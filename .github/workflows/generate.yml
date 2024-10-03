@@ -1,0 +1,49 @@
+name: Generate TS Code
+
+on:
+  workflow_dispatch:  # Allows manual trigger via GitHub UI or external API call
+  repository_dispatch:
+    types: [trigger-from-protobuffer-ts]  # This listens for the custom event from Repository A
+
+jobs:
+  generate:
+    runs-on: [runs-on,runner=2cpu-linux-x64,"run-id=${{ github.run_id }}"]
+
+    steps:
+      - name: Checkout generated-code repository
+        uses: actions/checkout@v3
+
+      - name: Checkout Protobuf repository
+        uses: actions/checkout@v3
+        with:
+          repository: BassemLabs/protobuffer
+          token: ${{ secrets.MY_GITHUB_PAT }}
+          path: proto-repo
+
+      # Step 3: Install buf CLI
+      - name: Install buf CLI
+        run: |
+          curl -sSL https://github.com/bufbuild/buf/releases/download/v1.40.1/buf-Linux-x86_64 -o /usr/local/bin/buf
+          chmod +x /usr/local/bin/buf
+
+      # Step 4: Generate Rust code from Protobuf files
+      - name: Generate TS code with buf
+        run: cd proto-repo && ls -l && cat buf.gen.yaml && buf generate
+
+      # Step 5: Move generated files to the src directory
+      - name: Move generated files
+        run: |
+          find . ! -name '.github' -type f -exec rm -f {} +  # Clear previous generated files
+          mv proto-repo/ts_gen/* .  # Move new generated files
+
+      # Step 8: Commit and push the generated code
+      - name: Commit and push changes
+        run: |
+          rm -rf proto-repo
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Update generated Rust code and lib.rs" || echo "No changes to commit"
+          git push origin HEAD:${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
