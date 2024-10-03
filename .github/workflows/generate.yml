@@ -35,6 +35,7 @@ jobs:
         run: |
           find . ! -path './.github/*' ! -path './.git/*' -type f -exec rm -f {} +  # Clear previous generated files
           mv proto-repo/ts_gen/* .  # Move new generated files
+          ls -l .
 
       # Step 8: Commit and push the generated code
       - name: Commit and push changes
