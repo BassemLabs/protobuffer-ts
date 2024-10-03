@@ -28,7 +28,7 @@ jobs:
 
       # Step 4: Generate Rust code from Protobuf files
       - name: Generate TS code with buf
-        run: cd proto-repo && ls -l && cat buf.gen.yaml && buf generate
+        run: cd proto-repo && ls -l && cat buf.gen.yaml && buf generate && ls -l ts_gen
 
       # Step 5: Move generated files to the src directory
       - name: Move generated files
