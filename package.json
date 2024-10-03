@@ -1,0 +1,27 @@
+{
+  "name": "protobuffer-ts",
+  "version": "1.0.0",
+  "description": "Generated TypeScript code from Protobuf files",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BassemLabs/protobuffer-ts.git"
+  },
+  "keywords": [
+    "protobuf",
+    "typescript",
+    "grpc"
+  ],
+  "author": "BassemLabs",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.0.0",
+    "@types/node": "^16.0.0"
+  }
+}
