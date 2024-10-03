@@ -28,15 +28,14 @@ jobs:
 
       # Step 4: Generate Rust code from Protobuf files
       - name: Generate TS code with buf
-        run: cd proto-repo && ls -l && cat buf.gen.yaml && buf generate && ls -l ts_gen && ls -l ts_gen/class_service
+        run: cd proto-repo && ls -l && cat buf.gen.yaml && buf generate && ls -l ts_gen
 
       # Step 5: Move generated files to the src directory
       - name: Move generated files
         run: |
-          find . ! -path './proto-repo/*' ! -path './.github/*' ! -path './.git/*' -type f -exec rm -f {} +  # Clear previous files but exclude proto-repo
-          cp -R proto-repo/ts_gen/* .  # Recursively copy all files and directories
-          ls -l .
-          ls -l class_service
+          rm -rf src
+          mkdir src
+          cp -R proto-repo/ts_gen/* src/  # Recursively copy all files and directories
 
       # Step 8: Commit and push the generated code
       - name: Commit and push changes
