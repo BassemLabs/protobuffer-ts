@@ -5,14 +5,60 @@
 //   protoc               unknown
 // source: class_service/semester.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Semester = exports.protobufPackage = void 0;
+exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.ReportType = exports.protobufPackage = void 0;
+exports.reportTypeFromJSON = reportTypeFromJSON;
+exports.reportTypeToJSON = reportTypeToJSON;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const datetime_1 = require("../utils/datetime");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
+var ReportType;
+(function (ReportType) {
+    ReportType[ReportType["Progress"] = 1] = "Progress";
+    ReportType[ReportType["Midterm"] = 2] = "Midterm";
+    ReportType[ReportType["Final"] = 3] = "Final";
+    ReportType[ReportType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+})(ReportType || (exports.ReportType = ReportType = {}));
+function reportTypeFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "Progress":
+            return ReportType.Progress;
+        case 2:
+        case "Midterm":
+            return ReportType.Midterm;
+        case 3:
+        case "Final":
+            return ReportType.Final;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportType.UNRECOGNIZED;
+    }
+}
+function reportTypeToJSON(object) {
+    switch (object) {
+        case ReportType.Progress:
+            return "Progress";
+        case ReportType.Midterm:
+            return "Midterm";
+        case ReportType.Final:
+            return "Final";
+        case ReportType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
 function createBaseSemester() {
-    return { id: undefined, name: "", archived: false, startDate: undefined, endDate: undefined };
+    return {
+        id: undefined,
+        name: "",
+        archived: false,
+        startDate: undefined,
+        endDate: undefined,
+        reportLayout: undefined,
+    };
 }
 exports.Semester = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -30,6 +76,9 @@ exports.Semester = {
         }
         if (message.endDate !== undefined) {
             datetime_1.DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+        }
+        if (message.reportLayout !== undefined) {
+            exports.SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -70,6 +119,12 @@ exports.Semester = {
                     }
                     message.endDate = datetime_1.DateTime.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.reportLayout = exports.SemesterReportLayout.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -85,6 +140,7 @@ exports.Semester = {
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
             startDate: isSet(object.startDate) ? datetime_1.DateTime.fromJSON(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? datetime_1.DateTime.fromJSON(object.endDate) : undefined,
+            reportLayout: isSet(object.reportLayout) ? exports.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
         };
     },
     toJSON(message) {
@@ -104,6 +160,9 @@ exports.Semester = {
         if (message.endDate !== undefined) {
             obj.endDate = datetime_1.DateTime.toJSON(message.endDate);
         }
+        if (message.reportLayout !== undefined) {
+            obj.reportLayout = exports.SemesterReportLayout.toJSON(message.reportLayout);
+        }
         return obj;
     },
     create(base) {
@@ -120,6 +179,295 @@ exports.Semester = {
         message.endDate = (object.endDate !== undefined && object.endDate !== null)
             ? datetime_1.DateTime.fromPartial(object.endDate)
             : undefined;
+        message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
+            ? exports.SemesterReportLayout.fromPartial(object.reportLayout)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSemesterReportLayout() {
+    return {
+        commentCharLimit: 0,
+        includeProgressReportCards: false,
+        showCreditsEarnedEntry: false,
+        learningSkills: [],
+        reportDates: [],
+    };
+}
+exports.SemesterReportLayout = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.commentCharLimit !== 0) {
+            writer.uint32(8).uint32(message.commentCharLimit);
+        }
+        if (message.includeProgressReportCards !== false) {
+            writer.uint32(16).bool(message.includeProgressReportCards);
+        }
+        if (message.showCreditsEarnedEntry !== false) {
+            writer.uint32(24).bool(message.showCreditsEarnedEntry);
+        }
+        for (const v of message.learningSkills) {
+            exports.SemesterLearningSkill.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.reportDates) {
+            exports.ReportDates.encode(v, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSemesterReportLayout();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.commentCharLimit = reader.uint32();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.includeProgressReportCards = reader.bool();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.showCreditsEarnedEntry = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.learningSkills.push(exports.SemesterLearningSkill.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.reportDates.push(exports.ReportDates.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            commentCharLimit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
+            includeProgressReportCards: isSet(object.includeProgressReportCards)
+                ? globalThis.Boolean(object.includeProgressReportCards)
+                : false,
+            showCreditsEarnedEntry: isSet(object.showCreditsEarnedEntry)
+                ? globalThis.Boolean(object.showCreditsEarnedEntry)
+                : false,
+            learningSkills: globalThis.Array.isArray(object?.learningSkills)
+                ? object.learningSkills.map((e) => exports.SemesterLearningSkill.fromJSON(e))
+                : [],
+            reportDates: globalThis.Array.isArray(object?.reportDates)
+                ? object.reportDates.map((e) => exports.ReportDates.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.commentCharLimit !== 0) {
+            obj.commentCharLimit = Math.round(message.commentCharLimit);
+        }
+        if (message.includeProgressReportCards !== false) {
+            obj.includeProgressReportCards = message.includeProgressReportCards;
+        }
+        if (message.showCreditsEarnedEntry !== false) {
+            obj.showCreditsEarnedEntry = message.showCreditsEarnedEntry;
+        }
+        if (message.learningSkills?.length) {
+            obj.learningSkills = message.learningSkills.map((e) => exports.SemesterLearningSkill.toJSON(e));
+        }
+        if (message.reportDates?.length) {
+            obj.reportDates = message.reportDates.map((e) => exports.ReportDates.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SemesterReportLayout.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSemesterReportLayout();
+        message.commentCharLimit = object.commentCharLimit ?? 0;
+        message.includeProgressReportCards = object.includeProgressReportCards ?? false;
+        message.showCreditsEarnedEntry = object.showCreditsEarnedEntry ?? false;
+        message.learningSkills = object.learningSkills?.map((e) => exports.SemesterLearningSkill.fromPartial(e)) || [];
+        message.reportDates = object.reportDates?.map((e) => exports.ReportDates.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseReportDates() {
+    return { reportType: 1, dueDate: undefined, distributionDate: undefined };
+}
+exports.ReportDates = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.reportType !== 1) {
+            writer.uint32(8).int32(message.reportType);
+        }
+        if (message.dueDate !== undefined) {
+            datetime_1.DateTime.encode(message.dueDate, writer.uint32(18).fork()).join();
+        }
+        if (message.distributionDate !== undefined) {
+            datetime_1.DateTime.encode(message.distributionDate, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportDates();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.reportType = reader.int32();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.dueDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.distributionDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : 1,
+            dueDate: isSet(object.dueDate) ? datetime_1.DateTime.fromJSON(object.dueDate) : undefined,
+            distributionDate: isSet(object.distributionDate) ? datetime_1.DateTime.fromJSON(object.distributionDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.reportType !== 1) {
+            obj.reportType = reportTypeToJSON(message.reportType);
+        }
+        if (message.dueDate !== undefined) {
+            obj.dueDate = datetime_1.DateTime.toJSON(message.dueDate);
+        }
+        if (message.distributionDate !== undefined) {
+            obj.distributionDate = datetime_1.DateTime.toJSON(message.distributionDate);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportDates.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportDates();
+        message.reportType = object.reportType ?? 1;
+        message.dueDate = (object.dueDate !== undefined && object.dueDate !== null)
+            ? datetime_1.DateTime.fromPartial(object.dueDate)
+            : undefined;
+        message.distributionDate = (object.distributionDate !== undefined && object.distributionDate !== null)
+            ? datetime_1.DateTime.fromPartial(object.distributionDate)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSemesterLearningSkill() {
+    return { id: undefined, title: "", description: "" };
+}
+exports.SemesterLearningSkill = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.title !== "") {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.description !== "") {
+            writer.uint32(26).string(message.description);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSemesterLearningSkill();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : "",
+            description: isSet(object.description) ? globalThis.String(object.description) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.title !== "") {
+            obj.title = message.title;
+        }
+        if (message.description !== "") {
+            obj.description = message.description;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SemesterLearningSkill.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSemesterLearningSkill();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.title = object.title ?? "";
+        message.description = object.description ?? "";
         return message;
     },
 };

@@ -11,16 +11,83 @@ import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "class_service";
 
+export enum ReportType {
+  Progress = 1,
+  Midterm = 2,
+  Final = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function reportTypeFromJSON(object: any): ReportType {
+  switch (object) {
+    case 1:
+    case "Progress":
+      return ReportType.Progress;
+    case 2:
+    case "Midterm":
+      return ReportType.Midterm;
+    case 3:
+    case "Final":
+      return ReportType.Final;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportType.UNRECOGNIZED;
+  }
+}
+
+export function reportTypeToJSON(object: ReportType): string {
+  switch (object) {
+    case ReportType.Progress:
+      return "Progress";
+    case ReportType.Midterm:
+      return "Midterm";
+    case ReportType.Final:
+      return "Final";
+    case ReportType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface Semester {
   id: ObjectId | undefined;
   name: string;
   archived: boolean;
   startDate: DateTime | undefined;
   endDate: DateTime | undefined;
+  reportLayout: SemesterReportLayout | undefined;
+}
+
+export interface SemesterReportLayout {
+  commentCharLimit: number;
+  includeProgressReportCards: boolean;
+  showCreditsEarnedEntry: boolean;
+  learningSkills: SemesterLearningSkill[];
+  reportDates: ReportDates[];
+}
+
+export interface ReportDates {
+  reportType: ReportType;
+  dueDate?: DateTime | undefined;
+  distributionDate?: DateTime | undefined;
+}
+
+export interface SemesterLearningSkill {
+  id: ObjectId | undefined;
+  title: string;
+  description: string;
 }
 
 function createBaseSemester(): Semester {
-  return { id: undefined, name: "", archived: false, startDate: undefined, endDate: undefined };
+  return {
+    id: undefined,
+    name: "",
+    archived: false,
+    startDate: undefined,
+    endDate: undefined,
+    reportLayout: undefined,
+  };
 }
 
 export const Semester: MessageFns<Semester> = {
@@ -39,6 +106,9 @@ export const Semester: MessageFns<Semester> = {
     }
     if (message.endDate !== undefined) {
       DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+    }
+    if (message.reportLayout !== undefined) {
+      SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -85,6 +155,13 @@ export const Semester: MessageFns<Semester> = {
 
           message.endDate = DateTime.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.reportLayout = SemesterReportLayout.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -101,6 +178,7 @@ export const Semester: MessageFns<Semester> = {
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       startDate: isSet(object.startDate) ? DateTime.fromJSON(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? DateTime.fromJSON(object.endDate) : undefined,
+      reportLayout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
     };
   },
 
@@ -121,6 +199,9 @@ export const Semester: MessageFns<Semester> = {
     if (message.endDate !== undefined) {
       obj.endDate = DateTime.toJSON(message.endDate);
     }
+    if (message.reportLayout !== undefined) {
+      obj.reportLayout = SemesterReportLayout.toJSON(message.reportLayout);
+    }
     return obj;
   },
 
@@ -138,6 +219,324 @@ export const Semester: MessageFns<Semester> = {
     message.endDate = (object.endDate !== undefined && object.endDate !== null)
       ? DateTime.fromPartial(object.endDate)
       : undefined;
+    message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
+      ? SemesterReportLayout.fromPartial(object.reportLayout)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSemesterReportLayout(): SemesterReportLayout {
+  return {
+    commentCharLimit: 0,
+    includeProgressReportCards: false,
+    showCreditsEarnedEntry: false,
+    learningSkills: [],
+    reportDates: [],
+  };
+}
+
+export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
+  encode(message: SemesterReportLayout, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.commentCharLimit !== 0) {
+      writer.uint32(8).uint32(message.commentCharLimit);
+    }
+    if (message.includeProgressReportCards !== false) {
+      writer.uint32(16).bool(message.includeProgressReportCards);
+    }
+    if (message.showCreditsEarnedEntry !== false) {
+      writer.uint32(24).bool(message.showCreditsEarnedEntry);
+    }
+    for (const v of message.learningSkills) {
+      SemesterLearningSkill.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.reportDates) {
+      ReportDates.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SemesterReportLayout {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSemesterReportLayout();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.commentCharLimit = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.includeProgressReportCards = reader.bool();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.showCreditsEarnedEntry = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.learningSkills.push(SemesterLearningSkill.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.reportDates.push(ReportDates.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SemesterReportLayout {
+    return {
+      commentCharLimit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
+      includeProgressReportCards: isSet(object.includeProgressReportCards)
+        ? globalThis.Boolean(object.includeProgressReportCards)
+        : false,
+      showCreditsEarnedEntry: isSet(object.showCreditsEarnedEntry)
+        ? globalThis.Boolean(object.showCreditsEarnedEntry)
+        : false,
+      learningSkills: globalThis.Array.isArray(object?.learningSkills)
+        ? object.learningSkills.map((e: any) => SemesterLearningSkill.fromJSON(e))
+        : [],
+      reportDates: globalThis.Array.isArray(object?.reportDates)
+        ? object.reportDates.map((e: any) => ReportDates.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SemesterReportLayout): unknown {
+    const obj: any = {};
+    if (message.commentCharLimit !== 0) {
+      obj.commentCharLimit = Math.round(message.commentCharLimit);
+    }
+    if (message.includeProgressReportCards !== false) {
+      obj.includeProgressReportCards = message.includeProgressReportCards;
+    }
+    if (message.showCreditsEarnedEntry !== false) {
+      obj.showCreditsEarnedEntry = message.showCreditsEarnedEntry;
+    }
+    if (message.learningSkills?.length) {
+      obj.learningSkills = message.learningSkills.map((e) => SemesterLearningSkill.toJSON(e));
+    }
+    if (message.reportDates?.length) {
+      obj.reportDates = message.reportDates.map((e) => ReportDates.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SemesterReportLayout>, I>>(base?: I): SemesterReportLayout {
+    return SemesterReportLayout.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SemesterReportLayout>, I>>(object: I): SemesterReportLayout {
+    const message = createBaseSemesterReportLayout();
+    message.commentCharLimit = object.commentCharLimit ?? 0;
+    message.includeProgressReportCards = object.includeProgressReportCards ?? false;
+    message.showCreditsEarnedEntry = object.showCreditsEarnedEntry ?? false;
+    message.learningSkills = object.learningSkills?.map((e) => SemesterLearningSkill.fromPartial(e)) || [];
+    message.reportDates = object.reportDates?.map((e) => ReportDates.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseReportDates(): ReportDates {
+  return { reportType: 1, dueDate: undefined, distributionDate: undefined };
+}
+
+export const ReportDates: MessageFns<ReportDates> = {
+  encode(message: ReportDates, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.reportType !== 1) {
+      writer.uint32(8).int32(message.reportType);
+    }
+    if (message.dueDate !== undefined) {
+      DateTime.encode(message.dueDate, writer.uint32(18).fork()).join();
+    }
+    if (message.distributionDate !== undefined) {
+      DateTime.encode(message.distributionDate, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportDates {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportDates();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.reportType = reader.int32() as any;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.dueDate = DateTime.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.distributionDate = DateTime.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportDates {
+    return {
+      reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : 1,
+      dueDate: isSet(object.dueDate) ? DateTime.fromJSON(object.dueDate) : undefined,
+      distributionDate: isSet(object.distributionDate) ? DateTime.fromJSON(object.distributionDate) : undefined,
+    };
+  },
+
+  toJSON(message: ReportDates): unknown {
+    const obj: any = {};
+    if (message.reportType !== 1) {
+      obj.reportType = reportTypeToJSON(message.reportType);
+    }
+    if (message.dueDate !== undefined) {
+      obj.dueDate = DateTime.toJSON(message.dueDate);
+    }
+    if (message.distributionDate !== undefined) {
+      obj.distributionDate = DateTime.toJSON(message.distributionDate);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportDates>, I>>(base?: I): ReportDates {
+    return ReportDates.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportDates>, I>>(object: I): ReportDates {
+    const message = createBaseReportDates();
+    message.reportType = object.reportType ?? 1;
+    message.dueDate = (object.dueDate !== undefined && object.dueDate !== null)
+      ? DateTime.fromPartial(object.dueDate)
+      : undefined;
+    message.distributionDate = (object.distributionDate !== undefined && object.distributionDate !== null)
+      ? DateTime.fromPartial(object.distributionDate)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSemesterLearningSkill(): SemesterLearningSkill {
+  return { id: undefined, title: "", description: "" };
+}
+
+export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
+  encode(message: SemesterLearningSkill, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.title !== "") {
+      writer.uint32(18).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SemesterLearningSkill {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSemesterLearningSkill();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SemesterLearningSkill {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+    };
+  },
+
+  toJSON(message: SemesterLearningSkill): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SemesterLearningSkill>, I>>(base?: I): SemesterLearningSkill {
+    return SemesterLearningSkill.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SemesterLearningSkill>, I>>(object: I): SemesterLearningSkill {
+    const message = createBaseSemesterLearningSkill();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.title = object.title ?? "";
+    message.description = object.description ?? "";
     return message;
   },
 };
