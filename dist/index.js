@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Object_id = exports.Datetime = exports.Request_context = exports.Duration = exports.Gclass = exports.Report_layout_service = exports.Homeroom_service = exports.Report_layout = exports.Course_service = exports.Semester = exports.Homeroom = exports.Semester_service = exports.Course = void 0;
+exports.Object_id = exports.Request_context = exports.Timestamp = exports.Gclass = exports.Report_layout_service = exports.Homeroom_service = exports.Report_layout = exports.Course_service = exports.Semester = exports.Homeroom = exports.Semester_service = exports.Course = void 0;
 // Auto-generated index.ts
 const Course = __importStar(require("./class_service/course"));
 exports.Course = Course;
@@ -43,11 +43,9 @@ const Report_layout_service = __importStar(require("./class_service/report_layou
 exports.Report_layout_service = Report_layout_service;
 const Gclass = __importStar(require("./class_service/gclass"));
 exports.Gclass = Gclass;
-const Duration = __importStar(require("./google/protobuf/duration"));
-exports.Duration = Duration;
+const Timestamp = __importStar(require("./google/protobuf/timestamp"));
+exports.Timestamp = Timestamp;
 const Request_context = __importStar(require("./utils/request_context"));
 exports.Request_context = Request_context;
-const Datetime = __importStar(require("./utils/datetime"));
-exports.Datetime = Datetime;
 const Object_id = __importStar(require("./utils/object_id"));
 exports.Object_id = Object_id;

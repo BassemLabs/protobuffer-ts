@@ -10,7 +10,7 @@ exports.reportTypeFromJSON = reportTypeFromJSON;
 exports.reportTypeToJSON = reportTypeToJSON;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const datetime_1 = require("../utils/datetime");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 var ReportType;
@@ -72,10 +72,10 @@ exports.Semester = {
             writer.uint32(24).bool(message.archived);
         }
         if (message.startDate !== undefined) {
-            datetime_1.DateTime.encode(message.startDate, writer.uint32(34).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
         }
         if (message.endDate !== undefined) {
-            datetime_1.DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
         }
         if (message.reportLayout !== undefined) {
             exports.SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
@@ -111,13 +111,13 @@ exports.Semester = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.startDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.endDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -138,8 +138,8 @@ exports.Semester = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-            startDate: isSet(object.startDate) ? datetime_1.DateTime.fromJSON(object.startDate) : undefined,
-            endDate: isSet(object.endDate) ? datetime_1.DateTime.fromJSON(object.endDate) : undefined,
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             reportLayout: isSet(object.reportLayout) ? exports.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
         };
     },
@@ -155,10 +155,10 @@ exports.Semester = {
             obj.archived = message.archived;
         }
         if (message.startDate !== undefined) {
-            obj.startDate = datetime_1.DateTime.toJSON(message.startDate);
+            obj.startDate = message.startDate.toISOString();
         }
         if (message.endDate !== undefined) {
-            obj.endDate = datetime_1.DateTime.toJSON(message.endDate);
+            obj.endDate = message.endDate.toISOString();
         }
         if (message.reportLayout !== undefined) {
             obj.reportLayout = exports.SemesterReportLayout.toJSON(message.reportLayout);
@@ -173,12 +173,8 @@ exports.Semester = {
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? "";
         message.archived = object.archived ?? false;
-        message.startDate = (object.startDate !== undefined && object.startDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.startDate)
-            : undefined;
-        message.endDate = (object.endDate !== undefined && object.endDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.endDate)
-            : undefined;
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
             ? exports.SemesterReportLayout.fromPartial(object.reportLayout)
             : undefined;
@@ -316,10 +312,10 @@ exports.ReportDates = {
             writer.uint32(8).int32(message.reportType);
         }
         if (message.dueDate !== undefined) {
-            datetime_1.DateTime.encode(message.dueDate, writer.uint32(18).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(18).fork()).join();
         }
         if (message.distributionDate !== undefined) {
-            datetime_1.DateTime.encode(message.distributionDate, writer.uint32(26).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.distributionDate), writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -340,13 +336,13 @@ exports.ReportDates = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.dueDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.dueDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.distributionDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.distributionDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -359,8 +355,8 @@ exports.ReportDates = {
     fromJSON(object) {
         return {
             reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : 1,
-            dueDate: isSet(object.dueDate) ? datetime_1.DateTime.fromJSON(object.dueDate) : undefined,
-            distributionDate: isSet(object.distributionDate) ? datetime_1.DateTime.fromJSON(object.distributionDate) : undefined,
+            dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            distributionDate: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
         };
     },
     toJSON(message) {
@@ -369,10 +365,10 @@ exports.ReportDates = {
             obj.reportType = reportTypeToJSON(message.reportType);
         }
         if (message.dueDate !== undefined) {
-            obj.dueDate = datetime_1.DateTime.toJSON(message.dueDate);
+            obj.dueDate = message.dueDate.toISOString();
         }
         if (message.distributionDate !== undefined) {
-            obj.distributionDate = datetime_1.DateTime.toJSON(message.distributionDate);
+            obj.distributionDate = message.distributionDate.toISOString();
         }
         return obj;
     },
@@ -382,12 +378,8 @@ exports.ReportDates = {
     fromPartial(object) {
         const message = createBaseReportDates();
         message.reportType = object.reportType ?? 1;
-        message.dueDate = (object.dueDate !== undefined && object.dueDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.dueDate)
-            : undefined;
-        message.distributionDate = (object.distributionDate !== undefined && object.distributionDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.distributionDate)
-            : undefined;
+        message.dueDate = object.dueDate ?? undefined;
+        message.distributionDate = object.distributionDate ?? undefined;
         return message;
     },
 };
@@ -471,6 +463,27 @@ exports.SemesterLearningSkill = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

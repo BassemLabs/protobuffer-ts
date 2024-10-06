@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const datetime_1 = require("../utils/datetime");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const course_1 = require("./course");
@@ -577,10 +577,10 @@ exports.UpdateRequest = {
             writer.uint32(26).string(message.name);
         }
         if (message.startDate !== undefined) {
-            datetime_1.DateTime.encode(message.startDate, writer.uint32(34).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
         }
         if (message.endDate !== undefined) {
-            datetime_1.DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
         }
         if (message.reportLayout !== undefined) {
             semester_1.SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
@@ -616,13 +616,13 @@ exports.UpdateRequest = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.startDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.endDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -643,8 +643,8 @@ exports.UpdateRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             semesterId: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            startDate: isSet(object.startDate) ? datetime_1.DateTime.fromJSON(object.startDate) : undefined,
-            endDate: isSet(object.endDate) ? datetime_1.DateTime.fromJSON(object.endDate) : undefined,
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             reportLayout: isSet(object.reportLayout) ? semester_1.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
         };
     },
@@ -660,10 +660,10 @@ exports.UpdateRequest = {
             obj.name = message.name;
         }
         if (message.startDate !== undefined) {
-            obj.startDate = datetime_1.DateTime.toJSON(message.startDate);
+            obj.startDate = message.startDate.toISOString();
         }
         if (message.endDate !== undefined) {
-            obj.endDate = datetime_1.DateTime.toJSON(message.endDate);
+            obj.endDate = message.endDate.toISOString();
         }
         if (message.reportLayout !== undefined) {
             obj.reportLayout = semester_1.SemesterReportLayout.toJSON(message.reportLayout);
@@ -682,12 +682,8 @@ exports.UpdateRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semesterId)
             : undefined;
         message.name = object.name ?? "";
-        message.startDate = (object.startDate !== undefined && object.startDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.startDate)
-            : undefined;
-        message.endDate = (object.endDate !== undefined && object.endDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.endDate)
-            : undefined;
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
             ? semester_1.SemesterReportLayout.fromPartial(object.reportLayout)
             : undefined;
@@ -776,10 +772,10 @@ exports.CreateRequest = {
             writer.uint32(18).string(message.name);
         }
         if (message.startDate !== undefined) {
-            datetime_1.DateTime.encode(message.startDate, writer.uint32(26).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
         }
         if (message.endDate !== undefined) {
-            datetime_1.DateTime.encode(message.endDate, writer.uint32(34).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -806,13 +802,13 @@ exports.CreateRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.startDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.endDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -826,8 +822,8 @@ exports.CreateRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            startDate: isSet(object.startDate) ? datetime_1.DateTime.fromJSON(object.startDate) : undefined,
-            endDate: isSet(object.endDate) ? datetime_1.DateTime.fromJSON(object.endDate) : undefined,
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -839,10 +835,10 @@ exports.CreateRequest = {
             obj.name = message.name;
         }
         if (message.startDate !== undefined) {
-            obj.startDate = datetime_1.DateTime.toJSON(message.startDate);
+            obj.startDate = message.startDate.toISOString();
         }
         if (message.endDate !== undefined) {
-            obj.endDate = datetime_1.DateTime.toJSON(message.endDate);
+            obj.endDate = message.endDate.toISOString();
         }
         return obj;
     },
@@ -855,12 +851,8 @@ exports.CreateRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.name = object.name ?? "";
-        message.startDate = (object.startDate !== undefined && object.startDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.startDate)
-            : undefined;
-        message.endDate = (object.endDate !== undefined && object.endDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.endDate)
-            : undefined;
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         return message;
     },
 };
@@ -916,6 +908,27 @@ exports.SemesterResponse = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

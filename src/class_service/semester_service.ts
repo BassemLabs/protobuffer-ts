@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { DateTime } from "../utils/datetime";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
@@ -63,8 +63,8 @@ export interface UpdateRequest {
   context: RequestContext | undefined;
   semesterId: ObjectId | undefined;
   name: string;
-  startDate: DateTime | undefined;
-  endDate: DateTime | undefined;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
   reportLayout?: SemesterReportLayout | undefined;
 }
 
@@ -78,8 +78,8 @@ export interface CreateRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
   name: string;
-  startDate: DateTime | undefined;
-  endDate: DateTime | undefined;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 }
 
 export interface SemesterResponse {
@@ -716,10 +716,10 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       writer.uint32(26).string(message.name);
     }
     if (message.startDate !== undefined) {
-      DateTime.encode(message.startDate, writer.uint32(34).fork()).join();
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
     }
     if (message.endDate !== undefined) {
-      DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
     }
     if (message.reportLayout !== undefined) {
       SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
@@ -760,14 +760,14 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.startDate = DateTime.decode(reader, reader.uint32());
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.endDate = DateTime.decode(reader, reader.uint32());
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
@@ -790,8 +790,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      startDate: isSet(object.startDate) ? DateTime.fromJSON(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? DateTime.fromJSON(object.endDate) : undefined,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       reportLayout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
     };
   },
@@ -808,10 +808,10 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       obj.name = message.name;
     }
     if (message.startDate !== undefined) {
-      obj.startDate = DateTime.toJSON(message.startDate);
+      obj.startDate = message.startDate.toISOString();
     }
     if (message.endDate !== undefined) {
-      obj.endDate = DateTime.toJSON(message.endDate);
+      obj.endDate = message.endDate.toISOString();
     }
     if (message.reportLayout !== undefined) {
       obj.reportLayout = SemesterReportLayout.toJSON(message.reportLayout);
@@ -831,12 +831,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       ? ObjectId.fromPartial(object.semesterId)
       : undefined;
     message.name = object.name ?? "";
-    message.startDate = (object.startDate !== undefined && object.startDate !== null)
-      ? DateTime.fromPartial(object.startDate)
-      : undefined;
-    message.endDate = (object.endDate !== undefined && object.endDate !== null)
-      ? DateTime.fromPartial(object.endDate)
-      : undefined;
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
     message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
       ? SemesterReportLayout.fromPartial(object.reportLayout)
       : undefined;
@@ -935,10 +931,10 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       writer.uint32(18).string(message.name);
     }
     if (message.startDate !== undefined) {
-      DateTime.encode(message.startDate, writer.uint32(26).fork()).join();
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
     }
     if (message.endDate !== undefined) {
-      DateTime.encode(message.endDate, writer.uint32(34).fork()).join();
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -969,14 +965,14 @@ export const CreateRequest: MessageFns<CreateRequest> = {
             break;
           }
 
-          message.startDate = DateTime.decode(reader, reader.uint32());
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.endDate = DateTime.decode(reader, reader.uint32());
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -991,8 +987,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      startDate: isSet(object.startDate) ? DateTime.fromJSON(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? DateTime.fromJSON(object.endDate) : undefined,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -1005,10 +1001,10 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       obj.name = message.name;
     }
     if (message.startDate !== undefined) {
-      obj.startDate = DateTime.toJSON(message.startDate);
+      obj.startDate = message.startDate.toISOString();
     }
     if (message.endDate !== undefined) {
-      obj.endDate = DateTime.toJSON(message.endDate);
+      obj.endDate = message.endDate.toISOString();
     }
     return obj;
   },
@@ -1022,12 +1018,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? "";
-    message.startDate = (object.startDate !== undefined && object.startDate !== null)
-      ? DateTime.fromPartial(object.startDate)
-      : undefined;
-    message.endDate = (object.endDate !== undefined && object.endDate !== null)
-      ? DateTime.fromPartial(object.endDate)
-      : undefined;
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
     return message;
   },
 };
@@ -1102,6 +1094,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

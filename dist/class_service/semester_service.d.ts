@@ -1,5 +1,4 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { DateTime } from "../utils/datetime";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
@@ -45,8 +44,8 @@ export interface UpdateRequest {
     context: RequestContext | undefined;
     semesterId: ObjectId | undefined;
     name: string;
-    startDate: DateTime | undefined;
-    endDate: DateTime | undefined;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
     reportLayout?: SemesterReportLayout | undefined;
 }
 export interface ArchiveRequest {
@@ -58,8 +57,8 @@ export interface CreateRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
     name: string;
-    startDate: DateTime | undefined;
-    endDate: DateTime | undefined;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
 }
 export interface SemesterResponse {
     semester: Semester | undefined;

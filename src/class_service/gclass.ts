@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { DateTime } from "../utils/datetime";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "class_service";
@@ -297,10 +297,10 @@ export interface GClassCourseWork {
   materials: Attachment[];
   /** Assuming ISO datetime format in TS */
   creationTime:
-    | DateTime
+    | Date
     | undefined;
   /** Same here */
-  dueDate: DateTime | undefined;
+  dueDate: Date | undefined;
   workType: WorkType;
   rawJsonData: string;
 }
@@ -315,7 +315,7 @@ export interface SubmissionHistory {
 export interface GradeHistory {
   actorUserId: string;
   gradeChangeType?: GradeChangeType | undefined;
-  gradeTimestamp?: DateTime | undefined;
+  gradeTimestamp?: Date | undefined;
   maxPoints: number;
   pointsEarned: number;
 }
@@ -324,7 +324,7 @@ export interface GradeHistory {
 export interface StateHistoryData {
   actorUserId: string;
   state?: StateHistory | undefined;
-  stateTimestamp?: DateTime | undefined;
+  stateTimestamp?: Date | undefined;
 }
 
 /** Represents an assignment submission */
@@ -768,10 +768,10 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
       Attachment.encode(v!, writer.uint32(66).fork()).join();
     }
     if (message.creationTime !== undefined) {
-      DateTime.encode(message.creationTime, writer.uint32(74).fork()).join();
+      Timestamp.encode(toTimestamp(message.creationTime), writer.uint32(74).fork()).join();
     }
     if (message.dueDate !== undefined) {
-      DateTime.encode(message.dueDate, writer.uint32(82).fork()).join();
+      Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(82).fork()).join();
     }
     if (message.workType !== 0) {
       writer.uint32(88).int32(message.workType);
@@ -850,14 +850,14 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
             break;
           }
 
-          message.creationTime = DateTime.decode(reader, reader.uint32());
+          message.creationTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 10:
           if (tag !== 82) {
             break;
           }
 
-          message.dueDate = DateTime.decode(reader, reader.uint32());
+          message.dueDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 11:
           if (tag !== 88) {
@@ -894,8 +894,8 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
       materials: globalThis.Array.isArray(object?.materials)
         ? object.materials.map((e: any) => Attachment.fromJSON(e))
         : [],
-      creationTime: isSet(object.creationTime) ? DateTime.fromJSON(object.creationTime) : undefined,
-      dueDate: isSet(object.dueDate) ? DateTime.fromJSON(object.dueDate) : undefined,
+      creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
+      dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : 0,
       rawJsonData: isSet(object.rawJsonData) ? globalThis.String(object.rawJsonData) : "",
     };
@@ -928,10 +928,10 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
       obj.materials = message.materials.map((e) => Attachment.toJSON(e));
     }
     if (message.creationTime !== undefined) {
-      obj.creationTime = DateTime.toJSON(message.creationTime);
+      obj.creationTime = message.creationTime.toISOString();
     }
     if (message.dueDate !== undefined) {
-      obj.dueDate = DateTime.toJSON(message.dueDate);
+      obj.dueDate = message.dueDate.toISOString();
     }
     if (message.workType !== 0) {
       obj.workType = workTypeToJSON(message.workType);
@@ -959,12 +959,8 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
     message.description = object.description ?? "";
     message.gclassLink = object.gclassLink ?? "";
     message.materials = object.materials?.map((e) => Attachment.fromPartial(e)) || [];
-    message.creationTime = (object.creationTime !== undefined && object.creationTime !== null)
-      ? DateTime.fromPartial(object.creationTime)
-      : undefined;
-    message.dueDate = (object.dueDate !== undefined && object.dueDate !== null)
-      ? DateTime.fromPartial(object.dueDate)
-      : undefined;
+    message.creationTime = object.creationTime ?? undefined;
+    message.dueDate = object.dueDate ?? undefined;
     message.workType = object.workType ?? 0;
     message.rawJsonData = object.rawJsonData ?? "";
     return message;
@@ -1062,7 +1058,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
       writer.uint32(16).int32(message.gradeChangeType);
     }
     if (message.gradeTimestamp !== undefined) {
-      DateTime.encode(message.gradeTimestamp, writer.uint32(26).fork()).join();
+      Timestamp.encode(toTimestamp(message.gradeTimestamp), writer.uint32(26).fork()).join();
     }
     if (message.maxPoints !== 0) {
       writer.uint32(33).double(message.maxPoints);
@@ -1099,7 +1095,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
             break;
           }
 
-          message.gradeTimestamp = DateTime.decode(reader, reader.uint32());
+          message.gradeTimestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 4:
           if (tag !== 33) {
@@ -1128,7 +1124,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
     return {
       actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
       gradeChangeType: isSet(object.gradeChangeType) ? gradeChangeTypeFromJSON(object.gradeChangeType) : 0,
-      gradeTimestamp: isSet(object.gradeTimestamp) ? DateTime.fromJSON(object.gradeTimestamp) : undefined,
+      gradeTimestamp: isSet(object.gradeTimestamp) ? fromJsonTimestamp(object.gradeTimestamp) : undefined,
       maxPoints: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
       pointsEarned: isSet(object.pointsEarned) ? globalThis.Number(object.pointsEarned) : 0,
     };
@@ -1143,7 +1139,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
       obj.gradeChangeType = gradeChangeTypeToJSON(message.gradeChangeType);
     }
     if (message.gradeTimestamp !== undefined) {
-      obj.gradeTimestamp = DateTime.toJSON(message.gradeTimestamp);
+      obj.gradeTimestamp = message.gradeTimestamp.toISOString();
     }
     if (message.maxPoints !== 0) {
       obj.maxPoints = message.maxPoints;
@@ -1161,9 +1157,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
     const message = createBaseGradeHistory();
     message.actorUserId = object.actorUserId ?? "";
     message.gradeChangeType = object.gradeChangeType ?? 0;
-    message.gradeTimestamp = (object.gradeTimestamp !== undefined && object.gradeTimestamp !== null)
-      ? DateTime.fromPartial(object.gradeTimestamp)
-      : undefined;
+    message.gradeTimestamp = object.gradeTimestamp ?? undefined;
     message.maxPoints = object.maxPoints ?? 0;
     message.pointsEarned = object.pointsEarned ?? 0;
     return message;
@@ -1183,7 +1177,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
       writer.uint32(16).int32(message.state);
     }
     if (message.stateTimestamp !== undefined) {
-      DateTime.encode(message.stateTimestamp, writer.uint32(26).fork()).join();
+      Timestamp.encode(toTimestamp(message.stateTimestamp), writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -1214,7 +1208,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
             break;
           }
 
-          message.stateTimestamp = DateTime.decode(reader, reader.uint32());
+          message.stateTimestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1229,7 +1223,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
     return {
       actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
       state: isSet(object.state) ? stateHistoryFromJSON(object.state) : 0,
-      stateTimestamp: isSet(object.stateTimestamp) ? DateTime.fromJSON(object.stateTimestamp) : undefined,
+      stateTimestamp: isSet(object.stateTimestamp) ? fromJsonTimestamp(object.stateTimestamp) : undefined,
     };
   },
 
@@ -1242,7 +1236,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
       obj.state = stateHistoryToJSON(message.state);
     }
     if (message.stateTimestamp !== undefined) {
-      obj.stateTimestamp = DateTime.toJSON(message.stateTimestamp);
+      obj.stateTimestamp = message.stateTimestamp.toISOString();
     }
     return obj;
   },
@@ -1254,9 +1248,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
     const message = createBaseStateHistoryData();
     message.actorUserId = object.actorUserId ?? "";
     message.state = object.state ?? 0;
-    message.stateTimestamp = (object.stateTimestamp !== undefined && object.stateTimestamp !== null)
-      ? DateTime.fromPartial(object.stateTimestamp)
-      : undefined;
+    message.stateTimestamp = object.stateTimestamp ?? undefined;
     return message;
   },
 };
@@ -1956,6 +1948,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

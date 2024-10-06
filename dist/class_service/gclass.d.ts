@@ -1,5 +1,4 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { DateTime } from "../utils/datetime";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export declare enum States {
@@ -82,9 +81,9 @@ export interface GClassCourseWork {
     gclassLink: string;
     materials: Attachment[];
     /** Assuming ISO datetime format in TS */
-    creationTime: DateTime | undefined;
+    creationTime: Date | undefined;
     /** Same here */
-    dueDate: DateTime | undefined;
+    dueDate: Date | undefined;
     workType: WorkType;
     rawJsonData: string;
 }
@@ -97,7 +96,7 @@ export interface SubmissionHistory {
 export interface GradeHistory {
     actorUserId: string;
     gradeChangeType?: GradeChangeType | undefined;
-    gradeTimestamp?: DateTime | undefined;
+    gradeTimestamp?: Date | undefined;
     maxPoints: number;
     pointsEarned: number;
 }
@@ -105,7 +104,7 @@ export interface GradeHistory {
 export interface StateHistoryData {
     actorUserId: string;
     state?: StateHistory | undefined;
-    stateTimestamp?: DateTime | undefined;
+    stateTimestamp?: Date | undefined;
 }
 /** Represents an assignment submission */
 export interface AssignmentSubmission {

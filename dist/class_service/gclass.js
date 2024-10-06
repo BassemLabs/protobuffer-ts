@@ -16,7 +16,7 @@ exports.stateHistoryFromJSON = stateHistoryFromJSON;
 exports.stateHistoryToJSON = stateHistoryToJSON;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const datetime_1 = require("../utils/datetime");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 var States;
@@ -626,10 +626,10 @@ exports.GClassCourseWork = {
             exports.Attachment.encode(v, writer.uint32(66).fork()).join();
         }
         if (message.creationTime !== undefined) {
-            datetime_1.DateTime.encode(message.creationTime, writer.uint32(74).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.creationTime), writer.uint32(74).fork()).join();
         }
         if (message.dueDate !== undefined) {
-            datetime_1.DateTime.encode(message.dueDate, writer.uint32(82).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(82).fork()).join();
         }
         if (message.workType !== 0) {
             writer.uint32(88).int32(message.workType);
@@ -698,13 +698,13 @@ exports.GClassCourseWork = {
                     if (tag !== 74) {
                         break;
                     }
-                    message.creationTime = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.creationTime = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 10:
                     if (tag !== 82) {
                         break;
                     }
-                    message.dueDate = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.dueDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 11:
                     if (tag !== 88) {
@@ -738,8 +738,8 @@ exports.GClassCourseWork = {
             materials: globalThis.Array.isArray(object?.materials)
                 ? object.materials.map((e) => exports.Attachment.fromJSON(e))
                 : [],
-            creationTime: isSet(object.creationTime) ? datetime_1.DateTime.fromJSON(object.creationTime) : undefined,
-            dueDate: isSet(object.dueDate) ? datetime_1.DateTime.fromJSON(object.dueDate) : undefined,
+            creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
+            dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
             workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : 0,
             rawJsonData: isSet(object.rawJsonData) ? globalThis.String(object.rawJsonData) : "",
         };
@@ -771,10 +771,10 @@ exports.GClassCourseWork = {
             obj.materials = message.materials.map((e) => exports.Attachment.toJSON(e));
         }
         if (message.creationTime !== undefined) {
-            obj.creationTime = datetime_1.DateTime.toJSON(message.creationTime);
+            obj.creationTime = message.creationTime.toISOString();
         }
         if (message.dueDate !== undefined) {
-            obj.dueDate = datetime_1.DateTime.toJSON(message.dueDate);
+            obj.dueDate = message.dueDate.toISOString();
         }
         if (message.workType !== 0) {
             obj.workType = workTypeToJSON(message.workType);
@@ -801,12 +801,8 @@ exports.GClassCourseWork = {
         message.description = object.description ?? "";
         message.gclassLink = object.gclassLink ?? "";
         message.materials = object.materials?.map((e) => exports.Attachment.fromPartial(e)) || [];
-        message.creationTime = (object.creationTime !== undefined && object.creationTime !== null)
-            ? datetime_1.DateTime.fromPartial(object.creationTime)
-            : undefined;
-        message.dueDate = (object.dueDate !== undefined && object.dueDate !== null)
-            ? datetime_1.DateTime.fromPartial(object.dueDate)
-            : undefined;
+        message.creationTime = object.creationTime ?? undefined;
+        message.dueDate = object.dueDate ?? undefined;
         message.workType = object.workType ?? 0;
         message.rawJsonData = object.rawJsonData ?? "";
         return message;
@@ -894,7 +890,7 @@ exports.GradeHistory = {
             writer.uint32(16).int32(message.gradeChangeType);
         }
         if (message.gradeTimestamp !== undefined) {
-            datetime_1.DateTime.encode(message.gradeTimestamp, writer.uint32(26).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.gradeTimestamp), writer.uint32(26).fork()).join();
         }
         if (message.maxPoints !== 0) {
             writer.uint32(33).double(message.maxPoints);
@@ -927,7 +923,7 @@ exports.GradeHistory = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.gradeTimestamp = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.gradeTimestamp = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 4:
                     if (tag !== 33) {
@@ -953,7 +949,7 @@ exports.GradeHistory = {
         return {
             actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
             gradeChangeType: isSet(object.gradeChangeType) ? gradeChangeTypeFromJSON(object.gradeChangeType) : 0,
-            gradeTimestamp: isSet(object.gradeTimestamp) ? datetime_1.DateTime.fromJSON(object.gradeTimestamp) : undefined,
+            gradeTimestamp: isSet(object.gradeTimestamp) ? fromJsonTimestamp(object.gradeTimestamp) : undefined,
             maxPoints: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
             pointsEarned: isSet(object.pointsEarned) ? globalThis.Number(object.pointsEarned) : 0,
         };
@@ -967,7 +963,7 @@ exports.GradeHistory = {
             obj.gradeChangeType = gradeChangeTypeToJSON(message.gradeChangeType);
         }
         if (message.gradeTimestamp !== undefined) {
-            obj.gradeTimestamp = datetime_1.DateTime.toJSON(message.gradeTimestamp);
+            obj.gradeTimestamp = message.gradeTimestamp.toISOString();
         }
         if (message.maxPoints !== 0) {
             obj.maxPoints = message.maxPoints;
@@ -984,9 +980,7 @@ exports.GradeHistory = {
         const message = createBaseGradeHistory();
         message.actorUserId = object.actorUserId ?? "";
         message.gradeChangeType = object.gradeChangeType ?? 0;
-        message.gradeTimestamp = (object.gradeTimestamp !== undefined && object.gradeTimestamp !== null)
-            ? datetime_1.DateTime.fromPartial(object.gradeTimestamp)
-            : undefined;
+        message.gradeTimestamp = object.gradeTimestamp ?? undefined;
         message.maxPoints = object.maxPoints ?? 0;
         message.pointsEarned = object.pointsEarned ?? 0;
         return message;
@@ -1004,7 +998,7 @@ exports.StateHistoryData = {
             writer.uint32(16).int32(message.state);
         }
         if (message.stateTimestamp !== undefined) {
-            datetime_1.DateTime.encode(message.stateTimestamp, writer.uint32(26).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.stateTimestamp), writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -1031,7 +1025,7 @@ exports.StateHistoryData = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.stateTimestamp = datetime_1.DateTime.decode(reader, reader.uint32());
+                    message.stateTimestamp = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1045,7 +1039,7 @@ exports.StateHistoryData = {
         return {
             actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
             state: isSet(object.state) ? stateHistoryFromJSON(object.state) : 0,
-            stateTimestamp: isSet(object.stateTimestamp) ? datetime_1.DateTime.fromJSON(object.stateTimestamp) : undefined,
+            stateTimestamp: isSet(object.stateTimestamp) ? fromJsonTimestamp(object.stateTimestamp) : undefined,
         };
     },
     toJSON(message) {
@@ -1057,7 +1051,7 @@ exports.StateHistoryData = {
             obj.state = stateHistoryToJSON(message.state);
         }
         if (message.stateTimestamp !== undefined) {
-            obj.stateTimestamp = datetime_1.DateTime.toJSON(message.stateTimestamp);
+            obj.stateTimestamp = message.stateTimestamp.toISOString();
         }
         return obj;
     },
@@ -1068,9 +1062,7 @@ exports.StateHistoryData = {
         const message = createBaseStateHistoryData();
         message.actorUserId = object.actorUserId ?? "";
         message.state = object.state ?? 0;
-        message.stateTimestamp = (object.stateTimestamp !== undefined && object.stateTimestamp !== null)
-            ? datetime_1.DateTime.fromPartial(object.stateTimestamp)
-            : undefined;
+        message.stateTimestamp = object.stateTimestamp ?? undefined;
         return message;
     },
 };
@@ -1688,6 +1680,27 @@ exports.YouTubeVideo = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

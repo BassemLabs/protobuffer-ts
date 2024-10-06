@@ -1,5 +1,4 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { DateTime } from "../utils/datetime";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export declare enum ReportType {
@@ -14,8 +13,8 @@ export interface Semester {
     id: ObjectId | undefined;
     name: string;
     archived: boolean;
-    startDate: DateTime | undefined;
-    endDate: DateTime | undefined;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
     reportLayout?: SemesterReportLayout | undefined;
 }
 export interface SemesterReportLayout {
@@ -27,8 +26,8 @@ export interface SemesterReportLayout {
 }
 export interface ReportDates {
     reportType: ReportType;
-    dueDate?: DateTime | undefined;
-    distributionDate?: DateTime | undefined;
+    dueDate?: Date | undefined;
+    distributionDate?: Date | undefined;
 }
 export interface SemesterLearningSkill {
     id: ObjectId | undefined;
