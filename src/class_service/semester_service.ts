@@ -11,7 +11,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
-import { Semester } from "./semester";
+import { Semester, SemesterReportLayout } from "./semester";
 
 export const protobufPackage = "class_service.semester_service";
 
@@ -65,6 +65,7 @@ export interface UpdateRequest {
   name: string;
   startDate: DateTime | undefined;
   endDate: DateTime | undefined;
+  reportLayout?: SemesterReportLayout | undefined;
 }
 
 export interface ArchiveRequest {
@@ -693,7 +694,14 @@ export const HomeroomsResponse: MessageFns<HomeroomsResponse> = {
 };
 
 function createBaseUpdateRequest(): UpdateRequest {
-  return { context: undefined, semesterId: undefined, name: "", startDate: undefined, endDate: undefined };
+  return {
+    context: undefined,
+    semesterId: undefined,
+    name: "",
+    startDate: undefined,
+    endDate: undefined,
+    reportLayout: undefined,
+  };
 }
 
 export const UpdateRequest: MessageFns<UpdateRequest> = {
@@ -712,6 +720,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     }
     if (message.endDate !== undefined) {
       DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+    }
+    if (message.reportLayout !== undefined) {
+      SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -758,6 +769,13 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
 
           message.endDate = DateTime.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.reportLayout = SemesterReportLayout.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -774,6 +792,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       startDate: isSet(object.startDate) ? DateTime.fromJSON(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? DateTime.fromJSON(object.endDate) : undefined,
+      reportLayout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
     };
   },
 
@@ -793,6 +812,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     }
     if (message.endDate !== undefined) {
       obj.endDate = DateTime.toJSON(message.endDate);
+    }
+    if (message.reportLayout !== undefined) {
+      obj.reportLayout = SemesterReportLayout.toJSON(message.reportLayout);
     }
     return obj;
   },
@@ -814,6 +836,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       : undefined;
     message.endDate = (object.endDate !== undefined && object.endDate !== null)
       ? DateTime.fromPartial(object.endDate)
+      : undefined;
+    message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
+      ? SemesterReportLayout.fromPartial(object.reportLayout)
       : undefined;
     return message;
   },

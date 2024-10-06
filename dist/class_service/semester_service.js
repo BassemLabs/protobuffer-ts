@@ -556,7 +556,14 @@ exports.HomeroomsResponse = {
     },
 };
 function createBaseUpdateRequest() {
-    return { context: undefined, semesterId: undefined, name: "", startDate: undefined, endDate: undefined };
+    return {
+        context: undefined,
+        semesterId: undefined,
+        name: "",
+        startDate: undefined,
+        endDate: undefined,
+        reportLayout: undefined,
+    };
 }
 exports.UpdateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -574,6 +581,9 @@ exports.UpdateRequest = {
         }
         if (message.endDate !== undefined) {
             datetime_1.DateTime.encode(message.endDate, writer.uint32(42).fork()).join();
+        }
+        if (message.reportLayout !== undefined) {
+            semester_1.SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -614,6 +624,12 @@ exports.UpdateRequest = {
                     }
                     message.endDate = datetime_1.DateTime.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.reportLayout = semester_1.SemesterReportLayout.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -629,6 +645,7 @@ exports.UpdateRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             startDate: isSet(object.startDate) ? datetime_1.DateTime.fromJSON(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? datetime_1.DateTime.fromJSON(object.endDate) : undefined,
+            reportLayout: isSet(object.reportLayout) ? semester_1.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
         };
     },
     toJSON(message) {
@@ -647,6 +664,9 @@ exports.UpdateRequest = {
         }
         if (message.endDate !== undefined) {
             obj.endDate = datetime_1.DateTime.toJSON(message.endDate);
+        }
+        if (message.reportLayout !== undefined) {
+            obj.reportLayout = semester_1.SemesterReportLayout.toJSON(message.reportLayout);
         }
         return obj;
     },
@@ -667,6 +687,9 @@ exports.UpdateRequest = {
             : undefined;
         message.endDate = (object.endDate !== undefined && object.endDate !== null)
             ? datetime_1.DateTime.fromPartial(object.endDate)
+            : undefined;
+        message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
+            ? semester_1.SemesterReportLayout.fromPartial(object.reportLayout)
             : undefined;
         return message;
     },

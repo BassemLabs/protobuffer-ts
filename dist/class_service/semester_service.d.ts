@@ -4,7 +4,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
-import { Semester } from "./semester";
+import { Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service.semester_service";
 export interface GetSemesterRequest {
     context: RequestContext | undefined;
@@ -47,6 +47,7 @@ export interface UpdateRequest {
     name: string;
     startDate: DateTime | undefined;
     endDate: DateTime | undefined;
+    reportLayout?: SemesterReportLayout | undefined;
 }
 export interface ArchiveRequest {
     /** Always include RequestContext as the first field */
