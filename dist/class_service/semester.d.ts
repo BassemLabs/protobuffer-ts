@@ -16,7 +16,7 @@ export interface Semester {
     archived: boolean;
     startDate: DateTime | undefined;
     endDate: DateTime | undefined;
-    reportLayout: SemesterReportLayout | undefined;
+    reportLayout?: SemesterReportLayout | undefined;
 }
 export interface SemesterReportLayout {
     commentCharLimit: number;
