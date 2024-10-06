@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES5",                          // Specify ECMAScript target version
+    "target": "ESNext",                          // Specify ECMAScript target version
+    "lib": ["ESNext", "DOM"],
     "module": "CommonJS",                     // Use commonjs for Node.js compatibility
     "declaration": true,                      // Generates corresponding '.d.ts' files
     "outDir": "./dist",                       // Redirect output structure to the 'dist' folder
