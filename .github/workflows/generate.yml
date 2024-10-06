@@ -40,11 +40,11 @@ jobs:
       - name: Generate `index.ts`
         run: |
           echo "Generating index.ts..."
-          for file in src/**/*.ts; do
-            file_name=$(basename "$file" .ts)
-            if [ "$file_name" != "index" ]; then
-              echo "export * from './$file_name';" >> src/index.ts
-            fi
+          echo "// Auto-generated index.ts" > src/index.ts
+          find src -name "*.ts" ! -name "index.ts" | while read file; do
+            relative_path="${file#src/}"    # Remove 'src/' from the path
+            relative_path="${relative_path%.ts}"  # Remove '.ts' extension
+            echo "export * from './$relative_path';" >> src/index.ts
           done
         shell: bash
 
