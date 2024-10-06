@@ -36,6 +36,17 @@ jobs:
           rm -rf src
           mkdir src
           cp -R proto-repo/ts_gen/* src/  # Recursively copy all files and directories
+          
+      - name: Generate `index.ts`
+        run: |
+          echo "Generating index.ts..."
+          for file in src/**/*.ts; do
+            file_name=$(basename "$file" .ts)
+            if [ "$file_name" != "index" ]; then
+              echo "export * from './$file_name';" >> src/index.ts
+            fi
+          done
+        shell: bash
 
       # Step 8: Commit and push the generated code
       - name: Commit and push changes
