@@ -1,10 +1,10 @@
 {
   "name": "protobuffer-ts",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",  // Ensure this points to the compiled JS in 'dist/src'
+  "types": "dist/src/index.d.ts",  // Points to the compiled TypeScript declaration file
   "scripts": {
-    "build": "tsc"
+    "build": "tsc"  // Runs the TypeScript compiler
   },
   "devDependencies": {
     "typescript": "^4.0.0"
