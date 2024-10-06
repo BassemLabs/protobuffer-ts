@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES5",                          // Specify ECMAScript target version
+    "module": "CommonJS",                     // Use commonjs for Node.js compatibility
+    "declaration": true,                      // Generates corresponding '.d.ts' files
+    "outDir": "./dist",                       // Redirect output structure to the 'dist' folder
+    "strict": true,                           // Enable all strict type-checking options
+    "esModuleInterop": true,                  // Enable compatibility between CommonJS and ES modules
+    "skipLibCheck": true,                     // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true  // Disallow inconsistently-cased references
+  },
+  "include": ["src/**/*"],  // Include all TypeScript files in the src folder
+  "exclude": ["node_modules"]
+}
