@@ -34,6 +34,8 @@ jobs:
       - name: Move generated files
         run: |
           rm -rf src
+          rm -rf dist
+          rm -rf node_modules
           mkdir src
           cp -R proto-repo/ts_gen/* src/  # Recursively copy all files and directories
           
