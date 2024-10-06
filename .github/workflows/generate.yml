@@ -39,14 +39,16 @@ jobs:
           
       - name: Generate `index.ts`
         run: |
-          echo "Generating index.ts..."
+          echo "Generating index.ts with aliases..."
           echo "// Auto-generated index.ts" > src/index.ts
           find src -name "*.ts" ! -name "index.ts" | while read file; do
-            relative_path="${file#src/}"    # Remove 'src/' from the path
-            relative_path="${relative_path%.ts}"  # Remove '.ts' extension
-            echo "export * from './$relative_path';" >> src/index.ts
+            base_name=$(basename "$file" .ts)
+            dir_name=$(dirname "$file")
+            alias=$(echo "$base_name" | sed 's/^./\U&/')  # Capitalize alias
+            relative_path="${dir_name#src/}/$base_name"
+            echo "import * as $alias from './$relative_path';" >> src/index.ts
+            echo "export { $alias };" >> src/index.ts
           done
-        shell: bash
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
