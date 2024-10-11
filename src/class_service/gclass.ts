@@ -299,8 +299,8 @@ export interface GClassCourseWork {
   creationTime:
     | Date
     | undefined;
-  /** Same here */
-  dueDate: Date | undefined;
+  /** This maybe optional due to gclass api, see: https://developers.google.com/classroom/reference/rest/v1/courses.courseWork */
+  dueDate?: Date | undefined;
   workType: WorkType;
   rawJsonData: string;
 }
