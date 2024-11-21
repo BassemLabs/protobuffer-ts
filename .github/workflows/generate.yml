@@ -16,8 +16,8 @@ jobs:
       - name: Checkout Protobuf repository
         uses: actions/checkout@v3
         with:
-          repository: BassemLabs/protobuffer
           token: ${{ secrets.MY_GITHUB_PAT }}
+          repository: BassemLabs/protobuffer
           path: proto-repo
 
       # Step 3: Install buf CLI
