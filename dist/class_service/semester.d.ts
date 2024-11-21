@@ -23,6 +23,8 @@ export interface SemesterReportLayout {
     showCreditsEarnedEntry: boolean;
     learningSkills: SemesterLearningSkill[];
     reportDates: ReportDates[];
+    hideLearningSkillsFromHomerooms: boolean;
+    hideLearningSkillsFromCourses: boolean;
 }
 export interface ReportDates {
     reportType: ReportType;

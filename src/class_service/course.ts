@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { Homeroom } from "./homeroom";
+import { ReportLayout } from "./report_layout";
 import { Semester } from "./semester";
 
 export const protobufPackage = "class_service";
@@ -22,6 +23,7 @@ export interface Course {
   teacherIds: ObjectId[];
   studentIds: ObjectId[];
   gclassId?: string | undefined;
+  reportLayout: ReportLayout | undefined;
 }
 
 function createBaseCourse(): Course {
@@ -35,6 +37,7 @@ function createBaseCourse(): Course {
     teacherIds: [],
     studentIds: [],
     gclassId: "",
+    reportLayout: undefined,
   };
 }
 
@@ -66,6 +69,9 @@ export const Course: MessageFns<Course> = {
     }
     if (message.gclassId !== undefined && message.gclassId !== "") {
       writer.uint32(74).string(message.gclassId);
+    }
+    if (message.reportLayout !== undefined) {
+      ReportLayout.encode(message.reportLayout, writer.uint32(82).fork()).join();
     }
     return writer;
   },
@@ -140,6 +146,13 @@ export const Course: MessageFns<Course> = {
 
           message.gclassId = reader.string();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.reportLayout = ReportLayout.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -164,6 +177,7 @@ export const Course: MessageFns<Course> = {
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
       gclassId: isSet(object.gclassId) ? globalThis.String(object.gclassId) : "",
+      reportLayout: isSet(object.reportLayout) ? ReportLayout.fromJSON(object.reportLayout) : undefined,
     };
   },
 
@@ -196,6 +210,9 @@ export const Course: MessageFns<Course> = {
     if (message.gclassId !== undefined && message.gclassId !== "") {
       obj.gclassId = message.gclassId;
     }
+    if (message.reportLayout !== undefined) {
+      obj.reportLayout = ReportLayout.toJSON(message.reportLayout);
+    }
     return obj;
   },
 
@@ -217,6 +234,9 @@ export const Course: MessageFns<Course> = {
     message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
     message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
     message.gclassId = object.gclassId ?? "";
+    message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
+      ? ReportLayout.fromPartial(object.reportLayout)
+      : undefined;
     return message;
   },
 };

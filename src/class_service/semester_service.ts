@@ -20,6 +20,11 @@ export interface GetSemesterRequest {
   semesterId: ObjectId | undefined;
 }
 
+export interface GetSemestersRequest {
+  context: RequestContext | undefined;
+  semesterIds: ObjectId[];
+}
+
 export interface AggregateSemesterRequest {
   context: RequestContext | undefined;
   aggregationDocument: string;
@@ -160,6 +165,84 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
     message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
       ? ObjectId.fromPartial(object.semesterId)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSemestersRequest(): GetSemestersRequest {
+  return { context: undefined, semesterIds: [] };
+}
+
+export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
+  encode(message: GetSemestersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.semesterIds) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSemestersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSemestersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.semesterIds.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSemestersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      semesterIds: globalThis.Array.isArray(object?.semesterIds)
+        ? object.semesterIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetSemestersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.semesterIds?.length) {
+      obj.semesterIds = message.semesterIds.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSemestersRequest>, I>>(base?: I): GetSemestersRequest {
+    return GetSemestersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSemestersRequest>, I>>(object: I): GetSemestersRequest {
+    const message = createBaseGetSemestersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.semesterIds = object.semesterIds?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

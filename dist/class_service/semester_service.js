@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
+exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -82,6 +82,76 @@ exports.GetSemesterRequest = {
         message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
             ? object_id_1.ObjectId.fromPartial(object.semesterId)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetSemestersRequest() {
+    return { context: undefined, semesterIds: [] };
+}
+exports.GetSemestersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.semesterIds) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetSemestersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.semesterIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            semesterIds: globalThis.Array.isArray(object?.semesterIds)
+                ? object.semesterIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.semesterIds?.length) {
+            obj.semesterIds = message.semesterIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetSemestersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetSemestersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.semesterIds = object.semesterIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

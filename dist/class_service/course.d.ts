@@ -1,6 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { Homeroom } from "./homeroom";
+import { ReportLayout } from "./report_layout";
 import { Semester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Course {
@@ -13,6 +14,7 @@ export interface Course {
     teacherIds: ObjectId[];
     studentIds: ObjectId[];
     gclassId?: string | undefined;
+    reportLayout: ReportLayout | undefined;
 }
 export declare const Course: MessageFns<Course>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

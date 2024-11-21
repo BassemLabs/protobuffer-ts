@@ -188,6 +188,8 @@ function createBaseSemesterReportLayout() {
         showCreditsEarnedEntry: false,
         learningSkills: [],
         reportDates: [],
+        hideLearningSkillsFromHomerooms: false,
+        hideLearningSkillsFromCourses: false,
     };
 }
 exports.SemesterReportLayout = {
@@ -206,6 +208,12 @@ exports.SemesterReportLayout = {
         }
         for (const v of message.reportDates) {
             exports.ReportDates.encode(v, writer.uint32(42).fork()).join();
+        }
+        if (message.hideLearningSkillsFromHomerooms !== false) {
+            writer.uint32(48).bool(message.hideLearningSkillsFromHomerooms);
+        }
+        if (message.hideLearningSkillsFromCourses !== false) {
+            writer.uint32(56).bool(message.hideLearningSkillsFromCourses);
         }
         return writer;
     },
@@ -246,6 +254,18 @@ exports.SemesterReportLayout = {
                     }
                     message.reportDates.push(exports.ReportDates.decode(reader, reader.uint32()));
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.hideLearningSkillsFromHomerooms = reader.bool();
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.hideLearningSkillsFromCourses = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -269,6 +289,12 @@ exports.SemesterReportLayout = {
             reportDates: globalThis.Array.isArray(object?.reportDates)
                 ? object.reportDates.map((e) => exports.ReportDates.fromJSON(e))
                 : [],
+            hideLearningSkillsFromHomerooms: isSet(object.hideLearningSkillsFromHomerooms)
+                ? globalThis.Boolean(object.hideLearningSkillsFromHomerooms)
+                : false,
+            hideLearningSkillsFromCourses: isSet(object.hideLearningSkillsFromCourses)
+                ? globalThis.Boolean(object.hideLearningSkillsFromCourses)
+                : false,
         };
     },
     toJSON(message) {
@@ -288,6 +314,12 @@ exports.SemesterReportLayout = {
         if (message.reportDates?.length) {
             obj.reportDates = message.reportDates.map((e) => exports.ReportDates.toJSON(e));
         }
+        if (message.hideLearningSkillsFromHomerooms !== false) {
+            obj.hideLearningSkillsFromHomerooms = message.hideLearningSkillsFromHomerooms;
+        }
+        if (message.hideLearningSkillsFromCourses !== false) {
+            obj.hideLearningSkillsFromCourses = message.hideLearningSkillsFromCourses;
+        }
         return obj;
     },
     create(base) {
@@ -300,6 +332,8 @@ exports.SemesterReportLayout = {
         message.showCreditsEarnedEntry = object.showCreditsEarnedEntry ?? false;
         message.learningSkills = object.learningSkills?.map((e) => exports.SemesterLearningSkill.fromPartial(e)) || [];
         message.reportDates = object.reportDates?.map((e) => exports.ReportDates.fromPartial(e)) || [];
+        message.hideLearningSkillsFromHomerooms = object.hideLearningSkillsFromHomerooms ?? false;
+        message.hideLearningSkillsFromCourses = object.hideLearningSkillsFromCourses ?? false;
         return message;
     },
 };

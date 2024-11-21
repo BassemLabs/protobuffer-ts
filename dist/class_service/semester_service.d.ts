@@ -9,6 +9,10 @@ export interface GetSemesterRequest {
     context: RequestContext | undefined;
     semesterId: ObjectId | undefined;
 }
+export interface GetSemestersRequest {
+    context: RequestContext | undefined;
+    semesterIds: ObjectId[];
+}
 export interface AggregateSemesterRequest {
     context: RequestContext | undefined;
     aggregationDocument: string;
@@ -64,6 +68,7 @@ export interface SemesterResponse {
     semester: Semester | undefined;
 }
 export declare const GetSemesterRequest: MessageFns<GetSemesterRequest>;
+export declare const GetSemestersRequest: MessageFns<GetSemestersRequest>;
 export declare const AggregateSemesterRequest: MessageFns<AggregateSemesterRequest>;
 export declare const AggregateSemesterResponse: MessageFns<AggregateSemesterResponse>;
 export declare const GetActiveSemestersRequest: MessageFns<GetActiveSemestersRequest>;
