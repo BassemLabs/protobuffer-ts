@@ -31,6 +31,18 @@ export interface GetOrganizationByDomainRequest {
   domain: string;
 }
 
+/** Request to unsafely fetch an organization by domain */
+export interface UnsafeGetOrganizationByOrganizationIdRequest {
+  /** ID of the organization to fetch */
+  organizationId: ObjectId | undefined;
+}
+
+/** Request to unsafely fetch an organization by domain */
+export interface UnsafeGetOrganizationByDomainRequest {
+  /** Domain name of the organization to fetch */
+  domain: string;
+}
+
 /** Request to fetch profile settings of an organization by ID */
 export interface GetOrganizationProfileSettingsRequest {
   /** Context of the request */
@@ -192,6 +204,133 @@ export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
+    message.domain = object.domain ?? "";
+    return message;
+  },
+};
+
+function createBaseUnsafeGetOrganizationByOrganizationIdRequest(): UnsafeGetOrganizationByOrganizationIdRequest {
+  return { organizationId: undefined };
+}
+
+export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest> = {
+  encode(
+    message: UnsafeGetOrganizationByOrganizationIdRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UnsafeGetOrganizationByOrganizationIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UnsafeGetOrganizationByOrganizationIdRequest {
+    return { organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined };
+  },
+
+  toJSON(message: UnsafeGetOrganizationByOrganizationIdRequest): unknown {
+    const obj: any = {};
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnsafeGetOrganizationByOrganizationIdRequest>, I>>(
+    base?: I,
+  ): UnsafeGetOrganizationByOrganizationIdRequest {
+    return UnsafeGetOrganizationByOrganizationIdRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UnsafeGetOrganizationByOrganizationIdRequest>, I>>(
+    object: I,
+  ): UnsafeGetOrganizationByOrganizationIdRequest {
+    const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUnsafeGetOrganizationByDomainRequest(): UnsafeGetOrganizationByDomainRequest {
+  return { domain: "" };
+}
+
+export const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizationByDomainRequest> = {
+  encode(message: UnsafeGetOrganizationByDomainRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.domain !== "") {
+      writer.uint32(10).string(message.domain);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UnsafeGetOrganizationByDomainRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnsafeGetOrganizationByDomainRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.domain = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UnsafeGetOrganizationByDomainRequest {
+    return { domain: isSet(object.domain) ? globalThis.String(object.domain) : "" };
+  },
+
+  toJSON(message: UnsafeGetOrganizationByDomainRequest): unknown {
+    const obj: any = {};
+    if (message.domain !== "") {
+      obj.domain = message.domain;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnsafeGetOrganizationByDomainRequest>, I>>(
+    base?: I,
+  ): UnsafeGetOrganizationByDomainRequest {
+    return UnsafeGetOrganizationByDomainRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UnsafeGetOrganizationByDomainRequest>, I>>(
+    object: I,
+  ): UnsafeGetOrganizationByDomainRequest {
+    const message = createBaseUnsafeGetOrganizationByDomainRequest();
     message.domain = object.domain ?? "";
     return message;
   },

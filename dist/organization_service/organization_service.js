@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOrganizationProfileSettingsRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.GetOrganizationProfileSettingsRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -145,6 +145,108 @@ exports.GetOrganizationByDomainRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
+        message.domain = object.domain ?? "";
+        return message;
+    },
+};
+function createBaseUnsafeGetOrganizationByOrganizationIdRequest() {
+    return { organizationId: undefined };
+}
+exports.UnsafeGetOrganizationByOrganizationIdRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UnsafeGetOrganizationByOrganizationIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        return message;
+    },
+};
+function createBaseUnsafeGetOrganizationByDomainRequest() {
+    return { domain: "" };
+}
+exports.UnsafeGetOrganizationByDomainRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.domain !== "") {
+            writer.uint32(10).string(message.domain);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUnsafeGetOrganizationByDomainRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.domain = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { domain: isSet(object.domain) ? globalThis.String(object.domain) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.domain !== "") {
+            obj.domain = message.domain;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UnsafeGetOrganizationByDomainRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUnsafeGetOrganizationByDomainRequest();
         message.domain = object.domain ?? "";
         return message;
     },

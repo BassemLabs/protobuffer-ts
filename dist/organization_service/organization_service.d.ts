@@ -16,6 +16,16 @@ export interface GetOrganizationByDomainRequest {
     /** Domain name of the organization to fetch */
     domain: string;
 }
+/** Request to unsafely fetch an organization by domain */
+export interface UnsafeGetOrganizationByOrganizationIdRequest {
+    /** ID of the organization to fetch */
+    organizationId: ObjectId | undefined;
+}
+/** Request to unsafely fetch an organization by domain */
+export interface UnsafeGetOrganizationByDomainRequest {
+    /** Domain name of the organization to fetch */
+    domain: string;
+}
 /** Request to fetch profile settings of an organization by ID */
 export interface GetOrganizationProfileSettingsRequest {
     /** Context of the request */
@@ -25,6 +35,8 @@ export interface GetOrganizationProfileSettingsRequest {
 }
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
+export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
+export declare const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizationByDomainRequest>;
 export declare const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationProfileSettingsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
