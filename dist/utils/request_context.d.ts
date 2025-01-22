@@ -20,6 +20,10 @@ export interface UserContext {
     userAuthToken: string;
     organizationId: ObjectId | undefined;
     roles: string[];
+    parentFamilyIds: ObjectId[];
+    fullName: string;
+    firebaseToken: string;
+    exp: number;
 }
 export declare const RequestContext: MessageFns<RequestContext>;
 export declare const UserContext: MessageFns<UserContext>;
