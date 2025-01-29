@@ -8,49 +8,68 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { Organization } from "./organization";
 
 export const protobufPackage = "organization_service";
 
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
-  /** Context of the request */
-  context:
-    | RequestContext
-    | undefined;
-  /** ID of the organization to fetch */
+  context: RequestContext | undefined;
   organizationId: ObjectId | undefined;
 }
 
 /** Request to fetch an organization by domain */
 export interface GetOrganizationByDomainRequest {
-  /** Context of the request */
-  context:
-    | RequestContext
-    | undefined;
-  /** Domain name of the organization to fetch */
+  context: RequestContext | undefined;
   domain: string;
 }
 
-/** Request to unsafely fetch an organization by domain */
+/** Request to unsafely fetch an organization by ID */
 export interface UnsafeGetOrganizationByOrganizationIdRequest {
-  /** ID of the organization to fetch */
   organizationId: ObjectId | undefined;
 }
 
 /** Request to unsafely fetch an organization by domain */
 export interface UnsafeGetOrganizationByDomainRequest {
-  /** Domain name of the organization to fetch */
   domain: string;
 }
 
-/** Request to fetch profile settings of an organization by ID */
-export interface GetOrganizationProfileSettingsRequest {
-  /** Context of the request */
-  context:
-    | RequestContext
-    | undefined;
-  /** ID of the organization for which to fetch profile settings */
+/** Request to rename an organization */
+export interface RenameOrganizationRequest {
+  context: RequestContext | undefined;
   organizationId: ObjectId | undefined;
+  newName: string;
+}
+
+/** Request to update the default domain of an organization */
+export interface UpdateDefaultDomainRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  newDefaultDomain: string;
+}
+
+/** Request to add a domain to an organization */
+export interface AddDomainRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  newDomain: string;
+}
+
+/** Request to remove a domain from an organization */
+export interface RemoveDomainRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  removeDomain: string;
+}
+
+/** Request to fetch all organizations */
+export interface GetOrganizationsRequest {
+  context: RequestContext | undefined;
+}
+
+/** Response containing a list of organizations */
+export interface GetOrganizationsResponse {
+  organizations: Organization[];
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -336,25 +355,28 @@ export const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizat
   },
 };
 
-function createBaseGetOrganizationProfileSettingsRequest(): GetOrganizationProfileSettingsRequest {
-  return { context: undefined, organizationId: undefined };
+function createBaseRenameOrganizationRequest(): RenameOrganizationRequest {
+  return { context: undefined, organizationId: undefined, newName: "" };
 }
 
-export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationProfileSettingsRequest> = {
-  encode(message: GetOrganizationProfileSettingsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = {
+  encode(message: RenameOrganizationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
+    if (message.newName !== "") {
+      writer.uint32(26).string(message.newName);
+    }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationProfileSettingsRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): RenameOrganizationRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetOrganizationProfileSettingsRequest();
+    const message = createBaseRenameOrganizationRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -372,6 +394,13 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
 
           message.organizationId = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.newName = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -381,14 +410,15 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
     return message;
   },
 
-  fromJSON(object: any): GetOrganizationProfileSettingsRequest {
+  fromJSON(object: any): RenameOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      newName: isSet(object.newName) ? globalThis.String(object.newName) : "",
     };
   },
 
-  toJSON(message: GetOrganizationProfileSettingsRequest): unknown {
+  toJSON(message: RenameOrganizationRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -396,24 +426,423 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
+    if (message.newName !== "") {
+      obj.newName = message.newName;
+    }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetOrganizationProfileSettingsRequest>, I>>(
-    base?: I,
-  ): GetOrganizationProfileSettingsRequest {
-    return GetOrganizationProfileSettingsRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<RenameOrganizationRequest>, I>>(base?: I): RenameOrganizationRequest {
+    return RenameOrganizationRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetOrganizationProfileSettingsRequest>, I>>(
-    object: I,
-  ): GetOrganizationProfileSettingsRequest {
-    const message = createBaseGetOrganizationProfileSettingsRequest();
+  fromPartial<I extends Exact<DeepPartial<RenameOrganizationRequest>, I>>(object: I): RenameOrganizationRequest {
+    const message = createBaseRenameOrganizationRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
+    message.newName = object.newName ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateDefaultDomainRequest(): UpdateDefaultDomainRequest {
+  return { context: undefined, organizationId: undefined, newDefaultDomain: "" };
+}
+
+export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> = {
+  encode(message: UpdateDefaultDomainRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.newDefaultDomain !== "") {
+      writer.uint32(26).string(message.newDefaultDomain);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateDefaultDomainRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateDefaultDomainRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.newDefaultDomain = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateDefaultDomainRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      newDefaultDomain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
+    };
+  },
+
+  toJSON(message: UpdateDefaultDomainRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.newDefaultDomain !== "") {
+      obj.newDefaultDomain = message.newDefaultDomain;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateDefaultDomainRequest>, I>>(base?: I): UpdateDefaultDomainRequest {
+    return UpdateDefaultDomainRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateDefaultDomainRequest>, I>>(object: I): UpdateDefaultDomainRequest {
+    const message = createBaseUpdateDefaultDomainRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.newDefaultDomain = object.newDefaultDomain ?? "";
+    return message;
+  },
+};
+
+function createBaseAddDomainRequest(): AddDomainRequest {
+  return { context: undefined, organizationId: undefined, newDomain: "" };
+}
+
+export const AddDomainRequest: MessageFns<AddDomainRequest> = {
+  encode(message: AddDomainRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.newDomain !== "") {
+      writer.uint32(26).string(message.newDomain);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddDomainRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddDomainRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.newDomain = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddDomainRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      newDomain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
+    };
+  },
+
+  toJSON(message: AddDomainRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.newDomain !== "") {
+      obj.newDomain = message.newDomain;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddDomainRequest>, I>>(base?: I): AddDomainRequest {
+    return AddDomainRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AddDomainRequest>, I>>(object: I): AddDomainRequest {
+    const message = createBaseAddDomainRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.newDomain = object.newDomain ?? "";
+    return message;
+  },
+};
+
+function createBaseRemoveDomainRequest(): RemoveDomainRequest {
+  return { context: undefined, organizationId: undefined, removeDomain: "" };
+}
+
+export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
+  encode(message: RemoveDomainRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.removeDomain !== "") {
+      writer.uint32(26).string(message.removeDomain);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveDomainRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveDomainRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.removeDomain = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveDomainRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      removeDomain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
+    };
+  },
+
+  toJSON(message: RemoveDomainRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.removeDomain !== "") {
+      obj.removeDomain = message.removeDomain;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RemoveDomainRequest>, I>>(base?: I): RemoveDomainRequest {
+    return RemoveDomainRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RemoveDomainRequest>, I>>(object: I): RemoveDomainRequest {
+    const message = createBaseRemoveDomainRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.removeDomain = object.removeDomain ?? "";
+    return message;
+  },
+};
+
+function createBaseGetOrganizationsRequest(): GetOrganizationsRequest {
+  return { context: undefined };
+}
+
+export const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest> = {
+  encode(message: GetOrganizationsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationsRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetOrganizationsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationsRequest>, I>>(base?: I): GetOrganizationsRequest {
+    return GetOrganizationsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationsRequest>, I>>(object: I): GetOrganizationsRequest {
+    const message = createBaseGetOrganizationsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationsResponse(): GetOrganizationsResponse {
+  return { organizations: [] };
+}
+
+export const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse> = {
+  encode(message: GetOrganizationsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.organizations) {
+      Organization.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.organizations.push(Organization.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationsResponse {
+    return {
+      organizations: globalThis.Array.isArray(object?.organizations)
+        ? object.organizations.map((e: any) => Organization.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetOrganizationsResponse): unknown {
+    const obj: any = {};
+    if (message.organizations?.length) {
+      obj.organizations = message.organizations.map((e) => Organization.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationsResponse>, I>>(base?: I): GetOrganizationsResponse {
+    return GetOrganizationsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationsResponse>, I>>(object: I): GetOrganizationsResponse {
+    const message = createBaseGetOrganizationsResponse();
+    message.organizations = object.organizations?.map((e) => Organization.fromPartial(e)) || [];
     return message;
   },
 };

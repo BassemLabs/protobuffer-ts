@@ -15,6 +15,7 @@ export enum UserType {
   Student = 1,
   Teacher = 2,
   Parent = 3,
+  BassemLabsStaff = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -32,6 +33,9 @@ export function userTypeFromJSON(object: any): UserType {
     case 3:
     case "Parent":
       return UserType.Parent;
+    case 4:
+    case "BassemLabsStaff":
+      return UserType.BassemLabsStaff;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -49,6 +53,8 @@ export function userTypeToJSON(object: UserType): string {
       return "Teacher";
     case UserType.Parent:
       return "Parent";
+    case UserType.BassemLabsStaff:
+      return "BassemLabsStaff";
     case UserType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -64,7 +70,7 @@ export interface UserContext {
   userId: ObjectId | undefined;
   userType: UserType;
   userAuthToken: string;
-  organizationId: ObjectId | undefined;
+  organizationId?: ObjectId | undefined;
   roles: string[];
   parentFamilyIds: ObjectId[];
   fullName: string;

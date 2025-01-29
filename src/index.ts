@@ -1,10 +1,16 @@
 // Auto-generated index.ts
 import * as Organization from './organization_service/organization';
 export { Organization };
+import * as Organization_profile_settings_service from './organization_service/organization_profile_settings_service';
+export { Organization_profile_settings_service };
 import * as Organization_profile_settings from './organization_service/organization_profile_settings';
 export { Organization_profile_settings };
+import * as Bassem_labs_staff_service from './organization_service/bassem_labs_staff_service';
+export { Bassem_labs_staff_service };
 import * as Organization_service from './organization_service/organization_service';
 export { Organization_service };
+import * as Bassem_labs_staff from './organization_service/bassem_labs_staff';
+export { Bassem_labs_staff };
 import * as Test from './template_service/test';
 export { Test };
 import * as Test_service from './template_service/test_service';

@@ -3,19 +3,19 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/organization_service.proto
+// source: organization_service/organization_profile_settings_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.RemoveStudentProfileSectionRequest = exports.AddStudentProfileSectionRequest = exports.RemoveTeacherProfileSectionRequest = exports.AddTeacherProfileSectionRequest = exports.RemoveParentProfileSectionRequest = exports.AddParentProfileSectionRequest = exports.GetOrganizationProfileSettingsRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
-const organization_1 = require("./organization");
+const organization_profile_settings_1 = require("./organization_profile_settings");
 exports.protobufPackage = "organization_service";
-function createBaseGetOrganizationRequest() {
+function createBaseGetOrganizationProfileSettingsRequest() {
     return { context: undefined, organizationId: undefined };
 }
-exports.GetOrganizationRequest = {
+exports.GetOrganizationProfileSettingsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -28,7 +28,7 @@ exports.GetOrganizationRequest = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetOrganizationRequest();
+        const message = createBaseGetOrganizationProfileSettingsRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -69,10 +69,10 @@ exports.GetOrganizationRequest = {
         return obj;
     },
     create(base) {
-        return exports.GetOrganizationRequest.fromPartial(base ?? {});
+        return exports.GetOrganizationProfileSettingsRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetOrganizationRequest();
+        const message = createBaseGetOrganizationProfileSettingsRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
@@ -82,180 +82,10 @@ exports.GetOrganizationRequest = {
         return message;
     },
 };
-function createBaseGetOrganizationByDomainRequest() {
-    return { context: undefined, domain: "" };
+function createBaseAddParentProfileSectionRequest() {
+    return { context: undefined, organizationId: undefined, newProfileSection: 0 };
 }
-exports.GetOrganizationByDomainRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.domain !== "") {
-            writer.uint32(18).string(message.domain);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetOrganizationByDomainRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.domain = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            domain: isSet(object.domain) ? globalThis.String(object.domain) : "",
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.domain !== "") {
-            obj.domain = message.domain;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.GetOrganizationByDomainRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseGetOrganizationByDomainRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.domain = object.domain ?? "";
-        return message;
-    },
-};
-function createBaseUnsafeGetOrganizationByOrganizationIdRequest() {
-    return { organizationId: undefined };
-}
-exports.UnsafeGetOrganizationByOrganizationIdRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(10).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.UnsafeGetOrganizationByOrganizationIdRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
-            : undefined;
-        return message;
-    },
-};
-function createBaseUnsafeGetOrganizationByDomainRequest() {
-    return { domain: "" };
-}
-exports.UnsafeGetOrganizationByDomainRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.domain !== "") {
-            writer.uint32(10).string(message.domain);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUnsafeGetOrganizationByDomainRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.domain = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { domain: isSet(object.domain) ? globalThis.String(object.domain) : "" };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.domain !== "") {
-            obj.domain = message.domain;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.UnsafeGetOrganizationByDomainRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseUnsafeGetOrganizationByDomainRequest();
-        message.domain = object.domain ?? "";
-        return message;
-    },
-};
-function createBaseRenameOrganizationRequest() {
-    return { context: undefined, organizationId: undefined, newName: "" };
-}
-exports.RenameOrganizationRequest = {
+exports.AddParentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -263,15 +93,15 @@ exports.RenameOrganizationRequest = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
         }
-        if (message.newName !== "") {
-            writer.uint32(26).string(message.newName);
+        if (message.newProfileSection !== 0) {
+            writer.uint32(24).int32(message.newProfileSection);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseRenameOrganizationRequest();
+        const message = createBaseAddParentProfileSectionRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -288,10 +118,10 @@ exports.RenameOrganizationRequest = {
                     message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.newName = reader.string();
+                    message.newProfileSection = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -305,7 +135,7 @@ exports.RenameOrganizationRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            newName: isSet(object.newName) ? globalThis.String(object.newName) : "",
+            newProfileSection: isSet(object.newProfileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection) : 0,
         };
     },
     toJSON(message) {
@@ -316,30 +146,30 @@ exports.RenameOrganizationRequest = {
         if (message.organizationId !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
-        if (message.newName !== "") {
-            obj.newName = message.newName;
+        if (message.newProfileSection !== 0) {
+            obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.newProfileSection);
         }
         return obj;
     },
     create(base) {
-        return exports.RenameOrganizationRequest.fromPartial(base ?? {});
+        return exports.AddParentProfileSectionRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseRenameOrganizationRequest();
+        const message = createBaseAddParentProfileSectionRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
-        message.newName = object.newName ?? "";
+        message.newProfileSection = object.newProfileSection ?? 0;
         return message;
     },
 };
-function createBaseUpdateDefaultDomainRequest() {
-    return { context: undefined, organizationId: undefined, newDefaultDomain: "" };
+function createBaseRemoveParentProfileSectionRequest() {
+    return { context: undefined, organizationId: undefined, removeProfileSection: 0 };
 }
-exports.UpdateDefaultDomainRequest = {
+exports.RemoveParentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -347,15 +177,15 @@ exports.UpdateDefaultDomainRequest = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
         }
-        if (message.newDefaultDomain !== "") {
-            writer.uint32(26).string(message.newDefaultDomain);
+        if (message.removeProfileSection !== 0) {
+            writer.uint32(24).int32(message.removeProfileSection);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUpdateDefaultDomainRequest();
+        const message = createBaseRemoveParentProfileSectionRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -372,10 +202,10 @@ exports.UpdateDefaultDomainRequest = {
                     message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.newDefaultDomain = reader.string();
+                    message.removeProfileSection = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -389,7 +219,9 @@ exports.UpdateDefaultDomainRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            newDefaultDomain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
+            removeProfileSection: isSet(object.removeProfileSection)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
+                : 0,
         };
     },
     toJSON(message) {
@@ -400,30 +232,30 @@ exports.UpdateDefaultDomainRequest = {
         if (message.organizationId !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
-        if (message.newDefaultDomain !== "") {
-            obj.newDefaultDomain = message.newDefaultDomain;
+        if (message.removeProfileSection !== 0) {
+            obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.removeProfileSection);
         }
         return obj;
     },
     create(base) {
-        return exports.UpdateDefaultDomainRequest.fromPartial(base ?? {});
+        return exports.RemoveParentProfileSectionRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseUpdateDefaultDomainRequest();
+        const message = createBaseRemoveParentProfileSectionRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
-        message.newDefaultDomain = object.newDefaultDomain ?? "";
+        message.removeProfileSection = object.removeProfileSection ?? 0;
         return message;
     },
 };
-function createBaseAddDomainRequest() {
-    return { context: undefined, organizationId: undefined, newDomain: "" };
+function createBaseAddTeacherProfileSectionRequest() {
+    return { context: undefined, organizationId: undefined, newProfileSection: 0 };
 }
-exports.AddDomainRequest = {
+exports.AddTeacherProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -431,15 +263,15 @@ exports.AddDomainRequest = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
         }
-        if (message.newDomain !== "") {
-            writer.uint32(26).string(message.newDomain);
+        if (message.newProfileSection !== 0) {
+            writer.uint32(24).int32(message.newProfileSection);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAddDomainRequest();
+        const message = createBaseAddTeacherProfileSectionRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -456,10 +288,10 @@ exports.AddDomainRequest = {
                     message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.newDomain = reader.string();
+                    message.newProfileSection = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -473,7 +305,7 @@ exports.AddDomainRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            newDomain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
+            newProfileSection: isSet(object.newProfileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection) : 0,
         };
     },
     toJSON(message) {
@@ -484,30 +316,30 @@ exports.AddDomainRequest = {
         if (message.organizationId !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
-        if (message.newDomain !== "") {
-            obj.newDomain = message.newDomain;
+        if (message.newProfileSection !== 0) {
+            obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.newProfileSection);
         }
         return obj;
     },
     create(base) {
-        return exports.AddDomainRequest.fromPartial(base ?? {});
+        return exports.AddTeacherProfileSectionRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseAddDomainRequest();
+        const message = createBaseAddTeacherProfileSectionRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
-        message.newDomain = object.newDomain ?? "";
+        message.newProfileSection = object.newProfileSection ?? 0;
         return message;
     },
 };
-function createBaseRemoveDomainRequest() {
-    return { context: undefined, organizationId: undefined, removeDomain: "" };
+function createBaseRemoveTeacherProfileSectionRequest() {
+    return { context: undefined, organizationId: undefined, removeProfileSection: 0 };
 }
-exports.RemoveDomainRequest = {
+exports.RemoveTeacherProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -515,15 +347,15 @@ exports.RemoveDomainRequest = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
         }
-        if (message.removeDomain !== "") {
-            writer.uint32(26).string(message.removeDomain);
+        if (message.removeProfileSection !== 0) {
+            writer.uint32(24).int32(message.removeProfileSection);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseRemoveDomainRequest();
+        const message = createBaseRemoveTeacherProfileSectionRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -540,10 +372,10 @@ exports.RemoveDomainRequest = {
                     message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.removeDomain = reader.string();
+                    message.removeProfileSection = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -557,7 +389,9 @@ exports.RemoveDomainRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            removeDomain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
+            removeProfileSection: isSet(object.removeProfileSection)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
+                : 0,
         };
     },
     toJSON(message) {
@@ -568,40 +402,46 @@ exports.RemoveDomainRequest = {
         if (message.organizationId !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
-        if (message.removeDomain !== "") {
-            obj.removeDomain = message.removeDomain;
+        if (message.removeProfileSection !== 0) {
+            obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.removeProfileSection);
         }
         return obj;
     },
     create(base) {
-        return exports.RemoveDomainRequest.fromPartial(base ?? {});
+        return exports.RemoveTeacherProfileSectionRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseRemoveDomainRequest();
+        const message = createBaseRemoveTeacherProfileSectionRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
-        message.removeDomain = object.removeDomain ?? "";
+        message.removeProfileSection = object.removeProfileSection ?? 0;
         return message;
     },
 };
-function createBaseGetOrganizationsRequest() {
-    return { context: undefined };
+function createBaseAddStudentProfileSectionRequest() {
+    return { context: undefined, organizationId: undefined, newProfileSection: 0 };
 }
-exports.GetOrganizationsRequest = {
+exports.AddStudentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.newProfileSection !== 0) {
+            writer.uint32(24).int32(message.newProfileSection);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetOrganizationsRequest();
+        const message = createBaseAddStudentProfileSectionRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -611,57 +451,17 @@ exports.GetOrganizationsRequest = {
                     }
                     message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
                     continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.GetOrganizationsRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseGetOrganizationsRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        return message;
-    },
-};
-function createBaseGetOrganizationsResponse() {
-    return { organizations: [] };
-}
-exports.GetOrganizationsResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        for (const v of message.organizations) {
-            organization_1.Organization.encode(v, writer.uint32(10).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetOrganizationsResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
+                case 2:
+                    if (tag !== 18) {
                         break;
                     }
-                    message.organizations.push(organization_1.Organization.decode(reader, reader.uint32()));
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.newProfileSection = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -673,24 +473,122 @@ exports.GetOrganizationsResponse = {
     },
     fromJSON(object) {
         return {
-            organizations: globalThis.Array.isArray(object?.organizations)
-                ? object.organizations.map((e) => organization_1.Organization.fromJSON(e))
-                : [],
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            newProfileSection: isSet(object.newProfileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.organizations?.length) {
-            obj.organizations = message.organizations.map((e) => organization_1.Organization.toJSON(e));
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.newProfileSection !== 0) {
+            obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.newProfileSection);
         }
         return obj;
     },
     create(base) {
-        return exports.GetOrganizationsResponse.fromPartial(base ?? {});
+        return exports.AddStudentProfileSectionRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetOrganizationsResponse();
-        message.organizations = object.organizations?.map((e) => organization_1.Organization.fromPartial(e)) || [];
+        const message = createBaseAddStudentProfileSectionRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.newProfileSection = object.newProfileSection ?? 0;
+        return message;
+    },
+};
+function createBaseRemoveStudentProfileSectionRequest() {
+    return { context: undefined, organizationId: undefined, removeProfileSection: 0 };
+}
+exports.RemoveStudentProfileSectionRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.removeProfileSection !== 0) {
+            writer.uint32(24).int32(message.removeProfileSection);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRemoveStudentProfileSectionRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.removeProfileSection = reader.int32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            removeProfileSection: isSet(object.removeProfileSection)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
+                : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.removeProfileSection !== 0) {
+            obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.removeProfileSection);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RemoveStudentProfileSectionRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRemoveStudentProfileSectionRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.removeProfileSection = object.removeProfileSection ?? 0;
         return message;
     },
 };

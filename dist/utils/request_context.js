@@ -18,6 +18,7 @@ var UserType;
     UserType[UserType["Student"] = 1] = "Student";
     UserType[UserType["Teacher"] = 2] = "Teacher";
     UserType[UserType["Parent"] = 3] = "Parent";
+    UserType[UserType["BassemLabsStaff"] = 4] = "BassemLabsStaff";
     UserType[UserType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
 })(UserType || (exports.UserType = UserType = {}));
 function userTypeFromJSON(object) {
@@ -34,6 +35,9 @@ function userTypeFromJSON(object) {
         case 3:
         case "Parent":
             return UserType.Parent;
+        case 4:
+        case "BassemLabsStaff":
+            return UserType.BassemLabsStaff;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -50,6 +54,8 @@ function userTypeToJSON(object) {
             return "Teacher";
         case UserType.Parent:
             return "Parent";
+        case UserType.BassemLabsStaff:
+            return "BassemLabsStaff";
         case UserType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";

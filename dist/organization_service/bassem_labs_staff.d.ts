@@ -1,33 +1,26 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ObjectId } from "./object_id";
-export declare const protobufPackage = "utils";
-export declare enum UserType {
-    None = 0,
-    Student = 1,
-    Teacher = 2,
-    Parent = 3,
-    BassemLabsStaff = 4,
+import { ObjectId } from "../utils/object_id";
+export declare const protobufPackage = "organization_service";
+export declare enum StaffStatus {
+    ACTIVE = 0,
+    INACTIVE = 1,
     UNRECOGNIZED = -1
 }
-export declare function userTypeFromJSON(object: any): UserType;
-export declare function userTypeToJSON(object: UserType): string;
-export interface RequestContext {
-    userContext: UserContext | undefined;
-    isTesting: boolean;
+export declare function staffStatusFromJSON(object: any): StaffStatus;
+export declare function staffStatusToJSON(object: StaffStatus): string;
+export interface BassemLabsStaff {
+    id: ObjectId | undefined;
+    status: StaffStatus;
+    username: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    email: string;
+    personalEmail: string;
+    dateOfBirth: Date | undefined;
+    phoneNumber: string;
 }
-export interface UserContext {
-    userId: ObjectId | undefined;
-    userType: UserType;
-    userAuthToken: string;
-    organizationId?: ObjectId | undefined;
-    roles: string[];
-    parentFamilyIds: ObjectId[];
-    fullName: string;
-    firebaseToken: string;
-    exp: number;
-}
-export declare const RequestContext: MessageFns<RequestContext>;
-export declare const UserContext: MessageFns<UserContext>;
+export declare const BassemLabsStaff: MessageFns<BassemLabsStaff>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
