@@ -17,6 +17,7 @@ export interface ReportLayout {
   commentCharLimit?: number | undefined;
   sections: ReportLayoutSection[];
   checkBoxes: ReportCheckBoxLayout[];
+  creditWeight: number;
 }
 
 export interface ReportLayoutSection {
@@ -37,6 +38,7 @@ function createBaseReportLayout(): ReportLayout {
     commentCharLimit: 0,
     sections: [],
     checkBoxes: [],
+    creditWeight: 0,
   };
 }
 
@@ -59,6 +61,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     }
     for (const v of message.checkBoxes) {
       ReportCheckBoxLayout.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.creditWeight !== 0) {
+      writer.uint32(61).float(message.creditWeight);
     }
     return writer;
   },
@@ -112,6 +117,13 @@ export const ReportLayout: MessageFns<ReportLayout> = {
 
           message.checkBoxes.push(ReportCheckBoxLayout.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 61) {
+            break;
+          }
+
+          message.creditWeight = reader.float();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -133,6 +145,7 @@ export const ReportLayout: MessageFns<ReportLayout> = {
       checkBoxes: globalThis.Array.isArray(object?.checkBoxes)
         ? object.checkBoxes.map((e: any) => ReportCheckBoxLayout.fromJSON(e))
         : [],
+      creditWeight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
     };
   },
 
@@ -156,6 +169,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     if (message.checkBoxes?.length) {
       obj.checkBoxes = message.checkBoxes.map((e) => ReportCheckBoxLayout.toJSON(e));
     }
+    if (message.creditWeight !== 0) {
+      obj.creditWeight = message.creditWeight;
+    }
     return obj;
   },
 
@@ -174,6 +190,7 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     message.commentCharLimit = object.commentCharLimit ?? 0;
     message.sections = object.sections?.map((e) => ReportLayoutSection.fromPartial(e)) || [];
     message.checkBoxes = object.checkBoxes?.map((e) => ReportCheckBoxLayout.fromPartial(e)) || [];
+    message.creditWeight = object.creditWeight ?? 0;
     return message;
   },
 };

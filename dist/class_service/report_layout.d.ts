@@ -8,6 +8,7 @@ export interface ReportLayout {
     commentCharLimit?: number | undefined;
     sections: ReportLayoutSection[];
     checkBoxes: ReportCheckBoxLayout[];
+    creditWeight: number;
 }
 export interface ReportLayoutSection {
     id: ObjectId | undefined;

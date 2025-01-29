@@ -18,6 +18,7 @@ function createBaseReportLayout() {
         commentCharLimit: 0,
         sections: [],
         checkBoxes: [],
+        creditWeight: 0,
     };
 }
 exports.ReportLayout = {
@@ -39,6 +40,9 @@ exports.ReportLayout = {
         }
         for (const v of message.checkBoxes) {
             exports.ReportCheckBoxLayout.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.creditWeight !== 0) {
+            writer.uint32(61).float(message.creditWeight);
         }
         return writer;
     },
@@ -85,6 +89,12 @@ exports.ReportLayout = {
                     }
                     message.checkBoxes.push(exports.ReportCheckBoxLayout.decode(reader, reader.uint32()));
                     continue;
+                case 7:
+                    if (tag !== 61) {
+                        break;
+                    }
+                    message.creditWeight = reader.float();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -105,6 +115,7 @@ exports.ReportLayout = {
             checkBoxes: globalThis.Array.isArray(object?.checkBoxes)
                 ? object.checkBoxes.map((e) => exports.ReportCheckBoxLayout.fromJSON(e))
                 : [],
+            creditWeight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
         };
     },
     toJSON(message) {
@@ -127,6 +138,9 @@ exports.ReportLayout = {
         if (message.checkBoxes?.length) {
             obj.checkBoxes = message.checkBoxes.map((e) => exports.ReportCheckBoxLayout.toJSON(e));
         }
+        if (message.creditWeight !== 0) {
+            obj.creditWeight = message.creditWeight;
+        }
         return obj;
     },
     create(base) {
@@ -144,6 +158,7 @@ exports.ReportLayout = {
         message.commentCharLimit = object.commentCharLimit ?? 0;
         message.sections = object.sections?.map((e) => exports.ReportLayoutSection.fromPartial(e)) || [];
         message.checkBoxes = object.checkBoxes?.map((e) => exports.ReportCheckBoxLayout.fromPartial(e)) || [];
+        message.creditWeight = object.creditWeight ?? 0;
         return message;
     },
 };
