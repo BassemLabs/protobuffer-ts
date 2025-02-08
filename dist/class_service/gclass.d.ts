@@ -2,53 +2,57 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export declare enum States {
-    STATES_CREATED = 0,
-    STATES_NEW = 1,
-    STATES_RECLAIMED_BY_STUDENT = 2,
-    STATES_RETURNED = 3,
-    STATES_SUBMISSION_STATE_UNSPECIFIED = 4,
-    STATES_TURNED_IN = 5,
-    STATES_NOOP = 6,
-    STATES_FALLTHROUGH_STRING = 7,
-    UNRECOGNIZED = -1
+    STATES_CREATED = "STATES_CREATED",
+    STATES_NEW = "STATES_NEW",
+    STATES_RECLAIMED_BY_STUDENT = "STATES_RECLAIMED_BY_STUDENT",
+    STATES_RETURNED = "STATES_RETURNED",
+    STATES_SUBMISSION_STATE_UNSPECIFIED = "STATES_SUBMISSION_STATE_UNSPECIFIED",
+    STATES_TURNED_IN = "STATES_TURNED_IN",
+    STATES_NOOP = "STATES_NOOP",
+    STATES_FALLTHROUGH_STRING = "STATES_FALLTHROUGH_STRING",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function statesFromJSON(object: any): States;
 export declare function statesToJSON(object: States): string;
+export declare function statesToNumber(object: States): number;
 export declare enum WorkType {
-    WORKTYPE_ASSIGNMENT = 0,
-    WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED = 1,
-    WORKTYPE_MULTIPLE_CHOICE_QUESTION = 2,
-    WORKTYPE_SHORT_ANSWER_QUESTION = 3,
-    WORKTYPE_NOOP = 4,
-    WORKTYPE_FALLTHROUGH_STRING = 5,
-    UNRECOGNIZED = -1
+    WORKTYPE_ASSIGNMENT = "WORKTYPE_ASSIGNMENT",
+    WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED = "WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED",
+    WORKTYPE_MULTIPLE_CHOICE_QUESTION = "WORKTYPE_MULTIPLE_CHOICE_QUESTION",
+    WORKTYPE_SHORT_ANSWER_QUESTION = "WORKTYPE_SHORT_ANSWER_QUESTION",
+    WORKTYPE_NOOP = "WORKTYPE_NOOP",
+    WORKTYPE_FALLTHROUGH_STRING = "WORKTYPE_FALLTHROUGH_STRING",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function workTypeFromJSON(object: any): WorkType;
 export declare function workTypeToJSON(object: WorkType): string;
+export declare function workTypeToNumber(object: WorkType): number;
 export declare enum GradeChangeType {
-    GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED = 0,
-    GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED = 1,
-    GRADE_CHANGE_MAX_POINTS = 2,
-    GRADE_CHANGE_UNKNOWN = 3,
-    GRADE_CHANGE_NOOP = 4,
-    GRADE_CHANGE_FALLTHROUGH_STRING = 5,
-    UNRECOGNIZED = -1
+    GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED = "GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED",
+    GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED = "GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED",
+    GRADE_CHANGE_MAX_POINTS = "GRADE_CHANGE_MAX_POINTS",
+    GRADE_CHANGE_UNKNOWN = "GRADE_CHANGE_UNKNOWN",
+    GRADE_CHANGE_NOOP = "GRADE_CHANGE_NOOP",
+    GRADE_CHANGE_FALLTHROUGH_STRING = "GRADE_CHANGE_FALLTHROUGH_STRING",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function gradeChangeTypeFromJSON(object: any): GradeChangeType;
 export declare function gradeChangeTypeToJSON(object: GradeChangeType): string;
+export declare function gradeChangeTypeToNumber(object: GradeChangeType): number;
 export declare enum StateHistory {
-    HISTORY_CREATED = 0,
-    HISTORY_RECLAIMED_BY_STUDENT = 1,
-    HISTORY_RETURNED = 2,
-    HISTORY_UNSPECIFIED = 3,
-    HISTORY_STUDENT_EDITED_AFTER_TURN_IN = 4,
-    HISTORY_TURNED_IN = 5,
-    HISTORY_NOOP = 6,
-    HISTORY_FALLTHROUGH_STRING = 7,
-    UNRECOGNIZED = -1
+    HISTORY_CREATED = "HISTORY_CREATED",
+    HISTORY_RECLAIMED_BY_STUDENT = "HISTORY_RECLAIMED_BY_STUDENT",
+    HISTORY_RETURNED = "HISTORY_RETURNED",
+    HISTORY_UNSPECIFIED = "HISTORY_UNSPECIFIED",
+    HISTORY_STUDENT_EDITED_AFTER_TURN_IN = "HISTORY_STUDENT_EDITED_AFTER_TURN_IN",
+    HISTORY_TURNED_IN = "HISTORY_TURNED_IN",
+    HISTORY_NOOP = "HISTORY_NOOP",
+    HISTORY_FALLTHROUGH_STRING = "HISTORY_FALLTHROUGH_STRING",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function stateHistoryFromJSON(object: any): StateHistory;
 export declare function stateHistoryToJSON(object: StateHistory): string;
+export declare function stateHistoryToNumber(object: StateHistory): number;
 /** Represents a GClass student submission */
 export interface GClassStudentSubmission {
     gclassStudentSubmissionId: string;

@@ -12,9 +12,9 @@ import { ObjectId } from "../utils/object_id";
 export const protobufPackage = "organization_service";
 
 export enum StaffStatus {
-  ACTIVE = 0,
-  INACTIVE = 1,
-  UNRECOGNIZED = -1,
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function staffStatusFromJSON(object: any): StaffStatus {
@@ -44,6 +44,18 @@ export function staffStatusToJSON(object: StaffStatus): string {
   }
 }
 
+export function staffStatusToNumber(object: StaffStatus): number {
+  switch (object) {
+    case StaffStatus.ACTIVE:
+      return 0;
+    case StaffStatus.INACTIVE:
+      return 1;
+    case StaffStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface BassemLabsStaff {
   id: ObjectId | undefined;
   status: StaffStatus;
@@ -60,7 +72,7 @@ export interface BassemLabsStaff {
 function createBaseBassemLabsStaff(): BassemLabsStaff {
   return {
     id: undefined,
-    status: 0,
+    status: StaffStatus.ACTIVE,
     username: "",
     firstName: "",
     lastName: "",
@@ -77,8 +89,8 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.status !== 0) {
-      writer.uint32(16).int32(message.status);
+    if (message.status !== StaffStatus.ACTIVE) {
+      writer.uint32(16).int32(staffStatusToNumber(message.status));
     }
     if (message.username !== "") {
       writer.uint32(26).string(message.username);
@@ -126,7 +138,7 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
             break;
           }
 
-          message.status = reader.int32() as any;
+          message.status = staffStatusFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -196,7 +208,7 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
   fromJSON(object: any): BassemLabsStaff {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      status: isSet(object.status) ? staffStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? staffStatusFromJSON(object.status) : StaffStatus.ACTIVE,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
       lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
@@ -213,7 +225,7 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.status !== 0) {
+    if (message.status !== StaffStatus.ACTIVE) {
       obj.status = staffStatusToJSON(message.status);
     }
     if (message.username !== "") {
@@ -249,7 +261,7 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
   fromPartial<I extends Exact<DeepPartial<BassemLabsStaff>, I>>(object: I): BassemLabsStaff {
     const message = createBaseBassemLabsStaff();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.status = object.status ?? 0;
+    message.status = object.status ?? StaffStatus.ACTIVE;
     message.username = object.username ?? "";
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";

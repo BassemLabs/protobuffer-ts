@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.ReportType = exports.protobufPackage = void 0;
 exports.reportTypeFromJSON = reportTypeFromJSON;
 exports.reportTypeToJSON = reportTypeToJSON;
+exports.reportTypeToNumber = reportTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -15,10 +16,10 @@ const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 var ReportType;
 (function (ReportType) {
-    ReportType[ReportType["Progress"] = 1] = "Progress";
-    ReportType[ReportType["Midterm"] = 2] = "Midterm";
-    ReportType[ReportType["Final"] = 3] = "Final";
-    ReportType[ReportType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    ReportType["Progress"] = "Progress";
+    ReportType["Midterm"] = "Midterm";
+    ReportType["Final"] = "Final";
+    ReportType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ReportType || (exports.ReportType = ReportType = {}));
 function reportTypeFromJSON(object) {
     switch (object) {
@@ -48,6 +49,19 @@ function reportTypeToJSON(object) {
         case ReportType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
+    }
+}
+function reportTypeToNumber(object) {
+    switch (object) {
+        case ReportType.Progress:
+            return 1;
+        case ReportType.Midterm:
+            return 2;
+        case ReportType.Final:
+            return 3;
+        case ReportType.UNRECOGNIZED:
+        default:
+            return -1;
     }
 }
 function createBaseSemester() {
@@ -338,12 +352,12 @@ exports.SemesterReportLayout = {
     },
 };
 function createBaseReportDates() {
-    return { reportType: 1, dueDate: undefined, distributionDate: undefined };
+    return { reportType: ReportType.Progress, dueDate: undefined, distributionDate: undefined };
 }
 exports.ReportDates = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.reportType !== 1) {
-            writer.uint32(8).int32(message.reportType);
+        if (message.reportType !== ReportType.Progress) {
+            writer.uint32(8).int32(reportTypeToNumber(message.reportType));
         }
         if (message.dueDate !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(18).fork()).join();
@@ -364,7 +378,7 @@ exports.ReportDates = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.reportType = reader.int32();
+                    message.reportType = reportTypeFromJSON(reader.int32());
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -388,14 +402,14 @@ exports.ReportDates = {
     },
     fromJSON(object) {
         return {
-            reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : 1,
+            reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : ReportType.Progress,
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
             distributionDate: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.reportType !== 1) {
+        if (message.reportType !== ReportType.Progress) {
             obj.reportType = reportTypeToJSON(message.reportType);
         }
         if (message.dueDate !== undefined) {
@@ -411,7 +425,7 @@ exports.ReportDates = {
     },
     fromPartial(object) {
         const message = createBaseReportDates();
-        message.reportType = object.reportType ?? 1;
+        message.reportType = object.reportType ?? ReportType.Progress;
         message.dueDate = object.dueDate ?? undefined;
         message.distributionDate = object.distributionDate ?? undefined;
         return message;

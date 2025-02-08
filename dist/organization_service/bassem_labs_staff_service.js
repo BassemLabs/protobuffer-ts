@@ -351,7 +351,7 @@ exports.UpdateProfileRequest = {
     },
 };
 function createBaseUpdateStatusRequest() {
-    return { context: undefined, id: undefined, status: 0 };
+    return { context: undefined, id: undefined, status: bassem_labs_staff_1.StaffStatus.ACTIVE };
 }
 exports.UpdateStatusRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -361,8 +361,8 @@ exports.UpdateStatusRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
-        if (message.status !== 0) {
-            writer.uint32(24).int32(message.status);
+        if (message.status !== bassem_labs_staff_1.StaffStatus.ACTIVE) {
+            writer.uint32(24).int32((0, bassem_labs_staff_1.staffStatusToNumber)(message.status));
         }
         return writer;
     },
@@ -389,7 +389,7 @@ exports.UpdateStatusRequest = {
                     if (tag !== 24) {
                         break;
                     }
-                    message.status = reader.int32();
+                    message.status = (0, bassem_labs_staff_1.staffStatusFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -403,7 +403,7 @@ exports.UpdateStatusRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            status: isSet(object.status) ? (0, bassem_labs_staff_1.staffStatusFromJSON)(object.status) : 0,
+            status: isSet(object.status) ? (0, bassem_labs_staff_1.staffStatusFromJSON)(object.status) : bassem_labs_staff_1.StaffStatus.ACTIVE,
         };
     },
     toJSON(message) {
@@ -414,7 +414,7 @@ exports.UpdateStatusRequest = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.status !== 0) {
+        if (message.status !== bassem_labs_staff_1.StaffStatus.ACTIVE) {
             obj.status = (0, bassem_labs_staff_1.staffStatusToJSON)(message.status);
         }
         return obj;
@@ -428,7 +428,7 @@ exports.UpdateStatusRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.status = object.status ?? 0;
+        message.status = object.status ?? bassem_labs_staff_1.StaffStatus.ACTIVE;
         return message;
     },
 };

@@ -12,15 +12,15 @@ import { ObjectId } from "../utils/object_id";
 export const protobufPackage = "class_service";
 
 export enum States {
-  STATES_CREATED = 0,
-  STATES_NEW = 1,
-  STATES_RECLAIMED_BY_STUDENT = 2,
-  STATES_RETURNED = 3,
-  STATES_SUBMISSION_STATE_UNSPECIFIED = 4,
-  STATES_TURNED_IN = 5,
-  STATES_NOOP = 6,
-  STATES_FALLTHROUGH_STRING = 7,
-  UNRECOGNIZED = -1,
+  STATES_CREATED = "STATES_CREATED",
+  STATES_NEW = "STATES_NEW",
+  STATES_RECLAIMED_BY_STUDENT = "STATES_RECLAIMED_BY_STUDENT",
+  STATES_RETURNED = "STATES_RETURNED",
+  STATES_SUBMISSION_STATE_UNSPECIFIED = "STATES_SUBMISSION_STATE_UNSPECIFIED",
+  STATES_TURNED_IN = "STATES_TURNED_IN",
+  STATES_NOOP = "STATES_NOOP",
+  STATES_FALLTHROUGH_STRING = "STATES_FALLTHROUGH_STRING",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function statesFromJSON(object: any): States {
@@ -80,14 +80,38 @@ export function statesToJSON(object: States): string {
   }
 }
 
+export function statesToNumber(object: States): number {
+  switch (object) {
+    case States.STATES_CREATED:
+      return 0;
+    case States.STATES_NEW:
+      return 1;
+    case States.STATES_RECLAIMED_BY_STUDENT:
+      return 2;
+    case States.STATES_RETURNED:
+      return 3;
+    case States.STATES_SUBMISSION_STATE_UNSPECIFIED:
+      return 4;
+    case States.STATES_TURNED_IN:
+      return 5;
+    case States.STATES_NOOP:
+      return 6;
+    case States.STATES_FALLTHROUGH_STRING:
+      return 7;
+    case States.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export enum WorkType {
-  WORKTYPE_ASSIGNMENT = 0,
-  WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED = 1,
-  WORKTYPE_MULTIPLE_CHOICE_QUESTION = 2,
-  WORKTYPE_SHORT_ANSWER_QUESTION = 3,
-  WORKTYPE_NOOP = 4,
-  WORKTYPE_FALLTHROUGH_STRING = 5,
-  UNRECOGNIZED = -1,
+  WORKTYPE_ASSIGNMENT = "WORKTYPE_ASSIGNMENT",
+  WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED = "WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED",
+  WORKTYPE_MULTIPLE_CHOICE_QUESTION = "WORKTYPE_MULTIPLE_CHOICE_QUESTION",
+  WORKTYPE_SHORT_ANSWER_QUESTION = "WORKTYPE_SHORT_ANSWER_QUESTION",
+  WORKTYPE_NOOP = "WORKTYPE_NOOP",
+  WORKTYPE_FALLTHROUGH_STRING = "WORKTYPE_FALLTHROUGH_STRING",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function workTypeFromJSON(object: any): WorkType {
@@ -137,14 +161,34 @@ export function workTypeToJSON(object: WorkType): string {
   }
 }
 
+export function workTypeToNumber(object: WorkType): number {
+  switch (object) {
+    case WorkType.WORKTYPE_ASSIGNMENT:
+      return 0;
+    case WorkType.WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED:
+      return 1;
+    case WorkType.WORKTYPE_MULTIPLE_CHOICE_QUESTION:
+      return 2;
+    case WorkType.WORKTYPE_SHORT_ANSWER_QUESTION:
+      return 3;
+    case WorkType.WORKTYPE_NOOP:
+      return 4;
+    case WorkType.WORKTYPE_FALLTHROUGH_STRING:
+      return 5;
+    case WorkType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export enum GradeChangeType {
-  GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED = 0,
-  GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED = 1,
-  GRADE_CHANGE_MAX_POINTS = 2,
-  GRADE_CHANGE_UNKNOWN = 3,
-  GRADE_CHANGE_NOOP = 4,
-  GRADE_CHANGE_FALLTHROUGH_STRING = 5,
-  UNRECOGNIZED = -1,
+  GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED = "GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED",
+  GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED = "GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED",
+  GRADE_CHANGE_MAX_POINTS = "GRADE_CHANGE_MAX_POINTS",
+  GRADE_CHANGE_UNKNOWN = "GRADE_CHANGE_UNKNOWN",
+  GRADE_CHANGE_NOOP = "GRADE_CHANGE_NOOP",
+  GRADE_CHANGE_FALLTHROUGH_STRING = "GRADE_CHANGE_FALLTHROUGH_STRING",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function gradeChangeTypeFromJSON(object: any): GradeChangeType {
@@ -194,16 +238,36 @@ export function gradeChangeTypeToJSON(object: GradeChangeType): string {
   }
 }
 
+export function gradeChangeTypeToNumber(object: GradeChangeType): number {
+  switch (object) {
+    case GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED:
+      return 0;
+    case GradeChangeType.GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED:
+      return 1;
+    case GradeChangeType.GRADE_CHANGE_MAX_POINTS:
+      return 2;
+    case GradeChangeType.GRADE_CHANGE_UNKNOWN:
+      return 3;
+    case GradeChangeType.GRADE_CHANGE_NOOP:
+      return 4;
+    case GradeChangeType.GRADE_CHANGE_FALLTHROUGH_STRING:
+      return 5;
+    case GradeChangeType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export enum StateHistory {
-  HISTORY_CREATED = 0,
-  HISTORY_RECLAIMED_BY_STUDENT = 1,
-  HISTORY_RETURNED = 2,
-  HISTORY_UNSPECIFIED = 3,
-  HISTORY_STUDENT_EDITED_AFTER_TURN_IN = 4,
-  HISTORY_TURNED_IN = 5,
-  HISTORY_NOOP = 6,
-  HISTORY_FALLTHROUGH_STRING = 7,
-  UNRECOGNIZED = -1,
+  HISTORY_CREATED = "HISTORY_CREATED",
+  HISTORY_RECLAIMED_BY_STUDENT = "HISTORY_RECLAIMED_BY_STUDENT",
+  HISTORY_RETURNED = "HISTORY_RETURNED",
+  HISTORY_UNSPECIFIED = "HISTORY_UNSPECIFIED",
+  HISTORY_STUDENT_EDITED_AFTER_TURN_IN = "HISTORY_STUDENT_EDITED_AFTER_TURN_IN",
+  HISTORY_TURNED_IN = "HISTORY_TURNED_IN",
+  HISTORY_NOOP = "HISTORY_NOOP",
+  HISTORY_FALLTHROUGH_STRING = "HISTORY_FALLTHROUGH_STRING",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function stateHistoryFromJSON(object: any): StateHistory {
@@ -260,6 +324,30 @@ export function stateHistoryToJSON(object: StateHistory): string {
     case StateHistory.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
+  }
+}
+
+export function stateHistoryToNumber(object: StateHistory): number {
+  switch (object) {
+    case StateHistory.HISTORY_CREATED:
+      return 0;
+    case StateHistory.HISTORY_RECLAIMED_BY_STUDENT:
+      return 1;
+    case StateHistory.HISTORY_RETURNED:
+      return 2;
+    case StateHistory.HISTORY_UNSPECIFIED:
+      return 3;
+    case StateHistory.HISTORY_STUDENT_EDITED_AFTER_TURN_IN:
+      return 4;
+    case StateHistory.HISTORY_TURNED_IN:
+      return 5;
+    case StateHistory.HISTORY_NOOP:
+      return 6;
+    case StateHistory.HISTORY_FALLTHROUGH_STRING:
+      return 7;
+    case StateHistory.UNRECOGNIZED:
+    default:
+      return -1;
   }
 }
 
@@ -391,10 +479,10 @@ function createBaseGClassStudentSubmission(): GClassStudentSubmission {
     studentId: undefined,
     homeroomId: undefined,
     courseId: undefined,
-    submissionState: 0,
+    submissionState: States.STATES_CREATED,
     workNotSubmittedAndLate: false,
     assignedGrade: 0,
-    workType: 0,
+    workType: WorkType.WORKTYPE_ASSIGNMENT,
     submissionHistory: [],
     assignmentSubmission: undefined,
     shortAnswerSubmission: undefined,
@@ -429,8 +517,8 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
     if (message.courseId !== undefined) {
       ObjectId.encode(message.courseId, writer.uint32(66).fork()).join();
     }
-    if (message.submissionState !== 0) {
-      writer.uint32(72).int32(message.submissionState);
+    if (message.submissionState !== States.STATES_CREATED) {
+      writer.uint32(72).int32(statesToNumber(message.submissionState));
     }
     if (message.workNotSubmittedAndLate !== false) {
       writer.uint32(80).bool(message.workNotSubmittedAndLate);
@@ -438,8 +526,8 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
     if (message.assignedGrade !== 0) {
       writer.uint32(89).double(message.assignedGrade);
     }
-    if (message.workType !== 0) {
-      writer.uint32(96).int32(message.workType);
+    if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
+      writer.uint32(96).int32(workTypeToNumber(message.workType));
     }
     for (const v of message.submissionHistory) {
       SubmissionHistory.encode(v!, writer.uint32(106).fork()).join();
@@ -527,7 +615,7 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
             break;
           }
 
-          message.submissionState = reader.int32() as any;
+          message.submissionState = statesFromJSON(reader.int32());
           continue;
         case 10:
           if (tag !== 80) {
@@ -548,7 +636,7 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
             break;
           }
 
-          message.workType = reader.int32() as any;
+          message.workType = workTypeFromJSON(reader.int32());
           continue;
         case 13:
           if (tag !== 106) {
@@ -606,12 +694,12 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
       studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
-      submissionState: isSet(object.submissionState) ? statesFromJSON(object.submissionState) : 0,
+      submissionState: isSet(object.submissionState) ? statesFromJSON(object.submissionState) : States.STATES_CREATED,
       workNotSubmittedAndLate: isSet(object.workNotSubmittedAndLate)
         ? globalThis.Boolean(object.workNotSubmittedAndLate)
         : false,
       assignedGrade: isSet(object.assignedGrade) ? globalThis.Number(object.assignedGrade) : 0,
-      workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : 0,
+      workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : WorkType.WORKTYPE_ASSIGNMENT,
       submissionHistory: globalThis.Array.isArray(object?.submissionHistory)
         ? object.submissionHistory.map((e: any) => SubmissionHistory.fromJSON(e))
         : [],
@@ -654,7 +742,7 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
     if (message.courseId !== undefined) {
       obj.courseId = ObjectId.toJSON(message.courseId);
     }
-    if (message.submissionState !== 0) {
+    if (message.submissionState !== States.STATES_CREATED) {
       obj.submissionState = statesToJSON(message.submissionState);
     }
     if (message.workNotSubmittedAndLate !== false) {
@@ -663,7 +751,7 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
     if (message.assignedGrade !== 0) {
       obj.assignedGrade = message.assignedGrade;
     }
-    if (message.workType !== 0) {
+    if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
       obj.workType = workTypeToJSON(message.workType);
     }
     if (message.submissionHistory?.length) {
@@ -703,10 +791,10 @@ export const GClassStudentSubmission: MessageFns<GClassStudentSubmission> = {
     message.courseId = (object.courseId !== undefined && object.courseId !== null)
       ? ObjectId.fromPartial(object.courseId)
       : undefined;
-    message.submissionState = object.submissionState ?? 0;
+    message.submissionState = object.submissionState ?? States.STATES_CREATED;
     message.workNotSubmittedAndLate = object.workNotSubmittedAndLate ?? false;
     message.assignedGrade = object.assignedGrade ?? 0;
-    message.workType = object.workType ?? 0;
+    message.workType = object.workType ?? WorkType.WORKTYPE_ASSIGNMENT;
     message.submissionHistory = object.submissionHistory?.map((e) => SubmissionHistory.fromPartial(e)) || [];
     message.assignmentSubmission = (object.assignmentSubmission !== undefined && object.assignmentSubmission !== null)
       ? AssignmentSubmission.fromPartial(object.assignmentSubmission)
@@ -736,7 +824,7 @@ function createBaseGClassCourseWork(): GClassCourseWork {
     materials: [],
     creationTime: undefined,
     dueDate: undefined,
-    workType: 0,
+    workType: WorkType.WORKTYPE_ASSIGNMENT,
     rawJsonData: "",
   };
 }
@@ -773,8 +861,8 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
     if (message.dueDate !== undefined) {
       Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(82).fork()).join();
     }
-    if (message.workType !== 0) {
-      writer.uint32(88).int32(message.workType);
+    if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
+      writer.uint32(88).int32(workTypeToNumber(message.workType));
     }
     if (message.rawJsonData !== "") {
       writer.uint32(98).string(message.rawJsonData);
@@ -864,7 +952,7 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
             break;
           }
 
-          message.workType = reader.int32() as any;
+          message.workType = workTypeFromJSON(reader.int32());
           continue;
         case 12:
           if (tag !== 98) {
@@ -896,7 +984,7 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
         : [],
       creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-      workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : 0,
+      workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : WorkType.WORKTYPE_ASSIGNMENT,
       rawJsonData: isSet(object.rawJsonData) ? globalThis.String(object.rawJsonData) : "",
     };
   },
@@ -933,7 +1021,7 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
     if (message.dueDate !== undefined) {
       obj.dueDate = message.dueDate.toISOString();
     }
-    if (message.workType !== 0) {
+    if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
       obj.workType = workTypeToJSON(message.workType);
     }
     if (message.rawJsonData !== "") {
@@ -961,7 +1049,7 @@ export const GClassCourseWork: MessageFns<GClassCourseWork> = {
     message.materials = object.materials?.map((e) => Attachment.fromPartial(e)) || [];
     message.creationTime = object.creationTime ?? undefined;
     message.dueDate = object.dueDate ?? undefined;
-    message.workType = object.workType ?? 0;
+    message.workType = object.workType ?? WorkType.WORKTYPE_ASSIGNMENT;
     message.rawJsonData = object.rawJsonData ?? "";
     return message;
   },
@@ -1046,7 +1134,13 @@ export const SubmissionHistory: MessageFns<SubmissionHistory> = {
 };
 
 function createBaseGradeHistory(): GradeHistory {
-  return { actorUserId: "", gradeChangeType: 0, gradeTimestamp: undefined, maxPoints: 0, pointsEarned: 0 };
+  return {
+    actorUserId: "",
+    gradeChangeType: GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED,
+    gradeTimestamp: undefined,
+    maxPoints: 0,
+    pointsEarned: 0,
+  };
 }
 
 export const GradeHistory: MessageFns<GradeHistory> = {
@@ -1054,8 +1148,11 @@ export const GradeHistory: MessageFns<GradeHistory> = {
     if (message.actorUserId !== "") {
       writer.uint32(10).string(message.actorUserId);
     }
-    if (message.gradeChangeType !== undefined && message.gradeChangeType !== 0) {
-      writer.uint32(16).int32(message.gradeChangeType);
+    if (
+      message.gradeChangeType !== undefined &&
+      message.gradeChangeType !== GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED
+    ) {
+      writer.uint32(16).int32(gradeChangeTypeToNumber(message.gradeChangeType));
     }
     if (message.gradeTimestamp !== undefined) {
       Timestamp.encode(toTimestamp(message.gradeTimestamp), writer.uint32(26).fork()).join();
@@ -1088,7 +1185,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
             break;
           }
 
-          message.gradeChangeType = reader.int32() as any;
+          message.gradeChangeType = gradeChangeTypeFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1123,7 +1220,9 @@ export const GradeHistory: MessageFns<GradeHistory> = {
   fromJSON(object: any): GradeHistory {
     return {
       actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
-      gradeChangeType: isSet(object.gradeChangeType) ? gradeChangeTypeFromJSON(object.gradeChangeType) : 0,
+      gradeChangeType: isSet(object.gradeChangeType)
+        ? gradeChangeTypeFromJSON(object.gradeChangeType)
+        : GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED,
       gradeTimestamp: isSet(object.gradeTimestamp) ? fromJsonTimestamp(object.gradeTimestamp) : undefined,
       maxPoints: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
       pointsEarned: isSet(object.pointsEarned) ? globalThis.Number(object.pointsEarned) : 0,
@@ -1135,7 +1234,10 @@ export const GradeHistory: MessageFns<GradeHistory> = {
     if (message.actorUserId !== "") {
       obj.actorUserId = message.actorUserId;
     }
-    if (message.gradeChangeType !== undefined && message.gradeChangeType !== 0) {
+    if (
+      message.gradeChangeType !== undefined &&
+      message.gradeChangeType !== GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED
+    ) {
       obj.gradeChangeType = gradeChangeTypeToJSON(message.gradeChangeType);
     }
     if (message.gradeTimestamp !== undefined) {
@@ -1156,7 +1258,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
   fromPartial<I extends Exact<DeepPartial<GradeHistory>, I>>(object: I): GradeHistory {
     const message = createBaseGradeHistory();
     message.actorUserId = object.actorUserId ?? "";
-    message.gradeChangeType = object.gradeChangeType ?? 0;
+    message.gradeChangeType = object.gradeChangeType ?? GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED;
     message.gradeTimestamp = object.gradeTimestamp ?? undefined;
     message.maxPoints = object.maxPoints ?? 0;
     message.pointsEarned = object.pointsEarned ?? 0;
@@ -1165,7 +1267,7 @@ export const GradeHistory: MessageFns<GradeHistory> = {
 };
 
 function createBaseStateHistoryData(): StateHistoryData {
-  return { actorUserId: "", state: 0, stateTimestamp: undefined };
+  return { actorUserId: "", state: StateHistory.HISTORY_CREATED, stateTimestamp: undefined };
 }
 
 export const StateHistoryData: MessageFns<StateHistoryData> = {
@@ -1173,8 +1275,8 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
     if (message.actorUserId !== "") {
       writer.uint32(10).string(message.actorUserId);
     }
-    if (message.state !== undefined && message.state !== 0) {
-      writer.uint32(16).int32(message.state);
+    if (message.state !== undefined && message.state !== StateHistory.HISTORY_CREATED) {
+      writer.uint32(16).int32(stateHistoryToNumber(message.state));
     }
     if (message.stateTimestamp !== undefined) {
       Timestamp.encode(toTimestamp(message.stateTimestamp), writer.uint32(26).fork()).join();
@@ -1201,7 +1303,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
             break;
           }
 
-          message.state = reader.int32() as any;
+          message.state = stateHistoryFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1222,7 +1324,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
   fromJSON(object: any): StateHistoryData {
     return {
       actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
-      state: isSet(object.state) ? stateHistoryFromJSON(object.state) : 0,
+      state: isSet(object.state) ? stateHistoryFromJSON(object.state) : StateHistory.HISTORY_CREATED,
       stateTimestamp: isSet(object.stateTimestamp) ? fromJsonTimestamp(object.stateTimestamp) : undefined,
     };
   },
@@ -1232,7 +1334,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
     if (message.actorUserId !== "") {
       obj.actorUserId = message.actorUserId;
     }
-    if (message.state !== undefined && message.state !== 0) {
+    if (message.state !== undefined && message.state !== StateHistory.HISTORY_CREATED) {
       obj.state = stateHistoryToJSON(message.state);
     }
     if (message.stateTimestamp !== undefined) {
@@ -1247,7 +1349,7 @@ export const StateHistoryData: MessageFns<StateHistoryData> = {
   fromPartial<I extends Exact<DeepPartial<StateHistoryData>, I>>(object: I): StateHistoryData {
     const message = createBaseStateHistoryData();
     message.actorUserId = object.actorUserId ?? "";
-    message.state = object.state ?? 0;
+    message.state = object.state ?? StateHistory.HISTORY_CREATED;
     message.stateTimestamp = object.stateTimestamp ?? undefined;
     return message;
   },

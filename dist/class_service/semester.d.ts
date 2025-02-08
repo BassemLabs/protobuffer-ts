@@ -2,13 +2,14 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export declare enum ReportType {
-    Progress = 1,
-    Midterm = 2,
-    Final = 3,
-    UNRECOGNIZED = -1
+    Progress = "Progress",
+    Midterm = "Midterm",
+    Final = "Final",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function reportTypeFromJSON(object: any): ReportType;
 export declare function reportTypeToJSON(object: ReportType): string;
+export declare function reportTypeToNumber(object: ReportType): number;
 export interface Semester {
     id: ObjectId | undefined;
     name: string;

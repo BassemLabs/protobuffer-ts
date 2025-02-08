@@ -9,7 +9,13 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { BassemLabsStaff, StaffStatus, staffStatusFromJSON, staffStatusToJSON } from "./bassem_labs_staff";
+import {
+  BassemLabsStaff,
+  StaffStatus,
+  staffStatusFromJSON,
+  staffStatusToJSON,
+  staffStatusToNumber,
+} from "./bassem_labs_staff";
 
 export const protobufPackage = "organization_service";
 
@@ -479,7 +485,7 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
 };
 
 function createBaseUpdateStatusRequest(): UpdateStatusRequest {
-  return { context: undefined, id: undefined, status: 0 };
+  return { context: undefined, id: undefined, status: StaffStatus.ACTIVE };
 }
 
 export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
@@ -490,8 +496,8 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(18).fork()).join();
     }
-    if (message.status !== 0) {
-      writer.uint32(24).int32(message.status);
+    if (message.status !== StaffStatus.ACTIVE) {
+      writer.uint32(24).int32(staffStatusToNumber(message.status));
     }
     return writer;
   },
@@ -522,7 +528,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
             break;
           }
 
-          message.status = reader.int32() as any;
+          message.status = staffStatusFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -537,7 +543,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      status: isSet(object.status) ? staffStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? staffStatusFromJSON(object.status) : StaffStatus.ACTIVE,
     };
   },
 
@@ -549,7 +555,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.status !== 0) {
+    if (message.status !== StaffStatus.ACTIVE) {
       obj.status = staffStatusToJSON(message.status);
     }
     return obj;
@@ -564,7 +570,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.status = object.status ?? 0;
+    message.status = object.status ?? StaffStatus.ACTIVE;
     return message;
   },
 };

@@ -8,18 +8,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserContext = exports.RequestContext = exports.UserType = exports.protobufPackage = void 0;
 exports.userTypeFromJSON = userTypeFromJSON;
 exports.userTypeToJSON = userTypeToJSON;
+exports.userTypeToNumber = userTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("./object_id");
 exports.protobufPackage = "utils";
 var UserType;
 (function (UserType) {
-    UserType[UserType["None"] = 0] = "None";
-    UserType[UserType["Student"] = 1] = "Student";
-    UserType[UserType["Teacher"] = 2] = "Teacher";
-    UserType[UserType["Parent"] = 3] = "Parent";
-    UserType[UserType["BassemLabsStaff"] = 4] = "BassemLabsStaff";
-    UserType[UserType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    UserType["None"] = "None";
+    UserType["Student"] = "Student";
+    UserType["Teacher"] = "Teacher";
+    UserType["Parent"] = "Parent";
+    UserType["BassemLabsStaff"] = "BassemLabsStaff";
+    UserType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(UserType || (exports.UserType = UserType = {}));
 function userTypeFromJSON(object) {
     switch (object) {
@@ -59,6 +60,23 @@ function userTypeToJSON(object) {
         case UserType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
+    }
+}
+function userTypeToNumber(object) {
+    switch (object) {
+        case UserType.None:
+            return 0;
+        case UserType.Student:
+            return 1;
+        case UserType.Teacher:
+            return 2;
+        case UserType.Parent:
+            return 3;
+        case UserType.BassemLabsStaff:
+            return 4;
+        case UserType.UNRECOGNIZED:
+        default:
+            return -1;
     }
 }
 function createBaseRequestContext() {
@@ -132,7 +150,7 @@ exports.RequestContext = {
 function createBaseUserContext() {
     return {
         userId: undefined,
-        userType: 0,
+        userType: UserType.None,
         userAuthToken: "",
         organizationId: undefined,
         roles: [],
@@ -147,8 +165,8 @@ exports.UserContext = {
         if (message.userId !== undefined) {
             object_id_1.ObjectId.encode(message.userId, writer.uint32(10).fork()).join();
         }
-        if (message.userType !== 0) {
-            writer.uint32(16).int32(message.userType);
+        if (message.userType !== UserType.None) {
+            writer.uint32(16).int32(userTypeToNumber(message.userType));
         }
         if (message.userAuthToken !== "") {
             writer.uint32(26).string(message.userAuthToken);
@@ -190,7 +208,7 @@ exports.UserContext = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.userType = reader.int32();
+                    message.userType = userTypeFromJSON(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -245,7 +263,7 @@ exports.UserContext = {
     fromJSON(object) {
         return {
             userId: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : 0,
+            userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.None,
             userAuthToken: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => globalThis.String(e)) : [],
@@ -262,7 +280,7 @@ exports.UserContext = {
         if (message.userId !== undefined) {
             obj.userId = object_id_1.ObjectId.toJSON(message.userId);
         }
-        if (message.userType !== 0) {
+        if (message.userType !== UserType.None) {
             obj.userType = userTypeToJSON(message.userType);
         }
         if (message.userAuthToken !== "") {
@@ -296,7 +314,7 @@ exports.UserContext = {
         message.userId = (object.userId !== undefined && object.userId !== null)
             ? object_id_1.ObjectId.fromPartial(object.userId)
             : undefined;
-        message.userType = object.userType ?? 0;
+        message.userType = object.userType ?? UserType.None;
         message.userAuthToken = object.userAuthToken ?? "";
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)

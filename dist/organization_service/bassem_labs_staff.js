@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BassemLabsStaff = exports.StaffStatus = exports.protobufPackage = void 0;
 exports.staffStatusFromJSON = staffStatusFromJSON;
 exports.staffStatusToJSON = staffStatusToJSON;
+exports.staffStatusToNumber = staffStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -15,9 +16,9 @@ const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "organization_service";
 var StaffStatus;
 (function (StaffStatus) {
-    StaffStatus[StaffStatus["ACTIVE"] = 0] = "ACTIVE";
-    StaffStatus[StaffStatus["INACTIVE"] = 1] = "INACTIVE";
-    StaffStatus[StaffStatus["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    StaffStatus["ACTIVE"] = "ACTIVE";
+    StaffStatus["INACTIVE"] = "INACTIVE";
+    StaffStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(StaffStatus || (exports.StaffStatus = StaffStatus = {}));
 function staffStatusFromJSON(object) {
     switch (object) {
@@ -44,10 +45,21 @@ function staffStatusToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+function staffStatusToNumber(object) {
+    switch (object) {
+        case StaffStatus.ACTIVE:
+            return 0;
+        case StaffStatus.INACTIVE:
+            return 1;
+        case StaffStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseBassemLabsStaff() {
     return {
         id: undefined,
-        status: 0,
+        status: StaffStatus.ACTIVE,
         username: "",
         firstName: "",
         lastName: "",
@@ -63,8 +75,8 @@ exports.BassemLabsStaff = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.status !== 0) {
-            writer.uint32(16).int32(message.status);
+        if (message.status !== StaffStatus.ACTIVE) {
+            writer.uint32(16).int32(staffStatusToNumber(message.status));
         }
         if (message.username !== "") {
             writer.uint32(26).string(message.username);
@@ -109,7 +121,7 @@ exports.BassemLabsStaff = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.status = reader.int32();
+                    message.status = staffStatusFromJSON(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -170,7 +182,7 @@ exports.BassemLabsStaff = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            status: isSet(object.status) ? staffStatusFromJSON(object.status) : 0,
+            status: isSet(object.status) ? staffStatusFromJSON(object.status) : StaffStatus.ACTIVE,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
             firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
             lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
@@ -186,7 +198,7 @@ exports.BassemLabsStaff = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.status !== 0) {
+        if (message.status !== StaffStatus.ACTIVE) {
             obj.status = staffStatusToJSON(message.status);
         }
         if (message.username !== "") {
@@ -221,7 +233,7 @@ exports.BassemLabsStaff = {
     fromPartial(object) {
         const message = createBaseBassemLabsStaff();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.status = object.status ?? 0;
+        message.status = object.status ?? StaffStatus.ACTIVE;
         message.username = object.username ?? "";
         message.firstName = object.firstName ?? "";
         message.lastName = object.lastName ?? "";

@@ -2,12 +2,13 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "organization_service";
 export declare enum StaffStatus {
-    ACTIVE = 0,
-    INACTIVE = 1,
-    UNRECOGNIZED = -1
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function staffStatusFromJSON(object: any): StaffStatus;
 export declare function staffStatusToJSON(object: StaffStatus): string;
+export declare function staffStatusToNumber(object: StaffStatus): number;
 export interface BassemLabsStaff {
     id: ObjectId | undefined;
     status: StaffStatus;

@@ -8,12 +8,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.YouTubeVideo = exports.Link = exports.Form = exports.DriveFile = exports.Attachment = exports.MultipleChoiceSubmission = exports.ShortAnswerSubmission = exports.AssignmentSubmission = exports.StateHistoryData = exports.GradeHistory = exports.SubmissionHistory = exports.GClassCourseWork = exports.GClassStudentSubmission = exports.StateHistory = exports.GradeChangeType = exports.WorkType = exports.States = exports.protobufPackage = void 0;
 exports.statesFromJSON = statesFromJSON;
 exports.statesToJSON = statesToJSON;
+exports.statesToNumber = statesToNumber;
 exports.workTypeFromJSON = workTypeFromJSON;
 exports.workTypeToJSON = workTypeToJSON;
+exports.workTypeToNumber = workTypeToNumber;
 exports.gradeChangeTypeFromJSON = gradeChangeTypeFromJSON;
 exports.gradeChangeTypeToJSON = gradeChangeTypeToJSON;
+exports.gradeChangeTypeToNumber = gradeChangeTypeToNumber;
 exports.stateHistoryFromJSON = stateHistoryFromJSON;
 exports.stateHistoryToJSON = stateHistoryToJSON;
+exports.stateHistoryToNumber = stateHistoryToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -21,15 +25,15 @@ const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 var States;
 (function (States) {
-    States[States["STATES_CREATED"] = 0] = "STATES_CREATED";
-    States[States["STATES_NEW"] = 1] = "STATES_NEW";
-    States[States["STATES_RECLAIMED_BY_STUDENT"] = 2] = "STATES_RECLAIMED_BY_STUDENT";
-    States[States["STATES_RETURNED"] = 3] = "STATES_RETURNED";
-    States[States["STATES_SUBMISSION_STATE_UNSPECIFIED"] = 4] = "STATES_SUBMISSION_STATE_UNSPECIFIED";
-    States[States["STATES_TURNED_IN"] = 5] = "STATES_TURNED_IN";
-    States[States["STATES_NOOP"] = 6] = "STATES_NOOP";
-    States[States["STATES_FALLTHROUGH_STRING"] = 7] = "STATES_FALLTHROUGH_STRING";
-    States[States["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    States["STATES_CREATED"] = "STATES_CREATED";
+    States["STATES_NEW"] = "STATES_NEW";
+    States["STATES_RECLAIMED_BY_STUDENT"] = "STATES_RECLAIMED_BY_STUDENT";
+    States["STATES_RETURNED"] = "STATES_RETURNED";
+    States["STATES_SUBMISSION_STATE_UNSPECIFIED"] = "STATES_SUBMISSION_STATE_UNSPECIFIED";
+    States["STATES_TURNED_IN"] = "STATES_TURNED_IN";
+    States["STATES_NOOP"] = "STATES_NOOP";
+    States["STATES_FALLTHROUGH_STRING"] = "STATES_FALLTHROUGH_STRING";
+    States["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(States || (exports.States = States = {}));
 function statesFromJSON(object) {
     switch (object) {
@@ -86,15 +90,38 @@ function statesToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+function statesToNumber(object) {
+    switch (object) {
+        case States.STATES_CREATED:
+            return 0;
+        case States.STATES_NEW:
+            return 1;
+        case States.STATES_RECLAIMED_BY_STUDENT:
+            return 2;
+        case States.STATES_RETURNED:
+            return 3;
+        case States.STATES_SUBMISSION_STATE_UNSPECIFIED:
+            return 4;
+        case States.STATES_TURNED_IN:
+            return 5;
+        case States.STATES_NOOP:
+            return 6;
+        case States.STATES_FALLTHROUGH_STRING:
+            return 7;
+        case States.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 var WorkType;
 (function (WorkType) {
-    WorkType[WorkType["WORKTYPE_ASSIGNMENT"] = 0] = "WORKTYPE_ASSIGNMENT";
-    WorkType[WorkType["WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED"] = 1] = "WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED";
-    WorkType[WorkType["WORKTYPE_MULTIPLE_CHOICE_QUESTION"] = 2] = "WORKTYPE_MULTIPLE_CHOICE_QUESTION";
-    WorkType[WorkType["WORKTYPE_SHORT_ANSWER_QUESTION"] = 3] = "WORKTYPE_SHORT_ANSWER_QUESTION";
-    WorkType[WorkType["WORKTYPE_NOOP"] = 4] = "WORKTYPE_NOOP";
-    WorkType[WorkType["WORKTYPE_FALLTHROUGH_STRING"] = 5] = "WORKTYPE_FALLTHROUGH_STRING";
-    WorkType[WorkType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    WorkType["WORKTYPE_ASSIGNMENT"] = "WORKTYPE_ASSIGNMENT";
+    WorkType["WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED"] = "WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED";
+    WorkType["WORKTYPE_MULTIPLE_CHOICE_QUESTION"] = "WORKTYPE_MULTIPLE_CHOICE_QUESTION";
+    WorkType["WORKTYPE_SHORT_ANSWER_QUESTION"] = "WORKTYPE_SHORT_ANSWER_QUESTION";
+    WorkType["WORKTYPE_NOOP"] = "WORKTYPE_NOOP";
+    WorkType["WORKTYPE_FALLTHROUGH_STRING"] = "WORKTYPE_FALLTHROUGH_STRING";
+    WorkType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(WorkType || (exports.WorkType = WorkType = {}));
 function workTypeFromJSON(object) {
     switch (object) {
@@ -141,15 +168,34 @@ function workTypeToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+function workTypeToNumber(object) {
+    switch (object) {
+        case WorkType.WORKTYPE_ASSIGNMENT:
+            return 0;
+        case WorkType.WORKTYPE_COURSE_WORK_TYPE_UNSPECIFIED:
+            return 1;
+        case WorkType.WORKTYPE_MULTIPLE_CHOICE_QUESTION:
+            return 2;
+        case WorkType.WORKTYPE_SHORT_ANSWER_QUESTION:
+            return 3;
+        case WorkType.WORKTYPE_NOOP:
+            return 4;
+        case WorkType.WORKTYPE_FALLTHROUGH_STRING:
+            return 5;
+        case WorkType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 var GradeChangeType;
 (function (GradeChangeType) {
-    GradeChangeType[GradeChangeType["GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED"] = 0] = "GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED";
-    GradeChangeType[GradeChangeType["GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED"] = 1] = "GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED";
-    GradeChangeType[GradeChangeType["GRADE_CHANGE_MAX_POINTS"] = 2] = "GRADE_CHANGE_MAX_POINTS";
-    GradeChangeType[GradeChangeType["GRADE_CHANGE_UNKNOWN"] = 3] = "GRADE_CHANGE_UNKNOWN";
-    GradeChangeType[GradeChangeType["GRADE_CHANGE_NOOP"] = 4] = "GRADE_CHANGE_NOOP";
-    GradeChangeType[GradeChangeType["GRADE_CHANGE_FALLTHROUGH_STRING"] = 5] = "GRADE_CHANGE_FALLTHROUGH_STRING";
-    GradeChangeType[GradeChangeType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    GradeChangeType["GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED"] = "GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED";
+    GradeChangeType["GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED"] = "GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED";
+    GradeChangeType["GRADE_CHANGE_MAX_POINTS"] = "GRADE_CHANGE_MAX_POINTS";
+    GradeChangeType["GRADE_CHANGE_UNKNOWN"] = "GRADE_CHANGE_UNKNOWN";
+    GradeChangeType["GRADE_CHANGE_NOOP"] = "GRADE_CHANGE_NOOP";
+    GradeChangeType["GRADE_CHANGE_FALLTHROUGH_STRING"] = "GRADE_CHANGE_FALLTHROUGH_STRING";
+    GradeChangeType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(GradeChangeType || (exports.GradeChangeType = GradeChangeType = {}));
 function gradeChangeTypeFromJSON(object) {
     switch (object) {
@@ -196,17 +242,36 @@ function gradeChangeTypeToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+function gradeChangeTypeToNumber(object) {
+    switch (object) {
+        case GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED:
+            return 0;
+        case GradeChangeType.GRADE_CHANGE_DRAFT_GRADE_POINTS_EARNED:
+            return 1;
+        case GradeChangeType.GRADE_CHANGE_MAX_POINTS:
+            return 2;
+        case GradeChangeType.GRADE_CHANGE_UNKNOWN:
+            return 3;
+        case GradeChangeType.GRADE_CHANGE_NOOP:
+            return 4;
+        case GradeChangeType.GRADE_CHANGE_FALLTHROUGH_STRING:
+            return 5;
+        case GradeChangeType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 var StateHistory;
 (function (StateHistory) {
-    StateHistory[StateHistory["HISTORY_CREATED"] = 0] = "HISTORY_CREATED";
-    StateHistory[StateHistory["HISTORY_RECLAIMED_BY_STUDENT"] = 1] = "HISTORY_RECLAIMED_BY_STUDENT";
-    StateHistory[StateHistory["HISTORY_RETURNED"] = 2] = "HISTORY_RETURNED";
-    StateHistory[StateHistory["HISTORY_UNSPECIFIED"] = 3] = "HISTORY_UNSPECIFIED";
-    StateHistory[StateHistory["HISTORY_STUDENT_EDITED_AFTER_TURN_IN"] = 4] = "HISTORY_STUDENT_EDITED_AFTER_TURN_IN";
-    StateHistory[StateHistory["HISTORY_TURNED_IN"] = 5] = "HISTORY_TURNED_IN";
-    StateHistory[StateHistory["HISTORY_NOOP"] = 6] = "HISTORY_NOOP";
-    StateHistory[StateHistory["HISTORY_FALLTHROUGH_STRING"] = 7] = "HISTORY_FALLTHROUGH_STRING";
-    StateHistory[StateHistory["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    StateHistory["HISTORY_CREATED"] = "HISTORY_CREATED";
+    StateHistory["HISTORY_RECLAIMED_BY_STUDENT"] = "HISTORY_RECLAIMED_BY_STUDENT";
+    StateHistory["HISTORY_RETURNED"] = "HISTORY_RETURNED";
+    StateHistory["HISTORY_UNSPECIFIED"] = "HISTORY_UNSPECIFIED";
+    StateHistory["HISTORY_STUDENT_EDITED_AFTER_TURN_IN"] = "HISTORY_STUDENT_EDITED_AFTER_TURN_IN";
+    StateHistory["HISTORY_TURNED_IN"] = "HISTORY_TURNED_IN";
+    StateHistory["HISTORY_NOOP"] = "HISTORY_NOOP";
+    StateHistory["HISTORY_FALLTHROUGH_STRING"] = "HISTORY_FALLTHROUGH_STRING";
+    StateHistory["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(StateHistory || (exports.StateHistory = StateHistory = {}));
 function stateHistoryFromJSON(object) {
     switch (object) {
@@ -263,6 +328,29 @@ function stateHistoryToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+function stateHistoryToNumber(object) {
+    switch (object) {
+        case StateHistory.HISTORY_CREATED:
+            return 0;
+        case StateHistory.HISTORY_RECLAIMED_BY_STUDENT:
+            return 1;
+        case StateHistory.HISTORY_RETURNED:
+            return 2;
+        case StateHistory.HISTORY_UNSPECIFIED:
+            return 3;
+        case StateHistory.HISTORY_STUDENT_EDITED_AFTER_TURN_IN:
+            return 4;
+        case StateHistory.HISTORY_TURNED_IN:
+            return 5;
+        case StateHistory.HISTORY_NOOP:
+            return 6;
+        case StateHistory.HISTORY_FALLTHROUGH_STRING:
+            return 7;
+        case StateHistory.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGClassStudentSubmission() {
     return {
         gclassStudentSubmissionId: "",
@@ -273,10 +361,10 @@ function createBaseGClassStudentSubmission() {
         studentId: undefined,
         homeroomId: undefined,
         courseId: undefined,
-        submissionState: 0,
+        submissionState: States.STATES_CREATED,
         workNotSubmittedAndLate: false,
         assignedGrade: 0,
-        workType: 0,
+        workType: WorkType.WORKTYPE_ASSIGNMENT,
         submissionHistory: [],
         assignmentSubmission: undefined,
         shortAnswerSubmission: undefined,
@@ -310,8 +398,8 @@ exports.GClassStudentSubmission = {
         if (message.courseId !== undefined) {
             object_id_1.ObjectId.encode(message.courseId, writer.uint32(66).fork()).join();
         }
-        if (message.submissionState !== 0) {
-            writer.uint32(72).int32(message.submissionState);
+        if (message.submissionState !== States.STATES_CREATED) {
+            writer.uint32(72).int32(statesToNumber(message.submissionState));
         }
         if (message.workNotSubmittedAndLate !== false) {
             writer.uint32(80).bool(message.workNotSubmittedAndLate);
@@ -319,8 +407,8 @@ exports.GClassStudentSubmission = {
         if (message.assignedGrade !== 0) {
             writer.uint32(89).double(message.assignedGrade);
         }
-        if (message.workType !== 0) {
-            writer.uint32(96).int32(message.workType);
+        if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
+            writer.uint32(96).int32(workTypeToNumber(message.workType));
         }
         for (const v of message.submissionHistory) {
             exports.SubmissionHistory.encode(v, writer.uint32(106).fork()).join();
@@ -398,7 +486,7 @@ exports.GClassStudentSubmission = {
                     if (tag !== 72) {
                         break;
                     }
-                    message.submissionState = reader.int32();
+                    message.submissionState = statesFromJSON(reader.int32());
                     continue;
                 case 10:
                     if (tag !== 80) {
@@ -416,7 +504,7 @@ exports.GClassStudentSubmission = {
                     if (tag !== 96) {
                         break;
                     }
-                    message.workType = reader.int32();
+                    message.workType = workTypeFromJSON(reader.int32());
                     continue;
                 case 13:
                     if (tag !== 106) {
@@ -468,12 +556,12 @@ exports.GClassStudentSubmission = {
             studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            submissionState: isSet(object.submissionState) ? statesFromJSON(object.submissionState) : 0,
+            submissionState: isSet(object.submissionState) ? statesFromJSON(object.submissionState) : States.STATES_CREATED,
             workNotSubmittedAndLate: isSet(object.workNotSubmittedAndLate)
                 ? globalThis.Boolean(object.workNotSubmittedAndLate)
                 : false,
             assignedGrade: isSet(object.assignedGrade) ? globalThis.Number(object.assignedGrade) : 0,
-            workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : 0,
+            workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : WorkType.WORKTYPE_ASSIGNMENT,
             submissionHistory: globalThis.Array.isArray(object?.submissionHistory)
                 ? object.submissionHistory.map((e) => exports.SubmissionHistory.fromJSON(e))
                 : [],
@@ -515,7 +603,7 @@ exports.GClassStudentSubmission = {
         if (message.courseId !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
         }
-        if (message.submissionState !== 0) {
+        if (message.submissionState !== States.STATES_CREATED) {
             obj.submissionState = statesToJSON(message.submissionState);
         }
         if (message.workNotSubmittedAndLate !== false) {
@@ -524,7 +612,7 @@ exports.GClassStudentSubmission = {
         if (message.assignedGrade !== 0) {
             obj.assignedGrade = message.assignedGrade;
         }
-        if (message.workType !== 0) {
+        if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
             obj.workType = workTypeToJSON(message.workType);
         }
         if (message.submissionHistory?.length) {
@@ -563,10 +651,10 @@ exports.GClassStudentSubmission = {
         message.courseId = (object.courseId !== undefined && object.courseId !== null)
             ? object_id_1.ObjectId.fromPartial(object.courseId)
             : undefined;
-        message.submissionState = object.submissionState ?? 0;
+        message.submissionState = object.submissionState ?? States.STATES_CREATED;
         message.workNotSubmittedAndLate = object.workNotSubmittedAndLate ?? false;
         message.assignedGrade = object.assignedGrade ?? 0;
-        message.workType = object.workType ?? 0;
+        message.workType = object.workType ?? WorkType.WORKTYPE_ASSIGNMENT;
         message.submissionHistory = object.submissionHistory?.map((e) => exports.SubmissionHistory.fromPartial(e)) || [];
         message.assignmentSubmission = (object.assignmentSubmission !== undefined && object.assignmentSubmission !== null)
             ? exports.AssignmentSubmission.fromPartial(object.assignmentSubmission)
@@ -595,7 +683,7 @@ function createBaseGClassCourseWork() {
         materials: [],
         creationTime: undefined,
         dueDate: undefined,
-        workType: 0,
+        workType: WorkType.WORKTYPE_ASSIGNMENT,
         rawJsonData: "",
     };
 }
@@ -631,8 +719,8 @@ exports.GClassCourseWork = {
         if (message.dueDate !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(82).fork()).join();
         }
-        if (message.workType !== 0) {
-            writer.uint32(88).int32(message.workType);
+        if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
+            writer.uint32(88).int32(workTypeToNumber(message.workType));
         }
         if (message.rawJsonData !== "") {
             writer.uint32(98).string(message.rawJsonData);
@@ -710,7 +798,7 @@ exports.GClassCourseWork = {
                     if (tag !== 88) {
                         break;
                     }
-                    message.workType = reader.int32();
+                    message.workType = workTypeFromJSON(reader.int32());
                     continue;
                 case 12:
                     if (tag !== 98) {
@@ -740,7 +828,7 @@ exports.GClassCourseWork = {
                 : [],
             creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-            workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : 0,
+            workType: isSet(object.workType) ? workTypeFromJSON(object.workType) : WorkType.WORKTYPE_ASSIGNMENT,
             rawJsonData: isSet(object.rawJsonData) ? globalThis.String(object.rawJsonData) : "",
         };
     },
@@ -776,7 +864,7 @@ exports.GClassCourseWork = {
         if (message.dueDate !== undefined) {
             obj.dueDate = message.dueDate.toISOString();
         }
-        if (message.workType !== 0) {
+        if (message.workType !== WorkType.WORKTYPE_ASSIGNMENT) {
             obj.workType = workTypeToJSON(message.workType);
         }
         if (message.rawJsonData !== "") {
@@ -803,7 +891,7 @@ exports.GClassCourseWork = {
         message.materials = object.materials?.map((e) => exports.Attachment.fromPartial(e)) || [];
         message.creationTime = object.creationTime ?? undefined;
         message.dueDate = object.dueDate ?? undefined;
-        message.workType = object.workType ?? 0;
+        message.workType = object.workType ?? WorkType.WORKTYPE_ASSIGNMENT;
         message.rawJsonData = object.rawJsonData ?? "";
         return message;
     },
@@ -879,15 +967,22 @@ exports.SubmissionHistory = {
     },
 };
 function createBaseGradeHistory() {
-    return { actorUserId: "", gradeChangeType: 0, gradeTimestamp: undefined, maxPoints: 0, pointsEarned: 0 };
+    return {
+        actorUserId: "",
+        gradeChangeType: GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED,
+        gradeTimestamp: undefined,
+        maxPoints: 0,
+        pointsEarned: 0,
+    };
 }
 exports.GradeHistory = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.actorUserId !== "") {
             writer.uint32(10).string(message.actorUserId);
         }
-        if (message.gradeChangeType !== undefined && message.gradeChangeType !== 0) {
-            writer.uint32(16).int32(message.gradeChangeType);
+        if (message.gradeChangeType !== undefined &&
+            message.gradeChangeType !== GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED) {
+            writer.uint32(16).int32(gradeChangeTypeToNumber(message.gradeChangeType));
         }
         if (message.gradeTimestamp !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.gradeTimestamp), writer.uint32(26).fork()).join();
@@ -917,7 +1012,7 @@ exports.GradeHistory = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.gradeChangeType = reader.int32();
+                    message.gradeChangeType = gradeChangeTypeFromJSON(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -948,7 +1043,9 @@ exports.GradeHistory = {
     fromJSON(object) {
         return {
             actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
-            gradeChangeType: isSet(object.gradeChangeType) ? gradeChangeTypeFromJSON(object.gradeChangeType) : 0,
+            gradeChangeType: isSet(object.gradeChangeType)
+                ? gradeChangeTypeFromJSON(object.gradeChangeType)
+                : GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED,
             gradeTimestamp: isSet(object.gradeTimestamp) ? fromJsonTimestamp(object.gradeTimestamp) : undefined,
             maxPoints: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
             pointsEarned: isSet(object.pointsEarned) ? globalThis.Number(object.pointsEarned) : 0,
@@ -959,7 +1056,8 @@ exports.GradeHistory = {
         if (message.actorUserId !== "") {
             obj.actorUserId = message.actorUserId;
         }
-        if (message.gradeChangeType !== undefined && message.gradeChangeType !== 0) {
+        if (message.gradeChangeType !== undefined &&
+            message.gradeChangeType !== GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED) {
             obj.gradeChangeType = gradeChangeTypeToJSON(message.gradeChangeType);
         }
         if (message.gradeTimestamp !== undefined) {
@@ -979,7 +1077,7 @@ exports.GradeHistory = {
     fromPartial(object) {
         const message = createBaseGradeHistory();
         message.actorUserId = object.actorUserId ?? "";
-        message.gradeChangeType = object.gradeChangeType ?? 0;
+        message.gradeChangeType = object.gradeChangeType ?? GradeChangeType.GRADE_CHANGE_ASSIGNED_GRADE_POINTS_EARNED;
         message.gradeTimestamp = object.gradeTimestamp ?? undefined;
         message.maxPoints = object.maxPoints ?? 0;
         message.pointsEarned = object.pointsEarned ?? 0;
@@ -987,15 +1085,15 @@ exports.GradeHistory = {
     },
 };
 function createBaseStateHistoryData() {
-    return { actorUserId: "", state: 0, stateTimestamp: undefined };
+    return { actorUserId: "", state: StateHistory.HISTORY_CREATED, stateTimestamp: undefined };
 }
 exports.StateHistoryData = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.actorUserId !== "") {
             writer.uint32(10).string(message.actorUserId);
         }
-        if (message.state !== undefined && message.state !== 0) {
-            writer.uint32(16).int32(message.state);
+        if (message.state !== undefined && message.state !== StateHistory.HISTORY_CREATED) {
+            writer.uint32(16).int32(stateHistoryToNumber(message.state));
         }
         if (message.stateTimestamp !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.stateTimestamp), writer.uint32(26).fork()).join();
@@ -1019,7 +1117,7 @@ exports.StateHistoryData = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.state = reader.int32();
+                    message.state = stateHistoryFromJSON(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1038,7 +1136,7 @@ exports.StateHistoryData = {
     fromJSON(object) {
         return {
             actorUserId: isSet(object.actorUserId) ? globalThis.String(object.actorUserId) : "",
-            state: isSet(object.state) ? stateHistoryFromJSON(object.state) : 0,
+            state: isSet(object.state) ? stateHistoryFromJSON(object.state) : StateHistory.HISTORY_CREATED,
             stateTimestamp: isSet(object.stateTimestamp) ? fromJsonTimestamp(object.stateTimestamp) : undefined,
         };
     },
@@ -1047,7 +1145,7 @@ exports.StateHistoryData = {
         if (message.actorUserId !== "") {
             obj.actorUserId = message.actorUserId;
         }
-        if (message.state !== undefined && message.state !== 0) {
+        if (message.state !== undefined && message.state !== StateHistory.HISTORY_CREATED) {
             obj.state = stateHistoryToJSON(message.state);
         }
         if (message.stateTimestamp !== undefined) {
@@ -1061,7 +1159,7 @@ exports.StateHistoryData = {
     fromPartial(object) {
         const message = createBaseStateHistoryData();
         message.actorUserId = object.actorUserId ?? "";
-        message.state = object.state ?? 0;
+        message.state = object.state ?? StateHistory.HISTORY_CREATED;
         message.stateTimestamp = object.stateTimestamp ?? undefined;
         return message;
     },

@@ -8,7 +8,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { ProfileSection, profileSectionFromJSON, profileSectionToJSON } from "./organization_profile_settings";
+import {
+  ProfileSection,
+  profileSectionFromJSON,
+  profileSectionToJSON,
+  profileSectionToNumber,
+} from "./organization_profile_settings";
 
 export const protobufPackage = "organization_service";
 
@@ -58,6 +63,13 @@ export interface RemoveStudentProfileSectionRequest {
   context: RequestContext | undefined;
   organizationId: ObjectId | undefined;
   removeProfileSection: ProfileSection;
+}
+
+/** Request to set student_primary_id_custom_field */
+export interface SetStudentPrimaryIdCustomFieldRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  studentPrimaryIdCustomField: ObjectId | undefined;
 }
 
 function createBaseGetOrganizationProfileSettingsRequest(): GetOrganizationProfileSettingsRequest {
@@ -143,7 +155,7 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
 };
 
 function createBaseAddParentProfileSectionRequest(): AddParentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, newProfileSection: 0 };
+  return { context: undefined, organizationId: undefined, newProfileSection: ProfileSection.OVERVIEW };
 }
 
 export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionRequest> = {
@@ -154,8 +166,8 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
-    if (message.newProfileSection !== 0) {
-      writer.uint32(24).int32(message.newProfileSection);
+    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.newProfileSection));
     }
     return writer;
   },
@@ -186,7 +198,7 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
             break;
           }
 
-          message.newProfileSection = reader.int32() as any;
+          message.newProfileSection = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -201,7 +213,9 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newProfileSection: isSet(object.newProfileSection) ? profileSectionFromJSON(object.newProfileSection) : 0,
+      newProfileSection: isSet(object.newProfileSection)
+        ? profileSectionFromJSON(object.newProfileSection)
+        : ProfileSection.OVERVIEW,
     };
   },
 
@@ -213,7 +227,7 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
-    if (message.newProfileSection !== 0) {
+    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
       obj.newProfileSection = profileSectionToJSON(message.newProfileSection);
     }
     return obj;
@@ -232,13 +246,13 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
-    message.newProfileSection = object.newProfileSection ?? 0;
+    message.newProfileSection = object.newProfileSection ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseRemoveParentProfileSectionRequest(): RemoveParentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, removeProfileSection: 0 };
+  return { context: undefined, organizationId: undefined, removeProfileSection: ProfileSection.OVERVIEW };
 }
 
 export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSectionRequest> = {
@@ -249,8 +263,8 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
-    if (message.removeProfileSection !== 0) {
-      writer.uint32(24).int32(message.removeProfileSection);
+    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.removeProfileSection));
     }
     return writer;
   },
@@ -281,7 +295,7 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
             break;
           }
 
-          message.removeProfileSection = reader.int32() as any;
+          message.removeProfileSection = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -298,7 +312,7 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       removeProfileSection: isSet(object.removeProfileSection)
         ? profileSectionFromJSON(object.removeProfileSection)
-        : 0,
+        : ProfileSection.OVERVIEW,
     };
   },
 
@@ -310,7 +324,7 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
-    if (message.removeProfileSection !== 0) {
+    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
       obj.removeProfileSection = profileSectionToJSON(message.removeProfileSection);
     }
     return obj;
@@ -331,13 +345,13 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
-    message.removeProfileSection = object.removeProfileSection ?? 0;
+    message.removeProfileSection = object.removeProfileSection ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseAddTeacherProfileSectionRequest(): AddTeacherProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, newProfileSection: 0 };
+  return { context: undefined, organizationId: undefined, newProfileSection: ProfileSection.OVERVIEW };
 }
 
 export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectionRequest> = {
@@ -348,8 +362,8 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
-    if (message.newProfileSection !== 0) {
-      writer.uint32(24).int32(message.newProfileSection);
+    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.newProfileSection));
     }
     return writer;
   },
@@ -380,7 +394,7 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
             break;
           }
 
-          message.newProfileSection = reader.int32() as any;
+          message.newProfileSection = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -395,7 +409,9 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newProfileSection: isSet(object.newProfileSection) ? profileSectionFromJSON(object.newProfileSection) : 0,
+      newProfileSection: isSet(object.newProfileSection)
+        ? profileSectionFromJSON(object.newProfileSection)
+        : ProfileSection.OVERVIEW,
     };
   },
 
@@ -407,7 +423,7 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
-    if (message.newProfileSection !== 0) {
+    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
       obj.newProfileSection = profileSectionToJSON(message.newProfileSection);
     }
     return obj;
@@ -426,13 +442,13 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
-    message.newProfileSection = object.newProfileSection ?? 0;
+    message.newProfileSection = object.newProfileSection ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseRemoveTeacherProfileSectionRequest(): RemoveTeacherProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, removeProfileSection: 0 };
+  return { context: undefined, organizationId: undefined, removeProfileSection: ProfileSection.OVERVIEW };
 }
 
 export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfileSectionRequest> = {
@@ -443,8 +459,8 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
-    if (message.removeProfileSection !== 0) {
-      writer.uint32(24).int32(message.removeProfileSection);
+    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.removeProfileSection));
     }
     return writer;
   },
@@ -475,7 +491,7 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
             break;
           }
 
-          message.removeProfileSection = reader.int32() as any;
+          message.removeProfileSection = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -492,7 +508,7 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       removeProfileSection: isSet(object.removeProfileSection)
         ? profileSectionFromJSON(object.removeProfileSection)
-        : 0,
+        : ProfileSection.OVERVIEW,
     };
   },
 
@@ -504,7 +520,7 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
-    if (message.removeProfileSection !== 0) {
+    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
       obj.removeProfileSection = profileSectionToJSON(message.removeProfileSection);
     }
     return obj;
@@ -525,13 +541,13 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
-    message.removeProfileSection = object.removeProfileSection ?? 0;
+    message.removeProfileSection = object.removeProfileSection ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseAddStudentProfileSectionRequest(): AddStudentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, newProfileSection: 0 };
+  return { context: undefined, organizationId: undefined, newProfileSection: ProfileSection.OVERVIEW };
 }
 
 export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectionRequest> = {
@@ -542,8 +558,8 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
-    if (message.newProfileSection !== 0) {
-      writer.uint32(24).int32(message.newProfileSection);
+    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.newProfileSection));
     }
     return writer;
   },
@@ -574,7 +590,7 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
             break;
           }
 
-          message.newProfileSection = reader.int32() as any;
+          message.newProfileSection = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -589,7 +605,9 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newProfileSection: isSet(object.newProfileSection) ? profileSectionFromJSON(object.newProfileSection) : 0,
+      newProfileSection: isSet(object.newProfileSection)
+        ? profileSectionFromJSON(object.newProfileSection)
+        : ProfileSection.OVERVIEW,
     };
   },
 
@@ -601,7 +619,7 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
-    if (message.newProfileSection !== 0) {
+    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
       obj.newProfileSection = profileSectionToJSON(message.newProfileSection);
     }
     return obj;
@@ -620,13 +638,13 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
-    message.newProfileSection = object.newProfileSection ?? 0;
+    message.newProfileSection = object.newProfileSection ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseRemoveStudentProfileSectionRequest(): RemoveStudentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, removeProfileSection: 0 };
+  return { context: undefined, organizationId: undefined, removeProfileSection: ProfileSection.OVERVIEW };
 }
 
 export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfileSectionRequest> = {
@@ -637,8 +655,8 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
     }
-    if (message.removeProfileSection !== 0) {
-      writer.uint32(24).int32(message.removeProfileSection);
+    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.removeProfileSection));
     }
     return writer;
   },
@@ -669,7 +687,7 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
             break;
           }
 
-          message.removeProfileSection = reader.int32() as any;
+          message.removeProfileSection = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -686,7 +704,7 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       removeProfileSection: isSet(object.removeProfileSection)
         ? profileSectionFromJSON(object.removeProfileSection)
-        : 0,
+        : ProfileSection.OVERVIEW,
     };
   },
 
@@ -698,7 +716,7 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
     if (message.organizationId !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
-    if (message.removeProfileSection !== 0) {
+    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
       obj.removeProfileSection = profileSectionToJSON(message.removeProfileSection);
     }
     return obj;
@@ -719,7 +737,109 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
-    message.removeProfileSection = object.removeProfileSection ?? 0;
+    message.removeProfileSection = object.removeProfileSection ?? ProfileSection.OVERVIEW;
+    return message;
+  },
+};
+
+function createBaseSetStudentPrimaryIdCustomFieldRequest(): SetStudentPrimaryIdCustomFieldRequest {
+  return { context: undefined, organizationId: undefined, studentPrimaryIdCustomField: undefined };
+}
+
+export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimaryIdCustomFieldRequest> = {
+  encode(message: SetStudentPrimaryIdCustomFieldRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.studentPrimaryIdCustomField !== undefined) {
+      ObjectId.encode(message.studentPrimaryIdCustomField, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetStudentPrimaryIdCustomFieldRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetStudentPrimaryIdCustomFieldRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.studentPrimaryIdCustomField = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetStudentPrimaryIdCustomFieldRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      studentPrimaryIdCustomField: isSet(object.studentPrimaryIdCustomField)
+        ? ObjectId.fromJSON(object.studentPrimaryIdCustomField)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SetStudentPrimaryIdCustomFieldRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.studentPrimaryIdCustomField !== undefined) {
+      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.studentPrimaryIdCustomField);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SetStudentPrimaryIdCustomFieldRequest>, I>>(
+    base?: I,
+  ): SetStudentPrimaryIdCustomFieldRequest {
+    return SetStudentPrimaryIdCustomFieldRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SetStudentPrimaryIdCustomFieldRequest>, I>>(
+    object: I,
+  ): SetStudentPrimaryIdCustomFieldRequest {
+    const message = createBaseSetStudentPrimaryIdCustomFieldRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.studentPrimaryIdCustomField =
+      (object.studentPrimaryIdCustomField !== undefined && object.studentPrimaryIdCustomField !== null)
+        ? ObjectId.fromPartial(object.studentPrimaryIdCustomField)
+        : undefined;
     return message;
   },
 };

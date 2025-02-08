@@ -1,28 +1,31 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "organization_service";
 export declare enum ProfileSection {
-    OVERVIEW = 0,
-    PROFILE = 1,
-    FAMILY = 2,
-    HEALTH = 3,
-    HISTORY = 4,
-    DOCUMENTS = 5,
-    FINANCIAL = 6,
-    DONATION = 7,
-    MISC = 8,
-    INCIDENTS = 9,
-    TRANSACTIONS = 10,
-    FORMS = 11,
-    ROLES = 12,
-    SCHEDULE = 13,
-    UNRECOGNIZED = -1
+    OVERVIEW = "OVERVIEW",
+    PROFILE = "PROFILE",
+    FAMILY = "FAMILY",
+    HEALTH = "HEALTH",
+    HISTORY = "HISTORY",
+    DOCUMENTS = "DOCUMENTS",
+    FINANCIAL = "FINANCIAL",
+    DONATION = "DONATION",
+    MISC = "MISC",
+    INCIDENTS = "INCIDENTS",
+    TRANSACTIONS = "TRANSACTIONS",
+    FORMS = "FORMS",
+    ROLES = "ROLES",
+    SCHEDULE = "SCHEDULE",
+    UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function profileSectionFromJSON(object: any): ProfileSection;
 export declare function profileSectionToJSON(object: ProfileSection): string;
+export declare function profileSectionToNumber(object: ProfileSection): number;
 export interface OrganizationProfileSettings {
     studentProfileSections: ProfileSection[];
     parentProfileSections: ProfileSection[];
     teacherProfileSections: ProfileSection[];
+    studentPrimaryIdCustomField?: ObjectId | undefined;
 }
 export declare const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

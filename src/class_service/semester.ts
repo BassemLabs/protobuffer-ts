@@ -12,10 +12,10 @@ import { ObjectId } from "../utils/object_id";
 export const protobufPackage = "class_service";
 
 export enum ReportType {
-  Progress = 1,
-  Midterm = 2,
-  Final = 3,
-  UNRECOGNIZED = -1,
+  Progress = "Progress",
+  Midterm = "Midterm",
+  Final = "Final",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function reportTypeFromJSON(object: any): ReportType {
@@ -47,6 +47,20 @@ export function reportTypeToJSON(object: ReportType): string {
     case ReportType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
+  }
+}
+
+export function reportTypeToNumber(object: ReportType): number {
+  switch (object) {
+    case ReportType.Progress:
+      return 1;
+    case ReportType.Midterm:
+      return 2;
+    case ReportType.Final:
+      return 3;
+    case ReportType.UNRECOGNIZED:
+    default:
+      return -1;
   }
 }
 
@@ -394,13 +408,13 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
 };
 
 function createBaseReportDates(): ReportDates {
-  return { reportType: 1, dueDate: undefined, distributionDate: undefined };
+  return { reportType: ReportType.Progress, dueDate: undefined, distributionDate: undefined };
 }
 
 export const ReportDates: MessageFns<ReportDates> = {
   encode(message: ReportDates, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.reportType !== 1) {
-      writer.uint32(8).int32(message.reportType);
+    if (message.reportType !== ReportType.Progress) {
+      writer.uint32(8).int32(reportTypeToNumber(message.reportType));
     }
     if (message.dueDate !== undefined) {
       Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(18).fork()).join();
@@ -423,7 +437,7 @@ export const ReportDates: MessageFns<ReportDates> = {
             break;
           }
 
-          message.reportType = reader.int32() as any;
+          message.reportType = reportTypeFromJSON(reader.int32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -450,7 +464,7 @@ export const ReportDates: MessageFns<ReportDates> = {
 
   fromJSON(object: any): ReportDates {
     return {
-      reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : 1,
+      reportType: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : ReportType.Progress,
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       distributionDate: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
     };
@@ -458,7 +472,7 @@ export const ReportDates: MessageFns<ReportDates> = {
 
   toJSON(message: ReportDates): unknown {
     const obj: any = {};
-    if (message.reportType !== 1) {
+    if (message.reportType !== ReportType.Progress) {
       obj.reportType = reportTypeToJSON(message.reportType);
     }
     if (message.dueDate !== undefined) {
@@ -475,7 +489,7 @@ export const ReportDates: MessageFns<ReportDates> = {
   },
   fromPartial<I extends Exact<DeepPartial<ReportDates>, I>>(object: I): ReportDates {
     const message = createBaseReportDates();
-    message.reportType = object.reportType ?? 1;
+    message.reportType = object.reportType ?? ReportType.Progress;
     message.dueDate = object.dueDate ?? undefined;
     message.distributionDate = object.distributionDate ?? undefined;
     return message;

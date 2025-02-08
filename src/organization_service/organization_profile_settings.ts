@@ -6,25 +6,26 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "organization_service";
 
 export enum ProfileSection {
-  OVERVIEW = 0,
-  PROFILE = 1,
-  FAMILY = 2,
-  HEALTH = 3,
-  HISTORY = 4,
-  DOCUMENTS = 5,
-  FINANCIAL = 6,
-  DONATION = 7,
-  MISC = 8,
-  INCIDENTS = 9,
-  TRANSACTIONS = 10,
-  FORMS = 11,
-  ROLES = 12,
-  SCHEDULE = 13,
-  UNRECOGNIZED = -1,
+  OVERVIEW = "OVERVIEW",
+  PROFILE = "PROFILE",
+  FAMILY = "FAMILY",
+  HEALTH = "HEALTH",
+  HISTORY = "HISTORY",
+  DOCUMENTS = "DOCUMENTS",
+  FINANCIAL = "FINANCIAL",
+  DONATION = "DONATION",
+  MISC = "MISC",
+  INCIDENTS = "INCIDENTS",
+  TRANSACTIONS = "TRANSACTIONS",
+  FORMS = "FORMS",
+  ROLES = "ROLES",
+  SCHEDULE = "SCHEDULE",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function profileSectionFromJSON(object: any): ProfileSection {
@@ -114,33 +115,78 @@ export function profileSectionToJSON(object: ProfileSection): string {
   }
 }
 
+export function profileSectionToNumber(object: ProfileSection): number {
+  switch (object) {
+    case ProfileSection.OVERVIEW:
+      return 0;
+    case ProfileSection.PROFILE:
+      return 1;
+    case ProfileSection.FAMILY:
+      return 2;
+    case ProfileSection.HEALTH:
+      return 3;
+    case ProfileSection.HISTORY:
+      return 4;
+    case ProfileSection.DOCUMENTS:
+      return 5;
+    case ProfileSection.FINANCIAL:
+      return 6;
+    case ProfileSection.DONATION:
+      return 7;
+    case ProfileSection.MISC:
+      return 8;
+    case ProfileSection.INCIDENTS:
+      return 9;
+    case ProfileSection.TRANSACTIONS:
+      return 10;
+    case ProfileSection.FORMS:
+      return 11;
+    case ProfileSection.ROLES:
+      return 12;
+    case ProfileSection.SCHEDULE:
+      return 13;
+    case ProfileSection.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface OrganizationProfileSettings {
   studentProfileSections: ProfileSection[];
   parentProfileSections: ProfileSection[];
   teacherProfileSections: ProfileSection[];
+  studentPrimaryIdCustomField?: ObjectId | undefined;
 }
 
 function createBaseOrganizationProfileSettings(): OrganizationProfileSettings {
-  return { studentProfileSections: [], parentProfileSections: [], teacherProfileSections: [] };
+  return {
+    studentProfileSections: [],
+    parentProfileSections: [],
+    teacherProfileSections: [],
+    studentPrimaryIdCustomField: undefined,
+  };
 }
 
 export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings> = {
   encode(message: OrganizationProfileSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.studentProfileSections) {
-      writer.int32(v);
+      writer.int32(profileSectionToNumber(v));
     }
     writer.join();
     writer.uint32(18).fork();
     for (const v of message.parentProfileSections) {
-      writer.int32(v);
+      writer.int32(profileSectionToNumber(v));
     }
     writer.join();
     writer.uint32(26).fork();
     for (const v of message.teacherProfileSections) {
-      writer.int32(v);
+      writer.int32(profileSectionToNumber(v));
     }
     writer.join();
+    if (message.studentPrimaryIdCustomField !== undefined) {
+      ObjectId.encode(message.studentPrimaryIdCustomField, writer.uint32(34).fork()).join();
+    }
     return writer;
   },
 
@@ -153,7 +199,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
       switch (tag >>> 3) {
         case 1:
           if (tag === 8) {
-            message.studentProfileSections.push(reader.int32() as any);
+            message.studentProfileSections.push(profileSectionFromJSON(reader.int32()));
 
             continue;
           }
@@ -161,7 +207,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           if (tag === 10) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.studentProfileSections.push(reader.int32() as any);
+              message.studentProfileSections.push(profileSectionFromJSON(reader.int32()));
             }
 
             continue;
@@ -170,7 +216,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           break;
         case 2:
           if (tag === 16) {
-            message.parentProfileSections.push(reader.int32() as any);
+            message.parentProfileSections.push(profileSectionFromJSON(reader.int32()));
 
             continue;
           }
@@ -178,7 +224,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           if (tag === 18) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.parentProfileSections.push(reader.int32() as any);
+              message.parentProfileSections.push(profileSectionFromJSON(reader.int32()));
             }
 
             continue;
@@ -187,7 +233,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           break;
         case 3:
           if (tag === 24) {
-            message.teacherProfileSections.push(reader.int32() as any);
+            message.teacherProfileSections.push(profileSectionFromJSON(reader.int32()));
 
             continue;
           }
@@ -195,13 +241,20 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           if (tag === 26) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.teacherProfileSections.push(reader.int32() as any);
+              message.teacherProfileSections.push(profileSectionFromJSON(reader.int32()));
             }
 
             continue;
           }
 
           break;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.studentPrimaryIdCustomField = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -222,6 +275,9 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
       teacherProfileSections: globalThis.Array.isArray(object?.teacherProfileSections)
         ? object.teacherProfileSections.map((e: any) => profileSectionFromJSON(e))
         : [],
+      studentPrimaryIdCustomField: isSet(object.studentPrimaryIdCustomField)
+        ? ObjectId.fromJSON(object.studentPrimaryIdCustomField)
+        : undefined,
     };
   },
 
@@ -236,6 +292,9 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
     if (message.teacherProfileSections?.length) {
       obj.teacherProfileSections = message.teacherProfileSections.map((e) => profileSectionToJSON(e));
     }
+    if (message.studentPrimaryIdCustomField !== undefined) {
+      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.studentPrimaryIdCustomField);
+    }
     return obj;
   },
 
@@ -247,6 +306,10 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
     message.studentProfileSections = object.studentProfileSections?.map((e) => e) || [];
     message.parentProfileSections = object.parentProfileSections?.map((e) => e) || [];
     message.teacherProfileSections = object.teacherProfileSections?.map((e) => e) || [];
+    message.studentPrimaryIdCustomField =
+      (object.studentPrimaryIdCustomField !== undefined && object.studentPrimaryIdCustomField !== null)
+        ? ObjectId.fromPartial(object.studentPrimaryIdCustomField)
+        : undefined;
     return message;
   },
 };
@@ -262,6 +325,10 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isSet(value: any): boolean {
+  return value !== null && value !== undefined;
+}
 
 export interface MessageFns<T> {
   encode(message: T, writer?: BinaryWriter): BinaryWriter;

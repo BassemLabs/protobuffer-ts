@@ -44,6 +44,12 @@ export interface RemoveStudentProfileSectionRequest {
     organizationId: ObjectId | undefined;
     removeProfileSection: ProfileSection;
 }
+/** Request to set student_primary_id_custom_field */
+export interface SetStudentPrimaryIdCustomFieldRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    studentPrimaryIdCustomField: ObjectId | undefined;
+}
 export declare const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationProfileSettingsRequest>;
 export declare const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionRequest>;
 export declare const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSectionRequest>;
@@ -51,6 +57,7 @@ export declare const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfi
 export declare const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfileSectionRequest>;
 export declare const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectionRequest>;
 export declare const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfileSectionRequest>;
+export declare const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimaryIdCustomFieldRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

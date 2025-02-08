@@ -8,26 +8,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrganizationProfileSettings = exports.ProfileSection = exports.protobufPackage = void 0;
 exports.profileSectionFromJSON = profileSectionFromJSON;
 exports.profileSectionToJSON = profileSectionToJSON;
+exports.profileSectionToNumber = profileSectionToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "organization_service";
 var ProfileSection;
 (function (ProfileSection) {
-    ProfileSection[ProfileSection["OVERVIEW"] = 0] = "OVERVIEW";
-    ProfileSection[ProfileSection["PROFILE"] = 1] = "PROFILE";
-    ProfileSection[ProfileSection["FAMILY"] = 2] = "FAMILY";
-    ProfileSection[ProfileSection["HEALTH"] = 3] = "HEALTH";
-    ProfileSection[ProfileSection["HISTORY"] = 4] = "HISTORY";
-    ProfileSection[ProfileSection["DOCUMENTS"] = 5] = "DOCUMENTS";
-    ProfileSection[ProfileSection["FINANCIAL"] = 6] = "FINANCIAL";
-    ProfileSection[ProfileSection["DONATION"] = 7] = "DONATION";
-    ProfileSection[ProfileSection["MISC"] = 8] = "MISC";
-    ProfileSection[ProfileSection["INCIDENTS"] = 9] = "INCIDENTS";
-    ProfileSection[ProfileSection["TRANSACTIONS"] = 10] = "TRANSACTIONS";
-    ProfileSection[ProfileSection["FORMS"] = 11] = "FORMS";
-    ProfileSection[ProfileSection["ROLES"] = 12] = "ROLES";
-    ProfileSection[ProfileSection["SCHEDULE"] = 13] = "SCHEDULE";
-    ProfileSection[ProfileSection["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
+    ProfileSection["OVERVIEW"] = "OVERVIEW";
+    ProfileSection["PROFILE"] = "PROFILE";
+    ProfileSection["FAMILY"] = "FAMILY";
+    ProfileSection["HEALTH"] = "HEALTH";
+    ProfileSection["HISTORY"] = "HISTORY";
+    ProfileSection["DOCUMENTS"] = "DOCUMENTS";
+    ProfileSection["FINANCIAL"] = "FINANCIAL";
+    ProfileSection["DONATION"] = "DONATION";
+    ProfileSection["MISC"] = "MISC";
+    ProfileSection["INCIDENTS"] = "INCIDENTS";
+    ProfileSection["TRANSACTIONS"] = "TRANSACTIONS";
+    ProfileSection["FORMS"] = "FORMS";
+    ProfileSection["ROLES"] = "ROLES";
+    ProfileSection["SCHEDULE"] = "SCHEDULE";
+    ProfileSection["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ProfileSection || (exports.ProfileSection = ProfileSection = {}));
 function profileSectionFromJSON(object) {
     switch (object) {
@@ -114,26 +116,69 @@ function profileSectionToJSON(object) {
             return "UNRECOGNIZED";
     }
 }
+function profileSectionToNumber(object) {
+    switch (object) {
+        case ProfileSection.OVERVIEW:
+            return 0;
+        case ProfileSection.PROFILE:
+            return 1;
+        case ProfileSection.FAMILY:
+            return 2;
+        case ProfileSection.HEALTH:
+            return 3;
+        case ProfileSection.HISTORY:
+            return 4;
+        case ProfileSection.DOCUMENTS:
+            return 5;
+        case ProfileSection.FINANCIAL:
+            return 6;
+        case ProfileSection.DONATION:
+            return 7;
+        case ProfileSection.MISC:
+            return 8;
+        case ProfileSection.INCIDENTS:
+            return 9;
+        case ProfileSection.TRANSACTIONS:
+            return 10;
+        case ProfileSection.FORMS:
+            return 11;
+        case ProfileSection.ROLES:
+            return 12;
+        case ProfileSection.SCHEDULE:
+            return 13;
+        case ProfileSection.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseOrganizationProfileSettings() {
-    return { studentProfileSections: [], parentProfileSections: [], teacherProfileSections: [] };
+    return {
+        studentProfileSections: [],
+        parentProfileSections: [],
+        teacherProfileSections: [],
+        studentPrimaryIdCustomField: undefined,
+    };
 }
 exports.OrganizationProfileSettings = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         writer.uint32(10).fork();
         for (const v of message.studentProfileSections) {
-            writer.int32(v);
+            writer.int32(profileSectionToNumber(v));
         }
         writer.join();
         writer.uint32(18).fork();
         for (const v of message.parentProfileSections) {
-            writer.int32(v);
+            writer.int32(profileSectionToNumber(v));
         }
         writer.join();
         writer.uint32(26).fork();
         for (const v of message.teacherProfileSections) {
-            writer.int32(v);
+            writer.int32(profileSectionToNumber(v));
         }
         writer.join();
+        if (message.studentPrimaryIdCustomField !== undefined) {
+            object_id_1.ObjectId.encode(message.studentPrimaryIdCustomField, writer.uint32(34).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -145,43 +190,49 @@ exports.OrganizationProfileSettings = {
             switch (tag >>> 3) {
                 case 1:
                     if (tag === 8) {
-                        message.studentProfileSections.push(reader.int32());
+                        message.studentProfileSections.push(profileSectionFromJSON(reader.int32()));
                         continue;
                     }
                     if (tag === 10) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.studentProfileSections.push(reader.int32());
+                            message.studentProfileSections.push(profileSectionFromJSON(reader.int32()));
                         }
                         continue;
                     }
                     break;
                 case 2:
                     if (tag === 16) {
-                        message.parentProfileSections.push(reader.int32());
+                        message.parentProfileSections.push(profileSectionFromJSON(reader.int32()));
                         continue;
                     }
                     if (tag === 18) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.parentProfileSections.push(reader.int32());
+                            message.parentProfileSections.push(profileSectionFromJSON(reader.int32()));
                         }
                         continue;
                     }
                     break;
                 case 3:
                     if (tag === 24) {
-                        message.teacherProfileSections.push(reader.int32());
+                        message.teacherProfileSections.push(profileSectionFromJSON(reader.int32()));
                         continue;
                     }
                     if (tag === 26) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.teacherProfileSections.push(reader.int32());
+                            message.teacherProfileSections.push(profileSectionFromJSON(reader.int32()));
                         }
                         continue;
                     }
                     break;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.studentPrimaryIdCustomField = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -201,6 +252,9 @@ exports.OrganizationProfileSettings = {
             teacherProfileSections: globalThis.Array.isArray(object?.teacherProfileSections)
                 ? object.teacherProfileSections.map((e) => profileSectionFromJSON(e))
                 : [],
+            studentPrimaryIdCustomField: isSet(object.studentPrimaryIdCustomField)
+                ? object_id_1.ObjectId.fromJSON(object.studentPrimaryIdCustomField)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -214,6 +268,9 @@ exports.OrganizationProfileSettings = {
         if (message.teacherProfileSections?.length) {
             obj.teacherProfileSections = message.teacherProfileSections.map((e) => profileSectionToJSON(e));
         }
+        if (message.studentPrimaryIdCustomField !== undefined) {
+            obj.studentPrimaryIdCustomField = object_id_1.ObjectId.toJSON(message.studentPrimaryIdCustomField);
+        }
         return obj;
     },
     create(base) {
@@ -224,6 +281,13 @@ exports.OrganizationProfileSettings = {
         message.studentProfileSections = object.studentProfileSections?.map((e) => e) || [];
         message.parentProfileSections = object.parentProfileSections?.map((e) => e) || [];
         message.teacherProfileSections = object.teacherProfileSections?.map((e) => e) || [];
+        message.studentPrimaryIdCustomField =
+            (object.studentPrimaryIdCustomField !== undefined && object.studentPrimaryIdCustomField !== null)
+                ? object_id_1.ObjectId.fromPartial(object.studentPrimaryIdCustomField)
+                : undefined;
         return message;
     },
 };
+function isSet(value) {
+    return value !== null && value !== undefined;
+}
