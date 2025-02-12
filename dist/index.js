@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Timestamp = exports.Object_id = exports.Request_context = exports.Semester_service = exports.Report_layout_service = exports.Report_layout = exports.Course_service = exports.Semester = exports.Course = exports.Homeroom = exports.Gclass = exports.Homeroom_service = exports.Test_service = exports.Test = exports.Bassem_labs_staff = exports.Organization_service = exports.Bassem_labs_staff_service = exports.Organization_profile_settings = exports.Organization_profile_settings_service = exports.Organization = void 0;
+exports.Timestamp = exports.Custom_field_entry = exports.Aws_file = exports.Object_id = exports.Request_context = exports.Semester_service = exports.Report_layout_service = exports.Report_layout = exports.Course_service = exports.Semester = exports.Course = exports.Homeroom = exports.Gclass = exports.Homeroom_service = exports.Test_service = exports.Test = exports.Bassem_labs_staff = exports.Organization_service = exports.Bassem_labs_staff_service = exports.Organization_profile_settings = exports.Organization_profile_settings_service = exports.Organization = void 0;
 // Auto-generated index.ts
 const Organization = __importStar(require("./organization_service/organization"));
 exports.Organization = Organization;
@@ -63,5 +63,9 @@ const Request_context = __importStar(require("./utils/request_context"));
 exports.Request_context = Request_context;
 const Object_id = __importStar(require("./utils/object_id"));
 exports.Object_id = Object_id;
+const Aws_file = __importStar(require("./utils/aws_file"));
+exports.Aws_file = Aws_file;
+const Custom_field_entry = __importStar(require("./user_service/custom_field_entry"));
+exports.Custom_field_entry = Custom_field_entry;
 const Timestamp = __importStar(require("./google/protobuf/timestamp"));
 exports.Timestamp = Timestamp;
