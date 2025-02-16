@@ -71,6 +71,7 @@ export interface UpdateRequest {
   startDate: Date | undefined;
   endDate: Date | undefined;
   reportLayout?: SemesterReportLayout | undefined;
+  principalId?: ObjectId | undefined;
 }
 
 export interface ArchiveRequest {
@@ -85,6 +86,7 @@ export interface CreateRequest {
   name: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
+  principalId?: ObjectId | undefined;
 }
 
 export interface SemesterResponse {
@@ -784,6 +786,7 @@ function createBaseUpdateRequest(): UpdateRequest {
     startDate: undefined,
     endDate: undefined,
     reportLayout: undefined,
+    principalId: undefined,
   };
 }
 
@@ -806,6 +809,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     }
     if (message.reportLayout !== undefined) {
       SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
+    }
+    if (message.principalId !== undefined) {
+      ObjectId.encode(message.principalId, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -859,6 +865,13 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
 
           message.reportLayout = SemesterReportLayout.decode(reader, reader.uint32());
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.principalId = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -876,6 +889,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       reportLayout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
+      principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
     };
   },
 
@@ -899,6 +913,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.reportLayout !== undefined) {
       obj.reportLayout = SemesterReportLayout.toJSON(message.reportLayout);
     }
+    if (message.principalId !== undefined) {
+      obj.principalId = ObjectId.toJSON(message.principalId);
+    }
     return obj;
   },
 
@@ -918,6 +935,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     message.endDate = object.endDate ?? undefined;
     message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
       ? SemesterReportLayout.fromPartial(object.reportLayout)
+      : undefined;
+    message.principalId = (object.principalId !== undefined && object.principalId !== null)
+      ? ObjectId.fromPartial(object.principalId)
       : undefined;
     return message;
   },
@@ -1002,7 +1022,7 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
 };
 
 function createBaseCreateRequest(): CreateRequest {
-  return { context: undefined, name: "", startDate: undefined, endDate: undefined };
+  return { context: undefined, name: "", startDate: undefined, endDate: undefined, principalId: undefined };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -1018,6 +1038,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     }
     if (message.endDate !== undefined) {
       Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
+    }
+    if (message.principalId !== undefined) {
+      ObjectId.encode(message.principalId, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -1057,6 +1080,13 @@ export const CreateRequest: MessageFns<CreateRequest> = {
 
           message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.principalId = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1072,6 +1102,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
     };
   },
 
@@ -1089,6 +1120,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.endDate !== undefined) {
       obj.endDate = message.endDate.toISOString();
     }
+    if (message.principalId !== undefined) {
+      obj.principalId = ObjectId.toJSON(message.principalId);
+    }
     return obj;
   },
 
@@ -1103,6 +1137,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     message.name = object.name ?? "";
     message.startDate = object.startDate ?? undefined;
     message.endDate = object.endDate ?? undefined;
+    message.principalId = (object.principalId !== undefined && object.principalId !== null)
+      ? ObjectId.fromPartial(object.principalId)
+      : undefined;
     return message;
   },
 };

@@ -51,6 +51,7 @@ export interface UpdateRequest {
     startDate: Date | undefined;
     endDate: Date | undefined;
     reportLayout?: SemesterReportLayout | undefined;
+    principalId?: ObjectId | undefined;
 }
 export interface ArchiveRequest {
     /** Always include RequestContext as the first field */
@@ -63,6 +64,7 @@ export interface CreateRequest {
     name: string;
     startDate: Date | undefined;
     endDate: Date | undefined;
+    principalId?: ObjectId | undefined;
 }
 export interface SemesterResponse {
     semester: Semester | undefined;

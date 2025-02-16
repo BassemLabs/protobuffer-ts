@@ -633,6 +633,7 @@ function createBaseUpdateRequest() {
         startDate: undefined,
         endDate: undefined,
         reportLayout: undefined,
+        principalId: undefined,
     };
 }
 exports.UpdateRequest = {
@@ -654,6 +655,9 @@ exports.UpdateRequest = {
         }
         if (message.reportLayout !== undefined) {
             semester_1.SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
+        }
+        if (message.principalId !== undefined) {
+            object_id_1.ObjectId.encode(message.principalId, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -700,6 +704,12 @@ exports.UpdateRequest = {
                     }
                     message.reportLayout = semester_1.SemesterReportLayout.decode(reader, reader.uint32());
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.principalId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -716,6 +726,7 @@ exports.UpdateRequest = {
             startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             reportLayout: isSet(object.reportLayout) ? semester_1.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
+            principalId: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
         };
     },
     toJSON(message) {
@@ -738,6 +749,9 @@ exports.UpdateRequest = {
         if (message.reportLayout !== undefined) {
             obj.reportLayout = semester_1.SemesterReportLayout.toJSON(message.reportLayout);
         }
+        if (message.principalId !== undefined) {
+            obj.principalId = object_id_1.ObjectId.toJSON(message.principalId);
+        }
         return obj;
     },
     create(base) {
@@ -756,6 +770,9 @@ exports.UpdateRequest = {
         message.endDate = object.endDate ?? undefined;
         message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
             ? semester_1.SemesterReportLayout.fromPartial(object.reportLayout)
+            : undefined;
+        message.principalId = (object.principalId !== undefined && object.principalId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.principalId)
             : undefined;
         return message;
     },
@@ -831,7 +848,7 @@ exports.ArchiveRequest = {
     },
 };
 function createBaseCreateRequest() {
-    return { context: undefined, name: "", startDate: undefined, endDate: undefined };
+    return { context: undefined, name: "", startDate: undefined, endDate: undefined, principalId: undefined };
 }
 exports.CreateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -846,6 +863,9 @@ exports.CreateRequest = {
         }
         if (message.endDate !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
+        }
+        if (message.principalId !== undefined) {
+            object_id_1.ObjectId.encode(message.principalId, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -880,6 +900,12 @@ exports.CreateRequest = {
                     }
                     message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.principalId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -894,6 +920,7 @@ exports.CreateRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            principalId: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
         };
     },
     toJSON(message) {
@@ -910,6 +937,9 @@ exports.CreateRequest = {
         if (message.endDate !== undefined) {
             obj.endDate = message.endDate.toISOString();
         }
+        if (message.principalId !== undefined) {
+            obj.principalId = object_id_1.ObjectId.toJSON(message.principalId);
+        }
         return obj;
     },
     create(base) {
@@ -923,6 +953,9 @@ exports.CreateRequest = {
         message.name = object.name ?? "";
         message.startDate = object.startDate ?? undefined;
         message.endDate = object.endDate ?? undefined;
+        message.principalId = (object.principalId !== undefined && object.principalId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.principalId)
+            : undefined;
         return message;
     },
 };
