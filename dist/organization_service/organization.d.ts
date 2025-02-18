@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { OnboardingSettings } from "./onboarding_settings";
 import { OrganizationProfileSettings } from "./organization_profile_settings";
 export declare const protobufPackage = "organization_service";
 export interface Organization {
@@ -8,6 +9,7 @@ export interface Organization {
     defaultDomain: string;
     domains: string[];
     organizationProfileSettings: OrganizationProfileSettings | undefined;
+    onboardingSettings: OnboardingSettings | undefined;
 }
 export declare const Organization: MessageFns<Organization>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

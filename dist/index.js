@@ -23,18 +23,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Timestamp = exports.Custom_field_entry = exports.Aws_file = exports.Object_id = exports.Request_context = exports.Semester_service = exports.Report_layout_service = exports.Report_layout = exports.Course_service = exports.Semester = exports.Course = exports.Homeroom = exports.Gclass = exports.Homeroom_service = exports.Test_service = exports.Test = exports.Bassem_labs_staff = exports.Organization_service = exports.Bassem_labs_staff_service = exports.Organization_profile_settings = exports.Organization_profile_settings_service = exports.Organization = void 0;
+exports.Timestamp = exports.Custom_field_entry = exports.Aws_file = exports.Object_id = exports.Request_context = exports.Semester_service = exports.Report_layout_service = exports.Report_layout = exports.Course_service = exports.Semester = exports.Course = exports.Homeroom = exports.Gclass = exports.Homeroom_service = exports.Test_service = exports.Test = exports.Bassem_labs_staff = exports.Onboarding_settings = exports.Organization_service = exports.Bassem_labs_staff_service = exports.Organization_profile_settings = exports.Onboarding_settings_service = exports.Organization_profile_settings_service = exports.Organization = void 0;
 // Auto-generated index.ts
 const Organization = __importStar(require("./organization_service/organization"));
 exports.Organization = Organization;
 const Organization_profile_settings_service = __importStar(require("./organization_service/organization_profile_settings_service"));
 exports.Organization_profile_settings_service = Organization_profile_settings_service;
+const Onboarding_settings_service = __importStar(require("./organization_service/onboarding_settings_service"));
+exports.Onboarding_settings_service = Onboarding_settings_service;
 const Organization_profile_settings = __importStar(require("./organization_service/organization_profile_settings"));
 exports.Organization_profile_settings = Organization_profile_settings;
 const Bassem_labs_staff_service = __importStar(require("./organization_service/bassem_labs_staff_service"));
 exports.Bassem_labs_staff_service = Bassem_labs_staff_service;
 const Organization_service = __importStar(require("./organization_service/organization_service"));
 exports.Organization_service = Organization_service;
+const Onboarding_settings = __importStar(require("./organization_service/onboarding_settings"));
+exports.Onboarding_settings = Onboarding_settings;
 const Bassem_labs_staff = __importStar(require("./organization_service/bassem_labs_staff"));
 exports.Bassem_labs_staff = Bassem_labs_staff;
 const Test = __importStar(require("./template_service/test"));

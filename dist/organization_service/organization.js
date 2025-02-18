@@ -9,10 +9,18 @@ exports.Organization = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
+const onboarding_settings_1 = require("./onboarding_settings");
 const organization_profile_settings_1 = require("./organization_profile_settings");
 exports.protobufPackage = "organization_service";
 function createBaseOrganization() {
-    return { id: undefined, name: "", defaultDomain: "", domains: [], organizationProfileSettings: undefined };
+    return {
+        id: undefined,
+        name: "",
+        defaultDomain: "",
+        domains: [],
+        organizationProfileSettings: undefined,
+        onboardingSettings: undefined,
+    };
 }
 exports.Organization = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -30,6 +38,9 @@ exports.Organization = {
         }
         if (message.organizationProfileSettings !== undefined) {
             organization_profile_settings_1.OrganizationProfileSettings.encode(message.organizationProfileSettings, writer.uint32(42).fork()).join();
+        }
+        if (message.onboardingSettings !== undefined) {
+            onboarding_settings_1.OnboardingSettings.encode(message.onboardingSettings, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -70,6 +81,12 @@ exports.Organization = {
                     }
                     message.organizationProfileSettings = organization_profile_settings_1.OrganizationProfileSettings.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.onboardingSettings = onboarding_settings_1.OnboardingSettings.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -86,6 +103,9 @@ exports.Organization = {
             domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e) => globalThis.String(e)) : [],
             organizationProfileSettings: isSet(object.organizationProfileSettings)
                 ? organization_profile_settings_1.OrganizationProfileSettings.fromJSON(object.organizationProfileSettings)
+                : undefined,
+            onboardingSettings: isSet(object.onboardingSettings)
+                ? onboarding_settings_1.OnboardingSettings.fromJSON(object.onboardingSettings)
                 : undefined,
         };
     },
@@ -106,6 +126,9 @@ exports.Organization = {
         if (message.organizationProfileSettings !== undefined) {
             obj.organizationProfileSettings = organization_profile_settings_1.OrganizationProfileSettings.toJSON(message.organizationProfileSettings);
         }
+        if (message.onboardingSettings !== undefined) {
+            obj.onboardingSettings = onboarding_settings_1.OnboardingSettings.toJSON(message.onboardingSettings);
+        }
         return obj;
     },
     create(base) {
@@ -121,6 +144,9 @@ exports.Organization = {
             (object.organizationProfileSettings !== undefined && object.organizationProfileSettings !== null)
                 ? organization_profile_settings_1.OrganizationProfileSettings.fromPartial(object.organizationProfileSettings)
                 : undefined;
+        message.onboardingSettings = (object.onboardingSettings !== undefined && object.onboardingSettings !== null)
+            ? onboarding_settings_1.OnboardingSettings.fromPartial(object.onboardingSettings)
+            : undefined;
         return message;
     },
 };

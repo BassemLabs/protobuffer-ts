@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { OnboardingSettings } from "./onboarding_settings";
 import { OrganizationProfileSettings } from "./organization_profile_settings";
 
 export const protobufPackage = "organization_service";
@@ -17,10 +18,18 @@ export interface Organization {
   defaultDomain: string;
   domains: string[];
   organizationProfileSettings: OrganizationProfileSettings | undefined;
+  onboardingSettings: OnboardingSettings | undefined;
 }
 
 function createBaseOrganization(): Organization {
-  return { id: undefined, name: "", defaultDomain: "", domains: [], organizationProfileSettings: undefined };
+  return {
+    id: undefined,
+    name: "",
+    defaultDomain: "",
+    domains: [],
+    organizationProfileSettings: undefined,
+    onboardingSettings: undefined,
+  };
 }
 
 export const Organization: MessageFns<Organization> = {
@@ -39,6 +48,9 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.organizationProfileSettings !== undefined) {
       OrganizationProfileSettings.encode(message.organizationProfileSettings, writer.uint32(42).fork()).join();
+    }
+    if (message.onboardingSettings !== undefined) {
+      OnboardingSettings.encode(message.onboardingSettings, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -85,6 +97,13 @@ export const Organization: MessageFns<Organization> = {
 
           message.organizationProfileSettings = OrganizationProfileSettings.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.onboardingSettings = OnboardingSettings.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -102,6 +121,9 @@ export const Organization: MessageFns<Organization> = {
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
       organizationProfileSettings: isSet(object.organizationProfileSettings)
         ? OrganizationProfileSettings.fromJSON(object.organizationProfileSettings)
+        : undefined,
+      onboardingSettings: isSet(object.onboardingSettings)
+        ? OnboardingSettings.fromJSON(object.onboardingSettings)
         : undefined,
     };
   },
@@ -123,6 +145,9 @@ export const Organization: MessageFns<Organization> = {
     if (message.organizationProfileSettings !== undefined) {
       obj.organizationProfileSettings = OrganizationProfileSettings.toJSON(message.organizationProfileSettings);
     }
+    if (message.onboardingSettings !== undefined) {
+      obj.onboardingSettings = OnboardingSettings.toJSON(message.onboardingSettings);
+    }
     return obj;
   },
 
@@ -139,6 +164,9 @@ export const Organization: MessageFns<Organization> = {
       (object.organizationProfileSettings !== undefined && object.organizationProfileSettings !== null)
         ? OrganizationProfileSettings.fromPartial(object.organizationProfileSettings)
         : undefined;
+    message.onboardingSettings = (object.onboardingSettings !== undefined && object.onboardingSettings !== null)
+      ? OnboardingSettings.fromPartial(object.onboardingSettings)
+      : undefined;
     return message;
   },
 };
