@@ -93,6 +93,16 @@ export interface SemesterResponse {
   semester: Semester | undefined;
 }
 
+export interface GetStudentSemestersRequest {
+  context: RequestContext | undefined;
+  studentId: ObjectId | undefined;
+  includeArchived?: boolean | undefined;
+}
+
+export interface GetStudentSemestersResponse {
+  semesters: Semester[];
+}
+
 function createBaseGetSemesterRequest(): GetSemesterRequest {
   return { context: undefined, semesterId: undefined };
 }
@@ -1199,6 +1209,160 @@ export const SemesterResponse: MessageFns<SemesterResponse> = {
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? Semester.fromPartial(object.semester)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentSemestersRequest(): GetStudentSemestersRequest {
+  return { context: undefined, studentId: undefined, includeArchived: false };
+}
+
+export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> = {
+  encode(message: GetStudentSemestersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.studentId !== undefined) {
+      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    }
+    if (message.includeArchived !== undefined && message.includeArchived !== false) {
+      writer.uint32(24).bool(message.includeArchived);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentSemestersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentSemestersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.studentId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.includeArchived = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentSemestersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+    };
+  },
+
+  toJSON(message: GetStudentSemestersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.studentId !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.studentId);
+    }
+    if (message.includeArchived !== undefined && message.includeArchived !== false) {
+      obj.includeArchived = message.includeArchived;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentSemestersRequest>, I>>(base?: I): GetStudentSemestersRequest {
+    return GetStudentSemestersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentSemestersRequest>, I>>(object: I): GetStudentSemestersRequest {
+    const message = createBaseGetStudentSemestersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.studentId = (object.studentId !== undefined && object.studentId !== null)
+      ? ObjectId.fromPartial(object.studentId)
+      : undefined;
+    message.includeArchived = object.includeArchived ?? false;
+    return message;
+  },
+};
+
+function createBaseGetStudentSemestersResponse(): GetStudentSemestersResponse {
+  return { semesters: [] };
+}
+
+export const GetStudentSemestersResponse: MessageFns<GetStudentSemestersResponse> = {
+  encode(message: GetStudentSemestersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.semesters) {
+      Semester.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentSemestersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentSemestersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.semesters.push(Semester.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentSemestersResponse {
+    return {
+      semesters: globalThis.Array.isArray(object?.semesters)
+        ? object.semesters.map((e: any) => Semester.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetStudentSemestersResponse): unknown {
+    const obj: any = {};
+    if (message.semesters?.length) {
+      obj.semesters = message.semesters.map((e) => Semester.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentSemestersResponse>, I>>(base?: I): GetStudentSemestersResponse {
+    return GetStudentSemestersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentSemestersResponse>, I>>(object: I): GetStudentSemestersResponse {
+    const message = createBaseGetStudentSemestersResponse();
+    message.semesters = object.semesters?.map((e) => Semester.fromPartial(e)) || [];
     return message;
   },
 };

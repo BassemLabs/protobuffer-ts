@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
+exports.GetStudentSemestersResponse = exports.GetStudentSemestersRequest = exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -1008,6 +1008,144 @@ exports.SemesterResponse = {
         message.semester = (object.semester !== undefined && object.semester !== null)
             ? semester_1.Semester.fromPartial(object.semester)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetStudentSemestersRequest() {
+    return { context: undefined, studentId: undefined, includeArchived: false };
+}
+exports.GetStudentSemestersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.studentId !== undefined) {
+            object_id_1.ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+        }
+        if (message.includeArchived !== undefined && message.includeArchived !== false) {
+            writer.uint32(24).bool(message.includeArchived);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentSemestersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.includeArchived = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.studentId !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        }
+        if (message.includeArchived !== undefined && message.includeArchived !== false) {
+            obj.includeArchived = message.includeArchived;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentSemestersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentSemestersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.studentId = (object.studentId !== undefined && object.studentId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.studentId)
+            : undefined;
+        message.includeArchived = object.includeArchived ?? false;
+        return message;
+    },
+};
+function createBaseGetStudentSemestersResponse() {
+    return { semesters: [] };
+}
+exports.GetStudentSemestersResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.semesters) {
+            semester_1.Semester.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentSemestersResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.semesters.push(semester_1.Semester.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            semesters: globalThis.Array.isArray(object?.semesters)
+                ? object.semesters.map((e) => semester_1.Semester.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.semesters?.length) {
+            obj.semesters = message.semesters.map((e) => semester_1.Semester.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentSemestersResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentSemestersResponse();
+        message.semesters = object.semesters?.map((e) => semester_1.Semester.fromPartial(e)) || [];
         return message;
     },
 };

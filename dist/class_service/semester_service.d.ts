@@ -69,6 +69,14 @@ export interface CreateRequest {
 export interface SemesterResponse {
     semester: Semester | undefined;
 }
+export interface GetStudentSemestersRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+    includeArchived?: boolean | undefined;
+}
+export interface GetStudentSemestersResponse {
+    semesters: Semester[];
+}
 export declare const GetSemesterRequest: MessageFns<GetSemesterRequest>;
 export declare const GetSemestersRequest: MessageFns<GetSemestersRequest>;
 export declare const AggregateSemesterRequest: MessageFns<AggregateSemesterRequest>;
@@ -83,6 +91,8 @@ export declare const UpdateRequest: MessageFns<UpdateRequest>;
 export declare const ArchiveRequest: MessageFns<ArchiveRequest>;
 export declare const CreateRequest: MessageFns<CreateRequest>;
 export declare const SemesterResponse: MessageFns<SemesterResponse>;
+export declare const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest>;
+export declare const GetStudentSemestersResponse: MessageFns<GetStudentSemestersResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
