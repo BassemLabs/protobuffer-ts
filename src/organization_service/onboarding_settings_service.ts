@@ -50,6 +50,8 @@ export interface UpdateEmailTemplatesRequest {
   postInterviewEmailTemplate?: string | undefined;
   rejectionEmailTemplate: string;
   approvalEmailTemplate: string;
+  fieldGroupRejectionEmailTemplate: string;
+  withdrawEmailTemplate: string;
 }
 
 export interface UpdateRegistrationFeeRequest {
@@ -577,6 +579,8 @@ function createBaseUpdateEmailTemplatesRequest(): UpdateEmailTemplatesRequest {
     postInterviewEmailTemplate: "",
     rejectionEmailTemplate: "",
     approvalEmailTemplate: "",
+    fieldGroupRejectionEmailTemplate: "",
+    withdrawEmailTemplate: "",
   };
 }
 
@@ -599,6 +603,12 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
     }
     if (message.approvalEmailTemplate !== "") {
       writer.uint32(50).string(message.approvalEmailTemplate);
+    }
+    if (message.fieldGroupRejectionEmailTemplate !== "") {
+      writer.uint32(58).string(message.fieldGroupRejectionEmailTemplate);
+    }
+    if (message.withdrawEmailTemplate !== "") {
+      writer.uint32(66).string(message.withdrawEmailTemplate);
     }
     return writer;
   },
@@ -652,6 +662,20 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
 
           message.approvalEmailTemplate = reader.string();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.fieldGroupRejectionEmailTemplate = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.withdrawEmailTemplate = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -675,6 +699,10 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
         ? globalThis.String(object.rejectionEmailTemplate)
         : "",
       approvalEmailTemplate: isSet(object.approvalEmailTemplate) ? globalThis.String(object.approvalEmailTemplate) : "",
+      fieldGroupRejectionEmailTemplate: isSet(object.fieldGroupRejectionEmailTemplate)
+        ? globalThis.String(object.fieldGroupRejectionEmailTemplate)
+        : "",
+      withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
     };
   },
 
@@ -698,6 +726,12 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
     if (message.approvalEmailTemplate !== "") {
       obj.approvalEmailTemplate = message.approvalEmailTemplate;
     }
+    if (message.fieldGroupRejectionEmailTemplate !== "") {
+      obj.fieldGroupRejectionEmailTemplate = message.fieldGroupRejectionEmailTemplate;
+    }
+    if (message.withdrawEmailTemplate !== "") {
+      obj.withdrawEmailTemplate = message.withdrawEmailTemplate;
+    }
     return obj;
   },
 
@@ -716,6 +750,8 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
     message.postInterviewEmailTemplate = object.postInterviewEmailTemplate ?? "";
     message.rejectionEmailTemplate = object.rejectionEmailTemplate ?? "";
     message.approvalEmailTemplate = object.approvalEmailTemplate ?? "";
+    message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
+    message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
     return message;
   },
 };

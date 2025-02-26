@@ -36,6 +36,8 @@ export interface UpdateEmailTemplatesRequest {
     postInterviewEmailTemplate?: string | undefined;
     rejectionEmailTemplate: string;
     approvalEmailTemplate: string;
+    fieldGroupRejectionEmailTemplate: string;
+    withdrawEmailTemplate: string;
 }
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;

@@ -463,6 +463,8 @@ function createBaseUpdateEmailTemplatesRequest() {
         postInterviewEmailTemplate: "",
         rejectionEmailTemplate: "",
         approvalEmailTemplate: "",
+        fieldGroupRejectionEmailTemplate: "",
+        withdrawEmailTemplate: "",
     };
 }
 exports.UpdateEmailTemplatesRequest = {
@@ -484,6 +486,12 @@ exports.UpdateEmailTemplatesRequest = {
         }
         if (message.approvalEmailTemplate !== "") {
             writer.uint32(50).string(message.approvalEmailTemplate);
+        }
+        if (message.fieldGroupRejectionEmailTemplate !== "") {
+            writer.uint32(58).string(message.fieldGroupRejectionEmailTemplate);
+        }
+        if (message.withdrawEmailTemplate !== "") {
+            writer.uint32(66).string(message.withdrawEmailTemplate);
         }
         return writer;
     },
@@ -530,6 +538,18 @@ exports.UpdateEmailTemplatesRequest = {
                     }
                     message.approvalEmailTemplate = reader.string();
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.fieldGroupRejectionEmailTemplate = reader.string();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.withdrawEmailTemplate = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -552,6 +572,10 @@ exports.UpdateEmailTemplatesRequest = {
                 ? globalThis.String(object.rejectionEmailTemplate)
                 : "",
             approvalEmailTemplate: isSet(object.approvalEmailTemplate) ? globalThis.String(object.approvalEmailTemplate) : "",
+            fieldGroupRejectionEmailTemplate: isSet(object.fieldGroupRejectionEmailTemplate)
+                ? globalThis.String(object.fieldGroupRejectionEmailTemplate)
+                : "",
+            withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
         };
     },
     toJSON(message) {
@@ -574,6 +598,12 @@ exports.UpdateEmailTemplatesRequest = {
         if (message.approvalEmailTemplate !== "") {
             obj.approvalEmailTemplate = message.approvalEmailTemplate;
         }
+        if (message.fieldGroupRejectionEmailTemplate !== "") {
+            obj.fieldGroupRejectionEmailTemplate = message.fieldGroupRejectionEmailTemplate;
+        }
+        if (message.withdrawEmailTemplate !== "") {
+            obj.withdrawEmailTemplate = message.withdrawEmailTemplate;
+        }
         return obj;
     },
     create(base) {
@@ -591,6 +621,8 @@ exports.UpdateEmailTemplatesRequest = {
         message.postInterviewEmailTemplate = object.postInterviewEmailTemplate ?? "";
         message.rejectionEmailTemplate = object.rejectionEmailTemplate ?? "";
         message.approvalEmailTemplate = object.approvalEmailTemplate ?? "";
+        message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
+        message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
         return message;
     },
 };

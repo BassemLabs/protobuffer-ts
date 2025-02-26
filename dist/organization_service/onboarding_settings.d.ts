@@ -15,6 +15,8 @@ export interface OnboardingSettings {
     postInterviewEmailTemplate?: string | undefined;
     rejectionEmailTemplate: string;
     approvalEmailTemplate: string;
+    fieldGroupRejectionEmailTemplate: string;
+    withdrawEmailTemplate: string;
     schoolHandbook: AWSFile[];
 }
 export interface OnboardingSettings_RegistrationFeesEntry {

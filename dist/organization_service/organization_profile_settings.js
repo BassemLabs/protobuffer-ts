@@ -29,6 +29,8 @@ var ProfileSection;
     ProfileSection["FORMS"] = "FORMS";
     ProfileSection["ROLES"] = "ROLES";
     ProfileSection["SCHEDULE"] = "SCHEDULE";
+    ProfileSection["INTERVIEW"] = "INTERVIEW";
+    ProfileSection["WAITLIST"] = "WAITLIST";
     ProfileSection["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ProfileSection || (exports.ProfileSection = ProfileSection = {}));
 function profileSectionFromJSON(object) {
@@ -75,6 +77,12 @@ function profileSectionFromJSON(object) {
         case 13:
         case "SCHEDULE":
             return ProfileSection.SCHEDULE;
+        case 14:
+        case "INTERVIEW":
+            return ProfileSection.INTERVIEW;
+        case 15:
+        case "WAITLIST":
+            return ProfileSection.WAITLIST;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -111,6 +119,10 @@ function profileSectionToJSON(object) {
             return "ROLES";
         case ProfileSection.SCHEDULE:
             return "SCHEDULE";
+        case ProfileSection.INTERVIEW:
+            return "INTERVIEW";
+        case ProfileSection.WAITLIST:
+            return "WAITLIST";
         case ProfileSection.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -146,6 +158,10 @@ function profileSectionToNumber(object) {
             return 12;
         case ProfileSection.SCHEDULE:
             return 13;
+        case ProfileSection.INTERVIEW:
+            return 14;
+        case ProfileSection.WAITLIST:
+            return 15;
         case ProfileSection.UNRECOGNIZED:
         default:
             return -1;

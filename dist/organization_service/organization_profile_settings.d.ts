@@ -16,6 +16,8 @@ export declare enum ProfileSection {
     FORMS = "FORMS",
     ROLES = "ROLES",
     SCHEDULE = "SCHEDULE",
+    INTERVIEW = "INTERVIEW",
+    WAITLIST = "WAITLIST",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function profileSectionFromJSON(object: any): ProfileSection;
