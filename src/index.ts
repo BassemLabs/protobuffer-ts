@@ -17,6 +17,10 @@ import * as Organization_profile_settings from './organization_service/organizat
 export { Organization_profile_settings };
 import * as Onboarding_settings from './organization_service/onboarding_settings';
 export { Onboarding_settings };
+import * as Kms_service from './organization_service/kms_service';
+export { Kms_service };
+import * as Kms_key from './organization_service/kms_key';
+export { Kms_key };
 import * as Organization_profile_settings_service from './organization_service/organization_profile_settings_service';
 export { Organization_profile_settings_service };
 import * as Organization from './organization_service/organization';

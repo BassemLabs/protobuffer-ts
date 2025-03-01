@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Report_layout_service = exports.Semester_service = exports.Report_layout = exports.Course = exports.Gclass = exports.Homeroom = exports.Semester = exports.Homeroom_service = exports.Course_service = exports.Organization_service = exports.Bassem_labs_staff_service = exports.Onboarding_settings_service = exports.Bassem_labs_staff = exports.Organization = exports.Organization_profile_settings_service = exports.Onboarding_settings = exports.Organization_profile_settings = exports.Custom_field_entry = exports.Timestamp = exports.Test_service = exports.Test = exports.Aws_file = exports.Request_context = exports.Object_id = void 0;
+exports.Report_layout_service = exports.Semester_service = exports.Report_layout = exports.Course = exports.Gclass = exports.Homeroom = exports.Semester = exports.Homeroom_service = exports.Course_service = exports.Organization_service = exports.Bassem_labs_staff_service = exports.Onboarding_settings_service = exports.Bassem_labs_staff = exports.Organization = exports.Organization_profile_settings_service = exports.Kms_key = exports.Kms_service = exports.Onboarding_settings = exports.Organization_profile_settings = exports.Custom_field_entry = exports.Timestamp = exports.Test_service = exports.Test = exports.Aws_file = exports.Request_context = exports.Object_id = void 0;
 // Auto-generated index.ts
 const Object_id = __importStar(require("./utils/object_id"));
 exports.Object_id = Object_id;
@@ -43,6 +43,10 @@ const Organization_profile_settings = __importStar(require("./organization_servi
 exports.Organization_profile_settings = Organization_profile_settings;
 const Onboarding_settings = __importStar(require("./organization_service/onboarding_settings"));
 exports.Onboarding_settings = Onboarding_settings;
+const Kms_service = __importStar(require("./organization_service/kms_service"));
+exports.Kms_service = Kms_service;
+const Kms_key = __importStar(require("./organization_service/kms_key"));
+exports.Kms_key = Kms_key;
 const Organization_profile_settings_service = __importStar(require("./organization_service/organization_profile_settings_service"));
 exports.Organization_profile_settings_service = Organization_profile_settings_service;
 const Organization = __importStar(require("./organization_service/organization"));
