@@ -94,6 +94,7 @@ export interface UserContext {
   fullName: string;
   firebaseToken: string;
   exp: number;
+  traceId: string;
 }
 
 function createBaseRequestContext(): RequestContext {
@@ -183,6 +184,7 @@ function createBaseUserContext(): UserContext {
     fullName: "",
     firebaseToken: "",
     exp: 0,
+    traceId: "",
   };
 }
 
@@ -214,6 +216,9 @@ export const UserContext: MessageFns<UserContext> = {
     }
     if (message.exp !== 0) {
       writer.uint32(72).uint64(message.exp);
+    }
+    if (message.traceId !== "") {
+      writer.uint32(82).string(message.traceId);
     }
     return writer;
   },
@@ -288,6 +293,13 @@ export const UserContext: MessageFns<UserContext> = {
 
           message.exp = longToNumber(reader.uint64());
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.traceId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -310,6 +322,7 @@ export const UserContext: MessageFns<UserContext> = {
       fullName: isSet(object.fullName) ? globalThis.String(object.fullName) : "",
       firebaseToken: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : "",
       exp: isSet(object.exp) ? globalThis.Number(object.exp) : 0,
+      traceId: isSet(object.traceId) ? globalThis.String(object.traceId) : "",
     };
   },
 
@@ -342,6 +355,9 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.exp !== 0) {
       obj.exp = Math.round(message.exp);
     }
+    if (message.traceId !== "") {
+      obj.traceId = message.traceId;
+    }
     return obj;
   },
 
@@ -363,6 +379,7 @@ export const UserContext: MessageFns<UserContext> = {
     message.fullName = object.fullName ?? "";
     message.firebaseToken = object.firebaseToken ?? "";
     message.exp = object.exp ?? 0;
+    message.traceId = object.traceId ?? "";
     return message;
   },
 };

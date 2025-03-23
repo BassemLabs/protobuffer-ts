@@ -26,6 +26,7 @@ export interface UserContext {
     fullName: string;
     firebaseToken: string;
     exp: number;
+    traceId: string;
 }
 export declare const RequestContext: MessageFns<RequestContext>;
 export declare const UserContext: MessageFns<UserContext>;
