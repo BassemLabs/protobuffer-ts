@@ -38,6 +38,7 @@ export interface UpdateEmailTemplatesRequest {
     approvalEmailTemplate: string;
     fieldGroupRejectionEmailTemplate: string;
     withdrawEmailTemplate: string;
+    moveStudentAdmissionYearEmailTemplate: string;
 }
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;

@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { Organization } from "./organization";
+import { Organization, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
@@ -53,6 +53,27 @@ export interface GetOrganizationsRequest {
 export interface GetOrganizationsResponse {
     organizations: Organization[];
 }
+export interface GetSchoolYearsRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+}
+export interface GetSchoolYearsResponse {
+    schoolYears: SchoolYear[];
+}
+export interface CreateSchoolYearRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    name: string;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
+}
+export interface CreateSchoolYearResponse {
+    schoolYears: SchoolYear[];
+}
+export interface StartSchoolYearRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -63,6 +84,11 @@ export declare const AddDomainRequest: MessageFns<AddDomainRequest>;
 export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;
 export declare const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse>;
+export declare const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest>;
+export declare const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse>;
+export declare const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest>;
+export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
+export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -5,9 +5,10 @@
 //   protoc               unknown
 // source: organization_service/organization.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Organization = exports.protobufPackage = void 0;
+exports.SchoolYear = exports.Organization = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const onboarding_settings_1 = require("./onboarding_settings");
 const organization_profile_settings_1 = require("./organization_profile_settings");
@@ -20,6 +21,8 @@ function createBaseOrganization() {
         domains: [],
         organizationProfileSettings: undefined,
         onboardingSettings: undefined,
+        activeSchoolYear: undefined,
+        comingSchoolYear: undefined,
     };
 }
 exports.Organization = {
@@ -41,6 +44,12 @@ exports.Organization = {
         }
         if (message.onboardingSettings !== undefined) {
             onboarding_settings_1.OnboardingSettings.encode(message.onboardingSettings, writer.uint32(50).fork()).join();
+        }
+        if (message.activeSchoolYear !== undefined) {
+            exports.SchoolYear.encode(message.activeSchoolYear, writer.uint32(58).fork()).join();
+        }
+        if (message.comingSchoolYear !== undefined) {
+            exports.SchoolYear.encode(message.comingSchoolYear, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -87,6 +96,18 @@ exports.Organization = {
                     }
                     message.onboardingSettings = onboarding_settings_1.OnboardingSettings.decode(reader, reader.uint32());
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.activeSchoolYear = exports.SchoolYear.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.comingSchoolYear = exports.SchoolYear.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -107,6 +128,8 @@ exports.Organization = {
             onboardingSettings: isSet(object.onboardingSettings)
                 ? onboarding_settings_1.OnboardingSettings.fromJSON(object.onboardingSettings)
                 : undefined,
+            activeSchoolYear: isSet(object.activeSchoolYear) ? exports.SchoolYear.fromJSON(object.activeSchoolYear) : undefined,
+            comingSchoolYear: isSet(object.comingSchoolYear) ? exports.SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -129,6 +152,12 @@ exports.Organization = {
         if (message.onboardingSettings !== undefined) {
             obj.onboardingSettings = onboarding_settings_1.OnboardingSettings.toJSON(message.onboardingSettings);
         }
+        if (message.activeSchoolYear !== undefined) {
+            obj.activeSchoolYear = exports.SchoolYear.toJSON(message.activeSchoolYear);
+        }
+        if (message.comingSchoolYear !== undefined) {
+            obj.comingSchoolYear = exports.SchoolYear.toJSON(message.comingSchoolYear);
+        }
         return obj;
     },
     create(base) {
@@ -147,9 +176,146 @@ exports.Organization = {
         message.onboardingSettings = (object.onboardingSettings !== undefined && object.onboardingSettings !== null)
             ? onboarding_settings_1.OnboardingSettings.fromPartial(object.onboardingSettings)
             : undefined;
+        message.activeSchoolYear = (object.activeSchoolYear !== undefined && object.activeSchoolYear !== null)
+            ? exports.SchoolYear.fromPartial(object.activeSchoolYear)
+            : undefined;
+        message.comingSchoolYear = (object.comingSchoolYear !== undefined && object.comingSchoolYear !== null)
+            ? exports.SchoolYear.fromPartial(object.comingSchoolYear)
+            : undefined;
         return message;
     },
 };
+function createBaseSchoolYear() {
+    return { id: undefined, organizationId: undefined, name: "", startDate: undefined, endDate: undefined };
+}
+exports.SchoolYear = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchoolYear();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchoolYear.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchoolYear();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.name = object.name ?? "";
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
+        return message;
+    },
+};
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

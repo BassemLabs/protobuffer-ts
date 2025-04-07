@@ -52,6 +52,7 @@ export interface UpdateEmailTemplatesRequest {
   approvalEmailTemplate: string;
   fieldGroupRejectionEmailTemplate: string;
   withdrawEmailTemplate: string;
+  moveStudentAdmissionYearEmailTemplate: string;
 }
 
 export interface UpdateRegistrationFeeRequest {
@@ -581,6 +582,7 @@ function createBaseUpdateEmailTemplatesRequest(): UpdateEmailTemplatesRequest {
     approvalEmailTemplate: "",
     fieldGroupRejectionEmailTemplate: "",
     withdrawEmailTemplate: "",
+    moveStudentAdmissionYearEmailTemplate: "",
   };
 }
 
@@ -609,6 +611,9 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
     }
     if (message.withdrawEmailTemplate !== "") {
       writer.uint32(66).string(message.withdrawEmailTemplate);
+    }
+    if (message.moveStudentAdmissionYearEmailTemplate !== "") {
+      writer.uint32(74).string(message.moveStudentAdmissionYearEmailTemplate);
     }
     return writer;
   },
@@ -676,6 +681,13 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
 
           message.withdrawEmailTemplate = reader.string();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.moveStudentAdmissionYearEmailTemplate = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -703,6 +715,9 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
         ? globalThis.String(object.fieldGroupRejectionEmailTemplate)
         : "",
       withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
+      moveStudentAdmissionYearEmailTemplate: isSet(object.moveStudentAdmissionYearEmailTemplate)
+        ? globalThis.String(object.moveStudentAdmissionYearEmailTemplate)
+        : "",
     };
   },
 
@@ -732,6 +747,9 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
     if (message.withdrawEmailTemplate !== "") {
       obj.withdrawEmailTemplate = message.withdrawEmailTemplate;
     }
+    if (message.moveStudentAdmissionYearEmailTemplate !== "") {
+      obj.moveStudentAdmissionYearEmailTemplate = message.moveStudentAdmissionYearEmailTemplate;
+    }
     return obj;
   },
 
@@ -752,6 +770,7 @@ export const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest
     message.approvalEmailTemplate = object.approvalEmailTemplate ?? "";
     message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
     message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
+    message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
     return message;
   },
 };
