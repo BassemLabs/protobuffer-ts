@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Test = exports.Test_service = exports.Report_layout = exports.Semester_service = exports.Homeroom = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Gclass = exports.Course = exports.Course_service = exports.Custom_field_entry = exports.Timestamp = exports.Organization_profile_settings_service = exports.Organization = exports.Bassem_labs_staff = exports.Onboarding_settings_service = exports.Onboarding_settings = exports.Kms_key = exports.Organization_service = exports.Kms_service = exports.Organization_profile_settings = exports.Bassem_labs_staff_service = exports.Object_id = exports.Aws_file = exports.Request_context = void 0;
+exports.Test = exports.Test_service = exports.Report_layout = exports.Semester_service = exports.Homeroom = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Gclass = exports.Course = exports.Course_service = exports.Custom_field_entry = exports.Timestamp = exports.Organization_profile_settings_service = exports.Organization = exports.Bassem_labs_staff = exports.Onboarding_settings_service = exports.Onboarding_settings = exports.Kms_key = exports.Organization_service = exports.Kms_service = exports.Campus_service = exports.Organization_profile_settings = exports.Campus = exports.Bassem_labs_staff_service = exports.Object_id = exports.Aws_file = exports.Request_context = void 0;
 // Auto-generated index.ts
 const Request_context = __importStar(require("./utils/request_context"));
 exports.Request_context = Request_context;
@@ -33,8 +33,12 @@ const Object_id = __importStar(require("./utils/object_id"));
 exports.Object_id = Object_id;
 const Bassem_labs_staff_service = __importStar(require("./organization_service/bassem_labs_staff_service"));
 exports.Bassem_labs_staff_service = Bassem_labs_staff_service;
+const Campus = __importStar(require("./organization_service/campus"));
+exports.Campus = Campus;
 const Organization_profile_settings = __importStar(require("./organization_service/organization_profile_settings"));
 exports.Organization_profile_settings = Organization_profile_settings;
+const Campus_service = __importStar(require("./organization_service/campus_service"));
+exports.Campus_service = Campus_service;
 const Kms_service = __importStar(require("./organization_service/kms_service"));
 exports.Kms_service = Kms_service;
 const Organization_service = __importStar(require("./organization_service/organization_service"));

@@ -71,7 +71,7 @@ export interface Semester {
   startDate: Date | undefined;
   endDate: Date | undefined;
   reportLayout?: SemesterReportLayout | undefined;
-  principalId?: ObjectId | undefined;
+  campusId: ObjectId | undefined;
 }
 
 export interface SemesterReportLayout {
@@ -104,7 +104,7 @@ function createBaseSemester(): Semester {
     startDate: undefined,
     endDate: undefined,
     reportLayout: undefined,
-    principalId: undefined,
+    campusId: undefined,
   };
 }
 
@@ -128,8 +128,8 @@ export const Semester: MessageFns<Semester> = {
     if (message.reportLayout !== undefined) {
       SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
     }
-    if (message.principalId !== undefined) {
-      ObjectId.encode(message.principalId, writer.uint32(58).fork()).join();
+    if (message.campusId !== undefined) {
+      ObjectId.encode(message.campusId, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -188,7 +188,7 @@ export const Semester: MessageFns<Semester> = {
             break;
           }
 
-          message.principalId = ObjectId.decode(reader, reader.uint32());
+          message.campusId = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -207,7 +207,7 @@ export const Semester: MessageFns<Semester> = {
       startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       reportLayout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
-      principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
+      campusId: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
     };
   },
 
@@ -231,8 +231,8 @@ export const Semester: MessageFns<Semester> = {
     if (message.reportLayout !== undefined) {
       obj.reportLayout = SemesterReportLayout.toJSON(message.reportLayout);
     }
-    if (message.principalId !== undefined) {
-      obj.principalId = ObjectId.toJSON(message.principalId);
+    if (message.campusId !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campusId);
     }
     return obj;
   },
@@ -250,8 +250,8 @@ export const Semester: MessageFns<Semester> = {
     message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
       ? SemesterReportLayout.fromPartial(object.reportLayout)
       : undefined;
-    message.principalId = (object.principalId !== undefined && object.principalId !== null)
-      ? ObjectId.fromPartial(object.principalId)
+    message.campusId = (object.campusId !== undefined && object.campusId !== null)
+      ? ObjectId.fromPartial(object.campusId)
       : undefined;
     return message;
   },

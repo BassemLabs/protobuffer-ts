@@ -72,7 +72,7 @@ function createBaseSemester() {
         startDate: undefined,
         endDate: undefined,
         reportLayout: undefined,
-        principalId: undefined,
+        campusId: undefined,
     };
 }
 exports.Semester = {
@@ -95,8 +95,8 @@ exports.Semester = {
         if (message.reportLayout !== undefined) {
             exports.SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
         }
-        if (message.principalId !== undefined) {
-            object_id_1.ObjectId.encode(message.principalId, writer.uint32(58).fork()).join();
+        if (message.campusId !== undefined) {
+            object_id_1.ObjectId.encode(message.campusId, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -147,7 +147,7 @@ exports.Semester = {
                     if (tag !== 58) {
                         break;
                     }
-                    message.principalId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.campusId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -165,7 +165,7 @@ exports.Semester = {
             startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             reportLayout: isSet(object.reportLayout) ? exports.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
-            principalId: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
+            campusId: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
         };
     },
     toJSON(message) {
@@ -188,8 +188,8 @@ exports.Semester = {
         if (message.reportLayout !== undefined) {
             obj.reportLayout = exports.SemesterReportLayout.toJSON(message.reportLayout);
         }
-        if (message.principalId !== undefined) {
-            obj.principalId = object_id_1.ObjectId.toJSON(message.principalId);
+        if (message.campusId !== undefined) {
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campusId);
         }
         return obj;
     },
@@ -206,8 +206,8 @@ exports.Semester = {
         message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
             ? exports.SemesterReportLayout.fromPartial(object.reportLayout)
             : undefined;
-        message.principalId = (object.principalId !== undefined && object.principalId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.principalId)
+        message.campusId = (object.campusId !== undefined && object.campusId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.campusId)
             : undefined;
         return message;
     },
