@@ -23,6 +23,7 @@ export interface OnboardingSettings {
   fieldGroupRejectionEmailTemplate: string;
   withdrawEmailTemplate: string;
   moveStudentAdmissionYearEmailTemplate: string;
+  reregistrationInvitationEmailTemplate: string;
   schoolHandbook: AWSFile[];
 }
 
@@ -63,6 +64,7 @@ function createBaseOnboardingSettings(): OnboardingSettings {
     fieldGroupRejectionEmailTemplate: "",
     withdrawEmailTemplate: "",
     moveStudentAdmissionYearEmailTemplate: "",
+    reregistrationInvitationEmailTemplate: "",
     schoolHandbook: [],
   };
 }
@@ -105,8 +107,11 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     if (message.moveStudentAdmissionYearEmailTemplate !== "") {
       writer.uint32(98).string(message.moveStudentAdmissionYearEmailTemplate);
     }
+    if (message.reregistrationInvitationEmailTemplate !== "") {
+      writer.uint32(106).string(message.reregistrationInvitationEmailTemplate);
+    }
     for (const v of message.schoolHandbook) {
-      AWSFile.encode(v!, writer.uint32(106).fork()).join();
+      AWSFile.encode(v!, writer.uint32(114).fork()).join();
     }
     return writer;
   },
@@ -213,6 +218,13 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
             break;
           }
 
+          message.reregistrationInvitationEmailTemplate = reader.string();
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.schoolHandbook.push(AWSFile.decode(reader, reader.uint32()));
           continue;
       }
@@ -261,6 +273,9 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
       withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
       moveStudentAdmissionYearEmailTemplate: isSet(object.moveStudentAdmissionYearEmailTemplate)
         ? globalThis.String(object.moveStudentAdmissionYearEmailTemplate)
+        : "",
+      reregistrationInvitationEmailTemplate: isSet(object.reregistrationInvitationEmailTemplate)
+        ? globalThis.String(object.reregistrationInvitationEmailTemplate)
         : "",
       schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
         ? object.schoolHandbook.map((e: any) => AWSFile.fromJSON(e))
@@ -318,6 +333,9 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     if (message.moveStudentAdmissionYearEmailTemplate !== "") {
       obj.moveStudentAdmissionYearEmailTemplate = message.moveStudentAdmissionYearEmailTemplate;
     }
+    if (message.reregistrationInvitationEmailTemplate !== "") {
+      obj.reregistrationInvitationEmailTemplate = message.reregistrationInvitationEmailTemplate;
+    }
     if (message.schoolHandbook?.length) {
       obj.schoolHandbook = message.schoolHandbook.map((e) => AWSFile.toJSON(e));
     }
@@ -357,6 +375,7 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
     message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
     message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
+    message.reregistrationInvitationEmailTemplate = object.reregistrationInvitationEmailTemplate ?? "";
     message.schoolHandbook = object.schoolHandbook?.map((e) => AWSFile.fromPartial(e)) || [];
     return message;
   },

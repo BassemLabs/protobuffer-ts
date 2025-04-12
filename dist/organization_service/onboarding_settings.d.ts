@@ -18,6 +18,7 @@ export interface OnboardingSettings {
     fieldGroupRejectionEmailTemplate: string;
     withdrawEmailTemplate: string;
     moveStudentAdmissionYearEmailTemplate: string;
+    reregistrationInvitationEmailTemplate: string;
     schoolHandbook: AWSFile[];
 }
 export interface OnboardingSettings_RegistrationFeesEntry {

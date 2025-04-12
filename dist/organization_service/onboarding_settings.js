@@ -24,6 +24,7 @@ function createBaseOnboardingSettings() {
         fieldGroupRejectionEmailTemplate: "",
         withdrawEmailTemplate: "",
         moveStudentAdmissionYearEmailTemplate: "",
+        reregistrationInvitationEmailTemplate: "",
         schoolHandbook: [],
     };
 }
@@ -65,8 +66,11 @@ exports.OnboardingSettings = {
         if (message.moveStudentAdmissionYearEmailTemplate !== "") {
             writer.uint32(98).string(message.moveStudentAdmissionYearEmailTemplate);
         }
+        if (message.reregistrationInvitationEmailTemplate !== "") {
+            writer.uint32(106).string(message.reregistrationInvitationEmailTemplate);
+        }
         for (const v of message.schoolHandbook) {
-            aws_file_1.AWSFile.encode(v, writer.uint32(106).fork()).join();
+            aws_file_1.AWSFile.encode(v, writer.uint32(114).fork()).join();
         }
         return writer;
     },
@@ -159,6 +163,12 @@ exports.OnboardingSettings = {
                     if (tag !== 106) {
                         break;
                     }
+                    message.reregistrationInvitationEmailTemplate = reader.string();
+                    continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
                     message.schoolHandbook.push(aws_file_1.AWSFile.decode(reader, reader.uint32()));
                     continue;
             }
@@ -206,6 +216,9 @@ exports.OnboardingSettings = {
             withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
             moveStudentAdmissionYearEmailTemplate: isSet(object.moveStudentAdmissionYearEmailTemplate)
                 ? globalThis.String(object.moveStudentAdmissionYearEmailTemplate)
+                : "",
+            reregistrationInvitationEmailTemplate: isSet(object.reregistrationInvitationEmailTemplate)
+                ? globalThis.String(object.reregistrationInvitationEmailTemplate)
                 : "",
             schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
                 ? object.schoolHandbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
@@ -262,6 +275,9 @@ exports.OnboardingSettings = {
         if (message.moveStudentAdmissionYearEmailTemplate !== "") {
             obj.moveStudentAdmissionYearEmailTemplate = message.moveStudentAdmissionYearEmailTemplate;
         }
+        if (message.reregistrationInvitationEmailTemplate !== "") {
+            obj.reregistrationInvitationEmailTemplate = message.reregistrationInvitationEmailTemplate;
+        }
         if (message.schoolHandbook?.length) {
             obj.schoolHandbook = message.schoolHandbook.map((e) => aws_file_1.AWSFile.toJSON(e));
         }
@@ -294,6 +310,7 @@ exports.OnboardingSettings = {
         message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
         message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
         message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
+        message.reregistrationInvitationEmailTemplate = object.reregistrationInvitationEmailTemplate ?? "";
         message.schoolHandbook = object.schoolHandbook?.map((e) => aws_file_1.AWSFile.fromPartial(e)) || [];
         return message;
     },

@@ -466,6 +466,7 @@ function createBaseUpdateEmailTemplatesRequest() {
         fieldGroupRejectionEmailTemplate: "",
         withdrawEmailTemplate: "",
         moveStudentAdmissionYearEmailTemplate: "",
+        reregistrationInvitationEmailTemplate: "",
     };
 }
 exports.UpdateEmailTemplatesRequest = {
@@ -496,6 +497,9 @@ exports.UpdateEmailTemplatesRequest = {
         }
         if (message.moveStudentAdmissionYearEmailTemplate !== "") {
             writer.uint32(74).string(message.moveStudentAdmissionYearEmailTemplate);
+        }
+        if (message.reregistrationInvitationEmailTemplate !== "") {
+            writer.uint32(82).string(message.reregistrationInvitationEmailTemplate);
         }
         return writer;
     },
@@ -560,6 +564,12 @@ exports.UpdateEmailTemplatesRequest = {
                     }
                     message.moveStudentAdmissionYearEmailTemplate = reader.string();
                     continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.reregistrationInvitationEmailTemplate = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -588,6 +598,9 @@ exports.UpdateEmailTemplatesRequest = {
             withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
             moveStudentAdmissionYearEmailTemplate: isSet(object.moveStudentAdmissionYearEmailTemplate)
                 ? globalThis.String(object.moveStudentAdmissionYearEmailTemplate)
+                : "",
+            reregistrationInvitationEmailTemplate: isSet(object.reregistrationInvitationEmailTemplate)
+                ? globalThis.String(object.reregistrationInvitationEmailTemplate)
                 : "",
         };
     },
@@ -620,6 +633,9 @@ exports.UpdateEmailTemplatesRequest = {
         if (message.moveStudentAdmissionYearEmailTemplate !== "") {
             obj.moveStudentAdmissionYearEmailTemplate = message.moveStudentAdmissionYearEmailTemplate;
         }
+        if (message.reregistrationInvitationEmailTemplate !== "") {
+            obj.reregistrationInvitationEmailTemplate = message.reregistrationInvitationEmailTemplate;
+        }
         return obj;
     },
     create(base) {
@@ -640,6 +656,7 @@ exports.UpdateEmailTemplatesRequest = {
         message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
         message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
         message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
+        message.reregistrationInvitationEmailTemplate = object.reregistrationInvitationEmailTemplate ?? "";
         return message;
     },
 };
