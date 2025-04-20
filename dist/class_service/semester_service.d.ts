@@ -65,6 +65,7 @@ export interface CreateRequest {
     startDate: Date | undefined;
     endDate: Date | undefined;
     campusId: ObjectId | undefined;
+    schoolYearId: ObjectId | undefined;
 }
 export interface SemesterResponse {
     semester: Semester | undefined;

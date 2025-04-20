@@ -18,6 +18,7 @@ export interface Semester {
     endDate: Date | undefined;
     reportLayout?: SemesterReportLayout | undefined;
     campusId: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
 }
 export interface SemesterReportLayout {
     commentCharLimit: number;

@@ -87,6 +87,7 @@ export interface CreateRequest {
   startDate: Date | undefined;
   endDate: Date | undefined;
   campusId: ObjectId | undefined;
+  schoolYearId: ObjectId | undefined;
 }
 
 export interface SemesterResponse {
@@ -1032,7 +1033,14 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
 };
 
 function createBaseCreateRequest(): CreateRequest {
-  return { context: undefined, name: "", startDate: undefined, endDate: undefined, campusId: undefined };
+  return {
+    context: undefined,
+    name: "",
+    startDate: undefined,
+    endDate: undefined,
+    campusId: undefined,
+    schoolYearId: undefined,
+  };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -1051,6 +1059,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     }
     if (message.campusId !== undefined) {
       ObjectId.encode(message.campusId, writer.uint32(42).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -1097,6 +1108,13 @@ export const CreateRequest: MessageFns<CreateRequest> = {
 
           message.campusId = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1113,6 +1131,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       campusId: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -1133,6 +1152,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.campusId !== undefined) {
       obj.campusId = ObjectId.toJSON(message.campusId);
     }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
     return obj;
   },
 
@@ -1149,6 +1171,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     message.endDate = object.endDate ?? undefined;
     message.campusId = (object.campusId !== undefined && object.campusId !== null)
       ? ObjectId.fromPartial(object.campusId)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
       : undefined;
     return message;
   },

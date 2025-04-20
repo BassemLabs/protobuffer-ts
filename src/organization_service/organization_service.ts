@@ -78,6 +78,11 @@ export interface GetSchoolYearsRequest {
   organizationId: ObjectId | undefined;
 }
 
+export interface GetSchoolYearRequest {
+  context: RequestContext | undefined;
+  schoolYearId: ObjectId | undefined;
+}
+
 export interface GetSchoolYearsResponse {
   schoolYears: SchoolYear[];
 }
@@ -947,6 +952,84 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
       : undefined;
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchoolYearRequest(): GetSchoolYearRequest {
+  return { context: undefined, schoolYearId: undefined };
+}
+
+export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
+  encode(message: GetSchoolYearRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchoolYearRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchoolYearRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchoolYearRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchoolYearRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchoolYearRequest>, I>>(base?: I): GetSchoolYearRequest {
+    return GetSchoolYearRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchoolYearRequest>, I>>(object: I): GetSchoolYearRequest {
+    const message = createBaseGetSchoolYearRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
       : undefined;
     return message;
   },

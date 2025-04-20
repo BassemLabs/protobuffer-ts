@@ -73,6 +73,7 @@ function createBaseSemester() {
         endDate: undefined,
         reportLayout: undefined,
         campusId: undefined,
+        schoolYear: undefined,
     };
 }
 exports.Semester = {
@@ -97,6 +98,9 @@ exports.Semester = {
         }
         if (message.campusId !== undefined) {
             object_id_1.ObjectId.encode(message.campusId, writer.uint32(58).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -149,6 +153,12 @@ exports.Semester = {
                     }
                     message.campusId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -166,6 +176,7 @@ exports.Semester = {
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             reportLayout: isSet(object.reportLayout) ? exports.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
             campusId: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -191,6 +202,9 @@ exports.Semester = {
         if (message.campusId !== undefined) {
             obj.campusId = object_id_1.ObjectId.toJSON(message.campusId);
         }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
         return obj;
     },
     create(base) {
@@ -208,6 +222,9 @@ exports.Semester = {
             : undefined;
         message.campusId = (object.campusId !== undefined && object.campusId !== null)
             ? object_id_1.ObjectId.fromPartial(object.campusId)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
         return message;
     },

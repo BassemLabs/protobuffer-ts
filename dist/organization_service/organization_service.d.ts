@@ -57,6 +57,10 @@ export interface GetSchoolYearsRequest {
     context: RequestContext | undefined;
     organizationId: ObjectId | undefined;
 }
+export interface GetSchoolYearRequest {
+    context: RequestContext | undefined;
+    schoolYearId: ObjectId | undefined;
+}
 export interface GetSchoolYearsResponse {
     schoolYears: SchoolYear[];
 }
@@ -85,6 +89,7 @@ export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;
 export declare const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse>;
 export declare const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest>;
+export declare const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest>;
 export declare const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse>;
 export declare const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest>;
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;

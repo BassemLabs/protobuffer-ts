@@ -848,7 +848,14 @@ exports.ArchiveRequest = {
     },
 };
 function createBaseCreateRequest() {
-    return { context: undefined, name: "", startDate: undefined, endDate: undefined, campusId: undefined };
+    return {
+        context: undefined,
+        name: "",
+        startDate: undefined,
+        endDate: undefined,
+        campusId: undefined,
+        schoolYearId: undefined,
+    };
 }
 exports.CreateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -866,6 +873,9 @@ exports.CreateRequest = {
         }
         if (message.campusId !== undefined) {
             object_id_1.ObjectId.encode(message.campusId, writer.uint32(42).fork()).join();
+        }
+        if (message.schoolYearId !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYearId, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -906,6 +916,12 @@ exports.CreateRequest = {
                     }
                     message.campusId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.schoolYearId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -921,6 +937,7 @@ exports.CreateRequest = {
             startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             campusId: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            schoolYearId: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -940,6 +957,9 @@ exports.CreateRequest = {
         if (message.campusId !== undefined) {
             obj.campusId = object_id_1.ObjectId.toJSON(message.campusId);
         }
+        if (message.schoolYearId !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.schoolYearId);
+        }
         return obj;
     },
     create(base) {
@@ -955,6 +975,9 @@ exports.CreateRequest = {
         message.endDate = object.endDate ?? undefined;
         message.campusId = (object.campusId !== undefined && object.campusId !== null)
             ? object_id_1.ObjectId.fromPartial(object.campusId)
+            : undefined;
+        message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYearId)
             : undefined;
         return message;
     },
