@@ -22,6 +22,7 @@ export interface Organization {
   onboardingSettings: OnboardingSettings | undefined;
   activeSchoolYear: SchoolYear | undefined;
   comingSchoolYear?: SchoolYear | undefined;
+  openedReregistrationForComingSchoolYear: boolean;
 }
 
 export interface SchoolYear {
@@ -42,6 +43,7 @@ function createBaseOrganization(): Organization {
     onboardingSettings: undefined,
     activeSchoolYear: undefined,
     comingSchoolYear: undefined,
+    openedReregistrationForComingSchoolYear: false,
   };
 }
 
@@ -70,6 +72,9 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.comingSchoolYear !== undefined) {
       SchoolYear.encode(message.comingSchoolYear, writer.uint32(66).fork()).join();
+    }
+    if (message.openedReregistrationForComingSchoolYear !== false) {
+      writer.uint32(72).bool(message.openedReregistrationForComingSchoolYear);
     }
     return writer;
   },
@@ -137,6 +142,13 @@ export const Organization: MessageFns<Organization> = {
 
           message.comingSchoolYear = SchoolYear.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.openedReregistrationForComingSchoolYear = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -160,6 +172,9 @@ export const Organization: MessageFns<Organization> = {
         : undefined,
       activeSchoolYear: isSet(object.activeSchoolYear) ? SchoolYear.fromJSON(object.activeSchoolYear) : undefined,
       comingSchoolYear: isSet(object.comingSchoolYear) ? SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
+      openedReregistrationForComingSchoolYear: isSet(object.openedReregistrationForComingSchoolYear)
+        ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
+        : false,
     };
   },
 
@@ -189,6 +204,9 @@ export const Organization: MessageFns<Organization> = {
     if (message.comingSchoolYear !== undefined) {
       obj.comingSchoolYear = SchoolYear.toJSON(message.comingSchoolYear);
     }
+    if (message.openedReregistrationForComingSchoolYear !== false) {
+      obj.openedReregistrationForComingSchoolYear = message.openedReregistrationForComingSchoolYear;
+    }
     return obj;
   },
 
@@ -214,6 +232,7 @@ export const Organization: MessageFns<Organization> = {
     message.comingSchoolYear = (object.comingSchoolYear !== undefined && object.comingSchoolYear !== null)
       ? SchoolYear.fromPartial(object.comingSchoolYear)
       : undefined;
+    message.openedReregistrationForComingSchoolYear = object.openedReregistrationForComingSchoolYear ?? false;
     return message;
   },
 };

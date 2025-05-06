@@ -23,6 +23,7 @@ function createBaseOrganization() {
         onboardingSettings: undefined,
         activeSchoolYear: undefined,
         comingSchoolYear: undefined,
+        openedReregistrationForComingSchoolYear: false,
     };
 }
 exports.Organization = {
@@ -50,6 +51,9 @@ exports.Organization = {
         }
         if (message.comingSchoolYear !== undefined) {
             exports.SchoolYear.encode(message.comingSchoolYear, writer.uint32(66).fork()).join();
+        }
+        if (message.openedReregistrationForComingSchoolYear !== false) {
+            writer.uint32(72).bool(message.openedReregistrationForComingSchoolYear);
         }
         return writer;
     },
@@ -108,6 +112,12 @@ exports.Organization = {
                     }
                     message.comingSchoolYear = exports.SchoolYear.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.openedReregistrationForComingSchoolYear = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -130,6 +140,9 @@ exports.Organization = {
                 : undefined,
             activeSchoolYear: isSet(object.activeSchoolYear) ? exports.SchoolYear.fromJSON(object.activeSchoolYear) : undefined,
             comingSchoolYear: isSet(object.comingSchoolYear) ? exports.SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
+            openedReregistrationForComingSchoolYear: isSet(object.openedReregistrationForComingSchoolYear)
+                ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
+                : false,
         };
     },
     toJSON(message) {
@@ -158,6 +171,9 @@ exports.Organization = {
         if (message.comingSchoolYear !== undefined) {
             obj.comingSchoolYear = exports.SchoolYear.toJSON(message.comingSchoolYear);
         }
+        if (message.openedReregistrationForComingSchoolYear !== false) {
+            obj.openedReregistrationForComingSchoolYear = message.openedReregistrationForComingSchoolYear;
+        }
         return obj;
     },
     create(base) {
@@ -182,6 +198,7 @@ exports.Organization = {
         message.comingSchoolYear = (object.comingSchoolYear !== undefined && object.comingSchoolYear !== null)
             ? exports.SchoolYear.fromPartial(object.comingSchoolYear)
             : undefined;
+        message.openedReregistrationForComingSchoolYear = object.openedReregistrationForComingSchoolYear ?? false;
         return message;
     },
 };

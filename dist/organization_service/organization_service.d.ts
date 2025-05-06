@@ -78,6 +78,10 @@ export interface StartSchoolYearRequest {
     context: RequestContext | undefined;
     organizationId: ObjectId | undefined;
 }
+export interface StartReregistrationRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -94,6 +98,7 @@ export declare const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse>;
 export declare const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest>;
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
 export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
+export declare const StartReregistrationRequest: MessageFns<StartReregistrationRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

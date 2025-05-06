@@ -104,6 +104,11 @@ export interface StartSchoolYearRequest {
   organizationId: ObjectId | undefined;
 }
 
+export interface StartReregistrationRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+}
+
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
   return { context: undefined, organizationId: undefined };
 }
@@ -1348,6 +1353,84 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<StartSchoolYearRequest>, I>>(object: I): StartSchoolYearRequest {
     const message = createBaseStartSchoolYearRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseStartReregistrationRequest(): StartReregistrationRequest {
+  return { context: undefined, organizationId: undefined };
+}
+
+export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> = {
+  encode(message: StartReregistrationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartReregistrationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartReregistrationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartReregistrationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: StartReregistrationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartReregistrationRequest>, I>>(base?: I): StartReregistrationRequest {
+    return StartReregistrationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartReregistrationRequest>, I>>(object: I): StartReregistrationRequest {
+    const message = createBaseStartReregistrationRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;

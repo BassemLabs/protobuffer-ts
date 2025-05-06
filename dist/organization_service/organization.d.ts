@@ -12,6 +12,7 @@ export interface Organization {
     onboardingSettings: OnboardingSettings | undefined;
     activeSchoolYear: SchoolYear | undefined;
     comingSchoolYear?: SchoolYear | undefined;
+    openedReregistrationForComingSchoolYear: boolean;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;
