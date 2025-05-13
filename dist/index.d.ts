@@ -2,6 +2,8 @@ import * as Test_service from './template_service/test_service';
 export { Test_service };
 import * as Test from './template_service/test';
 export { Test };
+import * as Organization_owner from './organization_service/organization_owner';
+export { Organization_owner };
 import * as Kms_service from './organization_service/kms_service';
 export { Kms_service };
 import * as Onboarding_settings_service from './organization_service/onboarding_settings_service';
@@ -26,6 +28,8 @@ import * as Organization_profile_settings_service from './organization_service/o
 export { Organization_profile_settings_service };
 import * as Organization from './organization_service/organization';
 export { Organization };
+import * as Organization_owner_service from './organization_service/organization_owner_service';
+export { Organization_owner_service };
 import * as Timestamp from './google/protobuf/timestamp';
 export { Timestamp };
 import * as Aws_file from './utils/aws_file';

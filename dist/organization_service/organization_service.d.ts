@@ -45,6 +45,14 @@ export interface RemoveDomainRequest {
     organizationId: ObjectId | undefined;
     removeDomain: string;
 }
+/** Request to update organization main settings */
+export interface UpdateOrganizationSettingsRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    name: string;
+    domains: string[];
+    defaultDomain: string;
+}
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
     context: RequestContext | undefined;
@@ -90,6 +98,7 @@ export declare const RenameOrganizationRequest: MessageFns<RenameOrganizationReq
 export declare const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest>;
 export declare const AddDomainRequest: MessageFns<AddDomainRequest>;
 export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
+export declare const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSettingsRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;
 export declare const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse>;
 export declare const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest>;

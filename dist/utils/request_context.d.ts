@@ -7,6 +7,7 @@ export declare enum UserType {
     Teacher = "Teacher",
     Parent = "Parent",
     BassemLabsStaff = "BassemLabsStaff",
+    OrganizationOwner = "OrganizationOwner",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function userTypeFromJSON(object: any): UserType;

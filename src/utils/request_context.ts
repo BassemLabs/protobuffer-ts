@@ -16,6 +16,7 @@ export enum UserType {
   Teacher = "Teacher",
   Parent = "Parent",
   BassemLabsStaff = "BassemLabsStaff",
+  OrganizationOwner = "OrganizationOwner",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -36,6 +37,9 @@ export function userTypeFromJSON(object: any): UserType {
     case 4:
     case "BassemLabsStaff":
       return UserType.BassemLabsStaff;
+    case 5:
+    case "OrganizationOwner":
+      return UserType.OrganizationOwner;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -55,6 +59,8 @@ export function userTypeToJSON(object: UserType): string {
       return "Parent";
     case UserType.BassemLabsStaff:
       return "BassemLabsStaff";
+    case UserType.OrganizationOwner:
+      return "OrganizationOwner";
     case UserType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -73,6 +79,8 @@ export function userTypeToNumber(object: UserType): number {
       return 3;
     case UserType.BassemLabsStaff:
       return 4;
+    case UserType.OrganizationOwner:
+      return 5;
     case UserType.UNRECOGNIZED:
     default:
       return -1;

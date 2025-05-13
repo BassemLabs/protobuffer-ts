@@ -23,12 +23,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Custom_field_entry = exports.Homeroom = exports.Report_layout = exports.Semester_service = exports.Gclass = exports.Course_service = exports.Course = exports.Semester = exports.Homeroom_service = exports.Report_layout_service = exports.Object_id = exports.Request_context = exports.Aws_file = exports.Timestamp = exports.Organization = exports.Organization_profile_settings_service = exports.Organization_service = exports.Bassem_labs_staff = exports.Campus = exports.Campus_service = exports.Organization_profile_settings = exports.Bassem_labs_staff_service = exports.Kms_key = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Kms_service = exports.Test = exports.Test_service = void 0;
+exports.Custom_field_entry = exports.Homeroom = exports.Report_layout = exports.Semester_service = exports.Gclass = exports.Course_service = exports.Course = exports.Semester = exports.Homeroom_service = exports.Report_layout_service = exports.Object_id = exports.Request_context = exports.Aws_file = exports.Timestamp = exports.Organization_owner_service = exports.Organization = exports.Organization_profile_settings_service = exports.Organization_service = exports.Bassem_labs_staff = exports.Campus = exports.Campus_service = exports.Organization_profile_settings = exports.Bassem_labs_staff_service = exports.Kms_key = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Kms_service = exports.Organization_owner = exports.Test = exports.Test_service = void 0;
 // Auto-generated index.ts
 const Test_service = __importStar(require("./template_service/test_service"));
 exports.Test_service = Test_service;
 const Test = __importStar(require("./template_service/test"));
 exports.Test = Test;
+const Organization_owner = __importStar(require("./organization_service/organization_owner"));
+exports.Organization_owner = Organization_owner;
 const Kms_service = __importStar(require("./organization_service/kms_service"));
 exports.Kms_service = Kms_service;
 const Onboarding_settings_service = __importStar(require("./organization_service/onboarding_settings_service"));
@@ -53,6 +55,8 @@ const Organization_profile_settings_service = __importStar(require("./organizati
 exports.Organization_profile_settings_service = Organization_profile_settings_service;
 const Organization = __importStar(require("./organization_service/organization"));
 exports.Organization = Organization;
+const Organization_owner_service = __importStar(require("./organization_service/organization_owner_service"));
+exports.Organization_owner_service = Organization_owner_service;
 const Timestamp = __importStar(require("./google/protobuf/timestamp"));
 exports.Timestamp = Timestamp;
 const Aws_file = __importStar(require("./utils/aws_file"));
