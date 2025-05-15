@@ -25,6 +25,7 @@ export interface OnboardingSettings {
   moveStudentAdmissionYearEmailTemplate: string;
   reregistrationInvitationEmailTemplate: string;
   schoolHandbook: AWSFile[];
+  interviewFee: number;
 }
 
 export interface OnboardingSettings_RegistrationFeesEntry {
@@ -66,6 +67,7 @@ function createBaseOnboardingSettings(): OnboardingSettings {
     moveStudentAdmissionYearEmailTemplate: "",
     reregistrationInvitationEmailTemplate: "",
     schoolHandbook: [],
+    interviewFee: 0,
   };
 }
 
@@ -112,6 +114,9 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     }
     for (const v of message.schoolHandbook) {
       AWSFile.encode(v!, writer.uint32(114).fork()).join();
+    }
+    if (message.interviewFee !== 0) {
+      writer.uint32(125).float(message.interviewFee);
     }
     return writer;
   },
@@ -227,6 +232,13 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
 
           message.schoolHandbook.push(AWSFile.decode(reader, reader.uint32()));
           continue;
+        case 15:
+          if (tag !== 125) {
+            break;
+          }
+
+          message.interviewFee = reader.float();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -280,6 +292,7 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
       schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
         ? object.schoolHandbook.map((e: any) => AWSFile.fromJSON(e))
         : [],
+      interviewFee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
     };
   },
 
@@ -339,6 +352,9 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     if (message.schoolHandbook?.length) {
       obj.schoolHandbook = message.schoolHandbook.map((e) => AWSFile.toJSON(e));
     }
+    if (message.interviewFee !== 0) {
+      obj.interviewFee = message.interviewFee;
+    }
     return obj;
   },
 
@@ -377,6 +393,7 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
     message.reregistrationInvitationEmailTemplate = object.reregistrationInvitationEmailTemplate ?? "";
     message.schoolHandbook = object.schoolHandbook?.map((e) => AWSFile.fromPartial(e)) || [];
+    message.interviewFee = object.interviewFee ?? 0;
     return message;
   },
 };

@@ -63,6 +63,11 @@ export interface UpdateReregistrationFeeRequest_ReregistrationFeesEntry {
     key: string;
     value: ItemizedFee | undefined;
 }
+export interface UpdateInterviewFeeRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    interviewFee: number;
+}
 export declare const GetOnboardingSettingsRequest: MessageFns<GetOnboardingSettingsRequest>;
 export declare const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentConfigurationRequest>;
 export declare const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileRequest>;
@@ -73,6 +78,7 @@ export declare const UpdateRegistrationFeeRequest: MessageFns<UpdateRegistration
 export declare const UpdateRegistrationFeeRequest_RegistrationFeesEntry: MessageFns<UpdateRegistrationFeeRequest_RegistrationFeesEntry>;
 export declare const UpdateReregistrationFeeRequest: MessageFns<UpdateReregistrationFeeRequest>;
 export declare const UpdateReregistrationFeeRequest_ReregistrationFeesEntry: MessageFns<UpdateReregistrationFeeRequest_ReregistrationFeesEntry>;
+export declare const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

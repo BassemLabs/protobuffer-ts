@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/onboarding_settings_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry = exports.UpdateReregistrationFeeRequest = exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry = exports.UpdateRegistrationFeeRequest = exports.UpdateEmailTemplatesRequest = exports.UpdateWaitlistFeeRequest = exports.RemoveSchoolHandbookFileRequest = exports.AddSchoolHandbookFileRequest = exports.UpdateEnrollmentConfigurationRequest = exports.GetOnboardingSettingsRequest = exports.protobufPackage = void 0;
+exports.UpdateInterviewFeeRequest = exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry = exports.UpdateReregistrationFeeRequest = exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry = exports.UpdateRegistrationFeeRequest = exports.UpdateEmailTemplatesRequest = exports.UpdateWaitlistFeeRequest = exports.RemoveSchoolHandbookFileRequest = exports.AddSchoolHandbookFileRequest = exports.UpdateEnrollmentConfigurationRequest = exports.GetOnboardingSettingsRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -1000,6 +1000,90 @@ exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry = {
         message.value = (object.value !== undefined && object.value !== null)
             ? onboarding_settings_1.ItemizedFee.fromPartial(object.value)
             : undefined;
+        return message;
+    },
+};
+function createBaseUpdateInterviewFeeRequest() {
+    return { context: undefined, organizationId: undefined, interviewFee: 0 };
+}
+exports.UpdateInterviewFeeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.interviewFee !== 0) {
+            writer.uint32(29).float(message.interviewFee);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateInterviewFeeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 29) {
+                        break;
+                    }
+                    message.interviewFee = reader.float();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            interviewFee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.interviewFee !== 0) {
+            obj.interviewFee = message.interviewFee;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateInterviewFeeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateInterviewFeeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.interviewFee = object.interviewFee ?? 0;
         return message;
     },
 };

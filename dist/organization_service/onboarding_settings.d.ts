@@ -20,6 +20,7 @@ export interface OnboardingSettings {
     moveStudentAdmissionYearEmailTemplate: string;
     reregistrationInvitationEmailTemplate: string;
     schoolHandbook: AWSFile[];
+    interviewFee: number;
 }
 export interface OnboardingSettings_RegistrationFeesEntry {
     key: string;

@@ -78,6 +78,12 @@ export interface UpdateReregistrationFeeRequest_ReregistrationFeesEntry {
   value: ItemizedFee | undefined;
 }
 
+export interface UpdateInterviewFeeRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  interviewFee: number;
+}
+
 function createBaseGetOnboardingSettingsRequest(): GetOnboardingSettingsRequest {
   return { context: undefined, organizationId: undefined };
 }
@@ -1196,6 +1202,99 @@ export const UpdateReregistrationFeeRequest_ReregistrationFeesEntry: MessageFns<
     message.value = (object.value !== undefined && object.value !== null)
       ? ItemizedFee.fromPartial(object.value)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateInterviewFeeRequest(): UpdateInterviewFeeRequest {
+  return { context: undefined, organizationId: undefined, interviewFee: 0 };
+}
+
+export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = {
+  encode(message: UpdateInterviewFeeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.interviewFee !== 0) {
+      writer.uint32(29).float(message.interviewFee);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateInterviewFeeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateInterviewFeeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 29) {
+            break;
+          }
+
+          message.interviewFee = reader.float();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateInterviewFeeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      interviewFee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+    };
+  },
+
+  toJSON(message: UpdateInterviewFeeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.interviewFee !== 0) {
+      obj.interviewFee = message.interviewFee;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateInterviewFeeRequest>, I>>(base?: I): UpdateInterviewFeeRequest {
+    return UpdateInterviewFeeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateInterviewFeeRequest>, I>>(object: I): UpdateInterviewFeeRequest {
+    const message = createBaseUpdateInterviewFeeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.interviewFee = object.interviewFee ?? 0;
     return message;
   },
 };

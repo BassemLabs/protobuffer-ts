@@ -26,6 +26,7 @@ function createBaseOnboardingSettings() {
         moveStudentAdmissionYearEmailTemplate: "",
         reregistrationInvitationEmailTemplate: "",
         schoolHandbook: [],
+        interviewFee: 0,
     };
 }
 exports.OnboardingSettings = {
@@ -71,6 +72,9 @@ exports.OnboardingSettings = {
         }
         for (const v of message.schoolHandbook) {
             aws_file_1.AWSFile.encode(v, writer.uint32(114).fork()).join();
+        }
+        if (message.interviewFee !== 0) {
+            writer.uint32(125).float(message.interviewFee);
         }
         return writer;
     },
@@ -171,6 +175,12 @@ exports.OnboardingSettings = {
                     }
                     message.schoolHandbook.push(aws_file_1.AWSFile.decode(reader, reader.uint32()));
                     continue;
+                case 15:
+                    if (tag !== 125) {
+                        break;
+                    }
+                    message.interviewFee = reader.float();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -223,6 +233,7 @@ exports.OnboardingSettings = {
             schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
                 ? object.schoolHandbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
                 : [],
+            interviewFee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
         };
     },
     toJSON(message) {
@@ -281,6 +292,9 @@ exports.OnboardingSettings = {
         if (message.schoolHandbook?.length) {
             obj.schoolHandbook = message.schoolHandbook.map((e) => aws_file_1.AWSFile.toJSON(e));
         }
+        if (message.interviewFee !== 0) {
+            obj.interviewFee = message.interviewFee;
+        }
         return obj;
     },
     create(base) {
@@ -312,6 +326,7 @@ exports.OnboardingSettings = {
         message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
         message.reregistrationInvitationEmailTemplate = object.reregistrationInvitationEmailTemplate ?? "";
         message.schoolHandbook = object.schoolHandbook?.map((e) => aws_file_1.AWSFile.fromPartial(e)) || [];
+        message.interviewFee = object.interviewFee ?? 0;
         return message;
     },
 };
