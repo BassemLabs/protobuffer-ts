@@ -15,6 +15,7 @@ export declare enum KMSKeyType {
     GoogleAdminServiceAccountId = "GoogleAdminServiceAccountId",
     StripeSecret = "StripeSecret",
     StripeEndpointSecret = "StripeEndpointSecret",
+    StripePublicKey = "StripePublicKey",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function kMSKeyTypeFromJSON(object: any): KMSKeyType;

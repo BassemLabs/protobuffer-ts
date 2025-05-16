@@ -65,6 +65,7 @@ var KMSKeyType;
     KMSKeyType["GoogleAdminServiceAccountId"] = "GoogleAdminServiceAccountId";
     KMSKeyType["StripeSecret"] = "StripeSecret";
     KMSKeyType["StripeEndpointSecret"] = "StripeEndpointSecret";
+    KMSKeyType["StripePublicKey"] = "StripePublicKey";
     KMSKeyType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(KMSKeyType || (exports.KMSKeyType = KMSKeyType = {}));
 function kMSKeyTypeFromJSON(object) {
@@ -84,6 +85,9 @@ function kMSKeyTypeFromJSON(object) {
         case 5:
         case "StripeEndpointSecret":
             return KMSKeyType.StripeEndpointSecret;
+        case 6:
+        case "StripePublicKey":
+            return KMSKeyType.StripePublicKey;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -102,6 +106,8 @@ function kMSKeyTypeToJSON(object) {
             return "StripeSecret";
         case KMSKeyType.StripeEndpointSecret:
             return "StripeEndpointSecret";
+        case KMSKeyType.StripePublicKey:
+            return "StripePublicKey";
         case KMSKeyType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -119,6 +125,8 @@ function kMSKeyTypeToNumber(object) {
             return 4;
         case KMSKeyType.StripeEndpointSecret:
             return 5;
+        case KMSKeyType.StripePublicKey:
+            return 6;
         case KMSKeyType.UNRECOGNIZED:
         default:
             return -1;
