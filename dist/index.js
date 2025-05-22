@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Timestamp = exports.Test = exports.Test_service = exports.Report_layout = exports.Semester_service = exports.Report_layout_service = exports.Semester = exports.Homeroom = exports.Course = exports.Homeroom_service = exports.Gclass = exports.Course_service = exports.Campus = exports.Kms_service = exports.Kms_key = exports.Bassem_labs_staff_service = exports.Organization_owner = exports.Organization_owner_service = exports.Onboarding_settings = exports.Bassem_labs_staff = exports.Organization_service = exports.Organization = exports.Campus_service = exports.Onboarding_settings_service = exports.Organization_profile_settings_service = exports.Organization_profile_settings = exports.Custom_field_entry = exports.Object_id = exports.Request_context = exports.Aws_file = void 0;
+exports.Timestamp = exports.Test = exports.Test_service = exports.Report_layout = exports.Semester_service = exports.Report_layout_service = exports.Semester = exports.Homeroom = exports.Course = exports.Homeroom_service = exports.Gclass = exports.Course_service = exports.Campus = exports.Kms_service = exports.Kms_key = exports.Bassem_labs_staff_service = exports.Organization_owner = exports.Organization_owner_service = exports.Onboarding_settings = exports.Bassem_labs_staff = exports.Tuition_service = exports.Tuition = exports.Organization_service = exports.Organization = exports.Campus_service = exports.Onboarding_settings_service = exports.Organization_profile_settings_service = exports.Organization_profile_settings = exports.Custom_field_entry = exports.Object_id = exports.Request_context = exports.Aws_file = void 0;
 // Auto-generated index.ts
 const Aws_file = __importStar(require("./utils/aws_file"));
 exports.Aws_file = Aws_file;
@@ -45,6 +45,10 @@ const Organization = __importStar(require("./organization_service/organization")
 exports.Organization = Organization;
 const Organization_service = __importStar(require("./organization_service/organization_service"));
 exports.Organization_service = Organization_service;
+const Tuition = __importStar(require("./organization_service/tuition"));
+exports.Tuition = Tuition;
+const Tuition_service = __importStar(require("./organization_service/tuition_service"));
+exports.Tuition_service = Tuition_service;
 const Bassem_labs_staff = __importStar(require("./organization_service/bassem_labs_staff"));
 exports.Bassem_labs_staff = Bassem_labs_staff;
 const Onboarding_settings = __importStar(require("./organization_service/onboarding_settings"));
