@@ -36,7 +36,6 @@ export interface GetTuitionRateRequest {
 
 export interface ListTuitionRatesRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
 }
 
@@ -44,19 +43,15 @@ export interface ListTuitionRatesResponse {
   rates: TuitionRate[];
 }
 
-export interface CreateTuitionRateRequest {
-  context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  schoolYear: ObjectId | undefined;
+export interface GradeAmount {
   grade: string;
   amount: number;
 }
 
-export interface UpdateTuitionRateRequest {
+export interface UpsertTuitionRatesRequest {
   context: RequestContext | undefined;
-  id: ObjectId | undefined;
-  grade: string;
-  amount: number;
+  schoolYear: ObjectId | undefined;
+  gradeAmounts: GradeAmount[];
 }
 
 export interface DeleteTuitionRateRequest {
@@ -76,7 +71,6 @@ export interface GetAdditionalFeeRequest {
 
 export interface ListAdditionalFeesRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
 }
 
@@ -86,7 +80,6 @@ export interface ListAdditionalFeesResponse {
 
 export interface CreateAdditionalFeeRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
   name: string;
   description: string;
@@ -120,7 +113,6 @@ export interface GetTuitionDiscountRequest {
 
 export interface ListTuitionDiscountsRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
 }
 
@@ -130,26 +122,23 @@ export interface ListTuitionDiscountsResponse {
 
 export interface CreateTuitionDiscountRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
+  name: string;
   discountType: DiscountType;
   scope: DiscountScope;
   valueType: DiscountValueType;
   value: number;
-  student?: ObjectId | undefined;
-  family?: ObjectId | undefined;
   description: string;
 }
 
 export interface UpdateTuitionDiscountRequest {
   context: RequestContext | undefined;
   id: ObjectId | undefined;
+  name: string;
   discountType: DiscountType;
   scope: DiscountScope;
   valueType: DiscountValueType;
   value: number;
-  student?: ObjectId | undefined;
-  family?: ObjectId | undefined;
   description: string;
 }
 
@@ -239,7 +228,7 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
 };
 
 function createBaseListTuitionRatesRequest(): ListTuitionRatesRequest {
-  return { context: undefined, organizationId: undefined, schoolYear: undefined };
+  return { context: undefined, schoolYear: undefined };
 }
 
 export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
@@ -247,11 +236,8 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-    }
     if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -275,13 +261,6 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
       }
@@ -296,7 +275,6 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
   fromJSON(object: any): ListTuitionRatesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
@@ -305,9 +283,6 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
@@ -322,9 +297,6 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
     const message = createBaseListTuitionRatesRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
       : undefined;
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
@@ -392,34 +364,25 @@ export const ListTuitionRatesResponse: MessageFns<ListTuitionRatesResponse> = {
   },
 };
 
-function createBaseCreateTuitionRateRequest(): CreateTuitionRateRequest {
-  return { context: undefined, organizationId: undefined, schoolYear: undefined, grade: "", amount: 0 };
+function createBaseGradeAmount(): GradeAmount {
+  return { grade: "", amount: 0 };
 }
 
-export const CreateTuitionRateRequest: MessageFns<CreateTuitionRateRequest> = {
-  encode(message: CreateTuitionRateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-    }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
-    }
+export const GradeAmount: MessageFns<GradeAmount> = {
+  encode(message: GradeAmount, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.grade !== "") {
-      writer.uint32(34).string(message.grade);
+      writer.uint32(10).string(message.grade);
     }
     if (message.amount !== 0) {
-      writer.uint32(41).double(message.amount);
+      writer.uint32(17).double(message.amount);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): CreateTuitionRateRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GradeAmount {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateTuitionRateRequest();
+    const message = createBaseGradeAmount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -428,31 +391,10 @@ export const CreateTuitionRateRequest: MessageFns<CreateTuitionRateRequest> = {
             break;
           }
 
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
           message.grade = reader.string();
           continue;
-        case 5:
-          if (tag !== 41) {
+        case 2:
+          if (tag !== 17) {
             break;
           }
 
@@ -467,27 +409,15 @@ export const CreateTuitionRateRequest: MessageFns<CreateTuitionRateRequest> = {
     return message;
   },
 
-  fromJSON(object: any): CreateTuitionRateRequest {
+  fromJSON(object: any): GradeAmount {
     return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
     };
   },
 
-  toJSON(message: CreateTuitionRateRequest): unknown {
+  toJSON(message: GradeAmount): unknown {
     const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
-    }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
-    }
     if (message.grade !== "") {
       obj.grade = message.grade;
     }
@@ -497,51 +427,39 @@ export const CreateTuitionRateRequest: MessageFns<CreateTuitionRateRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CreateTuitionRateRequest>, I>>(base?: I): CreateTuitionRateRequest {
-    return CreateTuitionRateRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GradeAmount>, I>>(base?: I): GradeAmount {
+    return GradeAmount.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CreateTuitionRateRequest>, I>>(object: I): CreateTuitionRateRequest {
-    const message = createBaseCreateTuitionRateRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
-      : undefined;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
-      : undefined;
+  fromPartial<I extends Exact<DeepPartial<GradeAmount>, I>>(object: I): GradeAmount {
+    const message = createBaseGradeAmount();
     message.grade = object.grade ?? "";
     message.amount = object.amount ?? 0;
     return message;
   },
 };
 
-function createBaseUpdateTuitionRateRequest(): UpdateTuitionRateRequest {
-  return { context: undefined, id: undefined, grade: "", amount: 0 };
+function createBaseUpsertTuitionRatesRequest(): UpsertTuitionRatesRequest {
+  return { context: undefined, schoolYear: undefined, gradeAmounts: [] };
 }
 
-export const UpdateTuitionRateRequest: MessageFns<UpdateTuitionRateRequest> = {
-  encode(message: UpdateTuitionRateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const UpsertTuitionRatesRequest: MessageFns<UpsertTuitionRatesRequest> = {
+  encode(message: UpsertTuitionRatesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
     }
-    if (message.grade !== "") {
-      writer.uint32(26).string(message.grade);
-    }
-    if (message.amount !== 0) {
-      writer.uint32(33).double(message.amount);
+    for (const v of message.gradeAmounts) {
+      GradeAmount.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): UpdateTuitionRateRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertTuitionRatesRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdateTuitionRateRequest();
+    const message = createBaseUpsertTuitionRatesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -557,21 +475,14 @@ export const UpdateTuitionRateRequest: MessageFns<UpdateTuitionRateRequest> = {
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.grade = reader.string();
-          continue;
-        case 4:
-          if (tag !== 33) {
-            break;
-          }
-
-          message.amount = reader.double();
+          message.gradeAmounts.push(GradeAmount.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -582,43 +493,42 @@ export const UpdateTuitionRateRequest: MessageFns<UpdateTuitionRateRequest> = {
     return message;
   },
 
-  fromJSON(object: any): UpdateTuitionRateRequest {
+  fromJSON(object: any): UpsertTuitionRatesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
-      amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      gradeAmounts: globalThis.Array.isArray(object?.gradeAmounts)
+        ? object.gradeAmounts.map((e: any) => GradeAmount.fromJSON(e))
+        : [],
     };
   },
 
-  toJSON(message: UpdateTuitionRateRequest): unknown {
+  toJSON(message: UpsertTuitionRatesRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
     }
-    if (message.grade !== "") {
-      obj.grade = message.grade;
-    }
-    if (message.amount !== 0) {
-      obj.amount = message.amount;
+    if (message.gradeAmounts?.length) {
+      obj.gradeAmounts = message.gradeAmounts.map((e) => GradeAmount.toJSON(e));
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UpdateTuitionRateRequest>, I>>(base?: I): UpdateTuitionRateRequest {
-    return UpdateTuitionRateRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<UpsertTuitionRatesRequest>, I>>(base?: I): UpsertTuitionRatesRequest {
+    return UpsertTuitionRatesRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<UpdateTuitionRateRequest>, I>>(object: I): UpdateTuitionRateRequest {
-    const message = createBaseUpdateTuitionRateRequest();
+  fromPartial<I extends Exact<DeepPartial<UpsertTuitionRatesRequest>, I>>(object: I): UpsertTuitionRatesRequest {
+    const message = createBaseUpsertTuitionRatesRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.grade = object.grade ?? "";
-    message.amount = object.amount ?? 0;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.gradeAmounts = object.gradeAmounts?.map((e) => GradeAmount.fromPartial(e)) || [];
     return message;
   },
 };
@@ -833,7 +743,7 @@ export const GetAdditionalFeeRequest: MessageFns<GetAdditionalFeeRequest> = {
 };
 
 function createBaseListAdditionalFeesRequest(): ListAdditionalFeesRequest {
-  return { context: undefined, organizationId: undefined, schoolYear: undefined };
+  return { context: undefined, schoolYear: undefined };
 }
 
 export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = {
@@ -841,11 +751,8 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-    }
     if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -869,13 +776,6 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
       }
@@ -890,7 +790,6 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
   fromJSON(object: any): ListAdditionalFeesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
@@ -899,9 +798,6 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
@@ -916,9 +812,6 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
     const message = createBaseListAdditionalFeesRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
       : undefined;
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
@@ -987,15 +880,7 @@ export const ListAdditionalFeesResponse: MessageFns<ListAdditionalFeesResponse> 
 };
 
 function createBaseCreateAdditionalFeeRequest(): CreateAdditionalFeeRequest {
-  return {
-    context: undefined,
-    organizationId: undefined,
-    schoolYear: undefined,
-    name: "",
-    description: "",
-    amount: 0,
-    isOptional: false,
-  };
+  return { context: undefined, schoolYear: undefined, name: "", description: "", amount: 0, isOptional: false };
 }
 
 export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> = {
@@ -1003,23 +888,20 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-    }
     if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
-      writer.uint32(34).string(message.name);
+      writer.uint32(26).string(message.name);
     }
     if (message.description !== "") {
-      writer.uint32(42).string(message.description);
+      writer.uint32(34).string(message.description);
     }
     if (message.amount !== 0) {
-      writer.uint32(49).double(message.amount);
+      writer.uint32(41).double(message.amount);
     }
     if (message.isOptional !== false) {
-      writer.uint32(56).bool(message.isOptional);
+      writer.uint32(48).bool(message.isOptional);
     }
     return writer;
   },
@@ -1043,38 +925,31 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.name = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.name = reader.string();
-          continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
           message.description = reader.string();
           continue;
-        case 6:
-          if (tag !== 49) {
+        case 5:
+          if (tag !== 41) {
             break;
           }
 
           message.amount = reader.double();
           continue;
-        case 7:
-          if (tag !== 56) {
+        case 6:
+          if (tag !== 48) {
             break;
           }
 
@@ -1092,7 +967,6 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
   fromJSON(object: any): CreateAdditionalFeeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
@@ -1105,9 +979,6 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
@@ -1134,9 +1005,6 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
     const message = createBaseCreateAdditionalFeeRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
       : undefined;
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
@@ -1495,7 +1363,7 @@ export const GetTuitionDiscountRequest: MessageFns<GetTuitionDiscountRequest> = 
 };
 
 function createBaseListTuitionDiscountsRequest(): ListTuitionDiscountsRequest {
-  return { context: undefined, organizationId: undefined, schoolYear: undefined };
+  return { context: undefined, schoolYear: undefined };
 }
 
 export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest> = {
@@ -1503,11 +1371,8 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-    }
     if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1531,13 +1396,6 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
       }
@@ -1552,7 +1410,6 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
   fromJSON(object: any): ListTuitionDiscountsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
@@ -1561,9 +1418,6 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
@@ -1578,9 +1432,6 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
     const message = createBaseListTuitionDiscountsRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
       : undefined;
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
@@ -1653,14 +1504,12 @@ export const ListTuitionDiscountsResponse: MessageFns<ListTuitionDiscountsRespon
 function createBaseCreateTuitionDiscountRequest(): CreateTuitionDiscountRequest {
   return {
     context: undefined,
-    organizationId: undefined,
     schoolYear: undefined,
+    name: "",
     discountType: DiscountType.STANDARD,
     scope: DiscountScope.STUDENT_DISCOUNT,
     valueType: DiscountValueType.AMOUNT,
     value: 0,
-    student: undefined,
-    family: undefined,
     description: "",
   };
 }
@@ -1670,11 +1519,11 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-    }
     if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
     }
     if (message.discountType !== DiscountType.STANDARD) {
       writer.uint32(32).int32(discountTypeToNumber(message.discountType));
@@ -1688,14 +1537,8 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
     if (message.value !== 0) {
       writer.uint32(57).double(message.value);
     }
-    if (message.student !== undefined) {
-      ObjectId.encode(message.student, writer.uint32(66).fork()).join();
-    }
-    if (message.family !== undefined) {
-      ObjectId.encode(message.family, writer.uint32(74).fork()).join();
-    }
     if (message.description !== "") {
-      writer.uint32(82).string(message.description);
+      writer.uint32(66).string(message.description);
     }
     return writer;
   },
@@ -1719,14 +1562,14 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.name = reader.string();
           continue;
         case 4:
           if (tag !== 32) {
@@ -1761,20 +1604,6 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
             break;
           }
 
-          message.student = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.family = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 10:
-          if (tag !== 82) {
-            break;
-          }
-
           message.description = reader.string();
           continue;
       }
@@ -1789,14 +1618,12 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
   fromJSON(object: any): CreateTuitionDiscountRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
       discountType: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
       scope: isSet(object.scope) ? discountScopeFromJSON(object.scope) : DiscountScope.STUDENT_DISCOUNT,
       valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-      student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
     };
   },
@@ -1806,11 +1633,11 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
-    }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
     }
     if (message.discountType !== DiscountType.STANDARD) {
       obj.discountType = discountTypeToJSON(message.discountType);
@@ -1823,12 +1650,6 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
     }
     if (message.value !== 0) {
       obj.value = message.value;
-    }
-    if (message.student !== undefined) {
-      obj.student = ObjectId.toJSON(message.student);
-    }
-    if (message.family !== undefined) {
-      obj.family = ObjectId.toJSON(message.family);
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -1844,22 +1665,14 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
-      : undefined;
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    message.name = object.name ?? "";
     message.discountType = object.discountType ?? DiscountType.STANDARD;
     message.scope = object.scope ?? DiscountScope.STUDENT_DISCOUNT;
     message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
     message.value = object.value ?? 0;
-    message.student = (object.student !== undefined && object.student !== null)
-      ? ObjectId.fromPartial(object.student)
-      : undefined;
-    message.family = (object.family !== undefined && object.family !== null)
-      ? ObjectId.fromPartial(object.family)
-      : undefined;
     message.description = object.description ?? "";
     return message;
   },
@@ -1869,12 +1682,11 @@ function createBaseUpdateTuitionDiscountRequest(): UpdateTuitionDiscountRequest 
   return {
     context: undefined,
     id: undefined,
+    name: "",
     discountType: DiscountType.STANDARD,
     scope: DiscountScope.STUDENT_DISCOUNT,
     valueType: DiscountValueType.AMOUNT,
     value: 0,
-    student: undefined,
-    family: undefined,
     description: "",
   };
 }
@@ -1887,26 +1699,23 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(18).fork()).join();
     }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
     if (message.discountType !== DiscountType.STANDARD) {
-      writer.uint32(24).int32(discountTypeToNumber(message.discountType));
+      writer.uint32(32).int32(discountTypeToNumber(message.discountType));
     }
     if (message.scope !== DiscountScope.STUDENT_DISCOUNT) {
-      writer.uint32(32).int32(discountScopeToNumber(message.scope));
+      writer.uint32(40).int32(discountScopeToNumber(message.scope));
     }
     if (message.valueType !== DiscountValueType.AMOUNT) {
-      writer.uint32(40).int32(discountValueTypeToNumber(message.valueType));
+      writer.uint32(48).int32(discountValueTypeToNumber(message.valueType));
     }
     if (message.value !== 0) {
-      writer.uint32(49).double(message.value);
-    }
-    if (message.student !== undefined) {
-      ObjectId.encode(message.student, writer.uint32(58).fork()).join();
-    }
-    if (message.family !== undefined) {
-      ObjectId.encode(message.family, writer.uint32(66).fork()).join();
+      writer.uint32(57).double(message.value);
     }
     if (message.description !== "") {
-      writer.uint32(74).string(message.description);
+      writer.uint32(66).string(message.description);
     }
     return writer;
   },
@@ -1933,49 +1742,42 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
           message.id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
-          if (tag !== 24) {
+          if (tag !== 26) {
             break;
           }
 
-          message.discountType = discountTypeFromJSON(reader.int32());
+          message.name = reader.string();
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.scope = discountScopeFromJSON(reader.int32());
+          message.discountType = discountTypeFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.valueType = discountValueTypeFromJSON(reader.int32());
+          message.scope = discountScopeFromJSON(reader.int32());
           continue;
         case 6:
-          if (tag !== 49) {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.valueType = discountValueTypeFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 57) {
             break;
           }
 
           message.value = reader.double();
           continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.student = ObjectId.decode(reader, reader.uint32());
-          continue;
         case 8:
           if (tag !== 66) {
-            break;
-          }
-
-          message.family = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 9:
-          if (tag !== 74) {
             break;
           }
 
@@ -1994,12 +1796,11 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
       discountType: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
       scope: isSet(object.scope) ? discountScopeFromJSON(object.scope) : DiscountScope.STUDENT_DISCOUNT,
       valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-      student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
     };
   },
@@ -2012,6 +1813,9 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
     if (message.discountType !== DiscountType.STANDARD) {
       obj.discountType = discountTypeToJSON(message.discountType);
     }
@@ -2023,12 +1827,6 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
     }
     if (message.value !== 0) {
       obj.value = message.value;
-    }
-    if (message.student !== undefined) {
-      obj.student = ObjectId.toJSON(message.student);
-    }
-    if (message.family !== undefined) {
-      obj.family = ObjectId.toJSON(message.family);
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -2045,16 +1843,11 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? "";
     message.discountType = object.discountType ?? DiscountType.STANDARD;
     message.scope = object.scope ?? DiscountScope.STUDENT_DISCOUNT;
     message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
     message.value = object.value ?? 0;
-    message.student = (object.student !== undefined && object.student !== null)
-      ? ObjectId.fromPartial(object.student)
-      : undefined;
-    message.family = (object.family !== undefined && object.family !== null)
-      ? ObjectId.fromPartial(object.family)
-      : undefined;
     message.description = object.description ?? "";
     return message;
   },

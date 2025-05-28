@@ -47,12 +47,11 @@ export interface TuitionDiscount {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
+    name: string;
     discountType: DiscountType;
     scope: DiscountScope;
     valueType: DiscountValueType;
     value: number;
-    student?: ObjectId | undefined;
-    family?: ObjectId | undefined;
     description: string;
 }
 export declare const TuitionRate: MessageFns<TuitionRate>;

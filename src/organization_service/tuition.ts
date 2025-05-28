@@ -169,12 +169,11 @@ export interface TuitionDiscount {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
+  name: string;
   discountType: DiscountType;
   scope: DiscountScope;
   valueType: DiscountValueType;
   value: number;
-  student?: ObjectId | undefined;
-  family?: ObjectId | undefined;
   description: string;
 }
 
@@ -467,12 +466,11 @@ function createBaseTuitionDiscount(): TuitionDiscount {
     id: undefined,
     organization: undefined,
     schoolYear: undefined,
+    name: "",
     discountType: DiscountType.STANDARD,
     scope: DiscountScope.STUDENT_DISCOUNT,
     valueType: DiscountValueType.AMOUNT,
     value: 0,
-    student: undefined,
-    family: undefined,
     description: "",
   };
 }
@@ -488,26 +486,23 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     if (message.schoolYear !== undefined) {
       ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
     }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
+    }
     if (message.discountType !== DiscountType.STANDARD) {
-      writer.uint32(32).int32(discountTypeToNumber(message.discountType));
+      writer.uint32(40).int32(discountTypeToNumber(message.discountType));
     }
     if (message.scope !== DiscountScope.STUDENT_DISCOUNT) {
-      writer.uint32(40).int32(discountScopeToNumber(message.scope));
+      writer.uint32(48).int32(discountScopeToNumber(message.scope));
     }
     if (message.valueType !== DiscountValueType.AMOUNT) {
-      writer.uint32(48).int32(discountValueTypeToNumber(message.valueType));
+      writer.uint32(56).int32(discountValueTypeToNumber(message.valueType));
     }
     if (message.value !== 0) {
-      writer.uint32(57).double(message.value);
-    }
-    if (message.student !== undefined) {
-      ObjectId.encode(message.student, writer.uint32(66).fork()).join();
-    }
-    if (message.family !== undefined) {
-      ObjectId.encode(message.family, writer.uint32(74).fork()).join();
+      writer.uint32(65).double(message.value);
     }
     if (message.description !== "") {
-      writer.uint32(82).string(message.description);
+      writer.uint32(74).string(message.description);
     }
     return writer;
   },
@@ -541,49 +536,42 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
-          if (tag !== 32) {
+          if (tag !== 34) {
             break;
           }
 
-          message.discountType = discountTypeFromJSON(reader.int32());
+          message.name = reader.string();
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.scope = discountScopeFromJSON(reader.int32());
+          message.discountType = discountTypeFromJSON(reader.int32());
           continue;
         case 6:
           if (tag !== 48) {
             break;
           }
 
-          message.valueType = discountValueTypeFromJSON(reader.int32());
+          message.scope = discountScopeFromJSON(reader.int32());
           continue;
         case 7:
-          if (tag !== 57) {
+          if (tag !== 56) {
+            break;
+          }
+
+          message.valueType = discountValueTypeFromJSON(reader.int32());
+          continue;
+        case 8:
+          if (tag !== 65) {
             break;
           }
 
           message.value = reader.double();
           continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.student = ObjectId.decode(reader, reader.uint32());
-          continue;
         case 9:
           if (tag !== 74) {
-            break;
-          }
-
-          message.family = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 10:
-          if (tag !== 82) {
             break;
           }
 
@@ -603,12 +591,11 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
       discountType: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
       scope: isSet(object.scope) ? discountScopeFromJSON(object.scope) : DiscountScope.STUDENT_DISCOUNT,
       valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-      student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
     };
   },
@@ -624,6 +611,9 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
     }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
     if (message.discountType !== DiscountType.STANDARD) {
       obj.discountType = discountTypeToJSON(message.discountType);
     }
@@ -635,12 +625,6 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     }
     if (message.value !== 0) {
       obj.value = message.value;
-    }
-    if (message.student !== undefined) {
-      obj.student = ObjectId.toJSON(message.student);
-    }
-    if (message.family !== undefined) {
-      obj.family = ObjectId.toJSON(message.family);
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -660,16 +644,11 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    message.name = object.name ?? "";
     message.discountType = object.discountType ?? DiscountType.STANDARD;
     message.scope = object.scope ?? DiscountScope.STUDENT_DISCOUNT;
     message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
     message.value = object.value ?? 0;
-    message.student = (object.student !== undefined && object.student !== null)
-      ? ObjectId.fromPartial(object.student)
-      : undefined;
-    message.family = (object.family !== undefined && object.family !== null)
-      ? ObjectId.fromPartial(object.family)
-      : undefined;
     message.description = object.description ?? "";
     return message;
   },

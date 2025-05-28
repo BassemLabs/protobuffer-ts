@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/tuition_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteTuitionDiscountResponse = exports.DeleteTuitionDiscountRequest = exports.UpdateTuitionDiscountRequest = exports.CreateTuitionDiscountRequest = exports.ListTuitionDiscountsResponse = exports.ListTuitionDiscountsRequest = exports.GetTuitionDiscountRequest = exports.DeleteAdditionalFeeResponse = exports.DeleteAdditionalFeeRequest = exports.UpdateAdditionalFeeRequest = exports.CreateAdditionalFeeRequest = exports.ListAdditionalFeesResponse = exports.ListAdditionalFeesRequest = exports.GetAdditionalFeeRequest = exports.DeleteTuitionRateResponse = exports.DeleteTuitionRateRequest = exports.UpdateTuitionRateRequest = exports.CreateTuitionRateRequest = exports.ListTuitionRatesResponse = exports.ListTuitionRatesRequest = exports.GetTuitionRateRequest = exports.protobufPackage = void 0;
+exports.DeleteTuitionDiscountResponse = exports.DeleteTuitionDiscountRequest = exports.UpdateTuitionDiscountRequest = exports.CreateTuitionDiscountRequest = exports.ListTuitionDiscountsResponse = exports.ListTuitionDiscountsRequest = exports.GetTuitionDiscountRequest = exports.DeleteAdditionalFeeResponse = exports.DeleteAdditionalFeeRequest = exports.UpdateAdditionalFeeRequest = exports.CreateAdditionalFeeRequest = exports.ListAdditionalFeesResponse = exports.ListAdditionalFeesRequest = exports.GetAdditionalFeeRequest = exports.DeleteTuitionRateResponse = exports.DeleteTuitionRateRequest = exports.UpsertTuitionRatesRequest = exports.GradeAmount = exports.ListTuitionRatesResponse = exports.ListTuitionRatesRequest = exports.GetTuitionRateRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -81,18 +81,15 @@ exports.GetTuitionRateRequest = {
     },
 };
 function createBaseListTuitionRatesRequest() {
-    return { context: undefined, organizationId: undefined, schoolYear: undefined };
+    return { context: undefined, schoolYear: undefined };
 }
 exports.ListTuitionRatesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-        }
         if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -113,12 +110,6 @@ exports.ListTuitionRatesRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
@@ -132,7 +123,6 @@ exports.ListTuitionRatesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -140,9 +130,6 @@ exports.ListTuitionRatesRequest = {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
@@ -156,9 +143,6 @@ exports.ListTuitionRatesRequest = {
         const message = createBaseListTuitionRatesRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
@@ -218,32 +202,23 @@ exports.ListTuitionRatesResponse = {
         return message;
     },
 };
-function createBaseCreateTuitionRateRequest() {
-    return { context: undefined, organizationId: undefined, schoolYear: undefined, grade: "", amount: 0 };
+function createBaseGradeAmount() {
+    return { grade: "", amount: 0 };
 }
-exports.CreateTuitionRateRequest = {
+exports.GradeAmount = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-        }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
-        }
         if (message.grade !== "") {
-            writer.uint32(34).string(message.grade);
+            writer.uint32(10).string(message.grade);
         }
         if (message.amount !== 0) {
-            writer.uint32(41).double(message.amount);
+            writer.uint32(17).double(message.amount);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseCreateTuitionRateRequest();
+        const message = createBaseGradeAmount();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -251,28 +226,10 @@ exports.CreateTuitionRateRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
                     message.grade = reader.string();
                     continue;
-                case 5:
-                    if (tag !== 41) {
+                case 2:
+                    if (tag !== 17) {
                         break;
                     }
                     message.amount = reader.double();
@@ -287,24 +244,12 @@ exports.CreateTuitionRateRequest = {
     },
     fromJSON(object) {
         return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
-        }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
-        }
         if (message.grade !== "") {
             obj.grade = message.grade;
         }
@@ -314,47 +259,35 @@ exports.CreateTuitionRateRequest = {
         return obj;
     },
     create(base) {
-        return exports.CreateTuitionRateRequest.fromPartial(base ?? {});
+        return exports.GradeAmount.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseCreateTuitionRateRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
-            : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
-            : undefined;
+        const message = createBaseGradeAmount();
         message.grade = object.grade ?? "";
         message.amount = object.amount ?? 0;
         return message;
     },
 };
-function createBaseUpdateTuitionRateRequest() {
-    return { context: undefined, id: undefined, grade: "", amount: 0 };
+function createBaseUpsertTuitionRatesRequest() {
+    return { context: undefined, schoolYear: undefined, gradeAmounts: [] };
 }
-exports.UpdateTuitionRateRequest = {
+exports.UpsertTuitionRatesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.id !== undefined) {
-            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
         }
-        if (message.grade !== "") {
-            writer.uint32(26).string(message.grade);
-        }
-        if (message.amount !== 0) {
-            writer.uint32(33).double(message.amount);
+        for (const v of message.gradeAmounts) {
+            exports.GradeAmount.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUpdateTuitionRateRequest();
+        const message = createBaseUpsertTuitionRatesRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -368,19 +301,13 @@ exports.UpdateTuitionRateRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.grade = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 33) {
-                        break;
-                    }
-                    message.amount = reader.double();
+                    message.gradeAmounts.push(exports.GradeAmount.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -393,9 +320,10 @@ exports.UpdateTuitionRateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
-            amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            gradeAmounts: globalThis.Array.isArray(object?.gradeAmounts)
+                ? object.gradeAmounts.map((e) => exports.GradeAmount.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -403,28 +331,26 @@ exports.UpdateTuitionRateRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.id !== undefined) {
-            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
-        }
-        if (message.amount !== 0) {
-            obj.amount = message.amount;
+        if (message.gradeAmounts?.length) {
+            obj.gradeAmounts = message.gradeAmounts.map((e) => exports.GradeAmount.toJSON(e));
         }
         return obj;
     },
     create(base) {
-        return exports.UpdateTuitionRateRequest.fromPartial(base ?? {});
+        return exports.UpsertTuitionRatesRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseUpdateTuitionRateRequest();
+        const message = createBaseUpsertTuitionRatesRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.grade = object.grade ?? "";
-        message.amount = object.amount ?? 0;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.gradeAmounts = object.gradeAmounts?.map((e) => exports.GradeAmount.fromPartial(e)) || [];
         return message;
     },
 };
@@ -615,18 +541,15 @@ exports.GetAdditionalFeeRequest = {
     },
 };
 function createBaseListAdditionalFeesRequest() {
-    return { context: undefined, organizationId: undefined, schoolYear: undefined };
+    return { context: undefined, schoolYear: undefined };
 }
 exports.ListAdditionalFeesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-        }
         if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -647,12 +570,6 @@ exports.ListAdditionalFeesRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
@@ -666,7 +583,6 @@ exports.ListAdditionalFeesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -674,9 +590,6 @@ exports.ListAdditionalFeesRequest = {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
@@ -690,9 +603,6 @@ exports.ListAdditionalFeesRequest = {
         const message = createBaseListAdditionalFeesRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
@@ -753,38 +663,27 @@ exports.ListAdditionalFeesResponse = {
     },
 };
 function createBaseCreateAdditionalFeeRequest() {
-    return {
-        context: undefined,
-        organizationId: undefined,
-        schoolYear: undefined,
-        name: "",
-        description: "",
-        amount: 0,
-        isOptional: false,
-    };
+    return { context: undefined, schoolYear: undefined, name: "", description: "", amount: 0, isOptional: false };
 }
 exports.CreateAdditionalFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-        }
         if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
         }
         if (message.name !== "") {
-            writer.uint32(34).string(message.name);
+            writer.uint32(26).string(message.name);
         }
         if (message.description !== "") {
-            writer.uint32(42).string(message.description);
+            writer.uint32(34).string(message.description);
         }
         if (message.amount !== 0) {
-            writer.uint32(49).double(message.amount);
+            writer.uint32(41).double(message.amount);
         }
         if (message.isOptional !== false) {
-            writer.uint32(56).bool(message.isOptional);
+            writer.uint32(48).bool(message.isOptional);
         }
         return writer;
     },
@@ -805,34 +704,28 @@ exports.CreateAdditionalFeeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.name = reader.string();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
                     message.description = reader.string();
                     continue;
-                case 6:
-                    if (tag !== 49) {
+                case 5:
+                    if (tag !== 41) {
                         break;
                     }
                     message.amount = reader.double();
                     continue;
-                case 7:
-                    if (tag !== 56) {
+                case 6:
+                    if (tag !== 48) {
                         break;
                     }
                     message.isOptional = reader.bool();
@@ -848,7 +741,6 @@ exports.CreateAdditionalFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
@@ -860,9 +752,6 @@ exports.CreateAdditionalFeeRequest = {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
@@ -888,9 +777,6 @@ exports.CreateAdditionalFeeRequest = {
         const message = createBaseCreateAdditionalFeeRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
@@ -1213,18 +1099,15 @@ exports.GetTuitionDiscountRequest = {
     },
 };
 function createBaseListTuitionDiscountsRequest() {
-    return { context: undefined, organizationId: undefined, schoolYear: undefined };
+    return { context: undefined, schoolYear: undefined };
 }
 exports.ListTuitionDiscountsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-        }
         if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -1245,12 +1128,6 @@ exports.ListTuitionDiscountsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
@@ -1264,7 +1141,6 @@ exports.ListTuitionDiscountsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -1272,9 +1148,6 @@ exports.ListTuitionDiscountsRequest = {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
@@ -1288,9 +1161,6 @@ exports.ListTuitionDiscountsRequest = {
         const message = createBaseListTuitionDiscountsRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
@@ -1355,14 +1225,12 @@ exports.ListTuitionDiscountsResponse = {
 function createBaseCreateTuitionDiscountRequest() {
     return {
         context: undefined,
-        organizationId: undefined,
         schoolYear: undefined,
+        name: "",
         discountType: tuition_1.DiscountType.STANDARD,
         scope: tuition_1.DiscountScope.STUDENT_DISCOUNT,
         valueType: tuition_1.DiscountValueType.AMOUNT,
         value: 0,
-        student: undefined,
-        family: undefined,
         description: "",
     };
 }
@@ -1371,11 +1239,11 @@ exports.CreateTuitionDiscountRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
-        }
         if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
         }
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             writer.uint32(32).int32((0, tuition_1.discountTypeToNumber)(message.discountType));
@@ -1389,14 +1257,8 @@ exports.CreateTuitionDiscountRequest = {
         if (message.value !== 0) {
             writer.uint32(57).double(message.value);
         }
-        if (message.student !== undefined) {
-            object_id_1.ObjectId.encode(message.student, writer.uint32(66).fork()).join();
-        }
-        if (message.family !== undefined) {
-            object_id_1.ObjectId.encode(message.family, writer.uint32(74).fork()).join();
-        }
         if (message.description !== "") {
-            writer.uint32(82).string(message.description);
+            writer.uint32(66).string(message.description);
         }
         return writer;
     },
@@ -1417,13 +1279,13 @@ exports.CreateTuitionDiscountRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 32) {
@@ -1453,18 +1315,6 @@ exports.CreateTuitionDiscountRequest = {
                     if (tag !== 66) {
                         break;
                     }
-                    message.student = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 9:
-                    if (tag !== 74) {
-                        break;
-                    }
-                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 10:
-                    if (tag !== 82) {
-                        break;
-                    }
                     message.description = reader.string();
                     continue;
             }
@@ -1478,14 +1328,12 @@ exports.CreateTuitionDiscountRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
             discountType: isSet(object.discountType) ? (0, tuition_1.discountTypeFromJSON)(object.discountType) : tuition_1.DiscountType.STANDARD,
             scope: isSet(object.scope) ? (0, tuition_1.discountScopeFromJSON)(object.scope) : tuition_1.DiscountScope.STUDENT_DISCOUNT,
             valueType: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-            student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
         };
     },
@@ -1494,11 +1342,11 @@ exports.CreateTuitionDiscountRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
-        }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
         }
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             obj.discountType = (0, tuition_1.discountTypeToJSON)(message.discountType);
@@ -1511,12 +1359,6 @@ exports.CreateTuitionDiscountRequest = {
         }
         if (message.value !== 0) {
             obj.value = message.value;
-        }
-        if (message.student !== undefined) {
-            obj.student = object_id_1.ObjectId.toJSON(message.student);
-        }
-        if (message.family !== undefined) {
-            obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.description !== "") {
             obj.description = message.description;
@@ -1531,22 +1373,14 @@ exports.CreateTuitionDiscountRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
-            : undefined;
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
+        message.name = object.name ?? "";
         message.discountType = object.discountType ?? tuition_1.DiscountType.STANDARD;
         message.scope = object.scope ?? tuition_1.DiscountScope.STUDENT_DISCOUNT;
         message.valueType = object.valueType ?? tuition_1.DiscountValueType.AMOUNT;
         message.value = object.value ?? 0;
-        message.student = (object.student !== undefined && object.student !== null)
-            ? object_id_1.ObjectId.fromPartial(object.student)
-            : undefined;
-        message.family = (object.family !== undefined && object.family !== null)
-            ? object_id_1.ObjectId.fromPartial(object.family)
-            : undefined;
         message.description = object.description ?? "";
         return message;
     },
@@ -1555,12 +1389,11 @@ function createBaseUpdateTuitionDiscountRequest() {
     return {
         context: undefined,
         id: undefined,
+        name: "",
         discountType: tuition_1.DiscountType.STANDARD,
         scope: tuition_1.DiscountScope.STUDENT_DISCOUNT,
         valueType: tuition_1.DiscountValueType.AMOUNT,
         value: 0,
-        student: undefined,
-        family: undefined,
         description: "",
     };
 }
@@ -1572,26 +1405,23 @@ exports.UpdateTuitionDiscountRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
-            writer.uint32(24).int32((0, tuition_1.discountTypeToNumber)(message.discountType));
+            writer.uint32(32).int32((0, tuition_1.discountTypeToNumber)(message.discountType));
         }
         if (message.scope !== tuition_1.DiscountScope.STUDENT_DISCOUNT) {
-            writer.uint32(32).int32((0, tuition_1.discountScopeToNumber)(message.scope));
+            writer.uint32(40).int32((0, tuition_1.discountScopeToNumber)(message.scope));
         }
         if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
-            writer.uint32(40).int32((0, tuition_1.discountValueTypeToNumber)(message.valueType));
+            writer.uint32(48).int32((0, tuition_1.discountValueTypeToNumber)(message.valueType));
         }
         if (message.value !== 0) {
-            writer.uint32(49).double(message.value);
-        }
-        if (message.student !== undefined) {
-            object_id_1.ObjectId.encode(message.student, writer.uint32(58).fork()).join();
-        }
-        if (message.family !== undefined) {
-            object_id_1.ObjectId.encode(message.family, writer.uint32(66).fork()).join();
+            writer.uint32(57).double(message.value);
         }
         if (message.description !== "") {
-            writer.uint32(74).string(message.description);
+            writer.uint32(66).string(message.description);
         }
         return writer;
     },
@@ -1615,43 +1445,37 @@ exports.UpdateTuitionDiscountRequest = {
                     message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
-                    if (tag !== 24) {
+                    if (tag !== 26) {
                         break;
                     }
-                    message.discountType = (0, tuition_1.discountTypeFromJSON)(reader.int32());
+                    message.name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 32) {
                         break;
                     }
-                    message.scope = (0, tuition_1.discountScopeFromJSON)(reader.int32());
+                    message.discountType = (0, tuition_1.discountTypeFromJSON)(reader.int32());
                     continue;
                 case 5:
                     if (tag !== 40) {
                         break;
                     }
-                    message.valueType = (0, tuition_1.discountValueTypeFromJSON)(reader.int32());
+                    message.scope = (0, tuition_1.discountScopeFromJSON)(reader.int32());
                     continue;
                 case 6:
-                    if (tag !== 49) {
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.valueType = (0, tuition_1.discountValueTypeFromJSON)(reader.int32());
+                    continue;
+                case 7:
+                    if (tag !== 57) {
                         break;
                     }
                     message.value = reader.double();
                     continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.student = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
                 case 8:
                     if (tag !== 66) {
-                        break;
-                    }
-                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 9:
-                    if (tag !== 74) {
                         break;
                     }
                     message.description = reader.string();
@@ -1668,12 +1492,11 @@ exports.UpdateTuitionDiscountRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
             discountType: isSet(object.discountType) ? (0, tuition_1.discountTypeFromJSON)(object.discountType) : tuition_1.DiscountType.STANDARD,
             scope: isSet(object.scope) ? (0, tuition_1.discountScopeFromJSON)(object.scope) : tuition_1.DiscountScope.STUDENT_DISCOUNT,
             valueType: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-            student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
         };
     },
@@ -1684,6 +1507,9 @@ exports.UpdateTuitionDiscountRequest = {
         }
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
         }
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             obj.discountType = (0, tuition_1.discountTypeToJSON)(message.discountType);
@@ -1696,12 +1522,6 @@ exports.UpdateTuitionDiscountRequest = {
         }
         if (message.value !== 0) {
             obj.value = message.value;
-        }
-        if (message.student !== undefined) {
-            obj.student = object_id_1.ObjectId.toJSON(message.student);
-        }
-        if (message.family !== undefined) {
-            obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.description !== "") {
             obj.description = message.description;
@@ -1717,16 +1537,11 @@ exports.UpdateTuitionDiscountRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? "";
         message.discountType = object.discountType ?? tuition_1.DiscountType.STANDARD;
         message.scope = object.scope ?? tuition_1.DiscountScope.STUDENT_DISCOUNT;
         message.valueType = object.valueType ?? tuition_1.DiscountValueType.AMOUNT;
         message.value = object.value ?? 0;
-        message.student = (object.student !== undefined && object.student !== null)
-            ? object_id_1.ObjectId.fromPartial(object.student)
-            : undefined;
-        message.family = (object.family !== undefined && object.family !== null)
-            ? object_id_1.ObjectId.fromPartial(object.family)
-            : undefined;
         message.description = object.description ?? "";
         return message;
     },

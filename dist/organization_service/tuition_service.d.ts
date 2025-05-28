@@ -10,24 +10,19 @@ export interface GetTuitionRateRequest {
 }
 export interface ListTuitionRatesRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
 }
 export interface ListTuitionRatesResponse {
     rates: TuitionRate[];
 }
-export interface CreateTuitionRateRequest {
-    context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+export interface GradeAmount {
     grade: string;
     amount: number;
 }
-export interface UpdateTuitionRateRequest {
+export interface UpsertTuitionRatesRequest {
     context: RequestContext | undefined;
-    id: ObjectId | undefined;
-    grade: string;
-    amount: number;
+    schoolYear: ObjectId | undefined;
+    gradeAmounts: GradeAmount[];
 }
 export interface DeleteTuitionRateRequest {
     context: RequestContext | undefined;
@@ -43,7 +38,6 @@ export interface GetAdditionalFeeRequest {
 }
 export interface ListAdditionalFeesRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
 }
 export interface ListAdditionalFeesResponse {
@@ -51,7 +45,6 @@ export interface ListAdditionalFeesResponse {
 }
 export interface CreateAdditionalFeeRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
     name: string;
     description: string;
@@ -80,7 +73,6 @@ export interface GetTuitionDiscountRequest {
 }
 export interface ListTuitionDiscountsRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
 }
 export interface ListTuitionDiscountsResponse {
@@ -88,25 +80,22 @@ export interface ListTuitionDiscountsResponse {
 }
 export interface CreateTuitionDiscountRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
+    name: string;
     discountType: DiscountType;
     scope: DiscountScope;
     valueType: DiscountValueType;
     value: number;
-    student?: ObjectId | undefined;
-    family?: ObjectId | undefined;
     description: string;
 }
 export interface UpdateTuitionDiscountRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
+    name: string;
     discountType: DiscountType;
     scope: DiscountScope;
     valueType: DiscountValueType;
     value: number;
-    student?: ObjectId | undefined;
-    family?: ObjectId | undefined;
     description: string;
 }
 export interface DeleteTuitionDiscountRequest {
@@ -119,8 +108,8 @@ export interface DeleteTuitionDiscountResponse {
 export declare const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest>;
 export declare const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest>;
 export declare const ListTuitionRatesResponse: MessageFns<ListTuitionRatesResponse>;
-export declare const CreateTuitionRateRequest: MessageFns<CreateTuitionRateRequest>;
-export declare const UpdateTuitionRateRequest: MessageFns<UpdateTuitionRateRequest>;
+export declare const GradeAmount: MessageFns<GradeAmount>;
+export declare const UpsertTuitionRatesRequest: MessageFns<UpsertTuitionRatesRequest>;
 export declare const DeleteTuitionRateRequest: MessageFns<DeleteTuitionRateRequest>;
 export declare const DeleteTuitionRateResponse: MessageFns<DeleteTuitionRateResponse>;
 export declare const GetAdditionalFeeRequest: MessageFns<GetAdditionalFeeRequest>;
