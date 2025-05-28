@@ -57,46 +57,46 @@ export function discountTypeToNumber(object: DiscountType): number {
   }
 }
 
-export enum DiscountScope {
-  STUDENT_DISCOUNT = "STUDENT_DISCOUNT",
-  FAMILY_DISCOUNT = "FAMILY_DISCOUNT",
+export enum FeeScope {
+  STUDENT_FEE = "STUDENT_FEE",
+  FAMILY_FEE = "FAMILY_FEE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export function discountScopeFromJSON(object: any): DiscountScope {
+export function feeScopeFromJSON(object: any): FeeScope {
   switch (object) {
     case 1:
-    case "STUDENT_DISCOUNT":
-      return DiscountScope.STUDENT_DISCOUNT;
+    case "STUDENT_FEE":
+      return FeeScope.STUDENT_FEE;
     case 2:
-    case "FAMILY_DISCOUNT":
-      return DiscountScope.FAMILY_DISCOUNT;
+    case "FAMILY_FEE":
+      return FeeScope.FAMILY_FEE;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return DiscountScope.UNRECOGNIZED;
+      return FeeScope.UNRECOGNIZED;
   }
 }
 
-export function discountScopeToJSON(object: DiscountScope): string {
+export function feeScopeToJSON(object: FeeScope): string {
   switch (object) {
-    case DiscountScope.STUDENT_DISCOUNT:
-      return "STUDENT_DISCOUNT";
-    case DiscountScope.FAMILY_DISCOUNT:
-      return "FAMILY_DISCOUNT";
-    case DiscountScope.UNRECOGNIZED:
+    case FeeScope.STUDENT_FEE:
+      return "STUDENT_FEE";
+    case FeeScope.FAMILY_FEE:
+      return "FAMILY_FEE";
+    case FeeScope.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
-export function discountScopeToNumber(object: DiscountScope): number {
+export function feeScopeToNumber(object: FeeScope): number {
   switch (object) {
-    case DiscountScope.STUDENT_DISCOUNT:
+    case FeeScope.STUDENT_FEE:
       return 1;
-    case DiscountScope.FAMILY_DISCOUNT:
+    case FeeScope.FAMILY_FEE:
       return 2;
-    case DiscountScope.UNRECOGNIZED:
+    case FeeScope.UNRECOGNIZED:
     default:
       return -1;
   }
@@ -163,6 +163,7 @@ export interface AdditionalFee {
   description: string;
   amount: number;
   isOptional: boolean;
+  scope: FeeScope;
 }
 
 export interface TuitionDiscount {
@@ -171,7 +172,7 @@ export interface TuitionDiscount {
   schoolYear: ObjectId | undefined;
   name: string;
   discountType: DiscountType;
-  scope: DiscountScope;
+  scope: FeeScope;
   valueType: DiscountValueType;
   value: number;
   description: string;
@@ -309,6 +310,7 @@ function createBaseAdditionalFee(): AdditionalFee {
     description: "",
     amount: 0,
     isOptional: false,
+    scope: FeeScope.STUDENT_FEE,
   };
 }
 
@@ -334,6 +336,9 @@ export const AdditionalFee: MessageFns<AdditionalFee> = {
     }
     if (message.isOptional !== false) {
       writer.uint32(56).bool(message.isOptional);
+    }
+    if (message.scope !== FeeScope.STUDENT_FEE) {
+      writer.uint32(64).int32(feeScopeToNumber(message.scope));
     }
     return writer;
   },
@@ -394,6 +399,13 @@ export const AdditionalFee: MessageFns<AdditionalFee> = {
 
           message.isOptional = reader.bool();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.scope = feeScopeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -412,6 +424,7 @@ export const AdditionalFee: MessageFns<AdditionalFee> = {
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
       isOptional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
+      scope: isSet(object.scope) ? feeScopeFromJSON(object.scope) : FeeScope.STUDENT_FEE,
     };
   },
 
@@ -438,6 +451,9 @@ export const AdditionalFee: MessageFns<AdditionalFee> = {
     if (message.isOptional !== false) {
       obj.isOptional = message.isOptional;
     }
+    if (message.scope !== FeeScope.STUDENT_FEE) {
+      obj.scope = feeScopeToJSON(message.scope);
+    }
     return obj;
   },
 
@@ -457,6 +473,7 @@ export const AdditionalFee: MessageFns<AdditionalFee> = {
     message.description = object.description ?? "";
     message.amount = object.amount ?? 0;
     message.isOptional = object.isOptional ?? false;
+    message.scope = object.scope ?? FeeScope.STUDENT_FEE;
     return message;
   },
 };
@@ -468,7 +485,7 @@ function createBaseTuitionDiscount(): TuitionDiscount {
     schoolYear: undefined,
     name: "",
     discountType: DiscountType.STANDARD,
-    scope: DiscountScope.STUDENT_DISCOUNT,
+    scope: FeeScope.STUDENT_FEE,
     valueType: DiscountValueType.AMOUNT,
     value: 0,
     description: "",
@@ -492,8 +509,8 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     if (message.discountType !== DiscountType.STANDARD) {
       writer.uint32(40).int32(discountTypeToNumber(message.discountType));
     }
-    if (message.scope !== DiscountScope.STUDENT_DISCOUNT) {
-      writer.uint32(48).int32(discountScopeToNumber(message.scope));
+    if (message.scope !== FeeScope.STUDENT_FEE) {
+      writer.uint32(48).int32(feeScopeToNumber(message.scope));
     }
     if (message.valueType !== DiscountValueType.AMOUNT) {
       writer.uint32(56).int32(discountValueTypeToNumber(message.valueType));
@@ -554,7 +571,7 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
             break;
           }
 
-          message.scope = discountScopeFromJSON(reader.int32());
+          message.scope = feeScopeFromJSON(reader.int32());
           continue;
         case 7:
           if (tag !== 56) {
@@ -593,7 +610,7 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       discountType: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
-      scope: isSet(object.scope) ? discountScopeFromJSON(object.scope) : DiscountScope.STUDENT_DISCOUNT,
+      scope: isSet(object.scope) ? feeScopeFromJSON(object.scope) : FeeScope.STUDENT_FEE,
       valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
@@ -617,8 +634,8 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     if (message.discountType !== DiscountType.STANDARD) {
       obj.discountType = discountTypeToJSON(message.discountType);
     }
-    if (message.scope !== DiscountScope.STUDENT_DISCOUNT) {
-      obj.scope = discountScopeToJSON(message.scope);
+    if (message.scope !== FeeScope.STUDENT_FEE) {
+      obj.scope = feeScopeToJSON(message.scope);
     }
     if (message.valueType !== DiscountValueType.AMOUNT) {
       obj.valueType = discountValueTypeToJSON(message.valueType);
@@ -646,7 +663,7 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
       : undefined;
     message.name = object.name ?? "";
     message.discountType = object.discountType ?? DiscountType.STANDARD;
-    message.scope = object.scope ?? DiscountScope.STUDENT_DISCOUNT;
+    message.scope = object.scope ?? FeeScope.STUDENT_FEE;
     message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
     message.value = object.value ?? 0;
     message.description = object.description ?? "";

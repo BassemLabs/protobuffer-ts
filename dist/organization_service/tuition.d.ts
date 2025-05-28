@@ -11,14 +11,14 @@ export declare enum DiscountType {
 export declare function discountTypeFromJSON(object: any): DiscountType;
 export declare function discountTypeToJSON(object: DiscountType): string;
 export declare function discountTypeToNumber(object: DiscountType): number;
-export declare enum DiscountScope {
-    STUDENT_DISCOUNT = "STUDENT_DISCOUNT",
-    FAMILY_DISCOUNT = "FAMILY_DISCOUNT",
+export declare enum FeeScope {
+    STUDENT_FEE = "STUDENT_FEE",
+    FAMILY_FEE = "FAMILY_FEE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
-export declare function discountScopeFromJSON(object: any): DiscountScope;
-export declare function discountScopeToJSON(object: DiscountScope): string;
-export declare function discountScopeToNumber(object: DiscountScope): number;
+export declare function feeScopeFromJSON(object: any): FeeScope;
+export declare function feeScopeToJSON(object: FeeScope): string;
+export declare function feeScopeToNumber(object: FeeScope): number;
 export declare enum DiscountValueType {
     AMOUNT = "AMOUNT",
     PERCENTAGE = "PERCENTAGE",
@@ -42,6 +42,7 @@ export interface AdditionalFee {
     description: string;
     amount: number;
     isOptional: boolean;
+    scope: FeeScope;
 }
 export interface TuitionDiscount {
     id: ObjectId | undefined;
@@ -49,7 +50,7 @@ export interface TuitionDiscount {
     schoolYear: ObjectId | undefined;
     name: string;
     discountType: DiscountType;
-    scope: DiscountScope;
+    scope: FeeScope;
     valueType: DiscountValueType;
     value: number;
     description: string;

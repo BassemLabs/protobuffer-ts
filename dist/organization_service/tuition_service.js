@@ -663,7 +663,15 @@ exports.ListAdditionalFeesResponse = {
     },
 };
 function createBaseCreateAdditionalFeeRequest() {
-    return { context: undefined, schoolYear: undefined, name: "", description: "", amount: 0, isOptional: false };
+    return {
+        context: undefined,
+        schoolYear: undefined,
+        name: "",
+        description: "",
+        amount: 0,
+        isOptional: false,
+        scope: tuition_1.FeeScope.STUDENT_FEE,
+    };
 }
 exports.CreateAdditionalFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -684,6 +692,9 @@ exports.CreateAdditionalFeeRequest = {
         }
         if (message.isOptional !== false) {
             writer.uint32(48).bool(message.isOptional);
+        }
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            writer.uint32(56).int32((0, tuition_1.feeScopeToNumber)(message.scope));
         }
         return writer;
     },
@@ -730,6 +741,12 @@ exports.CreateAdditionalFeeRequest = {
                     }
                     message.isOptional = reader.bool();
                     continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.scope = (0, tuition_1.feeScopeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -746,6 +763,7 @@ exports.CreateAdditionalFeeRequest = {
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             isOptional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
+            scope: isSet(object.scope) ? (0, tuition_1.feeScopeFromJSON)(object.scope) : tuition_1.FeeScope.STUDENT_FEE,
         };
     },
     toJSON(message) {
@@ -768,6 +786,9 @@ exports.CreateAdditionalFeeRequest = {
         if (message.isOptional !== false) {
             obj.isOptional = message.isOptional;
         }
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            obj.scope = (0, tuition_1.feeScopeToJSON)(message.scope);
+        }
         return obj;
     },
     create(base) {
@@ -785,11 +806,20 @@ exports.CreateAdditionalFeeRequest = {
         message.description = object.description ?? "";
         message.amount = object.amount ?? 0;
         message.isOptional = object.isOptional ?? false;
+        message.scope = object.scope ?? tuition_1.FeeScope.STUDENT_FEE;
         return message;
     },
 };
 function createBaseUpdateAdditionalFeeRequest() {
-    return { context: undefined, id: undefined, name: "", description: "", amount: 0, isOptional: false };
+    return {
+        context: undefined,
+        id: undefined,
+        name: "",
+        description: "",
+        amount: 0,
+        isOptional: false,
+        scope: tuition_1.FeeScope.STUDENT_FEE,
+    };
 }
 exports.UpdateAdditionalFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -810,6 +840,9 @@ exports.UpdateAdditionalFeeRequest = {
         }
         if (message.isOptional !== false) {
             writer.uint32(48).bool(message.isOptional);
+        }
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            writer.uint32(56).int32((0, tuition_1.feeScopeToNumber)(message.scope));
         }
         return writer;
     },
@@ -856,6 +889,12 @@ exports.UpdateAdditionalFeeRequest = {
                     }
                     message.isOptional = reader.bool();
                     continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.scope = (0, tuition_1.feeScopeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -872,6 +911,7 @@ exports.UpdateAdditionalFeeRequest = {
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             isOptional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
+            scope: isSet(object.scope) ? (0, tuition_1.feeScopeFromJSON)(object.scope) : tuition_1.FeeScope.STUDENT_FEE,
         };
     },
     toJSON(message) {
@@ -894,6 +934,9 @@ exports.UpdateAdditionalFeeRequest = {
         if (message.isOptional !== false) {
             obj.isOptional = message.isOptional;
         }
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            obj.scope = (0, tuition_1.feeScopeToJSON)(message.scope);
+        }
         return obj;
     },
     create(base) {
@@ -909,6 +952,7 @@ exports.UpdateAdditionalFeeRequest = {
         message.description = object.description ?? "";
         message.amount = object.amount ?? 0;
         message.isOptional = object.isOptional ?? false;
+        message.scope = object.scope ?? tuition_1.FeeScope.STUDENT_FEE;
         return message;
     },
 };
@@ -1228,7 +1272,7 @@ function createBaseCreateTuitionDiscountRequest() {
         schoolYear: undefined,
         name: "",
         discountType: tuition_1.DiscountType.STANDARD,
-        scope: tuition_1.DiscountScope.STUDENT_DISCOUNT,
+        scope: tuition_1.FeeScope.STUDENT_FEE,
         valueType: tuition_1.DiscountValueType.AMOUNT,
         value: 0,
         description: "",
@@ -1248,8 +1292,8 @@ exports.CreateTuitionDiscountRequest = {
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             writer.uint32(32).int32((0, tuition_1.discountTypeToNumber)(message.discountType));
         }
-        if (message.scope !== tuition_1.DiscountScope.STUDENT_DISCOUNT) {
-            writer.uint32(40).int32((0, tuition_1.discountScopeToNumber)(message.scope));
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            writer.uint32(40).int32((0, tuition_1.feeScopeToNumber)(message.scope));
         }
         if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
             writer.uint32(48).int32((0, tuition_1.discountValueTypeToNumber)(message.valueType));
@@ -1297,7 +1341,7 @@ exports.CreateTuitionDiscountRequest = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.scope = (0, tuition_1.discountScopeFromJSON)(reader.int32());
+                    message.scope = (0, tuition_1.feeScopeFromJSON)(reader.int32());
                     continue;
                 case 6:
                     if (tag !== 48) {
@@ -1331,7 +1375,7 @@ exports.CreateTuitionDiscountRequest = {
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             discountType: isSet(object.discountType) ? (0, tuition_1.discountTypeFromJSON)(object.discountType) : tuition_1.DiscountType.STANDARD,
-            scope: isSet(object.scope) ? (0, tuition_1.discountScopeFromJSON)(object.scope) : tuition_1.DiscountScope.STUDENT_DISCOUNT,
+            scope: isSet(object.scope) ? (0, tuition_1.feeScopeFromJSON)(object.scope) : tuition_1.FeeScope.STUDENT_FEE,
             valueType: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
@@ -1351,8 +1395,8 @@ exports.CreateTuitionDiscountRequest = {
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             obj.discountType = (0, tuition_1.discountTypeToJSON)(message.discountType);
         }
-        if (message.scope !== tuition_1.DiscountScope.STUDENT_DISCOUNT) {
-            obj.scope = (0, tuition_1.discountScopeToJSON)(message.scope);
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            obj.scope = (0, tuition_1.feeScopeToJSON)(message.scope);
         }
         if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
             obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.valueType);
@@ -1378,7 +1422,7 @@ exports.CreateTuitionDiscountRequest = {
             : undefined;
         message.name = object.name ?? "";
         message.discountType = object.discountType ?? tuition_1.DiscountType.STANDARD;
-        message.scope = object.scope ?? tuition_1.DiscountScope.STUDENT_DISCOUNT;
+        message.scope = object.scope ?? tuition_1.FeeScope.STUDENT_FEE;
         message.valueType = object.valueType ?? tuition_1.DiscountValueType.AMOUNT;
         message.value = object.value ?? 0;
         message.description = object.description ?? "";
@@ -1391,7 +1435,7 @@ function createBaseUpdateTuitionDiscountRequest() {
         id: undefined,
         name: "",
         discountType: tuition_1.DiscountType.STANDARD,
-        scope: tuition_1.DiscountScope.STUDENT_DISCOUNT,
+        scope: tuition_1.FeeScope.STUDENT_FEE,
         valueType: tuition_1.DiscountValueType.AMOUNT,
         value: 0,
         description: "",
@@ -1411,8 +1455,8 @@ exports.UpdateTuitionDiscountRequest = {
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             writer.uint32(32).int32((0, tuition_1.discountTypeToNumber)(message.discountType));
         }
-        if (message.scope !== tuition_1.DiscountScope.STUDENT_DISCOUNT) {
-            writer.uint32(40).int32((0, tuition_1.discountScopeToNumber)(message.scope));
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            writer.uint32(40).int32((0, tuition_1.feeScopeToNumber)(message.scope));
         }
         if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
             writer.uint32(48).int32((0, tuition_1.discountValueTypeToNumber)(message.valueType));
@@ -1460,7 +1504,7 @@ exports.UpdateTuitionDiscountRequest = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.scope = (0, tuition_1.discountScopeFromJSON)(reader.int32());
+                    message.scope = (0, tuition_1.feeScopeFromJSON)(reader.int32());
                     continue;
                 case 6:
                     if (tag !== 48) {
@@ -1494,7 +1538,7 @@ exports.UpdateTuitionDiscountRequest = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             discountType: isSet(object.discountType) ? (0, tuition_1.discountTypeFromJSON)(object.discountType) : tuition_1.DiscountType.STANDARD,
-            scope: isSet(object.scope) ? (0, tuition_1.discountScopeFromJSON)(object.scope) : tuition_1.DiscountScope.STUDENT_DISCOUNT,
+            scope: isSet(object.scope) ? (0, tuition_1.feeScopeFromJSON)(object.scope) : tuition_1.FeeScope.STUDENT_FEE,
             valueType: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
@@ -1514,8 +1558,8 @@ exports.UpdateTuitionDiscountRequest = {
         if (message.discountType !== tuition_1.DiscountType.STANDARD) {
             obj.discountType = (0, tuition_1.discountTypeToJSON)(message.discountType);
         }
-        if (message.scope !== tuition_1.DiscountScope.STUDENT_DISCOUNT) {
-            obj.scope = (0, tuition_1.discountScopeToJSON)(message.scope);
+        if (message.scope !== tuition_1.FeeScope.STUDENT_FEE) {
+            obj.scope = (0, tuition_1.feeScopeToJSON)(message.scope);
         }
         if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
             obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.valueType);
@@ -1539,7 +1583,7 @@ exports.UpdateTuitionDiscountRequest = {
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? "";
         message.discountType = object.discountType ?? tuition_1.DiscountType.STANDARD;
-        message.scope = object.scope ?? tuition_1.DiscountScope.STUDENT_DISCOUNT;
+        message.scope = object.scope ?? tuition_1.FeeScope.STUDENT_FEE;
         message.valueType = object.valueType ?? tuition_1.DiscountValueType.AMOUNT;
         message.value = object.value ?? 0;
         message.description = object.description ?? "";
