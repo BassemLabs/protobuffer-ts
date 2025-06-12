@@ -22,7 +22,13 @@ import {
   feeScopeFromJSON,
   feeScopeToJSON,
   feeScopeToNumber,
+  PaymentInstallment,
+  PaymentScheduleType,
+  paymentScheduleTypeFromJSON,
+  paymentScheduleTypeToJSON,
+  paymentScheduleTypeToNumber,
   TuitionDiscount,
+  TuitionPlan,
   TuitionRate,
 } from "./tuition";
 
@@ -31,7 +37,8 @@ export const protobufPackage = "organization_service";
 /** TuitionRate messages */
 export interface GetTuitionRateRequest {
   context: RequestContext | undefined;
-  id: ObjectId | undefined;
+  schoolYear: ObjectId | undefined;
+  grade: string;
 }
 
 export interface ListTuitionRatesRequest {
@@ -52,15 +59,6 @@ export interface UpsertTuitionRatesRequest {
   context: RequestContext | undefined;
   schoolYear: ObjectId | undefined;
   gradeAmounts: GradeAmount[];
-}
-
-export interface DeleteTuitionRateRequest {
-  context: RequestContext | undefined;
-  id: ObjectId | undefined;
-}
-
-export interface DeleteTuitionRateResponse {
-  success: boolean;
 }
 
 /** AdditionalFee messages */
@@ -153,8 +151,54 @@ export interface DeleteTuitionDiscountResponse {
   success: boolean;
 }
 
+/** TuitionPlan messages */
+export interface GetTuitionPlanRequest {
+  context: RequestContext | undefined;
+  id: ObjectId | undefined;
+}
+
+export interface ListTuitionPlansRequest {
+  context: RequestContext | undefined;
+  schoolYear: ObjectId | undefined;
+  archived?: boolean | undefined;
+}
+
+export interface ListTuitionPlansResponse {
+  plans: TuitionPlan[];
+}
+
+export interface CreateTuitionPlanRequest {
+  context: RequestContext | undefined;
+  schoolYear: ObjectId | undefined;
+  name: string;
+  description: string;
+  scheduleType: PaymentScheduleType;
+  numberOfMonths?: number | undefined;
+  installments: PaymentInstallment[];
+}
+
+export interface UpdateTuitionPlanRequest {
+  context: RequestContext | undefined;
+  id: ObjectId | undefined;
+  name: string;
+  description: string;
+  scheduleType: PaymentScheduleType;
+  numberOfMonths?: number | undefined;
+  installments: PaymentInstallment[];
+}
+
+export interface ArchiveTuitionPlanRequest {
+  context: RequestContext | undefined;
+  id: ObjectId | undefined;
+}
+
+export interface UnarchiveTuitionPlanRequest {
+  context: RequestContext | undefined;
+  id: ObjectId | undefined;
+}
+
 function createBaseGetTuitionRateRequest(): GetTuitionRateRequest {
-  return { context: undefined, id: undefined };
+  return { context: undefined, schoolYear: undefined, grade: "" };
 }
 
 export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
@@ -162,8 +206,11 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    if (message.grade !== "") {
+      writer.uint32(26).string(message.grade);
     }
     return writer;
   },
@@ -187,7 +234,14 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.grade = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -201,7 +255,8 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
   fromJSON(object: any): GetTuitionRateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
     };
   },
 
@@ -210,8 +265,11 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.grade !== "") {
+      obj.grade = message.grade;
     }
     return obj;
   },
@@ -224,7 +282,10 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.grade = object.grade ?? "";
     return message;
   },
 };
@@ -531,139 +592,6 @@ export const UpsertTuitionRatesRequest: MessageFns<UpsertTuitionRatesRequest> = 
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
     message.gradeAmounts = object.gradeAmounts?.map((e) => GradeAmount.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseDeleteTuitionRateRequest(): DeleteTuitionRateRequest {
-  return { context: undefined, id: undefined };
-}
-
-export const DeleteTuitionRateRequest: MessageFns<DeleteTuitionRateRequest> = {
-  encode(message: DeleteTuitionRateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): DeleteTuitionRateRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDeleteTuitionRateRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.id = ObjectId.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): DeleteTuitionRateRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-    };
-  },
-
-  toJSON(message: DeleteTuitionRateRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<DeleteTuitionRateRequest>, I>>(base?: I): DeleteTuitionRateRequest {
-    return DeleteTuitionRateRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<DeleteTuitionRateRequest>, I>>(object: I): DeleteTuitionRateRequest {
-    const message = createBaseDeleteTuitionRateRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    return message;
-  },
-};
-
-function createBaseDeleteTuitionRateResponse(): DeleteTuitionRateResponse {
-  return { success: false };
-}
-
-export const DeleteTuitionRateResponse: MessageFns<DeleteTuitionRateResponse> = {
-  encode(message: DeleteTuitionRateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
-      writer.uint32(8).bool(message.success);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): DeleteTuitionRateResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDeleteTuitionRateResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.success = reader.bool();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): DeleteTuitionRateResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
-  },
-
-  toJSON(message: DeleteTuitionRateResponse): unknown {
-    const obj: any = {};
-    if (message.success !== false) {
-      obj.success = message.success;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<DeleteTuitionRateResponse>, I>>(base?: I): DeleteTuitionRateResponse {
-    return DeleteTuitionRateResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<DeleteTuitionRateResponse>, I>>(object: I): DeleteTuitionRateResponse {
-    const message = createBaseDeleteTuitionRateResponse();
-    message.success = object.success ?? false;
     return message;
   },
 };
@@ -2032,6 +1960,714 @@ export const DeleteTuitionDiscountResponse: MessageFns<DeleteTuitionDiscountResp
   ): DeleteTuitionDiscountResponse {
     const message = createBaseDeleteTuitionDiscountResponse();
     message.success = object.success ?? false;
+    return message;
+  },
+};
+
+function createBaseGetTuitionPlanRequest(): GetTuitionPlanRequest {
+  return { context: undefined, id: undefined };
+}
+
+export const GetTuitionPlanRequest: MessageFns<GetTuitionPlanRequest> = {
+  encode(message: GetTuitionPlanRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTuitionPlanRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTuitionPlanRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTuitionPlanRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+    };
+  },
+
+  toJSON(message: GetTuitionPlanRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTuitionPlanRequest>, I>>(base?: I): GetTuitionPlanRequest {
+    return GetTuitionPlanRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTuitionPlanRequest>, I>>(object: I): GetTuitionPlanRequest {
+    const message = createBaseGetTuitionPlanRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    return message;
+  },
+};
+
+function createBaseListTuitionPlansRequest(): ListTuitionPlansRequest {
+  return { context: undefined, schoolYear: undefined, archived: false };
+}
+
+export const ListTuitionPlansRequest: MessageFns<ListTuitionPlansRequest> = {
+  encode(message: ListTuitionPlansRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      writer.uint32(24).bool(message.archived);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListTuitionPlansRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListTuitionPlansRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListTuitionPlansRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+    };
+  },
+
+  toJSON(message: ListTuitionPlansRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTuitionPlansRequest>, I>>(base?: I): ListTuitionPlansRequest {
+    return ListTuitionPlansRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListTuitionPlansRequest>, I>>(object: I): ListTuitionPlansRequest {
+    const message = createBaseListTuitionPlansRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.archived = object.archived ?? false;
+    return message;
+  },
+};
+
+function createBaseListTuitionPlansResponse(): ListTuitionPlansResponse {
+  return { plans: [] };
+}
+
+export const ListTuitionPlansResponse: MessageFns<ListTuitionPlansResponse> = {
+  encode(message: ListTuitionPlansResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.plans) {
+      TuitionPlan.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListTuitionPlansResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListTuitionPlansResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.plans.push(TuitionPlan.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListTuitionPlansResponse {
+    return {
+      plans: globalThis.Array.isArray(object?.plans) ? object.plans.map((e: any) => TuitionPlan.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: ListTuitionPlansResponse): unknown {
+    const obj: any = {};
+    if (message.plans?.length) {
+      obj.plans = message.plans.map((e) => TuitionPlan.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTuitionPlansResponse>, I>>(base?: I): ListTuitionPlansResponse {
+    return ListTuitionPlansResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListTuitionPlansResponse>, I>>(object: I): ListTuitionPlansResponse {
+    const message = createBaseListTuitionPlansResponse();
+    message.plans = object.plans?.map((e) => TuitionPlan.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateTuitionPlanRequest(): CreateTuitionPlanRequest {
+  return {
+    context: undefined,
+    schoolYear: undefined,
+    name: "",
+    description: "",
+    scheduleType: PaymentScheduleType.ONE_TIME,
+    numberOfMonths: 0,
+    installments: [],
+  };
+}
+
+export const CreateTuitionPlanRequest: MessageFns<CreateTuitionPlanRequest> = {
+  encode(message: CreateTuitionPlanRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(34).string(message.description);
+    }
+    if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
+      writer.uint32(40).int32(paymentScheduleTypeToNumber(message.scheduleType));
+    }
+    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+      writer.uint32(48).int32(message.numberOfMonths);
+    }
+    for (const v of message.installments) {
+      PaymentInstallment.encode(v!, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateTuitionPlanRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateTuitionPlanRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.scheduleType = paymentScheduleTypeFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.numberOfMonths = reader.int32();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.installments.push(PaymentInstallment.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateTuitionPlanRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      scheduleType: isSet(object.scheduleType)
+        ? paymentScheduleTypeFromJSON(object.scheduleType)
+        : PaymentScheduleType.ONE_TIME,
+      numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+      installments: globalThis.Array.isArray(object?.installments)
+        ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateTuitionPlanRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
+      obj.scheduleType = paymentScheduleTypeToJSON(message.scheduleType);
+    }
+    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+      obj.numberOfMonths = Math.round(message.numberOfMonths);
+    }
+    if (message.installments?.length) {
+      obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateTuitionPlanRequest>, I>>(base?: I): CreateTuitionPlanRequest {
+    return CreateTuitionPlanRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateTuitionPlanRequest>, I>>(object: I): CreateTuitionPlanRequest {
+    const message = createBaseCreateTuitionPlanRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
+    message.numberOfMonths = object.numberOfMonths ?? 0;
+    message.installments = object.installments?.map((e) => PaymentInstallment.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateTuitionPlanRequest(): UpdateTuitionPlanRequest {
+  return {
+    context: undefined,
+    id: undefined,
+    name: "",
+    description: "",
+    scheduleType: PaymentScheduleType.ONE_TIME,
+    numberOfMonths: 0,
+    installments: [],
+  };
+}
+
+export const UpdateTuitionPlanRequest: MessageFns<UpdateTuitionPlanRequest> = {
+  encode(message: UpdateTuitionPlanRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(34).string(message.description);
+    }
+    if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
+      writer.uint32(40).int32(paymentScheduleTypeToNumber(message.scheduleType));
+    }
+    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+      writer.uint32(48).int32(message.numberOfMonths);
+    }
+    for (const v of message.installments) {
+      PaymentInstallment.encode(v!, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateTuitionPlanRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateTuitionPlanRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.scheduleType = paymentScheduleTypeFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.numberOfMonths = reader.int32();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.installments.push(PaymentInstallment.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateTuitionPlanRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      scheduleType: isSet(object.scheduleType)
+        ? paymentScheduleTypeFromJSON(object.scheduleType)
+        : PaymentScheduleType.ONE_TIME,
+      numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+      installments: globalThis.Array.isArray(object?.installments)
+        ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpdateTuitionPlanRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
+      obj.scheduleType = paymentScheduleTypeToJSON(message.scheduleType);
+    }
+    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+      obj.numberOfMonths = Math.round(message.numberOfMonths);
+    }
+    if (message.installments?.length) {
+      obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateTuitionPlanRequest>, I>>(base?: I): UpdateTuitionPlanRequest {
+    return UpdateTuitionPlanRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateTuitionPlanRequest>, I>>(object: I): UpdateTuitionPlanRequest {
+    const message = createBaseUpdateTuitionPlanRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
+    message.numberOfMonths = object.numberOfMonths ?? 0;
+    message.installments = object.installments?.map((e) => PaymentInstallment.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseArchiveTuitionPlanRequest(): ArchiveTuitionPlanRequest {
+  return { context: undefined, id: undefined };
+}
+
+export const ArchiveTuitionPlanRequest: MessageFns<ArchiveTuitionPlanRequest> = {
+  encode(message: ArchiveTuitionPlanRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ArchiveTuitionPlanRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseArchiveTuitionPlanRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ArchiveTuitionPlanRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+    };
+  },
+
+  toJSON(message: ArchiveTuitionPlanRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ArchiveTuitionPlanRequest>, I>>(base?: I): ArchiveTuitionPlanRequest {
+    return ArchiveTuitionPlanRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ArchiveTuitionPlanRequest>, I>>(object: I): ArchiveTuitionPlanRequest {
+    const message = createBaseArchiveTuitionPlanRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    return message;
+  },
+};
+
+function createBaseUnarchiveTuitionPlanRequest(): UnarchiveTuitionPlanRequest {
+  return { context: undefined, id: undefined };
+}
+
+export const UnarchiveTuitionPlanRequest: MessageFns<UnarchiveTuitionPlanRequest> = {
+  encode(message: UnarchiveTuitionPlanRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UnarchiveTuitionPlanRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnarchiveTuitionPlanRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UnarchiveTuitionPlanRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+    };
+  },
+
+  toJSON(message: UnarchiveTuitionPlanRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnarchiveTuitionPlanRequest>, I>>(base?: I): UnarchiveTuitionPlanRequest {
+    return UnarchiveTuitionPlanRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UnarchiveTuitionPlanRequest>, I>>(object: I): UnarchiveTuitionPlanRequest {
+    const message = createBaseUnarchiveTuitionPlanRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     return message;
   },
 };

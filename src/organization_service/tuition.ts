@@ -147,6 +147,59 @@ export function discountValueTypeToNumber(object: DiscountValueType): number {
   }
 }
 
+export enum PaymentScheduleType {
+  ONE_TIME = "ONE_TIME",
+  MONTHLY = "MONTHLY",
+  CUSTOM_PAYMENT_SCHEDULE = "CUSTOM_PAYMENT_SCHEDULE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function paymentScheduleTypeFromJSON(object: any): PaymentScheduleType {
+  switch (object) {
+    case 1:
+    case "ONE_TIME":
+      return PaymentScheduleType.ONE_TIME;
+    case 2:
+    case "MONTHLY":
+      return PaymentScheduleType.MONTHLY;
+    case 3:
+    case "CUSTOM_PAYMENT_SCHEDULE":
+      return PaymentScheduleType.CUSTOM_PAYMENT_SCHEDULE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PaymentScheduleType.UNRECOGNIZED;
+  }
+}
+
+export function paymentScheduleTypeToJSON(object: PaymentScheduleType): string {
+  switch (object) {
+    case PaymentScheduleType.ONE_TIME:
+      return "ONE_TIME";
+    case PaymentScheduleType.MONTHLY:
+      return "MONTHLY";
+    case PaymentScheduleType.CUSTOM_PAYMENT_SCHEDULE:
+      return "CUSTOM_PAYMENT_SCHEDULE";
+    case PaymentScheduleType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function paymentScheduleTypeToNumber(object: PaymentScheduleType): number {
+  switch (object) {
+    case PaymentScheduleType.ONE_TIME:
+      return 1;
+    case PaymentScheduleType.MONTHLY:
+      return 2;
+    case PaymentScheduleType.CUSTOM_PAYMENT_SCHEDULE:
+      return 3;
+    case PaymentScheduleType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface TuitionRate {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -176,6 +229,27 @@ export interface TuitionDiscount {
   valueType: DiscountValueType;
   value: number;
   description: string;
+}
+
+export interface TuitionPlan {
+  id: ObjectId | undefined;
+  organization: ObjectId | undefined;
+  schoolYear: ObjectId | undefined;
+  name: string;
+  description: string;
+  scheduleType: PaymentScheduleType;
+  /** For monthly plans */
+  numberOfMonths?:
+    | number
+    | undefined;
+  /** For custom plans */
+  installments: PaymentInstallment[];
+  archived: boolean;
+}
+
+export interface PaymentInstallment {
+  dueDay: number;
+  dueMonth: number;
 }
 
 function createBaseTuitionRate(): TuitionRate {
@@ -667,6 +741,277 @@ export const TuitionDiscount: MessageFns<TuitionDiscount> = {
     message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
     message.value = object.value ?? 0;
     message.description = object.description ?? "";
+    return message;
+  },
+};
+
+function createBaseTuitionPlan(): TuitionPlan {
+  return {
+    id: undefined,
+    organization: undefined,
+    schoolYear: undefined,
+    name: "",
+    description: "",
+    scheduleType: PaymentScheduleType.ONE_TIME,
+    numberOfMonths: 0,
+    installments: [],
+    archived: false,
+  };
+}
+
+export const TuitionPlan: MessageFns<TuitionPlan> = {
+  encode(message: TuitionPlan, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(42).string(message.description);
+    }
+    if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
+      writer.uint32(48).int32(paymentScheduleTypeToNumber(message.scheduleType));
+    }
+    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+      writer.uint32(56).int32(message.numberOfMonths);
+    }
+    for (const v of message.installments) {
+      PaymentInstallment.encode(v!, writer.uint32(66).fork()).join();
+    }
+    if (message.archived !== false) {
+      writer.uint32(72).bool(message.archived);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TuitionPlan {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTuitionPlan();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.scheduleType = paymentScheduleTypeFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.numberOfMonths = reader.int32();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.installments.push(PaymentInstallment.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TuitionPlan {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      scheduleType: isSet(object.scheduleType)
+        ? paymentScheduleTypeFromJSON(object.scheduleType)
+        : PaymentScheduleType.ONE_TIME,
+      numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+      installments: globalThis.Array.isArray(object?.installments)
+        ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
+        : [],
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+    };
+  },
+
+  toJSON(message: TuitionPlan): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
+      obj.scheduleType = paymentScheduleTypeToJSON(message.scheduleType);
+    }
+    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+      obj.numberOfMonths = Math.round(message.numberOfMonths);
+    }
+    if (message.installments?.length) {
+      obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
+    }
+    if (message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TuitionPlan>, I>>(base?: I): TuitionPlan {
+    return TuitionPlan.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TuitionPlan>, I>>(object: I): TuitionPlan {
+    const message = createBaseTuitionPlan();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
+    message.numberOfMonths = object.numberOfMonths ?? 0;
+    message.installments = object.installments?.map((e) => PaymentInstallment.fromPartial(e)) || [];
+    message.archived = object.archived ?? false;
+    return message;
+  },
+};
+
+function createBasePaymentInstallment(): PaymentInstallment {
+  return { dueDay: 0, dueMonth: 0 };
+}
+
+export const PaymentInstallment: MessageFns<PaymentInstallment> = {
+  encode(message: PaymentInstallment, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.dueDay !== 0) {
+      writer.uint32(8).int32(message.dueDay);
+    }
+    if (message.dueMonth !== 0) {
+      writer.uint32(16).int32(message.dueMonth);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentInstallment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentInstallment();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.dueDay = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.dueMonth = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentInstallment {
+    return {
+      dueDay: isSet(object.dueDay) ? globalThis.Number(object.dueDay) : 0,
+      dueMonth: isSet(object.dueMonth) ? globalThis.Number(object.dueMonth) : 0,
+    };
+  },
+
+  toJSON(message: PaymentInstallment): unknown {
+    const obj: any = {};
+    if (message.dueDay !== 0) {
+      obj.dueDay = Math.round(message.dueDay);
+    }
+    if (message.dueMonth !== 0) {
+      obj.dueMonth = Math.round(message.dueMonth);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentInstallment>, I>>(base?: I): PaymentInstallment {
+    return PaymentInstallment.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentInstallment>, I>>(object: I): PaymentInstallment {
+    const message = createBasePaymentInstallment();
+    message.dueDay = object.dueDay ?? 0;
+    message.dueMonth = object.dueMonth ?? 0;
     return message;
   },
 };

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/tuition_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteTuitionDiscountResponse = exports.DeleteTuitionDiscountRequest = exports.UpdateTuitionDiscountRequest = exports.CreateTuitionDiscountRequest = exports.ListTuitionDiscountsResponse = exports.ListTuitionDiscountsRequest = exports.GetTuitionDiscountRequest = exports.DeleteAdditionalFeeResponse = exports.DeleteAdditionalFeeRequest = exports.UpdateAdditionalFeeRequest = exports.CreateAdditionalFeeRequest = exports.ListAdditionalFeesResponse = exports.ListAdditionalFeesRequest = exports.GetAdditionalFeeRequest = exports.DeleteTuitionRateResponse = exports.DeleteTuitionRateRequest = exports.UpsertTuitionRatesRequest = exports.GradeAmount = exports.ListTuitionRatesResponse = exports.ListTuitionRatesRequest = exports.GetTuitionRateRequest = exports.protobufPackage = void 0;
+exports.UnarchiveTuitionPlanRequest = exports.ArchiveTuitionPlanRequest = exports.UpdateTuitionPlanRequest = exports.CreateTuitionPlanRequest = exports.ListTuitionPlansResponse = exports.ListTuitionPlansRequest = exports.GetTuitionPlanRequest = exports.DeleteTuitionDiscountResponse = exports.DeleteTuitionDiscountRequest = exports.UpdateTuitionDiscountRequest = exports.CreateTuitionDiscountRequest = exports.ListTuitionDiscountsResponse = exports.ListTuitionDiscountsRequest = exports.GetTuitionDiscountRequest = exports.DeleteAdditionalFeeResponse = exports.DeleteAdditionalFeeRequest = exports.UpdateAdditionalFeeRequest = exports.CreateAdditionalFeeRequest = exports.ListAdditionalFeesResponse = exports.ListAdditionalFeesRequest = exports.GetAdditionalFeeRequest = exports.UpsertTuitionRatesRequest = exports.GradeAmount = exports.ListTuitionRatesResponse = exports.ListTuitionRatesRequest = exports.GetTuitionRateRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -13,15 +13,18 @@ const request_context_1 = require("../utils/request_context");
 const tuition_1 = require("./tuition");
 exports.protobufPackage = "organization_service";
 function createBaseGetTuitionRateRequest() {
-    return { context: undefined, id: undefined };
+    return { context: undefined, schoolYear: undefined, grade: "" };
 }
 exports.GetTuitionRateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.id !== undefined) {
-            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+        }
+        if (message.grade !== "") {
+            writer.uint32(26).string(message.grade);
         }
         return writer;
     },
@@ -42,7 +45,13 @@ exports.GetTuitionRateRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.grade = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -55,7 +64,8 @@ exports.GetTuitionRateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
         };
     },
     toJSON(message) {
@@ -63,8 +73,11 @@ exports.GetTuitionRateRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.id !== undefined) {
-            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.grade !== "") {
+            obj.grade = message.grade;
         }
         return obj;
     },
@@ -76,7 +89,10 @@ exports.GetTuitionRateRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.grade = object.grade ?? "";
         return message;
     },
 };
@@ -351,124 +367,6 @@ exports.UpsertTuitionRatesRequest = {
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
         message.gradeAmounts = object.gradeAmounts?.map((e) => exports.GradeAmount.fromPartial(e)) || [];
-        return message;
-    },
-};
-function createBaseDeleteTuitionRateRequest() {
-    return { context: undefined, id: undefined };
-}
-exports.DeleteTuitionRateRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.id !== undefined) {
-            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseDeleteTuitionRateRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.id !== undefined) {
-            obj.id = object_id_1.ObjectId.toJSON(message.id);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.DeleteTuitionRateRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseDeleteTuitionRateRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        return message;
-    },
-};
-function createBaseDeleteTuitionRateResponse() {
-    return { success: false };
-}
-exports.DeleteTuitionRateResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success !== false) {
-            writer.uint32(8).bool(message.success);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseDeleteTuitionRateResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 8) {
-                        break;
-                    }
-                    message.success = reader.bool();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.success !== false) {
-            obj.success = message.success;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.DeleteTuitionRateResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseDeleteTuitionRateResponse();
-        message.success = object.success ?? false;
         return message;
     },
 };
@@ -1705,6 +1603,648 @@ exports.DeleteTuitionDiscountResponse = {
     fromPartial(object) {
         const message = createBaseDeleteTuitionDiscountResponse();
         message.success = object.success ?? false;
+        return message;
+    },
+};
+function createBaseGetTuitionPlanRequest() {
+    return { context: undefined, id: undefined };
+}
+exports.GetTuitionPlanRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTuitionPlanRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTuitionPlanRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTuitionPlanRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        return message;
+    },
+};
+function createBaseListTuitionPlansRequest() {
+    return { context: undefined, schoolYear: undefined, archived: false };
+}
+exports.ListTuitionPlansRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            writer.uint32(24).bool(message.archived);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListTuitionPlansRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            obj.archived = message.archived;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListTuitionPlansRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListTuitionPlansRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.archived = object.archived ?? false;
+        return message;
+    },
+};
+function createBaseListTuitionPlansResponse() {
+    return { plans: [] };
+}
+exports.ListTuitionPlansResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.plans) {
+            tuition_1.TuitionPlan.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListTuitionPlansResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.plans.push(tuition_1.TuitionPlan.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            plans: globalThis.Array.isArray(object?.plans) ? object.plans.map((e) => tuition_1.TuitionPlan.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.plans?.length) {
+            obj.plans = message.plans.map((e) => tuition_1.TuitionPlan.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListTuitionPlansResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListTuitionPlansResponse();
+        message.plans = object.plans?.map((e) => tuition_1.TuitionPlan.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCreateTuitionPlanRequest() {
+    return {
+        context: undefined,
+        schoolYear: undefined,
+        name: "",
+        description: "",
+        scheduleType: tuition_1.PaymentScheduleType.ONE_TIME,
+        numberOfMonths: 0,
+        installments: [],
+    };
+}
+exports.CreateTuitionPlanRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.description !== "") {
+            writer.uint32(34).string(message.description);
+        }
+        if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
+            writer.uint32(40).int32((0, tuition_1.paymentScheduleTypeToNumber)(message.scheduleType));
+        }
+        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+            writer.uint32(48).int32(message.numberOfMonths);
+        }
+        for (const v of message.installments) {
+            tuition_1.PaymentInstallment.encode(v, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateTuitionPlanRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.scheduleType = (0, tuition_1.paymentScheduleTypeFromJSON)(reader.int32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.numberOfMonths = reader.int32();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.installments.push(tuition_1.PaymentInstallment.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            description: isSet(object.description) ? globalThis.String(object.description) : "",
+            scheduleType: isSet(object.scheduleType)
+                ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
+                : tuition_1.PaymentScheduleType.ONE_TIME,
+            numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+            installments: globalThis.Array.isArray(object?.installments)
+                ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.description !== "") {
+            obj.description = message.description;
+        }
+        if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
+            obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.scheduleType);
+        }
+        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+            obj.numberOfMonths = Math.round(message.numberOfMonths);
+        }
+        if (message.installments?.length) {
+            obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateTuitionPlanRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateTuitionPlanRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.name = object.name ?? "";
+        message.description = object.description ?? "";
+        message.scheduleType = object.scheduleType ?? tuition_1.PaymentScheduleType.ONE_TIME;
+        message.numberOfMonths = object.numberOfMonths ?? 0;
+        message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseUpdateTuitionPlanRequest() {
+    return {
+        context: undefined,
+        id: undefined,
+        name: "",
+        description: "",
+        scheduleType: tuition_1.PaymentScheduleType.ONE_TIME,
+        numberOfMonths: 0,
+        installments: [],
+    };
+}
+exports.UpdateTuitionPlanRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.description !== "") {
+            writer.uint32(34).string(message.description);
+        }
+        if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
+            writer.uint32(40).int32((0, tuition_1.paymentScheduleTypeToNumber)(message.scheduleType));
+        }
+        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+            writer.uint32(48).int32(message.numberOfMonths);
+        }
+        for (const v of message.installments) {
+            tuition_1.PaymentInstallment.encode(v, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateTuitionPlanRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.scheduleType = (0, tuition_1.paymentScheduleTypeFromJSON)(reader.int32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.numberOfMonths = reader.int32();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.installments.push(tuition_1.PaymentInstallment.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            description: isSet(object.description) ? globalThis.String(object.description) : "",
+            scheduleType: isSet(object.scheduleType)
+                ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
+                : tuition_1.PaymentScheduleType.ONE_TIME,
+            numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+            installments: globalThis.Array.isArray(object?.installments)
+                ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.description !== "") {
+            obj.description = message.description;
+        }
+        if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
+            obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.scheduleType);
+        }
+        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
+            obj.numberOfMonths = Math.round(message.numberOfMonths);
+        }
+        if (message.installments?.length) {
+            obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateTuitionPlanRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateTuitionPlanRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? "";
+        message.description = object.description ?? "";
+        message.scheduleType = object.scheduleType ?? tuition_1.PaymentScheduleType.ONE_TIME;
+        message.numberOfMonths = object.numberOfMonths ?? 0;
+        message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseArchiveTuitionPlanRequest() {
+    return { context: undefined, id: undefined };
+}
+exports.ArchiveTuitionPlanRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseArchiveTuitionPlanRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ArchiveTuitionPlanRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseArchiveTuitionPlanRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        return message;
+    },
+};
+function createBaseUnarchiveTuitionPlanRequest() {
+    return { context: undefined, id: undefined };
+}
+exports.UnarchiveTuitionPlanRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUnarchiveTuitionPlanRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UnarchiveTuitionPlanRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUnarchiveTuitionPlanRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         return message;
     },
 };

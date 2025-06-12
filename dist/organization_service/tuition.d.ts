@@ -27,6 +27,15 @@ export declare enum DiscountValueType {
 export declare function discountValueTypeFromJSON(object: any): DiscountValueType;
 export declare function discountValueTypeToJSON(object: DiscountValueType): string;
 export declare function discountValueTypeToNumber(object: DiscountValueType): number;
+export declare enum PaymentScheduleType {
+    ONE_TIME = "ONE_TIME",
+    MONTHLY = "MONTHLY",
+    CUSTOM_PAYMENT_SCHEDULE = "CUSTOM_PAYMENT_SCHEDULE",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function paymentScheduleTypeFromJSON(object: any): PaymentScheduleType;
+export declare function paymentScheduleTypeToJSON(object: PaymentScheduleType): string;
+export declare function paymentScheduleTypeToNumber(object: PaymentScheduleType): number;
 export interface TuitionRate {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -55,9 +64,28 @@ export interface TuitionDiscount {
     value: number;
     description: string;
 }
+export interface TuitionPlan {
+    id: ObjectId | undefined;
+    organization: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+    name: string;
+    description: string;
+    scheduleType: PaymentScheduleType;
+    /** For monthly plans */
+    numberOfMonths?: number | undefined;
+    /** For custom plans */
+    installments: PaymentInstallment[];
+    archived: boolean;
+}
+export interface PaymentInstallment {
+    dueDay: number;
+    dueMonth: number;
+}
 export declare const TuitionRate: MessageFns<TuitionRate>;
 export declare const AdditionalFee: MessageFns<AdditionalFee>;
 export declare const TuitionDiscount: MessageFns<TuitionDiscount>;
+export declare const TuitionPlan: MessageFns<TuitionPlan>;
+export declare const PaymentInstallment: MessageFns<PaymentInstallment>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

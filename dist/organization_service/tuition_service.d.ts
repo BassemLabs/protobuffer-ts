@@ -1,12 +1,13 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AdditionalFee, DiscountType, DiscountValueType, FeeScope, TuitionDiscount, TuitionRate } from "./tuition";
+import { AdditionalFee, DiscountType, DiscountValueType, FeeScope, PaymentInstallment, PaymentScheduleType, TuitionDiscount, TuitionPlan, TuitionRate } from "./tuition";
 export declare const protobufPackage = "organization_service";
 /** TuitionRate messages */
 export interface GetTuitionRateRequest {
     context: RequestContext | undefined;
-    id: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+    grade: string;
 }
 export interface ListTuitionRatesRequest {
     context: RequestContext | undefined;
@@ -23,13 +24,6 @@ export interface UpsertTuitionRatesRequest {
     context: RequestContext | undefined;
     schoolYear: ObjectId | undefined;
     gradeAmounts: GradeAmount[];
-}
-export interface DeleteTuitionRateRequest {
-    context: RequestContext | undefined;
-    id: ObjectId | undefined;
-}
-export interface DeleteTuitionRateResponse {
-    success: boolean;
 }
 /** AdditionalFee messages */
 export interface GetAdditionalFeeRequest {
@@ -107,13 +101,50 @@ export interface DeleteTuitionDiscountRequest {
 export interface DeleteTuitionDiscountResponse {
     success: boolean;
 }
+/** TuitionPlan messages */
+export interface GetTuitionPlanRequest {
+    context: RequestContext | undefined;
+    id: ObjectId | undefined;
+}
+export interface ListTuitionPlansRequest {
+    context: RequestContext | undefined;
+    schoolYear: ObjectId | undefined;
+    archived?: boolean | undefined;
+}
+export interface ListTuitionPlansResponse {
+    plans: TuitionPlan[];
+}
+export interface CreateTuitionPlanRequest {
+    context: RequestContext | undefined;
+    schoolYear: ObjectId | undefined;
+    name: string;
+    description: string;
+    scheduleType: PaymentScheduleType;
+    numberOfMonths?: number | undefined;
+    installments: PaymentInstallment[];
+}
+export interface UpdateTuitionPlanRequest {
+    context: RequestContext | undefined;
+    id: ObjectId | undefined;
+    name: string;
+    description: string;
+    scheduleType: PaymentScheduleType;
+    numberOfMonths?: number | undefined;
+    installments: PaymentInstallment[];
+}
+export interface ArchiveTuitionPlanRequest {
+    context: RequestContext | undefined;
+    id: ObjectId | undefined;
+}
+export interface UnarchiveTuitionPlanRequest {
+    context: RequestContext | undefined;
+    id: ObjectId | undefined;
+}
 export declare const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest>;
 export declare const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest>;
 export declare const ListTuitionRatesResponse: MessageFns<ListTuitionRatesResponse>;
 export declare const GradeAmount: MessageFns<GradeAmount>;
 export declare const UpsertTuitionRatesRequest: MessageFns<UpsertTuitionRatesRequest>;
-export declare const DeleteTuitionRateRequest: MessageFns<DeleteTuitionRateRequest>;
-export declare const DeleteTuitionRateResponse: MessageFns<DeleteTuitionRateResponse>;
 export declare const GetAdditionalFeeRequest: MessageFns<GetAdditionalFeeRequest>;
 export declare const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest>;
 export declare const ListAdditionalFeesResponse: MessageFns<ListAdditionalFeesResponse>;
@@ -128,6 +159,13 @@ export declare const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDisco
 export declare const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountRequest>;
 export declare const DeleteTuitionDiscountRequest: MessageFns<DeleteTuitionDiscountRequest>;
 export declare const DeleteTuitionDiscountResponse: MessageFns<DeleteTuitionDiscountResponse>;
+export declare const GetTuitionPlanRequest: MessageFns<GetTuitionPlanRequest>;
+export declare const ListTuitionPlansRequest: MessageFns<ListTuitionPlansRequest>;
+export declare const ListTuitionPlansResponse: MessageFns<ListTuitionPlansResponse>;
+export declare const CreateTuitionPlanRequest: MessageFns<CreateTuitionPlanRequest>;
+export declare const UpdateTuitionPlanRequest: MessageFns<UpdateTuitionPlanRequest>;
+export declare const ArchiveTuitionPlanRequest: MessageFns<ArchiveTuitionPlanRequest>;
+export declare const UnarchiveTuitionPlanRequest: MessageFns<UnarchiveTuitionPlanRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
