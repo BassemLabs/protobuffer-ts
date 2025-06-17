@@ -11,14 +11,14 @@ export declare enum DiscountType {
 export declare function discountTypeFromJSON(object: any): DiscountType;
 export declare function discountTypeToJSON(object: DiscountType): string;
 export declare function discountTypeToNumber(object: DiscountType): number;
-export declare enum FeeScope {
-    STUDENT_FEE = "STUDENT_FEE",
-    FAMILY_FEE = "FAMILY_FEE",
+export declare enum Scope {
+    STUDENT_SCOPE = "STUDENT_SCOPE",
+    FAMILY_SCOPE = "FAMILY_SCOPE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
-export declare function feeScopeFromJSON(object: any): FeeScope;
-export declare function feeScopeToJSON(object: FeeScope): string;
-export declare function feeScopeToNumber(object: FeeScope): number;
+export declare function scopeFromJSON(object: any): Scope;
+export declare function scopeToJSON(object: Scope): string;
+export declare function scopeToNumber(object: Scope): number;
 export declare enum DiscountValueType {
     AMOUNT = "AMOUNT",
     PERCENTAGE = "PERCENTAGE",
@@ -36,6 +36,16 @@ export declare enum PaymentScheduleType {
 export declare function paymentScheduleTypeFromJSON(object: any): PaymentScheduleType;
 export declare function paymentScheduleTypeToJSON(object: PaymentScheduleType): string;
 export declare function paymentScheduleTypeToNumber(object: PaymentScheduleType): number;
+export declare enum DiscountStackMode {
+    /** ADDITIVE - All discounts stack */
+    ADDITIVE = "ADDITIVE",
+    /** EXCLUSIVE - Only the best in the bucket */
+    EXCLUSIVE = "EXCLUSIVE",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function discountStackModeFromJSON(object: any): DiscountStackMode;
+export declare function discountStackModeToJSON(object: DiscountStackMode): string;
+export declare function discountStackModeToNumber(object: DiscountStackMode): number;
 export interface TuitionRate {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -51,7 +61,7 @@ export interface AdditionalFee {
     description: string;
     amount: number;
     isOptional: boolean;
-    scope: FeeScope;
+    scope: Scope;
 }
 export interface TuitionDiscount {
     id: ObjectId | undefined;
@@ -59,10 +69,11 @@ export interface TuitionDiscount {
     schoolYear: ObjectId | undefined;
     name: string;
     discountType: DiscountType;
-    scope: FeeScope;
+    scope: Scope;
     valueType: DiscountValueType;
     value: number;
     description: string;
+    stackMode: DiscountStackMode;
 }
 export interface TuitionPlan {
     id: ObjectId | undefined;

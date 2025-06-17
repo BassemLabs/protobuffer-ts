@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AdditionalFee, DiscountType, DiscountValueType, FeeScope, PaymentInstallment, PaymentScheduleType, TuitionDiscount, TuitionPlan, TuitionRate } from "./tuition";
+import { AdditionalFee, DiscountStackMode, DiscountType, DiscountValueType, PaymentInstallment, PaymentScheduleType, Scope, TuitionDiscount, TuitionPlan, TuitionRate } from "./tuition";
 export declare const protobufPackage = "organization_service";
 /** TuitionRate messages */
 export interface GetTuitionRateRequest {
@@ -44,7 +44,7 @@ export interface CreateAdditionalFeeRequest {
     description: string;
     amount: number;
     isOptional: boolean;
-    scope: FeeScope;
+    scope: Scope;
 }
 export interface UpdateAdditionalFeeRequest {
     context: RequestContext | undefined;
@@ -53,7 +53,7 @@ export interface UpdateAdditionalFeeRequest {
     description: string;
     amount: number;
     isOptional: boolean;
-    scope: FeeScope;
+    scope: Scope;
 }
 export interface DeleteAdditionalFeeRequest {
     context: RequestContext | undefined;
@@ -79,20 +79,22 @@ export interface CreateTuitionDiscountRequest {
     schoolYear: ObjectId | undefined;
     name: string;
     discountType: DiscountType;
-    scope: FeeScope;
+    scope: Scope;
     valueType: DiscountValueType;
     value: number;
     description: string;
+    stackMode: DiscountStackMode;
 }
 export interface UpdateTuitionDiscountRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
     name: string;
     discountType: DiscountType;
-    scope: FeeScope;
+    scope: Scope;
     valueType: DiscountValueType;
     value: number;
     description: string;
+    stackMode: DiscountStackMode;
 }
 export interface DeleteTuitionDiscountRequest {
     context: RequestContext | undefined;

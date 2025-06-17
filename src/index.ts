@@ -27,6 +27,8 @@ import * as Bassem_labs_staff_service from './organization_service/bassem_labs_s
 export { Bassem_labs_staff_service };
 import * as Organization_profile_settings_service from './organization_service/organization_profile_settings_service';
 export { Organization_profile_settings_service };
+import * as Tuition_application_service from './organization_service/tuition_application_service';
+export { Tuition_application_service };
 import * as Campus_service from './organization_service/campus_service';
 export { Campus_service };
 import * as Tuition from './organization_service/tuition';
@@ -35,6 +37,8 @@ import * as Organization_owner_service from './organization_service/organization
 export { Organization_owner_service };
 import * as Campus from './organization_service/campus';
 export { Campus };
+import * as Tuition_application from './organization_service/tuition_application';
+export { Tuition_application };
 import * as Organization from './organization_service/organization';
 export { Organization };
 import * as Kms_key from './organization_service/kms_key';
