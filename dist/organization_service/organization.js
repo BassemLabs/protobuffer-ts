@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: organization_service/organization.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchoolYear = exports.Organization = exports.protobufPackage = void 0;
+exports.PaymentInformation = exports.SchoolYear = exports.Organization = exports.Currency = exports.protobufPackage = void 0;
+exports.currencyFromJSON = currencyFromJSON;
+exports.currencyToJSON = currencyToJSON;
+exports.currencyToNumber = currencyToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -13,6 +16,48 @@ const object_id_1 = require("../utils/object_id");
 const onboarding_settings_1 = require("./onboarding_settings");
 const organization_profile_settings_1 = require("./organization_profile_settings");
 exports.protobufPackage = "organization_service";
+var Currency;
+(function (Currency) {
+    Currency["USD"] = "USD";
+    Currency["CAD"] = "CAD";
+    Currency["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(Currency || (exports.Currency = Currency = {}));
+function currencyFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "USD":
+            return Currency.USD;
+        case 2:
+        case "CAD":
+            return Currency.CAD;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return Currency.UNRECOGNIZED;
+    }
+}
+function currencyToJSON(object) {
+    switch (object) {
+        case Currency.USD:
+            return "USD";
+        case Currency.CAD:
+            return "CAD";
+        case Currency.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function currencyToNumber(object) {
+    switch (object) {
+        case Currency.USD:
+            return 1;
+        case Currency.CAD:
+            return 2;
+        case Currency.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseOrganization() {
     return {
         id: undefined,
@@ -24,6 +69,8 @@ function createBaseOrganization() {
         activeSchoolYear: undefined,
         comingSchoolYear: undefined,
         openedReregistrationForComingSchoolYear: false,
+        countryCode: "",
+        paymentInformation: undefined,
     };
 }
 exports.Organization = {
@@ -54,6 +101,12 @@ exports.Organization = {
         }
         if (message.openedReregistrationForComingSchoolYear !== false) {
             writer.uint32(72).bool(message.openedReregistrationForComingSchoolYear);
+        }
+        if (message.countryCode !== undefined && message.countryCode !== "") {
+            writer.uint32(82).string(message.countryCode);
+        }
+        if (message.paymentInformation !== undefined) {
+            exports.PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
         }
         return writer;
     },
@@ -118,6 +171,18 @@ exports.Organization = {
                     }
                     message.openedReregistrationForComingSchoolYear = reader.bool();
                     continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.countryCode = reader.string();
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.paymentInformation = exports.PaymentInformation.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -143,6 +208,10 @@ exports.Organization = {
             openedReregistrationForComingSchoolYear: isSet(object.openedReregistrationForComingSchoolYear)
                 ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
                 : false,
+            countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+            paymentInformation: isSet(object.paymentInformation)
+                ? exports.PaymentInformation.fromJSON(object.paymentInformation)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -174,6 +243,12 @@ exports.Organization = {
         if (message.openedReregistrationForComingSchoolYear !== false) {
             obj.openedReregistrationForComingSchoolYear = message.openedReregistrationForComingSchoolYear;
         }
+        if (message.countryCode !== undefined && message.countryCode !== "") {
+            obj.countryCode = message.countryCode;
+        }
+        if (message.paymentInformation !== undefined) {
+            obj.paymentInformation = exports.PaymentInformation.toJSON(message.paymentInformation);
+        }
         return obj;
     },
     create(base) {
@@ -199,6 +274,10 @@ exports.Organization = {
             ? exports.SchoolYear.fromPartial(object.comingSchoolYear)
             : undefined;
         message.openedReregistrationForComingSchoolYear = object.openedReregistrationForComingSchoolYear ?? false;
+        message.countryCode = object.countryCode ?? "";
+        message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
+            ? exports.PaymentInformation.fromPartial(object.paymentInformation)
+            : undefined;
         return message;
     },
 };
@@ -309,6 +388,126 @@ exports.SchoolYear = {
         message.name = object.name ?? "";
         message.startDate = object.startDate ?? undefined;
         message.endDate = object.endDate ?? undefined;
+        return message;
+    },
+};
+function createBasePaymentInformation() {
+    return {
+        stripeAccountId: "",
+        accountCurrency: Currency.USD,
+        stripePayoutsEnabled: false,
+        stripeDetailsSubmitted: false,
+        stripeChargesEnabled: false,
+    };
+}
+exports.PaymentInformation = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.stripeAccountId !== undefined && message.stripeAccountId !== "") {
+            writer.uint32(10).string(message.stripeAccountId);
+        }
+        if (message.accountCurrency !== undefined && message.accountCurrency !== Currency.USD) {
+            writer.uint32(16).int32(currencyToNumber(message.accountCurrency));
+        }
+        if (message.stripePayoutsEnabled !== false) {
+            writer.uint32(24).bool(message.stripePayoutsEnabled);
+        }
+        if (message.stripeDetailsSubmitted !== false) {
+            writer.uint32(32).bool(message.stripeDetailsSubmitted);
+        }
+        if (message.stripeChargesEnabled !== false) {
+            writer.uint32(40).bool(message.stripeChargesEnabled);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePaymentInformation();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.stripeAccountId = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.accountCurrency = currencyFromJSON(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.stripePayoutsEnabled = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.stripeDetailsSubmitted = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.stripeChargesEnabled = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            stripeAccountId: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "",
+            accountCurrency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : Currency.USD,
+            stripePayoutsEnabled: isSet(object.stripePayoutsEnabled)
+                ? globalThis.Boolean(object.stripePayoutsEnabled)
+                : false,
+            stripeDetailsSubmitted: isSet(object.stripeDetailsSubmitted)
+                ? globalThis.Boolean(object.stripeDetailsSubmitted)
+                : false,
+            stripeChargesEnabled: isSet(object.stripeChargesEnabled)
+                ? globalThis.Boolean(object.stripeChargesEnabled)
+                : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.stripeAccountId !== undefined && message.stripeAccountId !== "") {
+            obj.stripeAccountId = message.stripeAccountId;
+        }
+        if (message.accountCurrency !== undefined && message.accountCurrency !== Currency.USD) {
+            obj.accountCurrency = currencyToJSON(message.accountCurrency);
+        }
+        if (message.stripePayoutsEnabled !== false) {
+            obj.stripePayoutsEnabled = message.stripePayoutsEnabled;
+        }
+        if (message.stripeDetailsSubmitted !== false) {
+            obj.stripeDetailsSubmitted = message.stripeDetailsSubmitted;
+        }
+        if (message.stripeChargesEnabled !== false) {
+            obj.stripeChargesEnabled = message.stripeChargesEnabled;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PaymentInformation.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePaymentInformation();
+        message.stripeAccountId = object.stripeAccountId ?? "";
+        message.accountCurrency = object.accountCurrency ?? Currency.USD;
+        message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
+        message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
+        message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
         return message;
     },
 };

@@ -59,9 +59,6 @@ export enum KMSKeyType {
   GoogelAdminEmail = "GoogelAdminEmail",
   GoogleAdminServiceAccountKey = "GoogleAdminServiceAccountKey",
   GoogleAdminServiceAccountId = "GoogleAdminServiceAccountId",
-  StripeSecret = "StripeSecret",
-  StripeEndpointSecret = "StripeEndpointSecret",
-  StripePublicKey = "StripePublicKey",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -76,15 +73,6 @@ export function kMSKeyTypeFromJSON(object: any): KMSKeyType {
     case 3:
     case "GoogleAdminServiceAccountId":
       return KMSKeyType.GoogleAdminServiceAccountId;
-    case 4:
-    case "StripeSecret":
-      return KMSKeyType.StripeSecret;
-    case 5:
-    case "StripeEndpointSecret":
-      return KMSKeyType.StripeEndpointSecret;
-    case 6:
-    case "StripePublicKey":
-      return KMSKeyType.StripePublicKey;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -100,12 +88,6 @@ export function kMSKeyTypeToJSON(object: KMSKeyType): string {
       return "GoogleAdminServiceAccountKey";
     case KMSKeyType.GoogleAdminServiceAccountId:
       return "GoogleAdminServiceAccountId";
-    case KMSKeyType.StripeSecret:
-      return "StripeSecret";
-    case KMSKeyType.StripeEndpointSecret:
-      return "StripeEndpointSecret";
-    case KMSKeyType.StripePublicKey:
-      return "StripePublicKey";
     case KMSKeyType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -120,12 +102,6 @@ export function kMSKeyTypeToNumber(object: KMSKeyType): number {
       return 2;
     case KMSKeyType.GoogleAdminServiceAccountId:
       return 3;
-    case KMSKeyType.StripeSecret:
-      return 4;
-    case KMSKeyType.StripeEndpointSecret:
-      return 5;
-    case KMSKeyType.StripePublicKey:
-      return 6;
     case KMSKeyType.UNRECOGNIZED:
     default:
       return -1;

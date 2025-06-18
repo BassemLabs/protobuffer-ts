@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { Organization, SchoolYear } from "./organization";
+import { Currency, Organization, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
@@ -52,6 +52,8 @@ export interface UpdateOrganizationSettingsRequest {
     name: string;
     domains: string[];
     defaultDomain: string;
+    countryCode: string;
+    currency: Currency;
 }
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
@@ -90,6 +92,21 @@ export interface StartReregistrationRequest {
     context: RequestContext | undefined;
     organizationId: ObjectId | undefined;
 }
+export interface GetOrganizationByStripeRequest {
+    stripeAccountId: string;
+}
+export interface UpdateStripeIdRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    stripeAcountId: string;
+}
+export interface UpdateOrganizationStripePaymentInfoRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    stripePayoutsEnabled: boolean;
+    stripeDetailsSubmitted: boolean;
+    stripeChargesEnabled: boolean;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -108,6 +125,9 @@ export declare const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
 export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
 export declare const StartReregistrationRequest: MessageFns<StartReregistrationRequest>;
+export declare const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest>;
+export declare const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest>;
+export declare const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

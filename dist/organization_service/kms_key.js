@@ -63,9 +63,6 @@ var KMSKeyType;
     KMSKeyType["GoogelAdminEmail"] = "GoogelAdminEmail";
     KMSKeyType["GoogleAdminServiceAccountKey"] = "GoogleAdminServiceAccountKey";
     KMSKeyType["GoogleAdminServiceAccountId"] = "GoogleAdminServiceAccountId";
-    KMSKeyType["StripeSecret"] = "StripeSecret";
-    KMSKeyType["StripeEndpointSecret"] = "StripeEndpointSecret";
-    KMSKeyType["StripePublicKey"] = "StripePublicKey";
     KMSKeyType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(KMSKeyType || (exports.KMSKeyType = KMSKeyType = {}));
 function kMSKeyTypeFromJSON(object) {
@@ -79,15 +76,6 @@ function kMSKeyTypeFromJSON(object) {
         case 3:
         case "GoogleAdminServiceAccountId":
             return KMSKeyType.GoogleAdminServiceAccountId;
-        case 4:
-        case "StripeSecret":
-            return KMSKeyType.StripeSecret;
-        case 5:
-        case "StripeEndpointSecret":
-            return KMSKeyType.StripeEndpointSecret;
-        case 6:
-        case "StripePublicKey":
-            return KMSKeyType.StripePublicKey;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -102,12 +90,6 @@ function kMSKeyTypeToJSON(object) {
             return "GoogleAdminServiceAccountKey";
         case KMSKeyType.GoogleAdminServiceAccountId:
             return "GoogleAdminServiceAccountId";
-        case KMSKeyType.StripeSecret:
-            return "StripeSecret";
-        case KMSKeyType.StripeEndpointSecret:
-            return "StripeEndpointSecret";
-        case KMSKeyType.StripePublicKey:
-            return "StripePublicKey";
         case KMSKeyType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -121,12 +103,6 @@ function kMSKeyTypeToNumber(object) {
             return 2;
         case KMSKeyType.GoogleAdminServiceAccountId:
             return 3;
-        case KMSKeyType.StripeSecret:
-            return 4;
-        case KMSKeyType.StripeEndpointSecret:
-            return 5;
-        case KMSKeyType.StripePublicKey:
-            return 6;
         case KMSKeyType.UNRECOGNIZED:
         default:
             return -1;

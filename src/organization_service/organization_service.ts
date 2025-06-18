@@ -9,7 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { Organization, SchoolYear } from "./organization";
+import { Currency, currencyFromJSON, currencyToJSON, currencyToNumber, Organization, SchoolYear } from "./organization";
 
 export const protobufPackage = "organization_service";
 
@@ -70,6 +70,8 @@ export interface UpdateOrganizationSettingsRequest {
   name: string;
   domains: string[];
   defaultDomain: string;
+  countryCode: string;
+  currency: Currency;
 }
 
 /** Request to fetch all organizations */
@@ -116,6 +118,24 @@ export interface StartSchoolYearRequest {
 export interface StartReregistrationRequest {
   context: RequestContext | undefined;
   organizationId: ObjectId | undefined;
+}
+
+export interface GetOrganizationByStripeRequest {
+  stripeAccountId: string;
+}
+
+export interface UpdateStripeIdRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  stripeAcountId: string;
+}
+
+export interface UpdateOrganizationStripePaymentInfoRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  stripePayoutsEnabled: boolean;
+  stripeDetailsSubmitted: boolean;
+  stripeChargesEnabled: boolean;
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -774,7 +794,15 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
 };
 
 function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettingsRequest {
-  return { context: undefined, organizationId: undefined, name: "", domains: [], defaultDomain: "" };
+  return {
+    context: undefined,
+    organizationId: undefined,
+    name: "",
+    domains: [],
+    defaultDomain: "",
+    countryCode: "",
+    currency: Currency.USD,
+  };
 }
 
 export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSettingsRequest> = {
@@ -793,6 +821,12 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.defaultDomain !== "") {
       writer.uint32(42).string(message.defaultDomain);
+    }
+    if (message.countryCode !== "") {
+      writer.uint32(50).string(message.countryCode);
+    }
+    if (message.currency !== Currency.USD) {
+      writer.uint32(56).int32(currencyToNumber(message.currency));
     }
     return writer;
   },
@@ -839,6 +873,20 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
 
           message.defaultDomain = reader.string();
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.countryCode = reader.string();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.currency = currencyFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -855,6 +903,8 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
       defaultDomain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
+      countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+      currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
     };
   },
 
@@ -874,6 +924,12 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.defaultDomain !== "") {
       obj.defaultDomain = message.defaultDomain;
+    }
+    if (message.countryCode !== "") {
+      obj.countryCode = message.countryCode;
+    }
+    if (message.currency !== Currency.USD) {
+      obj.currency = currencyToJSON(message.currency);
     }
     return obj;
   },
@@ -896,6 +952,8 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.name = object.name ?? "";
     message.domains = object.domains?.map((e) => e) || [];
     message.defaultDomain = object.defaultDomain ?? "";
+    message.countryCode = object.countryCode ?? "";
+    message.currency = object.currency ?? Currency.USD;
     return message;
   },
 };
@@ -1573,6 +1631,297 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationByStripeRequest(): GetOrganizationByStripeRequest {
+  return { stripeAccountId: "" };
+}
+
+export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest> = {
+  encode(message: GetOrganizationByStripeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.stripeAccountId !== "") {
+      writer.uint32(10).string(message.stripeAccountId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationByStripeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationByStripeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.stripeAccountId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationByStripeRequest {
+    return { stripeAccountId: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "" };
+  },
+
+  toJSON(message: GetOrganizationByStripeRequest): unknown {
+    const obj: any = {};
+    if (message.stripeAccountId !== "") {
+      obj.stripeAccountId = message.stripeAccountId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationByStripeRequest>, I>>(base?: I): GetOrganizationByStripeRequest {
+    return GetOrganizationByStripeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationByStripeRequest>, I>>(
+    object: I,
+  ): GetOrganizationByStripeRequest {
+    const message = createBaseGetOrganizationByStripeRequest();
+    message.stripeAccountId = object.stripeAccountId ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateStripeIdRequest(): UpdateStripeIdRequest {
+  return { context: undefined, organizationId: undefined, stripeAcountId: "" };
+}
+
+export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
+  encode(message: UpdateStripeIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.stripeAcountId !== "") {
+      writer.uint32(26).string(message.stripeAcountId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateStripeIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateStripeIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.stripeAcountId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateStripeIdRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      stripeAcountId: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : "",
+    };
+  },
+
+  toJSON(message: UpdateStripeIdRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.stripeAcountId !== "") {
+      obj.stripeAcountId = message.stripeAcountId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateStripeIdRequest>, I>>(base?: I): UpdateStripeIdRequest {
+    return UpdateStripeIdRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateStripeIdRequest>, I>>(object: I): UpdateStripeIdRequest {
+    const message = createBaseUpdateStripeIdRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.stripeAcountId = object.stripeAcountId ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateOrganizationStripePaymentInfoRequest(): UpdateOrganizationStripePaymentInfoRequest {
+  return {
+    context: undefined,
+    organizationId: undefined,
+    stripePayoutsEnabled: false,
+    stripeDetailsSubmitted: false,
+    stripeChargesEnabled: false,
+  };
+}
+
+export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest> = {
+  encode(message: UpdateOrganizationStripePaymentInfoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.stripePayoutsEnabled !== false) {
+      writer.uint32(24).bool(message.stripePayoutsEnabled);
+    }
+    if (message.stripeDetailsSubmitted !== false) {
+      writer.uint32(32).bool(message.stripeDetailsSubmitted);
+    }
+    if (message.stripeChargesEnabled !== false) {
+      writer.uint32(40).bool(message.stripeChargesEnabled);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateOrganizationStripePaymentInfoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateOrganizationStripePaymentInfoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.stripePayoutsEnabled = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.stripeDetailsSubmitted = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.stripeChargesEnabled = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateOrganizationStripePaymentInfoRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      stripePayoutsEnabled: isSet(object.stripePayoutsEnabled)
+        ? globalThis.Boolean(object.stripePayoutsEnabled)
+        : false,
+      stripeDetailsSubmitted: isSet(object.stripeDetailsSubmitted)
+        ? globalThis.Boolean(object.stripeDetailsSubmitted)
+        : false,
+      stripeChargesEnabled: isSet(object.stripeChargesEnabled)
+        ? globalThis.Boolean(object.stripeChargesEnabled)
+        : false,
+    };
+  },
+
+  toJSON(message: UpdateOrganizationStripePaymentInfoRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.stripePayoutsEnabled !== false) {
+      obj.stripePayoutsEnabled = message.stripePayoutsEnabled;
+    }
+    if (message.stripeDetailsSubmitted !== false) {
+      obj.stripeDetailsSubmitted = message.stripeDetailsSubmitted;
+    }
+    if (message.stripeChargesEnabled !== false) {
+      obj.stripeChargesEnabled = message.stripeChargesEnabled;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateOrganizationStripePaymentInfoRequest>, I>>(
+    base?: I,
+  ): UpdateOrganizationStripePaymentInfoRequest {
+    return UpdateOrganizationStripePaymentInfoRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateOrganizationStripePaymentInfoRequest>, I>>(
+    object: I,
+  ): UpdateOrganizationStripePaymentInfoRequest {
+    const message = createBaseUpdateOrganizationStripePaymentInfoRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
+    message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
+    message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
     return message;
   },
 };

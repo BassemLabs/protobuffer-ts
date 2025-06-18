@@ -13,6 +13,51 @@ import { OrganizationProfileSettings } from "./organization_profile_settings";
 
 export const protobufPackage = "organization_service";
 
+export enum Currency {
+  USD = "USD",
+  CAD = "CAD",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function currencyFromJSON(object: any): Currency {
+  switch (object) {
+    case 1:
+    case "USD":
+      return Currency.USD;
+    case 2:
+    case "CAD":
+      return Currency.CAD;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Currency.UNRECOGNIZED;
+  }
+}
+
+export function currencyToJSON(object: Currency): string {
+  switch (object) {
+    case Currency.USD:
+      return "USD";
+    case Currency.CAD:
+      return "CAD";
+    case Currency.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function currencyToNumber(object: Currency): number {
+  switch (object) {
+    case Currency.USD:
+      return 1;
+    case Currency.CAD:
+      return 2;
+    case Currency.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface Organization {
   id: ObjectId | undefined;
   name: string;
@@ -23,6 +68,8 @@ export interface Organization {
   activeSchoolYear: SchoolYear | undefined;
   comingSchoolYear?: SchoolYear | undefined;
   openedReregistrationForComingSchoolYear: boolean;
+  countryCode?: string | undefined;
+  paymentInformation: PaymentInformation | undefined;
 }
 
 export interface SchoolYear {
@@ -31,6 +78,14 @@ export interface SchoolYear {
   name: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
+}
+
+export interface PaymentInformation {
+  stripeAccountId?: string | undefined;
+  accountCurrency?: Currency | undefined;
+  stripePayoutsEnabled: boolean;
+  stripeDetailsSubmitted: boolean;
+  stripeChargesEnabled: boolean;
 }
 
 function createBaseOrganization(): Organization {
@@ -44,6 +99,8 @@ function createBaseOrganization(): Organization {
     activeSchoolYear: undefined,
     comingSchoolYear: undefined,
     openedReregistrationForComingSchoolYear: false,
+    countryCode: "",
+    paymentInformation: undefined,
   };
 }
 
@@ -75,6 +132,12 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.openedReregistrationForComingSchoolYear !== false) {
       writer.uint32(72).bool(message.openedReregistrationForComingSchoolYear);
+    }
+    if (message.countryCode !== undefined && message.countryCode !== "") {
+      writer.uint32(82).string(message.countryCode);
+    }
+    if (message.paymentInformation !== undefined) {
+      PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
     }
     return writer;
   },
@@ -149,6 +212,20 @@ export const Organization: MessageFns<Organization> = {
 
           message.openedReregistrationForComingSchoolYear = reader.bool();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.countryCode = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.paymentInformation = PaymentInformation.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -175,6 +252,10 @@ export const Organization: MessageFns<Organization> = {
       openedReregistrationForComingSchoolYear: isSet(object.openedReregistrationForComingSchoolYear)
         ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
         : false,
+      countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+      paymentInformation: isSet(object.paymentInformation)
+        ? PaymentInformation.fromJSON(object.paymentInformation)
+        : undefined,
     };
   },
 
@@ -207,6 +288,12 @@ export const Organization: MessageFns<Organization> = {
     if (message.openedReregistrationForComingSchoolYear !== false) {
       obj.openedReregistrationForComingSchoolYear = message.openedReregistrationForComingSchoolYear;
     }
+    if (message.countryCode !== undefined && message.countryCode !== "") {
+      obj.countryCode = message.countryCode;
+    }
+    if (message.paymentInformation !== undefined) {
+      obj.paymentInformation = PaymentInformation.toJSON(message.paymentInformation);
+    }
     return obj;
   },
 
@@ -233,6 +320,10 @@ export const Organization: MessageFns<Organization> = {
       ? SchoolYear.fromPartial(object.comingSchoolYear)
       : undefined;
     message.openedReregistrationForComingSchoolYear = object.openedReregistrationForComingSchoolYear ?? false;
+    message.countryCode = object.countryCode ?? "";
+    message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
+      ? PaymentInformation.fromPartial(object.paymentInformation)
+      : undefined;
     return message;
   },
 };
@@ -354,6 +445,137 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     message.name = object.name ?? "";
     message.startDate = object.startDate ?? undefined;
     message.endDate = object.endDate ?? undefined;
+    return message;
+  },
+};
+
+function createBasePaymentInformation(): PaymentInformation {
+  return {
+    stripeAccountId: "",
+    accountCurrency: Currency.USD,
+    stripePayoutsEnabled: false,
+    stripeDetailsSubmitted: false,
+    stripeChargesEnabled: false,
+  };
+}
+
+export const PaymentInformation: MessageFns<PaymentInformation> = {
+  encode(message: PaymentInformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.stripeAccountId !== undefined && message.stripeAccountId !== "") {
+      writer.uint32(10).string(message.stripeAccountId);
+    }
+    if (message.accountCurrency !== undefined && message.accountCurrency !== Currency.USD) {
+      writer.uint32(16).int32(currencyToNumber(message.accountCurrency));
+    }
+    if (message.stripePayoutsEnabled !== false) {
+      writer.uint32(24).bool(message.stripePayoutsEnabled);
+    }
+    if (message.stripeDetailsSubmitted !== false) {
+      writer.uint32(32).bool(message.stripeDetailsSubmitted);
+    }
+    if (message.stripeChargesEnabled !== false) {
+      writer.uint32(40).bool(message.stripeChargesEnabled);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentInformation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentInformation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.stripeAccountId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.accountCurrency = currencyFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.stripePayoutsEnabled = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.stripeDetailsSubmitted = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.stripeChargesEnabled = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentInformation {
+    return {
+      stripeAccountId: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "",
+      accountCurrency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : Currency.USD,
+      stripePayoutsEnabled: isSet(object.stripePayoutsEnabled)
+        ? globalThis.Boolean(object.stripePayoutsEnabled)
+        : false,
+      stripeDetailsSubmitted: isSet(object.stripeDetailsSubmitted)
+        ? globalThis.Boolean(object.stripeDetailsSubmitted)
+        : false,
+      stripeChargesEnabled: isSet(object.stripeChargesEnabled)
+        ? globalThis.Boolean(object.stripeChargesEnabled)
+        : false,
+    };
+  },
+
+  toJSON(message: PaymentInformation): unknown {
+    const obj: any = {};
+    if (message.stripeAccountId !== undefined && message.stripeAccountId !== "") {
+      obj.stripeAccountId = message.stripeAccountId;
+    }
+    if (message.accountCurrency !== undefined && message.accountCurrency !== Currency.USD) {
+      obj.accountCurrency = currencyToJSON(message.accountCurrency);
+    }
+    if (message.stripePayoutsEnabled !== false) {
+      obj.stripePayoutsEnabled = message.stripePayoutsEnabled;
+    }
+    if (message.stripeDetailsSubmitted !== false) {
+      obj.stripeDetailsSubmitted = message.stripeDetailsSubmitted;
+    }
+    if (message.stripeChargesEnabled !== false) {
+      obj.stripeChargesEnabled = message.stripeChargesEnabled;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentInformation>, I>>(base?: I): PaymentInformation {
+    return PaymentInformation.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentInformation>, I>>(object: I): PaymentInformation {
+    const message = createBasePaymentInformation();
+    message.stripeAccountId = object.stripeAccountId ?? "";
+    message.accountCurrency = object.accountCurrency ?? Currency.USD;
+    message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
+    message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
+    message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
     return message;
   },
 };
