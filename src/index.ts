@@ -31,8 +31,12 @@ import * as Tuition_application_service from './organization_service/tuition_app
 export { Tuition_application_service };
 import * as Campus_service from './organization_service/campus_service';
 export { Campus_service };
+import * as Tuition_invoice from './organization_service/tuition_invoice';
+export { Tuition_invoice };
 import * as Tuition from './organization_service/tuition';
 export { Tuition };
+import * as Tuition_invoice_service from './organization_service/tuition_invoice_service';
+export { Tuition_invoice_service };
 import * as Organization_owner_service from './organization_service/organization_owner_service';
 export { Organization_owner_service };
 import * as Campus from './organization_service/campus';

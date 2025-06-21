@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Timestamp = exports.Request_context = exports.Aws_file = exports.Object_id = exports.Bassem_labs_staff = exports.Organization_owner = exports.Kms_service = exports.Organization_service = exports.Tuition_service = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Organization_profile_settings = exports.Kms_key = exports.Organization = exports.Tuition_application = exports.Campus = exports.Organization_owner_service = exports.Tuition = exports.Campus_service = exports.Tuition_application_service = exports.Organization_profile_settings_service = exports.Bassem_labs_staff_service = exports.Test_service = exports.Test = exports.Custom_field_entry = exports.Course = exports.Gclass = exports.Course_service = exports.Report_layout = exports.Semester = exports.Homeroom_service = exports.Report_layout_service = exports.Semester_service = exports.Homeroom = void 0;
+exports.Timestamp = exports.Request_context = exports.Aws_file = exports.Object_id = exports.Bassem_labs_staff = exports.Organization_owner = exports.Kms_service = exports.Organization_service = exports.Tuition_service = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Organization_profile_settings = exports.Kms_key = exports.Organization = exports.Tuition_application = exports.Campus = exports.Organization_owner_service = exports.Tuition_invoice_service = exports.Tuition = exports.Tuition_invoice = exports.Campus_service = exports.Tuition_application_service = exports.Organization_profile_settings_service = exports.Bassem_labs_staff_service = exports.Test_service = exports.Test = exports.Custom_field_entry = exports.Course = exports.Gclass = exports.Course_service = exports.Report_layout = exports.Semester = exports.Homeroom_service = exports.Report_layout_service = exports.Semester_service = exports.Homeroom = void 0;
 // Auto-generated index.ts
 const Homeroom = __importStar(require("./class_service/homeroom"));
 exports.Homeroom = Homeroom;
@@ -57,8 +57,12 @@ const Tuition_application_service = __importStar(require("./organization_service
 exports.Tuition_application_service = Tuition_application_service;
 const Campus_service = __importStar(require("./organization_service/campus_service"));
 exports.Campus_service = Campus_service;
+const Tuition_invoice = __importStar(require("./organization_service/tuition_invoice"));
+exports.Tuition_invoice = Tuition_invoice;
 const Tuition = __importStar(require("./organization_service/tuition"));
 exports.Tuition = Tuition;
+const Tuition_invoice_service = __importStar(require("./organization_service/tuition_invoice_service"));
+exports.Tuition_invoice_service = Tuition_invoice_service;
 const Organization_owner_service = __importStar(require("./organization_service/organization_owner_service"));
 exports.Organization_owner_service = Organization_owner_service;
 const Campus = __importStar(require("./organization_service/campus"));
