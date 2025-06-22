@@ -15,6 +15,9 @@ export interface GetOwnerRequest {
     context: RequestContext | undefined;
     ownerId: ObjectId | undefined;
 }
+export interface GetOrganizationOwnerRequest {
+    context: RequestContext | undefined;
+}
 export interface UpdateOwnerProfileRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
@@ -24,6 +27,7 @@ export interface UpdateOwnerProfileRequest {
 export declare const CreateOwnerRequest: MessageFns<CreateOwnerRequest>;
 export declare const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest>;
 export declare const GetOwnerRequest: MessageFns<GetOwnerRequest>;
+export declare const GetOrganizationOwnerRequest: MessageFns<GetOrganizationOwnerRequest>;
 export declare const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

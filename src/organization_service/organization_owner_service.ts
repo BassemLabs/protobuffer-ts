@@ -27,6 +27,10 @@ export interface GetOwnerRequest {
   ownerId: ObjectId | undefined;
 }
 
+export interface GetOrganizationOwnerRequest {
+  context: RequestContext | undefined;
+}
+
 export interface UpdateOwnerProfileRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
@@ -274,6 +278,65 @@ export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
       : undefined;
     message.ownerId = (object.ownerId !== undefined && object.ownerId !== null)
       ? ObjectId.fromPartial(object.ownerId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationOwnerRequest(): GetOrganizationOwnerRequest {
+  return { context: undefined };
+}
+
+export const GetOrganizationOwnerRequest: MessageFns<GetOrganizationOwnerRequest> = {
+  encode(message: GetOrganizationOwnerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationOwnerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationOwnerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationOwnerRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetOrganizationOwnerRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationOwnerRequest>, I>>(base?: I): GetOrganizationOwnerRequest {
+    return GetOrganizationOwnerRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationOwnerRequest>, I>>(object: I): GetOrganizationOwnerRequest {
+    const message = createBaseGetOrganizationOwnerRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
       : undefined;
     return message;
   },

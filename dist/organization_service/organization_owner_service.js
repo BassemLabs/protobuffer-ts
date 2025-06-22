@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_owner_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateOwnerProfileRequest = exports.GetOwnerRequest = exports.GetOwnerByEmailRequest = exports.CreateOwnerRequest = exports.protobufPackage = void 0;
+exports.UpdateOwnerProfileRequest = exports.GetOrganizationOwnerRequest = exports.GetOwnerRequest = exports.GetOwnerByEmailRequest = exports.CreateOwnerRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -227,6 +227,58 @@ exports.GetOwnerRequest = {
             : undefined;
         message.ownerId = (object.ownerId !== undefined && object.ownerId !== null)
             ? object_id_1.ObjectId.fromPartial(object.ownerId)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetOrganizationOwnerRequest() {
+    return { context: undefined };
+}
+exports.GetOrganizationOwnerRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationOwnerRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationOwnerRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationOwnerRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         return message;
     },
