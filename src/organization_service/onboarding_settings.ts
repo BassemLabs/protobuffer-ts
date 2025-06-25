@@ -16,14 +16,6 @@ export interface OnboardingSettings {
   waitlistFee: number;
   registrationFees: { [key: string]: ItemizedFee };
   reregistrationFees: { [key: string]: ItemizedFee };
-  interviewEmailTemplate?: string | undefined;
-  postInterviewEmailTemplate?: string | undefined;
-  rejectionEmailTemplate: string;
-  approvalEmailTemplate: string;
-  fieldGroupRejectionEmailTemplate: string;
-  withdrawEmailTemplate: string;
-  moveStudentAdmissionYearEmailTemplate: string;
-  reregistrationInvitationEmailTemplate: string;
   schoolHandbook: AWSFile[];
   interviewFee: number;
 }
@@ -58,14 +50,6 @@ function createBaseOnboardingSettings(): OnboardingSettings {
     waitlistFee: 0,
     registrationFees: {},
     reregistrationFees: {},
-    interviewEmailTemplate: "",
-    postInterviewEmailTemplate: "",
-    rejectionEmailTemplate: "",
-    approvalEmailTemplate: "",
-    fieldGroupRejectionEmailTemplate: "",
-    withdrawEmailTemplate: "",
-    moveStudentAdmissionYearEmailTemplate: "",
-    reregistrationInvitationEmailTemplate: "",
     schoolHandbook: [],
     interviewFee: 0,
   };
@@ -88,35 +72,11 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     Object.entries(message.reregistrationFees).forEach(([key, value]) => {
       OnboardingSettings_ReregistrationFeesEntry.encode({ key: key as any, value }, writer.uint32(42).fork()).join();
     });
-    if (message.interviewEmailTemplate !== undefined && message.interviewEmailTemplate !== "") {
-      writer.uint32(50).string(message.interviewEmailTemplate);
-    }
-    if (message.postInterviewEmailTemplate !== undefined && message.postInterviewEmailTemplate !== "") {
-      writer.uint32(58).string(message.postInterviewEmailTemplate);
-    }
-    if (message.rejectionEmailTemplate !== "") {
-      writer.uint32(66).string(message.rejectionEmailTemplate);
-    }
-    if (message.approvalEmailTemplate !== "") {
-      writer.uint32(74).string(message.approvalEmailTemplate);
-    }
-    if (message.fieldGroupRejectionEmailTemplate !== "") {
-      writer.uint32(82).string(message.fieldGroupRejectionEmailTemplate);
-    }
-    if (message.withdrawEmailTemplate !== "") {
-      writer.uint32(90).string(message.withdrawEmailTemplate);
-    }
-    if (message.moveStudentAdmissionYearEmailTemplate !== "") {
-      writer.uint32(98).string(message.moveStudentAdmissionYearEmailTemplate);
-    }
-    if (message.reregistrationInvitationEmailTemplate !== "") {
-      writer.uint32(106).string(message.reregistrationInvitationEmailTemplate);
-    }
     for (const v of message.schoolHandbook) {
-      AWSFile.encode(v!, writer.uint32(114).fork()).join();
+      AWSFile.encode(v!, writer.uint32(50).fork()).join();
     }
     if (message.interviewFee !== 0) {
-      writer.uint32(125).float(message.interviewFee);
+      writer.uint32(61).float(message.interviewFee);
     }
     return writer;
   },
@@ -174,66 +134,10 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
             break;
           }
 
-          message.interviewEmailTemplate = reader.string();
-          continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.postInterviewEmailTemplate = reader.string();
-          continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.rejectionEmailTemplate = reader.string();
-          continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.approvalEmailTemplate = reader.string();
-          continue;
-        case 10:
-          if (tag !== 82) {
-            break;
-          }
-
-          message.fieldGroupRejectionEmailTemplate = reader.string();
-          continue;
-        case 11:
-          if (tag !== 90) {
-            break;
-          }
-
-          message.withdrawEmailTemplate = reader.string();
-          continue;
-        case 12:
-          if (tag !== 98) {
-            break;
-          }
-
-          message.moveStudentAdmissionYearEmailTemplate = reader.string();
-          continue;
-        case 13:
-          if (tag !== 106) {
-            break;
-          }
-
-          message.reregistrationInvitationEmailTemplate = reader.string();
-          continue;
-        case 14:
-          if (tag !== 114) {
-            break;
-          }
-
           message.schoolHandbook.push(AWSFile.decode(reader, reader.uint32()));
           continue;
-        case 15:
-          if (tag !== 125) {
+        case 7:
+          if (tag !== 61) {
             break;
           }
 
@@ -269,26 +173,6 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
           return acc;
         }, {})
         : {},
-      interviewEmailTemplate: isSet(object.interviewEmailTemplate)
-        ? globalThis.String(object.interviewEmailTemplate)
-        : "",
-      postInterviewEmailTemplate: isSet(object.postInterviewEmailTemplate)
-        ? globalThis.String(object.postInterviewEmailTemplate)
-        : "",
-      rejectionEmailTemplate: isSet(object.rejectionEmailTemplate)
-        ? globalThis.String(object.rejectionEmailTemplate)
-        : "",
-      approvalEmailTemplate: isSet(object.approvalEmailTemplate) ? globalThis.String(object.approvalEmailTemplate) : "",
-      fieldGroupRejectionEmailTemplate: isSet(object.fieldGroupRejectionEmailTemplate)
-        ? globalThis.String(object.fieldGroupRejectionEmailTemplate)
-        : "",
-      withdrawEmailTemplate: isSet(object.withdrawEmailTemplate) ? globalThis.String(object.withdrawEmailTemplate) : "",
-      moveStudentAdmissionYearEmailTemplate: isSet(object.moveStudentAdmissionYearEmailTemplate)
-        ? globalThis.String(object.moveStudentAdmissionYearEmailTemplate)
-        : "",
-      reregistrationInvitationEmailTemplate: isSet(object.reregistrationInvitationEmailTemplate)
-        ? globalThis.String(object.reregistrationInvitationEmailTemplate)
-        : "",
       schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
         ? object.schoolHandbook.map((e: any) => AWSFile.fromJSON(e))
         : [],
@@ -325,30 +209,6 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
         });
       }
     }
-    if (message.interviewEmailTemplate !== undefined && message.interviewEmailTemplate !== "") {
-      obj.interviewEmailTemplate = message.interviewEmailTemplate;
-    }
-    if (message.postInterviewEmailTemplate !== undefined && message.postInterviewEmailTemplate !== "") {
-      obj.postInterviewEmailTemplate = message.postInterviewEmailTemplate;
-    }
-    if (message.rejectionEmailTemplate !== "") {
-      obj.rejectionEmailTemplate = message.rejectionEmailTemplate;
-    }
-    if (message.approvalEmailTemplate !== "") {
-      obj.approvalEmailTemplate = message.approvalEmailTemplate;
-    }
-    if (message.fieldGroupRejectionEmailTemplate !== "") {
-      obj.fieldGroupRejectionEmailTemplate = message.fieldGroupRejectionEmailTemplate;
-    }
-    if (message.withdrawEmailTemplate !== "") {
-      obj.withdrawEmailTemplate = message.withdrawEmailTemplate;
-    }
-    if (message.moveStudentAdmissionYearEmailTemplate !== "") {
-      obj.moveStudentAdmissionYearEmailTemplate = message.moveStudentAdmissionYearEmailTemplate;
-    }
-    if (message.reregistrationInvitationEmailTemplate !== "") {
-      obj.reregistrationInvitationEmailTemplate = message.reregistrationInvitationEmailTemplate;
-    }
     if (message.schoolHandbook?.length) {
       obj.schoolHandbook = message.schoolHandbook.map((e) => AWSFile.toJSON(e));
     }
@@ -384,14 +244,6 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
       },
       {},
     );
-    message.interviewEmailTemplate = object.interviewEmailTemplate ?? "";
-    message.postInterviewEmailTemplate = object.postInterviewEmailTemplate ?? "";
-    message.rejectionEmailTemplate = object.rejectionEmailTemplate ?? "";
-    message.approvalEmailTemplate = object.approvalEmailTemplate ?? "";
-    message.fieldGroupRejectionEmailTemplate = object.fieldGroupRejectionEmailTemplate ?? "";
-    message.withdrawEmailTemplate = object.withdrawEmailTemplate ?? "";
-    message.moveStudentAdmissionYearEmailTemplate = object.moveStudentAdmissionYearEmailTemplate ?? "";
-    message.reregistrationInvitationEmailTemplate = object.reregistrationInvitationEmailTemplate ?? "";
     message.schoolHandbook = object.schoolHandbook?.map((e) => AWSFile.fromPartial(e)) || [];
     message.interviewFee = object.interviewFee ?? 0;
     return message;

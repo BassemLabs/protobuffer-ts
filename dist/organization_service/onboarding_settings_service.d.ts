@@ -29,18 +29,6 @@ export interface UpdateWaitlistFeeRequest {
     organizationId: ObjectId | undefined;
     waitlistFee: number;
 }
-export interface UpdateEmailTemplatesRequest {
-    context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    interviewEmailTemplate?: string | undefined;
-    postInterviewEmailTemplate?: string | undefined;
-    rejectionEmailTemplate: string;
-    approvalEmailTemplate: string;
-    fieldGroupRejectionEmailTemplate: string;
-    withdrawEmailTemplate: string;
-    moveStudentAdmissionYearEmailTemplate: string;
-    reregistrationInvitationEmailTemplate: string;
-}
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;
     organizationId: ObjectId | undefined;
@@ -73,7 +61,6 @@ export declare const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnro
 export declare const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileRequest>;
 export declare const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFileRequest>;
 export declare const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest>;
-export declare const UpdateEmailTemplatesRequest: MessageFns<UpdateEmailTemplatesRequest>;
 export declare const UpdateRegistrationFeeRequest: MessageFns<UpdateRegistrationFeeRequest>;
 export declare const UpdateRegistrationFeeRequest_RegistrationFeesEntry: MessageFns<UpdateRegistrationFeeRequest_RegistrationFeesEntry>;
 export declare const UpdateReregistrationFeeRequest: MessageFns<UpdateReregistrationFeeRequest>;

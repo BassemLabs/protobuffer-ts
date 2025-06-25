@@ -11,14 +11,6 @@ export interface OnboardingSettings {
     reregistrationFees: {
         [key: string]: ItemizedFee;
     };
-    interviewEmailTemplate?: string | undefined;
-    postInterviewEmailTemplate?: string | undefined;
-    rejectionEmailTemplate: string;
-    approvalEmailTemplate: string;
-    fieldGroupRejectionEmailTemplate: string;
-    withdrawEmailTemplate: string;
-    moveStudentAdmissionYearEmailTemplate: string;
-    reregistrationInvitationEmailTemplate: string;
     schoolHandbook: AWSFile[];
     interviewFee: number;
 }
