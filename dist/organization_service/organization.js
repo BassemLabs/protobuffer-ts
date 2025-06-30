@@ -282,7 +282,14 @@ exports.Organization = {
     },
 };
 function createBaseSchoolYear() {
-    return { id: undefined, organizationId: undefined, name: "", startDate: undefined, endDate: undefined };
+    return {
+        id: undefined,
+        organizationId: undefined,
+        name: "",
+        startDate: undefined,
+        endDate: undefined,
+        isOpenForRegistration: false,
+    };
 }
 exports.SchoolYear = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -300,6 +307,9 @@ exports.SchoolYear = {
         }
         if (message.endDate !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+        }
+        if (message.isOpenForRegistration !== undefined && message.isOpenForRegistration !== false) {
+            writer.uint32(48).bool(message.isOpenForRegistration);
         }
         return writer;
     },
@@ -340,6 +350,12 @@ exports.SchoolYear = {
                     }
                     message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.isOpenForRegistration = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -355,6 +371,9 @@ exports.SchoolYear = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            isOpenForRegistration: isSet(object.isOpenForRegistration)
+                ? globalThis.Boolean(object.isOpenForRegistration)
+                : false,
         };
     },
     toJSON(message) {
@@ -374,6 +393,9 @@ exports.SchoolYear = {
         if (message.endDate !== undefined) {
             obj.endDate = message.endDate.toISOString();
         }
+        if (message.isOpenForRegistration !== undefined && message.isOpenForRegistration !== false) {
+            obj.isOpenForRegistration = message.isOpenForRegistration;
+        }
         return obj;
     },
     create(base) {
@@ -388,6 +410,7 @@ exports.SchoolYear = {
         message.name = object.name ?? "";
         message.startDate = object.startDate ?? undefined;
         message.endDate = object.endDate ?? undefined;
+        message.isOpenForRegistration = object.isOpenForRegistration ?? false;
         return message;
     },
 };

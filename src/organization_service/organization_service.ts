@@ -106,6 +106,12 @@ export interface CreateSchoolYearRequest {
   endDate: Date | undefined;
 }
 
+export interface UpdateSchoolYearRegistrationStatusRequest {
+  context: RequestContext | undefined;
+  schoolYearId: ObjectId | undefined;
+  newRegistrationStatus: boolean;
+}
+
 export interface CreateSchoolYearResponse {
   schoolYears: SchoolYear[];
 }
@@ -1414,6 +1420,105 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     message.name = object.name ?? "";
     message.startDate = object.startDate ?? undefined;
     message.endDate = object.endDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateSchoolYearRegistrationStatusRequest(): UpdateSchoolYearRegistrationStatusRequest {
+  return { context: undefined, schoolYearId: undefined, newRegistrationStatus: false };
+}
+
+export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolYearRegistrationStatusRequest> = {
+  encode(message: UpdateSchoolYearRegistrationStatusRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    }
+    if (message.newRegistrationStatus !== false) {
+      writer.uint32(24).bool(message.newRegistrationStatus);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateSchoolYearRegistrationStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSchoolYearRegistrationStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.newRegistrationStatus = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSchoolYearRegistrationStatusRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      newRegistrationStatus: isSet(object.newRegistrationStatus)
+        ? globalThis.Boolean(object.newRegistrationStatus)
+        : false,
+    };
+  },
+
+  toJSON(message: UpdateSchoolYearRegistrationStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
+    if (message.newRegistrationStatus !== false) {
+      obj.newRegistrationStatus = message.newRegistrationStatus;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateSchoolYearRegistrationStatusRequest>, I>>(
+    base?: I,
+  ): UpdateSchoolYearRegistrationStatusRequest {
+    return UpdateSchoolYearRegistrationStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateSchoolYearRegistrationStatusRequest>, I>>(
+    object: I,
+  ): UpdateSchoolYearRegistrationStatusRequest {
+    const message = createBaseUpdateSchoolYearRegistrationStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
+      : undefined;
+    message.newRegistrationStatus = object.newRegistrationStatus ?? false;
     return message;
   },
 };

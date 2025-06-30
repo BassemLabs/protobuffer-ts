@@ -78,6 +78,7 @@ export interface SchoolYear {
   name: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
+  isOpenForRegistration?: boolean | undefined;
 }
 
 export interface PaymentInformation {
@@ -329,7 +330,14 @@ export const Organization: MessageFns<Organization> = {
 };
 
 function createBaseSchoolYear(): SchoolYear {
-  return { id: undefined, organizationId: undefined, name: "", startDate: undefined, endDate: undefined };
+  return {
+    id: undefined,
+    organizationId: undefined,
+    name: "",
+    startDate: undefined,
+    endDate: undefined,
+    isOpenForRegistration: false,
+  };
 }
 
 export const SchoolYear: MessageFns<SchoolYear> = {
@@ -348,6 +356,9 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     }
     if (message.endDate !== undefined) {
       Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+    }
+    if (message.isOpenForRegistration !== undefined && message.isOpenForRegistration !== false) {
+      writer.uint32(48).bool(message.isOpenForRegistration);
     }
     return writer;
   },
@@ -394,6 +405,13 @@ export const SchoolYear: MessageFns<SchoolYear> = {
 
           message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.isOpenForRegistration = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -410,6 +428,9 @@ export const SchoolYear: MessageFns<SchoolYear> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      isOpenForRegistration: isSet(object.isOpenForRegistration)
+        ? globalThis.Boolean(object.isOpenForRegistration)
+        : false,
     };
   },
 
@@ -430,6 +451,9 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     if (message.endDate !== undefined) {
       obj.endDate = message.endDate.toISOString();
     }
+    if (message.isOpenForRegistration !== undefined && message.isOpenForRegistration !== false) {
+      obj.isOpenForRegistration = message.isOpenForRegistration;
+    }
     return obj;
   },
 
@@ -445,6 +469,7 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     message.name = object.name ?? "";
     message.startDate = object.startDate ?? undefined;
     message.endDate = object.endDate ?? undefined;
+    message.isOpenForRegistration = object.isOpenForRegistration ?? false;
     return message;
   },
 };

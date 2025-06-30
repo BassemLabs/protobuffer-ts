@@ -81,6 +81,11 @@ export interface CreateSchoolYearRequest {
     startDate: Date | undefined;
     endDate: Date | undefined;
 }
+export interface UpdateSchoolYearRegistrationStatusRequest {
+    context: RequestContext | undefined;
+    schoolYearId: ObjectId | undefined;
+    newRegistrationStatus: boolean;
+}
 export interface CreateSchoolYearResponse {
     schoolYears: SchoolYear[];
 }
@@ -122,6 +127,7 @@ export declare const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest>;
 export declare const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest>;
 export declare const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse>;
 export declare const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest>;
+export declare const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolYearRegistrationStatusRequest>;
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
 export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
 export declare const StartReregistrationRequest: MessageFns<StartReregistrationRequest>;

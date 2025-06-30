@@ -30,6 +30,7 @@ export interface SchoolYear {
     name: string;
     startDate: Date | undefined;
     endDate: Date | undefined;
+    isOpenForRegistration?: boolean | undefined;
 }
 export interface PaymentInformation {
     stripeAccountId?: string | undefined;
