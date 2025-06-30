@@ -1,6 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-export declare const protobufPackage = "organization_service";
+export declare const protobufPackage = "payment_service";
 export declare enum DiscountType {
     /** STANDARD - subsidized, teacher, sibling, scholarship */
     STANDARD = "STANDARD",

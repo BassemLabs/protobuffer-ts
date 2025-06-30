@@ -1,0 +1,185 @@
+import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
+import { ObjectId } from "../utils/object_id";
+import { RequestContext } from "../utils/request_context";
+import { Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, InvoiceStatus } from "./invoice";
+export declare const protobufPackage = "payment_service";
+/** Invoice messages */
+export interface GetInvoiceRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+}
+export interface GetInvoiceByNumberRequest {
+    context: RequestContext | undefined;
+    invoiceNumber: number;
+}
+export interface GetUserInvoicesRequest {
+    context: RequestContext | undefined;
+    userId: ObjectId | undefined;
+}
+export interface GetUserInvoicesResponse {
+    invoices: InvoiceResponse[];
+}
+export interface GetFamilyInvoicesRequest {
+    context: RequestContext | undefined;
+    familyId: ObjectId | undefined;
+}
+export interface GetParentInvoicesRequest {
+    context: RequestContext | undefined;
+    parentId: ObjectId | undefined;
+}
+export interface GetActionsRequiredByParentsRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+}
+export interface GetActionsRequiredByParentsResponse {
+    actions: ActionRequiredByParents[];
+}
+export interface StudentHasNoUnpaidInvoicesRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+}
+export interface StudentHasNoUnpaidInvoicesResponse {
+    hasNoUnpaidInvoices: boolean;
+}
+export interface UsersInvoicesFilter {
+    status: InvoiceStatus;
+    schoolYear?: ObjectId | undefined;
+}
+export interface GetUsersInvoicesRequest {
+    context: RequestContext | undefined;
+    filter: UsersInvoicesFilter | undefined;
+}
+export interface GetUsersInvoicesResponse {
+    invoices: InvoiceResponse[];
+}
+export interface ListInvoicesRequest {
+    context: RequestContext | undefined;
+    filter: InvoiceFilter | undefined;
+}
+export interface AggregationResponse {
+    invoices: Invoice[];
+    invoicesCount: number;
+}
+export interface PaginatedListInvoicesResponse {
+    invoices: InvoiceResponse[];
+    invoicesCount: number;
+}
+export interface ListInvoicesResponse {
+    invoices: InvoiceResponse[];
+}
+export interface IsInvoicePaidRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+}
+export interface IsInvoicePaidResponse {
+    isPaid: boolean;
+}
+export interface CreateInvoiceRequest {
+    context: RequestContext | undefined;
+    title: string;
+    description: string;
+    showHst: boolean;
+    disableTax: boolean;
+    user?: ObjectId | undefined;
+    family?: ObjectId | undefined;
+    items: InvoiceItem[];
+    coupons: Coupon[];
+    dueDate?: Date | undefined;
+    schoolYear: ObjectId | undefined;
+}
+export interface CreateInvoiceForClassRequest {
+    context: RequestContext | undefined;
+    title: string;
+    description: string;
+    showHst: boolean;
+    disableTax: boolean;
+    homeroom?: ObjectId | undefined;
+    course?: ObjectId | undefined;
+    items: InvoiceItem[];
+    coupons: Coupon[];
+    dueDate?: Date | undefined;
+    schoolYear: ObjectId | undefined;
+}
+export interface GenerateInterviewFeeInvoiceRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+}
+export interface GenerateWaitlistFeeInvoiceRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+}
+export interface GenerateRegistrationFeesInvoiceRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+}
+export interface CreateInvoiceForClassResponse {
+    invoices: InvoiceResponse[];
+}
+export interface UpdateInvoiceRequest {
+    context: RequestContext | undefined;
+    id: ObjectId | undefined;
+    title: string;
+    description: string;
+    showHst: boolean;
+    disableTax: boolean;
+    items: InvoiceItem[];
+    coupons: Coupon[];
+    dueDate?: Date | undefined;
+}
+export interface ArchiveInvoiceRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+}
+export interface UnarchiveInvoiceRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+}
+export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
+export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
+export declare const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest>;
+export declare const GetUserInvoicesResponse: MessageFns<GetUserInvoicesResponse>;
+export declare const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest>;
+export declare const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest>;
+export declare const GetActionsRequiredByParentsRequest: MessageFns<GetActionsRequiredByParentsRequest>;
+export declare const GetActionsRequiredByParentsResponse: MessageFns<GetActionsRequiredByParentsResponse>;
+export declare const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInvoicesRequest>;
+export declare const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidInvoicesResponse>;
+export declare const UsersInvoicesFilter: MessageFns<UsersInvoicesFilter>;
+export declare const GetUsersInvoicesRequest: MessageFns<GetUsersInvoicesRequest>;
+export declare const GetUsersInvoicesResponse: MessageFns<GetUsersInvoicesResponse>;
+export declare const ListInvoicesRequest: MessageFns<ListInvoicesRequest>;
+export declare const AggregationResponse: MessageFns<AggregationResponse>;
+export declare const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResponse>;
+export declare const ListInvoicesResponse: MessageFns<ListInvoicesResponse>;
+export declare const IsInvoicePaidRequest: MessageFns<IsInvoicePaidRequest>;
+export declare const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse>;
+export declare const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest>;
+export declare const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassRequest>;
+export declare const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFeeInvoiceRequest>;
+export declare const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeInvoiceRequest>;
+export declare const GenerateRegistrationFeesInvoiceRequest: MessageFns<GenerateRegistrationFeesInvoiceRequest>;
+export declare const CreateInvoiceForClassResponse: MessageFns<CreateInvoiceForClassResponse>;
+export declare const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest>;
+export declare const ArchiveInvoiceRequest: MessageFns<ArchiveInvoiceRequest>;
+export declare const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest>;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
+    [K in keyof T]?: DeepPartial<T[K]>;
+} : Partial<T>;
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+export type Exact<P, I extends P> = P extends Builtin ? P : P & {
+    [K in keyof P]: Exact<P[K], I[K]>;
+} & {
+    [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
+};
+export interface MessageFns<T> {
+    encode(message: T, writer?: BinaryWriter): BinaryWriter;
+    decode(input: BinaryReader | Uint8Array, length?: number): T;
+    fromJSON(object: any): T;
+    toJSON(message: T): unknown;
+    create<I extends Exact<DeepPartial<T>, I>>(base?: I): T;
+    fromPartial<I extends Exact<DeepPartial<T>, I>>(object: I): T;
+}
+export {};

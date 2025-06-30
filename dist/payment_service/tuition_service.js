@@ -3,7 +3,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_service.proto
+// source: payment_service/tuition_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UnarchiveTuitionPlanRequest = exports.ArchiveTuitionPlanRequest = exports.UpdateTuitionPlanRequest = exports.CreateTuitionPlanRequest = exports.ListTuitionPlansResponse = exports.ListTuitionPlansRequest = exports.GetTuitionPlanRequest = exports.DeleteTuitionDiscountResponse = exports.DeleteTuitionDiscountRequest = exports.UpdateTuitionDiscountRequest = exports.CreateTuitionDiscountRequest = exports.ListTuitionDiscountsResponse = exports.ListTuitionDiscountsRequest = exports.GetTuitionDiscountRequest = exports.DeleteAdditionalFeeResponse = exports.DeleteAdditionalFeeRequest = exports.UpdateAdditionalFeeRequest = exports.CreateAdditionalFeeRequest = exports.ListAdditionalFeesResponse = exports.ListAdditionalFeesRequest = exports.GetAdditionalFeeRequest = exports.UpsertTuitionRatesRequest = exports.GradeAmount = exports.ListTuitionRatesResponse = exports.ListTuitionRatesRequest = exports.GetTuitionRateRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
@@ -11,7 +11,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const tuition_1 = require("./tuition");
-exports.protobufPackage = "organization_service";
+exports.protobufPackage = "payment_service";
 function createBaseGetTuitionRateRequest() {
     return { context: undefined, schoolYear: undefined, grade: "" };
 }

@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_application_service.proto
+// source: payment_service/tuition_application_service.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
@@ -10,7 +10,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { AdditionalFeeApplication, DiscountApplication } from "./tuition_application";
 
-export const protobufPackage = "organization_service";
+export const protobufPackage = "payment_service";
 
 /** Discount Application messages */
 export interface ApplyDiscountRequest {

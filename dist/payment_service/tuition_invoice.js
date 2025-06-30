@@ -3,7 +3,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_invoice.proto
+// source: payment_service/tuition_invoice.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TuitionInvoice = exports.TuitionInvoiceLineItem = exports.TuitionPlanSnapshot = exports.LineType = exports.protobufPackage = void 0;
 exports.lineTypeFromJSON = lineTypeFromJSON;
@@ -13,7 +13,7 @@ exports.lineTypeToNumber = lineTypeToNumber;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const tuition_1 = require("./tuition");
-exports.protobufPackage = "organization_service";
+exports.protobufPackage = "payment_service";
 var LineType;
 (function (LineType) {
     LineType["BASE_RATE"] = "BASE_RATE";

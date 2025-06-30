@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { AdditionalFee, DiscountStackMode, DiscountType, DiscountValueType, PaymentInstallment, PaymentScheduleType, Scope, TuitionDiscount, TuitionPlan, TuitionRate } from "./tuition";
-export declare const protobufPackage = "organization_service";
+export declare const protobufPackage = "payment_service";
 /** TuitionRate messages */
 export interface GetTuitionRateRequest {
     context: RequestContext | undefined;

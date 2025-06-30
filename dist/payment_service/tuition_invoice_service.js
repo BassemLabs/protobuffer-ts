@@ -3,14 +3,14 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_invoice_service.proto
+// source: payment_service/tuition_invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenerateTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
-exports.protobufPackage = "organization_service";
+exports.protobufPackage = "payment_service";
 function createBaseStudentObj() {
     return { id: undefined, name: "", grade: "" };
 }

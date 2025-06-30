@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { DiscountValueType, PaymentInstallment, PaymentScheduleType, Scope } from "./tuition";
-export declare const protobufPackage = "organization_service";
+export declare const protobufPackage = "payment_service";
 export declare enum LineType {
     BASE_RATE = "BASE_RATE",
     ADD_FEE = "ADD_FEE",

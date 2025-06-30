@@ -2,13 +2,13 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_application.proto
+// source: payment_service/tuition_application.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 
-export const protobufPackage = "organization_service";
+export const protobufPackage = "payment_service";
 
 /** applied to either a student or a family */
 export interface DiscountApplication {

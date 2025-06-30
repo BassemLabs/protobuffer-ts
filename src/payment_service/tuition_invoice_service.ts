@@ -2,14 +2,14 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_invoice_service.proto
+// source: payment_service/tuition_invoice_service.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 
-export const protobufPackage = "organization_service";
+export const protobufPackage = "payment_service";
 
 /** TODO: Remove this once we move into payment service and call user service */
 export interface StudentObj {

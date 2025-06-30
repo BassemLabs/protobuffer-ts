@@ -3,7 +3,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_application_service.proto
+// source: payment_service/tuition_application_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListFamilyAdditionalFeesResponse = exports.ListFamilyAdditionalFeesRequest = exports.ListStudentAdditionalFeesResponse = exports.ListStudentAdditionalFeesRequest = exports.RemoveAdditionalFeeResponse = exports.RemoveAdditionalFeeRequest = exports.ApplyAdditionalFeeRequest = exports.ListFamilyDiscountsResponse = exports.ListFamilyDiscountsRequest = exports.ListStudentDiscountsResponse = exports.ListStudentDiscountsRequest = exports.RemoveDiscountResponse = exports.RemoveDiscountRequest = exports.ApplyDiscountRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
@@ -11,7 +11,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const tuition_application_1 = require("./tuition_application");
-exports.protobufPackage = "organization_service";
+exports.protobufPackage = "payment_service";
 function createBaseApplyDiscountRequest() {
     return { context: undefined, discount: undefined, student: undefined, family: undefined };
 }

@@ -1,24 +1,22 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-export declare const protobufPackage = "organization_service";
-/** applied to either a student or a family */
-export interface DiscountApplication {
+import { RequestContext } from "../utils/request_context";
+export declare const protobufPackage = "payment_service";
+/** TODO: Remove this once we move into payment service and call user service */
+export interface StudentObj {
     id: ObjectId | undefined;
-    organization: ObjectId | undefined;
-    discount: ObjectId | undefined;
-    student?: ObjectId | undefined;
-    family?: ObjectId | undefined;
+    name: string;
+    grade: string;
 }
-/** applied to either a student or a family */
-export interface AdditionalFeeApplication {
-    id: ObjectId | undefined;
-    organization: ObjectId | undefined;
-    additionalFee: ObjectId | undefined;
-    student?: ObjectId | undefined;
-    family?: ObjectId | undefined;
+export interface GenerateTuitionInvoiceRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+    tuitionPlan: ObjectId | undefined;
+    students: StudentObj[];
 }
-export declare const DiscountApplication: MessageFns<DiscountApplication>;
-export declare const AdditionalFeeApplication: MessageFns<AdditionalFeeApplication>;
+export declare const StudentObj: MessageFns<StudentObj>;
+export declare const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -3,7 +3,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition.proto
+// source: payment_service/tuition.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentInstallment = exports.TuitionPlan = exports.TuitionDiscount = exports.AdditionalFee = exports.TuitionRate = exports.DiscountStackMode = exports.PaymentScheduleType = exports.DiscountValueType = exports.Scope = exports.DiscountType = exports.protobufPackage = void 0;
 exports.discountTypeFromJSON = discountTypeFromJSON;
@@ -24,7 +24,7 @@ exports.discountStackModeToNumber = discountStackModeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
-exports.protobufPackage = "organization_service";
+exports.protobufPackage = "payment_service";
 var DiscountType;
 (function (DiscountType) {
     /** STANDARD - subsidized, teacher, sibling, scholarship */

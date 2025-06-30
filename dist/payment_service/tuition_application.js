@@ -3,13 +3,13 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_application.proto
+// source: payment_service/tuition_application.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdditionalFeeApplication = exports.DiscountApplication = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
-exports.protobufPackage = "organization_service";
+exports.protobufPackage = "payment_service";
 function createBaseDiscountApplication() {
     return { id: undefined, organization: undefined, discount: undefined, student: undefined, family: undefined };
 }

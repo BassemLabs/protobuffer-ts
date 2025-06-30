@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.2.0
 //   protoc               unknown
-// source: organization_service/tuition_service.proto
+// source: payment_service/tuition_service.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
@@ -36,7 +36,7 @@ import {
   TuitionRate,
 } from "./tuition";
 
-export const protobufPackage = "organization_service";
+export const protobufPackage = "payment_service";
 
 /** TuitionRate messages */
 export interface GetTuitionRateRequest {
