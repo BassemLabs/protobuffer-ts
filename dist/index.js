@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Test = exports.Test_service = exports.Tuition_application_service = exports.Tuition_service = exports.Tuition = exports.Invoice = exports.Tuition_invoice = exports.Transaction = exports.Transaction_service = exports.Invoice_service = exports.Tuition_invoice_service = exports.Tuition_application = exports.Action_required_by_parents = exports.Custom_field_entry = exports.Email_template = exports.User_type = exports.Request_context = exports.Aws_file = exports.Object_id = exports.Organization_profile_settings = exports.Organization_service = exports.Kms_service = exports.Onboarding_settings_service = exports.Kms_key = exports.Organization_owner = exports.Organization = exports.Onboarding_settings = exports.Campus = exports.Bassem_labs_staff = exports.Organization_owner_service = exports.Campus_service = exports.Bassem_labs_staff_service = exports.Organization_profile_settings_service = exports.Empty = exports.Timestamp = exports.Course = exports.Course_service = exports.Homeroom_service = exports.Semester_service = exports.Semester = exports.Homeroom = exports.Gclass = exports.Report_layout_service = exports.Report_layout = void 0;
+exports.Test = exports.Test_service = exports.Tuition_application_service = exports.Tuition_service = exports.Tuition = exports.Invoice = exports.Tuition_invoice = exports.Transaction = exports.Transaction_service = exports.Invoice_service = exports.Tuition_invoice_service = exports.Tuition_application = exports.Action_required_by_parents = exports.Custom_field_entry = exports.Email_template = exports.User_type = exports.Request_context = exports.Aws_file = exports.Object_id = exports.Organization_profile_settings = exports.Organization_service = exports.Kms_service = exports.Onboarding_settings_service = exports.Kms_key = exports.Organization_owner = exports.Organization = exports.Onboarding_settings = exports.Campus = exports.Bassem_labs_staff = exports.Organization_owner_service = exports.Campus_service = exports.Bassem_labs_staff_service = exports.Organization_profile_settings_service = exports.Empty = exports.Timestamp = exports.Sample = exports.Course = exports.Course_service = exports.Homeroom_service = exports.Semester_service = exports.Semester = exports.Homeroom = exports.Gclass = exports.Report_layout_service = exports.Report_layout = void 0;
 // Auto-generated index.ts
 const Report_layout = __importStar(require("./class_service/report_layout"));
 exports.Report_layout = Report_layout;
@@ -43,6 +43,8 @@ const Course_service = __importStar(require("./class_service/course_service"));
 exports.Course_service = Course_service;
 const Course = __importStar(require("./class_service/course"));
 exports.Course = Course;
+const Sample = __importStar(require("./rabbitmq_schemas/sample"));
+exports.Sample = Sample;
 const Timestamp = __importStar(require("./google/protobuf/timestamp"));
 exports.Timestamp = Timestamp;
 const Empty = __importStar(require("./google/protobuf/empty"));

@@ -16,6 +16,8 @@ import * as Course_service from './class_service/course_service';
 export { Course_service };
 import * as Course from './class_service/course';
 export { Course };
+import * as Sample from './rabbitmq_schemas/sample';
+export { Sample };
 import * as Timestamp from './google/protobuf/timestamp';
 export { Timestamp };
 import * as Empty from './google/protobuf/empty';
