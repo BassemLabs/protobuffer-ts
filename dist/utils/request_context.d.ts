@@ -4,6 +4,7 @@ import { UserType } from "./user_type";
 export declare const protobufPackage = "utils";
 export declare enum ServiceContext {
     AutoPaymentScheduling = "AutoPaymentScheduling",
+    AutoPaymentConsumer = "AutoPaymentConsumer",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function serviceContextFromJSON(object: any): ServiceContext;

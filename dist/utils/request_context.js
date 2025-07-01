@@ -17,6 +17,7 @@ exports.protobufPackage = "utils";
 var ServiceContext;
 (function (ServiceContext) {
     ServiceContext["AutoPaymentScheduling"] = "AutoPaymentScheduling";
+    ServiceContext["AutoPaymentConsumer"] = "AutoPaymentConsumer";
     ServiceContext["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ServiceContext || (exports.ServiceContext = ServiceContext = {}));
 function serviceContextFromJSON(object) {
@@ -24,6 +25,9 @@ function serviceContextFromJSON(object) {
         case 1:
         case "AutoPaymentScheduling":
             return ServiceContext.AutoPaymentScheduling;
+        case 2:
+        case "AutoPaymentConsumer":
+            return ServiceContext.AutoPaymentConsumer;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -34,6 +38,8 @@ function serviceContextToJSON(object) {
     switch (object) {
         case ServiceContext.AutoPaymentScheduling:
             return "AutoPaymentScheduling";
+        case ServiceContext.AutoPaymentConsumer:
+            return "AutoPaymentConsumer";
         case ServiceContext.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -43,6 +49,8 @@ function serviceContextToNumber(object) {
     switch (object) {
         case ServiceContext.AutoPaymentScheduling:
             return 1;
+        case ServiceContext.AutoPaymentConsumer:
+            return 2;
         case ServiceContext.UNRECOGNIZED:
         default:
             return -1;
