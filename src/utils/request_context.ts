@@ -11,9 +11,47 @@ import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "./
 
 export const protobufPackage = "utils";
 
+export enum ServiceContext {
+  AutoPaymentScheduling = "AutoPaymentScheduling",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function serviceContextFromJSON(object: any): ServiceContext {
+  switch (object) {
+    case 1:
+    case "AutoPaymentScheduling":
+      return ServiceContext.AutoPaymentScheduling;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ServiceContext.UNRECOGNIZED;
+  }
+}
+
+export function serviceContextToJSON(object: ServiceContext): string {
+  switch (object) {
+    case ServiceContext.AutoPaymentScheduling:
+      return "AutoPaymentScheduling";
+    case ServiceContext.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function serviceContextToNumber(object: ServiceContext): number {
+  switch (object) {
+    case ServiceContext.AutoPaymentScheduling:
+      return 1;
+    case ServiceContext.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface RequestContext {
   userContext: UserContext | undefined;
   isTesting: boolean;
+  serviceBasedContextName?: ServiceContext | undefined;
 }
 
 export interface UserContext {
@@ -30,7 +68,7 @@ export interface UserContext {
 }
 
 function createBaseRequestContext(): RequestContext {
-  return { userContext: undefined, isTesting: false };
+  return { userContext: undefined, isTesting: false, serviceBasedContextName: ServiceContext.AutoPaymentScheduling };
 }
 
 export const RequestContext: MessageFns<RequestContext> = {
@@ -40,6 +78,12 @@ export const RequestContext: MessageFns<RequestContext> = {
     }
     if (message.isTesting !== false) {
       writer.uint32(16).bool(message.isTesting);
+    }
+    if (
+      message.serviceBasedContextName !== undefined &&
+      message.serviceBasedContextName !== ServiceContext.AutoPaymentScheduling
+    ) {
+      writer.uint32(24).int32(serviceContextToNumber(message.serviceBasedContextName));
     }
     return writer;
   },
@@ -65,6 +109,13 @@ export const RequestContext: MessageFns<RequestContext> = {
 
           message.isTesting = reader.bool();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.serviceBasedContextName = serviceContextFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -78,6 +129,9 @@ export const RequestContext: MessageFns<RequestContext> = {
     return {
       userContext: isSet(object.userContext) ? UserContext.fromJSON(object.userContext) : undefined,
       isTesting: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : false,
+      serviceBasedContextName: isSet(object.serviceBasedContextName)
+        ? serviceContextFromJSON(object.serviceBasedContextName)
+        : ServiceContext.AutoPaymentScheduling,
     };
   },
 
@@ -88,6 +142,12 @@ export const RequestContext: MessageFns<RequestContext> = {
     }
     if (message.isTesting !== false) {
       obj.isTesting = message.isTesting;
+    }
+    if (
+      message.serviceBasedContextName !== undefined &&
+      message.serviceBasedContextName !== ServiceContext.AutoPaymentScheduling
+    ) {
+      obj.serviceBasedContextName = serviceContextToJSON(message.serviceBasedContextName);
     }
     return obj;
   },
@@ -101,6 +161,7 @@ export const RequestContext: MessageFns<RequestContext> = {
       ? UserContext.fromPartial(object.userContext)
       : undefined;
     message.isTesting = object.isTesting ?? false;
+    message.serviceBasedContextName = object.serviceBasedContextName ?? ServiceContext.AutoPaymentScheduling;
     return message;
   },
 };

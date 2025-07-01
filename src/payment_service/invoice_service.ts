@@ -11,6 +11,10 @@ import { ActionRequiredByParents } from "../user_service/action_required_by_pare
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
+  AutoPaymentStatus,
+  autoPaymentStatusFromJSON,
+  autoPaymentStatusToJSON,
+  autoPaymentStatusToNumber,
   Coupon,
   Invoice,
   InvoiceFilter,
@@ -25,6 +29,10 @@ import {
 export const protobufPackage = "payment_service";
 
 /** Invoice messages */
+export interface Invoices {
+  invoices: Invoice[];
+}
+
 export interface GetInvoiceRequest {
   context: RequestContext | undefined;
   invoiceId: ObjectId | undefined;
@@ -126,6 +134,9 @@ export interface CreateInvoiceRequest {
   coupons: Coupon[];
   dueDate?: Date | undefined;
   schoolYear: ObjectId | undefined;
+  autoPayEnabled?: boolean | undefined;
+  chargeOnDate?: Date | undefined;
+  autoPaymentStatus?: AutoPaymentStatus | undefined;
 }
 
 export interface CreateInvoiceForClassRequest {
@@ -140,6 +151,9 @@ export interface CreateInvoiceForClassRequest {
   coupons: Coupon[];
   dueDate?: Date | undefined;
   schoolYear: ObjectId | undefined;
+  autoPayEnabled?: boolean | undefined;
+  chargeOnDate?: Date | undefined;
+  autoPaymentStatus?: AutoPaymentStatus | undefined;
 }
 
 export interface GenerateInterviewFeeInvoiceRequest {
@@ -183,6 +197,75 @@ export interface UnarchiveInvoiceRequest {
   context: RequestContext | undefined;
   invoiceId: ObjectId | undefined;
 }
+
+export interface GetAutoPayInvoicesReadyToChargeRequest {
+  context: RequestContext | undefined;
+}
+
+export interface SetAutoPayInvoiceStatusRequest {
+  context: RequestContext | undefined;
+  invoiceId: ObjectId | undefined;
+  autoPaymentStatus: AutoPaymentStatus;
+}
+
+function createBaseInvoices(): Invoices {
+  return { invoices: [] };
+}
+
+export const Invoices: MessageFns<Invoices> = {
+  encode(message: Invoices, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.invoices) {
+      Invoice.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Invoices {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseInvoices();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.invoices.push(Invoice.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Invoices {
+    return {
+      invoices: globalThis.Array.isArray(object?.invoices) ? object.invoices.map((e: any) => Invoice.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: Invoices): unknown {
+    const obj: any = {};
+    if (message.invoices?.length) {
+      obj.invoices = message.invoices.map((e) => Invoice.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Invoices>, I>>(base?: I): Invoices {
+    return Invoices.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Invoices>, I>>(object: I): Invoices {
+    const message = createBaseInvoices();
+    message.invoices = object.invoices?.map((e) => Invoice.fromPartial(e)) || [];
+    return message;
+  },
+};
 
 function createBaseGetInvoiceRequest(): GetInvoiceRequest {
   return { context: undefined, invoiceId: undefined };
@@ -1579,6 +1662,9 @@ function createBaseCreateInvoiceRequest(): CreateInvoiceRequest {
     coupons: [],
     dueDate: undefined,
     schoolYear: undefined,
+    autoPayEnabled: false,
+    chargeOnDate: undefined,
+    autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
   };
 }
 
@@ -1616,6 +1702,15 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     }
     if (message.schoolYear !== undefined) {
       ObjectId.encode(message.schoolYear, writer.uint32(90).fork()).join();
+    }
+    if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+      writer.uint32(96).bool(message.autoPayEnabled);
+    }
+    if (message.chargeOnDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(106).fork()).join();
+    }
+    if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+      writer.uint32(112).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
     }
     return writer;
   },
@@ -1704,6 +1799,27 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
 
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.autoPayEnabled = reader.bool();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.chargeOnDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1726,6 +1842,11 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+      chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+      autoPaymentStatus: isSet(object.autoPaymentStatus)
+        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+        : AutoPaymentStatus.AutoPayPending,
     };
   },
 
@@ -1764,6 +1885,15 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
     }
+    if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+      obj.autoPayEnabled = message.autoPayEnabled;
+    }
+    if (message.chargeOnDate !== undefined) {
+      obj.chargeOnDate = message.chargeOnDate.toISOString();
+    }
+    if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
+    }
     return obj;
   },
 
@@ -1789,6 +1919,9 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    message.autoPayEnabled = object.autoPayEnabled ?? false;
+    message.chargeOnDate = object.chargeOnDate ?? undefined;
+    message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
     return message;
   },
 };
@@ -1806,6 +1939,9 @@ function createBaseCreateInvoiceForClassRequest(): CreateInvoiceForClassRequest 
     coupons: [],
     dueDate: undefined,
     schoolYear: undefined,
+    autoPayEnabled: false,
+    chargeOnDate: undefined,
+    autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
   };
 }
 
@@ -1843,6 +1979,15 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     }
     if (message.schoolYear !== undefined) {
       ObjectId.encode(message.schoolYear, writer.uint32(90).fork()).join();
+    }
+    if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+      writer.uint32(96).bool(message.autoPayEnabled);
+    }
+    if (message.chargeOnDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(106).fork()).join();
+    }
+    if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+      writer.uint32(112).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
     }
     return writer;
   },
@@ -1931,6 +2076,27 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
 
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.autoPayEnabled = reader.bool();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.chargeOnDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1953,6 +2119,11 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+      chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+      autoPaymentStatus: isSet(object.autoPaymentStatus)
+        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+        : AutoPaymentStatus.AutoPayPending,
     };
   },
 
@@ -1991,6 +2162,15 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
     }
+    if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+      obj.autoPayEnabled = message.autoPayEnabled;
+    }
+    if (message.chargeOnDate !== undefined) {
+      obj.chargeOnDate = message.chargeOnDate.toISOString();
+    }
+    if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
+    }
     return obj;
   },
 
@@ -2018,6 +2198,9 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    message.autoPayEnabled = object.autoPayEnabled ?? false;
+    message.chargeOnDate = object.chargeOnDate ?? undefined;
+    message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
     return message;
   },
 };
@@ -2691,6 +2874,166 @@ export const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest> = {
     message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
       ? ObjectId.fromPartial(object.invoiceId)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAutoPayInvoicesReadyToChargeRequest(): GetAutoPayInvoicesReadyToChargeRequest {
+  return { context: undefined };
+}
+
+export const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoicesReadyToChargeRequest> = {
+  encode(message: GetAutoPayInvoicesReadyToChargeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAutoPayInvoicesReadyToChargeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAutoPayInvoicesReadyToChargeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAutoPayInvoicesReadyToChargeRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetAutoPayInvoicesReadyToChargeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAutoPayInvoicesReadyToChargeRequest>, I>>(
+    base?: I,
+  ): GetAutoPayInvoicesReadyToChargeRequest {
+    return GetAutoPayInvoicesReadyToChargeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAutoPayInvoicesReadyToChargeRequest>, I>>(
+    object: I,
+  ): GetAutoPayInvoicesReadyToChargeRequest {
+    const message = createBaseGetAutoPayInvoicesReadyToChargeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSetAutoPayInvoiceStatusRequest(): SetAutoPayInvoiceStatusRequest {
+  return { context: undefined, invoiceId: undefined, autoPaymentStatus: AutoPaymentStatus.AutoPayPending };
+}
+
+export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusRequest> = {
+  encode(message: SetAutoPayInvoiceStatusRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.invoiceId !== undefined) {
+      ObjectId.encode(message.invoiceId, writer.uint32(18).fork()).join();
+    }
+    if (message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+      writer.uint32(24).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetAutoPayInvoiceStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetAutoPayInvoiceStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetAutoPayInvoiceStatusRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      autoPaymentStatus: isSet(object.autoPaymentStatus)
+        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+        : AutoPaymentStatus.AutoPayPending,
+    };
+  },
+
+  toJSON(message: SetAutoPayInvoiceStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoiceId !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    }
+    if (message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SetAutoPayInvoiceStatusRequest>, I>>(base?: I): SetAutoPayInvoiceStatusRequest {
+    return SetAutoPayInvoiceStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SetAutoPayInvoiceStatusRequest>, I>>(
+    object: I,
+  ): SetAutoPayInvoiceStatusRequest {
+    const message = createBaseSetAutoPayInvoiceStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+      ? ObjectId.fromPartial(object.invoiceId)
+      : undefined;
+    message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
     return message;
   },
 };

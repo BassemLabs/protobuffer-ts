@@ -2,9 +2,12 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, InvoiceStatus } from "./invoice";
+import { AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, InvoiceStatus } from "./invoice";
 export declare const protobufPackage = "payment_service";
 /** Invoice messages */
+export interface Invoices {
+    invoices: Invoice[];
+}
 export interface GetInvoiceRequest {
     context: RequestContext | undefined;
     invoiceId: ObjectId | undefined;
@@ -87,6 +90,9 @@ export interface CreateInvoiceRequest {
     coupons: Coupon[];
     dueDate?: Date | undefined;
     schoolYear: ObjectId | undefined;
+    autoPayEnabled?: boolean | undefined;
+    chargeOnDate?: Date | undefined;
+    autoPaymentStatus?: AutoPaymentStatus | undefined;
 }
 export interface CreateInvoiceForClassRequest {
     context: RequestContext | undefined;
@@ -100,6 +106,9 @@ export interface CreateInvoiceForClassRequest {
     coupons: Coupon[];
     dueDate?: Date | undefined;
     schoolYear: ObjectId | undefined;
+    autoPayEnabled?: boolean | undefined;
+    chargeOnDate?: Date | undefined;
+    autoPaymentStatus?: AutoPaymentStatus | undefined;
 }
 export interface GenerateInterviewFeeInvoiceRequest {
     context: RequestContext | undefined;
@@ -136,6 +145,15 @@ export interface UnarchiveInvoiceRequest {
     context: RequestContext | undefined;
     invoiceId: ObjectId | undefined;
 }
+export interface GetAutoPayInvoicesReadyToChargeRequest {
+    context: RequestContext | undefined;
+}
+export interface SetAutoPayInvoiceStatusRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+    autoPaymentStatus: AutoPaymentStatus;
+}
+export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
 export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
 export declare const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest>;
@@ -164,6 +182,8 @@ export declare const CreateInvoiceForClassResponse: MessageFns<CreateInvoiceForC
 export declare const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest>;
 export declare const ArchiveInvoiceRequest: MessageFns<ArchiveInvoiceRequest>;
 export declare const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest>;
+export declare const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoicesReadyToChargeRequest>;
+export declare const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

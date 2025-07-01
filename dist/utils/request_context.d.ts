@@ -2,9 +2,17 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "./object_id";
 import { UserType } from "./user_type";
 export declare const protobufPackage = "utils";
+export declare enum ServiceContext {
+    AutoPaymentScheduling = "AutoPaymentScheduling",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function serviceContextFromJSON(object: any): ServiceContext;
+export declare function serviceContextToJSON(object: ServiceContext): string;
+export declare function serviceContextToNumber(object: ServiceContext): number;
 export interface RequestContext {
     userContext: UserContext | undefined;
     isTesting: boolean;
+    serviceBasedContextName?: ServiceContext | undefined;
 }
 export interface UserContext {
     userId: ObjectId | undefined;

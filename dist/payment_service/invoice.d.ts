@@ -7,6 +7,8 @@ export declare enum InvoiceStatus {
     Paid = "Paid",
     NotPaid = "NotPaid",
     Overdue = "Overdue",
+    Refunded = "Refunded",
+    Processing = "Processing",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function invoiceStatusFromJSON(object: any): InvoiceStatus;
@@ -26,6 +28,24 @@ export declare enum StudentStatus {
 export declare function studentStatusFromJSON(object: any): StudentStatus;
 export declare function studentStatusToJSON(object: StudentStatus): string;
 export declare function studentStatusToNumber(object: StudentStatus): number;
+export declare enum AutoPaymentStatus {
+    /** AutoPayPending - Pending to be paid, not yet queued */
+    AutoPayPending = "AutoPayPending",
+    /** AutoPayQueued - Queued to be charged by the payment consumer */
+    AutoPayQueued = "AutoPayQueued",
+    /** AutoPayQueueFailed - Failed to queue */
+    AutoPayQueueFailed = "AutoPayQueueFailed",
+    /** AutoPayProcessing - The auto payment is processing */
+    AutoPayProcessing = "AutoPayProcessing",
+    /** AutoPaySucceeded - The auto payment succeeded */
+    AutoPaySucceeded = "AutoPaySucceeded",
+    /** AutoPayFailed - The auto payment failed */
+    AutoPayFailed = "AutoPayFailed",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function autoPaymentStatusFromJSON(object: any): AutoPaymentStatus;
+export declare function autoPaymentStatusToJSON(object: AutoPaymentStatus): string;
+export declare function autoPaymentStatusToNumber(object: AutoPaymentStatus): number;
 export interface InvoiceItem {
     title: string;
     description: string;
@@ -54,6 +74,14 @@ export interface Invoice {
     dueDate?: Date | undefined;
     invoiceStudentRegistrationPipelineStatus?: StudentStatus | undefined;
     schoolYear: ObjectId | undefined;
+    /**
+     * Auto pay fields
+     * If autopay is enabled for this invoice
+     */
+    autoPayEnabled?: boolean | undefined;
+    /** Date when this invoice must be automatically charged one */
+    chargeOnDate?: Date | undefined;
+    autoPaymentStatus?: AutoPaymentStatus | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.GetUsersInvoicesResponse = exports.GetUsersInvoicesRequest = exports.UsersInvoicesFilter = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.protobufPackage = void 0;
+exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.GetUsersInvoicesResponse = exports.GetUsersInvoicesRequest = exports.UsersInvoicesFilter = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -14,6 +14,58 @@ const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const invoice_1 = require("./invoice");
 exports.protobufPackage = "payment_service";
+function createBaseInvoices() {
+    return { invoices: [] };
+}
+exports.Invoices = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.invoices) {
+            invoice_1.Invoice.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseInvoices();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.invoices.push(invoice_1.Invoice.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            invoices: globalThis.Array.isArray(object?.invoices) ? object.invoices.map((e) => invoice_1.Invoice.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.invoices?.length) {
+            obj.invoices = message.invoices.map((e) => invoice_1.Invoice.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.Invoices.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseInvoices();
+        message.invoices = object.invoices?.map((e) => invoice_1.Invoice.fromPartial(e)) || [];
+        return message;
+    },
+};
 function createBaseGetInvoiceRequest() {
     return { context: undefined, invoiceId: undefined };
 }
@@ -1245,6 +1297,9 @@ function createBaseCreateInvoiceRequest() {
         coupons: [],
         dueDate: undefined,
         schoolYear: undefined,
+        autoPayEnabled: false,
+        chargeOnDate: undefined,
+        autoPaymentStatus: invoice_1.AutoPaymentStatus.AutoPayPending,
     };
 }
 exports.CreateInvoiceRequest = {
@@ -1281,6 +1336,15 @@ exports.CreateInvoiceRequest = {
         }
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(90).fork()).join();
+        }
+        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+            writer.uint32(96).bool(message.autoPayEnabled);
+        }
+        if (message.chargeOnDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(106).fork()).join();
+        }
+        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== invoice_1.AutoPaymentStatus.AutoPayPending) {
+            writer.uint32(112).int32((0, invoice_1.autoPaymentStatusToNumber)(message.autoPaymentStatus));
         }
         return writer;
     },
@@ -1357,6 +1421,24 @@ exports.CreateInvoiceRequest = {
                     }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 12:
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.autoPayEnabled = reader.bool();
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.chargeOnDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 14:
+                    if (tag !== 112) {
+                        break;
+                    }
+                    message.autoPaymentStatus = (0, invoice_1.autoPaymentStatusFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1378,6 +1460,11 @@ exports.CreateInvoiceRequest = {
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+            chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+            autoPaymentStatus: isSet(object.autoPaymentStatus)
+                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.autoPaymentStatus)
+                : invoice_1.AutoPaymentStatus.AutoPayPending,
         };
     },
     toJSON(message) {
@@ -1415,6 +1502,15 @@ exports.CreateInvoiceRequest = {
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
+        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+            obj.autoPayEnabled = message.autoPayEnabled;
+        }
+        if (message.chargeOnDate !== undefined) {
+            obj.chargeOnDate = message.chargeOnDate.toISOString();
+        }
+        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== invoice_1.AutoPaymentStatus.AutoPayPending) {
+            obj.autoPaymentStatus = (0, invoice_1.autoPaymentStatusToJSON)(message.autoPaymentStatus);
+        }
         return obj;
     },
     create(base) {
@@ -1439,6 +1535,9 @@ exports.CreateInvoiceRequest = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
+        message.autoPayEnabled = object.autoPayEnabled ?? false;
+        message.chargeOnDate = object.chargeOnDate ?? undefined;
+        message.autoPaymentStatus = object.autoPaymentStatus ?? invoice_1.AutoPaymentStatus.AutoPayPending;
         return message;
     },
 };
@@ -1455,6 +1554,9 @@ function createBaseCreateInvoiceForClassRequest() {
         coupons: [],
         dueDate: undefined,
         schoolYear: undefined,
+        autoPayEnabled: false,
+        chargeOnDate: undefined,
+        autoPaymentStatus: invoice_1.AutoPaymentStatus.AutoPayPending,
     };
 }
 exports.CreateInvoiceForClassRequest = {
@@ -1491,6 +1593,15 @@ exports.CreateInvoiceForClassRequest = {
         }
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(90).fork()).join();
+        }
+        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+            writer.uint32(96).bool(message.autoPayEnabled);
+        }
+        if (message.chargeOnDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(106).fork()).join();
+        }
+        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== invoice_1.AutoPaymentStatus.AutoPayPending) {
+            writer.uint32(112).int32((0, invoice_1.autoPaymentStatusToNumber)(message.autoPaymentStatus));
         }
         return writer;
     },
@@ -1567,6 +1678,24 @@ exports.CreateInvoiceForClassRequest = {
                     }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 12:
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.autoPayEnabled = reader.bool();
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.chargeOnDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 14:
+                    if (tag !== 112) {
+                        break;
+                    }
+                    message.autoPaymentStatus = (0, invoice_1.autoPaymentStatusFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1588,6 +1717,11 @@ exports.CreateInvoiceForClassRequest = {
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+            chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+            autoPaymentStatus: isSet(object.autoPaymentStatus)
+                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.autoPaymentStatus)
+                : invoice_1.AutoPaymentStatus.AutoPayPending,
         };
     },
     toJSON(message) {
@@ -1625,6 +1759,15 @@ exports.CreateInvoiceForClassRequest = {
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
+        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+            obj.autoPayEnabled = message.autoPayEnabled;
+        }
+        if (message.chargeOnDate !== undefined) {
+            obj.chargeOnDate = message.chargeOnDate.toISOString();
+        }
+        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== invoice_1.AutoPaymentStatus.AutoPayPending) {
+            obj.autoPaymentStatus = (0, invoice_1.autoPaymentStatusToJSON)(message.autoPaymentStatus);
+        }
         return obj;
     },
     create(base) {
@@ -1651,6 +1794,9 @@ exports.CreateInvoiceForClassRequest = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
+        message.autoPayEnabled = object.autoPayEnabled ?? false;
+        message.chargeOnDate = object.chargeOnDate ?? undefined;
+        message.autoPaymentStatus = object.autoPaymentStatus ?? invoice_1.AutoPaymentStatus.AutoPayPending;
         return message;
     },
 };
@@ -2247,6 +2393,144 @@ exports.UnarchiveInvoiceRequest = {
         message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
             ? object_id_1.ObjectId.fromPartial(object.invoiceId)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetAutoPayInvoicesReadyToChargeRequest() {
+    return { context: undefined };
+}
+exports.GetAutoPayInvoicesReadyToChargeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAutoPayInvoicesReadyToChargeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAutoPayInvoicesReadyToChargeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAutoPayInvoicesReadyToChargeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSetAutoPayInvoiceStatusRequest() {
+    return { context: undefined, invoiceId: undefined, autoPaymentStatus: invoice_1.AutoPaymentStatus.AutoPayPending };
+}
+exports.SetAutoPayInvoiceStatusRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.invoiceId !== undefined) {
+            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(18).fork()).join();
+        }
+        if (message.autoPaymentStatus !== invoice_1.AutoPaymentStatus.AutoPayPending) {
+            writer.uint32(24).int32((0, invoice_1.autoPaymentStatusToNumber)(message.autoPaymentStatus));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSetAutoPayInvoiceStatusRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.autoPaymentStatus = (0, invoice_1.autoPaymentStatusFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            autoPaymentStatus: isSet(object.autoPaymentStatus)
+                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.autoPaymentStatus)
+                : invoice_1.AutoPaymentStatus.AutoPayPending,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoiceId !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        }
+        if (message.autoPaymentStatus !== invoice_1.AutoPaymentStatus.AutoPayPending) {
+            obj.autoPaymentStatus = (0, invoice_1.autoPaymentStatusToJSON)(message.autoPaymentStatus);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SetAutoPayInvoiceStatusRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSetAutoPayInvoiceStatusRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+            : undefined;
+        message.autoPaymentStatus = object.autoPaymentStatus ?? invoice_1.AutoPaymentStatus.AutoPayPending;
         return message;
     },
 };

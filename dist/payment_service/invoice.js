@@ -5,13 +5,16 @@
 //   protoc               unknown
 // source: payment_service/invoice.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InvoiceFilter = exports.InvoiceResponse = exports.Invoice = exports.Coupon = exports.InvoiceItem = exports.StudentStatus = exports.InvoiceStatus = exports.protobufPackage = void 0;
+exports.InvoiceFilter = exports.InvoiceResponse = exports.Invoice = exports.Coupon = exports.InvoiceItem = exports.AutoPaymentStatus = exports.StudentStatus = exports.InvoiceStatus = exports.protobufPackage = void 0;
 exports.invoiceStatusFromJSON = invoiceStatusFromJSON;
 exports.invoiceStatusToJSON = invoiceStatusToJSON;
 exports.invoiceStatusToNumber = invoiceStatusToNumber;
 exports.studentStatusFromJSON = studentStatusFromJSON;
 exports.studentStatusToJSON = studentStatusToJSON;
 exports.studentStatusToNumber = studentStatusToNumber;
+exports.autoPaymentStatusFromJSON = autoPaymentStatusFromJSON;
+exports.autoPaymentStatusToJSON = autoPaymentStatusToJSON;
+exports.autoPaymentStatusToNumber = autoPaymentStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -24,6 +27,8 @@ var InvoiceStatus;
     InvoiceStatus["Paid"] = "Paid";
     InvoiceStatus["NotPaid"] = "NotPaid";
     InvoiceStatus["Overdue"] = "Overdue";
+    InvoiceStatus["Refunded"] = "Refunded";
+    InvoiceStatus["Processing"] = "Processing";
     InvoiceStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(InvoiceStatus || (exports.InvoiceStatus = InvoiceStatus = {}));
 function invoiceStatusFromJSON(object) {
@@ -37,6 +42,12 @@ function invoiceStatusFromJSON(object) {
         case 3:
         case "Overdue":
             return InvoiceStatus.Overdue;
+        case 4:
+        case "Refunded":
+            return InvoiceStatus.Refunded;
+        case 5:
+        case "Processing":
+            return InvoiceStatus.Processing;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -51,6 +62,10 @@ function invoiceStatusToJSON(object) {
             return "NotPaid";
         case InvoiceStatus.Overdue:
             return "Overdue";
+        case InvoiceStatus.Refunded:
+            return "Refunded";
+        case InvoiceStatus.Processing:
+            return "Processing";
         case InvoiceStatus.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -64,6 +79,10 @@ function invoiceStatusToNumber(object) {
             return 2;
         case InvoiceStatus.Overdue:
             return 3;
+        case InvoiceStatus.Refunded:
+            return 4;
+        case InvoiceStatus.Processing:
+            return 5;
         case InvoiceStatus.UNRECOGNIZED:
         default:
             return -1;
@@ -148,6 +167,86 @@ function studentStatusToNumber(object) {
         case StudentStatus.Withdrawn:
             return 7;
         case StudentStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var AutoPaymentStatus;
+(function (AutoPaymentStatus) {
+    /** AutoPayPending - Pending to be paid, not yet queued */
+    AutoPaymentStatus["AutoPayPending"] = "AutoPayPending";
+    /** AutoPayQueued - Queued to be charged by the payment consumer */
+    AutoPaymentStatus["AutoPayQueued"] = "AutoPayQueued";
+    /** AutoPayQueueFailed - Failed to queue */
+    AutoPaymentStatus["AutoPayQueueFailed"] = "AutoPayQueueFailed";
+    /** AutoPayProcessing - The auto payment is processing */
+    AutoPaymentStatus["AutoPayProcessing"] = "AutoPayProcessing";
+    /** AutoPaySucceeded - The auto payment succeeded */
+    AutoPaymentStatus["AutoPaySucceeded"] = "AutoPaySucceeded";
+    /** AutoPayFailed - The auto payment failed */
+    AutoPaymentStatus["AutoPayFailed"] = "AutoPayFailed";
+    AutoPaymentStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(AutoPaymentStatus || (exports.AutoPaymentStatus = AutoPaymentStatus = {}));
+function autoPaymentStatusFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "AutoPayPending":
+            return AutoPaymentStatus.AutoPayPending;
+        case 2:
+        case "AutoPayQueued":
+            return AutoPaymentStatus.AutoPayQueued;
+        case 3:
+        case "AutoPayQueueFailed":
+            return AutoPaymentStatus.AutoPayQueueFailed;
+        case 4:
+        case "AutoPayProcessing":
+            return AutoPaymentStatus.AutoPayProcessing;
+        case 5:
+        case "AutoPaySucceeded":
+            return AutoPaymentStatus.AutoPaySucceeded;
+        case 6:
+        case "AutoPayFailed":
+            return AutoPaymentStatus.AutoPayFailed;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return AutoPaymentStatus.UNRECOGNIZED;
+    }
+}
+function autoPaymentStatusToJSON(object) {
+    switch (object) {
+        case AutoPaymentStatus.AutoPayPending:
+            return "AutoPayPending";
+        case AutoPaymentStatus.AutoPayQueued:
+            return "AutoPayQueued";
+        case AutoPaymentStatus.AutoPayQueueFailed:
+            return "AutoPayQueueFailed";
+        case AutoPaymentStatus.AutoPayProcessing:
+            return "AutoPayProcessing";
+        case AutoPaymentStatus.AutoPaySucceeded:
+            return "AutoPaySucceeded";
+        case AutoPaymentStatus.AutoPayFailed:
+            return "AutoPayFailed";
+        case AutoPaymentStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function autoPaymentStatusToNumber(object) {
+    switch (object) {
+        case AutoPaymentStatus.AutoPayPending:
+            return 1;
+        case AutoPaymentStatus.AutoPayQueued:
+            return 2;
+        case AutoPaymentStatus.AutoPayQueueFailed:
+            return 3;
+        case AutoPaymentStatus.AutoPayProcessing:
+            return 4;
+        case AutoPaymentStatus.AutoPaySucceeded:
+            return 5;
+        case AutoPaymentStatus.AutoPayFailed:
+            return 6;
+        case AutoPaymentStatus.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -343,6 +442,9 @@ function createBaseInvoice() {
         dueDate: undefined,
         invoiceStudentRegistrationPipelineStatus: StudentStatus.Waitlist,
         schoolYear: undefined,
+        autoPayEnabled: false,
+        chargeOnDate: undefined,
+        autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
     };
 }
 exports.Invoice = {
@@ -392,6 +494,15 @@ exports.Invoice = {
         }
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(122).fork()).join();
+        }
+        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+            writer.uint32(128).bool(message.autoPayEnabled);
+        }
+        if (message.chargeOnDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(138).fork()).join();
+        }
+        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+            writer.uint32(144).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
         }
         return writer;
     },
@@ -492,6 +603,24 @@ exports.Invoice = {
                     }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 16:
+                    if (tag !== 128) {
+                        break;
+                    }
+                    message.autoPayEnabled = reader.bool();
+                    continue;
+                case 17:
+                    if (tag !== 138) {
+                        break;
+                    }
+                    message.chargeOnDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 18:
+                    if (tag !== 144) {
+                        break;
+                    }
+                    message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -519,6 +648,11 @@ exports.Invoice = {
                 ? studentStatusFromJSON(object.invoiceStudentRegistrationPipelineStatus)
                 : StudentStatus.Waitlist,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+            chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+            autoPaymentStatus: isSet(object.autoPaymentStatus)
+                ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+                : AutoPaymentStatus.AutoPayPending,
         };
     },
     toJSON(message) {
@@ -569,6 +703,15 @@ exports.Invoice = {
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
+        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
+            obj.autoPayEnabled = message.autoPayEnabled;
+        }
+        if (message.chargeOnDate !== undefined) {
+            obj.chargeOnDate = message.chargeOnDate.toISOString();
+        }
+        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
+            obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
+        }
         return obj;
     },
     create(base) {
@@ -598,6 +741,9 @@ exports.Invoice = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
+        message.autoPayEnabled = object.autoPayEnabled ?? false;
+        message.chargeOnDate = object.chargeOnDate ?? undefined;
+        message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
         return message;
     },
 };

@@ -5,14 +5,51 @@
 //   protoc               unknown
 // source: utils/request_context.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserContext = exports.RequestContext = exports.protobufPackage = void 0;
+exports.UserContext = exports.RequestContext = exports.ServiceContext = exports.protobufPackage = void 0;
+exports.serviceContextFromJSON = serviceContextFromJSON;
+exports.serviceContextToJSON = serviceContextToJSON;
+exports.serviceContextToNumber = serviceContextToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("./object_id");
 const user_type_1 = require("./user_type");
 exports.protobufPackage = "utils";
+var ServiceContext;
+(function (ServiceContext) {
+    ServiceContext["AutoPaymentScheduling"] = "AutoPaymentScheduling";
+    ServiceContext["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ServiceContext || (exports.ServiceContext = ServiceContext = {}));
+function serviceContextFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "AutoPaymentScheduling":
+            return ServiceContext.AutoPaymentScheduling;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ServiceContext.UNRECOGNIZED;
+    }
+}
+function serviceContextToJSON(object) {
+    switch (object) {
+        case ServiceContext.AutoPaymentScheduling:
+            return "AutoPaymentScheduling";
+        case ServiceContext.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function serviceContextToNumber(object) {
+    switch (object) {
+        case ServiceContext.AutoPaymentScheduling:
+            return 1;
+        case ServiceContext.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseRequestContext() {
-    return { userContext: undefined, isTesting: false };
+    return { userContext: undefined, isTesting: false, serviceBasedContextName: ServiceContext.AutoPaymentScheduling };
 }
 exports.RequestContext = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -21,6 +58,10 @@ exports.RequestContext = {
         }
         if (message.isTesting !== false) {
             writer.uint32(16).bool(message.isTesting);
+        }
+        if (message.serviceBasedContextName !== undefined &&
+            message.serviceBasedContextName !== ServiceContext.AutoPaymentScheduling) {
+            writer.uint32(24).int32(serviceContextToNumber(message.serviceBasedContextName));
         }
         return writer;
     },
@@ -43,6 +84,12 @@ exports.RequestContext = {
                     }
                     message.isTesting = reader.bool();
                     continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.serviceBasedContextName = serviceContextFromJSON(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -55,6 +102,9 @@ exports.RequestContext = {
         return {
             userContext: isSet(object.userContext) ? exports.UserContext.fromJSON(object.userContext) : undefined,
             isTesting: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : false,
+            serviceBasedContextName: isSet(object.serviceBasedContextName)
+                ? serviceContextFromJSON(object.serviceBasedContextName)
+                : ServiceContext.AutoPaymentScheduling,
         };
     },
     toJSON(message) {
@@ -64,6 +114,10 @@ exports.RequestContext = {
         }
         if (message.isTesting !== false) {
             obj.isTesting = message.isTesting;
+        }
+        if (message.serviceBasedContextName !== undefined &&
+            message.serviceBasedContextName !== ServiceContext.AutoPaymentScheduling) {
+            obj.serviceBasedContextName = serviceContextToJSON(message.serviceBasedContextName);
         }
         return obj;
     },
@@ -76,6 +130,7 @@ exports.RequestContext = {
             ? exports.UserContext.fromPartial(object.userContext)
             : undefined;
         message.isTesting = object.isTesting ?? false;
+        message.serviceBasedContextName = object.serviceBasedContextName ?? ServiceContext.AutoPaymentScheduling;
         return message;
     },
 };
