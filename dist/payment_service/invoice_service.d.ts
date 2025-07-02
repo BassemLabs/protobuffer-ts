@@ -137,6 +137,12 @@ export interface UpdateInvoiceRequest {
     coupons: Coupon[];
     dueDate?: Date | undefined;
 }
+export interface UpdateInvoiceAutoPaymentRequest {
+    context: RequestContext | undefined;
+    id: ObjectId | undefined;
+    autoPayEnabled: boolean;
+    chargeOnDate: Date | undefined;
+}
 export interface ArchiveInvoiceRequest {
     context: RequestContext | undefined;
     invoiceId: ObjectId | undefined;
@@ -180,6 +186,7 @@ export declare const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitl
 export declare const GenerateRegistrationFeesInvoiceRequest: MessageFns<GenerateRegistrationFeesInvoiceRequest>;
 export declare const CreateInvoiceForClassResponse: MessageFns<CreateInvoiceForClassResponse>;
 export declare const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest>;
+export declare const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymentRequest>;
 export declare const ArchiveInvoiceRequest: MessageFns<ArchiveInvoiceRequest>;
 export declare const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest>;
 export declare const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoicesReadyToChargeRequest>;

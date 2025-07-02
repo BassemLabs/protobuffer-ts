@@ -188,6 +188,13 @@ export interface UpdateInvoiceRequest {
   dueDate?: Date | undefined;
 }
 
+export interface UpdateInvoiceAutoPaymentRequest {
+  context: RequestContext | undefined;
+  id: ObjectId | undefined;
+  autoPayEnabled: boolean;
+  chargeOnDate: Date | undefined;
+}
+
 export interface ArchiveInvoiceRequest {
   context: RequestContext | undefined;
   invoiceId: ObjectId | undefined;
@@ -2718,6 +2725,114 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
     message.items = object.items?.map((e) => InvoiceItem.fromPartial(e)) || [];
     message.coupons = object.coupons?.map((e) => Coupon.fromPartial(e)) || [];
     message.dueDate = object.dueDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateInvoiceAutoPaymentRequest(): UpdateInvoiceAutoPaymentRequest {
+  return { context: undefined, id: undefined, autoPayEnabled: false, chargeOnDate: undefined };
+}
+
+export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymentRequest> = {
+  encode(message: UpdateInvoiceAutoPaymentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    if (message.autoPayEnabled !== false) {
+      writer.uint32(24).bool(message.autoPayEnabled);
+    }
+    if (message.chargeOnDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateInvoiceAutoPaymentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateInvoiceAutoPaymentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.autoPayEnabled = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.chargeOnDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateInvoiceAutoPaymentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+      chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateInvoiceAutoPaymentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.autoPayEnabled !== false) {
+      obj.autoPayEnabled = message.autoPayEnabled;
+    }
+    if (message.chargeOnDate !== undefined) {
+      obj.chargeOnDate = message.chargeOnDate.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateInvoiceAutoPaymentRequest>, I>>(base?: I): UpdateInvoiceAutoPaymentRequest {
+    return UpdateInvoiceAutoPaymentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateInvoiceAutoPaymentRequest>, I>>(
+    object: I,
+  ): UpdateInvoiceAutoPaymentRequest {
+    const message = createBaseUpdateInvoiceAutoPaymentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.autoPayEnabled = object.autoPayEnabled ?? false;
+    message.chargeOnDate = object.chargeOnDate ?? undefined;
     return message;
   },
 };

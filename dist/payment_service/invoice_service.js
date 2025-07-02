@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.GetUsersInvoicesResponse = exports.GetUsersInvoicesRequest = exports.UsersInvoicesFilter = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
+exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.GetUsersInvoicesResponse = exports.GetUsersInvoicesRequest = exports.UsersInvoicesFilter = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -2253,6 +2253,102 @@ exports.UpdateInvoiceRequest = {
         message.items = object.items?.map((e) => invoice_1.InvoiceItem.fromPartial(e)) || [];
         message.coupons = object.coupons?.map((e) => invoice_1.Coupon.fromPartial(e)) || [];
         message.dueDate = object.dueDate ?? undefined;
+        return message;
+    },
+};
+function createBaseUpdateInvoiceAutoPaymentRequest() {
+    return { context: undefined, id: undefined, autoPayEnabled: false, chargeOnDate: undefined };
+}
+exports.UpdateInvoiceAutoPaymentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        }
+        if (message.autoPayEnabled !== false) {
+            writer.uint32(24).bool(message.autoPayEnabled);
+        }
+        if (message.chargeOnDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateInvoiceAutoPaymentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.autoPayEnabled = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.chargeOnDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+            chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.autoPayEnabled !== false) {
+            obj.autoPayEnabled = message.autoPayEnabled;
+        }
+        if (message.chargeOnDate !== undefined) {
+            obj.chargeOnDate = message.chargeOnDate.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateInvoiceAutoPaymentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateInvoiceAutoPaymentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.autoPayEnabled = object.autoPayEnabled ?? false;
+        message.chargeOnDate = object.chargeOnDate ?? undefined;
         return message;
     },
 };
