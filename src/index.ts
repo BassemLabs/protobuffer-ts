@@ -11,6 +11,8 @@ import * as Transaction from './payment_service/transaction';
 export { Transaction };
 import * as Invoice_service from './payment_service/invoice_service';
 export { Invoice_service };
+import * as Payment_service from './payment_service/payment_service';
+export { Payment_service };
 import * as Tuition_invoice_service from './payment_service/tuition_invoice_service';
 export { Tuition_invoice_service };
 import * as Tuition_application_service from './payment_service/tuition_application_service';
@@ -53,8 +55,6 @@ import * as Onboarding_settings_service from './organization_service/onboarding_
 export { Onboarding_settings_service };
 import * as Timestamp from './google/protobuf/timestamp';
 export { Timestamp };
-import * as Empty from './google/protobuf/empty';
-export { Empty };
 import * as Sample from './rabbitmq_schemas/sample';
 export { Sample };
 import * as Invoice_to_charge from './rabbitmq_schemas/invoice_to_charge';
