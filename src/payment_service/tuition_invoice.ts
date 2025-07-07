@@ -8,10 +8,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import {
-  DiscountValueType,
-  discountValueTypeFromJSON,
-  discountValueTypeToJSON,
-  discountValueTypeToNumber,
   PaymentInstallment,
   PaymentScheduleType,
   paymentScheduleTypeFromJSON,
@@ -89,20 +85,17 @@ export function lineTypeToNumber(object: LineType): number {
 export interface TuitionPlanSnapshot {
   name: string;
   scheduleType: PaymentScheduleType;
-  numberOfMonths?: number | undefined;
+  dayOfMonth?: number | undefined;
   installments: PaymentInstallment[];
 }
 
 export interface TuitionInvoiceLineItem {
-  id: ObjectId | undefined;
   lineType: LineType;
   scope: Scope;
   /** present when scope = STUDENT_SCOPE */
   student?: ObjectId | undefined;
   name: string;
-  /** AMOUNT or PERCENTAGE when type = DISCOUNT */
-  valueType: DiscountValueType;
-  /** always positive */
+  /** might be negative for discounts */
   amount: number;
 }
 
@@ -119,7 +112,7 @@ export interface TuitionInvoice {
 }
 
 function createBaseTuitionPlanSnapshot(): TuitionPlanSnapshot {
-  return { name: "", scheduleType: PaymentScheduleType.ONE_TIME, numberOfMonths: 0, installments: [] };
+  return { name: "", scheduleType: PaymentScheduleType.ONE_TIME, dayOfMonth: 0, installments: [] };
 }
 
 export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
@@ -130,8 +123,8 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
     if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
       writer.uint32(16).int32(paymentScheduleTypeToNumber(message.scheduleType));
     }
-    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-      writer.uint32(24).int32(message.numberOfMonths);
+    if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+      writer.uint32(24).int32(message.dayOfMonth);
     }
     for (const v of message.installments) {
       PaymentInstallment.encode(v!, writer.uint32(34).fork()).join();
@@ -165,7 +158,7 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
             break;
           }
 
-          message.numberOfMonths = reader.int32();
+          message.dayOfMonth = reader.int32();
           continue;
         case 4:
           if (tag !== 34) {
@@ -189,7 +182,7 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
       scheduleType: isSet(object.scheduleType)
         ? paymentScheduleTypeFromJSON(object.scheduleType)
         : PaymentScheduleType.ONE_TIME,
-      numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+      dayOfMonth: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
       installments: globalThis.Array.isArray(object?.installments)
         ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
         : [],
@@ -204,8 +197,8 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
     if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
       obj.scheduleType = paymentScheduleTypeToJSON(message.scheduleType);
     }
-    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-      obj.numberOfMonths = Math.round(message.numberOfMonths);
+    if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+      obj.dayOfMonth = Math.round(message.dayOfMonth);
     }
     if (message.installments?.length) {
       obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
@@ -220,46 +213,32 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
     const message = createBaseTuitionPlanSnapshot();
     message.name = object.name ?? "";
     message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
-    message.numberOfMonths = object.numberOfMonths ?? 0;
+    message.dayOfMonth = object.dayOfMonth ?? 0;
     message.installments = object.installments?.map((e) => PaymentInstallment.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseTuitionInvoiceLineItem(): TuitionInvoiceLineItem {
-  return {
-    id: undefined,
-    lineType: LineType.BASE_RATE,
-    scope: Scope.STUDENT_SCOPE,
-    student: undefined,
-    name: "",
-    valueType: DiscountValueType.AMOUNT,
-    amount: 0,
-  };
+  return { lineType: LineType.BASE_RATE, scope: Scope.STUDENT_SCOPE, student: undefined, name: "", amount: 0 };
 }
 
 export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
   encode(message: TuitionInvoiceLineItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
-    }
     if (message.lineType !== LineType.BASE_RATE) {
-      writer.uint32(16).int32(lineTypeToNumber(message.lineType));
+      writer.uint32(8).int32(lineTypeToNumber(message.lineType));
     }
     if (message.scope !== Scope.STUDENT_SCOPE) {
-      writer.uint32(24).int32(scopeToNumber(message.scope));
+      writer.uint32(16).int32(scopeToNumber(message.scope));
     }
     if (message.student !== undefined) {
-      ObjectId.encode(message.student, writer.uint32(34).fork()).join();
+      ObjectId.encode(message.student, writer.uint32(26).fork()).join();
     }
     if (message.name !== "") {
-      writer.uint32(42).string(message.name);
-    }
-    if (message.valueType !== DiscountValueType.AMOUNT) {
-      writer.uint32(48).int32(discountValueTypeToNumber(message.valueType));
+      writer.uint32(34).string(message.name);
     }
     if (message.amount !== 0) {
-      writer.uint32(57).double(message.amount);
+      writer.uint32(41).double(message.amount);
     }
     return writer;
   },
@@ -272,49 +251,35 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.lineType = lineTypeFromJSON(reader.int32());
           continue;
         case 2:
           if (tag !== 16) {
             break;
           }
 
-          message.lineType = lineTypeFromJSON(reader.int32());
+          message.scope = scopeFromJSON(reader.int32());
           continue;
         case 3:
-          if (tag !== 24) {
+          if (tag !== 26) {
             break;
           }
 
-          message.scope = scopeFromJSON(reader.int32());
+          message.student = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.student = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
           message.name = reader.string();
           continue;
-        case 6:
-          if (tag !== 48) {
-            break;
-          }
-
-          message.valueType = discountValueTypeFromJSON(reader.int32());
-          continue;
-        case 7:
-          if (tag !== 57) {
+        case 5:
+          if (tag !== 41) {
             break;
           }
 
@@ -331,21 +296,16 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
 
   fromJSON(object: any): TuitionInvoiceLineItem {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       lineType: isSet(object.lineType) ? lineTypeFromJSON(object.lineType) : LineType.BASE_RATE,
       scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
     };
   },
 
   toJSON(message: TuitionInvoiceLineItem): unknown {
     const obj: any = {};
-    if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
-    }
     if (message.lineType !== LineType.BASE_RATE) {
       obj.lineType = lineTypeToJSON(message.lineType);
     }
@@ -358,9 +318,6 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.valueType !== DiscountValueType.AMOUNT) {
-      obj.valueType = discountValueTypeToJSON(message.valueType);
-    }
     if (message.amount !== 0) {
       obj.amount = message.amount;
     }
@@ -372,14 +329,12 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
   },
   fromPartial<I extends Exact<DeepPartial<TuitionInvoiceLineItem>, I>>(object: I): TuitionInvoiceLineItem {
     const message = createBaseTuitionInvoiceLineItem();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.lineType = object.lineType ?? LineType.BASE_RATE;
     message.scope = object.scope ?? Scope.STUDENT_SCOPE;
     message.student = (object.student !== undefined && object.student !== null)
       ? ObjectId.fromPartial(object.student)
       : undefined;
     message.name = object.name ?? "";
-    message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
     message.amount = object.amount ?? 0;
     return message;
   },

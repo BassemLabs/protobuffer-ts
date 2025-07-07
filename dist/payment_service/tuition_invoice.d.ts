@@ -1,6 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-import { DiscountValueType, PaymentInstallment, PaymentScheduleType, Scope } from "./tuition";
+import { PaymentInstallment, PaymentScheduleType, Scope } from "./tuition";
 export declare const protobufPackage = "payment_service";
 export declare enum LineType {
     BASE_RATE = "BASE_RATE",
@@ -15,19 +15,16 @@ export declare function lineTypeToNumber(object: LineType): number;
 export interface TuitionPlanSnapshot {
     name: string;
     scheduleType: PaymentScheduleType;
-    numberOfMonths?: number | undefined;
+    dayOfMonth?: number | undefined;
     installments: PaymentInstallment[];
 }
 export interface TuitionInvoiceLineItem {
-    id: ObjectId | undefined;
     lineType: LineType;
     scope: Scope;
     /** present when scope = STUDENT_SCOPE */
     student?: ObjectId | undefined;
     name: string;
-    /** AMOUNT or PERCENTAGE when type = DISCOUNT */
-    valueType: DiscountValueType;
-    /** always positive */
+    /** might be negative for discounts */
     amount: number;
 }
 export interface TuitionInvoice {

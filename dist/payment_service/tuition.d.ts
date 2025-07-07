@@ -82,15 +82,17 @@ export interface TuitionPlan {
     name: string;
     description: string;
     scheduleType: PaymentScheduleType;
-    /** For monthly plans */
-    numberOfMonths?: number | undefined;
+    /** For monthly plans : the day of the month that the payment is due */
+    dayOfMonth?: number | undefined;
     /** For custom plans */
     installments: PaymentInstallment[];
     archived: boolean;
+    /** plan dates */
+    startDate: Date | undefined;
+    endDate: Date | undefined;
 }
 export interface PaymentInstallment {
-    dueDay: number;
-    dueMonth: number;
+    dueDate: Date | undefined;
 }
 export declare const TuitionRate: MessageFns<TuitionRate>;
 export declare const AdditionalFee: MessageFns<AdditionalFee>;

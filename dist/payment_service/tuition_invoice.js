@@ -73,7 +73,7 @@ function lineTypeToNumber(object) {
     }
 }
 function createBaseTuitionPlanSnapshot() {
-    return { name: "", scheduleType: tuition_1.PaymentScheduleType.ONE_TIME, numberOfMonths: 0, installments: [] };
+    return { name: "", scheduleType: tuition_1.PaymentScheduleType.ONE_TIME, dayOfMonth: 0, installments: [] };
 }
 exports.TuitionPlanSnapshot = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -83,8 +83,8 @@ exports.TuitionPlanSnapshot = {
         if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
             writer.uint32(16).int32((0, tuition_1.paymentScheduleTypeToNumber)(message.scheduleType));
         }
-        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-            writer.uint32(24).int32(message.numberOfMonths);
+        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+            writer.uint32(24).int32(message.dayOfMonth);
         }
         for (const v of message.installments) {
             tuition_1.PaymentInstallment.encode(v, writer.uint32(34).fork()).join();
@@ -114,7 +114,7 @@ exports.TuitionPlanSnapshot = {
                     if (tag !== 24) {
                         break;
                     }
-                    message.numberOfMonths = reader.int32();
+                    message.dayOfMonth = reader.int32();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -136,7 +136,7 @@ exports.TuitionPlanSnapshot = {
             scheduleType: isSet(object.scheduleType)
                 ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
                 : tuition_1.PaymentScheduleType.ONE_TIME,
-            numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+            dayOfMonth: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
                 : [],
@@ -150,8 +150,8 @@ exports.TuitionPlanSnapshot = {
         if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
             obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.scheduleType);
         }
-        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-            obj.numberOfMonths = Math.round(message.numberOfMonths);
+        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+            obj.dayOfMonth = Math.round(message.dayOfMonth);
         }
         if (message.installments?.length) {
             obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
@@ -165,44 +165,30 @@ exports.TuitionPlanSnapshot = {
         const message = createBaseTuitionPlanSnapshot();
         message.name = object.name ?? "";
         message.scheduleType = object.scheduleType ?? tuition_1.PaymentScheduleType.ONE_TIME;
-        message.numberOfMonths = object.numberOfMonths ?? 0;
+        message.dayOfMonth = object.dayOfMonth ?? 0;
         message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseTuitionInvoiceLineItem() {
-    return {
-        id: undefined,
-        lineType: LineType.BASE_RATE,
-        scope: tuition_1.Scope.STUDENT_SCOPE,
-        student: undefined,
-        name: "",
-        valueType: tuition_1.DiscountValueType.AMOUNT,
-        amount: 0,
-    };
+    return { lineType: LineType.BASE_RATE, scope: tuition_1.Scope.STUDENT_SCOPE, student: undefined, name: "", amount: 0 };
 }
 exports.TuitionInvoiceLineItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.id !== undefined) {
-            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
-        }
         if (message.lineType !== LineType.BASE_RATE) {
-            writer.uint32(16).int32(lineTypeToNumber(message.lineType));
+            writer.uint32(8).int32(lineTypeToNumber(message.lineType));
         }
         if (message.scope !== tuition_1.Scope.STUDENT_SCOPE) {
-            writer.uint32(24).int32((0, tuition_1.scopeToNumber)(message.scope));
+            writer.uint32(16).int32((0, tuition_1.scopeToNumber)(message.scope));
         }
         if (message.student !== undefined) {
-            object_id_1.ObjectId.encode(message.student, writer.uint32(34).fork()).join();
+            object_id_1.ObjectId.encode(message.student, writer.uint32(26).fork()).join();
         }
         if (message.name !== "") {
-            writer.uint32(42).string(message.name);
-        }
-        if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
-            writer.uint32(48).int32((0, tuition_1.discountValueTypeToNumber)(message.valueType));
+            writer.uint32(34).string(message.name);
         }
         if (message.amount !== 0) {
-            writer.uint32(57).double(message.amount);
+            writer.uint32(41).double(message.amount);
         }
         return writer;
     },
@@ -214,43 +200,31 @@ exports.TuitionInvoiceLineItem = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.lineType = lineTypeFromJSON(reader.int32());
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.lineType = lineTypeFromJSON(reader.int32());
+                    message.scope = (0, tuition_1.scopeFromJSON)(reader.int32());
                     continue;
                 case 3:
-                    if (tag !== 24) {
+                    if (tag !== 26) {
                         break;
                     }
-                    message.scope = (0, tuition_1.scopeFromJSON)(reader.int32());
+                    message.student = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.student = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
                     message.name = reader.string();
                     continue;
-                case 6:
-                    if (tag !== 48) {
-                        break;
-                    }
-                    message.valueType = (0, tuition_1.discountValueTypeFromJSON)(reader.int32());
-                    continue;
-                case 7:
-                    if (tag !== 57) {
+                case 5:
+                    if (tag !== 41) {
                         break;
                     }
                     message.amount = reader.double();
@@ -265,20 +239,15 @@ exports.TuitionInvoiceLineItem = {
     },
     fromJSON(object) {
         return {
-            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             lineType: isSet(object.lineType) ? lineTypeFromJSON(object.lineType) : LineType.BASE_RATE,
             scope: isSet(object.scope) ? (0, tuition_1.scopeFromJSON)(object.scope) : tuition_1.Scope.STUDENT_SCOPE,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            valueType: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.id !== undefined) {
-            obj.id = object_id_1.ObjectId.toJSON(message.id);
-        }
         if (message.lineType !== LineType.BASE_RATE) {
             obj.lineType = lineTypeToJSON(message.lineType);
         }
@@ -291,9 +260,6 @@ exports.TuitionInvoiceLineItem = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
-            obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.valueType);
-        }
         if (message.amount !== 0) {
             obj.amount = message.amount;
         }
@@ -304,14 +270,12 @@ exports.TuitionInvoiceLineItem = {
     },
     fromPartial(object) {
         const message = createBaseTuitionInvoiceLineItem();
-        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.lineType = object.lineType ?? LineType.BASE_RATE;
         message.scope = object.scope ?? tuition_1.Scope.STUDENT_SCOPE;
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
         message.name = object.name ?? "";
-        message.valueType = object.valueType ?? tuition_1.DiscountValueType.AMOUNT;
         message.amount = object.amount ?? 0;
         return message;
     },

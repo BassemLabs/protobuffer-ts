@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "payment_service";
@@ -286,18 +287,20 @@ export interface TuitionPlan {
   name: string;
   description: string;
   scheduleType: PaymentScheduleType;
-  /** For monthly plans */
-  numberOfMonths?:
+  /** For monthly plans : the day of the month that the payment is due */
+  dayOfMonth?:
     | number
     | undefined;
   /** For custom plans */
   installments: PaymentInstallment[];
   archived: boolean;
+  /** plan dates */
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 }
 
 export interface PaymentInstallment {
-  dueDay: number;
-  dueMonth: number;
+  dueDate: Date | undefined;
 }
 
 function createBaseTuitionRate(): TuitionRate {
@@ -817,9 +820,11 @@ function createBaseTuitionPlan(): TuitionPlan {
     name: "",
     description: "",
     scheduleType: PaymentScheduleType.ONE_TIME,
-    numberOfMonths: 0,
+    dayOfMonth: 0,
     installments: [],
     archived: false,
+    startDate: undefined,
+    endDate: undefined,
   };
 }
 
@@ -843,14 +848,20 @@ export const TuitionPlan: MessageFns<TuitionPlan> = {
     if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
       writer.uint32(48).int32(paymentScheduleTypeToNumber(message.scheduleType));
     }
-    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-      writer.uint32(56).int32(message.numberOfMonths);
+    if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+      writer.uint32(56).int32(message.dayOfMonth);
     }
     for (const v of message.installments) {
       PaymentInstallment.encode(v!, writer.uint32(66).fork()).join();
     }
     if (message.archived !== false) {
       writer.uint32(72).bool(message.archived);
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(82).fork()).join();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(90).fork()).join();
     }
     return writer;
   },
@@ -909,7 +920,7 @@ export const TuitionPlan: MessageFns<TuitionPlan> = {
             break;
           }
 
-          message.numberOfMonths = reader.int32();
+          message.dayOfMonth = reader.int32();
           continue;
         case 8:
           if (tag !== 66) {
@@ -924,6 +935,20 @@ export const TuitionPlan: MessageFns<TuitionPlan> = {
           }
 
           message.archived = reader.bool();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -944,11 +969,13 @@ export const TuitionPlan: MessageFns<TuitionPlan> = {
       scheduleType: isSet(object.scheduleType)
         ? paymentScheduleTypeFromJSON(object.scheduleType)
         : PaymentScheduleType.ONE_TIME,
-      numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+      dayOfMonth: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
       installments: globalThis.Array.isArray(object?.installments)
         ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
         : [],
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -972,14 +999,20 @@ export const TuitionPlan: MessageFns<TuitionPlan> = {
     if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
       obj.scheduleType = paymentScheduleTypeToJSON(message.scheduleType);
     }
-    if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-      obj.numberOfMonths = Math.round(message.numberOfMonths);
+    if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+      obj.dayOfMonth = Math.round(message.dayOfMonth);
     }
     if (message.installments?.length) {
       obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
     }
     if (message.archived !== false) {
       obj.archived = message.archived;
+    }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
     }
     return obj;
   },
@@ -999,24 +1032,23 @@ export const TuitionPlan: MessageFns<TuitionPlan> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
-    message.numberOfMonths = object.numberOfMonths ?? 0;
+    message.dayOfMonth = object.dayOfMonth ?? 0;
     message.installments = object.installments?.map((e) => PaymentInstallment.fromPartial(e)) || [];
     message.archived = object.archived ?? false;
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
     return message;
   },
 };
 
 function createBasePaymentInstallment(): PaymentInstallment {
-  return { dueDay: 0, dueMonth: 0 };
+  return { dueDate: undefined };
 }
 
 export const PaymentInstallment: MessageFns<PaymentInstallment> = {
   encode(message: PaymentInstallment, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.dueDay !== 0) {
-      writer.uint32(8).int32(message.dueDay);
-    }
-    if (message.dueMonth !== 0) {
-      writer.uint32(16).int32(message.dueMonth);
+    if (message.dueDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -1029,18 +1061,11 @@ export const PaymentInstallment: MessageFns<PaymentInstallment> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 8) {
+          if (tag !== 10) {
             break;
           }
 
-          message.dueDay = reader.int32();
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.dueMonth = reader.int32();
+          message.dueDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1052,19 +1077,13 @@ export const PaymentInstallment: MessageFns<PaymentInstallment> = {
   },
 
   fromJSON(object: any): PaymentInstallment {
-    return {
-      dueDay: isSet(object.dueDay) ? globalThis.Number(object.dueDay) : 0,
-      dueMonth: isSet(object.dueMonth) ? globalThis.Number(object.dueMonth) : 0,
-    };
+    return { dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined };
   },
 
   toJSON(message: PaymentInstallment): unknown {
     const obj: any = {};
-    if (message.dueDay !== 0) {
-      obj.dueDay = Math.round(message.dueDay);
-    }
-    if (message.dueMonth !== 0) {
-      obj.dueMonth = Math.round(message.dueMonth);
+    if (message.dueDate !== undefined) {
+      obj.dueDate = message.dueDate.toISOString();
     }
     return obj;
   },
@@ -1074,8 +1093,7 @@ export const PaymentInstallment: MessageFns<PaymentInstallment> = {
   },
   fromPartial<I extends Exact<DeepPartial<PaymentInstallment>, I>>(object: I): PaymentInstallment {
     const message = createBasePaymentInstallment();
-    message.dueDay = object.dueDay ?? 0;
-    message.dueMonth = object.dueMonth ?? 0;
+    message.dueDate = object.dueDate ?? undefined;
     return message;
   },
 };
@@ -1091,6 +1109,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

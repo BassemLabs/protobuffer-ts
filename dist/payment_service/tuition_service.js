@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UnarchiveTuitionPlanRequest = exports.ArchiveTuitionPlanRequest = exports.UpdateTuitionPlanRequest = exports.CreateTuitionPlanRequest = exports.ListTuitionPlansResponse = exports.ListTuitionPlansRequest = exports.GetTuitionPlanRequest = exports.DeleteTuitionDiscountResponse = exports.DeleteTuitionDiscountRequest = exports.UpdateTuitionDiscountRequest = exports.CreateTuitionDiscountRequest = exports.ListTuitionDiscountsResponse = exports.ListTuitionDiscountsRequest = exports.GetTuitionDiscountRequest = exports.DeleteAdditionalFeeResponse = exports.DeleteAdditionalFeeRequest = exports.UpdateAdditionalFeeRequest = exports.CreateAdditionalFeeRequest = exports.ListAdditionalFeesResponse = exports.ListAdditionalFeesRequest = exports.GetAdditionalFeeRequest = exports.UpsertTuitionRatesRequest = exports.GradeAmount = exports.ListTuitionRatesResponse = exports.ListTuitionRatesRequest = exports.GetTuitionRateRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const tuition_1 = require("./tuition");
@@ -1847,8 +1848,10 @@ function createBaseCreateTuitionPlanRequest() {
         name: "",
         description: "",
         scheduleType: tuition_1.PaymentScheduleType.ONE_TIME,
-        numberOfMonths: 0,
+        dayOfMonth: 0,
         installments: [],
+        startDate: undefined,
+        endDate: undefined,
     };
 }
 exports.CreateTuitionPlanRequest = {
@@ -1868,11 +1871,17 @@ exports.CreateTuitionPlanRequest = {
         if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
             writer.uint32(40).int32((0, tuition_1.paymentScheduleTypeToNumber)(message.scheduleType));
         }
-        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-            writer.uint32(48).int32(message.numberOfMonths);
+        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+            writer.uint32(48).int32(message.dayOfMonth);
         }
         for (const v of message.installments) {
             tuition_1.PaymentInstallment.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(66).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -1917,13 +1926,25 @@ exports.CreateTuitionPlanRequest = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.numberOfMonths = reader.int32();
+                    message.dayOfMonth = reader.int32();
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
                     message.installments.push(tuition_1.PaymentInstallment.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1942,10 +1963,12 @@ exports.CreateTuitionPlanRequest = {
             scheduleType: isSet(object.scheduleType)
                 ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
                 : tuition_1.PaymentScheduleType.ONE_TIME,
-            numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+            dayOfMonth: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
                 : [],
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -1965,11 +1988,17 @@ exports.CreateTuitionPlanRequest = {
         if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
             obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.scheduleType);
         }
-        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-            obj.numberOfMonths = Math.round(message.numberOfMonths);
+        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+            obj.dayOfMonth = Math.round(message.dayOfMonth);
         }
         if (message.installments?.length) {
             obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
         }
         return obj;
     },
@@ -1987,8 +2016,10 @@ exports.CreateTuitionPlanRequest = {
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         message.scheduleType = object.scheduleType ?? tuition_1.PaymentScheduleType.ONE_TIME;
-        message.numberOfMonths = object.numberOfMonths ?? 0;
+        message.dayOfMonth = object.dayOfMonth ?? 0;
         message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         return message;
     },
 };
@@ -1999,8 +2030,10 @@ function createBaseUpdateTuitionPlanRequest() {
         name: "",
         description: "",
         scheduleType: tuition_1.PaymentScheduleType.ONE_TIME,
-        numberOfMonths: 0,
+        dayOfMonth: 0,
         installments: [],
+        startDate: undefined,
+        endDate: undefined,
     };
 }
 exports.UpdateTuitionPlanRequest = {
@@ -2020,11 +2053,17 @@ exports.UpdateTuitionPlanRequest = {
         if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
             writer.uint32(40).int32((0, tuition_1.paymentScheduleTypeToNumber)(message.scheduleType));
         }
-        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-            writer.uint32(48).int32(message.numberOfMonths);
+        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+            writer.uint32(48).int32(message.dayOfMonth);
         }
         for (const v of message.installments) {
             tuition_1.PaymentInstallment.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(66).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -2069,13 +2108,25 @@ exports.UpdateTuitionPlanRequest = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.numberOfMonths = reader.int32();
+                    message.dayOfMonth = reader.int32();
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
                     message.installments.push(tuition_1.PaymentInstallment.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2094,10 +2145,12 @@ exports.UpdateTuitionPlanRequest = {
             scheduleType: isSet(object.scheduleType)
                 ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
                 : tuition_1.PaymentScheduleType.ONE_TIME,
-            numberOfMonths: isSet(object.numberOfMonths) ? globalThis.Number(object.numberOfMonths) : 0,
+            dayOfMonth: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
                 : [],
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -2117,11 +2170,17 @@ exports.UpdateTuitionPlanRequest = {
         if (message.scheduleType !== tuition_1.PaymentScheduleType.ONE_TIME) {
             obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.scheduleType);
         }
-        if (message.numberOfMonths !== undefined && message.numberOfMonths !== 0) {
-            obj.numberOfMonths = Math.round(message.numberOfMonths);
+        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
+            obj.dayOfMonth = Math.round(message.dayOfMonth);
         }
         if (message.installments?.length) {
             obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
         }
         return obj;
     },
@@ -2137,8 +2196,10 @@ exports.UpdateTuitionPlanRequest = {
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         message.scheduleType = object.scheduleType ?? tuition_1.PaymentScheduleType.ONE_TIME;
-        message.numberOfMonths = object.numberOfMonths ?? 0;
+        message.dayOfMonth = object.dayOfMonth ?? 0;
         message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         return message;
     },
 };
@@ -2278,6 +2339,27 @@ exports.UnarchiveTuitionPlanRequest = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

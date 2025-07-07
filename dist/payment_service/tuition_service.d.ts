@@ -122,8 +122,10 @@ export interface CreateTuitionPlanRequest {
     name: string;
     description: string;
     scheduleType: PaymentScheduleType;
-    numberOfMonths?: number | undefined;
+    dayOfMonth?: number | undefined;
     installments: PaymentInstallment[];
+    startDate: Date | undefined;
+    endDate: Date | undefined;
 }
 export interface UpdateTuitionPlanRequest {
     context: RequestContext | undefined;
@@ -131,8 +133,10 @@ export interface UpdateTuitionPlanRequest {
     name: string;
     description: string;
     scheduleType: PaymentScheduleType;
-    numberOfMonths?: number | undefined;
+    dayOfMonth?: number | undefined;
     installments: PaymentInstallment[];
+    startDate: Date | undefined;
+    endDate: Date | undefined;
 }
 export interface ArchiveTuitionPlanRequest {
     context: RequestContext | undefined;
