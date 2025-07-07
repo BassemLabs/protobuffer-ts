@@ -51,6 +51,7 @@ export interface InvoiceItem {
     description: string;
     price: number;
     quantity: number;
+    isBassemLabsFee?: boolean | undefined;
 }
 export interface Coupon {
     title: string;

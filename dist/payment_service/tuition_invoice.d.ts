@@ -6,6 +6,7 @@ export declare enum LineType {
     BASE_RATE = "BASE_RATE",
     ADD_FEE = "ADD_FEE",
     DISCOUNT = "DISCOUNT",
+    BASSEM_LABS_FEE = "BASSEM_LABS_FEE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function lineTypeFromJSON(object: any): LineType;

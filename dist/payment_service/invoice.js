@@ -252,7 +252,7 @@ function autoPaymentStatusToNumber(object) {
     }
 }
 function createBaseInvoiceItem() {
-    return { title: "", description: "", price: 0, quantity: 0 };
+    return { title: "", description: "", price: 0, quantity: 0, isBassemLabsFee: false };
 }
 exports.InvoiceItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -267,6 +267,9 @@ exports.InvoiceItem = {
         }
         if (message.quantity !== 0) {
             writer.uint32(32).int32(message.quantity);
+        }
+        if (message.isBassemLabsFee !== undefined && message.isBassemLabsFee !== false) {
+            writer.uint32(40).bool(message.isBassemLabsFee);
         }
         return writer;
     },
@@ -301,6 +304,12 @@ exports.InvoiceItem = {
                     }
                     message.quantity = reader.int32();
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.isBassemLabsFee = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -315,6 +324,7 @@ exports.InvoiceItem = {
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             price: isSet(object.price) ? globalThis.Number(object.price) : 0,
             quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
+            isBassemLabsFee: isSet(object.isBassemLabsFee) ? globalThis.Boolean(object.isBassemLabsFee) : false,
         };
     },
     toJSON(message) {
@@ -331,6 +341,9 @@ exports.InvoiceItem = {
         if (message.quantity !== 0) {
             obj.quantity = Math.round(message.quantity);
         }
+        if (message.isBassemLabsFee !== undefined && message.isBassemLabsFee !== false) {
+            obj.isBassemLabsFee = message.isBassemLabsFee;
+        }
         return obj;
     },
     create(base) {
@@ -342,6 +355,7 @@ exports.InvoiceItem = {
         message.description = object.description ?? "";
         message.price = object.price ?? 0;
         message.quantity = object.quantity ?? 0;
+        message.isBassemLabsFee = object.isBassemLabsFee ?? false;
         return message;
     },
 };

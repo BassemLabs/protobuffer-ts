@@ -29,6 +29,7 @@ export enum LineType {
   BASE_RATE = "BASE_RATE",
   ADD_FEE = "ADD_FEE",
   DISCOUNT = "DISCOUNT",
+  BASSEM_LABS_FEE = "BASSEM_LABS_FEE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -43,6 +44,9 @@ export function lineTypeFromJSON(object: any): LineType {
     case 3:
     case "DISCOUNT":
       return LineType.DISCOUNT;
+    case 4:
+    case "BASSEM_LABS_FEE":
+      return LineType.BASSEM_LABS_FEE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -58,6 +62,8 @@ export function lineTypeToJSON(object: LineType): string {
       return "ADD_FEE";
     case LineType.DISCOUNT:
       return "DISCOUNT";
+    case LineType.BASSEM_LABS_FEE:
+      return "BASSEM_LABS_FEE";
     case LineType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -72,6 +78,8 @@ export function lineTypeToNumber(object: LineType): number {
       return 2;
     case LineType.DISCOUNT:
       return 3;
+    case LineType.BASSEM_LABS_FEE:
+      return 4;
     case LineType.UNRECOGNIZED:
     default:
       return -1;

@@ -19,6 +19,7 @@ var LineType;
     LineType["BASE_RATE"] = "BASE_RATE";
     LineType["ADD_FEE"] = "ADD_FEE";
     LineType["DISCOUNT"] = "DISCOUNT";
+    LineType["BASSEM_LABS_FEE"] = "BASSEM_LABS_FEE";
     LineType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(LineType || (exports.LineType = LineType = {}));
 function lineTypeFromJSON(object) {
@@ -32,6 +33,9 @@ function lineTypeFromJSON(object) {
         case 3:
         case "DISCOUNT":
             return LineType.DISCOUNT;
+        case 4:
+        case "BASSEM_LABS_FEE":
+            return LineType.BASSEM_LABS_FEE;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -46,6 +50,8 @@ function lineTypeToJSON(object) {
             return "ADD_FEE";
         case LineType.DISCOUNT:
             return "DISCOUNT";
+        case LineType.BASSEM_LABS_FEE:
+            return "BASSEM_LABS_FEE";
         case LineType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -59,6 +65,8 @@ function lineTypeToNumber(object) {
             return 2;
         case LineType.DISCOUNT:
             return 3;
+        case LineType.BASSEM_LABS_FEE:
+            return 4;
         case LineType.UNRECOGNIZED:
         default:
             return -1;

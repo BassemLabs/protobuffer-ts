@@ -261,6 +261,7 @@ export interface InvoiceItem {
   description: string;
   price: number;
   quantity: number;
+  isBassemLabsFee?: boolean | undefined;
 }
 
 export interface Coupon {
@@ -318,7 +319,7 @@ export interface InvoiceFilter {
 }
 
 function createBaseInvoiceItem(): InvoiceItem {
-  return { title: "", description: "", price: 0, quantity: 0 };
+  return { title: "", description: "", price: 0, quantity: 0, isBassemLabsFee: false };
 }
 
 export const InvoiceItem: MessageFns<InvoiceItem> = {
@@ -334,6 +335,9 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
     }
     if (message.quantity !== 0) {
       writer.uint32(32).int32(message.quantity);
+    }
+    if (message.isBassemLabsFee !== undefined && message.isBassemLabsFee !== false) {
+      writer.uint32(40).bool(message.isBassemLabsFee);
     }
     return writer;
   },
@@ -373,6 +377,13 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
 
           message.quantity = reader.int32();
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.isBassemLabsFee = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -388,6 +399,7 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       price: isSet(object.price) ? globalThis.Number(object.price) : 0,
       quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
+      isBassemLabsFee: isSet(object.isBassemLabsFee) ? globalThis.Boolean(object.isBassemLabsFee) : false,
     };
   },
 
@@ -405,6 +417,9 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
     if (message.quantity !== 0) {
       obj.quantity = Math.round(message.quantity);
     }
+    if (message.isBassemLabsFee !== undefined && message.isBassemLabsFee !== false) {
+      obj.isBassemLabsFee = message.isBassemLabsFee;
+    }
     return obj;
   },
 
@@ -417,6 +432,7 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
     message.description = object.description ?? "";
     message.price = object.price ?? 0;
     message.quantity = object.quantity ?? 0;
+    message.isBassemLabsFee = object.isBassemLabsFee ?? false;
     return message;
   },
 };
