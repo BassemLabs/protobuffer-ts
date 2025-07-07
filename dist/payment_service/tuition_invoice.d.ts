@@ -17,6 +17,8 @@ export interface TuitionPlanSnapshot {
     scheduleType: PaymentScheduleType;
     dayOfMonth?: number | undefined;
     installments: PaymentInstallment[];
+    startDate: Date | undefined;
+    endDate: Date | undefined;
 }
 export interface TuitionInvoiceLineItem {
     lineType: LineType;

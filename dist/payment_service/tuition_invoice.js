@@ -11,6 +11,7 @@ exports.lineTypeToJSON = lineTypeToJSON;
 exports.lineTypeToNumber = lineTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const tuition_1 = require("./tuition");
 exports.protobufPackage = "payment_service";
@@ -73,7 +74,14 @@ function lineTypeToNumber(object) {
     }
 }
 function createBaseTuitionPlanSnapshot() {
-    return { name: "", scheduleType: tuition_1.PaymentScheduleType.ONE_TIME, dayOfMonth: 0, installments: [] };
+    return {
+        name: "",
+        scheduleType: tuition_1.PaymentScheduleType.ONE_TIME,
+        dayOfMonth: 0,
+        installments: [],
+        startDate: undefined,
+        endDate: undefined,
+    };
 }
 exports.TuitionPlanSnapshot = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -88,6 +96,12 @@ exports.TuitionPlanSnapshot = {
         }
         for (const v of message.installments) {
             tuition_1.PaymentInstallment.encode(v, writer.uint32(34).fork()).join();
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(42).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -122,6 +136,18 @@ exports.TuitionPlanSnapshot = {
                     }
                     message.installments.push(tuition_1.PaymentInstallment.decode(reader, reader.uint32()));
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -140,6 +166,8 @@ exports.TuitionPlanSnapshot = {
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
                 : [],
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -156,6 +184,12 @@ exports.TuitionPlanSnapshot = {
         if (message.installments?.length) {
             obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
         }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
+        }
         return obj;
     },
     create(base) {
@@ -167,6 +201,8 @@ exports.TuitionPlanSnapshot = {
         message.scheduleType = object.scheduleType ?? tuition_1.PaymentScheduleType.ONE_TIME;
         message.dayOfMonth = object.dayOfMonth ?? 0;
         message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         return message;
     },
 };
@@ -464,6 +500,27 @@ exports.TuitionInvoice = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

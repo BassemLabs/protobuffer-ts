@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import {
   PaymentInstallment,
@@ -87,6 +88,8 @@ export interface TuitionPlanSnapshot {
   scheduleType: PaymentScheduleType;
   dayOfMonth?: number | undefined;
   installments: PaymentInstallment[];
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 }
 
 export interface TuitionInvoiceLineItem {
@@ -112,7 +115,14 @@ export interface TuitionInvoice {
 }
 
 function createBaseTuitionPlanSnapshot(): TuitionPlanSnapshot {
-  return { name: "", scheduleType: PaymentScheduleType.ONE_TIME, dayOfMonth: 0, installments: [] };
+  return {
+    name: "",
+    scheduleType: PaymentScheduleType.ONE_TIME,
+    dayOfMonth: 0,
+    installments: [],
+    startDate: undefined,
+    endDate: undefined,
+  };
 }
 
 export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
@@ -128,6 +138,12 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
     }
     for (const v of message.installments) {
       PaymentInstallment.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(42).fork()).join();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -167,6 +183,20 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
 
           message.installments.push(PaymentInstallment.decode(reader, reader.uint32()));
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -186,6 +216,8 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
       installments: globalThis.Array.isArray(object?.installments)
         ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
         : [],
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -203,6 +235,12 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
     if (message.installments?.length) {
       obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
     }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
+    }
     return obj;
   },
 
@@ -215,6 +253,8 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
     message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
     message.dayOfMonth = object.dayOfMonth ?? 0;
     message.installments = object.installments?.map((e) => PaymentInstallment.fromPartial(e)) || [];
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
     return message;
   },
 };
@@ -550,6 +590,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
