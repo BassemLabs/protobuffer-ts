@@ -137,6 +137,7 @@ export interface CreateInvoiceRequest {
   autoPayEnabled?: boolean | undefined;
   chargeOnDate?: Date | undefined;
   autoPaymentStatus?: AutoPaymentStatus | undefined;
+  isTuition?: boolean | undefined;
 }
 
 export interface CreateInvoiceForClassRequest {
@@ -213,6 +214,12 @@ export interface SetAutoPayInvoiceStatusRequest {
   context: RequestContext | undefined;
   invoiceId: ObjectId | undefined;
   autoPaymentStatus: AutoPaymentStatus;
+}
+
+export interface GetFamilyTuitionInvoicesRequest {
+  context: RequestContext | undefined;
+  familyId: ObjectId | undefined;
+  schoolYear: ObjectId | undefined;
 }
 
 function createBaseInvoices(): Invoices {
@@ -1672,6 +1679,7 @@ function createBaseCreateInvoiceRequest(): CreateInvoiceRequest {
     autoPayEnabled: false,
     chargeOnDate: undefined,
     autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
+    isTuition: false,
   };
 }
 
@@ -1718,6 +1726,9 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     }
     if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
       writer.uint32(112).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
+    }
+    if (message.isTuition !== undefined && message.isTuition !== false) {
+      writer.uint32(120).bool(message.isTuition);
     }
     return writer;
   },
@@ -1827,6 +1838,13 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
 
           message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
           continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.isTuition = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1854,6 +1872,7 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
       autoPaymentStatus: isSet(object.autoPaymentStatus)
         ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
         : AutoPaymentStatus.AutoPayPending,
+      isTuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
     };
   },
 
@@ -1901,6 +1920,9 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
       obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
     }
+    if (message.isTuition !== undefined && message.isTuition !== false) {
+      obj.isTuition = message.isTuition;
+    }
     return obj;
   },
 
@@ -1929,6 +1951,7 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     message.autoPayEnabled = object.autoPayEnabled ?? false;
     message.chargeOnDate = object.chargeOnDate ?? undefined;
     message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
+    message.isTuition = object.isTuition ?? false;
     return message;
   },
 };
@@ -3149,6 +3172,103 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
       ? ObjectId.fromPartial(object.invoiceId)
       : undefined;
     message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
+    return message;
+  },
+};
+
+function createBaseGetFamilyTuitionInvoicesRequest(): GetFamilyTuitionInvoicesRequest {
+  return { context: undefined, familyId: undefined, schoolYear: undefined };
+}
+
+export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoicesRequest> = {
+  encode(message: GetFamilyTuitionInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.familyId !== undefined) {
+      ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetFamilyTuitionInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFamilyTuitionInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.familyId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFamilyTuitionInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      familyId: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: GetFamilyTuitionInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.familyId !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.familyId);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetFamilyTuitionInvoicesRequest>, I>>(base?: I): GetFamilyTuitionInvoicesRequest {
+    return GetFamilyTuitionInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetFamilyTuitionInvoicesRequest>, I>>(
+    object: I,
+  ): GetFamilyTuitionInvoicesRequest {
+    const message = createBaseGetFamilyTuitionInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.familyId = (object.familyId !== undefined && object.familyId !== null)
+      ? ObjectId.fromPartial(object.familyId)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
     return message;
   },
 };

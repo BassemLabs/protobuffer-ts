@@ -83,6 +83,8 @@ export interface Invoice {
     /** Date when this invoice must be automatically charged one */
     chargeOnDate?: Date | undefined;
     autoPaymentStatus?: AutoPaymentStatus | undefined;
+    /** determine if this invoice is a tuition invoice */
+    isTuition: boolean;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;

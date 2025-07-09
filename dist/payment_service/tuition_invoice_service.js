@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GenerateTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
+exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -88,6 +88,92 @@ exports.StudentObj = {
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? "";
         message.grade = object.grade ?? "";
+        return message;
+    },
+};
+function createBaseGetFamilyTuitionInvoiceRequest() {
+    return { context: undefined, family: undefined, schoolYear: undefined };
+}
+exports.GetFamilyTuitionInvoiceRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetFamilyTuitionInvoiceRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetFamilyTuitionInvoiceRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetFamilyTuitionInvoiceRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
         return message;
     },
 };

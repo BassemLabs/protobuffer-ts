@@ -93,6 +93,7 @@ export interface CreateInvoiceRequest {
     autoPayEnabled?: boolean | undefined;
     chargeOnDate?: Date | undefined;
     autoPaymentStatus?: AutoPaymentStatus | undefined;
+    isTuition?: boolean | undefined;
 }
 export interface CreateInvoiceForClassRequest {
     context: RequestContext | undefined;
@@ -159,6 +160,11 @@ export interface SetAutoPayInvoiceStatusRequest {
     invoiceId: ObjectId | undefined;
     autoPaymentStatus: AutoPaymentStatus;
 }
+export interface GetFamilyTuitionInvoicesRequest {
+    context: RequestContext | undefined;
+    familyId: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+}
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
 export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
@@ -191,6 +197,7 @@ export declare const ArchiveInvoiceRequest: MessageFns<ArchiveInvoiceRequest>;
 export declare const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest>;
 export declare const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoicesReadyToChargeRequest>;
 export declare const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusRequest>;
+export declare const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoicesRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

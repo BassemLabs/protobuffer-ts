@@ -459,6 +459,7 @@ function createBaseInvoice() {
         autoPayEnabled: false,
         chargeOnDate: undefined,
         autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
+        isTuition: false,
     };
 }
 exports.Invoice = {
@@ -517,6 +518,9 @@ exports.Invoice = {
         }
         if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
             writer.uint32(144).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
+        }
+        if (message.isTuition !== false) {
+            writer.uint32(152).bool(message.isTuition);
         }
         return writer;
     },
@@ -635,6 +639,12 @@ exports.Invoice = {
                     }
                     message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
                     continue;
+                case 19:
+                    if (tag !== 152) {
+                        break;
+                    }
+                    message.isTuition = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -667,6 +677,7 @@ exports.Invoice = {
             autoPaymentStatus: isSet(object.autoPaymentStatus)
                 ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
                 : AutoPaymentStatus.AutoPayPending,
+            isTuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
         };
     },
     toJSON(message) {
@@ -726,6 +737,9 @@ exports.Invoice = {
         if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
             obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
         }
+        if (message.isTuition !== false) {
+            obj.isTuition = message.isTuition;
+        }
         return obj;
     },
     create(base) {
@@ -758,6 +772,7 @@ exports.Invoice = {
         message.autoPayEnabled = object.autoPayEnabled ?? false;
         message.chargeOnDate = object.chargeOnDate ?? undefined;
         message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
+        message.isTuition = object.isTuition ?? false;
         return message;
     },
 };

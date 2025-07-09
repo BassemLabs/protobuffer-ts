@@ -8,6 +8,11 @@ export interface StudentObj {
     name: string;
     grade: string;
 }
+export interface GetFamilyTuitionInvoiceRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+}
 export interface GenerateTuitionInvoiceRequest {
     context: RequestContext | undefined;
     family: ObjectId | undefined;
@@ -16,6 +21,7 @@ export interface GenerateTuitionInvoiceRequest {
     students: StudentObj[];
 }
 export declare const StudentObj: MessageFns<StudentObj>;
+export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;
 export declare const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

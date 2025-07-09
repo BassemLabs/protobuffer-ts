@@ -298,7 +298,11 @@ export interface Invoice {
     | undefined;
   /** Date when this invoice must be automatically charged one */
   chargeOnDate?: Date | undefined;
-  autoPaymentStatus?: AutoPaymentStatus | undefined;
+  autoPaymentStatus?:
+    | AutoPaymentStatus
+    | undefined;
+  /** determine if this invoice is a tuition invoice */
+  isTuition: boolean;
 }
 
 export interface InvoiceResponse {
@@ -546,6 +550,7 @@ function createBaseInvoice(): Invoice {
     autoPayEnabled: false,
     chargeOnDate: undefined,
     autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
+    isTuition: false,
   };
 }
 
@@ -607,6 +612,9 @@ export const Invoice: MessageFns<Invoice> = {
     }
     if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
       writer.uint32(144).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
+    }
+    if (message.isTuition !== false) {
+      writer.uint32(152).bool(message.isTuition);
     }
     return writer;
   },
@@ -744,6 +752,13 @@ export const Invoice: MessageFns<Invoice> = {
 
           message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
           continue;
+        case 19:
+          if (tag !== 152) {
+            break;
+          }
+
+          message.isTuition = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -777,6 +792,7 @@ export const Invoice: MessageFns<Invoice> = {
       autoPaymentStatus: isSet(object.autoPaymentStatus)
         ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
         : AutoPaymentStatus.AutoPayPending,
+      isTuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
     };
   },
 
@@ -841,6 +857,9 @@ export const Invoice: MessageFns<Invoice> = {
     if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
       obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
     }
+    if (message.isTuition !== false) {
+      obj.isTuition = message.isTuition;
+    }
     return obj;
   },
 
@@ -874,6 +893,7 @@ export const Invoice: MessageFns<Invoice> = {
     message.autoPayEnabled = object.autoPayEnabled ?? false;
     message.chargeOnDate = object.chargeOnDate ?? undefined;
     message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
+    message.isTuition = object.isTuition ?? false;
     return message;
   },
 };
