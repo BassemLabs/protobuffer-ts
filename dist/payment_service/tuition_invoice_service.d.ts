@@ -1,6 +1,8 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Family } from "../user_service/family";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { TuitionInvoice } from "./tuition_invoice";
 export declare const protobufPackage = "payment_service";
 /** TODO: Remove this once we move into payment service and call user service */
 export interface StudentObj {
@@ -20,9 +22,25 @@ export interface GenerateTuitionInvoiceRequest {
     tuitionPlan: ObjectId | undefined;
     students: StudentObj[];
 }
+export interface ListFamiliesWithTuitionInvoicesRequest {
+    context: RequestContext | undefined;
+    schoolYear: ObjectId | undefined;
+}
+export interface ListFamiliesWithTuitionInvoicesResponse {
+    familyWithTuitionInvoice: FamilyWithTuitionInvoice[];
+}
+export interface FamilyWithTuitionInvoice {
+    family: Family | undefined;
+    tuitionInvoice?: TuitionInvoice | undefined;
+    studentCount: number;
+    totalPaid: number;
+}
 export declare const StudentObj: MessageFns<StudentObj>;
 export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;
 export declare const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest>;
+export declare const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWithTuitionInvoicesRequest>;
+export declare const ListFamiliesWithTuitionInvoicesResponse: MessageFns<ListFamiliesWithTuitionInvoicesResponse>;
+export declare const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

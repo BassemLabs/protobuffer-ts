@@ -5,11 +5,13 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
+exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const family_1 = require("../user_service/family");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
+const tuition_invoice_1 = require("./tuition_invoice");
 exports.protobufPackage = "payment_service";
 function createBaseStudentObj() {
     return { id: undefined, name: "", grade: "" };
@@ -292,6 +294,229 @@ exports.GenerateTuitionInvoiceRequest = {
             ? object_id_1.ObjectId.fromPartial(object.tuitionPlan)
             : undefined;
         message.students = object.students?.map((e) => exports.StudentObj.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseListFamiliesWithTuitionInvoicesRequest() {
+    return { context: undefined, schoolYear: undefined };
+}
+exports.ListFamiliesWithTuitionInvoicesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamiliesWithTuitionInvoicesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamiliesWithTuitionInvoicesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamiliesWithTuitionInvoicesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        return message;
+    },
+};
+function createBaseListFamiliesWithTuitionInvoicesResponse() {
+    return { familyWithTuitionInvoice: [] };
+}
+exports.ListFamiliesWithTuitionInvoicesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.familyWithTuitionInvoice) {
+            exports.FamilyWithTuitionInvoice.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamiliesWithTuitionInvoicesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.familyWithTuitionInvoice.push(exports.FamilyWithTuitionInvoice.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            familyWithTuitionInvoice: globalThis.Array.isArray(object?.familyWithTuitionInvoice)
+                ? object.familyWithTuitionInvoice.map((e) => exports.FamilyWithTuitionInvoice.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.familyWithTuitionInvoice?.length) {
+            obj.familyWithTuitionInvoice = message.familyWithTuitionInvoice.map((e) => exports.FamilyWithTuitionInvoice.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamiliesWithTuitionInvoicesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamiliesWithTuitionInvoicesResponse();
+        message.familyWithTuitionInvoice =
+            object.familyWithTuitionInvoice?.map((e) => exports.FamilyWithTuitionInvoice.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseFamilyWithTuitionInvoice() {
+    return { family: undefined, tuitionInvoice: undefined, studentCount: 0, totalPaid: 0 };
+}
+exports.FamilyWithTuitionInvoice = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.family !== undefined) {
+            family_1.Family.encode(message.family, writer.uint32(10).fork()).join();
+        }
+        if (message.tuitionInvoice !== undefined) {
+            tuition_invoice_1.TuitionInvoice.encode(message.tuitionInvoice, writer.uint32(18).fork()).join();
+        }
+        if (message.studentCount !== 0) {
+            writer.uint32(24).int32(message.studentCount);
+        }
+        if (message.totalPaid !== 0) {
+            writer.uint32(33).double(message.totalPaid);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseFamilyWithTuitionInvoice();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.family = family_1.Family.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.tuitionInvoice = tuition_invoice_1.TuitionInvoice.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.studentCount = reader.int32();
+                    continue;
+                case 4:
+                    if (tag !== 33) {
+                        break;
+                    }
+                    message.totalPaid = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            family: isSet(object.family) ? family_1.Family.fromJSON(object.family) : undefined,
+            tuitionInvoice: isSet(object.tuitionInvoice) ? tuition_invoice_1.TuitionInvoice.fromJSON(object.tuitionInvoice) : undefined,
+            studentCount: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
+            totalPaid: isSet(object.totalPaid) ? globalThis.Number(object.totalPaid) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.family !== undefined) {
+            obj.family = family_1.Family.toJSON(message.family);
+        }
+        if (message.tuitionInvoice !== undefined) {
+            obj.tuitionInvoice = tuition_invoice_1.TuitionInvoice.toJSON(message.tuitionInvoice);
+        }
+        if (message.studentCount !== 0) {
+            obj.studentCount = Math.round(message.studentCount);
+        }
+        if (message.totalPaid !== 0) {
+            obj.totalPaid = message.totalPaid;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.FamilyWithTuitionInvoice.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseFamilyWithTuitionInvoice();
+        message.family = (object.family !== undefined && object.family !== null)
+            ? family_1.Family.fromPartial(object.family)
+            : undefined;
+        message.tuitionInvoice = (object.tuitionInvoice !== undefined && object.tuitionInvoice !== null)
+            ? tuition_invoice_1.TuitionInvoice.fromPartial(object.tuitionInvoice)
+            : undefined;
+        message.studentCount = object.studentCount ?? 0;
+        message.totalPaid = object.totalPaid ?? 0;
         return message;
     },
 };

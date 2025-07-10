@@ -65,6 +65,8 @@ import * as Email_template from './user_service/email_template';
 export { Email_template };
 import * as Custom_field_entry from './user_service/custom_field_entry';
 export { Custom_field_entry };
+import * as Family from './user_service/family';
+export { Family };
 import * as Homeroom_service from './class_service/homeroom_service';
 export { Homeroom_service };
 import * as Report_layout from './class_service/report_layout';

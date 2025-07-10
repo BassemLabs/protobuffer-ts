@@ -6,8 +6,10 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Family } from "../user_service/family";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { TuitionInvoice } from "./tuition_invoice";
 
 export const protobufPackage = "payment_service";
 
@@ -30,6 +32,22 @@ export interface GenerateTuitionInvoiceRequest {
   schoolYear: ObjectId | undefined;
   tuitionPlan: ObjectId | undefined;
   students: StudentObj[];
+}
+
+export interface ListFamiliesWithTuitionInvoicesRequest {
+  context: RequestContext | undefined;
+  schoolYear: ObjectId | undefined;
+}
+
+export interface ListFamiliesWithTuitionInvoicesResponse {
+  familyWithTuitionInvoice: FamilyWithTuitionInvoice[];
+}
+
+export interface FamilyWithTuitionInvoice {
+  family: Family | undefined;
+  tuitionInvoice?: TuitionInvoice | undefined;
+  studentCount: number;
+  totalPaid: number;
 }
 
 function createBaseStudentObj(): StudentObj {
@@ -345,6 +363,262 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
       ? ObjectId.fromPartial(object.tuitionPlan)
       : undefined;
     message.students = object.students?.map((e) => StudentObj.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListFamiliesWithTuitionInvoicesRequest(): ListFamiliesWithTuitionInvoicesRequest {
+  return { context: undefined, schoolYear: undefined };
+}
+
+export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWithTuitionInvoicesRequest> = {
+  encode(message: ListFamiliesWithTuitionInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamiliesWithTuitionInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamiliesWithTuitionInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamiliesWithTuitionInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: ListFamiliesWithTuitionInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamiliesWithTuitionInvoicesRequest>, I>>(
+    base?: I,
+  ): ListFamiliesWithTuitionInvoicesRequest {
+    return ListFamiliesWithTuitionInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamiliesWithTuitionInvoicesRequest>, I>>(
+    object: I,
+  ): ListFamiliesWithTuitionInvoicesRequest {
+    const message = createBaseListFamiliesWithTuitionInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseListFamiliesWithTuitionInvoicesResponse(): ListFamiliesWithTuitionInvoicesResponse {
+  return { familyWithTuitionInvoice: [] };
+}
+
+export const ListFamiliesWithTuitionInvoicesResponse: MessageFns<ListFamiliesWithTuitionInvoicesResponse> = {
+  encode(message: ListFamiliesWithTuitionInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.familyWithTuitionInvoice) {
+      FamilyWithTuitionInvoice.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamiliesWithTuitionInvoicesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamiliesWithTuitionInvoicesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.familyWithTuitionInvoice.push(FamilyWithTuitionInvoice.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamiliesWithTuitionInvoicesResponse {
+    return {
+      familyWithTuitionInvoice: globalThis.Array.isArray(object?.familyWithTuitionInvoice)
+        ? object.familyWithTuitionInvoice.map((e: any) => FamilyWithTuitionInvoice.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ListFamiliesWithTuitionInvoicesResponse): unknown {
+    const obj: any = {};
+    if (message.familyWithTuitionInvoice?.length) {
+      obj.familyWithTuitionInvoice = message.familyWithTuitionInvoice.map((e) => FamilyWithTuitionInvoice.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamiliesWithTuitionInvoicesResponse>, I>>(
+    base?: I,
+  ): ListFamiliesWithTuitionInvoicesResponse {
+    return ListFamiliesWithTuitionInvoicesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamiliesWithTuitionInvoicesResponse>, I>>(
+    object: I,
+  ): ListFamiliesWithTuitionInvoicesResponse {
+    const message = createBaseListFamiliesWithTuitionInvoicesResponse();
+    message.familyWithTuitionInvoice =
+      object.familyWithTuitionInvoice?.map((e) => FamilyWithTuitionInvoice.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseFamilyWithTuitionInvoice(): FamilyWithTuitionInvoice {
+  return { family: undefined, tuitionInvoice: undefined, studentCount: 0, totalPaid: 0 };
+}
+
+export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
+  encode(message: FamilyWithTuitionInvoice, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.family !== undefined) {
+      Family.encode(message.family, writer.uint32(10).fork()).join();
+    }
+    if (message.tuitionInvoice !== undefined) {
+      TuitionInvoice.encode(message.tuitionInvoice, writer.uint32(18).fork()).join();
+    }
+    if (message.studentCount !== 0) {
+      writer.uint32(24).int32(message.studentCount);
+    }
+    if (message.totalPaid !== 0) {
+      writer.uint32(33).double(message.totalPaid);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FamilyWithTuitionInvoice {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFamilyWithTuitionInvoice();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.family = Family.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.tuitionInvoice = TuitionInvoice.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.studentCount = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 33) {
+            break;
+          }
+
+          message.totalPaid = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FamilyWithTuitionInvoice {
+    return {
+      family: isSet(object.family) ? Family.fromJSON(object.family) : undefined,
+      tuitionInvoice: isSet(object.tuitionInvoice) ? TuitionInvoice.fromJSON(object.tuitionInvoice) : undefined,
+      studentCount: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
+      totalPaid: isSet(object.totalPaid) ? globalThis.Number(object.totalPaid) : 0,
+    };
+  },
+
+  toJSON(message: FamilyWithTuitionInvoice): unknown {
+    const obj: any = {};
+    if (message.family !== undefined) {
+      obj.family = Family.toJSON(message.family);
+    }
+    if (message.tuitionInvoice !== undefined) {
+      obj.tuitionInvoice = TuitionInvoice.toJSON(message.tuitionInvoice);
+    }
+    if (message.studentCount !== 0) {
+      obj.studentCount = Math.round(message.studentCount);
+    }
+    if (message.totalPaid !== 0) {
+      obj.totalPaid = message.totalPaid;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FamilyWithTuitionInvoice>, I>>(base?: I): FamilyWithTuitionInvoice {
+    return FamilyWithTuitionInvoice.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<FamilyWithTuitionInvoice>, I>>(object: I): FamilyWithTuitionInvoice {
+    const message = createBaseFamilyWithTuitionInvoice();
+    message.family = (object.family !== undefined && object.family !== null)
+      ? Family.fromPartial(object.family)
+      : undefined;
+    message.tuitionInvoice = (object.tuitionInvoice !== undefined && object.tuitionInvoice !== null)
+      ? TuitionInvoice.fromPartial(object.tuitionInvoice)
+      : undefined;
+    message.studentCount = object.studentCount ?? 0;
+    message.totalPaid = object.totalPaid ?? 0;
     return message;
   },
 };
