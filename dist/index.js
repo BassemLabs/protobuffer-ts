@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Action_required_by_parents = exports.Email_template = exports.Custom_fields_template = exports.Family = exports.Custom_field_entry = exports.Organization_service = exports.Kms_service = exports.Organization_owner = exports.Organization_profile_settings = exports.Kms_key = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Campus = exports.Campus_service = exports.Bassem_labs_staff_service = exports.Bassem_labs_staff = exports.Organization = exports.Organization_profile_settings_service = exports.Organization_owner_service = exports.Object_id = exports.Request_context = exports.Aws_file = exports.User_type = exports.Semester_service = exports.Report_layout = exports.Homeroom = exports.Gclass = exports.Course_service = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Course = exports.Timestamp = exports.Invoice_to_charge = exports.Sample = exports.Invoice = exports.Transaction = exports.Tuition_application = exports.Payment_service = exports.Tuition_invoice = exports.Transaction_service = exports.Tuition_service = exports.Tuition = exports.Tuition_application_service = exports.Invoice_service = exports.Tuition_invoice_service = exports.Test = exports.Test_service = void 0;
+exports.Action_required_by_parents = exports.Email_template = exports.Custom_fields_template = exports.Family = exports.Custom_field_entry = exports.Organization_service = exports.Kms_service = exports.Organization_owner = exports.Organization_profile_settings = exports.Kms_key = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Campus = exports.Campus_service = exports.Bassem_labs_staff_service = exports.Bassem_labs_staff = exports.Organization = exports.Organization_profile_settings_service = exports.Organization_owner_service = exports.Object_id = exports.Request_context = exports.Aws_file = exports.User_type = exports.Semester_service = exports.Report_layout = exports.Homeroom = exports.Gclass = exports.Course_service = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Course = exports.Timestamp = exports.Invoice_to_charge = exports.Sample = exports.Invoice = exports.Transaction = exports.Tuition_application = exports.Payment_service = exports.Tuition_invoice = exports.Processing_fees_service = exports.Processing_fees = exports.Transaction_service = exports.Tuition_service = exports.Tuition = exports.Tuition_application_service = exports.Invoice_service = exports.Tuition_invoice_service = exports.Test = exports.Test_service = void 0;
 // Auto-generated index.ts
 const Test_service = __importStar(require("./template_service/test_service"));
 exports.Test_service = Test_service;
@@ -41,6 +41,10 @@ const Tuition_service = __importStar(require("./payment_service/tuition_service"
 exports.Tuition_service = Tuition_service;
 const Transaction_service = __importStar(require("./payment_service/transaction_service"));
 exports.Transaction_service = Transaction_service;
+const Processing_fees = __importStar(require("./payment_service/processing_fees"));
+exports.Processing_fees = Processing_fees;
+const Processing_fees_service = __importStar(require("./payment_service/processing_fees_service"));
+exports.Processing_fees_service = Processing_fees_service;
 const Tuition_invoice = __importStar(require("./payment_service/tuition_invoice"));
 exports.Tuition_invoice = Tuition_invoice;
 const Payment_service = __importStar(require("./payment_service/payment_service"));
