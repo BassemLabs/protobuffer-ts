@@ -34,6 +34,7 @@ export interface Transaction {
     date: Date | undefined;
     invoice: ObjectId | undefined;
     amount: number;
+    declinedReason?: string | undefined;
 }
 export declare const Transaction: MessageFns<Transaction>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -161,6 +161,7 @@ function createBaseTransaction() {
         date: undefined,
         invoice: undefined,
         amount: 0,
+        declinedReason: "",
     };
 }
 exports.Transaction = {
@@ -191,6 +192,9 @@ exports.Transaction = {
         }
         if (message.amount !== 0) {
             writer.uint32(73).double(message.amount);
+        }
+        if (message.declinedReason !== undefined && message.declinedReason !== "") {
+            writer.uint32(82).string(message.declinedReason);
         }
         return writer;
     },
@@ -255,6 +259,12 @@ exports.Transaction = {
                     }
                     message.amount = reader.double();
                     continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.declinedReason = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -274,6 +284,7 @@ exports.Transaction = {
             date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
             invoice: isSet(object.invoice) ? object_id_1.ObjectId.fromJSON(object.invoice) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+            declinedReason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
         };
     },
     toJSON(message) {
@@ -305,6 +316,9 @@ exports.Transaction = {
         if (message.amount !== 0) {
             obj.amount = message.amount;
         }
+        if (message.declinedReason !== undefined && message.declinedReason !== "") {
+            obj.declinedReason = message.declinedReason;
+        }
         return obj;
     },
     create(base) {
@@ -325,6 +339,7 @@ exports.Transaction = {
             ? object_id_1.ObjectId.fromPartial(object.invoice)
             : undefined;
         message.amount = object.amount ?? 0;
+        message.declinedReason = object.declinedReason ?? "";
         return message;
     },
 };

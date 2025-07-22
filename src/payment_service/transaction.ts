@@ -160,6 +160,7 @@ export interface Transaction {
   date: Date | undefined;
   invoice: ObjectId | undefined;
   amount: number;
+  declinedReason?: string | undefined;
 }
 
 function createBaseTransaction(): Transaction {
@@ -173,6 +174,7 @@ function createBaseTransaction(): Transaction {
     date: undefined,
     invoice: undefined,
     amount: 0,
+    declinedReason: "",
   };
 }
 
@@ -204,6 +206,9 @@ export const Transaction: MessageFns<Transaction> = {
     }
     if (message.amount !== 0) {
       writer.uint32(73).double(message.amount);
+    }
+    if (message.declinedReason !== undefined && message.declinedReason !== "") {
+      writer.uint32(82).string(message.declinedReason);
     }
     return writer;
   },
@@ -278,6 +283,13 @@ export const Transaction: MessageFns<Transaction> = {
 
           message.amount = reader.double();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.declinedReason = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -298,6 +310,7 @@ export const Transaction: MessageFns<Transaction> = {
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
       invoice: isSet(object.invoice) ? ObjectId.fromJSON(object.invoice) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+      declinedReason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
     };
   },
 
@@ -330,6 +343,9 @@ export const Transaction: MessageFns<Transaction> = {
     if (message.amount !== 0) {
       obj.amount = message.amount;
     }
+    if (message.declinedReason !== undefined && message.declinedReason !== "") {
+      obj.declinedReason = message.declinedReason;
+    }
     return obj;
   },
 
@@ -351,6 +367,7 @@ export const Transaction: MessageFns<Transaction> = {
       ? ObjectId.fromPartial(object.invoice)
       : undefined;
     message.amount = object.amount ?? 0;
+    message.declinedReason = object.declinedReason ?? "";
     return message;
   },
 };
