@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -598,6 +598,7 @@ function createBaseUpdateOrganizationSettingsRequest() {
         defaultDomain: "",
         countryCode: "",
         currency: organization_1.Currency.USD,
+        loginId: "",
     };
 }
 exports.UpdateOrganizationSettingsRequest = {
@@ -622,6 +623,9 @@ exports.UpdateOrganizationSettingsRequest = {
         }
         if (message.currency !== organization_1.Currency.USD) {
             writer.uint32(56).int32((0, organization_1.currencyToNumber)(message.currency));
+        }
+        if (message.loginId !== "") {
+            writer.uint32(66).string(message.loginId);
         }
         return writer;
     },
@@ -674,6 +678,12 @@ exports.UpdateOrganizationSettingsRequest = {
                     }
                     message.currency = (0, organization_1.currencyFromJSON)(reader.int32());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.loginId = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -691,6 +701,7 @@ exports.UpdateOrganizationSettingsRequest = {
             defaultDomain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
             countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
+            loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
         };
     },
     toJSON(message) {
@@ -716,6 +727,9 @@ exports.UpdateOrganizationSettingsRequest = {
         if (message.currency !== organization_1.Currency.USD) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
         }
+        if (message.loginId !== "") {
+            obj.loginId = message.loginId;
+        }
         return obj;
     },
     create(base) {
@@ -734,6 +748,7 @@ exports.UpdateOrganizationSettingsRequest = {
         message.defaultDomain = object.defaultDomain ?? "";
         message.countryCode = object.countryCode ?? "";
         message.currency = object.currency ?? organization_1.Currency.USD;
+        message.loginId = object.loginId ?? "";
         return message;
     },
 };
@@ -1684,6 +1699,144 @@ exports.UpdateOrganizationStripePaymentInfoRequest = {
         message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
         message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
         message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
+        return message;
+    },
+};
+function createBaseGetOrganizationByLoginIdRequest() {
+    return { context: undefined, loginId: "" };
+}
+exports.GetOrganizationByLoginIdRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.loginId !== "") {
+            writer.uint32(18).string(message.loginId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationByLoginIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.loginId = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.loginId !== "") {
+            obj.loginId = message.loginId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationByLoginIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationByLoginIdRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.loginId = object.loginId ?? "";
+        return message;
+    },
+};
+function createBaseGetOrganizationsByIdRequest() {
+    return { context: undefined, organizationIds: [] };
+}
+exports.GetOrganizationsByIdRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.organizationIds) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationsByIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationIds: globalThis.Array.isArray(object?.organizationIds)
+                ? object.organizationIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationIds?.length) {
+            obj.organizationIds = message.organizationIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationsByIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationsByIdRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationIds = object.organizationIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

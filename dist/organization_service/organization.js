@@ -71,6 +71,7 @@ function createBaseOrganization() {
         openedReregistrationForComingSchoolYear: false,
         countryCode: "",
         paymentInformation: undefined,
+        loginId: "",
     };
 }
 exports.Organization = {
@@ -107,6 +108,9 @@ exports.Organization = {
         }
         if (message.paymentInformation !== undefined) {
             exports.PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
+        }
+        if (message.loginId !== "") {
+            writer.uint32(98).string(message.loginId);
         }
         return writer;
     },
@@ -183,6 +187,12 @@ exports.Organization = {
                     }
                     message.paymentInformation = exports.PaymentInformation.decode(reader, reader.uint32());
                     continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.loginId = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -212,6 +222,7 @@ exports.Organization = {
             paymentInformation: isSet(object.paymentInformation)
                 ? exports.PaymentInformation.fromJSON(object.paymentInformation)
                 : undefined,
+            loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
         };
     },
     toJSON(message) {
@@ -249,6 +260,9 @@ exports.Organization = {
         if (message.paymentInformation !== undefined) {
             obj.paymentInformation = exports.PaymentInformation.toJSON(message.paymentInformation);
         }
+        if (message.loginId !== "") {
+            obj.loginId = message.loginId;
+        }
         return obj;
     },
     create(base) {
@@ -278,6 +292,7 @@ exports.Organization = {
         message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
             ? exports.PaymentInformation.fromPartial(object.paymentInformation)
             : undefined;
+        message.loginId = object.loginId ?? "";
         return message;
     },
 };

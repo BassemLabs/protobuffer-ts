@@ -54,6 +54,7 @@ export interface UpdateOrganizationSettingsRequest {
     defaultDomain: string;
     countryCode: string;
     currency: Currency;
+    loginId: string;
 }
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
@@ -112,6 +113,14 @@ export interface UpdateOrganizationStripePaymentInfoRequest {
     stripeDetailsSubmitted: boolean;
     stripeChargesEnabled: boolean;
 }
+export interface GetOrganizationByLoginIdRequest {
+    context: RequestContext | undefined;
+    loginId: string;
+}
+export interface GetOrganizationsByIdRequest {
+    context: RequestContext | undefined;
+    organizationIds: ObjectId[];
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -134,6 +143,8 @@ export declare const StartReregistrationRequest: MessageFns<StartReregistrationR
 export declare const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest>;
 export declare const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest>;
 export declare const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest>;
+export declare const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest>;
+export declare const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -70,6 +70,7 @@ export interface Organization {
   openedReregistrationForComingSchoolYear: boolean;
   countryCode?: string | undefined;
   paymentInformation: PaymentInformation | undefined;
+  loginId: string;
 }
 
 export interface SchoolYear {
@@ -102,6 +103,7 @@ function createBaseOrganization(): Organization {
     openedReregistrationForComingSchoolYear: false,
     countryCode: "",
     paymentInformation: undefined,
+    loginId: "",
   };
 }
 
@@ -139,6 +141,9 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.paymentInformation !== undefined) {
       PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
+    }
+    if (message.loginId !== "") {
+      writer.uint32(98).string(message.loginId);
     }
     return writer;
   },
@@ -227,6 +232,13 @@ export const Organization: MessageFns<Organization> = {
 
           message.paymentInformation = PaymentInformation.decode(reader, reader.uint32());
           continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.loginId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -257,6 +269,7 @@ export const Organization: MessageFns<Organization> = {
       paymentInformation: isSet(object.paymentInformation)
         ? PaymentInformation.fromJSON(object.paymentInformation)
         : undefined,
+      loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
     };
   },
 
@@ -295,6 +308,9 @@ export const Organization: MessageFns<Organization> = {
     if (message.paymentInformation !== undefined) {
       obj.paymentInformation = PaymentInformation.toJSON(message.paymentInformation);
     }
+    if (message.loginId !== "") {
+      obj.loginId = message.loginId;
+    }
     return obj;
   },
 
@@ -325,6 +341,7 @@ export const Organization: MessageFns<Organization> = {
     message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
       ? PaymentInformation.fromPartial(object.paymentInformation)
       : undefined;
+    message.loginId = object.loginId ?? "";
     return message;
   },
 };

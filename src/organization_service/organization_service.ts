@@ -72,6 +72,7 @@ export interface UpdateOrganizationSettingsRequest {
   defaultDomain: string;
   countryCode: string;
   currency: Currency;
+  loginId: string;
 }
 
 /** Request to fetch all organizations */
@@ -142,6 +143,16 @@ export interface UpdateOrganizationStripePaymentInfoRequest {
   stripePayoutsEnabled: boolean;
   stripeDetailsSubmitted: boolean;
   stripeChargesEnabled: boolean;
+}
+
+export interface GetOrganizationByLoginIdRequest {
+  context: RequestContext | undefined;
+  loginId: string;
+}
+
+export interface GetOrganizationsByIdRequest {
+  context: RequestContext | undefined;
+  organizationIds: ObjectId[];
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -808,6 +819,7 @@ function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettin
     defaultDomain: "",
     countryCode: "",
     currency: Currency.USD,
+    loginId: "",
   };
 }
 
@@ -833,6 +845,9 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.currency !== Currency.USD) {
       writer.uint32(56).int32(currencyToNumber(message.currency));
+    }
+    if (message.loginId !== "") {
+      writer.uint32(66).string(message.loginId);
     }
     return writer;
   },
@@ -893,6 +908,13 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
 
           message.currency = currencyFromJSON(reader.int32());
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.loginId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -911,6 +933,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       defaultDomain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
       countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
+      loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
     };
   },
 
@@ -937,6 +960,9 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.currency !== Currency.USD) {
       obj.currency = currencyToJSON(message.currency);
     }
+    if (message.loginId !== "") {
+      obj.loginId = message.loginId;
+    }
     return obj;
   },
 
@@ -960,6 +986,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.defaultDomain = object.defaultDomain ?? "";
     message.countryCode = object.countryCode ?? "";
     message.currency = object.currency ?? Currency.USD;
+    message.loginId = object.loginId ?? "";
     return message;
   },
 };
@@ -2027,6 +2054,162 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
     message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
     message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationByLoginIdRequest(): GetOrganizationByLoginIdRequest {
+  return { context: undefined, loginId: "" };
+}
+
+export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest> = {
+  encode(message: GetOrganizationByLoginIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.loginId !== "") {
+      writer.uint32(18).string(message.loginId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationByLoginIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationByLoginIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.loginId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationByLoginIdRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+    };
+  },
+
+  toJSON(message: GetOrganizationByLoginIdRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.loginId !== "") {
+      obj.loginId = message.loginId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationByLoginIdRequest>, I>>(base?: I): GetOrganizationByLoginIdRequest {
+    return GetOrganizationByLoginIdRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationByLoginIdRequest>, I>>(
+    object: I,
+  ): GetOrganizationByLoginIdRequest {
+    const message = createBaseGetOrganizationByLoginIdRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.loginId = object.loginId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetOrganizationsByIdRequest(): GetOrganizationsByIdRequest {
+  return { context: undefined, organizationIds: [] };
+}
+
+export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest> = {
+  encode(message: GetOrganizationsByIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.organizationIds) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationsByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationsByIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationIds.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationsByIdRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationIds: globalThis.Array.isArray(object?.organizationIds)
+        ? object.organizationIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetOrganizationsByIdRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationIds?.length) {
+      obj.organizationIds = message.organizationIds.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationsByIdRequest>, I>>(base?: I): GetOrganizationsByIdRequest {
+    return GetOrganizationsByIdRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationsByIdRequest>, I>>(object: I): GetOrganizationsByIdRequest {
+    const message = createBaseGetOrganizationsByIdRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationIds = object.organizationIds?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

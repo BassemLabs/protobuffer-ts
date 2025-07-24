@@ -23,6 +23,7 @@ export interface Organization {
     openedReregistrationForComingSchoolYear: boolean;
     countryCode?: string | undefined;
     paymentInformation: PaymentInformation | undefined;
+    loginId: string;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;
