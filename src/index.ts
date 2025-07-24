@@ -85,6 +85,10 @@ import * as Organization_profile_settings from './organization_service/organizat
 export { Organization_profile_settings };
 import * as Organization_owner from './organization_service/organization_owner';
 export { Organization_owner };
+import * as Announcement from './organization_service/announcement';
+export { Announcement };
+import * as Announcement_service from './organization_service/announcement_service';
+export { Announcement_service };
 import * as Kms_service from './organization_service/kms_service';
 export { Kms_service };
 import * as Organization_service from './organization_service/organization_service';

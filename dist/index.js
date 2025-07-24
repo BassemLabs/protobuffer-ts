@@ -23,7 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Action_required_by_parents = exports.Email_template = exports.Custom_fields_template = exports.Family = exports.Custom_field_entry = exports.Organization_service = exports.Kms_service = exports.Organization_owner = exports.Organization_profile_settings = exports.Kms_key = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Campus = exports.Campus_service = exports.Bassem_labs_staff_service = exports.Bassem_labs_staff = exports.Organization = exports.Organization_profile_settings_service = exports.Organization_owner_service = exports.Object_id = exports.Request_context = exports.Aws_file = exports.User_type = exports.Semester_service = exports.Report_layout = exports.Homeroom = exports.Gclass = exports.Course_service = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Course = exports.Timestamp = exports.Invoice_to_charge = exports.Sample = exports.Invoice = exports.Transaction = exports.Tuition_application = exports.Payment_service = exports.Tuition_invoice = exports.Processing_fees_service = exports.Processing_fees = exports.Transaction_service = exports.Tuition_service = exports.Tuition = exports.Tuition_application_service = exports.Invoice_service = exports.Tuition_invoice_service = exports.Test = exports.Test_service = void 0;
+exports.Custom_fields_template = exports.Family = exports.Custom_field_entry = exports.Organization_service = exports.Kms_service = exports.Announcement_service = exports.Announcement = exports.Organization_owner = exports.Organization_profile_settings = exports.Kms_key = exports.Onboarding_settings = exports.Onboarding_settings_service = exports.Campus = exports.Campus_service = exports.Bassem_labs_staff_service = exports.Bassem_labs_staff = exports.Organization = exports.Organization_profile_settings_service = exports.Organization_owner_service = exports.Object_id = exports.Request_context = exports.Aws_file = exports.User_type = exports.Semester_service = exports.Report_layout = exports.Homeroom = exports.Gclass = exports.Course_service = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Course = exports.Timestamp = exports.Invoice_to_charge = exports.Sample = exports.Invoice = exports.Transaction = exports.Tuition_application = exports.Payment_service = exports.Tuition_invoice = exports.Processing_fees_service = exports.Processing_fees = exports.Transaction_service = exports.Tuition_service = exports.Tuition = exports.Tuition_application_service = exports.Invoice_service = exports.Tuition_invoice_service = exports.Test = exports.Test_service = void 0;
+exports.Action_required_by_parents = exports.Email_template = void 0;
 // Auto-generated index.ts
 const Test_service = __importStar(require("./template_service/test_service"));
 exports.Test_service = Test_service;
@@ -111,6 +112,10 @@ const Organization_profile_settings = __importStar(require("./organization_servi
 exports.Organization_profile_settings = Organization_profile_settings;
 const Organization_owner = __importStar(require("./organization_service/organization_owner"));
 exports.Organization_owner = Organization_owner;
+const Announcement = __importStar(require("./organization_service/announcement"));
+exports.Announcement = Announcement;
+const Announcement_service = __importStar(require("./organization_service/announcement_service"));
+exports.Announcement_service = Announcement_service;
 const Kms_service = __importStar(require("./organization_service/kms_service"));
 exports.Kms_service = Kms_service;
 const Organization_service = __importStar(require("./organization_service/organization_service"));
