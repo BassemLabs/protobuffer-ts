@@ -215,6 +215,7 @@ function createBaseTransaction() {
         invoice: undefined,
         amount: 0,
         declinedReason: "",
+        processingFeeAmount: 0,
     };
 }
 exports.Transaction = {
@@ -248,6 +249,9 @@ exports.Transaction = {
         }
         if (message.declinedReason !== undefined && message.declinedReason !== "") {
             writer.uint32(82).string(message.declinedReason);
+        }
+        if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
+            writer.uint32(89).double(message.processingFeeAmount);
         }
         return writer;
     },
@@ -318,6 +322,12 @@ exports.Transaction = {
                     }
                     message.declinedReason = reader.string();
                     continue;
+                case 11:
+                    if (tag !== 89) {
+                        break;
+                    }
+                    message.processingFeeAmount = reader.double();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -338,6 +348,7 @@ exports.Transaction = {
             invoice: isSet(object.invoice) ? object_id_1.ObjectId.fromJSON(object.invoice) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             declinedReason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
+            processingFeeAmount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
         };
     },
     toJSON(message) {
@@ -372,6 +383,9 @@ exports.Transaction = {
         if (message.declinedReason !== undefined && message.declinedReason !== "") {
             obj.declinedReason = message.declinedReason;
         }
+        if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
+            obj.processingFeeAmount = message.processingFeeAmount;
+        }
         return obj;
     },
     create(base) {
@@ -393,6 +407,7 @@ exports.Transaction = {
             : undefined;
         message.amount = object.amount ?? 0;
         message.declinedReason = object.declinedReason ?? "";
+        message.processingFeeAmount = object.processingFeeAmount ?? 0;
         return message;
     },
 };

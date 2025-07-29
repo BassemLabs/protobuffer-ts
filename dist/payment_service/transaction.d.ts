@@ -44,6 +44,7 @@ export interface Transaction {
     invoice: ObjectId | undefined;
     amount: number;
     declinedReason?: string | undefined;
+    processingFeeAmount?: number | undefined;
 }
 export interface RefundTransaction {
     id: ObjectId | undefined;

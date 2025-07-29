@@ -214,6 +214,7 @@ export interface Transaction {
   invoice: ObjectId | undefined;
   amount: number;
   declinedReason?: string | undefined;
+  processingFeeAmount?: number | undefined;
 }
 
 export interface RefundTransaction {
@@ -257,6 +258,7 @@ function createBaseTransaction(): Transaction {
     invoice: undefined,
     amount: 0,
     declinedReason: "",
+    processingFeeAmount: 0,
   };
 }
 
@@ -291,6 +293,9 @@ export const Transaction: MessageFns<Transaction> = {
     }
     if (message.declinedReason !== undefined && message.declinedReason !== "") {
       writer.uint32(82).string(message.declinedReason);
+    }
+    if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
+      writer.uint32(89).double(message.processingFeeAmount);
     }
     return writer;
   },
@@ -372,6 +377,13 @@ export const Transaction: MessageFns<Transaction> = {
 
           message.declinedReason = reader.string();
           continue;
+        case 11:
+          if (tag !== 89) {
+            break;
+          }
+
+          message.processingFeeAmount = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -393,6 +405,7 @@ export const Transaction: MessageFns<Transaction> = {
       invoice: isSet(object.invoice) ? ObjectId.fromJSON(object.invoice) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
       declinedReason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
+      processingFeeAmount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
     };
   },
 
@@ -428,6 +441,9 @@ export const Transaction: MessageFns<Transaction> = {
     if (message.declinedReason !== undefined && message.declinedReason !== "") {
       obj.declinedReason = message.declinedReason;
     }
+    if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
+      obj.processingFeeAmount = message.processingFeeAmount;
+    }
     return obj;
   },
 
@@ -450,6 +466,7 @@ export const Transaction: MessageFns<Transaction> = {
       : undefined;
     message.amount = object.amount ?? 0;
     message.declinedReason = object.declinedReason ?? "";
+    message.processingFeeAmount = object.processingFeeAmount ?? 0;
     return message;
   },
 };
