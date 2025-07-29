@@ -781,9 +781,12 @@ function createBaseInvoiceResponse() {
         invoice: undefined,
         transactions: [],
         totalAmount: 0,
-        totalAmountPaid: 0,
+        grossAmountPaid: 0,
         status: InvoiceStatus.Paid,
         billToName: "",
+        refundTransactions: [],
+        totalAmountRefunded: 0,
+        netAmountPaid: 0,
     };
 }
 exports.InvoiceResponse = {
@@ -797,14 +800,23 @@ exports.InvoiceResponse = {
         if (message.totalAmount !== 0) {
             writer.uint32(25).double(message.totalAmount);
         }
-        if (message.totalAmountPaid !== 0) {
-            writer.uint32(33).double(message.totalAmountPaid);
+        if (message.grossAmountPaid !== 0) {
+            writer.uint32(33).double(message.grossAmountPaid);
         }
         if (message.status !== InvoiceStatus.Paid) {
             writer.uint32(40).int32(invoiceStatusToNumber(message.status));
         }
         if (message.billToName !== undefined && message.billToName !== "") {
             writer.uint32(50).string(message.billToName);
+        }
+        for (const v of message.refundTransactions) {
+            transaction_1.RefundTransaction.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.totalAmountRefunded !== 0) {
+            writer.uint32(65).double(message.totalAmountRefunded);
+        }
+        if (message.netAmountPaid !== 0) {
+            writer.uint32(73).double(message.netAmountPaid);
         }
         return writer;
     },
@@ -837,7 +849,7 @@ exports.InvoiceResponse = {
                     if (tag !== 33) {
                         break;
                     }
-                    message.totalAmountPaid = reader.double();
+                    message.grossAmountPaid = reader.double();
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -850,6 +862,24 @@ exports.InvoiceResponse = {
                         break;
                     }
                     message.billToName = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.refundTransactions.push(transaction_1.RefundTransaction.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 65) {
+                        break;
+                    }
+                    message.totalAmountRefunded = reader.double();
+                    continue;
+                case 9:
+                    if (tag !== 73) {
+                        break;
+                    }
+                    message.netAmountPaid = reader.double();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -866,9 +896,14 @@ exports.InvoiceResponse = {
                 ? object.transactions.map((e) => transaction_1.Transaction.fromJSON(e))
                 : [],
             totalAmount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0,
-            totalAmountPaid: isSet(object.totalAmountPaid) ? globalThis.Number(object.totalAmountPaid) : 0,
+            grossAmountPaid: isSet(object.grossAmountPaid) ? globalThis.Number(object.grossAmountPaid) : 0,
             status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
             billToName: isSet(object.billToName) ? globalThis.String(object.billToName) : "",
+            refundTransactions: globalThis.Array.isArray(object?.refundTransactions)
+                ? object.refundTransactions.map((e) => transaction_1.RefundTransaction.fromJSON(e))
+                : [],
+            totalAmountRefunded: isSet(object.totalAmountRefunded) ? globalThis.Number(object.totalAmountRefunded) : 0,
+            netAmountPaid: isSet(object.netAmountPaid) ? globalThis.Number(object.netAmountPaid) : 0,
         };
     },
     toJSON(message) {
@@ -882,14 +917,23 @@ exports.InvoiceResponse = {
         if (message.totalAmount !== 0) {
             obj.totalAmount = message.totalAmount;
         }
-        if (message.totalAmountPaid !== 0) {
-            obj.totalAmountPaid = message.totalAmountPaid;
+        if (message.grossAmountPaid !== 0) {
+            obj.grossAmountPaid = message.grossAmountPaid;
         }
         if (message.status !== InvoiceStatus.Paid) {
             obj.status = invoiceStatusToJSON(message.status);
         }
         if (message.billToName !== undefined && message.billToName !== "") {
             obj.billToName = message.billToName;
+        }
+        if (message.refundTransactions?.length) {
+            obj.refundTransactions = message.refundTransactions.map((e) => transaction_1.RefundTransaction.toJSON(e));
+        }
+        if (message.totalAmountRefunded !== 0) {
+            obj.totalAmountRefunded = message.totalAmountRefunded;
+        }
+        if (message.netAmountPaid !== 0) {
+            obj.netAmountPaid = message.netAmountPaid;
         }
         return obj;
     },
@@ -903,9 +947,12 @@ exports.InvoiceResponse = {
             : undefined;
         message.transactions = object.transactions?.map((e) => transaction_1.Transaction.fromPartial(e)) || [];
         message.totalAmount = object.totalAmount ?? 0;
-        message.totalAmountPaid = object.totalAmountPaid ?? 0;
+        message.grossAmountPaid = object.grossAmountPaid ?? 0;
         message.status = object.status ?? InvoiceStatus.Paid;
         message.billToName = object.billToName ?? "";
+        message.refundTransactions = object.refundTransactions?.map((e) => transaction_1.RefundTransaction.fromPartial(e)) || [];
+        message.totalAmountRefunded = object.totalAmountRefunded ?? 0;
+        message.netAmountPaid = object.netAmountPaid ?? 0;
         return message;
     },
 };

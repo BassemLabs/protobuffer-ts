@@ -34,6 +34,14 @@ export interface CreateManualTransactionRequest {
   amount: number;
 }
 
+export interface IssueRefundRequest {
+  context: RequestContext | undefined;
+  transactionId: ObjectId | undefined;
+  paymentType: PaymentType;
+  amount: number;
+  reason?: string | undefined;
+}
+
 function createBaseGetPaidTransactionRequest(): GetPaidTransactionRequest {
   return { context: undefined, user: undefined, description: "" };
 }
@@ -368,6 +376,129 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
       ? ObjectId.fromPartial(object.invoiceId)
       : undefined;
     message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBaseIssueRefundRequest(): IssueRefundRequest {
+  return { context: undefined, transactionId: undefined, paymentType: PaymentType.Stripe, amount: 0, reason: "" };
+}
+
+export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
+  encode(message: IssueRefundRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.transactionId !== undefined) {
+      ObjectId.encode(message.transactionId, writer.uint32(18).fork()).join();
+    }
+    if (message.paymentType !== PaymentType.Stripe) {
+      writer.uint32(24).int32(paymentTypeToNumber(message.paymentType));
+    }
+    if (message.amount !== 0) {
+      writer.uint32(33).double(message.amount);
+    }
+    if (message.reason !== undefined && message.reason !== "") {
+      writer.uint32(42).string(message.reason);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): IssueRefundRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIssueRefundRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.transactionId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.paymentType = paymentTypeFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 33) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): IssueRefundRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      transactionId: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
+      paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+    };
+  },
+
+  toJSON(message: IssueRefundRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.transactionId !== undefined) {
+      obj.transactionId = ObjectId.toJSON(message.transactionId);
+    }
+    if (message.paymentType !== PaymentType.Stripe) {
+      obj.paymentType = paymentTypeToJSON(message.paymentType);
+    }
+    if (message.amount !== 0) {
+      obj.amount = message.amount;
+    }
+    if (message.reason !== undefined && message.reason !== "") {
+      obj.reason = message.reason;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<IssueRefundRequest>, I>>(base?: I): IssueRefundRequest {
+    return IssueRefundRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<IssueRefundRequest>, I>>(object: I): IssueRefundRequest {
+    const message = createBaseIssueRefundRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
+      ? ObjectId.fromPartial(object.transactionId)
+      : undefined;
+    message.paymentType = object.paymentType ?? PaymentType.Stripe;
+    message.amount = object.amount ?? 0;
+    message.reason = object.reason ?? "";
     return message;
   },
 };

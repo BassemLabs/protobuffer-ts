@@ -1,6 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-import { Transaction } from "./transaction";
+import { RefundTransaction, Transaction } from "./transaction";
 import { DiscountValueType } from "./tuition";
 export declare const protobufPackage = "payment_service";
 export declare enum InvoiceStatus {
@@ -89,10 +89,17 @@ export interface Invoice {
 export interface InvoiceResponse {
     invoice: Invoice | undefined;
     transactions: Transaction[];
+    /** Total amount of the invoice */
     totalAmount: number;
-    totalAmountPaid: number;
+    /** Total amount paid towards the invoice, excludes refunds, processing fees, (includes bassemlabs fees) */
+    grossAmountPaid: number;
     status: InvoiceStatus;
     billToName?: string | undefined;
+    refundTransactions: RefundTransaction[];
+    /** Total amount refunded */
+    totalAmountRefunded: number;
+    /** total_amount_paid - total_amount_refunded */
+    netAmountPaid: number;
 }
 export interface InvoiceFilter {
     perPage?: number | undefined;

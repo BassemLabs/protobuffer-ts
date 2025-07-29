@@ -5,7 +5,7 @@ export declare const protobufPackage = "payment_service_transaction";
 export declare enum TransactionStatus {
     Created = "Created",
     Declined = "Declined",
-    Refunded = "Refunded",
+    RefundedDoNotUseAnymore = "RefundedDoNotUseAnymore",
     Processing = "Processing",
     Paid = "Paid",
     UNRECOGNIZED = "UNRECOGNIZED"
@@ -24,6 +24,15 @@ export declare enum PaymentType {
 export declare function paymentTypeFromJSON(object: any): PaymentType;
 export declare function paymentTypeToJSON(object: PaymentType): string;
 export declare function paymentTypeToNumber(object: PaymentType): number;
+export declare enum RefundTransactionStatus {
+    Pending = "Pending",
+    Succeeded = "Succeeded",
+    Failed = "Failed",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function refundTransactionStatusFromJSON(object: any): RefundTransactionStatus;
+export declare function refundTransactionStatusToJSON(object: RefundTransactionStatus): string;
+export declare function refundTransactionStatusToNumber(object: RefundTransactionStatus): number;
 export interface Transaction {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -36,7 +45,28 @@ export interface Transaction {
     amount: number;
     declinedReason?: string | undefined;
 }
+export interface RefundTransaction {
+    id: ObjectId | undefined;
+    organization: ObjectId | undefined;
+    /** The Transaction this Refund is linked to */
+    transactionId: ObjectId | undefined;
+    /**
+     * Optional: If this is a stripe refund, this will include the stripe refund id
+     *    Note: For a RefundTransaction to be a stripe refund, the main transaction must be a stripe transaction
+     */
+    stripeRefundId?: string | undefined;
+    /** Status of the refund */
+    status: RefundTransactionStatus;
+    /** Payment type of the refund, is it stripe or manual payments? */
+    paymentType: PaymentType;
+    date: Date | undefined;
+    /** Amount of the refund */
+    amount: number;
+    /** Reason for the refund */
+    reason?: string | undefined;
+}
 export declare const Transaction: MessageFns<Transaction>;
+export declare const RefundTransaction: MessageFns<RefundTransaction>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

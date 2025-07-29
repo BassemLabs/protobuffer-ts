@@ -15,7 +15,7 @@ export const protobufPackage = "payment_service_transaction";
 export enum TransactionStatus {
   Created = "Created",
   Declined = "Declined",
-  Refunded = "Refunded",
+  RefundedDoNotUseAnymore = "RefundedDoNotUseAnymore",
   Processing = "Processing",
   Paid = "Paid",
   UNRECOGNIZED = "UNRECOGNIZED",
@@ -30,8 +30,8 @@ export function transactionStatusFromJSON(object: any): TransactionStatus {
     case "Declined":
       return TransactionStatus.Declined;
     case 3:
-    case "Refunded":
-      return TransactionStatus.Refunded;
+    case "RefundedDoNotUseAnymore":
+      return TransactionStatus.RefundedDoNotUseAnymore;
     case 4:
     case "Processing":
       return TransactionStatus.Processing;
@@ -51,8 +51,8 @@ export function transactionStatusToJSON(object: TransactionStatus): string {
       return "Created";
     case TransactionStatus.Declined:
       return "Declined";
-    case TransactionStatus.Refunded:
-      return "Refunded";
+    case TransactionStatus.RefundedDoNotUseAnymore:
+      return "RefundedDoNotUseAnymore";
     case TransactionStatus.Processing:
       return "Processing";
     case TransactionStatus.Paid:
@@ -69,7 +69,7 @@ export function transactionStatusToNumber(object: TransactionStatus): number {
       return 1;
     case TransactionStatus.Declined:
       return 2;
-    case TransactionStatus.Refunded:
+    case TransactionStatus.RefundedDoNotUseAnymore:
       return 3;
     case TransactionStatus.Processing:
       return 4;
@@ -150,6 +150,59 @@ export function paymentTypeToNumber(object: PaymentType): number {
   }
 }
 
+export enum RefundTransactionStatus {
+  Pending = "Pending",
+  Succeeded = "Succeeded",
+  Failed = "Failed",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function refundTransactionStatusFromJSON(object: any): RefundTransactionStatus {
+  switch (object) {
+    case 1:
+    case "Pending":
+      return RefundTransactionStatus.Pending;
+    case 2:
+    case "Succeeded":
+      return RefundTransactionStatus.Succeeded;
+    case 3:
+    case "Failed":
+      return RefundTransactionStatus.Failed;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RefundTransactionStatus.UNRECOGNIZED;
+  }
+}
+
+export function refundTransactionStatusToJSON(object: RefundTransactionStatus): string {
+  switch (object) {
+    case RefundTransactionStatus.Pending:
+      return "Pending";
+    case RefundTransactionStatus.Succeeded:
+      return "Succeeded";
+    case RefundTransactionStatus.Failed:
+      return "Failed";
+    case RefundTransactionStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function refundTransactionStatusToNumber(object: RefundTransactionStatus): number {
+  switch (object) {
+    case RefundTransactionStatus.Pending:
+      return 1;
+    case RefundTransactionStatus.Succeeded:
+      return 2;
+    case RefundTransactionStatus.Failed:
+      return 3;
+    case RefundTransactionStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface Transaction {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -161,6 +214,35 @@ export interface Transaction {
   invoice: ObjectId | undefined;
   amount: number;
   declinedReason?: string | undefined;
+}
+
+export interface RefundTransaction {
+  id: ObjectId | undefined;
+  organization:
+    | ObjectId
+    | undefined;
+  /** The Transaction this Refund is linked to */
+  transactionId:
+    | ObjectId
+    | undefined;
+  /**
+   * Optional: If this is a stripe refund, this will include the stripe refund id
+   *    Note: For a RefundTransaction to be a stripe refund, the main transaction must be a stripe transaction
+   */
+  stripeRefundId?:
+    | string
+    | undefined;
+  /** Status of the refund */
+  status: RefundTransactionStatus;
+  /** Payment type of the refund, is it stripe or manual payments? */
+  paymentType: PaymentType;
+  date:
+    | Date
+    | undefined;
+  /** Amount of the refund */
+  amount: number;
+  /** Reason for the refund */
+  reason?: string | undefined;
 }
 
 function createBaseTransaction(): Transaction {
@@ -368,6 +450,199 @@ export const Transaction: MessageFns<Transaction> = {
       : undefined;
     message.amount = object.amount ?? 0;
     message.declinedReason = object.declinedReason ?? "";
+    return message;
+  },
+};
+
+function createBaseRefundTransaction(): RefundTransaction {
+  return {
+    id: undefined,
+    organization: undefined,
+    transactionId: undefined,
+    stripeRefundId: "",
+    status: RefundTransactionStatus.Pending,
+    paymentType: PaymentType.Stripe,
+    date: undefined,
+    amount: 0,
+    reason: "",
+  };
+}
+
+export const RefundTransaction: MessageFns<RefundTransaction> = {
+  encode(message: RefundTransaction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.transactionId !== undefined) {
+      ObjectId.encode(message.transactionId, writer.uint32(26).fork()).join();
+    }
+    if (message.stripeRefundId !== undefined && message.stripeRefundId !== "") {
+      writer.uint32(34).string(message.stripeRefundId);
+    }
+    if (message.status !== RefundTransactionStatus.Pending) {
+      writer.uint32(40).int32(refundTransactionStatusToNumber(message.status));
+    }
+    if (message.paymentType !== PaymentType.Stripe) {
+      writer.uint32(48).int32(paymentTypeToNumber(message.paymentType));
+    }
+    if (message.date !== undefined) {
+      Timestamp.encode(toTimestamp(message.date), writer.uint32(58).fork()).join();
+    }
+    if (message.amount !== 0) {
+      writer.uint32(65).double(message.amount);
+    }
+    if (message.reason !== undefined && message.reason !== "") {
+      writer.uint32(74).string(message.reason);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RefundTransaction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefundTransaction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.transactionId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.stripeRefundId = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.status = refundTransactionStatusFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.paymentType = paymentTypeFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 65) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RefundTransaction {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      transactionId: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
+      stripeRefundId: isSet(object.stripeRefundId) ? globalThis.String(object.stripeRefundId) : "",
+      status: isSet(object.status) ? refundTransactionStatusFromJSON(object.status) : RefundTransactionStatus.Pending,
+      paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+      amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+    };
+  },
+
+  toJSON(message: RefundTransaction): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.transactionId !== undefined) {
+      obj.transactionId = ObjectId.toJSON(message.transactionId);
+    }
+    if (message.stripeRefundId !== undefined && message.stripeRefundId !== "") {
+      obj.stripeRefundId = message.stripeRefundId;
+    }
+    if (message.status !== RefundTransactionStatus.Pending) {
+      obj.status = refundTransactionStatusToJSON(message.status);
+    }
+    if (message.paymentType !== PaymentType.Stripe) {
+      obj.paymentType = paymentTypeToJSON(message.paymentType);
+    }
+    if (message.date !== undefined) {
+      obj.date = message.date.toISOString();
+    }
+    if (message.amount !== 0) {
+      obj.amount = message.amount;
+    }
+    if (message.reason !== undefined && message.reason !== "") {
+      obj.reason = message.reason;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RefundTransaction>, I>>(base?: I): RefundTransaction {
+    return RefundTransaction.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RefundTransaction>, I>>(object: I): RefundTransaction {
+    const message = createBaseRefundTransaction();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
+      ? ObjectId.fromPartial(object.transactionId)
+      : undefined;
+    message.stripeRefundId = object.stripeRefundId ?? "";
+    message.status = object.status ?? RefundTransactionStatus.Pending;
+    message.paymentType = object.paymentType ?? PaymentType.Stripe;
+    message.date = object.date ?? undefined;
+    message.amount = object.amount ?? 0;
+    message.reason = object.reason ?? "";
     return message;
   },
 };

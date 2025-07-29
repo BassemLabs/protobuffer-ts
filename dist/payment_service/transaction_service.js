@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/transaction_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateManualTransactionRequest = exports.GetTransactionsResponse = exports.GetTransactionsRequest = exports.GetPaidTransactionRequest = exports.protobufPackage = void 0;
+exports.IssueRefundRequest = exports.CreateManualTransactionRequest = exports.GetTransactionsResponse = exports.GetTransactionsRequest = exports.GetPaidTransactionRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -311,6 +311,118 @@ exports.CreateManualTransactionRequest = {
             ? object_id_1.ObjectId.fromPartial(object.invoiceId)
             : undefined;
         message.amount = object.amount ?? 0;
+        return message;
+    },
+};
+function createBaseIssueRefundRequest() {
+    return { context: undefined, transactionId: undefined, paymentType: transaction_1.PaymentType.Stripe, amount: 0, reason: "" };
+}
+exports.IssueRefundRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.transactionId !== undefined) {
+            object_id_1.ObjectId.encode(message.transactionId, writer.uint32(18).fork()).join();
+        }
+        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
+            writer.uint32(24).int32((0, transaction_1.paymentTypeToNumber)(message.paymentType));
+        }
+        if (message.amount !== 0) {
+            writer.uint32(33).double(message.amount);
+        }
+        if (message.reason !== undefined && message.reason !== "") {
+            writer.uint32(42).string(message.reason);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseIssueRefundRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.transactionId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.paymentType = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 33) {
+                        break;
+                    }
+                    message.amount = reader.double();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.reason = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            transactionId: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
+            paymentType: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
+            amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+            reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.transactionId !== undefined) {
+            obj.transactionId = object_id_1.ObjectId.toJSON(message.transactionId);
+        }
+        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.paymentType);
+        }
+        if (message.amount !== 0) {
+            obj.amount = message.amount;
+        }
+        if (message.reason !== undefined && message.reason !== "") {
+            obj.reason = message.reason;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.IssueRefundRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseIssueRefundRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.transactionId)
+            : undefined;
+        message.paymentType = object.paymentType ?? transaction_1.PaymentType.Stripe;
+        message.amount = object.amount ?? 0;
+        message.reason = object.reason ?? "";
         return message;
     },
 };
