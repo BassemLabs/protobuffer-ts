@@ -957,7 +957,15 @@ exports.InvoiceResponse = {
     },
 };
 function createBaseInvoiceFilter() {
-    return { perPage: 0, page: 0, title: "", status: InvoiceStatus.Paid, archived: false };
+    return {
+        perPage: 0,
+        page: 0,
+        title: "",
+        status: InvoiceStatus.Paid,
+        archived: false,
+        user: undefined,
+        family: undefined,
+    };
 }
 exports.InvoiceFilter = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -975,6 +983,12 @@ exports.InvoiceFilter = {
         }
         if (message.archived !== undefined && message.archived !== false) {
             writer.uint32(40).bool(message.archived);
+        }
+        if (message.user !== undefined) {
+            object_id_1.ObjectId.encode(message.user, writer.uint32(50).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -1015,6 +1029,18 @@ exports.InvoiceFilter = {
                     }
                     message.archived = reader.bool();
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.user = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1030,6 +1056,8 @@ exports.InvoiceFilter = {
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+            user: isSet(object.user) ? object_id_1.ObjectId.fromJSON(object.user) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
         };
     },
     toJSON(message) {
@@ -1049,6 +1077,12 @@ exports.InvoiceFilter = {
         if (message.archived !== undefined && message.archived !== false) {
             obj.archived = message.archived;
         }
+        if (message.user !== undefined) {
+            obj.user = object_id_1.ObjectId.toJSON(message.user);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
         return obj;
     },
     create(base) {
@@ -1061,6 +1095,10 @@ exports.InvoiceFilter = {
         message.title = object.title ?? "";
         message.status = object.status ?? InvoiceStatus.Paid;
         message.archived = object.archived ?? false;
+        message.user = (object.user !== undefined && object.user !== null) ? object_id_1.ObjectId.fromPartial(object.user) : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
         return message;
     },
 };

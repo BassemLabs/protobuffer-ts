@@ -327,6 +327,8 @@ export interface InvoiceFilter {
   title?: string | undefined;
   status?: InvoiceStatus | undefined;
   archived?: boolean | undefined;
+  user?: ObjectId | undefined;
+  family?: ObjectId | undefined;
 }
 
 function createBaseInvoiceItem(): InvoiceItem {
@@ -1101,7 +1103,15 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
 };
 
 function createBaseInvoiceFilter(): InvoiceFilter {
-  return { perPage: 0, page: 0, title: "", status: InvoiceStatus.Paid, archived: false };
+  return {
+    perPage: 0,
+    page: 0,
+    title: "",
+    status: InvoiceStatus.Paid,
+    archived: false,
+    user: undefined,
+    family: undefined,
+  };
 }
 
 export const InvoiceFilter: MessageFns<InvoiceFilter> = {
@@ -1120,6 +1130,12 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     }
     if (message.archived !== undefined && message.archived !== false) {
       writer.uint32(40).bool(message.archived);
+    }
+    if (message.user !== undefined) {
+      ObjectId.encode(message.user, writer.uint32(50).fork()).join();
+    }
+    if (message.family !== undefined) {
+      ObjectId.encode(message.family, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -1166,6 +1182,20 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
 
           message.archived = reader.bool();
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.user = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.family = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1182,6 +1212,8 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
+      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
     };
   },
 
@@ -1202,6 +1234,12 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     if (message.archived !== undefined && message.archived !== false) {
       obj.archived = message.archived;
     }
+    if (message.user !== undefined) {
+      obj.user = ObjectId.toJSON(message.user);
+    }
+    if (message.family !== undefined) {
+      obj.family = ObjectId.toJSON(message.family);
+    }
     return obj;
   },
 
@@ -1215,6 +1253,10 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     message.title = object.title ?? "";
     message.status = object.status ?? InvoiceStatus.Paid;
     message.archived = object.archived ?? false;
+    message.user = (object.user !== undefined && object.user !== null) ? ObjectId.fromPartial(object.user) : undefined;
+    message.family = (object.family !== undefined && object.family !== null)
+      ? ObjectId.fromPartial(object.family)
+      : undefined;
     return message;
   },
 };

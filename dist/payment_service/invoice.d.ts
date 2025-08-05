@@ -107,6 +107,8 @@ export interface InvoiceFilter {
     title?: string | undefined;
     status?: InvoiceStatus | undefined;
     archived?: boolean | undefined;
+    user?: ObjectId | undefined;
+    family?: ObjectId | undefined;
 }
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;
