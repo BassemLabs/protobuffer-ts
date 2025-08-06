@@ -5,12 +5,13 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
+const onboarding_steps_1 = require("./onboarding_steps");
 const organization_1 = require("./organization");
 exports.protobufPackage = "organization_service";
 function createBaseGetOrganizationRequest() {
@@ -1837,6 +1838,253 @@ exports.GetOrganizationsByIdRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.organizationIds = object.organizationIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetOrganizationOnboardingStepsStatusRequest() {
+    return { context: undefined, organizationId: undefined };
+}
+exports.GetOrganizationOnboardingStepsStatusRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationOnboardingStepsStatusRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationOnboardingStepsStatusRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationOnboardingStepsStatusRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAllOrganizationsOnboardingStepsStatusRequest() {
+    return { context: undefined };
+}
+exports.GetAllOrganizationsOnboardingStepsStatusRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAllOrganizationsOnboardingStepsStatusRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAllOrganizationsOnboardingStepsStatusRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAllOrganizationsOnboardingStepsStatusRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAllOrganizationsOnboardingStepsStatusResponse() {
+    return { orgsOnboardingStepsStatus: [] };
+}
+exports.GetAllOrganizationsOnboardingStepsStatusResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.orgsOnboardingStepsStatus) {
+            onboarding_steps_1.OnboardingStepsStatus.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAllOrganizationsOnboardingStepsStatusResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.orgsOnboardingStepsStatus.push(onboarding_steps_1.OnboardingStepsStatus.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            orgsOnboardingStepsStatus: globalThis.Array.isArray(object?.orgsOnboardingStepsStatus)
+                ? object.orgsOnboardingStepsStatus.map((e) => onboarding_steps_1.OnboardingStepsStatus.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.orgsOnboardingStepsStatus?.length) {
+            obj.orgsOnboardingStepsStatus = message.orgsOnboardingStepsStatus.map((e) => onboarding_steps_1.OnboardingStepsStatus.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAllOrganizationsOnboardingStepsStatusResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAllOrganizationsOnboardingStepsStatusResponse();
+        message.orgsOnboardingStepsStatus =
+            object.orgsOnboardingStepsStatus?.map((e) => onboarding_steps_1.OnboardingStepsStatus.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseMarkOnboardingStepAsCompletedRequest() {
+    return { context: undefined, stepName: onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE };
+}
+exports.MarkOnboardingStepAsCompletedRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.stepName !== onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE) {
+            writer.uint32(16).int32((0, onboarding_steps_1.onboardingStepNameToNumber)(message.stepName));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseMarkOnboardingStepAsCompletedRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.stepName = (0, onboarding_steps_1.onboardingStepNameFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            stepName: isSet(object.stepName)
+                ? (0, onboarding_steps_1.onboardingStepNameFromJSON)(object.stepName)
+                : onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.stepName !== onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE) {
+            obj.stepName = (0, onboarding_steps_1.onboardingStepNameToJSON)(message.stepName);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.MarkOnboardingStepAsCompletedRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseMarkOnboardingStepAsCompletedRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.stepName = object.stepName ?? onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE;
         return message;
     },
 };

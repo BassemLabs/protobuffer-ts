@@ -54,6 +54,8 @@ import * as Organization_profile_settings_service from './organization_service/o
 export { Organization_profile_settings_service };
 import * as Campus from './organization_service/campus';
 export { Campus };
+import * as Onboarding_steps from './organization_service/onboarding_steps';
+export { Onboarding_steps };
 import * as Organization_owner from './organization_service/organization_owner';
 export { Organization_owner };
 import * as Announcement from './organization_service/announcement';

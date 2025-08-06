@@ -1,6 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
 import { Currency, Organization, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
 /** Request to fetch an organization by its ID */
@@ -121,6 +122,20 @@ export interface GetOrganizationsByIdRequest {
     context: RequestContext | undefined;
     organizationIds: ObjectId[];
 }
+export interface GetOrganizationOnboardingStepsStatusRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+}
+export interface GetAllOrganizationsOnboardingStepsStatusRequest {
+    context: RequestContext | undefined;
+}
+export interface GetAllOrganizationsOnboardingStepsStatusResponse {
+    orgsOnboardingStepsStatus: OnboardingStepsStatus[];
+}
+export interface MarkOnboardingStepAsCompletedRequest {
+    context: RequestContext | undefined;
+    stepName: OnboardingStepName;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -145,6 +160,10 @@ export declare const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest>;
 export declare const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest>;
 export declare const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest>;
 export declare const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest>;
+export declare const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganizationOnboardingStepsStatusRequest>;
+export declare const GetAllOrganizationsOnboardingStepsStatusRequest: MessageFns<GetAllOrganizationsOnboardingStepsStatusRequest>;
+export declare const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<GetAllOrganizationsOnboardingStepsStatusResponse>;
+export declare const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStepAsCompletedRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -9,6 +9,13 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import {
+  OnboardingStepName,
+  onboardingStepNameFromJSON,
+  onboardingStepNameToJSON,
+  onboardingStepNameToNumber,
+  OnboardingStepsStatus,
+} from "./onboarding_steps";
 import { Currency, currencyFromJSON, currencyToJSON, currencyToNumber, Organization, SchoolYear } from "./organization";
 
 export const protobufPackage = "organization_service";
@@ -153,6 +160,24 @@ export interface GetOrganizationByLoginIdRequest {
 export interface GetOrganizationsByIdRequest {
   context: RequestContext | undefined;
   organizationIds: ObjectId[];
+}
+
+export interface GetOrganizationOnboardingStepsStatusRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+}
+
+export interface GetAllOrganizationsOnboardingStepsStatusRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetAllOrganizationsOnboardingStepsStatusResponse {
+  orgsOnboardingStepsStatus: OnboardingStepsStatus[];
+}
+
+export interface MarkOnboardingStepAsCompletedRequest {
+  context: RequestContext | undefined;
+  stepName: OnboardingStepName;
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -2210,6 +2235,312 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.organizationIds = object.organizationIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetOrganizationOnboardingStepsStatusRequest(): GetOrganizationOnboardingStepsStatusRequest {
+  return { context: undefined, organizationId: undefined };
+}
+
+export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganizationOnboardingStepsStatusRequest> = {
+  encode(
+    message: GetOrganizationOnboardingStepsStatusRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationOnboardingStepsStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationOnboardingStepsStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationOnboardingStepsStatusRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: GetOrganizationOnboardingStepsStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationOnboardingStepsStatusRequest>, I>>(
+    base?: I,
+  ): GetOrganizationOnboardingStepsStatusRequest {
+    return GetOrganizationOnboardingStepsStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationOnboardingStepsStatusRequest>, I>>(
+    object: I,
+  ): GetOrganizationOnboardingStepsStatusRequest {
+    const message = createBaseGetOrganizationOnboardingStepsStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAllOrganizationsOnboardingStepsStatusRequest(): GetAllOrganizationsOnboardingStepsStatusRequest {
+  return { context: undefined };
+}
+
+export const GetAllOrganizationsOnboardingStepsStatusRequest: MessageFns<
+  GetAllOrganizationsOnboardingStepsStatusRequest
+> = {
+  encode(
+    message: GetAllOrganizationsOnboardingStepsStatusRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAllOrganizationsOnboardingStepsStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAllOrganizationsOnboardingStepsStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAllOrganizationsOnboardingStepsStatusRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetAllOrganizationsOnboardingStepsStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAllOrganizationsOnboardingStepsStatusRequest>, I>>(
+    base?: I,
+  ): GetAllOrganizationsOnboardingStepsStatusRequest {
+    return GetAllOrganizationsOnboardingStepsStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAllOrganizationsOnboardingStepsStatusRequest>, I>>(
+    object: I,
+  ): GetAllOrganizationsOnboardingStepsStatusRequest {
+    const message = createBaseGetAllOrganizationsOnboardingStepsStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAllOrganizationsOnboardingStepsStatusResponse(): GetAllOrganizationsOnboardingStepsStatusResponse {
+  return { orgsOnboardingStepsStatus: [] };
+}
+
+export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
+  GetAllOrganizationsOnboardingStepsStatusResponse
+> = {
+  encode(
+    message: GetAllOrganizationsOnboardingStepsStatusResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.orgsOnboardingStepsStatus) {
+      OnboardingStepsStatus.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAllOrganizationsOnboardingStepsStatusResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAllOrganizationsOnboardingStepsStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.orgsOnboardingStepsStatus.push(OnboardingStepsStatus.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAllOrganizationsOnboardingStepsStatusResponse {
+    return {
+      orgsOnboardingStepsStatus: globalThis.Array.isArray(object?.orgsOnboardingStepsStatus)
+        ? object.orgsOnboardingStepsStatus.map((e: any) => OnboardingStepsStatus.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetAllOrganizationsOnboardingStepsStatusResponse): unknown {
+    const obj: any = {};
+    if (message.orgsOnboardingStepsStatus?.length) {
+      obj.orgsOnboardingStepsStatus = message.orgsOnboardingStepsStatus.map((e) => OnboardingStepsStatus.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAllOrganizationsOnboardingStepsStatusResponse>, I>>(
+    base?: I,
+  ): GetAllOrganizationsOnboardingStepsStatusResponse {
+    return GetAllOrganizationsOnboardingStepsStatusResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAllOrganizationsOnboardingStepsStatusResponse>, I>>(
+    object: I,
+  ): GetAllOrganizationsOnboardingStepsStatusResponse {
+    const message = createBaseGetAllOrganizationsOnboardingStepsStatusResponse();
+    message.orgsOnboardingStepsStatus =
+      object.orgsOnboardingStepsStatus?.map((e) => OnboardingStepsStatus.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseMarkOnboardingStepAsCompletedRequest(): MarkOnboardingStepAsCompletedRequest {
+  return { context: undefined, stepName: OnboardingStepName.ORG_OWNER_PROFILE };
+}
+
+export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStepAsCompletedRequest> = {
+  encode(message: MarkOnboardingStepAsCompletedRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.stepName !== OnboardingStepName.ORG_OWNER_PROFILE) {
+      writer.uint32(16).int32(onboardingStepNameToNumber(message.stepName));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): MarkOnboardingStepAsCompletedRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMarkOnboardingStepAsCompletedRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.stepName = onboardingStepNameFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MarkOnboardingStepAsCompletedRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      stepName: isSet(object.stepName)
+        ? onboardingStepNameFromJSON(object.stepName)
+        : OnboardingStepName.ORG_OWNER_PROFILE,
+    };
+  },
+
+  toJSON(message: MarkOnboardingStepAsCompletedRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.stepName !== OnboardingStepName.ORG_OWNER_PROFILE) {
+      obj.stepName = onboardingStepNameToJSON(message.stepName);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MarkOnboardingStepAsCompletedRequest>, I>>(
+    base?: I,
+  ): MarkOnboardingStepAsCompletedRequest {
+    return MarkOnboardingStepAsCompletedRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MarkOnboardingStepAsCompletedRequest>, I>>(
+    object: I,
+  ): MarkOnboardingStepAsCompletedRequest {
+    const message = createBaseMarkOnboardingStepAsCompletedRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.stepName = object.stepName ?? OnboardingStepName.ORG_OWNER_PROFILE;
     return message;
   },
 };
