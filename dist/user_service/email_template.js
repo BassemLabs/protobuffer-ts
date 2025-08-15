@@ -25,6 +25,13 @@ var EmailTemplateKey;
     EmailTemplateKey["MOVE_STUDENT_ADMISSION_YEAR_EMAIL"] = "MOVE_STUDENT_ADMISSION_YEAR_EMAIL";
     EmailTemplateKey["REREGISTRATION_INVITATION_EMAIL"] = "REREGISTRATION_INVITATION_EMAIL";
     EmailTemplateKey["NEW_TEACHER_INVITATION_EMAIL"] = "NEW_TEACHER_INVITATION_EMAIL";
+    /** ATTENDANCE_SIGN_OUT_EMAIL - Attendance notification templates */
+    EmailTemplateKey["ATTENDANCE_SIGN_OUT_EMAIL"] = "ATTENDANCE_SIGN_OUT_EMAIL";
+    EmailTemplateKey["ATTENDANCE_STATUS_EMAIL"] = "ATTENDANCE_STATUS_EMAIL";
+    EmailTemplateKey["ATTENDANCE_LATE_DISMISSAL_EMAIL"] = "ATTENDANCE_LATE_DISMISSAL_EMAIL";
+    /** REPORT_CARD_CHANGES_REQUESTED_EMAIL - Report card templates */
+    EmailTemplateKey["REPORT_CARD_CHANGES_REQUESTED_EMAIL"] = "REPORT_CARD_CHANGES_REQUESTED_EMAIL";
+    EmailTemplateKey["REPORT_CARD_PUBLISHED_EMAIL"] = "REPORT_CARD_PUBLISHED_EMAIL";
     EmailTemplateKey["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(EmailTemplateKey || (exports.EmailTemplateKey = EmailTemplateKey = {}));
 function emailTemplateKeyFromJSON(object) {
@@ -56,6 +63,21 @@ function emailTemplateKeyFromJSON(object) {
         case 8:
         case "NEW_TEACHER_INVITATION_EMAIL":
             return EmailTemplateKey.NEW_TEACHER_INVITATION_EMAIL;
+        case 9:
+        case "ATTENDANCE_SIGN_OUT_EMAIL":
+            return EmailTemplateKey.ATTENDANCE_SIGN_OUT_EMAIL;
+        case 10:
+        case "ATTENDANCE_STATUS_EMAIL":
+            return EmailTemplateKey.ATTENDANCE_STATUS_EMAIL;
+        case 11:
+        case "ATTENDANCE_LATE_DISMISSAL_EMAIL":
+            return EmailTemplateKey.ATTENDANCE_LATE_DISMISSAL_EMAIL;
+        case 12:
+        case "REPORT_CARD_CHANGES_REQUESTED_EMAIL":
+            return EmailTemplateKey.REPORT_CARD_CHANGES_REQUESTED_EMAIL;
+        case 13:
+        case "REPORT_CARD_PUBLISHED_EMAIL":
+            return EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -82,6 +104,16 @@ function emailTemplateKeyToJSON(object) {
             return "REREGISTRATION_INVITATION_EMAIL";
         case EmailTemplateKey.NEW_TEACHER_INVITATION_EMAIL:
             return "NEW_TEACHER_INVITATION_EMAIL";
+        case EmailTemplateKey.ATTENDANCE_SIGN_OUT_EMAIL:
+            return "ATTENDANCE_SIGN_OUT_EMAIL";
+        case EmailTemplateKey.ATTENDANCE_STATUS_EMAIL:
+            return "ATTENDANCE_STATUS_EMAIL";
+        case EmailTemplateKey.ATTENDANCE_LATE_DISMISSAL_EMAIL:
+            return "ATTENDANCE_LATE_DISMISSAL_EMAIL";
+        case EmailTemplateKey.REPORT_CARD_CHANGES_REQUESTED_EMAIL:
+            return "REPORT_CARD_CHANGES_REQUESTED_EMAIL";
+        case EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL:
+            return "REPORT_CARD_PUBLISHED_EMAIL";
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -107,6 +139,16 @@ function emailTemplateKeyToNumber(object) {
             return 7;
         case EmailTemplateKey.NEW_TEACHER_INVITATION_EMAIL:
             return 8;
+        case EmailTemplateKey.ATTENDANCE_SIGN_OUT_EMAIL:
+            return 9;
+        case EmailTemplateKey.ATTENDANCE_STATUS_EMAIL:
+            return 10;
+        case EmailTemplateKey.ATTENDANCE_LATE_DISMISSAL_EMAIL:
+            return 11;
+        case EmailTemplateKey.REPORT_CARD_CHANGES_REQUESTED_EMAIL:
+            return 12;
+        case EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL:
+            return 13;
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return -1;
