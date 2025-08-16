@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, InvoiceStatus } from "./invoice";
+import { AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, StudentStatus } from "./invoice";
 export declare const protobufPackage = "payment_service";
 /** Invoice messages */
 export interface Invoices {
@@ -44,17 +44,6 @@ export interface StudentHasNoUnpaidInvoicesRequest {
 }
 export interface StudentHasNoUnpaidInvoicesResponse {
     hasNoUnpaidInvoices: boolean;
-}
-export interface UsersInvoicesFilter {
-    status: InvoiceStatus;
-    schoolYear?: ObjectId | undefined;
-}
-export interface GetUsersInvoicesRequest {
-    context: RequestContext | undefined;
-    filter: UsersInvoicesFilter | undefined;
-}
-export interface GetUsersInvoicesResponse {
-    invoices: InvoiceResponse[];
 }
 export interface ListInvoicesRequest {
     context: RequestContext | undefined;
@@ -165,6 +154,21 @@ export interface GetFamilyTuitionInvoicesRequest {
     familyId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
 }
+export interface GetStudentsWithUnpaidInvoicesRequest {
+    context: RequestContext | undefined;
+    studentStatuses: StudentStatus[];
+    schoolYear: ObjectId | undefined;
+}
+export interface GetStudentsWithUnpaidInvoicesResponse {
+    studentIds: ObjectId[];
+}
+export interface GetStudentsWithReregistrationInvoicesRequest {
+    context: RequestContext | undefined;
+    schoolYear: ObjectId | undefined;
+}
+export interface GetStudentsWithReregistrationInvoicesResponse {
+    studentIds: ObjectId[];
+}
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
 export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
@@ -176,9 +180,6 @@ export declare const GetActionsRequiredByParentsRequest: MessageFns<GetActionsRe
 export declare const GetActionsRequiredByParentsResponse: MessageFns<GetActionsRequiredByParentsResponse>;
 export declare const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInvoicesRequest>;
 export declare const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidInvoicesResponse>;
-export declare const UsersInvoicesFilter: MessageFns<UsersInvoicesFilter>;
-export declare const GetUsersInvoicesRequest: MessageFns<GetUsersInvoicesRequest>;
-export declare const GetUsersInvoicesResponse: MessageFns<GetUsersInvoicesResponse>;
 export declare const ListInvoicesRequest: MessageFns<ListInvoicesRequest>;
 export declare const AggregationResponse: MessageFns<AggregationResponse>;
 export declare const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResponse>;
@@ -198,6 +199,10 @@ export declare const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest
 export declare const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoicesReadyToChargeRequest>;
 export declare const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusRequest>;
 export declare const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoicesRequest>;
+export declare const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnpaidInvoicesRequest>;
+export declare const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUnpaidInvoicesResponse>;
+export declare const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudentsWithReregistrationInvoicesRequest>;
+export declare const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStudentsWithReregistrationInvoicesResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

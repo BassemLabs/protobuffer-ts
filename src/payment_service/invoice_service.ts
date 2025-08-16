@@ -20,10 +20,10 @@ import {
   InvoiceFilter,
   InvoiceItem,
   InvoiceResponse,
-  InvoiceStatus,
-  invoiceStatusFromJSON,
-  invoiceStatusToJSON,
-  invoiceStatusToNumber,
+  StudentStatus,
+  studentStatusFromJSON,
+  studentStatusToJSON,
+  studentStatusToNumber,
 } from "./invoice";
 
 export const protobufPackage = "payment_service";
@@ -78,20 +78,6 @@ export interface StudentHasNoUnpaidInvoicesRequest {
 
 export interface StudentHasNoUnpaidInvoicesResponse {
   hasNoUnpaidInvoices: boolean;
-}
-
-export interface UsersInvoicesFilter {
-  status: InvoiceStatus;
-  schoolYear?: ObjectId | undefined;
-}
-
-export interface GetUsersInvoicesRequest {
-  context: RequestContext | undefined;
-  filter: UsersInvoicesFilter | undefined;
-}
-
-export interface GetUsersInvoicesResponse {
-  invoices: InvoiceResponse[];
 }
 
 export interface ListInvoicesRequest {
@@ -220,6 +206,25 @@ export interface GetFamilyTuitionInvoicesRequest {
   context: RequestContext | undefined;
   familyId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
+}
+
+export interface GetStudentsWithUnpaidInvoicesRequest {
+  context: RequestContext | undefined;
+  studentStatuses: StudentStatus[];
+  schoolYear: ObjectId | undefined;
+}
+
+export interface GetStudentsWithUnpaidInvoicesResponse {
+  studentIds: ObjectId[];
+}
+
+export interface GetStudentsWithReregistrationInvoicesRequest {
+  context: RequestContext | undefined;
+  schoolYear: ObjectId | undefined;
+}
+
+export interface GetStudentsWithReregistrationInvoicesResponse {
+  studentIds: ObjectId[];
 }
 
 function createBaseInvoices(): Invoices {
@@ -1018,221 +1023,6 @@ export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidIn
   ): StudentHasNoUnpaidInvoicesResponse {
     const message = createBaseStudentHasNoUnpaidInvoicesResponse();
     message.hasNoUnpaidInvoices = object.hasNoUnpaidInvoices ?? false;
-    return message;
-  },
-};
-
-function createBaseUsersInvoicesFilter(): UsersInvoicesFilter {
-  return { status: InvoiceStatus.Paid, schoolYear: undefined };
-}
-
-export const UsersInvoicesFilter: MessageFns<UsersInvoicesFilter> = {
-  encode(message: UsersInvoicesFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.status !== InvoiceStatus.Paid) {
-      writer.uint32(8).int32(invoiceStatusToNumber(message.status));
-    }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): UsersInvoicesFilter {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUsersInvoicesFilter();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.status = invoiceStatusFromJSON(reader.int32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): UsersInvoicesFilter {
-    return {
-      status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-    };
-  },
-
-  toJSON(message: UsersInvoicesFilter): unknown {
-    const obj: any = {};
-    if (message.status !== InvoiceStatus.Paid) {
-      obj.status = invoiceStatusToJSON(message.status);
-    }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<UsersInvoicesFilter>, I>>(base?: I): UsersInvoicesFilter {
-    return UsersInvoicesFilter.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<UsersInvoicesFilter>, I>>(object: I): UsersInvoicesFilter {
-    const message = createBaseUsersInvoicesFilter();
-    message.status = object.status ?? InvoiceStatus.Paid;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseGetUsersInvoicesRequest(): GetUsersInvoicesRequest {
-  return { context: undefined, filter: undefined };
-}
-
-export const GetUsersInvoicesRequest: MessageFns<GetUsersInvoicesRequest> = {
-  encode(message: GetUsersInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.filter !== undefined) {
-      UsersInvoicesFilter.encode(message.filter, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetUsersInvoicesRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetUsersInvoicesRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.filter = UsersInvoicesFilter.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetUsersInvoicesRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      filter: isSet(object.filter) ? UsersInvoicesFilter.fromJSON(object.filter) : undefined,
-    };
-  },
-
-  toJSON(message: GetUsersInvoicesRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.filter !== undefined) {
-      obj.filter = UsersInvoicesFilter.toJSON(message.filter);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetUsersInvoicesRequest>, I>>(base?: I): GetUsersInvoicesRequest {
-    return GetUsersInvoicesRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetUsersInvoicesRequest>, I>>(object: I): GetUsersInvoicesRequest {
-    const message = createBaseGetUsersInvoicesRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.filter = (object.filter !== undefined && object.filter !== null)
-      ? UsersInvoicesFilter.fromPartial(object.filter)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseGetUsersInvoicesResponse(): GetUsersInvoicesResponse {
-  return { invoices: [] };
-}
-
-export const GetUsersInvoicesResponse: MessageFns<GetUsersInvoicesResponse> = {
-  encode(message: GetUsersInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.invoices) {
-      InvoiceResponse.encode(v!, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetUsersInvoicesResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetUsersInvoicesResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.invoices.push(InvoiceResponse.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetUsersInvoicesResponse {
-    return {
-      invoices: globalThis.Array.isArray(object?.invoices)
-        ? object.invoices.map((e: any) => InvoiceResponse.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetUsersInvoicesResponse): unknown {
-    const obj: any = {};
-    if (message.invoices?.length) {
-      obj.invoices = message.invoices.map((e) => InvoiceResponse.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetUsersInvoicesResponse>, I>>(base?: I): GetUsersInvoicesResponse {
-    return GetUsersInvoicesResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetUsersInvoicesResponse>, I>>(object: I): GetUsersInvoicesResponse {
-    const message = createBaseGetUsersInvoicesResponse();
-    message.invoices = object.invoices?.map((e) => InvoiceResponse.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3272,6 +3062,336 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
     return message;
   },
 };
+
+function createBaseGetStudentsWithUnpaidInvoicesRequest(): GetStudentsWithUnpaidInvoicesRequest {
+  return { context: undefined, studentStatuses: [], schoolYear: undefined };
+}
+
+export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnpaidInvoicesRequest> = {
+  encode(message: GetStudentsWithUnpaidInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    writer.uint32(18).fork();
+    for (const v of message.studentStatuses) {
+      writer.int32(studentStatusToNumber(v));
+    }
+    writer.join();
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentsWithUnpaidInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentsWithUnpaidInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.studentStatuses.push(studentStatusFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.studentStatuses.push(studentStatusFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentsWithUnpaidInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      studentStatuses: globalThis.Array.isArray(object?.studentStatuses)
+        ? object.studentStatuses.map((e: any) => studentStatusFromJSON(e))
+        : [],
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentsWithUnpaidInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.studentStatuses?.length) {
+      obj.studentStatuses = message.studentStatuses.map((e) => studentStatusToJSON(e));
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentsWithUnpaidInvoicesRequest>, I>>(
+    base?: I,
+  ): GetStudentsWithUnpaidInvoicesRequest {
+    return GetStudentsWithUnpaidInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentsWithUnpaidInvoicesRequest>, I>>(
+    object: I,
+  ): GetStudentsWithUnpaidInvoicesRequest {
+    const message = createBaseGetStudentsWithUnpaidInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.studentStatuses = object.studentStatuses?.map((e) => e) || [];
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentsWithUnpaidInvoicesResponse(): GetStudentsWithUnpaidInvoicesResponse {
+  return { studentIds: [] };
+}
+
+export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUnpaidInvoicesResponse> = {
+  encode(message: GetStudentsWithUnpaidInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.studentIds) {
+      ObjectId.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentsWithUnpaidInvoicesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentsWithUnpaidInvoicesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentsWithUnpaidInvoicesResponse {
+    return {
+      studentIds: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetStudentsWithUnpaidInvoicesResponse): unknown {
+    const obj: any = {};
+    if (message.studentIds?.length) {
+      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentsWithUnpaidInvoicesResponse>, I>>(
+    base?: I,
+  ): GetStudentsWithUnpaidInvoicesResponse {
+    return GetStudentsWithUnpaidInvoicesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentsWithUnpaidInvoicesResponse>, I>>(
+    object: I,
+  ): GetStudentsWithUnpaidInvoicesResponse {
+    const message = createBaseGetStudentsWithUnpaidInvoicesResponse();
+    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetStudentsWithReregistrationInvoicesRequest(): GetStudentsWithReregistrationInvoicesRequest {
+  return { context: undefined, schoolYear: undefined };
+}
+
+export const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudentsWithReregistrationInvoicesRequest> = {
+  encode(
+    message: GetStudentsWithReregistrationInvoicesRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentsWithReregistrationInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentsWithReregistrationInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentsWithReregistrationInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentsWithReregistrationInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentsWithReregistrationInvoicesRequest>, I>>(
+    base?: I,
+  ): GetStudentsWithReregistrationInvoicesRequest {
+    return GetStudentsWithReregistrationInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentsWithReregistrationInvoicesRequest>, I>>(
+    object: I,
+  ): GetStudentsWithReregistrationInvoicesRequest {
+    const message = createBaseGetStudentsWithReregistrationInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentsWithReregistrationInvoicesResponse(): GetStudentsWithReregistrationInvoicesResponse {
+  return { studentIds: [] };
+}
+
+export const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStudentsWithReregistrationInvoicesResponse> =
+  {
+    encode(
+      message: GetStudentsWithReregistrationInvoicesResponse,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      for (const v of message.studentIds) {
+        ObjectId.encode(v!, writer.uint32(10).fork()).join();
+      }
+      return writer;
+    },
+
+    decode(input: BinaryReader | Uint8Array, length?: number): GetStudentsWithReregistrationInvoicesResponse {
+      const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+      let end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseGetStudentsWithReregistrationInvoicesResponse();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            if (tag !== 10) {
+              break;
+            }
+
+            message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+            continue;
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): GetStudentsWithReregistrationInvoicesResponse {
+      return {
+        studentIds: globalThis.Array.isArray(object?.studentIds)
+          ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+          : [],
+      };
+    },
+
+    toJSON(message: GetStudentsWithReregistrationInvoicesResponse): unknown {
+      const obj: any = {};
+      if (message.studentIds?.length) {
+        obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<GetStudentsWithReregistrationInvoicesResponse>, I>>(
+      base?: I,
+    ): GetStudentsWithReregistrationInvoicesResponse {
+      return GetStudentsWithReregistrationInvoicesResponse.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<I extends Exact<DeepPartial<GetStudentsWithReregistrationInvoicesResponse>, I>>(
+      object: I,
+    ): GetStudentsWithReregistrationInvoicesResponse {
+      const message = createBaseGetStudentsWithReregistrationInvoicesResponse();
+      message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+      return message;
+    },
+  };
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
