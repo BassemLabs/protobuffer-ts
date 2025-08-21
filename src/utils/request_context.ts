@@ -14,6 +14,7 @@ export const protobufPackage = "utils";
 export enum ServiceContext {
   AutoPaymentScheduling = "AutoPaymentScheduling",
   AutoPaymentConsumer = "AutoPaymentConsumer",
+  OrganizationInvoices = "OrganizationInvoices",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -25,6 +26,9 @@ export function serviceContextFromJSON(object: any): ServiceContext {
     case 2:
     case "AutoPaymentConsumer":
       return ServiceContext.AutoPaymentConsumer;
+    case 3:
+    case "OrganizationInvoices":
+      return ServiceContext.OrganizationInvoices;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -38,6 +42,8 @@ export function serviceContextToJSON(object: ServiceContext): string {
       return "AutoPaymentScheduling";
     case ServiceContext.AutoPaymentConsumer:
       return "AutoPaymentConsumer";
+    case ServiceContext.OrganizationInvoices:
+      return "OrganizationInvoices";
     case ServiceContext.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -50,6 +56,8 @@ export function serviceContextToNumber(object: ServiceContext): number {
       return 1;
     case ServiceContext.AutoPaymentConsumer:
       return 2;
+    case ServiceContext.OrganizationInvoices:
+      return 3;
     case ServiceContext.UNRECOGNIZED:
     default:
       return -1;

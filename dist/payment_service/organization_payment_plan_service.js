@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/organization_payment_plan_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOrgsPaymentPlanInfoResponse = exports.GetOrgsPaymentPlanInfoRequest = exports.GetOrganizationActiveOrgPaymentPlanInfoRequest = exports.AssignPaymentPlanToOrganizationRequest = exports.MakePaymentPlanAccessibleForOrganizationRequest = exports.GetAllPaymentPlanAccessResponse = exports.GetAllPaymentPlanAccessRequest = exports.GetOrganizationVisiblePlansRequest = exports.CreatePaymentPlanRequest = exports.GetPaymentPlansResponse = exports.GetAllPaymentPlansRequest = exports.protobufPackage = void 0;
+exports.GetOrgActivePaymentPlanWithInfoRequest = exports.GetOrgsPaymentPlanInfoResponse = exports.GetOrgsPaymentPlanInfoRequest = exports.GetOrganizationActiveOrgPaymentPlanInfoRequest = exports.AssignPaymentPlanToOrganizationRequest = exports.MakePaymentPlanAccessibleForOrganizationRequest = exports.GetAllPaymentPlanAccessResponse = exports.GetAllPaymentPlanAccessRequest = exports.GetOrganizationVisiblePlansRequest = exports.CreatePaymentPlanRequest = exports.GetPaymentPlansResponse = exports.GetAllPaymentPlansRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_1 = require("../organization_service/organization");
@@ -786,6 +786,76 @@ exports.GetOrgsPaymentPlanInfoResponse = {
         const message = createBaseGetOrgsPaymentPlanInfoResponse();
         message.orgPaymentPlanInfo =
             object.orgPaymentPlanInfo?.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetOrgActivePaymentPlanWithInfoRequest() {
+    return { context: undefined, organizationId: undefined };
+}
+exports.GetOrgActivePaymentPlanWithInfoRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrgActivePaymentPlanWithInfoRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrgActivePaymentPlanWithInfoRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrgActivePaymentPlanWithInfoRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
         return message;
     },
 };

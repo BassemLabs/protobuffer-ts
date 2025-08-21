@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/organization_payment_plan.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrganizationPaymentPlanInformation = exports.OrganizationPlanAccess = exports.OrganizationPaymentPlan = exports.PaymentInterval = exports.protobufPackage = void 0;
+exports.OrganizationPaymentPlanWithInfo = exports.OrganizationPaymentPlanInformation = exports.OrganizationPlanAccess = exports.OrganizationPaymentPlan = exports.PaymentInterval = exports.protobufPackage = void 0;
 exports.paymentIntervalFromJSON = paymentIntervalFromJSON;
 exports.paymentIntervalToJSON = paymentIntervalToJSON;
 exports.paymentIntervalToNumber = paymentIntervalToNumber;
@@ -468,6 +468,78 @@ exports.OrganizationPaymentPlanInformation = {
         message.deferPerStudentCostToParent = object.deferPerStudentCostToParent ?? false;
         message.startDate = object.startDate ?? undefined;
         message.endDate = object.endDate ?? undefined;
+        return message;
+    },
+};
+function createBaseOrganizationPaymentPlanWithInfo() {
+    return { paymentPlan: undefined, paymentPlanInfo: undefined };
+}
+exports.OrganizationPaymentPlanWithInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.paymentPlan !== undefined) {
+            exports.OrganizationPaymentPlan.encode(message.paymentPlan, writer.uint32(10).fork()).join();
+        }
+        if (message.paymentPlanInfo !== undefined) {
+            exports.OrganizationPaymentPlanInformation.encode(message.paymentPlanInfo, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOrganizationPaymentPlanWithInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.paymentPlan = exports.OrganizationPaymentPlan.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.paymentPlanInfo = exports.OrganizationPaymentPlanInformation.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            paymentPlan: isSet(object.paymentPlan) ? exports.OrganizationPaymentPlan.fromJSON(object.paymentPlan) : undefined,
+            paymentPlanInfo: isSet(object.paymentPlanInfo)
+                ? exports.OrganizationPaymentPlanInformation.fromJSON(object.paymentPlanInfo)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.paymentPlan !== undefined) {
+            obj.paymentPlan = exports.OrganizationPaymentPlan.toJSON(message.paymentPlan);
+        }
+        if (message.paymentPlanInfo !== undefined) {
+            obj.paymentPlanInfo = exports.OrganizationPaymentPlanInformation.toJSON(message.paymentPlanInfo);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OrganizationPaymentPlanWithInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOrganizationPaymentPlanWithInfo();
+        message.paymentPlan = (object.paymentPlan !== undefined && object.paymentPlan !== null)
+            ? exports.OrganizationPaymentPlan.fromPartial(object.paymentPlan)
+            : undefined;
+        message.paymentPlanInfo = (object.paymentPlanInfo !== undefined && object.paymentPlanInfo !== null)
+            ? exports.OrganizationPaymentPlanInformation.fromPartial(object.paymentPlanInfo)
+            : undefined;
         return message;
     },
 };

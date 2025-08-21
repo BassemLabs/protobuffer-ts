@@ -5,6 +5,7 @@ export declare const protobufPackage = "utils";
 export declare enum ServiceContext {
     AutoPaymentScheduling = "AutoPaymentScheduling",
     AutoPaymentConsumer = "AutoPaymentConsumer",
+    OrganizationInvoices = "OrganizationInvoices",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function serviceContextFromJSON(object: any): ServiceContext;

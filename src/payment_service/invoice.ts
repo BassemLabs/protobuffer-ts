@@ -271,6 +271,14 @@ export interface Coupon {
   value: number;
 }
 
+export interface OrganizationInvoiceDetails {
+  periodStartDate: Date | undefined;
+  periodEndDate: Date | undefined;
+  numberOfStudents: number;
+  paymentPlanId: ObjectId | undefined;
+  paymentPlanInfoId: ObjectId | undefined;
+}
+
 export interface Invoice {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -303,6 +311,8 @@ export interface Invoice {
     | undefined;
   /** determine if this invoice is a tuition invoice */
   isTuition: boolean;
+  /** Organization-specific invoice details */
+  organizationInvoiceDetails?: OrganizationInvoiceDetails | undefined;
 }
 
 export interface InvoiceResponse {
@@ -539,6 +549,135 @@ export const Coupon: MessageFns<Coupon> = {
   },
 };
 
+function createBaseOrganizationInvoiceDetails(): OrganizationInvoiceDetails {
+  return {
+    periodStartDate: undefined,
+    periodEndDate: undefined,
+    numberOfStudents: 0,
+    paymentPlanId: undefined,
+    paymentPlanInfoId: undefined,
+  };
+}
+
+export const OrganizationInvoiceDetails: MessageFns<OrganizationInvoiceDetails> = {
+  encode(message: OrganizationInvoiceDetails, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.periodStartDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.periodStartDate), writer.uint32(10).fork()).join();
+    }
+    if (message.periodEndDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.periodEndDate), writer.uint32(18).fork()).join();
+    }
+    if (message.numberOfStudents !== 0) {
+      writer.uint32(24).uint32(message.numberOfStudents);
+    }
+    if (message.paymentPlanId !== undefined) {
+      ObjectId.encode(message.paymentPlanId, writer.uint32(34).fork()).join();
+    }
+    if (message.paymentPlanInfoId !== undefined) {
+      ObjectId.encode(message.paymentPlanInfoId, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): OrganizationInvoiceDetails {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrganizationInvoiceDetails();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.periodStartDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.periodEndDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.numberOfStudents = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.paymentPlanId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.paymentPlanInfoId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OrganizationInvoiceDetails {
+    return {
+      periodStartDate: isSet(object.periodStartDate) ? fromJsonTimestamp(object.periodStartDate) : undefined,
+      periodEndDate: isSet(object.periodEndDate) ? fromJsonTimestamp(object.periodEndDate) : undefined,
+      numberOfStudents: isSet(object.numberOfStudents) ? globalThis.Number(object.numberOfStudents) : 0,
+      paymentPlanId: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
+      paymentPlanInfoId: isSet(object.paymentPlanInfoId) ? ObjectId.fromJSON(object.paymentPlanInfoId) : undefined,
+    };
+  },
+
+  toJSON(message: OrganizationInvoiceDetails): unknown {
+    const obj: any = {};
+    if (message.periodStartDate !== undefined) {
+      obj.periodStartDate = message.periodStartDate.toISOString();
+    }
+    if (message.periodEndDate !== undefined) {
+      obj.periodEndDate = message.periodEndDate.toISOString();
+    }
+    if (message.numberOfStudents !== 0) {
+      obj.numberOfStudents = Math.round(message.numberOfStudents);
+    }
+    if (message.paymentPlanId !== undefined) {
+      obj.paymentPlanId = ObjectId.toJSON(message.paymentPlanId);
+    }
+    if (message.paymentPlanInfoId !== undefined) {
+      obj.paymentPlanInfoId = ObjectId.toJSON(message.paymentPlanInfoId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<OrganizationInvoiceDetails>, I>>(base?: I): OrganizationInvoiceDetails {
+    return OrganizationInvoiceDetails.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<OrganizationInvoiceDetails>, I>>(object: I): OrganizationInvoiceDetails {
+    const message = createBaseOrganizationInvoiceDetails();
+    message.periodStartDate = object.periodStartDate ?? undefined;
+    message.periodEndDate = object.periodEndDate ?? undefined;
+    message.numberOfStudents = object.numberOfStudents ?? 0;
+    message.paymentPlanId = (object.paymentPlanId !== undefined && object.paymentPlanId !== null)
+      ? ObjectId.fromPartial(object.paymentPlanId)
+      : undefined;
+    message.paymentPlanInfoId = (object.paymentPlanInfoId !== undefined && object.paymentPlanInfoId !== null)
+      ? ObjectId.fromPartial(object.paymentPlanInfoId)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseInvoice(): Invoice {
   return {
     id: undefined,
@@ -560,6 +699,7 @@ function createBaseInvoice(): Invoice {
     chargeOnDate: undefined,
     autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
     isTuition: false,
+    organizationInvoiceDetails: undefined,
   };
 }
 
@@ -624,6 +764,9 @@ export const Invoice: MessageFns<Invoice> = {
     }
     if (message.isTuition !== false) {
       writer.uint32(152).bool(message.isTuition);
+    }
+    if (message.organizationInvoiceDetails !== undefined) {
+      OrganizationInvoiceDetails.encode(message.organizationInvoiceDetails, writer.uint32(162).fork()).join();
     }
     return writer;
   },
@@ -768,6 +911,13 @@ export const Invoice: MessageFns<Invoice> = {
 
           message.isTuition = reader.bool();
           continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.organizationInvoiceDetails = OrganizationInvoiceDetails.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -802,6 +952,9 @@ export const Invoice: MessageFns<Invoice> = {
         ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
         : AutoPaymentStatus.AutoPayPending,
       isTuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
+      organizationInvoiceDetails: isSet(object.organizationInvoiceDetails)
+        ? OrganizationInvoiceDetails.fromJSON(object.organizationInvoiceDetails)
+        : undefined,
     };
   },
 
@@ -869,6 +1022,9 @@ export const Invoice: MessageFns<Invoice> = {
     if (message.isTuition !== false) {
       obj.isTuition = message.isTuition;
     }
+    if (message.organizationInvoiceDetails !== undefined) {
+      obj.organizationInvoiceDetails = OrganizationInvoiceDetails.toJSON(message.organizationInvoiceDetails);
+    }
     return obj;
   },
 
@@ -903,6 +1059,10 @@ export const Invoice: MessageFns<Invoice> = {
     message.chargeOnDate = object.chargeOnDate ?? undefined;
     message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
     message.isTuition = object.isTuition ?? false;
+    message.organizationInvoiceDetails =
+      (object.organizationInvoiceDetails !== undefined && object.organizationInvoiceDetails !== null)
+        ? OrganizationInvoiceDetails.fromPartial(object.organizationInvoiceDetails)
+        : undefined;
     return message;
   },
 };

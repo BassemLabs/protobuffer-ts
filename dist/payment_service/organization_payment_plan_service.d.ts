@@ -49,6 +49,10 @@ export interface GetOrgsPaymentPlanInfoRequest {
 export interface GetOrgsPaymentPlanInfoResponse {
     orgPaymentPlanInfo: OrganizationPaymentPlanInformation[];
 }
+export interface GetOrgActivePaymentPlanWithInfoRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+}
 export declare const GetAllPaymentPlansRequest: MessageFns<GetAllPaymentPlansRequest>;
 export declare const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse>;
 export declare const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest>;
@@ -60,6 +64,7 @@ export declare const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPa
 export declare const GetOrganizationActiveOrgPaymentPlanInfoRequest: MessageFns<GetOrganizationActiveOrgPaymentPlanInfoRequest>;
 export declare const GetOrgsPaymentPlanInfoRequest: MessageFns<GetOrgsPaymentPlanInfoRequest>;
 export declare const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoResponse>;
+export declare const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaymentPlanWithInfoRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

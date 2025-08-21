@@ -169,6 +169,29 @@ export interface GetStudentsWithReregistrationInvoicesRequest {
 export interface GetStudentsWithReregistrationInvoicesResponse {
     studentIds: ObjectId[];
 }
+export interface GetOrgPaidBassemLabsFeesInPeriodRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
+}
+export interface GetOrgPaidBassemLabsFeesInPeriodResponse {
+    totalAmount: number;
+}
+export interface UpsertOrganizationInvoiceRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    invoiceStartDate: Date | undefined;
+    invoiceEndDate: Date | undefined;
+    upfrontAmount: number;
+    currentEnrolledStudentsCount: number;
+}
+export interface GetOrganizationInvoicesRequest {
+    context: RequestContext | undefined;
+}
+export interface GetAllOrganizationInvoicesRequest {
+    context: RequestContext | undefined;
+}
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
 export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
@@ -203,6 +226,11 @@ export declare const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudent
 export declare const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUnpaidInvoicesResponse>;
 export declare const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudentsWithReregistrationInvoicesRequest>;
 export declare const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStudentsWithReregistrationInvoicesResponse>;
+export declare const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBassemLabsFeesInPeriodRequest>;
+export declare const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBassemLabsFeesInPeriodResponse>;
+export declare const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvoiceRequest>;
+export declare const GetOrganizationInvoicesRequest: MessageFns<GetOrganizationInvoicesRequest>;
+export declare const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInvoicesRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

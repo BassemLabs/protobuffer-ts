@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
+exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -2809,6 +2809,393 @@ exports.GetStudentsWithReregistrationInvoicesResponse = {
     fromPartial(object) {
         const message = createBaseGetStudentsWithReregistrationInvoicesResponse();
         message.studentIds = object.studentIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetOrgPaidBassemLabsFeesInPeriodRequest() {
+    return { context: undefined, organizationId: undefined, startDate: undefined, endDate: undefined };
+}
+exports.GetOrgPaidBassemLabsFeesInPeriodRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrgPaidBassemLabsFeesInPeriodRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrgPaidBassemLabsFeesInPeriodRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrgPaidBassemLabsFeesInPeriodRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
+        return message;
+    },
+};
+function createBaseGetOrgPaidBassemLabsFeesInPeriodResponse() {
+    return { totalAmount: 0 };
+}
+exports.GetOrgPaidBassemLabsFeesInPeriodResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.totalAmount !== 0) {
+            writer.uint32(9).double(message.totalAmount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrgPaidBassemLabsFeesInPeriodResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 9) {
+                        break;
+                    }
+                    message.totalAmount = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { totalAmount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0 };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.totalAmount !== 0) {
+            obj.totalAmount = message.totalAmount;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrgPaidBassemLabsFeesInPeriodResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrgPaidBassemLabsFeesInPeriodResponse();
+        message.totalAmount = object.totalAmount ?? 0;
+        return message;
+    },
+};
+function createBaseUpsertOrganizationInvoiceRequest() {
+    return {
+        context: undefined,
+        organizationId: undefined,
+        invoiceStartDate: undefined,
+        invoiceEndDate: undefined,
+        upfrontAmount: 0,
+        currentEnrolledStudentsCount: 0,
+    };
+}
+exports.UpsertOrganizationInvoiceRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.invoiceStartDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.invoiceStartDate), writer.uint32(26).fork()).join();
+        }
+        if (message.invoiceEndDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.invoiceEndDate), writer.uint32(34).fork()).join();
+        }
+        if (message.upfrontAmount !== 0) {
+            writer.uint32(41).double(message.upfrontAmount);
+        }
+        if (message.currentEnrolledStudentsCount !== 0) {
+            writer.uint32(48).uint32(message.currentEnrolledStudentsCount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpsertOrganizationInvoiceRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.invoiceStartDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.invoiceEndDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 41) {
+                        break;
+                    }
+                    message.upfrontAmount = reader.double();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.currentEnrolledStudentsCount = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            invoiceStartDate: isSet(object.invoiceStartDate) ? fromJsonTimestamp(object.invoiceStartDate) : undefined,
+            invoiceEndDate: isSet(object.invoiceEndDate) ? fromJsonTimestamp(object.invoiceEndDate) : undefined,
+            upfrontAmount: isSet(object.upfrontAmount) ? globalThis.Number(object.upfrontAmount) : 0,
+            currentEnrolledStudentsCount: isSet(object.currentEnrolledStudentsCount)
+                ? globalThis.Number(object.currentEnrolledStudentsCount)
+                : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.invoiceStartDate !== undefined) {
+            obj.invoiceStartDate = message.invoiceStartDate.toISOString();
+        }
+        if (message.invoiceEndDate !== undefined) {
+            obj.invoiceEndDate = message.invoiceEndDate.toISOString();
+        }
+        if (message.upfrontAmount !== 0) {
+            obj.upfrontAmount = message.upfrontAmount;
+        }
+        if (message.currentEnrolledStudentsCount !== 0) {
+            obj.currentEnrolledStudentsCount = Math.round(message.currentEnrolledStudentsCount);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpsertOrganizationInvoiceRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpsertOrganizationInvoiceRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.invoiceStartDate = object.invoiceStartDate ?? undefined;
+        message.invoiceEndDate = object.invoiceEndDate ?? undefined;
+        message.upfrontAmount = object.upfrontAmount ?? 0;
+        message.currentEnrolledStudentsCount = object.currentEnrolledStudentsCount ?? 0;
+        return message;
+    },
+};
+function createBaseGetOrganizationInvoicesRequest() {
+    return { context: undefined };
+}
+exports.GetOrganizationInvoicesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationInvoicesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationInvoicesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationInvoicesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAllOrganizationInvoicesRequest() {
+    return { context: undefined };
+}
+exports.GetAllOrganizationInvoicesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAllOrganizationInvoicesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAllOrganizationInvoicesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAllOrganizationInvoicesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
         return message;
     },
 };

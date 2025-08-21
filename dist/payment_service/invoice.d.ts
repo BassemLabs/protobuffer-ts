@@ -59,6 +59,13 @@ export interface Coupon {
     /** percentage or amount value */
     value: number;
 }
+export interface OrganizationInvoiceDetails {
+    periodStartDate: Date | undefined;
+    periodEndDate: Date | undefined;
+    numberOfStudents: number;
+    paymentPlanId: ObjectId | undefined;
+    paymentPlanInfoId: ObjectId | undefined;
+}
 export interface Invoice {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -85,6 +92,8 @@ export interface Invoice {
     autoPaymentStatus?: AutoPaymentStatus | undefined;
     /** determine if this invoice is a tuition invoice */
     isTuition: boolean;
+    /** Organization-specific invoice details */
+    organizationInvoiceDetails?: OrganizationInvoiceDetails | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;
@@ -112,6 +121,7 @@ export interface InvoiceFilter {
 }
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;
+export declare const OrganizationInvoiceDetails: MessageFns<OrganizationInvoiceDetails>;
 export declare const Invoice: MessageFns<Invoice>;
 export declare const InvoiceResponse: MessageFns<InvoiceResponse>;
 export declare const InvoiceFilter: MessageFns<InvoiceFilter>;

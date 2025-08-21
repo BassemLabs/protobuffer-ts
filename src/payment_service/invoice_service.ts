@@ -227,6 +227,34 @@ export interface GetStudentsWithReregistrationInvoicesResponse {
   studentIds: ObjectId[];
 }
 
+export interface GetOrgPaidBassemLabsFeesInPeriodRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+}
+
+export interface GetOrgPaidBassemLabsFeesInPeriodResponse {
+  totalAmount: number;
+}
+
+export interface UpsertOrganizationInvoiceRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  invoiceStartDate: Date | undefined;
+  invoiceEndDate: Date | undefined;
+  upfrontAmount: number;
+  currentEnrolledStudentsCount: number;
+}
+
+export interface GetOrganizationInvoicesRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetAllOrganizationInvoicesRequest {
+  context: RequestContext | undefined;
+}
+
 function createBaseInvoices(): Invoices {
   return { invoices: [] };
 }
@@ -3392,6 +3420,454 @@ export const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStuden
       return message;
     },
   };
+
+function createBaseGetOrgPaidBassemLabsFeesInPeriodRequest(): GetOrgPaidBassemLabsFeesInPeriodRequest {
+  return { context: undefined, organizationId: undefined, startDate: undefined, endDate: undefined };
+}
+
+export const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBassemLabsFeesInPeriodRequest> = {
+  encode(message: GetOrgPaidBassemLabsFeesInPeriodRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrgPaidBassemLabsFeesInPeriodRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrgPaidBassemLabsFeesInPeriodRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrgPaidBassemLabsFeesInPeriodRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+    };
+  },
+
+  toJSON(message: GetOrgPaidBassemLabsFeesInPeriodRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrgPaidBassemLabsFeesInPeriodRequest>, I>>(
+    base?: I,
+  ): GetOrgPaidBassemLabsFeesInPeriodRequest {
+    return GetOrgPaidBassemLabsFeesInPeriodRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrgPaidBassemLabsFeesInPeriodRequest>, I>>(
+    object: I,
+  ): GetOrgPaidBassemLabsFeesInPeriodRequest {
+    const message = createBaseGetOrgPaidBassemLabsFeesInPeriodRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrgPaidBassemLabsFeesInPeriodResponse(): GetOrgPaidBassemLabsFeesInPeriodResponse {
+  return { totalAmount: 0 };
+}
+
+export const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBassemLabsFeesInPeriodResponse> = {
+  encode(message: GetOrgPaidBassemLabsFeesInPeriodResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.totalAmount !== 0) {
+      writer.uint32(9).double(message.totalAmount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrgPaidBassemLabsFeesInPeriodResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrgPaidBassemLabsFeesInPeriodResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 9) {
+            break;
+          }
+
+          message.totalAmount = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrgPaidBassemLabsFeesInPeriodResponse {
+    return { totalAmount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0 };
+  },
+
+  toJSON(message: GetOrgPaidBassemLabsFeesInPeriodResponse): unknown {
+    const obj: any = {};
+    if (message.totalAmount !== 0) {
+      obj.totalAmount = message.totalAmount;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrgPaidBassemLabsFeesInPeriodResponse>, I>>(
+    base?: I,
+  ): GetOrgPaidBassemLabsFeesInPeriodResponse {
+    return GetOrgPaidBassemLabsFeesInPeriodResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrgPaidBassemLabsFeesInPeriodResponse>, I>>(
+    object: I,
+  ): GetOrgPaidBassemLabsFeesInPeriodResponse {
+    const message = createBaseGetOrgPaidBassemLabsFeesInPeriodResponse();
+    message.totalAmount = object.totalAmount ?? 0;
+    return message;
+  },
+};
+
+function createBaseUpsertOrganizationInvoiceRequest(): UpsertOrganizationInvoiceRequest {
+  return {
+    context: undefined,
+    organizationId: undefined,
+    invoiceStartDate: undefined,
+    invoiceEndDate: undefined,
+    upfrontAmount: 0,
+    currentEnrolledStudentsCount: 0,
+  };
+}
+
+export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvoiceRequest> = {
+  encode(message: UpsertOrganizationInvoiceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.invoiceStartDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.invoiceStartDate), writer.uint32(26).fork()).join();
+    }
+    if (message.invoiceEndDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.invoiceEndDate), writer.uint32(34).fork()).join();
+    }
+    if (message.upfrontAmount !== 0) {
+      writer.uint32(41).double(message.upfrontAmount);
+    }
+    if (message.currentEnrolledStudentsCount !== 0) {
+      writer.uint32(48).uint32(message.currentEnrolledStudentsCount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertOrganizationInvoiceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertOrganizationInvoiceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.invoiceStartDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.invoiceEndDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 41) {
+            break;
+          }
+
+          message.upfrontAmount = reader.double();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.currentEnrolledStudentsCount = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpsertOrganizationInvoiceRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      invoiceStartDate: isSet(object.invoiceStartDate) ? fromJsonTimestamp(object.invoiceStartDate) : undefined,
+      invoiceEndDate: isSet(object.invoiceEndDate) ? fromJsonTimestamp(object.invoiceEndDate) : undefined,
+      upfrontAmount: isSet(object.upfrontAmount) ? globalThis.Number(object.upfrontAmount) : 0,
+      currentEnrolledStudentsCount: isSet(object.currentEnrolledStudentsCount)
+        ? globalThis.Number(object.currentEnrolledStudentsCount)
+        : 0,
+    };
+  },
+
+  toJSON(message: UpsertOrganizationInvoiceRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.invoiceStartDate !== undefined) {
+      obj.invoiceStartDate = message.invoiceStartDate.toISOString();
+    }
+    if (message.invoiceEndDate !== undefined) {
+      obj.invoiceEndDate = message.invoiceEndDate.toISOString();
+    }
+    if (message.upfrontAmount !== 0) {
+      obj.upfrontAmount = message.upfrontAmount;
+    }
+    if (message.currentEnrolledStudentsCount !== 0) {
+      obj.currentEnrolledStudentsCount = Math.round(message.currentEnrolledStudentsCount);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpsertOrganizationInvoiceRequest>, I>>(
+    base?: I,
+  ): UpsertOrganizationInvoiceRequest {
+    return UpsertOrganizationInvoiceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpsertOrganizationInvoiceRequest>, I>>(
+    object: I,
+  ): UpsertOrganizationInvoiceRequest {
+    const message = createBaseUpsertOrganizationInvoiceRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.invoiceStartDate = object.invoiceStartDate ?? undefined;
+    message.invoiceEndDate = object.invoiceEndDate ?? undefined;
+    message.upfrontAmount = object.upfrontAmount ?? 0;
+    message.currentEnrolledStudentsCount = object.currentEnrolledStudentsCount ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationInvoicesRequest(): GetOrganizationInvoicesRequest {
+  return { context: undefined };
+}
+
+export const GetOrganizationInvoicesRequest: MessageFns<GetOrganizationInvoicesRequest> = {
+  encode(message: GetOrganizationInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationInvoicesRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetOrganizationInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationInvoicesRequest>, I>>(base?: I): GetOrganizationInvoicesRequest {
+    return GetOrganizationInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationInvoicesRequest>, I>>(
+    object: I,
+  ): GetOrganizationInvoicesRequest {
+    const message = createBaseGetOrganizationInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAllOrganizationInvoicesRequest(): GetAllOrganizationInvoicesRequest {
+  return { context: undefined };
+}
+
+export const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInvoicesRequest> = {
+  encode(message: GetAllOrganizationInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAllOrganizationInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAllOrganizationInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAllOrganizationInvoicesRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetAllOrganizationInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAllOrganizationInvoicesRequest>, I>>(
+    base?: I,
+  ): GetAllOrganizationInvoicesRequest {
+    return GetAllOrganizationInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAllOrganizationInvoicesRequest>, I>>(
+    object: I,
+  ): GetAllOrganizationInvoicesRequest {
+    const message = createBaseGetAllOrganizationInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

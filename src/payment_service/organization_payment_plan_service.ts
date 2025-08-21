@@ -77,6 +77,11 @@ export interface GetOrgsPaymentPlanInfoResponse {
   orgPaymentPlanInfo: OrganizationPaymentPlanInformation[];
 }
 
+export interface GetOrgActivePaymentPlanWithInfoRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+}
+
 function createBaseGetAllPaymentPlansRequest(): GetAllPaymentPlansRequest {
   return { context: undefined };
 }
@@ -972,6 +977,88 @@ export const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoRe
     const message = createBaseGetOrgsPaymentPlanInfoResponse();
     message.orgPaymentPlanInfo =
       object.orgPaymentPlanInfo?.map((e) => OrganizationPaymentPlanInformation.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetOrgActivePaymentPlanWithInfoRequest(): GetOrgActivePaymentPlanWithInfoRequest {
+  return { context: undefined, organizationId: undefined };
+}
+
+export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaymentPlanWithInfoRequest> = {
+  encode(message: GetOrgActivePaymentPlanWithInfoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrgActivePaymentPlanWithInfoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrgActivePaymentPlanWithInfoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrgActivePaymentPlanWithInfoRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: GetOrgActivePaymentPlanWithInfoRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrgActivePaymentPlanWithInfoRequest>, I>>(
+    base?: I,
+  ): GetOrgActivePaymentPlanWithInfoRequest {
+    return GetOrgActivePaymentPlanWithInfoRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrgActivePaymentPlanWithInfoRequest>, I>>(
+    object: I,
+  ): GetOrgActivePaymentPlanWithInfoRequest {
+    const message = createBaseGetOrgActivePaymentPlanWithInfoRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
     return message;
   },
 };
