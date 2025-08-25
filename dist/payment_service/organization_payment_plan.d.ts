@@ -35,6 +35,7 @@ export interface OrganizationPaymentPlanInformation {
     deferPerStudentCostToParent: boolean;
     startDate: Date | undefined;
     endDate: Date | undefined;
+    trialDays: number;
 }
 export interface OrganizationPaymentPlanWithInfo {
     paymentPlan: OrganizationPaymentPlan | undefined;

@@ -185,6 +185,7 @@ export interface UpsertOrganizationInvoiceRequest {
     invoiceEndDate: Date | undefined;
     upfrontAmount: number;
     currentEnrolledStudentsCount: number;
+    isInTrialPeriod: boolean;
 }
 export interface GetOrganizationInvoicesRequest {
     context: RequestContext | undefined;

@@ -344,6 +344,7 @@ function createBaseOrganizationPaymentPlanInformation() {
         deferPerStudentCostToParent: false,
         startDate: undefined,
         endDate: undefined,
+        trialDays: 0,
     };
 }
 exports.OrganizationPaymentPlanInformation = {
@@ -365,6 +366,9 @@ exports.OrganizationPaymentPlanInformation = {
         }
         if (message.endDate !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(50).fork()).join();
+        }
+        if (message.trialDays !== 0) {
+            writer.uint32(56).uint32(message.trialDays);
         }
         return writer;
     },
@@ -411,6 +415,12 @@ exports.OrganizationPaymentPlanInformation = {
                     }
                     message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.trialDays = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -429,6 +439,7 @@ exports.OrganizationPaymentPlanInformation = {
                 : false,
             startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            trialDays: isSet(object.trialDays) ? globalThis.Number(object.trialDays) : 0,
         };
     },
     toJSON(message) {
@@ -451,6 +462,9 @@ exports.OrganizationPaymentPlanInformation = {
         if (message.endDate !== undefined) {
             obj.endDate = message.endDate.toISOString();
         }
+        if (message.trialDays !== 0) {
+            obj.trialDays = Math.round(message.trialDays);
+        }
         return obj;
     },
     create(base) {
@@ -468,6 +482,7 @@ exports.OrganizationPaymentPlanInformation = {
         message.deferPerStudentCostToParent = object.deferPerStudentCostToParent ?? false;
         message.startDate = object.startDate ?? undefined;
         message.endDate = object.endDate ?? undefined;
+        message.trialDays = object.trialDays ?? 0;
         return message;
     },
 };

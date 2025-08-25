@@ -2968,6 +2968,7 @@ function createBaseUpsertOrganizationInvoiceRequest() {
         invoiceEndDate: undefined,
         upfrontAmount: 0,
         currentEnrolledStudentsCount: 0,
+        isInTrialPeriod: false,
     };
 }
 exports.UpsertOrganizationInvoiceRequest = {
@@ -2989,6 +2990,9 @@ exports.UpsertOrganizationInvoiceRequest = {
         }
         if (message.currentEnrolledStudentsCount !== 0) {
             writer.uint32(48).uint32(message.currentEnrolledStudentsCount);
+        }
+        if (message.isInTrialPeriod !== false) {
+            writer.uint32(56).bool(message.isInTrialPeriod);
         }
         return writer;
     },
@@ -3035,6 +3039,12 @@ exports.UpsertOrganizationInvoiceRequest = {
                     }
                     message.currentEnrolledStudentsCount = reader.uint32();
                     continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.isInTrialPeriod = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3053,6 +3063,7 @@ exports.UpsertOrganizationInvoiceRequest = {
             currentEnrolledStudentsCount: isSet(object.currentEnrolledStudentsCount)
                 ? globalThis.Number(object.currentEnrolledStudentsCount)
                 : 0,
+            isInTrialPeriod: isSet(object.isInTrialPeriod) ? globalThis.Boolean(object.isInTrialPeriod) : false,
         };
     },
     toJSON(message) {
@@ -3075,6 +3086,9 @@ exports.UpsertOrganizationInvoiceRequest = {
         if (message.currentEnrolledStudentsCount !== 0) {
             obj.currentEnrolledStudentsCount = Math.round(message.currentEnrolledStudentsCount);
         }
+        if (message.isInTrialPeriod !== false) {
+            obj.isInTrialPeriod = message.isInTrialPeriod;
+        }
         return obj;
     },
     create(base) {
@@ -3092,6 +3106,7 @@ exports.UpsertOrganizationInvoiceRequest = {
         message.invoiceEndDate = object.invoiceEndDate ?? undefined;
         message.upfrontAmount = object.upfrontAmount ?? 0;
         message.currentEnrolledStudentsCount = object.currentEnrolledStudentsCount ?? 0;
+        message.isInTrialPeriod = object.isInTrialPeriod ?? false;
         return message;
     },
 };
