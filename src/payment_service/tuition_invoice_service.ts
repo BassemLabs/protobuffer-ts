@@ -6,10 +6,17 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { Family } from "../user_service/family";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { TuitionInvoice } from "./tuition_invoice";
+import {
+  TuitionInvoice,
+  TuitionInvoiceStatus,
+  tuitionInvoiceStatusFromJSON,
+  tuitionInvoiceStatusToJSON,
+  tuitionInvoiceStatusToNumber,
+} from "./tuition_invoice";
 
 export const protobufPackage = "payment_service";
 
@@ -37,6 +44,8 @@ export interface GenerateTuitionInvoiceRequest {
 export interface ListFamiliesWithTuitionInvoicesRequest {
   context: RequestContext | undefined;
   schoolYear: ObjectId | undefined;
+  startDate?: Date | undefined;
+  endDate?: Date | undefined;
 }
 
 export interface ListFamiliesWithTuitionInvoicesResponse {
@@ -48,6 +57,8 @@ export interface FamilyWithTuitionInvoice {
   tuitionInvoice?: TuitionInvoice | undefined;
   studentCount: number;
   totalPaid: number;
+  status: TuitionInvoiceStatus;
+  totalInvoicesAmount: number;
 }
 
 function createBaseStudentObj(): StudentObj {
@@ -368,7 +379,7 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
 };
 
 function createBaseListFamiliesWithTuitionInvoicesRequest(): ListFamiliesWithTuitionInvoicesRequest {
-  return { context: undefined, schoolYear: undefined };
+  return { context: undefined, schoolYear: undefined, startDate: undefined, endDate: undefined };
 }
 
 export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWithTuitionInvoicesRequest> = {
@@ -378,6 +389,12 @@ export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWith
     }
     if (message.schoolYear !== undefined) {
       ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -403,6 +420,20 @@ export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWith
 
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -416,6 +447,8 @@ export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWith
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -426,6 +459,12 @@ export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWith
     }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
     }
     return obj;
   },
@@ -445,6 +484,8 @@ export const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWith
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
     return message;
   },
 };
@@ -516,7 +557,14 @@ export const ListFamiliesWithTuitionInvoicesResponse: MessageFns<ListFamiliesWit
 };
 
 function createBaseFamilyWithTuitionInvoice(): FamilyWithTuitionInvoice {
-  return { family: undefined, tuitionInvoice: undefined, studentCount: 0, totalPaid: 0 };
+  return {
+    family: undefined,
+    tuitionInvoice: undefined,
+    studentCount: 0,
+    totalPaid: 0,
+    status: TuitionInvoiceStatus.NOT_GENERATED,
+    totalInvoicesAmount: 0,
+  };
 }
 
 export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
@@ -532,6 +580,12 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
     }
     if (message.totalPaid !== 0) {
       writer.uint32(33).double(message.totalPaid);
+    }
+    if (message.status !== TuitionInvoiceStatus.NOT_GENERATED) {
+      writer.uint32(40).int32(tuitionInvoiceStatusToNumber(message.status));
+    }
+    if (message.totalInvoicesAmount !== 0) {
+      writer.uint32(49).double(message.totalInvoicesAmount);
     }
     return writer;
   },
@@ -571,6 +625,20 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
 
           message.totalPaid = reader.double();
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.status = tuitionInvoiceStatusFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 49) {
+            break;
+          }
+
+          message.totalInvoicesAmount = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -586,6 +654,8 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
       tuitionInvoice: isSet(object.tuitionInvoice) ? TuitionInvoice.fromJSON(object.tuitionInvoice) : undefined,
       studentCount: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
       totalPaid: isSet(object.totalPaid) ? globalThis.Number(object.totalPaid) : 0,
+      status: isSet(object.status) ? tuitionInvoiceStatusFromJSON(object.status) : TuitionInvoiceStatus.NOT_GENERATED,
+      totalInvoicesAmount: isSet(object.totalInvoicesAmount) ? globalThis.Number(object.totalInvoicesAmount) : 0,
     };
   },
 
@@ -603,6 +673,12 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
     if (message.totalPaid !== 0) {
       obj.totalPaid = message.totalPaid;
     }
+    if (message.status !== TuitionInvoiceStatus.NOT_GENERATED) {
+      obj.status = tuitionInvoiceStatusToJSON(message.status);
+    }
+    if (message.totalInvoicesAmount !== 0) {
+      obj.totalInvoicesAmount = message.totalInvoicesAmount;
+    }
     return obj;
   },
 
@@ -619,6 +695,8 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
       : undefined;
     message.studentCount = object.studentCount ?? 0;
     message.totalPaid = object.totalPaid ?? 0;
+    message.status = object.status ?? TuitionInvoiceStatus.NOT_GENERATED;
+    message.totalInvoicesAmount = object.totalInvoicesAmount ?? 0;
     return message;
   },
 };
@@ -634,6 +712,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

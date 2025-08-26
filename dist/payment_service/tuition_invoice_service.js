@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const family_1 = require("../user_service/family");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
@@ -298,7 +299,7 @@ exports.GenerateTuitionInvoiceRequest = {
     },
 };
 function createBaseListFamiliesWithTuitionInvoicesRequest() {
-    return { context: undefined, schoolYear: undefined };
+    return { context: undefined, schoolYear: undefined, startDate: undefined, endDate: undefined };
 }
 exports.ListFamiliesWithTuitionInvoicesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -307,6 +308,12 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
         }
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -329,6 +336,18 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
                     }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -341,6 +360,8 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -350,6 +371,12 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
         }
         return obj;
     },
@@ -364,6 +391,8 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         return message;
     },
 };
@@ -423,7 +452,14 @@ exports.ListFamiliesWithTuitionInvoicesResponse = {
     },
 };
 function createBaseFamilyWithTuitionInvoice() {
-    return { family: undefined, tuitionInvoice: undefined, studentCount: 0, totalPaid: 0 };
+    return {
+        family: undefined,
+        tuitionInvoice: undefined,
+        studentCount: 0,
+        totalPaid: 0,
+        status: tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED,
+        totalInvoicesAmount: 0,
+    };
 }
 exports.FamilyWithTuitionInvoice = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -438,6 +474,12 @@ exports.FamilyWithTuitionInvoice = {
         }
         if (message.totalPaid !== 0) {
             writer.uint32(33).double(message.totalPaid);
+        }
+        if (message.status !== tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED) {
+            writer.uint32(40).int32((0, tuition_invoice_1.tuitionInvoiceStatusToNumber)(message.status));
+        }
+        if (message.totalInvoicesAmount !== 0) {
+            writer.uint32(49).double(message.totalInvoicesAmount);
         }
         return writer;
     },
@@ -472,6 +514,18 @@ exports.FamilyWithTuitionInvoice = {
                     }
                     message.totalPaid = reader.double();
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.status = (0, tuition_invoice_1.tuitionInvoiceStatusFromJSON)(reader.int32());
+                    continue;
+                case 6:
+                    if (tag !== 49) {
+                        break;
+                    }
+                    message.totalInvoicesAmount = reader.double();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -486,6 +540,8 @@ exports.FamilyWithTuitionInvoice = {
             tuitionInvoice: isSet(object.tuitionInvoice) ? tuition_invoice_1.TuitionInvoice.fromJSON(object.tuitionInvoice) : undefined,
             studentCount: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
             totalPaid: isSet(object.totalPaid) ? globalThis.Number(object.totalPaid) : 0,
+            status: isSet(object.status) ? (0, tuition_invoice_1.tuitionInvoiceStatusFromJSON)(object.status) : tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED,
+            totalInvoicesAmount: isSet(object.totalInvoicesAmount) ? globalThis.Number(object.totalInvoicesAmount) : 0,
         };
     },
     toJSON(message) {
@@ -502,6 +558,12 @@ exports.FamilyWithTuitionInvoice = {
         if (message.totalPaid !== 0) {
             obj.totalPaid = message.totalPaid;
         }
+        if (message.status !== tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED) {
+            obj.status = (0, tuition_invoice_1.tuitionInvoiceStatusToJSON)(message.status);
+        }
+        if (message.totalInvoicesAmount !== 0) {
+            obj.totalInvoicesAmount = message.totalInvoicesAmount;
+        }
         return obj;
     },
     create(base) {
@@ -517,9 +579,32 @@ exports.FamilyWithTuitionInvoice = {
             : undefined;
         message.studentCount = object.studentCount ?? 0;
         message.totalPaid = object.totalPaid ?? 0;
+        message.status = object.status ?? tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED;
+        message.totalInvoicesAmount = object.totalInvoicesAmount ?? 0;
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

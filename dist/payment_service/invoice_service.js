@@ -2454,7 +2454,7 @@ exports.SetAutoPayInvoiceStatusRequest = {
     },
 };
 function createBaseGetFamilyTuitionInvoicesRequest() {
-    return { context: undefined, familyId: undefined, schoolYear: undefined };
+    return { context: undefined, familyId: undefined, schoolYear: undefined, startDate: undefined, endDate: undefined };
 }
 exports.GetFamilyTuitionInvoicesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2466,6 +2466,12 @@ exports.GetFamilyTuitionInvoicesRequest = {
         }
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -2494,6 +2500,18 @@ exports.GetFamilyTuitionInvoicesRequest = {
                     }
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2507,6 +2525,8 @@ exports.GetFamilyTuitionInvoicesRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -2519,6 +2539,12 @@ exports.GetFamilyTuitionInvoicesRequest = {
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
         }
         return obj;
     },
@@ -2536,6 +2562,8 @@ exports.GetFamilyTuitionInvoicesRequest = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
         return message;
     },
 };

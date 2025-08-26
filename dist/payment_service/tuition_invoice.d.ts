@@ -12,6 +12,16 @@ export declare enum LineType {
 export declare function lineTypeFromJSON(object: any): LineType;
 export declare function lineTypeToJSON(object: LineType): string;
 export declare function lineTypeToNumber(object: LineType): number;
+export declare enum TuitionInvoiceStatus {
+    NOT_GENERATED = "NOT_GENERATED",
+    ON_TRACK = "ON_TRACK",
+    OVERDUE = "OVERDUE",
+    PAID = "PAID",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function tuitionInvoiceStatusFromJSON(object: any): TuitionInvoiceStatus;
+export declare function tuitionInvoiceStatusToJSON(object: TuitionInvoiceStatus): string;
+export declare function tuitionInvoiceStatusToNumber(object: TuitionInvoiceStatus): number;
 export interface TuitionPlanSnapshot {
     name: string;
     scheduleType: PaymentScheduleType;

@@ -153,6 +153,8 @@ export interface GetFamilyTuitionInvoicesRequest {
     context: RequestContext | undefined;
     familyId: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
+    startDate?: Date | undefined;
+    endDate?: Date | undefined;
 }
 export interface GetStudentsWithUnpaidInvoicesRequest {
     context: RequestContext | undefined;

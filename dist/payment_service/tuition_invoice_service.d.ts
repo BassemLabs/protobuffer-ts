@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Family } from "../user_service/family";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { TuitionInvoice } from "./tuition_invoice";
+import { TuitionInvoice, TuitionInvoiceStatus } from "./tuition_invoice";
 export declare const protobufPackage = "payment_service";
 /** TODO: Remove this once we move into payment service and call user service */
 export interface StudentObj {
@@ -25,6 +25,8 @@ export interface GenerateTuitionInvoiceRequest {
 export interface ListFamiliesWithTuitionInvoicesRequest {
     context: RequestContext | undefined;
     schoolYear: ObjectId | undefined;
+    startDate?: Date | undefined;
+    endDate?: Date | undefined;
 }
 export interface ListFamiliesWithTuitionInvoicesResponse {
     familyWithTuitionInvoice: FamilyWithTuitionInvoice[];
@@ -34,6 +36,8 @@ export interface FamilyWithTuitionInvoice {
     tuitionInvoice?: TuitionInvoice | undefined;
     studentCount: number;
     totalPaid: number;
+    status: TuitionInvoiceStatus;
+    totalInvoicesAmount: number;
 }
 export declare const StudentObj: MessageFns<StudentObj>;
 export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;

@@ -5,10 +5,13 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TuitionInvoice = exports.TuitionInvoiceLineItem = exports.TuitionPlanSnapshot = exports.LineType = exports.protobufPackage = void 0;
+exports.TuitionInvoice = exports.TuitionInvoiceLineItem = exports.TuitionPlanSnapshot = exports.TuitionInvoiceStatus = exports.LineType = exports.protobufPackage = void 0;
 exports.lineTypeFromJSON = lineTypeFromJSON;
 exports.lineTypeToJSON = lineTypeToJSON;
 exports.lineTypeToNumber = lineTypeToNumber;
+exports.tuitionInvoiceStatusFromJSON = tuitionInvoiceStatusFromJSON;
+exports.tuitionInvoiceStatusToJSON = tuitionInvoiceStatusToJSON;
+exports.tuitionInvoiceStatusToNumber = tuitionInvoiceStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -69,6 +72,64 @@ function lineTypeToNumber(object) {
         case LineType.BASSEM_LABS_FEE:
             return 4;
         case LineType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var TuitionInvoiceStatus;
+(function (TuitionInvoiceStatus) {
+    TuitionInvoiceStatus["NOT_GENERATED"] = "NOT_GENERATED";
+    TuitionInvoiceStatus["ON_TRACK"] = "ON_TRACK";
+    TuitionInvoiceStatus["OVERDUE"] = "OVERDUE";
+    TuitionInvoiceStatus["PAID"] = "PAID";
+    TuitionInvoiceStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(TuitionInvoiceStatus || (exports.TuitionInvoiceStatus = TuitionInvoiceStatus = {}));
+function tuitionInvoiceStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "NOT_GENERATED":
+            return TuitionInvoiceStatus.NOT_GENERATED;
+        case 1:
+        case "ON_TRACK":
+            return TuitionInvoiceStatus.ON_TRACK;
+        case 2:
+        case "OVERDUE":
+            return TuitionInvoiceStatus.OVERDUE;
+        case 3:
+        case "PAID":
+            return TuitionInvoiceStatus.PAID;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return TuitionInvoiceStatus.UNRECOGNIZED;
+    }
+}
+function tuitionInvoiceStatusToJSON(object) {
+    switch (object) {
+        case TuitionInvoiceStatus.NOT_GENERATED:
+            return "NOT_GENERATED";
+        case TuitionInvoiceStatus.ON_TRACK:
+            return "ON_TRACK";
+        case TuitionInvoiceStatus.OVERDUE:
+            return "OVERDUE";
+        case TuitionInvoiceStatus.PAID:
+            return "PAID";
+        case TuitionInvoiceStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function tuitionInvoiceStatusToNumber(object) {
+    switch (object) {
+        case TuitionInvoiceStatus.NOT_GENERATED:
+            return 0;
+        case TuitionInvoiceStatus.ON_TRACK:
+            return 1;
+        case TuitionInvoiceStatus.OVERDUE:
+            return 2;
+        case TuitionInvoiceStatus.PAID:
+            return 3;
+        case TuitionInvoiceStatus.UNRECOGNIZED:
         default:
             return -1;
     }

@@ -83,6 +83,67 @@ export function lineTypeToNumber(object: LineType): number {
   }
 }
 
+export enum TuitionInvoiceStatus {
+  NOT_GENERATED = "NOT_GENERATED",
+  ON_TRACK = "ON_TRACK",
+  OVERDUE = "OVERDUE",
+  PAID = "PAID",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function tuitionInvoiceStatusFromJSON(object: any): TuitionInvoiceStatus {
+  switch (object) {
+    case 0:
+    case "NOT_GENERATED":
+      return TuitionInvoiceStatus.NOT_GENERATED;
+    case 1:
+    case "ON_TRACK":
+      return TuitionInvoiceStatus.ON_TRACK;
+    case 2:
+    case "OVERDUE":
+      return TuitionInvoiceStatus.OVERDUE;
+    case 3:
+    case "PAID":
+      return TuitionInvoiceStatus.PAID;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TuitionInvoiceStatus.UNRECOGNIZED;
+  }
+}
+
+export function tuitionInvoiceStatusToJSON(object: TuitionInvoiceStatus): string {
+  switch (object) {
+    case TuitionInvoiceStatus.NOT_GENERATED:
+      return "NOT_GENERATED";
+    case TuitionInvoiceStatus.ON_TRACK:
+      return "ON_TRACK";
+    case TuitionInvoiceStatus.OVERDUE:
+      return "OVERDUE";
+    case TuitionInvoiceStatus.PAID:
+      return "PAID";
+    case TuitionInvoiceStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function tuitionInvoiceStatusToNumber(object: TuitionInvoiceStatus): number {
+  switch (object) {
+    case TuitionInvoiceStatus.NOT_GENERATED:
+      return 0;
+    case TuitionInvoiceStatus.ON_TRACK:
+      return 1;
+    case TuitionInvoiceStatus.OVERDUE:
+      return 2;
+    case TuitionInvoiceStatus.PAID:
+      return 3;
+    case TuitionInvoiceStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface TuitionPlanSnapshot {
   name: string;
   scheduleType: PaymentScheduleType;

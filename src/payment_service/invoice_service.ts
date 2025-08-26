@@ -206,6 +206,8 @@ export interface GetFamilyTuitionInvoicesRequest {
   context: RequestContext | undefined;
   familyId: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
+  startDate?: Date | undefined;
+  endDate?: Date | undefined;
 }
 
 export interface GetStudentsWithUnpaidInvoicesRequest {
@@ -2996,7 +2998,7 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
 };
 
 function createBaseGetFamilyTuitionInvoicesRequest(): GetFamilyTuitionInvoicesRequest {
-  return { context: undefined, familyId: undefined, schoolYear: undefined };
+  return { context: undefined, familyId: undefined, schoolYear: undefined, startDate: undefined, endDate: undefined };
 }
 
 export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoicesRequest> = {
@@ -3009,6 +3011,12 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
     }
     if (message.schoolYear !== undefined) {
       ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -3041,6 +3049,20 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
 
           message.schoolYear = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3055,6 +3077,8 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       familyId: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -3068,6 +3092,12 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
     }
     if (message.schoolYear !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
     }
     return obj;
   },
@@ -3088,6 +3118,8 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
     return message;
   },
 };
