@@ -20,7 +20,11 @@ export interface GenerateTuitionInvoiceRequest {
     family: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
     tuitionPlan: ObjectId | undefined;
-    students: StudentObj[];
+}
+export interface ModifyTuitionInvoiceRequest {
+    context: RequestContext | undefined;
+    tuitionInvoice: ObjectId | undefined;
+    tuitionPlan: ObjectId | undefined;
 }
 export interface ListFamiliesWithTuitionInvoicesRequest {
     context: RequestContext | undefined;
@@ -42,6 +46,7 @@ export interface FamilyWithTuitionInvoice {
 export declare const StudentObj: MessageFns<StudentObj>;
 export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;
 export declare const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest>;
+export declare const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest>;
 export declare const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWithTuitionInvoicesRequest>;
 export declare const ListFamiliesWithTuitionInvoicesResponse: MessageFns<ListFamiliesWithTuitionInvoicesResponse>;
 export declare const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice>;

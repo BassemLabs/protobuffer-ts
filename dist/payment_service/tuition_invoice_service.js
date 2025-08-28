@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
+exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.ModifyTuitionInvoiceRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -181,7 +181,7 @@ exports.GetFamilyTuitionInvoiceRequest = {
     },
 };
 function createBaseGenerateTuitionInvoiceRequest() {
-    return { context: undefined, family: undefined, schoolYear: undefined, tuitionPlan: undefined, students: [] };
+    return { context: undefined, family: undefined, schoolYear: undefined, tuitionPlan: undefined };
 }
 exports.GenerateTuitionInvoiceRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -196,9 +196,6 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.tuitionPlan !== undefined) {
             object_id_1.ObjectId.encode(message.tuitionPlan, writer.uint32(34).fork()).join();
-        }
-        for (const v of message.students) {
-            exports.StudentObj.encode(v, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -233,12 +230,6 @@ exports.GenerateTuitionInvoiceRequest = {
                     }
                     message.tuitionPlan = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.students.push(exports.StudentObj.decode(reader, reader.uint32()));
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -253,9 +244,6 @@ exports.GenerateTuitionInvoiceRequest = {
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             tuitionPlan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
-            students: globalThis.Array.isArray(object?.students)
-                ? object.students.map((e) => exports.StudentObj.fromJSON(e))
-                : [],
         };
     },
     toJSON(message) {
@@ -271,9 +259,6 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.tuitionPlan !== undefined) {
             obj.tuitionPlan = object_id_1.ObjectId.toJSON(message.tuitionPlan);
-        }
-        if (message.students?.length) {
-            obj.students = message.students.map((e) => exports.StudentObj.toJSON(e));
         }
         return obj;
     },
@@ -294,7 +279,92 @@ exports.GenerateTuitionInvoiceRequest = {
         message.tuitionPlan = (object.tuitionPlan !== undefined && object.tuitionPlan !== null)
             ? object_id_1.ObjectId.fromPartial(object.tuitionPlan)
             : undefined;
-        message.students = object.students?.map((e) => exports.StudentObj.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseModifyTuitionInvoiceRequest() {
+    return { context: undefined, tuitionInvoice: undefined, tuitionPlan: undefined };
+}
+exports.ModifyTuitionInvoiceRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.tuitionInvoice !== undefined) {
+            object_id_1.ObjectId.encode(message.tuitionInvoice, writer.uint32(18).fork()).join();
+        }
+        if (message.tuitionPlan !== undefined) {
+            object_id_1.ObjectId.encode(message.tuitionPlan, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseModifyTuitionInvoiceRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.tuitionInvoice = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.tuitionPlan = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            tuitionInvoice: isSet(object.tuitionInvoice) ? object_id_1.ObjectId.fromJSON(object.tuitionInvoice) : undefined,
+            tuitionPlan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.tuitionInvoice !== undefined) {
+            obj.tuitionInvoice = object_id_1.ObjectId.toJSON(message.tuitionInvoice);
+        }
+        if (message.tuitionPlan !== undefined) {
+            obj.tuitionPlan = object_id_1.ObjectId.toJSON(message.tuitionPlan);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ModifyTuitionInvoiceRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseModifyTuitionInvoiceRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.tuitionInvoice = (object.tuitionInvoice !== undefined && object.tuitionInvoice !== null)
+            ? object_id_1.ObjectId.fromPartial(object.tuitionInvoice)
+            : undefined;
+        message.tuitionPlan = (object.tuitionPlan !== undefined && object.tuitionPlan !== null)
+            ? object_id_1.ObjectId.fromPartial(object.tuitionPlan)
+            : undefined;
         return message;
     },
 };

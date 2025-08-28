@@ -38,7 +38,12 @@ export interface GenerateTuitionInvoiceRequest {
   family: ObjectId | undefined;
   schoolYear: ObjectId | undefined;
   tuitionPlan: ObjectId | undefined;
-  students: StudentObj[];
+}
+
+export interface ModifyTuitionInvoiceRequest {
+  context: RequestContext | undefined;
+  tuitionInvoice: ObjectId | undefined;
+  tuitionPlan: ObjectId | undefined;
 }
 
 export interface ListFamiliesWithTuitionInvoicesRequest {
@@ -248,7 +253,7 @@ export const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceR
 };
 
 function createBaseGenerateTuitionInvoiceRequest(): GenerateTuitionInvoiceRequest {
-  return { context: undefined, family: undefined, schoolYear: undefined, tuitionPlan: undefined, students: [] };
+  return { context: undefined, family: undefined, schoolYear: undefined, tuitionPlan: undefined };
 }
 
 export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest> = {
@@ -264,9 +269,6 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     }
     if (message.tuitionPlan !== undefined) {
       ObjectId.encode(message.tuitionPlan, writer.uint32(34).fork()).join();
-    }
-    for (const v of message.students) {
-      StudentObj.encode(v!, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -306,13 +308,6 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
 
           message.tuitionPlan = ObjectId.decode(reader, reader.uint32());
           continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.students.push(StudentObj.decode(reader, reader.uint32()));
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -328,9 +323,6 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       tuitionPlan: isSet(object.tuitionPlan) ? ObjectId.fromJSON(object.tuitionPlan) : undefined,
-      students: globalThis.Array.isArray(object?.students)
-        ? object.students.map((e: any) => StudentObj.fromJSON(e))
-        : [],
     };
   },
 
@@ -347,9 +339,6 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     }
     if (message.tuitionPlan !== undefined) {
       obj.tuitionPlan = ObjectId.toJSON(message.tuitionPlan);
-    }
-    if (message.students?.length) {
-      obj.students = message.students.map((e) => StudentObj.toJSON(e));
     }
     return obj;
   },
@@ -373,7 +362,101 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     message.tuitionPlan = (object.tuitionPlan !== undefined && object.tuitionPlan !== null)
       ? ObjectId.fromPartial(object.tuitionPlan)
       : undefined;
-    message.students = object.students?.map((e) => StudentObj.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseModifyTuitionInvoiceRequest(): ModifyTuitionInvoiceRequest {
+  return { context: undefined, tuitionInvoice: undefined, tuitionPlan: undefined };
+}
+
+export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest> = {
+  encode(message: ModifyTuitionInvoiceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.tuitionInvoice !== undefined) {
+      ObjectId.encode(message.tuitionInvoice, writer.uint32(18).fork()).join();
+    }
+    if (message.tuitionPlan !== undefined) {
+      ObjectId.encode(message.tuitionPlan, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ModifyTuitionInvoiceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseModifyTuitionInvoiceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.tuitionInvoice = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.tuitionPlan = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ModifyTuitionInvoiceRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      tuitionInvoice: isSet(object.tuitionInvoice) ? ObjectId.fromJSON(object.tuitionInvoice) : undefined,
+      tuitionPlan: isSet(object.tuitionPlan) ? ObjectId.fromJSON(object.tuitionPlan) : undefined,
+    };
+  },
+
+  toJSON(message: ModifyTuitionInvoiceRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.tuitionInvoice !== undefined) {
+      obj.tuitionInvoice = ObjectId.toJSON(message.tuitionInvoice);
+    }
+    if (message.tuitionPlan !== undefined) {
+      obj.tuitionPlan = ObjectId.toJSON(message.tuitionPlan);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ModifyTuitionInvoiceRequest>, I>>(base?: I): ModifyTuitionInvoiceRequest {
+    return ModifyTuitionInvoiceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ModifyTuitionInvoiceRequest>, I>>(object: I): ModifyTuitionInvoiceRequest {
+    const message = createBaseModifyTuitionInvoiceRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.tuitionInvoice = (object.tuitionInvoice !== undefined && object.tuitionInvoice !== null)
+      ? ObjectId.fromPartial(object.tuitionInvoice)
+      : undefined;
+    message.tuitionPlan = (object.tuitionPlan !== undefined && object.tuitionPlan !== null)
+      ? ObjectId.fromPartial(object.tuitionPlan)
+      : undefined;
     return message;
   },
 };
