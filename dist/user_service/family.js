@@ -9,17 +9,18 @@ exports.Family = exports.FamilyInformation = exports.FamilyContact = exports.pro
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
+const phone_number_1 = require("../utils/phone_number");
 exports.protobufPackage = "user_service";
 function createBaseFamilyContact() {
-    return { name: "", phone: "", email: "" };
+    return { name: "", phone: undefined, email: "" };
 }
 exports.FamilyContact = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.name !== "") {
             writer.uint32(10).string(message.name);
         }
-        if (message.phone !== "") {
-            writer.uint32(18).string(message.phone);
+        if (message.phone !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.phone, writer.uint32(18).fork()).join();
         }
         if (message.email !== "") {
             writer.uint32(26).string(message.email);
@@ -43,7 +44,7 @@ exports.FamilyContact = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.phone = reader.string();
+                    message.phone = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -62,7 +63,7 @@ exports.FamilyContact = {
     fromJSON(object) {
         return {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+            phone: isSet(object.phone) ? phone_number_1.PhoneNumber.fromJSON(object.phone) : undefined,
             email: isSet(object.email) ? globalThis.String(object.email) : "",
         };
     },
@@ -71,8 +72,8 @@ exports.FamilyContact = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.phone !== "") {
-            obj.phone = message.phone;
+        if (message.phone !== undefined) {
+            obj.phone = phone_number_1.PhoneNumber.toJSON(message.phone);
         }
         if (message.email !== "") {
             obj.email = message.email;
@@ -85,7 +86,9 @@ exports.FamilyContact = {
     fromPartial(object) {
         const message = createBaseFamilyContact();
         message.name = object.name ?? "";
-        message.phone = object.phone ?? "";
+        message.phone = (object.phone !== undefined && object.phone !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.phone)
+            : undefined;
         message.email = object.email ?? "";
         return message;
     },

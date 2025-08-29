@@ -23,8 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tuition = exports.Organization_payment_plan = exports.Transaction_service = exports.Processing_fees_service = exports.Processing_fees = exports.Tuition_invoice_service = exports.Payment_service = exports.Invoice = exports.Tuition_service = exports.Tuition_invoice = exports.Announcement_service = exports.Onboarding_settings = exports.Organization_profile_settings = exports.Organization = exports.Onboarding_settings_service = exports.Bassem_labs_staff = exports.Bassem_labs_staff_service = exports.Campus_service = exports.Organization_service = exports.Announcement = exports.Organization_owner = exports.Onboarding_steps = exports.Campus = exports.Organization_profile_settings_service = exports.Organization_owner_service = exports.Kms_service = exports.Kms_key = exports.Homeroom = exports.Course = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Report_layout = exports.Semester_service = exports.Course_service = exports.Gclass = exports.Timestamp = exports.Test_service = exports.Test = exports.User_type = exports.Aws_file = exports.Object_id = exports.Request_context = exports.Action_required_by_parents = exports.Family = exports.Custom_field_entry = exports.Custom_fields_template = exports.Email_template = exports.Invoice_to_charge = exports.Sample = void 0;
-exports.Organization_payment_plan_service = exports.Tuition_application_service = exports.Invoice_service = exports.Transaction = exports.Tuition_application = void 0;
+exports.Organization_payment_plan = exports.Transaction_service = exports.Processing_fees_service = exports.Processing_fees = exports.Tuition_invoice_service = exports.Payment_service = exports.Invoice = exports.Tuition_service = exports.Tuition_invoice = exports.Announcement_service = exports.Onboarding_settings = exports.Organization_profile_settings = exports.Organization = exports.Onboarding_settings_service = exports.Bassem_labs_staff = exports.Bassem_labs_staff_service = exports.Campus_service = exports.Organization_service = exports.Announcement = exports.Organization_owner = exports.Onboarding_steps = exports.Campus = exports.Organization_profile_settings_service = exports.Organization_owner_service = exports.Kms_service = exports.Kms_key = exports.Homeroom = exports.Course = exports.Report_layout_service = exports.Semester = exports.Homeroom_service = exports.Report_layout = exports.Semester_service = exports.Course_service = exports.Gclass = exports.Timestamp = exports.Test_service = exports.Test = exports.Phone_number = exports.User_type = exports.Aws_file = exports.Object_id = exports.Request_context = exports.Action_required_by_parents = exports.Family = exports.Custom_field_entry = exports.Custom_fields_template = exports.Email_template = exports.Invoice_to_charge = exports.Sample = void 0;
+exports.Organization_payment_plan_service = exports.Tuition_application_service = exports.Invoice_service = exports.Transaction = exports.Tuition_application = exports.Tuition = void 0;
 // Auto-generated index.ts
 const Sample = __importStar(require("./rabbitmq_schemas/sample"));
 exports.Sample = Sample;
@@ -48,6 +48,8 @@ const Aws_file = __importStar(require("./utils/aws_file"));
 exports.Aws_file = Aws_file;
 const User_type = __importStar(require("./utils/user_type"));
 exports.User_type = User_type;
+const Phone_number = __importStar(require("./utils/phone_number"));
+exports.Phone_number = Phone_number;
 const Test = __importStar(require("./template_service/test"));
 exports.Test = Test;
 const Test_service = __importStar(require("./template_service/test_service"));

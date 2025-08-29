@@ -7,12 +7,13 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { PhoneNumber } from "../utils/phone_number";
 
 export const protobufPackage = "user_service";
 
 export interface FamilyContact {
   name: string;
-  phone: string;
+  phone: PhoneNumber | undefined;
   email: string;
 }
 
@@ -34,7 +35,7 @@ export interface Family {
 }
 
 function createBaseFamilyContact(): FamilyContact {
-  return { name: "", phone: "", email: "" };
+  return { name: "", phone: undefined, email: "" };
 }
 
 export const FamilyContact: MessageFns<FamilyContact> = {
@@ -42,8 +43,8 @@ export const FamilyContact: MessageFns<FamilyContact> = {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
-    if (message.phone !== "") {
-      writer.uint32(18).string(message.phone);
+    if (message.phone !== undefined) {
+      PhoneNumber.encode(message.phone, writer.uint32(18).fork()).join();
     }
     if (message.email !== "") {
       writer.uint32(26).string(message.email);
@@ -70,7 +71,7 @@ export const FamilyContact: MessageFns<FamilyContact> = {
             break;
           }
 
-          message.phone = reader.string();
+          message.phone = PhoneNumber.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -91,7 +92,7 @@ export const FamilyContact: MessageFns<FamilyContact> = {
   fromJSON(object: any): FamilyContact {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+      phone: isSet(object.phone) ? PhoneNumber.fromJSON(object.phone) : undefined,
       email: isSet(object.email) ? globalThis.String(object.email) : "",
     };
   },
@@ -101,8 +102,8 @@ export const FamilyContact: MessageFns<FamilyContact> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.phone !== "") {
-      obj.phone = message.phone;
+    if (message.phone !== undefined) {
+      obj.phone = PhoneNumber.toJSON(message.phone);
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -116,7 +117,9 @@ export const FamilyContact: MessageFns<FamilyContact> = {
   fromPartial<I extends Exact<DeepPartial<FamilyContact>, I>>(object: I): FamilyContact {
     const message = createBaseFamilyContact();
     message.name = object.name ?? "";
-    message.phone = object.phone ?? "";
+    message.phone = (object.phone !== undefined && object.phone !== null)
+      ? PhoneNumber.fromPartial(object.phone)
+      : undefined;
     message.email = object.email ?? "";
     return message;
   },

@@ -1,30 +1,11 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ObjectId } from "../utils/object_id";
-import { PhoneNumber } from "../utils/phone_number";
-export declare const protobufPackage = "user_service";
-export interface FamilyContact {
-    name: string;
-    phone: PhoneNumber | undefined;
-    email: string;
+export declare const protobufPackage = "utils";
+export interface PhoneNumber {
+    countryCode: string;
+    number: string;
+    country: string;
 }
-export interface FamilyInformation {
-    studentLiving: string;
-    languageSpoken: string;
-    preferredContact?: ObjectId | undefined;
-    emergencyContact: FamilyContact | undefined;
-    primaryPayer?: ObjectId | undefined;
-}
-export interface Family {
-    id: ObjectId | undefined;
-    organization: ObjectId | undefined;
-    name: string;
-    guardians: ObjectId[];
-    guardiansToNotContact: ObjectId[];
-    information: FamilyInformation | undefined;
-}
-export declare const FamilyContact: MessageFns<FamilyContact>;
-export declare const FamilyInformation: MessageFns<FamilyInformation>;
-export declare const Family: MessageFns<Family>;
+export declare const PhoneNumber: MessageFns<PhoneNumber>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

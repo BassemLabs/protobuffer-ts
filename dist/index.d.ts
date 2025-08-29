@@ -20,6 +20,8 @@ import * as Aws_file from './utils/aws_file';
 export { Aws_file };
 import * as User_type from './utils/user_type';
 export { User_type };
+import * as Phone_number from './utils/phone_number';
+export { Phone_number };
 import * as Test from './template_service/test';
 export { Test };
 import * as Test_service from './template_service/test_service';
