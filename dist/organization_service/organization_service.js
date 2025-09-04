@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -2085,6 +2085,104 @@ exports.MarkOnboardingStepAsCompletedRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.stepName = object.stepName ?? onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE;
+        return message;
+    },
+};
+function createBaseUpdateInvoiceSettingsRequest() {
+    return { context: undefined, organizationId: undefined, disableTax: false, hstNumber: "" };
+}
+exports.UpdateInvoiceSettingsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organizationId !== undefined) {
+            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        }
+        if (message.disableTax !== false) {
+            writer.uint32(24).bool(message.disableTax);
+        }
+        if (message.hstNumber !== undefined && message.hstNumber !== "") {
+            writer.uint32(34).string(message.hstNumber);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateInvoiceSettingsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.disableTax = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.hstNumber = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+            hstNumber: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organizationId !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        }
+        if (message.disableTax !== false) {
+            obj.disableTax = message.disableTax;
+        }
+        if (message.hstNumber !== undefined && message.hstNumber !== "") {
+            obj.hstNumber = message.hstNumber;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateInvoiceSettingsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateInvoiceSettingsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+            : undefined;
+        message.disableTax = object.disableTax ?? false;
+        message.hstNumber = object.hstNumber ?? "";
         return message;
     },
 };

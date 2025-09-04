@@ -1,6 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { OnboardingSettings } from "./onboarding_settings";
+import { InvoiceSettings } from "./organization_invoice_settings";
 import { OrganizationProfileSettings } from "./organization_profile_settings";
 export declare const protobufPackage = "organization_service";
 export declare enum Currency {
@@ -23,6 +24,7 @@ export interface Organization {
     openedReregistrationForComingSchoolYear: boolean;
     countryCode?: string | undefined;
     paymentInformation: PaymentInformation | undefined;
+    invoiceSettings: InvoiceSettings | undefined;
     loginId: string;
 }
 export interface SchoolYear {

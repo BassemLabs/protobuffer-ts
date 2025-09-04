@@ -180,6 +180,13 @@ export interface MarkOnboardingStepAsCompletedRequest {
   stepName: OnboardingStepName;
 }
 
+export interface UpdateInvoiceSettingsRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  disableTax: boolean;
+  hstNumber?: string | undefined;
+}
+
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
   return { context: undefined, organizationId: undefined };
 }
@@ -2541,6 +2548,114 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.stepName = object.stepName ?? OnboardingStepName.ORG_OWNER_PROFILE;
+    return message;
+  },
+};
+
+function createBaseUpdateInvoiceSettingsRequest(): UpdateInvoiceSettingsRequest {
+  return { context: undefined, organizationId: undefined, disableTax: false, hstNumber: "" };
+}
+
+export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest> = {
+  encode(message: UpdateInvoiceSettingsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.disableTax !== false) {
+      writer.uint32(24).bool(message.disableTax);
+    }
+    if (message.hstNumber !== undefined && message.hstNumber !== "") {
+      writer.uint32(34).string(message.hstNumber);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateInvoiceSettingsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateInvoiceSettingsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.disableTax = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.hstNumber = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateInvoiceSettingsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      hstNumber: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+    };
+  },
+
+  toJSON(message: UpdateInvoiceSettingsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.disableTax !== false) {
+      obj.disableTax = message.disableTax;
+    }
+    if (message.hstNumber !== undefined && message.hstNumber !== "") {
+      obj.hstNumber = message.hstNumber;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateInvoiceSettingsRequest>, I>>(base?: I): UpdateInvoiceSettingsRequest {
+    return UpdateInvoiceSettingsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateInvoiceSettingsRequest>, I>>(object: I): UpdateInvoiceSettingsRequest {
+    const message = createBaseUpdateInvoiceSettingsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.disableTax = object.disableTax ?? false;
+    message.hstNumber = object.hstNumber ?? "";
     return message;
   },
 };

@@ -9,6 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { OnboardingSettings } from "./onboarding_settings";
+import { InvoiceSettings } from "./organization_invoice_settings";
 import { OrganizationProfileSettings } from "./organization_profile_settings";
 
 export const protobufPackage = "organization_service";
@@ -70,6 +71,7 @@ export interface Organization {
   openedReregistrationForComingSchoolYear: boolean;
   countryCode?: string | undefined;
   paymentInformation: PaymentInformation | undefined;
+  invoiceSettings: InvoiceSettings | undefined;
   loginId: string;
 }
 
@@ -103,6 +105,7 @@ function createBaseOrganization(): Organization {
     openedReregistrationForComingSchoolYear: false,
     countryCode: "",
     paymentInformation: undefined,
+    invoiceSettings: undefined,
     loginId: "",
   };
 }
@@ -142,8 +145,11 @@ export const Organization: MessageFns<Organization> = {
     if (message.paymentInformation !== undefined) {
       PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
     }
+    if (message.invoiceSettings !== undefined) {
+      InvoiceSettings.encode(message.invoiceSettings, writer.uint32(98).fork()).join();
+    }
     if (message.loginId !== "") {
-      writer.uint32(98).string(message.loginId);
+      writer.uint32(106).string(message.loginId);
     }
     return writer;
   },
@@ -237,6 +243,13 @@ export const Organization: MessageFns<Organization> = {
             break;
           }
 
+          message.invoiceSettings = InvoiceSettings.decode(reader, reader.uint32());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.loginId = reader.string();
           continue;
       }
@@ -269,6 +282,7 @@ export const Organization: MessageFns<Organization> = {
       paymentInformation: isSet(object.paymentInformation)
         ? PaymentInformation.fromJSON(object.paymentInformation)
         : undefined,
+      invoiceSettings: isSet(object.invoiceSettings) ? InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
       loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
     };
   },
@@ -308,6 +322,9 @@ export const Organization: MessageFns<Organization> = {
     if (message.paymentInformation !== undefined) {
       obj.paymentInformation = PaymentInformation.toJSON(message.paymentInformation);
     }
+    if (message.invoiceSettings !== undefined) {
+      obj.invoiceSettings = InvoiceSettings.toJSON(message.invoiceSettings);
+    }
     if (message.loginId !== "") {
       obj.loginId = message.loginId;
     }
@@ -340,6 +357,9 @@ export const Organization: MessageFns<Organization> = {
     message.countryCode = object.countryCode ?? "";
     message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
       ? PaymentInformation.fromPartial(object.paymentInformation)
+      : undefined;
+    message.invoiceSettings = (object.invoiceSettings !== undefined && object.invoiceSettings !== null)
+      ? InvoiceSettings.fromPartial(object.invoiceSettings)
       : undefined;
     message.loginId = object.loginId ?? "";
     return message;

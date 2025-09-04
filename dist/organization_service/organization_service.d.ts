@@ -136,6 +136,12 @@ export interface MarkOnboardingStepAsCompletedRequest {
     context: RequestContext | undefined;
     stepName: OnboardingStepName;
 }
+export interface UpdateInvoiceSettingsRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    disableTax: boolean;
+    hstNumber?: string | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -164,6 +170,7 @@ export declare const GetOrganizationOnboardingStepsStatusRequest: MessageFns<Get
 export declare const GetAllOrganizationsOnboardingStepsStatusRequest: MessageFns<GetAllOrganizationsOnboardingStepsStatusRequest>;
 export declare const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<GetAllOrganizationsOnboardingStepsStatusResponse>;
 export declare const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStepAsCompletedRequest>;
+export declare const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

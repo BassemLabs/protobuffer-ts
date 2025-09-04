@@ -14,6 +14,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const onboarding_settings_1 = require("./onboarding_settings");
+const organization_invoice_settings_1 = require("./organization_invoice_settings");
 const organization_profile_settings_1 = require("./organization_profile_settings");
 exports.protobufPackage = "organization_service";
 var Currency;
@@ -71,6 +72,7 @@ function createBaseOrganization() {
         openedReregistrationForComingSchoolYear: false,
         countryCode: "",
         paymentInformation: undefined,
+        invoiceSettings: undefined,
         loginId: "",
     };
 }
@@ -109,8 +111,11 @@ exports.Organization = {
         if (message.paymentInformation !== undefined) {
             exports.PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
         }
+        if (message.invoiceSettings !== undefined) {
+            organization_invoice_settings_1.InvoiceSettings.encode(message.invoiceSettings, writer.uint32(98).fork()).join();
+        }
         if (message.loginId !== "") {
-            writer.uint32(98).string(message.loginId);
+            writer.uint32(106).string(message.loginId);
         }
         return writer;
     },
@@ -191,6 +196,12 @@ exports.Organization = {
                     if (tag !== 98) {
                         break;
                     }
+                    message.invoiceSettings = organization_invoice_settings_1.InvoiceSettings.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
                     message.loginId = reader.string();
                     continue;
             }
@@ -222,6 +233,7 @@ exports.Organization = {
             paymentInformation: isSet(object.paymentInformation)
                 ? exports.PaymentInformation.fromJSON(object.paymentInformation)
                 : undefined,
+            invoiceSettings: isSet(object.invoiceSettings) ? organization_invoice_settings_1.InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
             loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
         };
     },
@@ -260,6 +272,9 @@ exports.Organization = {
         if (message.paymentInformation !== undefined) {
             obj.paymentInformation = exports.PaymentInformation.toJSON(message.paymentInformation);
         }
+        if (message.invoiceSettings !== undefined) {
+            obj.invoiceSettings = organization_invoice_settings_1.InvoiceSettings.toJSON(message.invoiceSettings);
+        }
         if (message.loginId !== "") {
             obj.loginId = message.loginId;
         }
@@ -291,6 +306,9 @@ exports.Organization = {
         message.countryCode = object.countryCode ?? "";
         message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
             ? exports.PaymentInformation.fromPartial(object.paymentInformation)
+            : undefined;
+        message.invoiceSettings = (object.invoiceSettings !== undefined && object.invoiceSettings !== null)
+            ? organization_invoice_settings_1.InvoiceSettings.fromPartial(object.invoiceSettings)
             : undefined;
         message.loginId = object.loginId ?? "";
         return message;
