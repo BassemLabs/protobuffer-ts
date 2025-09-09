@@ -185,7 +185,6 @@ export interface UpsertOrganizationInvoiceRequest {
     organizationId: ObjectId | undefined;
     invoiceStartDate: Date | undefined;
     invoiceEndDate: Date | undefined;
-    upfrontAmount: number;
     currentEnrolledStudentsCount: number;
     isInTrialPeriod: boolean;
 }

@@ -245,7 +245,6 @@ export interface UpsertOrganizationInvoiceRequest {
   organizationId: ObjectId | undefined;
   invoiceStartDate: Date | undefined;
   invoiceEndDate: Date | undefined;
-  upfrontAmount: number;
   currentEnrolledStudentsCount: number;
   isInTrialPeriod: boolean;
 }
@@ -3633,7 +3632,6 @@ function createBaseUpsertOrganizationInvoiceRequest(): UpsertOrganizationInvoice
     organizationId: undefined,
     invoiceStartDate: undefined,
     invoiceEndDate: undefined,
-    upfrontAmount: 0,
     currentEnrolledStudentsCount: 0,
     isInTrialPeriod: false,
   };
@@ -3653,14 +3651,11 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
     if (message.invoiceEndDate !== undefined) {
       Timestamp.encode(toTimestamp(message.invoiceEndDate), writer.uint32(34).fork()).join();
     }
-    if (message.upfrontAmount !== 0) {
-      writer.uint32(41).double(message.upfrontAmount);
-    }
     if (message.currentEnrolledStudentsCount !== 0) {
-      writer.uint32(48).uint32(message.currentEnrolledStudentsCount);
+      writer.uint32(40).uint32(message.currentEnrolledStudentsCount);
     }
     if (message.isInTrialPeriod !== false) {
-      writer.uint32(56).bool(message.isInTrialPeriod);
+      writer.uint32(48).bool(message.isInTrialPeriod);
     }
     return writer;
   },
@@ -3701,21 +3696,14 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
           message.invoiceEndDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 5:
-          if (tag !== 41) {
-            break;
-          }
-
-          message.upfrontAmount = reader.double();
-          continue;
-        case 6:
-          if (tag !== 48) {
+          if (tag !== 40) {
             break;
           }
 
           message.currentEnrolledStudentsCount = reader.uint32();
           continue;
-        case 7:
-          if (tag !== 56) {
+        case 6:
+          if (tag !== 48) {
             break;
           }
 
@@ -3736,7 +3724,6 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       invoiceStartDate: isSet(object.invoiceStartDate) ? fromJsonTimestamp(object.invoiceStartDate) : undefined,
       invoiceEndDate: isSet(object.invoiceEndDate) ? fromJsonTimestamp(object.invoiceEndDate) : undefined,
-      upfrontAmount: isSet(object.upfrontAmount) ? globalThis.Number(object.upfrontAmount) : 0,
       currentEnrolledStudentsCount: isSet(object.currentEnrolledStudentsCount)
         ? globalThis.Number(object.currentEnrolledStudentsCount)
         : 0,
@@ -3757,9 +3744,6 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
     }
     if (message.invoiceEndDate !== undefined) {
       obj.invoiceEndDate = message.invoiceEndDate.toISOString();
-    }
-    if (message.upfrontAmount !== 0) {
-      obj.upfrontAmount = message.upfrontAmount;
     }
     if (message.currentEnrolledStudentsCount !== 0) {
       obj.currentEnrolledStudentsCount = Math.round(message.currentEnrolledStudentsCount);
@@ -3787,7 +3771,6 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
       : undefined;
     message.invoiceStartDate = object.invoiceStartDate ?? undefined;
     message.invoiceEndDate = object.invoiceEndDate ?? undefined;
-    message.upfrontAmount = object.upfrontAmount ?? 0;
     message.currentEnrolledStudentsCount = object.currentEnrolledStudentsCount ?? 0;
     message.isInTrialPeriod = object.isInTrialPeriod ?? false;
     return message;

@@ -86,6 +86,8 @@ export enum PaymentType {
   Cash = "Cash",
   Cheque = "Cheque",
   Card = "Card",
+  /** ORGANIZATION_INVOICE - application fee from non-tuition invoice transactions (deferred bassemlabs fee) */
+  ORGANIZATION_INVOICE = "ORGANIZATION_INVOICE",
   Other = "Other",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
@@ -105,6 +107,9 @@ export function paymentTypeFromJSON(object: any): PaymentType {
     case "Card":
       return PaymentType.Card;
     case 5:
+    case "ORGANIZATION_INVOICE":
+      return PaymentType.ORGANIZATION_INVOICE;
+    case 6:
     case "Other":
       return PaymentType.Other;
     case -1:
@@ -124,6 +129,8 @@ export function paymentTypeToJSON(object: PaymentType): string {
       return "Cheque";
     case PaymentType.Card:
       return "Card";
+    case PaymentType.ORGANIZATION_INVOICE:
+      return "ORGANIZATION_INVOICE";
     case PaymentType.Other:
       return "Other";
     case PaymentType.UNRECOGNIZED:
@@ -142,8 +149,10 @@ export function paymentTypeToNumber(object: PaymentType): number {
       return 3;
     case PaymentType.Card:
       return 4;
-    case PaymentType.Other:
+    case PaymentType.ORGANIZATION_INVOICE:
       return 5;
+    case PaymentType.Other:
+      return 6;
     case PaymentType.UNRECOGNIZED:
     default:
       return -1;
@@ -214,7 +223,15 @@ export interface Transaction {
   invoice: ObjectId | undefined;
   amount: number;
   declinedReason?: string | undefined;
-  processingFeeAmount?: number | undefined;
+  processingFeeAmount?:
+    | number
+    | undefined;
+  /** this is for the fixed tuition cost */
+  bassemLabsFee?:
+    | number
+    | undefined;
+  /** this is for the percentage */
+  invoiceSurcharge?: number | undefined;
 }
 
 export interface RefundTransaction {
@@ -259,6 +276,8 @@ function createBaseTransaction(): Transaction {
     amount: 0,
     declinedReason: "",
     processingFeeAmount: 0,
+    bassemLabsFee: 0,
+    invoiceSurcharge: 0,
   };
 }
 
@@ -296,6 +315,12 @@ export const Transaction: MessageFns<Transaction> = {
     }
     if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
       writer.uint32(89).double(message.processingFeeAmount);
+    }
+    if (message.bassemLabsFee !== undefined && message.bassemLabsFee !== 0) {
+      writer.uint32(97).double(message.bassemLabsFee);
+    }
+    if (message.invoiceSurcharge !== undefined && message.invoiceSurcharge !== 0) {
+      writer.uint32(105).double(message.invoiceSurcharge);
     }
     return writer;
   },
@@ -384,6 +409,20 @@ export const Transaction: MessageFns<Transaction> = {
 
           message.processingFeeAmount = reader.double();
           continue;
+        case 12:
+          if (tag !== 97) {
+            break;
+          }
+
+          message.bassemLabsFee = reader.double();
+          continue;
+        case 13:
+          if (tag !== 105) {
+            break;
+          }
+
+          message.invoiceSurcharge = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -406,6 +445,8 @@ export const Transaction: MessageFns<Transaction> = {
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
       declinedReason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
       processingFeeAmount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
+      bassemLabsFee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : 0,
+      invoiceSurcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : 0,
     };
   },
 
@@ -444,6 +485,12 @@ export const Transaction: MessageFns<Transaction> = {
     if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
       obj.processingFeeAmount = message.processingFeeAmount;
     }
+    if (message.bassemLabsFee !== undefined && message.bassemLabsFee !== 0) {
+      obj.bassemLabsFee = message.bassemLabsFee;
+    }
+    if (message.invoiceSurcharge !== undefined && message.invoiceSurcharge !== 0) {
+      obj.invoiceSurcharge = message.invoiceSurcharge;
+    }
     return obj;
   },
 
@@ -467,6 +514,8 @@ export const Transaction: MessageFns<Transaction> = {
     message.amount = object.amount ?? 0;
     message.declinedReason = object.declinedReason ?? "";
     message.processingFeeAmount = object.processingFeeAmount ?? 0;
+    message.bassemLabsFee = object.bassemLabsFee ?? 0;
+    message.invoiceSurcharge = object.invoiceSurcharge ?? 0;
     return message;
   },
 };

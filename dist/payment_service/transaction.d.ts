@@ -18,6 +18,8 @@ export declare enum PaymentType {
     Cash = "Cash",
     Cheque = "Cheque",
     Card = "Card",
+    /** ORGANIZATION_INVOICE - application fee from non-tuition invoice transactions (deferred bassemlabs fee) */
+    ORGANIZATION_INVOICE = "ORGANIZATION_INVOICE",
     Other = "Other",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
@@ -45,6 +47,10 @@ export interface Transaction {
     amount: number;
     declinedReason?: string | undefined;
     processingFeeAmount?: number | undefined;
+    /** this is for the fixed tuition cost */
+    bassemLabsFee?: number | undefined;
+    /** this is for the percentage */
+    invoiceSurcharge?: number | undefined;
 }
 export interface RefundTransaction {
     id: ObjectId | undefined;
