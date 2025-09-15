@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentSemestersResponse = exports.GetStudentSemestersRequest = exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
+exports.GetStudentSemestersResponse = exports.GetStudentSemestersRequest = exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersBySchoolYearRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -376,6 +376,76 @@ exports.GetActiveSemestersResponse = {
     fromPartial(object) {
         const message = createBaseGetActiveSemestersResponse();
         message.semesters = object.semesters?.map((e) => semester_1.Semester.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetActiveSemestersBySchoolYearRequest() {
+    return { context: undefined, schoolYearId: undefined };
+}
+exports.GetActiveSemestersBySchoolYearRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.schoolYearId !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetActiveSemestersBySchoolYearRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.schoolYearId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            schoolYearId: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.schoolYearId !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.schoolYearId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetActiveSemestersBySchoolYearRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetActiveSemestersBySchoolYearRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYearId)
+            : undefined;
         return message;
     },
 };

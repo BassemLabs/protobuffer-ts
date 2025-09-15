@@ -43,6 +43,11 @@ export interface GetActiveSemestersResponse {
   semesters: Semester[];
 }
 
+export interface GetActiveSemestersBySchoolYearRequest {
+  context: RequestContext | undefined;
+  schoolYearId: ObjectId | undefined;
+}
+
 export interface CoursesRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
@@ -509,6 +514,88 @@ export const GetActiveSemestersResponse: MessageFns<GetActiveSemestersResponse> 
   fromPartial<I extends Exact<DeepPartial<GetActiveSemestersResponse>, I>>(object: I): GetActiveSemestersResponse {
     const message = createBaseGetActiveSemestersResponse();
     message.semesters = object.semesters?.map((e) => Semester.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetActiveSemestersBySchoolYearRequest(): GetActiveSemestersBySchoolYearRequest {
+  return { context: undefined, schoolYearId: undefined };
+}
+
+export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemestersBySchoolYearRequest> = {
+  encode(message: GetActiveSemestersBySchoolYearRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetActiveSemestersBySchoolYearRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetActiveSemestersBySchoolYearRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetActiveSemestersBySchoolYearRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetActiveSemestersBySchoolYearRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetActiveSemestersBySchoolYearRequest>, I>>(
+    base?: I,
+  ): GetActiveSemestersBySchoolYearRequest {
+    return GetActiveSemestersBySchoolYearRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetActiveSemestersBySchoolYearRequest>, I>>(
+    object: I,
+  ): GetActiveSemestersBySchoolYearRequest {
+    const message = createBaseGetActiveSemestersBySchoolYearRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
+      : undefined;
     return message;
   },
 };

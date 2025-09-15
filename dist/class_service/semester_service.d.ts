@@ -27,6 +27,10 @@ export interface GetActiveSemestersRequest {
 export interface GetActiveSemestersResponse {
     semesters: Semester[];
 }
+export interface GetActiveSemestersBySchoolYearRequest {
+    context: RequestContext | undefined;
+    schoolYearId: ObjectId | undefined;
+}
 export interface CoursesRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
@@ -84,6 +88,7 @@ export declare const AggregateSemesterRequest: MessageFns<AggregateSemesterReque
 export declare const AggregateSemesterResponse: MessageFns<AggregateSemesterResponse>;
 export declare const GetActiveSemestersRequest: MessageFns<GetActiveSemestersRequest>;
 export declare const GetActiveSemestersResponse: MessageFns<GetActiveSemestersResponse>;
+export declare const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemestersBySchoolYearRequest>;
 export declare const CoursesRequest: MessageFns<CoursesRequest>;
 export declare const CoursesResponse: MessageFns<CoursesResponse>;
 export declare const HomeroomsRequest: MessageFns<HomeroomsRequest>;
