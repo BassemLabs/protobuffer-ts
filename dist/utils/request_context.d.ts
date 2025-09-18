@@ -23,6 +23,7 @@ export interface UserContext {
     organizationId?: ObjectId | undefined;
     roles: string[];
     parentFamilyIds: ObjectId[];
+    parentStudentIds: ObjectId[];
     fullName: string;
     firebaseToken: string;
     exp: number;

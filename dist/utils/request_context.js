@@ -158,6 +158,7 @@ function createBaseUserContext() {
         organizationId: undefined,
         roles: [],
         parentFamilyIds: [],
+        parentStudentIds: [],
         fullName: "",
         firebaseToken: "",
         exp: 0,
@@ -184,17 +185,20 @@ exports.UserContext = {
         for (const v of message.parentFamilyIds) {
             object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
+        for (const v of message.parentStudentIds) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
         if (message.fullName !== "") {
-            writer.uint32(58).string(message.fullName);
+            writer.uint32(66).string(message.fullName);
         }
         if (message.firebaseToken !== "") {
-            writer.uint32(66).string(message.firebaseToken);
+            writer.uint32(74).string(message.firebaseToken);
         }
         if (message.exp !== 0) {
-            writer.uint32(72).uint64(message.exp);
+            writer.uint32(80).uint64(message.exp);
         }
         if (message.traceId !== "") {
-            writer.uint32(82).string(message.traceId);
+            writer.uint32(90).string(message.traceId);
         }
         return writer;
     },
@@ -245,22 +249,28 @@ exports.UserContext = {
                     if (tag !== 58) {
                         break;
                     }
-                    message.fullName = reader.string();
+                    message.parentStudentIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 8:
                     if (tag !== 66) {
                         break;
                     }
-                    message.firebaseToken = reader.string();
+                    message.fullName = reader.string();
                     continue;
                 case 9:
-                    if (tag !== 72) {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.firebaseToken = reader.string();
+                    continue;
+                case 10:
+                    if (tag !== 80) {
                         break;
                     }
                     message.exp = longToNumber(reader.uint64());
                     continue;
-                case 10:
-                    if (tag !== 82) {
+                case 11:
+                    if (tag !== 90) {
                         break;
                     }
                     message.traceId = reader.string();
@@ -282,6 +292,9 @@ exports.UserContext = {
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => globalThis.String(e)) : [],
             parentFamilyIds: globalThis.Array.isArray(object?.parentFamilyIds)
                 ? object.parentFamilyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            parentStudentIds: globalThis.Array.isArray(object?.parentStudentIds)
+                ? object.parentStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             fullName: isSet(object.fullName) ? globalThis.String(object.fullName) : "",
             firebaseToken: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : "",
@@ -308,6 +321,9 @@ exports.UserContext = {
         }
         if (message.parentFamilyIds?.length) {
             obj.parentFamilyIds = message.parentFamilyIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.parentStudentIds?.length) {
+            obj.parentStudentIds = message.parentStudentIds.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.fullName !== "") {
             obj.fullName = message.fullName;
@@ -338,6 +354,7 @@ exports.UserContext = {
             : undefined;
         message.roles = object.roles?.map((e) => e) || [];
         message.parentFamilyIds = object.parentFamilyIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.parentStudentIds = object.parentStudentIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.fullName = object.fullName ?? "";
         message.firebaseToken = object.firebaseToken ?? "";
         message.exp = object.exp ?? 0;
