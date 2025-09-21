@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Homeroom = exports.Course_service = exports.Timestamp = exports.Sample = exports.Invoice_to_charge = exports.Request_context = exports.User_type = exports.Object_id = exports.Aws_file = exports.Phone_number = exports.Email_template = exports.Custom_field_entry = exports.Family = exports.Custom_fields_template = exports.Action_required_by_parents = exports.Tuition = exports.Organization_payment_plan_service = exports.Transaction = exports.Processing_fees_service = exports.Invoice = exports.Tuition_application_service = exports.Tuition_service = exports.Invoice_service = exports.Tuition_application = exports.Processing_fees = exports.Organization_payment_plan = exports.Tuition_invoice = exports.Payment_service = exports.Transaction_service = exports.Tuition_invoice_service = exports.Organization_profile_settings_service = exports.Kms_service = exports.Organization_service = exports.Onboarding_settings = exports.Onboarding_steps = exports.Organization_owner = exports.Organization_invoice_settings = exports.Announcement = exports.Campus = exports.Kms_key = exports.Announcement_service = exports.Bassem_labs_staff_service = exports.Onboarding_settings_service = exports.Organization_profile_settings = exports.Bassem_labs_staff = exports.Organization = exports.Organization_owner_service = exports.Campus_service = exports.Test = exports.Test_service = void 0;
-exports.Gclass = exports.Report_layout = exports.Course = exports.Homeroom_service = exports.Report_layout_service = exports.Semester = exports.Semester_service = void 0;
+exports.Gclass = exports.Report_layout = exports.Course = exports.Homeroom_service = exports.Student_evaluation_entry = exports.Report_layout_service = exports.Semester = exports.Semester_service = void 0;
 // Auto-generated index.ts
 const Test_service = __importStar(require("./template_service/test_service"));
 exports.Test_service = Test_service;
@@ -132,6 +132,8 @@ const Semester = __importStar(require("./class_service/semester"));
 exports.Semester = Semester;
 const Report_layout_service = __importStar(require("./class_service/report_layout_service"));
 exports.Report_layout_service = Report_layout_service;
+const Student_evaluation_entry = __importStar(require("./class_service/student_evaluation_entry"));
+exports.Student_evaluation_entry = Student_evaluation_entry;
 const Homeroom_service = __importStar(require("./class_service/homeroom_service"));
 exports.Homeroom_service = Homeroom_service;
 const Course = __importStar(require("./class_service/course"));

@@ -104,6 +104,8 @@ import * as Semester from './class_service/semester';
 export { Semester };
 import * as Report_layout_service from './class_service/report_layout_service';
 export { Report_layout_service };
+import * as Student_evaluation_entry from './class_service/student_evaluation_entry';
+export { Student_evaluation_entry };
 import * as Homeroom_service from './class_service/homeroom_service';
 export { Homeroom_service };
 import * as Course from './class_service/course';
