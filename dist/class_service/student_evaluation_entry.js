@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/student_evaluation_entry.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StudentPublishedEvaluationEntry = exports.protobufPackage = void 0;
+exports.CourseEvaluations = exports.StudentCourseMarkOverview = exports.StudentPublishedEvaluationEntry = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -18,10 +18,15 @@ function createBaseStudentPublishedEvaluationEntry() {
         studentId: undefined,
         mark: 0,
         courseName: "",
+        courseId: undefined,
         evaluationName: "",
+        evaluationWeight: 0,
         totalMark: 0,
         date: undefined,
         lastPublishedAt: undefined,
+        categoryId: undefined,
+        categoryName: "",
+        markCategoryWeight: 0,
     };
 }
 exports.StudentPublishedEvaluationEntry = {
@@ -41,17 +46,32 @@ exports.StudentPublishedEvaluationEntry = {
         if (message.courseName !== "") {
             writer.uint32(42).string(message.courseName);
         }
+        if (message.courseId !== undefined) {
+            object_id_1.ObjectId.encode(message.courseId, writer.uint32(50).fork()).join();
+        }
         if (message.evaluationName !== "") {
-            writer.uint32(50).string(message.evaluationName);
+            writer.uint32(58).string(message.evaluationName);
+        }
+        if (message.evaluationWeight !== 0) {
+            writer.uint32(64).uint32(message.evaluationWeight);
         }
         if (message.totalMark !== 0) {
-            writer.uint32(56).uint32(message.totalMark);
+            writer.uint32(72).uint32(message.totalMark);
         }
         if (message.date !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(66).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(82).fork()).join();
         }
         if (message.lastPublishedAt !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.lastPublishedAt), writer.uint32(74).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.lastPublishedAt), writer.uint32(90).fork()).join();
+        }
+        if (message.categoryId !== undefined) {
+            object_id_1.ObjectId.encode(message.categoryId, writer.uint32(98).fork()).join();
+        }
+        if (message.categoryName !== "") {
+            writer.uint32(106).string(message.categoryName);
+        }
+        if (message.markCategoryWeight !== 0) {
+            writer.uint32(112).uint32(message.markCategoryWeight);
         }
         return writer;
     },
@@ -96,25 +116,55 @@ exports.StudentPublishedEvaluationEntry = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.evaluationName = reader.string();
+                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 7:
-                    if (tag !== 56) {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.evaluationName = reader.string();
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.evaluationWeight = reader.uint32();
+                    continue;
+                case 9:
+                    if (tag !== 72) {
                         break;
                     }
                     message.totalMark = reader.uint32();
                     continue;
-                case 8:
-                    if (tag !== 66) {
+                case 10:
+                    if (tag !== 82) {
                         break;
                     }
                     message.date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
-                case 9:
-                    if (tag !== 74) {
+                case 11:
+                    if (tag !== 90) {
                         break;
                     }
                     message.lastPublishedAt = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.categoryId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.categoryName = reader.string();
+                    continue;
+                case 14:
+                    if (tag !== 112) {
+                        break;
+                    }
+                    message.markCategoryWeight = reader.uint32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -131,10 +181,15 @@ exports.StudentPublishedEvaluationEntry = {
             studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
             courseName: isSet(object.courseName) ? globalThis.String(object.courseName) : "",
+            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             evaluationName: isSet(object.evaluationName) ? globalThis.String(object.evaluationName) : "",
+            evaluationWeight: isSet(object.evaluationWeight) ? globalThis.Number(object.evaluationWeight) : 0,
             totalMark: isSet(object.totalMark) ? globalThis.Number(object.totalMark) : 0,
             date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
             lastPublishedAt: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
+            categoryId: isSet(object.categoryId) ? object_id_1.ObjectId.fromJSON(object.categoryId) : undefined,
+            categoryName: isSet(object.categoryName) ? globalThis.String(object.categoryName) : "",
+            markCategoryWeight: isSet(object.markCategoryWeight) ? globalThis.Number(object.markCategoryWeight) : 0,
         };
     },
     toJSON(message) {
@@ -154,8 +209,14 @@ exports.StudentPublishedEvaluationEntry = {
         if (message.courseName !== "") {
             obj.courseName = message.courseName;
         }
+        if (message.courseId !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        }
         if (message.evaluationName !== "") {
             obj.evaluationName = message.evaluationName;
+        }
+        if (message.evaluationWeight !== 0) {
+            obj.evaluationWeight = Math.round(message.evaluationWeight);
         }
         if (message.totalMark !== 0) {
             obj.totalMark = Math.round(message.totalMark);
@@ -165,6 +226,15 @@ exports.StudentPublishedEvaluationEntry = {
         }
         if (message.lastPublishedAt !== undefined) {
             obj.lastPublishedAt = message.lastPublishedAt.toISOString();
+        }
+        if (message.categoryId !== undefined) {
+            obj.categoryId = object_id_1.ObjectId.toJSON(message.categoryId);
+        }
+        if (message.categoryName !== "") {
+            obj.categoryName = message.categoryName;
+        }
+        if (message.markCategoryWeight !== 0) {
+            obj.markCategoryWeight = Math.round(message.markCategoryWeight);
         }
         return obj;
     },
@@ -184,10 +254,221 @@ exports.StudentPublishedEvaluationEntry = {
             : undefined;
         message.mark = object.mark ?? 0;
         message.courseName = object.courseName ?? "";
+        message.courseId = (object.courseId !== undefined && object.courseId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.courseId)
+            : undefined;
         message.evaluationName = object.evaluationName ?? "";
+        message.evaluationWeight = object.evaluationWeight ?? 0;
         message.totalMark = object.totalMark ?? 0;
         message.date = object.date ?? undefined;
         message.lastPublishedAt = object.lastPublishedAt ?? undefined;
+        message.categoryId = (object.categoryId !== undefined && object.categoryId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.categoryId)
+            : undefined;
+        message.categoryName = object.categoryName ?? "";
+        message.markCategoryWeight = object.markCategoryWeight ?? 0;
+        return message;
+    },
+};
+function createBaseStudentCourseMarkOverview() {
+    return {
+        courseId: undefined,
+        courseName: "",
+        courseCode: "",
+        semesterId: undefined,
+        semesterName: "",
+        studentMark: 0,
+    };
+}
+exports.StudentCourseMarkOverview = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.courseId !== undefined) {
+            object_id_1.ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+        }
+        if (message.courseName !== "") {
+            writer.uint32(18).string(message.courseName);
+        }
+        if (message.courseCode !== "") {
+            writer.uint32(26).string(message.courseCode);
+        }
+        if (message.semesterId !== undefined) {
+            object_id_1.ObjectId.encode(message.semesterId, writer.uint32(34).fork()).join();
+        }
+        if (message.semesterName !== "") {
+            writer.uint32(42).string(message.semesterName);
+        }
+        if (message.studentMark !== undefined && message.studentMark !== 0) {
+            writer.uint32(49).double(message.studentMark);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStudentCourseMarkOverview();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.courseName = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.courseCode = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semesterId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.semesterName = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 49) {
+                        break;
+                    }
+                    message.studentMark = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            courseName: isSet(object.courseName) ? globalThis.String(object.courseName) : "",
+            courseCode: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
+            semesterId: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            semesterName: isSet(object.semesterName) ? globalThis.String(object.semesterName) : "",
+            studentMark: isSet(object.studentMark) ? globalThis.Number(object.studentMark) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courseId !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        }
+        if (message.courseName !== "") {
+            obj.courseName = message.courseName;
+        }
+        if (message.courseCode !== "") {
+            obj.courseCode = message.courseCode;
+        }
+        if (message.semesterId !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semesterId);
+        }
+        if (message.semesterName !== "") {
+            obj.semesterName = message.semesterName;
+        }
+        if (message.studentMark !== undefined && message.studentMark !== 0) {
+            obj.studentMark = message.studentMark;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StudentCourseMarkOverview.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStudentCourseMarkOverview();
+        message.courseId = (object.courseId !== undefined && object.courseId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.courseId)
+            : undefined;
+        message.courseName = object.courseName ?? "";
+        message.courseCode = object.courseCode ?? "";
+        message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semesterId)
+            : undefined;
+        message.semesterName = object.semesterName ?? "";
+        message.studentMark = object.studentMark ?? 0;
+        return message;
+    },
+};
+function createBaseCourseEvaluations() {
+    return { studentMark: 0, courseEvaluations: [] };
+}
+exports.CourseEvaluations = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.studentMark !== undefined && message.studentMark !== 0) {
+            writer.uint32(9).double(message.studentMark);
+        }
+        for (const v of message.courseEvaluations) {
+            exports.StudentPublishedEvaluationEntry.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCourseEvaluations();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 9) {
+                        break;
+                    }
+                    message.studentMark = reader.double();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.courseEvaluations.push(exports.StudentPublishedEvaluationEntry.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            studentMark: isSet(object.studentMark) ? globalThis.Number(object.studentMark) : 0,
+            courseEvaluations: globalThis.Array.isArray(object?.courseEvaluations)
+                ? object.courseEvaluations.map((e) => exports.StudentPublishedEvaluationEntry.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.studentMark !== undefined && message.studentMark !== 0) {
+            obj.studentMark = message.studentMark;
+        }
+        if (message.courseEvaluations?.length) {
+            obj.courseEvaluations = message.courseEvaluations.map((e) => exports.StudentPublishedEvaluationEntry.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CourseEvaluations.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCourseEvaluations();
+        message.studentMark = object.studentMark ?? 0;
+        message.courseEvaluations = object.courseEvaluations?.map((e) => exports.StudentPublishedEvaluationEntry.fromPartial(e)) ||
+            [];
         return message;
     },
 };

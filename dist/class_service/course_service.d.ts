@@ -30,6 +30,11 @@ export interface GetStudentCoursesRequest {
     studentId: ObjectId | undefined;
     includeArchived?: boolean | undefined;
 }
+export interface GetStudentCoursesForSchoolYearRequest {
+    context: RequestContext | undefined;
+    studentId: ObjectId | undefined;
+    schoolYearId: ObjectId | undefined;
+}
 /** Request to archive a course */
 export interface ArchiveCourseRequest {
     context: RequestContext | undefined;
@@ -138,6 +143,7 @@ export declare const CourseResponse: MessageFns<CourseResponse>;
 export declare const GClassCourseWorkResponse: MessageFns<GClassCourseWorkResponse>;
 export declare const GClassStudentSubmissionResponse: MessageFns<GClassStudentSubmissionResponse>;
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
+export declare const GetStudentCoursesForSchoolYearRequest: MessageFns<GetStudentCoursesForSchoolYearRequest>;
 export declare const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest>;
 export declare const UpdateCourseRequest: MessageFns<UpdateCourseRequest>;
 export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;

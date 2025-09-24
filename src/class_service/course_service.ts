@@ -46,6 +46,12 @@ export interface GetStudentCoursesRequest {
   includeArchived?: boolean | undefined;
 }
 
+export interface GetStudentCoursesForSchoolYearRequest {
+  context: RequestContext | undefined;
+  studentId: ObjectId | undefined;
+  schoolYearId: ObjectId | undefined;
+}
+
 /** Request to archive a course */
 export interface ArchiveCourseRequest {
   context: RequestContext | undefined;
@@ -646,6 +652,105 @@ export const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest> = {
       ? ObjectId.fromPartial(object.studentId)
       : undefined;
     message.includeArchived = object.includeArchived ?? false;
+    return message;
+  },
+};
+
+function createBaseGetStudentCoursesForSchoolYearRequest(): GetStudentCoursesForSchoolYearRequest {
+  return { context: undefined, studentId: undefined, schoolYearId: undefined };
+}
+
+export const GetStudentCoursesForSchoolYearRequest: MessageFns<GetStudentCoursesForSchoolYearRequest> = {
+  encode(message: GetStudentCoursesForSchoolYearRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.studentId !== undefined) {
+      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentCoursesForSchoolYearRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentCoursesForSchoolYearRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.studentId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentCoursesForSchoolYearRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentCoursesForSchoolYearRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.studentId !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.studentId);
+    }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentCoursesForSchoolYearRequest>, I>>(
+    base?: I,
+  ): GetStudentCoursesForSchoolYearRequest {
+    return GetStudentCoursesForSchoolYearRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentCoursesForSchoolYearRequest>, I>>(
+    object: I,
+  ): GetStudentCoursesForSchoolYearRequest {
+    const message = createBaseGetStudentCoursesForSchoolYearRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.studentId = (object.studentId !== undefined && object.studentId !== null)
+      ? ObjectId.fromPartial(object.studentId)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
+      : undefined;
     return message;
   },
 };

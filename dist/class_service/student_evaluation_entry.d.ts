@@ -8,12 +8,32 @@ export interface StudentPublishedEvaluationEntry {
     studentId: ObjectId | undefined;
     mark?: number | undefined;
     courseName: string;
+    courseId: ObjectId | undefined;
     evaluationName: string;
+    evaluationWeight: number;
     totalMark: number;
     date: Date | undefined;
     lastPublishedAt?: Date | undefined;
+    categoryId: ObjectId | undefined;
+    categoryName: string;
+    markCategoryWeight: number;
+}
+export interface StudentCourseMarkOverview {
+    courseId: ObjectId | undefined;
+    courseName: string;
+    courseCode: string;
+    semesterId: ObjectId | undefined;
+    semesterName: string;
+    /** the mark for published evaluations for this course through all categories */
+    studentMark?: number | undefined;
+}
+export interface CourseEvaluations {
+    studentMark?: number | undefined;
+    courseEvaluations: StudentPublishedEvaluationEntry[];
 }
 export declare const StudentPublishedEvaluationEntry: MessageFns<StudentPublishedEvaluationEntry>;
+export declare const StudentCourseMarkOverview: MessageFns<StudentCourseMarkOverview>;
+export declare const CourseEvaluations: MessageFns<CourseEvaluations>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

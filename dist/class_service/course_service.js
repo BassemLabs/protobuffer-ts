@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentGClassCourseWorkRequest = exports.GetGClassCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.AddAttendanceTeachersRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesRequest = exports.GClassStudentSubmissionResponse = exports.GClassCourseWorkResponse = exports.CourseResponse = exports.AggregateCourseResponse = exports.AggregateCourseRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentGClassCourseWorkRequest = exports.GetGClassCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.AddAttendanceTeachersRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentCoursesRequest = exports.GClassStudentSubmissionResponse = exports.GClassCourseWorkResponse = exports.CourseResponse = exports.AggregateCourseResponse = exports.AggregateCourseRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -443,6 +443,92 @@ exports.GetStudentCoursesRequest = {
             ? object_id_1.ObjectId.fromPartial(object.studentId)
             : undefined;
         message.includeArchived = object.includeArchived ?? false;
+        return message;
+    },
+};
+function createBaseGetStudentCoursesForSchoolYearRequest() {
+    return { context: undefined, studentId: undefined, schoolYearId: undefined };
+}
+exports.GetStudentCoursesForSchoolYearRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.studentId !== undefined) {
+            object_id_1.ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+        }
+        if (message.schoolYearId !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYearId, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentCoursesForSchoolYearRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.schoolYearId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            schoolYearId: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.studentId !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        }
+        if (message.schoolYearId !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.schoolYearId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentCoursesForSchoolYearRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentCoursesForSchoolYearRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.studentId = (object.studentId !== undefined && object.studentId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.studentId)
+            : undefined;
+        message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYearId)
+            : undefined;
         return message;
     },
 };
