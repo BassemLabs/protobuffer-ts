@@ -600,6 +600,7 @@ function createBaseUpdateOrganizationSettingsRequest() {
         countryCode: "",
         currency: organization_1.Currency.USD,
         loginId: "",
+        mainAddress: "",
     };
 }
 exports.UpdateOrganizationSettingsRequest = {
@@ -627,6 +628,9 @@ exports.UpdateOrganizationSettingsRequest = {
         }
         if (message.loginId !== "") {
             writer.uint32(66).string(message.loginId);
+        }
+        if (message.mainAddress !== "") {
+            writer.uint32(74).string(message.mainAddress);
         }
         return writer;
     },
@@ -685,6 +689,12 @@ exports.UpdateOrganizationSettingsRequest = {
                     }
                     message.loginId = reader.string();
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.mainAddress = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -703,6 +713,7 @@ exports.UpdateOrganizationSettingsRequest = {
             countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
             loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+            mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
         };
     },
     toJSON(message) {
@@ -731,6 +742,9 @@ exports.UpdateOrganizationSettingsRequest = {
         if (message.loginId !== "") {
             obj.loginId = message.loginId;
         }
+        if (message.mainAddress !== "") {
+            obj.mainAddress = message.mainAddress;
+        }
         return obj;
     },
     create(base) {
@@ -750,6 +764,7 @@ exports.UpdateOrganizationSettingsRequest = {
         message.countryCode = object.countryCode ?? "";
         message.currency = object.currency ?? organization_1.Currency.USD;
         message.loginId = object.loginId ?? "";
+        message.mainAddress = object.mainAddress ?? "";
         return message;
     },
 };

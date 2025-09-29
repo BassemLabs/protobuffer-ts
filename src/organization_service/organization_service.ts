@@ -80,6 +80,7 @@ export interface UpdateOrganizationSettingsRequest {
   countryCode: string;
   currency: Currency;
   loginId: string;
+  mainAddress: string;
 }
 
 /** Request to fetch all organizations */
@@ -852,6 +853,7 @@ function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettin
     countryCode: "",
     currency: Currency.USD,
     loginId: "",
+    mainAddress: "",
   };
 }
 
@@ -880,6 +882,9 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.loginId !== "") {
       writer.uint32(66).string(message.loginId);
+    }
+    if (message.mainAddress !== "") {
+      writer.uint32(74).string(message.mainAddress);
     }
     return writer;
   },
@@ -947,6 +952,13 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
 
           message.loginId = reader.string();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.mainAddress = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -966,6 +978,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
       loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+      mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
     };
   },
 
@@ -995,6 +1008,9 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.loginId !== "") {
       obj.loginId = message.loginId;
     }
+    if (message.mainAddress !== "") {
+      obj.mainAddress = message.mainAddress;
+    }
     return obj;
   },
 
@@ -1019,6 +1035,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.countryCode = object.countryCode ?? "";
     message.currency = object.currency ?? Currency.USD;
     message.loginId = object.loginId ?? "";
+    message.mainAddress = object.mainAddress ?? "";
     return message;
   },
 };

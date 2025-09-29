@@ -56,6 +56,7 @@ export interface UpdateOrganizationSettingsRequest {
     countryCode: string;
     currency: Currency;
     loginId: string;
+    mainAddress: string;
 }
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {

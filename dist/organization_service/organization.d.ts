@@ -26,6 +26,7 @@ export interface Organization {
     paymentInformation: PaymentInformation | undefined;
     invoiceSettings: InvoiceSettings | undefined;
     loginId: string;
+    mainAddress: string;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;

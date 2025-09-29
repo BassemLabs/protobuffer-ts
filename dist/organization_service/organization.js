@@ -74,6 +74,7 @@ function createBaseOrganization() {
         paymentInformation: undefined,
         invoiceSettings: undefined,
         loginId: "",
+        mainAddress: "",
     };
 }
 exports.Organization = {
@@ -116,6 +117,9 @@ exports.Organization = {
         }
         if (message.loginId !== "") {
             writer.uint32(106).string(message.loginId);
+        }
+        if (message.mainAddress !== "") {
+            writer.uint32(114).string(message.mainAddress);
         }
         return writer;
     },
@@ -204,6 +208,12 @@ exports.Organization = {
                     }
                     message.loginId = reader.string();
                     continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.mainAddress = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -235,6 +245,7 @@ exports.Organization = {
                 : undefined,
             invoiceSettings: isSet(object.invoiceSettings) ? organization_invoice_settings_1.InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
             loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+            mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
         };
     },
     toJSON(message) {
@@ -278,6 +289,9 @@ exports.Organization = {
         if (message.loginId !== "") {
             obj.loginId = message.loginId;
         }
+        if (message.mainAddress !== "") {
+            obj.mainAddress = message.mainAddress;
+        }
         return obj;
     },
     create(base) {
@@ -311,6 +325,7 @@ exports.Organization = {
             ? organization_invoice_settings_1.InvoiceSettings.fromPartial(object.invoiceSettings)
             : undefined;
         message.loginId = object.loginId ?? "";
+        message.mainAddress = object.mainAddress ?? "";
         return message;
     },
 };
