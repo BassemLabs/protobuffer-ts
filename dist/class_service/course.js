@@ -10,6 +10,7 @@ exports.Course = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const homeroom_1 = require("./homeroom");
+const lms_course_1 = require("./lms_course");
 const report_layout_1 = require("./report_layout");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service";
@@ -23,7 +24,7 @@ function createBaseCourse() {
         courseCode: "",
         teacherIds: [],
         studentIds: [],
-        gclassId: "",
+        lmsCourse: undefined,
         reportLayout: undefined,
     };
 }
@@ -53,8 +54,8 @@ exports.Course = {
         for (const v of message.studentIds) {
             object_id_1.ObjectId.encode(v, writer.uint32(66).fork()).join();
         }
-        if (message.gclassId !== undefined && message.gclassId !== "") {
-            writer.uint32(74).string(message.gclassId);
+        if (message.lmsCourse !== undefined) {
+            lms_course_1.LmsCourse.encode(message.lmsCourse, writer.uint32(74).fork()).join();
         }
         if (message.reportLayout !== undefined) {
             report_layout_1.ReportLayout.encode(message.reportLayout, writer.uint32(82).fork()).join();
@@ -120,7 +121,7 @@ exports.Course = {
                     if (tag !== 74) {
                         break;
                     }
-                    message.gclassId = reader.string();
+                    message.lmsCourse = lms_course_1.LmsCourse.decode(reader, reader.uint32());
                     continue;
                 case 10:
                     if (tag !== 82) {
@@ -150,7 +151,7 @@ exports.Course = {
             studentIds: globalThis.Array.isArray(object?.studentIds)
                 ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            gclassId: isSet(object.gclassId) ? globalThis.String(object.gclassId) : "",
+            lmsCourse: isSet(object.lmsCourse) ? lms_course_1.LmsCourse.fromJSON(object.lmsCourse) : undefined,
             reportLayout: isSet(object.reportLayout) ? report_layout_1.ReportLayout.fromJSON(object.reportLayout) : undefined,
         };
     },
@@ -180,8 +181,8 @@ exports.Course = {
         if (message.studentIds?.length) {
             obj.studentIds = message.studentIds.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.gclassId !== undefined && message.gclassId !== "") {
-            obj.gclassId = message.gclassId;
+        if (message.lmsCourse !== undefined) {
+            obj.lmsCourse = lms_course_1.LmsCourse.toJSON(message.lmsCourse);
         }
         if (message.reportLayout !== undefined) {
             obj.reportLayout = report_layout_1.ReportLayout.toJSON(message.reportLayout);
@@ -205,7 +206,9 @@ exports.Course = {
         message.courseCode = object.courseCode ?? "";
         message.teacherIds = object.teacherIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.studentIds = object.studentIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.gclassId = object.gclassId ?? "";
+        message.lmsCourse = (object.lmsCourse !== undefined && object.lmsCourse !== null)
+            ? lms_course_1.LmsCourse.fromPartial(object.lmsCourse)
+            : undefined;
         message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
             ? report_layout_1.ReportLayout.fromPartial(object.reportLayout)
             : undefined;

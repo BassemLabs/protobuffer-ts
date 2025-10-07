@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
-import { GClassCourseWork, GClassStudentSubmission } from "./gclass";
+import { LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
 export declare const protobufPackage = "class_service.course_service";
 export interface GetCourseRequest {
     context: RequestContext | undefined;
@@ -18,11 +18,11 @@ export interface AggregateCourseResponse {
 export interface CourseResponse {
     course: Course[];
 }
-export interface GClassCourseWorkResponse {
-    gclassCourseWork: GClassCourseWork[];
+export interface LmsCourseWorkResponse {
+    lmsCourseWork: LmsCourseWork[];
 }
-export interface GClassStudentSubmissionResponse {
-    gclassStudentSubmission: GClassStudentSubmission[];
+export interface LmsStudentSubmissionResponse {
+    lmsStudentSubmission: LmsSubmission[];
 }
 /** Request to get student courses */
 export interface GetStudentCoursesRequest {
@@ -87,13 +87,13 @@ export interface AttendanceClassesRequest {
 export interface AllAttendanceClassesRequest {
     context: RequestContext | undefined;
 }
-/** Request to get GClass course work for a course */
-export interface GetGClassCourseWorkRequest {
+/** Request to get LMS course work for a course */
+export interface GetLmsCourseWorkRequest {
     context: RequestContext | undefined;
     courseId: ObjectId | undefined;
 }
-/** Request to get GClass student submissions for a course and student */
-export interface GetStudentGClassCourseWorkRequest {
+/** Request to get LMS student submissions for a course and student */
+export interface GetStudentLmsCourseWorkRequest {
     context: RequestContext | undefined;
     courseId: ObjectId | undefined;
     studentId: ObjectId | undefined;
@@ -105,7 +105,7 @@ export interface StandaloneCreateRequest {
     semesterId: ObjectId | undefined;
     teachers: ObjectId[];
     courseCode: string;
-    gclassCreate: boolean;
+    lmsProvider?: LmsProviderType | undefined;
 }
 /** Request for standalone_clone */
 export interface StandaloneCloneRequest {
@@ -124,7 +124,7 @@ export interface HomeroomCreateRequest {
     courseCode: string;
     teachers: ObjectId[];
     homeroomId: ObjectId | undefined;
-    gclassCreate: boolean;
+    lmsProvider?: LmsProviderType | undefined;
 }
 /** Request for homeroom_clone */
 export interface HomeroomCloneRequest {
@@ -140,8 +140,8 @@ export declare const GetCourseRequest: MessageFns<GetCourseRequest>;
 export declare const AggregateCourseRequest: MessageFns<AggregateCourseRequest>;
 export declare const AggregateCourseResponse: MessageFns<AggregateCourseResponse>;
 export declare const CourseResponse: MessageFns<CourseResponse>;
-export declare const GClassCourseWorkResponse: MessageFns<GClassCourseWorkResponse>;
-export declare const GClassStudentSubmissionResponse: MessageFns<GClassStudentSubmissionResponse>;
+export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
+export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
 export declare const GetStudentCoursesForSchoolYearRequest: MessageFns<GetStudentCoursesForSchoolYearRequest>;
 export declare const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest>;
@@ -153,8 +153,8 @@ export declare const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest>;
 export declare const AddAttendanceTeachersRequest: MessageFns<AddAttendanceTeachersRequest>;
 export declare const AttendanceClassesRequest: MessageFns<AttendanceClassesRequest>;
 export declare const AllAttendanceClassesRequest: MessageFns<AllAttendanceClassesRequest>;
-export declare const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest>;
-export declare const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCourseWorkRequest>;
+export declare const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest>;
+export declare const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkRequest>;
 export declare const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest>;
 export declare const StandaloneCloneRequest: MessageFns<StandaloneCloneRequest>;
 export declare const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest>;

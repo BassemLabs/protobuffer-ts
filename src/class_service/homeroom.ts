@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { LmsCourse } from "./lms_course";
 import { Semester } from "./semester";
 
 export const protobufPackage = "class_service";
@@ -20,7 +21,7 @@ export interface Homeroom {
   grade?: string | undefined;
   teacherIds: ObjectId[];
   studentIds: ObjectId[];
-  gclassId?: string | undefined;
+  lmsCourse?: LmsCourse | undefined;
 }
 
 function createBaseHomeroom(): Homeroom {
@@ -32,7 +33,7 @@ function createBaseHomeroom(): Homeroom {
     grade: "",
     teacherIds: [],
     studentIds: [],
-    gclassId: "",
+    lmsCourse: undefined,
   };
 }
 
@@ -59,8 +60,8 @@ export const Homeroom: MessageFns<Homeroom> = {
     for (const v of message.studentIds) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
     }
-    if (message.gclassId !== undefined && message.gclassId !== "") {
-      writer.uint32(66).string(message.gclassId);
+    if (message.lmsCourse !== undefined) {
+      LmsCourse.encode(message.lmsCourse, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -126,7 +127,7 @@ export const Homeroom: MessageFns<Homeroom> = {
             break;
           }
 
-          message.gclassId = reader.string();
+          message.lmsCourse = LmsCourse.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -150,7 +151,7 @@ export const Homeroom: MessageFns<Homeroom> = {
       studentIds: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      gclassId: isSet(object.gclassId) ? globalThis.String(object.gclassId) : "",
+      lmsCourse: isSet(object.lmsCourse) ? LmsCourse.fromJSON(object.lmsCourse) : undefined,
     };
   },
 
@@ -177,8 +178,8 @@ export const Homeroom: MessageFns<Homeroom> = {
     if (message.studentIds?.length) {
       obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
     }
-    if (message.gclassId !== undefined && message.gclassId !== "") {
-      obj.gclassId = message.gclassId;
+    if (message.lmsCourse !== undefined) {
+      obj.lmsCourse = LmsCourse.toJSON(message.lmsCourse);
     }
     return obj;
   },
@@ -197,7 +198,9 @@ export const Homeroom: MessageFns<Homeroom> = {
     message.grade = object.grade ?? "";
     message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
     message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.gclassId = object.gclassId ?? "";
+    message.lmsCourse = (object.lmsCourse !== undefined && object.lmsCourse !== null)
+      ? LmsCourse.fromPartial(object.lmsCourse)
+      : undefined;
     return message;
   },
 };

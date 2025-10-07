@@ -9,7 +9,14 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
-import { GClassCourseWork, GClassStudentSubmission } from "./gclass";
+import {
+  LmsCourseWork,
+  LmsProviderType,
+  lmsProviderTypeFromJSON,
+  lmsProviderTypeToJSON,
+  lmsProviderTypeToNumber,
+  LmsSubmission,
+} from "./lms_course";
 
 export const protobufPackage = "class_service.course_service";
 
@@ -31,12 +38,12 @@ export interface CourseResponse {
   course: Course[];
 }
 
-export interface GClassCourseWorkResponse {
-  gclassCourseWork: GClassCourseWork[];
+export interface LmsCourseWorkResponse {
+  lmsCourseWork: LmsCourseWork[];
 }
 
-export interface GClassStudentSubmissionResponse {
-  gclassStudentSubmission: GClassStudentSubmission[];
+export interface LmsStudentSubmissionResponse {
+  lmsStudentSubmission: LmsSubmission[];
 }
 
 /** Request to get student courses */
@@ -113,14 +120,14 @@ export interface AllAttendanceClassesRequest {
   context: RequestContext | undefined;
 }
 
-/** Request to get GClass course work for a course */
-export interface GetGClassCourseWorkRequest {
+/** Request to get LMS course work for a course */
+export interface GetLmsCourseWorkRequest {
   context: RequestContext | undefined;
   courseId: ObjectId | undefined;
 }
 
-/** Request to get GClass student submissions for a course and student */
-export interface GetStudentGClassCourseWorkRequest {
+/** Request to get LMS student submissions for a course and student */
+export interface GetStudentLmsCourseWorkRequest {
   context: RequestContext | undefined;
   courseId: ObjectId | undefined;
   studentId: ObjectId | undefined;
@@ -133,7 +140,7 @@ export interface StandaloneCreateRequest {
   semesterId: ObjectId | undefined;
   teachers: ObjectId[];
   courseCode: string;
-  gclassCreate: boolean;
+  lmsProvider?: LmsProviderType | undefined;
 }
 
 /** Request for standalone_clone */
@@ -154,7 +161,7 @@ export interface HomeroomCreateRequest {
   courseCode: string;
   teachers: ObjectId[];
   homeroomId: ObjectId | undefined;
-  gclassCreate: boolean;
+  lmsProvider?: LmsProviderType | undefined;
 }
 
 /** Request for homeroom_clone */
@@ -438,22 +445,22 @@ export const CourseResponse: MessageFns<CourseResponse> = {
   },
 };
 
-function createBaseGClassCourseWorkResponse(): GClassCourseWorkResponse {
-  return { gclassCourseWork: [] };
+function createBaseLmsCourseWorkResponse(): LmsCourseWorkResponse {
+  return { lmsCourseWork: [] };
 }
 
-export const GClassCourseWorkResponse: MessageFns<GClassCourseWorkResponse> = {
-  encode(message: GClassCourseWorkResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.gclassCourseWork) {
-      GClassCourseWork.encode(v!, writer.uint32(10).fork()).join();
+export const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse> = {
+  encode(message: LmsCourseWorkResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.lmsCourseWork) {
+      LmsCourseWork.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GClassCourseWorkResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsCourseWorkResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGClassCourseWorkResponse();
+    const message = createBaseLmsCourseWorkResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -462,7 +469,7 @@ export const GClassCourseWorkResponse: MessageFns<GClassCourseWorkResponse> = {
             break;
           }
 
-          message.gclassCourseWork.push(GClassCourseWork.decode(reader, reader.uint32()));
+          message.lmsCourseWork.push(LmsCourseWork.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -473,48 +480,48 @@ export const GClassCourseWorkResponse: MessageFns<GClassCourseWorkResponse> = {
     return message;
   },
 
-  fromJSON(object: any): GClassCourseWorkResponse {
+  fromJSON(object: any): LmsCourseWorkResponse {
     return {
-      gclassCourseWork: globalThis.Array.isArray(object?.gclassCourseWork)
-        ? object.gclassCourseWork.map((e: any) => GClassCourseWork.fromJSON(e))
+      lmsCourseWork: globalThis.Array.isArray(object?.lmsCourseWork)
+        ? object.lmsCourseWork.map((e: any) => LmsCourseWork.fromJSON(e))
         : [],
     };
   },
 
-  toJSON(message: GClassCourseWorkResponse): unknown {
+  toJSON(message: LmsCourseWorkResponse): unknown {
     const obj: any = {};
-    if (message.gclassCourseWork?.length) {
-      obj.gclassCourseWork = message.gclassCourseWork.map((e) => GClassCourseWork.toJSON(e));
+    if (message.lmsCourseWork?.length) {
+      obj.lmsCourseWork = message.lmsCourseWork.map((e) => LmsCourseWork.toJSON(e));
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GClassCourseWorkResponse>, I>>(base?: I): GClassCourseWorkResponse {
-    return GClassCourseWorkResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<LmsCourseWorkResponse>, I>>(base?: I): LmsCourseWorkResponse {
+    return LmsCourseWorkResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GClassCourseWorkResponse>, I>>(object: I): GClassCourseWorkResponse {
-    const message = createBaseGClassCourseWorkResponse();
-    message.gclassCourseWork = object.gclassCourseWork?.map((e) => GClassCourseWork.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<LmsCourseWorkResponse>, I>>(object: I): LmsCourseWorkResponse {
+    const message = createBaseLmsCourseWorkResponse();
+    message.lmsCourseWork = object.lmsCourseWork?.map((e) => LmsCourseWork.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseGClassStudentSubmissionResponse(): GClassStudentSubmissionResponse {
-  return { gclassStudentSubmission: [] };
+function createBaseLmsStudentSubmissionResponse(): LmsStudentSubmissionResponse {
+  return { lmsStudentSubmission: [] };
 }
 
-export const GClassStudentSubmissionResponse: MessageFns<GClassStudentSubmissionResponse> = {
-  encode(message: GClassStudentSubmissionResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.gclassStudentSubmission) {
-      GClassStudentSubmission.encode(v!, writer.uint32(10).fork()).join();
+export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse> = {
+  encode(message: LmsStudentSubmissionResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.lmsStudentSubmission) {
+      LmsSubmission.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GClassStudentSubmissionResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsStudentSubmissionResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGClassStudentSubmissionResponse();
+    const message = createBaseLmsStudentSubmissionResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -523,7 +530,7 @@ export const GClassStudentSubmissionResponse: MessageFns<GClassStudentSubmission
             break;
           }
 
-          message.gclassStudentSubmission.push(GClassStudentSubmission.decode(reader, reader.uint32()));
+          message.lmsStudentSubmission.push(LmsSubmission.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -534,31 +541,28 @@ export const GClassStudentSubmissionResponse: MessageFns<GClassStudentSubmission
     return message;
   },
 
-  fromJSON(object: any): GClassStudentSubmissionResponse {
+  fromJSON(object: any): LmsStudentSubmissionResponse {
     return {
-      gclassStudentSubmission: globalThis.Array.isArray(object?.gclassStudentSubmission)
-        ? object.gclassStudentSubmission.map((e: any) => GClassStudentSubmission.fromJSON(e))
+      lmsStudentSubmission: globalThis.Array.isArray(object?.lmsStudentSubmission)
+        ? object.lmsStudentSubmission.map((e: any) => LmsSubmission.fromJSON(e))
         : [],
     };
   },
 
-  toJSON(message: GClassStudentSubmissionResponse): unknown {
+  toJSON(message: LmsStudentSubmissionResponse): unknown {
     const obj: any = {};
-    if (message.gclassStudentSubmission?.length) {
-      obj.gclassStudentSubmission = message.gclassStudentSubmission.map((e) => GClassStudentSubmission.toJSON(e));
+    if (message.lmsStudentSubmission?.length) {
+      obj.lmsStudentSubmission = message.lmsStudentSubmission.map((e) => LmsSubmission.toJSON(e));
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GClassStudentSubmissionResponse>, I>>(base?: I): GClassStudentSubmissionResponse {
-    return GClassStudentSubmissionResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<LmsStudentSubmissionResponse>, I>>(base?: I): LmsStudentSubmissionResponse {
+    return LmsStudentSubmissionResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GClassStudentSubmissionResponse>, I>>(
-    object: I,
-  ): GClassStudentSubmissionResponse {
-    const message = createBaseGClassStudentSubmissionResponse();
-    message.gclassStudentSubmission =
-      object.gclassStudentSubmission?.map((e) => GClassStudentSubmission.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<LmsStudentSubmissionResponse>, I>>(object: I): LmsStudentSubmissionResponse {
+    const message = createBaseLmsStudentSubmissionResponse();
+    message.lmsStudentSubmission = object.lmsStudentSubmission?.map((e) => LmsSubmission.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1570,12 +1574,12 @@ export const AllAttendanceClassesRequest: MessageFns<AllAttendanceClassesRequest
   },
 };
 
-function createBaseGetGClassCourseWorkRequest(): GetGClassCourseWorkRequest {
+function createBaseGetLmsCourseWorkRequest(): GetLmsCourseWorkRequest {
   return { context: undefined, courseId: undefined };
 }
 
-export const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest> = {
-  encode(message: GetGClassCourseWorkRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
+  encode(message: GetLmsCourseWorkRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
@@ -1585,10 +1589,10 @@ export const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest> 
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetGClassCourseWorkRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetLmsCourseWorkRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetGClassCourseWorkRequest();
+    const message = createBaseGetLmsCourseWorkRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1615,14 +1619,14 @@ export const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest> 
     return message;
   },
 
-  fromJSON(object: any): GetGClassCourseWorkRequest {
+  fromJSON(object: any): GetLmsCourseWorkRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
     };
   },
 
-  toJSON(message: GetGClassCourseWorkRequest): unknown {
+  toJSON(message: GetLmsCourseWorkRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -1633,11 +1637,11 @@ export const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest> 
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetGClassCourseWorkRequest>, I>>(base?: I): GetGClassCourseWorkRequest {
-    return GetGClassCourseWorkRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetLmsCourseWorkRequest>, I>>(base?: I): GetLmsCourseWorkRequest {
+    return GetLmsCourseWorkRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetGClassCourseWorkRequest>, I>>(object: I): GetGClassCourseWorkRequest {
-    const message = createBaseGetGClassCourseWorkRequest();
+  fromPartial<I extends Exact<DeepPartial<GetLmsCourseWorkRequest>, I>>(object: I): GetLmsCourseWorkRequest {
+    const message = createBaseGetLmsCourseWorkRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
@@ -1648,12 +1652,12 @@ export const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest> 
   },
 };
 
-function createBaseGetStudentGClassCourseWorkRequest(): GetStudentGClassCourseWorkRequest {
+function createBaseGetStudentLmsCourseWorkRequest(): GetStudentLmsCourseWorkRequest {
   return { context: undefined, courseId: undefined, studentId: undefined };
 }
 
-export const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCourseWorkRequest> = {
-  encode(message: GetStudentGClassCourseWorkRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkRequest> = {
+  encode(message: GetStudentLmsCourseWorkRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
@@ -1666,10 +1670,10 @@ export const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCours
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentGClassCourseWorkRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentLmsCourseWorkRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetStudentGClassCourseWorkRequest();
+    const message = createBaseGetStudentLmsCourseWorkRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1703,7 +1707,7 @@ export const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCours
     return message;
   },
 
-  fromJSON(object: any): GetStudentGClassCourseWorkRequest {
+  fromJSON(object: any): GetStudentLmsCourseWorkRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
@@ -1711,7 +1715,7 @@ export const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCours
     };
   },
 
-  toJSON(message: GetStudentGClassCourseWorkRequest): unknown {
+  toJSON(message: GetStudentLmsCourseWorkRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -1725,15 +1729,13 @@ export const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCours
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetStudentGClassCourseWorkRequest>, I>>(
-    base?: I,
-  ): GetStudentGClassCourseWorkRequest {
-    return GetStudentGClassCourseWorkRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetStudentLmsCourseWorkRequest>, I>>(base?: I): GetStudentLmsCourseWorkRequest {
+    return GetStudentLmsCourseWorkRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetStudentGClassCourseWorkRequest>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetStudentLmsCourseWorkRequest>, I>>(
     object: I,
-  ): GetStudentGClassCourseWorkRequest {
-    const message = createBaseGetStudentGClassCourseWorkRequest();
+  ): GetStudentLmsCourseWorkRequest {
+    const message = createBaseGetStudentLmsCourseWorkRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
@@ -1748,7 +1750,14 @@ export const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCours
 };
 
 function createBaseStandaloneCreateRequest(): StandaloneCreateRequest {
-  return { context: undefined, name: "", semesterId: undefined, teachers: [], courseCode: "", gclassCreate: false };
+  return {
+    context: undefined,
+    name: "",
+    semesterId: undefined,
+    teachers: [],
+    courseCode: "",
+    lmsProvider: LmsProviderType.GOOGLE_CLASSROOM,
+  };
 }
 
 export const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest> = {
@@ -1768,8 +1777,8 @@ export const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest> = {
     if (message.courseCode !== "") {
       writer.uint32(42).string(message.courseCode);
     }
-    if (message.gclassCreate !== false) {
-      writer.uint32(48).bool(message.gclassCreate);
+    if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
+      writer.uint32(48).int32(lmsProviderTypeToNumber(message.lmsProvider));
     }
     return writer;
   },
@@ -1821,7 +1830,7 @@ export const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest> = {
             break;
           }
 
-          message.gclassCreate = reader.bool();
+          message.lmsProvider = lmsProviderTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1839,7 +1848,9 @@ export const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest> = {
       semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
       teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => ObjectId.fromJSON(e)) : [],
       courseCode: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
-      gclassCreate: isSet(object.gclassCreate) ? globalThis.Boolean(object.gclassCreate) : false,
+      lmsProvider: isSet(object.lmsProvider)
+        ? lmsProviderTypeFromJSON(object.lmsProvider)
+        : LmsProviderType.GOOGLE_CLASSROOM,
     };
   },
 
@@ -1860,8 +1871,8 @@ export const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest> = {
     if (message.courseCode !== "") {
       obj.courseCode = message.courseCode;
     }
-    if (message.gclassCreate !== false) {
-      obj.gclassCreate = message.gclassCreate;
+    if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
+      obj.lmsProvider = lmsProviderTypeToJSON(message.lmsProvider);
     }
     return obj;
   },
@@ -1880,7 +1891,7 @@ export const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest> = {
       : undefined;
     message.teachers = object.teachers?.map((e) => ObjectId.fromPartial(e)) || [];
     message.courseCode = object.courseCode ?? "";
-    message.gclassCreate = object.gclassCreate ?? false;
+    message.lmsProvider = object.lmsProvider ?? LmsProviderType.GOOGLE_CLASSROOM;
     return message;
   },
 };
@@ -2049,7 +2060,14 @@ export const StandaloneCloneRequest: MessageFns<StandaloneCloneRequest> = {
 };
 
 function createBaseHomeroomCreateRequest(): HomeroomCreateRequest {
-  return { context: undefined, name: "", courseCode: "", teachers: [], homeroomId: undefined, gclassCreate: false };
+  return {
+    context: undefined,
+    name: "",
+    courseCode: "",
+    teachers: [],
+    homeroomId: undefined,
+    lmsProvider: LmsProviderType.GOOGLE_CLASSROOM,
+  };
 }
 
 export const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest> = {
@@ -2069,8 +2087,8 @@ export const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest> = {
     if (message.homeroomId !== undefined) {
       ObjectId.encode(message.homeroomId, writer.uint32(42).fork()).join();
     }
-    if (message.gclassCreate !== false) {
-      writer.uint32(48).bool(message.gclassCreate);
+    if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
+      writer.uint32(48).int32(lmsProviderTypeToNumber(message.lmsProvider));
     }
     return writer;
   },
@@ -2122,7 +2140,7 @@ export const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest> = {
             break;
           }
 
-          message.gclassCreate = reader.bool();
+          message.lmsProvider = lmsProviderTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2140,7 +2158,9 @@ export const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest> = {
       courseCode: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
       teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => ObjectId.fromJSON(e)) : [],
       homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      gclassCreate: isSet(object.gclassCreate) ? globalThis.Boolean(object.gclassCreate) : false,
+      lmsProvider: isSet(object.lmsProvider)
+        ? lmsProviderTypeFromJSON(object.lmsProvider)
+        : LmsProviderType.GOOGLE_CLASSROOM,
     };
   },
 
@@ -2161,8 +2181,8 @@ export const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest> = {
     if (message.homeroomId !== undefined) {
       obj.homeroomId = ObjectId.toJSON(message.homeroomId);
     }
-    if (message.gclassCreate !== false) {
-      obj.gclassCreate = message.gclassCreate;
+    if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
+      obj.lmsProvider = lmsProviderTypeToJSON(message.lmsProvider);
     }
     return obj;
   },
@@ -2181,7 +2201,7 @@ export const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest> = {
     message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
       ? ObjectId.fromPartial(object.homeroomId)
       : undefined;
-    message.gclassCreate = object.gclassCreate ?? false;
+    message.lmsProvider = object.lmsProvider ?? LmsProviderType.GOOGLE_CLASSROOM;
     return message;
   },
 };

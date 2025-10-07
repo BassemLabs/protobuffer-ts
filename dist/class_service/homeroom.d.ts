@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { LmsCourse } from "./lms_course";
 import { Semester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Homeroom {
@@ -11,7 +12,7 @@ export interface Homeroom {
     grade?: string | undefined;
     teacherIds: ObjectId[];
     studentIds: ObjectId[];
-    gclassId?: string | undefined;
+    lmsCourse?: LmsCourse | undefined;
 }
 export declare const Homeroom: MessageFns<Homeroom>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

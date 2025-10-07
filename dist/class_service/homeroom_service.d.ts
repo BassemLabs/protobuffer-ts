@@ -2,8 +2,8 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
-import { GClassCourseWork, GClassStudentSubmission } from "./gclass";
 import { Homeroom } from "./homeroom";
+import { LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
 export declare const protobufPackage = "class_service.homeroom_service";
 export interface GetHomeroomRequest {
     context: RequestContext | undefined;
@@ -22,6 +22,7 @@ export interface CreateHomeroomRequest {
     semesterId: ObjectId | undefined;
     teacherIds: ObjectId[];
     grade: string;
+    lmsProvider?: LmsProviderType | undefined;
 }
 export interface CloneHomeroomRequest {
     context: RequestContext | undefined;
@@ -95,20 +96,20 @@ export interface GetAllAttendanceClassesRequest {
 export interface GetAllAttendanceClassesResponse {
     homerooms: Homeroom[];
 }
-export interface GetGClassCourseWorkRequest {
+export interface GetLmsCourseWorkRequest {
     context: RequestContext | undefined;
     homeroomId: ObjectId | undefined;
 }
-export interface GetGClassCourseWorkResponse {
-    courseWork: GClassCourseWork[];
+export interface LmsCourseWorkResponse {
+    lmsCourseWork: LmsCourseWork[];
 }
-export interface GetStudentGClassCourseWorkRequest {
+export interface GetStudentLmsCourseWorkRequest {
     context: RequestContext | undefined;
     homeroomId: ObjectId | undefined;
     studentId: ObjectId | undefined;
 }
-export interface GetStudentGClassCourseWorkResponse {
-    submissions: GClassStudentSubmission[];
+export interface LmsStudentSubmissionResponse {
+    lmsStudentSubmission: LmsSubmission[];
 }
 export declare const GetHomeroomRequest: MessageFns<GetHomeroomRequest>;
 export declare const AggregateHomeroomRequest: MessageFns<AggregateHomeroomRequest>;
@@ -130,10 +131,10 @@ export declare const GetAttendanceClassesRequest: MessageFns<GetAttendanceClasse
 export declare const GetAttendanceClassesResponse: MessageFns<GetAttendanceClassesResponse>;
 export declare const GetAllAttendanceClassesRequest: MessageFns<GetAllAttendanceClassesRequest>;
 export declare const GetAllAttendanceClassesResponse: MessageFns<GetAllAttendanceClassesResponse>;
-export declare const GetGClassCourseWorkRequest: MessageFns<GetGClassCourseWorkRequest>;
-export declare const GetGClassCourseWorkResponse: MessageFns<GetGClassCourseWorkResponse>;
-export declare const GetStudentGClassCourseWorkRequest: MessageFns<GetStudentGClassCourseWorkRequest>;
-export declare const GetStudentGClassCourseWorkResponse: MessageFns<GetStudentGClassCourseWorkResponse>;
+export declare const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest>;
+export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
+export declare const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkRequest>;
+export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
