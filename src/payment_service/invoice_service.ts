@@ -60,6 +60,8 @@ export interface GetFamilyInvoicesRequest {
 export interface GetParentInvoicesRequest {
   context: RequestContext | undefined;
   parentId: ObjectId | undefined;
+  schoolYear?: ObjectId | undefined;
+  title?: string | undefined;
 }
 
 export interface GetActionsRequiredByParentsRequest {
@@ -688,7 +690,7 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
 };
 
 function createBaseGetParentInvoicesRequest(): GetParentInvoicesRequest {
-  return { context: undefined, parentId: undefined };
+  return { context: undefined, parentId: undefined, schoolYear: undefined, title: "" };
 }
 
 export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
@@ -698,6 +700,12 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     }
     if (message.parentId !== undefined) {
       ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    }
+    if (message.title !== undefined && message.title !== "") {
+      writer.uint32(34).string(message.title);
     }
     return writer;
   },
@@ -723,6 +731,20 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
 
           message.parentId = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -736,6 +758,8 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       parentId: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
     };
   },
 
@@ -746,6 +770,12 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     }
     if (message.parentId !== undefined) {
       obj.parentId = ObjectId.toJSON(message.parentId);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.title !== undefined && message.title !== "") {
+      obj.title = message.title;
     }
     return obj;
   },
@@ -761,6 +791,10 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     message.parentId = (object.parentId !== undefined && object.parentId !== null)
       ? ObjectId.fromPartial(object.parentId)
       : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.title = object.title ?? "";
     return message;
   },
 };

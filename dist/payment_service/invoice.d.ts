@@ -118,6 +118,7 @@ export interface InvoiceFilter {
     archived?: boolean | undefined;
     user?: ObjectId | undefined;
     family?: ObjectId | undefined;
+    schoolYear?: ObjectId | undefined;
 }
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;

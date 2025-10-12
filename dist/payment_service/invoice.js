@@ -1103,6 +1103,7 @@ function createBaseInvoiceFilter() {
         archived: false,
         user: undefined,
         family: undefined,
+        schoolYear: undefined,
     };
 }
 exports.InvoiceFilter = {
@@ -1127,6 +1128,9 @@ exports.InvoiceFilter = {
         }
         if (message.family !== undefined) {
             object_id_1.ObjectId.encode(message.family, writer.uint32(58).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -1179,6 +1183,12 @@ exports.InvoiceFilter = {
                     }
                     message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1196,6 +1206,7 @@ exports.InvoiceFilter = {
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
             user: isSet(object.user) ? object_id_1.ObjectId.fromJSON(object.user) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -1221,6 +1232,9 @@ exports.InvoiceFilter = {
         if (message.family !== undefined) {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
         return obj;
     },
     create(base) {
@@ -1236,6 +1250,9 @@ exports.InvoiceFilter = {
         message.user = (object.user !== undefined && object.user !== null) ? object_id_1.ObjectId.fromPartial(object.user) : undefined;
         message.family = (object.family !== undefined && object.family !== null)
             ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
         return message;
     },

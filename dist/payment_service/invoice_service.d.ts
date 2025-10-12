@@ -30,6 +30,8 @@ export interface GetFamilyInvoicesRequest {
 export interface GetParentInvoicesRequest {
     context: RequestContext | undefined;
     parentId: ObjectId | undefined;
+    schoolYear?: ObjectId | undefined;
+    title?: string | undefined;
 }
 export interface GetActionsRequiredByParentsRequest {
     context: RequestContext | undefined;

@@ -339,6 +339,7 @@ export interface InvoiceFilter {
   archived?: boolean | undefined;
   user?: ObjectId | undefined;
   family?: ObjectId | undefined;
+  schoolYear?: ObjectId | undefined;
 }
 
 function createBaseInvoiceItem(): InvoiceItem {
@@ -1271,6 +1272,7 @@ function createBaseInvoiceFilter(): InvoiceFilter {
     archived: false,
     user: undefined,
     family: undefined,
+    schoolYear: undefined,
   };
 }
 
@@ -1296,6 +1298,9 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     }
     if (message.family !== undefined) {
       ObjectId.encode(message.family, writer.uint32(58).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -1356,6 +1361,13 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
 
           message.family = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1374,6 +1386,7 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1400,6 +1413,9 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     if (message.family !== undefined) {
       obj.family = ObjectId.toJSON(message.family);
     }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
     return obj;
   },
 
@@ -1416,6 +1432,9 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     message.user = (object.user !== undefined && object.user !== null) ? ObjectId.fromPartial(object.user) : undefined;
     message.family = (object.family !== undefined && object.family !== null)
       ? ObjectId.fromPartial(object.family)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
     return message;
   },

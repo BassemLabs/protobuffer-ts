@@ -399,7 +399,7 @@ exports.GetFamilyInvoicesRequest = {
     },
 };
 function createBaseGetParentInvoicesRequest() {
-    return { context: undefined, parentId: undefined };
+    return { context: undefined, parentId: undefined, schoolYear: undefined, title: "" };
 }
 exports.GetParentInvoicesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -408,6 +408,12 @@ exports.GetParentInvoicesRequest = {
         }
         if (message.parentId !== undefined) {
             object_id_1.ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        }
+        if (message.title !== undefined && message.title !== "") {
+            writer.uint32(34).string(message.title);
         }
         return writer;
     },
@@ -430,6 +436,18 @@ exports.GetParentInvoicesRequest = {
                     }
                     message.parentId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -442,6 +460,8 @@ exports.GetParentInvoicesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             parentId: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : "",
         };
     },
     toJSON(message) {
@@ -451,6 +471,12 @@ exports.GetParentInvoicesRequest = {
         }
         if (message.parentId !== undefined) {
             obj.parentId = object_id_1.ObjectId.toJSON(message.parentId);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.title !== undefined && message.title !== "") {
+            obj.title = message.title;
         }
         return obj;
     },
@@ -465,6 +491,10 @@ exports.GetParentInvoicesRequest = {
         message.parentId = (object.parentId !== undefined && object.parentId !== null)
             ? object_id_1.ObjectId.fromPartial(object.parentId)
             : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.title = object.title ?? "";
         return message;
     },
 };
