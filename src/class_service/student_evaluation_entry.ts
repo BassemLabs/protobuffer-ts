@@ -26,7 +26,7 @@ export interface StudentPublishedEvaluationEntry {
   lastPublishedAt?: Date | undefined;
   categoryId: ObjectId | undefined;
   categoryName: string;
-  markCategoryWeight: number;
+  markCategoryPercentage: number;
 }
 
 export interface StudentCourseMarkOverview {
@@ -59,7 +59,7 @@ function createBaseStudentPublishedEvaluationEntry(): StudentPublishedEvaluation
     lastPublishedAt: undefined,
     categoryId: undefined,
     categoryName: "",
-    markCategoryWeight: 0,
+    markCategoryPercentage: 0,
   };
 }
 
@@ -104,8 +104,8 @@ export const StudentPublishedEvaluationEntry: MessageFns<StudentPublishedEvaluat
     if (message.categoryName !== "") {
       writer.uint32(106).string(message.categoryName);
     }
-    if (message.markCategoryWeight !== 0) {
-      writer.uint32(112).uint32(message.markCategoryWeight);
+    if (message.markCategoryPercentage !== 0) {
+      writer.uint32(112).uint32(message.markCategoryPercentage);
     }
     return writer;
   },
@@ -213,7 +213,7 @@ export const StudentPublishedEvaluationEntry: MessageFns<StudentPublishedEvaluat
             break;
           }
 
-          message.markCategoryWeight = reader.uint32();
+          message.markCategoryPercentage = reader.uint32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -239,7 +239,9 @@ export const StudentPublishedEvaluationEntry: MessageFns<StudentPublishedEvaluat
       lastPublishedAt: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
       categoryId: isSet(object.categoryId) ? ObjectId.fromJSON(object.categoryId) : undefined,
       categoryName: isSet(object.categoryName) ? globalThis.String(object.categoryName) : "",
-      markCategoryWeight: isSet(object.markCategoryWeight) ? globalThis.Number(object.markCategoryWeight) : 0,
+      markCategoryPercentage: isSet(object.markCategoryPercentage)
+        ? globalThis.Number(object.markCategoryPercentage)
+        : 0,
     };
   },
 
@@ -284,8 +286,8 @@ export const StudentPublishedEvaluationEntry: MessageFns<StudentPublishedEvaluat
     if (message.categoryName !== "") {
       obj.categoryName = message.categoryName;
     }
-    if (message.markCategoryWeight !== 0) {
-      obj.markCategoryWeight = Math.round(message.markCategoryWeight);
+    if (message.markCategoryPercentage !== 0) {
+      obj.markCategoryPercentage = Math.round(message.markCategoryPercentage);
     }
     return obj;
   },
@@ -320,7 +322,7 @@ export const StudentPublishedEvaluationEntry: MessageFns<StudentPublishedEvaluat
       ? ObjectId.fromPartial(object.categoryId)
       : undefined;
     message.categoryName = object.categoryName ?? "";
-    message.markCategoryWeight = object.markCategoryWeight ?? 0;
+    message.markCategoryPercentage = object.markCategoryPercentage ?? 0;
     return message;
   },
 };

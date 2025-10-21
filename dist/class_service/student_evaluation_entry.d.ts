@@ -16,7 +16,7 @@ export interface StudentPublishedEvaluationEntry {
     lastPublishedAt?: Date | undefined;
     categoryId: ObjectId | undefined;
     categoryName: string;
-    markCategoryWeight: number;
+    markCategoryPercentage: number;
 }
 export interface StudentCourseMarkOverview {
     courseId: ObjectId | undefined;
