@@ -35,6 +35,7 @@ export interface CloneHomeroomRequest {
 export interface GetHomeroomCoursesRequest {
     context: RequestContext | undefined;
     homeroomId: ObjectId | undefined;
+    includeArchived: boolean;
 }
 export interface GetHomeroomCoursesResponse {
     courses: Course[];

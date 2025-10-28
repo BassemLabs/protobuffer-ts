@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.AddAttendanceTeachersRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.AggregateCourseResponse = exports.AggregateCourseRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.AddAttendanceTeachersRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.AggregateCourseResponse = exports.AggregateCourseRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -592,6 +592,76 @@ exports.ArchiveCourseRequest = {
     },
     fromPartial(object) {
         const message = createBaseArchiveCourseRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.courseId = (object.courseId !== undefined && object.courseId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.courseId)
+            : undefined;
+        return message;
+    },
+};
+function createBaseUnarchiveCourseRequest() {
+    return { context: undefined, courseId: undefined };
+}
+exports.UnarchiveCourseRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.courseId !== undefined) {
+            object_id_1.ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUnarchiveCourseRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.courseId !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UnarchiveCourseRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUnarchiveCourseRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;

@@ -477,7 +477,7 @@ exports.CloneHomeroomRequest = {
     },
 };
 function createBaseGetHomeroomCoursesRequest() {
-    return { context: undefined, homeroomId: undefined };
+    return { context: undefined, homeroomId: undefined, includeArchived: false };
 }
 exports.GetHomeroomCoursesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -486,6 +486,9 @@ exports.GetHomeroomCoursesRequest = {
         }
         if (message.homeroomId !== undefined) {
             object_id_1.ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+        }
+        if (message.includeArchived !== false) {
+            writer.uint32(24).bool(message.includeArchived);
         }
         return writer;
     },
@@ -508,6 +511,12 @@ exports.GetHomeroomCoursesRequest = {
                     }
                     message.homeroomId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.includeArchived = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -520,6 +529,7 @@ exports.GetHomeroomCoursesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
         };
     },
     toJSON(message) {
@@ -529,6 +539,9 @@ exports.GetHomeroomCoursesRequest = {
         }
         if (message.homeroomId !== undefined) {
             obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroomId);
+        }
+        if (message.includeArchived !== false) {
+            obj.includeArchived = message.includeArchived;
         }
         return obj;
     },
@@ -543,6 +556,7 @@ exports.GetHomeroomCoursesRequest = {
         message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
             ? object_id_1.ObjectId.fromPartial(object.homeroomId)
             : undefined;
+        message.includeArchived = object.includeArchived ?? false;
         return message;
     },
 };

@@ -65,6 +65,11 @@ export interface ArchiveCourseRequest {
   courseId: ObjectId | undefined;
 }
 
+export interface UnarchiveCourseRequest {
+  context: RequestContext | undefined;
+  courseId: ObjectId | undefined;
+}
+
 /** Request to update a course */
 export interface UpdateCourseRequest {
   context: RequestContext | undefined;
@@ -827,6 +832,84 @@ export const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<ArchiveCourseRequest>, I>>(object: I): ArchiveCourseRequest {
     const message = createBaseArchiveCourseRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.courseId = (object.courseId !== undefined && object.courseId !== null)
+      ? ObjectId.fromPartial(object.courseId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUnarchiveCourseRequest(): UnarchiveCourseRequest {
+  return { context: undefined, courseId: undefined };
+}
+
+export const UnarchiveCourseRequest: MessageFns<UnarchiveCourseRequest> = {
+  encode(message: UnarchiveCourseRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.courseId !== undefined) {
+      ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UnarchiveCourseRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnarchiveCourseRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.courseId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UnarchiveCourseRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+    };
+  },
+
+  toJSON(message: UnarchiveCourseRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.courseId !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.courseId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnarchiveCourseRequest>, I>>(base?: I): UnarchiveCourseRequest {
+    return UnarchiveCourseRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UnarchiveCourseRequest>, I>>(object: I): UnarchiveCourseRequest {
+    const message = createBaseUnarchiveCourseRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;

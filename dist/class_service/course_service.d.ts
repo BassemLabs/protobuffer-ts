@@ -40,6 +40,10 @@ export interface ArchiveCourseRequest {
     context: RequestContext | undefined;
     courseId: ObjectId | undefined;
 }
+export interface UnarchiveCourseRequest {
+    context: RequestContext | undefined;
+    courseId: ObjectId | undefined;
+}
 /** Request to update a course */
 export interface UpdateCourseRequest {
     context: RequestContext | undefined;
@@ -145,6 +149,7 @@ export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissi
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
 export declare const GetStudentCoursesForSchoolYearRequest: MessageFns<GetStudentCoursesForSchoolYearRequest>;
 export declare const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest>;
+export declare const UnarchiveCourseRequest: MessageFns<UnarchiveCourseRequest>;
 export declare const UpdateCourseRequest: MessageFns<UpdateCourseRequest>;
 export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;
 export declare const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest>;
