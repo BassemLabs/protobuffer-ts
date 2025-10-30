@@ -134,8 +134,8 @@ export interface CreateInvoiceForClassRequest {
   description: string;
   showHst: boolean;
   disableTax: boolean;
-  homeroom?: ObjectId | undefined;
-  course?: ObjectId | undefined;
+  homerooms: ObjectId[];
+  courses: ObjectId[];
   items: InvoiceItem[];
   coupons: Coupon[];
   dueDate?: Date | undefined;
@@ -1817,8 +1817,8 @@ function createBaseCreateInvoiceForClassRequest(): CreateInvoiceForClassRequest 
     description: "",
     showHst: false,
     disableTax: false,
-    homeroom: undefined,
-    course: undefined,
+    homerooms: [],
+    courses: [],
     items: [],
     coupons: [],
     dueDate: undefined,
@@ -1846,11 +1846,11 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.disableTax !== false) {
       writer.uint32(40).bool(message.disableTax);
     }
-    if (message.homeroom !== undefined) {
-      ObjectId.encode(message.homeroom, writer.uint32(50).fork()).join();
+    for (const v of message.homerooms) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
-    if (message.course !== undefined) {
-      ObjectId.encode(message.course, writer.uint32(58).fork()).join();
+    for (const v of message.courses) {
+      ObjectId.encode(v!, writer.uint32(58).fork()).join();
     }
     for (const v of message.items) {
       InvoiceItem.encode(v!, writer.uint32(66).fork()).join();
@@ -1923,14 +1923,14 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
             break;
           }
 
-          message.homeroom = ObjectId.decode(reader, reader.uint32());
+          message.homerooms.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.course = ObjectId.decode(reader, reader.uint32());
+          message.courses.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 8:
           if (tag !== 66) {
@@ -1997,8 +1997,10 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       showHst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
       disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-      homeroom: isSet(object.homeroom) ? ObjectId.fromJSON(object.homeroom) : undefined,
-      course: isSet(object.course) ? ObjectId.fromJSON(object.course) : undefined,
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => ObjectId.fromJSON(e)) : [],
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
@@ -2028,11 +2030,11 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.disableTax !== false) {
       obj.disableTax = message.disableTax;
     }
-    if (message.homeroom !== undefined) {
-      obj.homeroom = ObjectId.toJSON(message.homeroom);
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => ObjectId.toJSON(e));
     }
-    if (message.course !== undefined) {
-      obj.course = ObjectId.toJSON(message.course);
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => ObjectId.toJSON(e));
     }
     if (message.items?.length) {
       obj.items = message.items.map((e) => InvoiceItem.toJSON(e));
@@ -2070,12 +2072,8 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     message.description = object.description ?? "";
     message.showHst = object.showHst ?? false;
     message.disableTax = object.disableTax ?? false;
-    message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
-      ? ObjectId.fromPartial(object.homeroom)
-      : undefined;
-    message.course = (object.course !== undefined && object.course !== null)
-      ? ObjectId.fromPartial(object.course)
-      : undefined;
+    message.homerooms = object.homerooms?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.courses = object.courses?.map((e) => ObjectId.fromPartial(e)) || [];
     message.items = object.items?.map((e) => InvoiceItem.fromPartial(e)) || [];
     message.coupons = object.coupons?.map((e) => Coupon.fromPartial(e)) || [];
     message.dueDate = object.dueDate ?? undefined;

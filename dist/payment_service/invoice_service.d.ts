@@ -92,8 +92,8 @@ export interface CreateInvoiceForClassRequest {
     description: string;
     showHst: boolean;
     disableTax: boolean;
-    homeroom?: ObjectId | undefined;
-    course?: ObjectId | undefined;
+    homerooms: ObjectId[];
+    courses: ObjectId[];
     items: InvoiceItem[];
     coupons: Coupon[];
     dueDate?: Date | undefined;

@@ -1401,8 +1401,8 @@ function createBaseCreateInvoiceForClassRequest() {
         description: "",
         showHst: false,
         disableTax: false,
-        homeroom: undefined,
-        course: undefined,
+        homerooms: [],
+        courses: [],
         items: [],
         coupons: [],
         dueDate: undefined,
@@ -1429,11 +1429,11 @@ exports.CreateInvoiceForClassRequest = {
         if (message.disableTax !== false) {
             writer.uint32(40).bool(message.disableTax);
         }
-        if (message.homeroom !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroom, writer.uint32(50).fork()).join();
+        for (const v of message.homerooms) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.course !== undefined) {
-            object_id_1.ObjectId.encode(message.course, writer.uint32(58).fork()).join();
+        for (const v of message.courses) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
         }
         for (const v of message.items) {
             invoice_1.InvoiceItem.encode(v, writer.uint32(66).fork()).join();
@@ -1499,13 +1499,13 @@ exports.CreateInvoiceForClassRequest = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.homeroom = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.homerooms.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.course = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.courses.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 8:
                     if (tag !== 66) {
@@ -1564,8 +1564,10 @@ exports.CreateInvoiceForClassRequest = {
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             showHst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
             disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-            homeroom: isSet(object.homeroom) ? object_id_1.ObjectId.fromJSON(object.homeroom) : undefined,
-            course: isSet(object.course) ? object_id_1.ObjectId.fromJSON(object.course) : undefined,
+            homerooms: globalThis.Array.isArray(object?.homerooms)
+                ? object.homerooms.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
@@ -1594,11 +1596,11 @@ exports.CreateInvoiceForClassRequest = {
         if (message.disableTax !== false) {
             obj.disableTax = message.disableTax;
         }
-        if (message.homeroom !== undefined) {
-            obj.homeroom = object_id_1.ObjectId.toJSON(message.homeroom);
+        if (message.homerooms?.length) {
+            obj.homerooms = message.homerooms.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.course !== undefined) {
-            obj.course = object_id_1.ObjectId.toJSON(message.course);
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.items?.length) {
             obj.items = message.items.map((e) => invoice_1.InvoiceItem.toJSON(e));
@@ -1635,12 +1637,8 @@ exports.CreateInvoiceForClassRequest = {
         message.description = object.description ?? "";
         message.showHst = object.showHst ?? false;
         message.disableTax = object.disableTax ?? false;
-        message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroom)
-            : undefined;
-        message.course = (object.course !== undefined && object.course !== null)
-            ? object_id_1.ObjectId.fromPartial(object.course)
-            : undefined;
+        message.homerooms = object.homerooms?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.courses = object.courses?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.items = object.items?.map((e) => invoice_1.InvoiceItem.fromPartial(e)) || [];
         message.coupons = object.coupons?.map((e) => invoice_1.Coupon.fromPartial(e)) || [];
         message.dueDate = object.dueDate ?? undefined;
