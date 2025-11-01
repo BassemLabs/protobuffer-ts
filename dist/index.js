@@ -23,8 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Payment_service = exports.Tuition_service = exports.Transaction_service = exports.Tuition = exports.Tuition_application = exports.Tuition_invoice = exports.Processing_fees_service = exports.Processing_fees = exports.Invoice_service = exports.Organization_payment_plan_service = exports.Organization_payment_plan = exports.Invoice = exports.Tuition_application_service = exports.Transaction = exports.Tuition_invoice_service = exports.Test = exports.Test_service = exports.Sample = exports.Invoice_to_charge = exports.Attendance = exports.Lms_course = exports.Course_service = exports.Attendance_service = exports.Homeroom = exports.Homeroom_service = exports.Semester = exports.Student_evaluation_entry = exports.Report_layout = exports.Semester_service = exports.Report_layout_service = exports.Course = exports.Announcement_service = exports.Bassem_labs_staff_service = exports.Organization = exports.Organization_owner = exports.Onboarding_settings = exports.Organization_invoice_settings = exports.Kms_key = exports.Bassem_labs_staff = exports.Organization_profile_settings_service = exports.Kms_service = exports.Organization_profile_settings = exports.Onboarding_settings_service = exports.Organization_service = exports.Onboarding_steps = exports.Campus_service = exports.Announcement = exports.Organization_owner_service = exports.Campus = exports.Timestamp = void 0;
-exports.User_type = exports.Phone_number = exports.Aws_file = exports.Request_context = exports.Object_id = exports.Custom_fields_template = exports.Family = exports.Email_template = exports.Custom_field_entry = exports.Student = exports.Action_required_by_parents = exports.Teacher = void 0;
+exports.Tuition = exports.Tuition_application = exports.Tuition_invoice = exports.Processing_fees_service = exports.Processing_fees = exports.Invoice_service = exports.Organization_payment_plan_service = exports.Organization_payment_plan = exports.Invoice = exports.Tuition_application_service = exports.Transaction = exports.Tuition_invoice_service = exports.Test = exports.Test_service = exports.Sample = exports.Invoice_to_charge = exports.Evaluation_entry = exports.Attendance = exports.Lms_course = exports.Course_service = exports.Attendance_service = exports.Homeroom = exports.Homeroom_service = exports.Semester = exports.Mark_category = exports.Evaluation = exports.Report_layout = exports.Evaluation_service = exports.Semester_service = exports.Report_layout_service = exports.Course = exports.Announcement_service = exports.Bassem_labs_staff_service = exports.Organization = exports.Organization_owner = exports.Onboarding_settings = exports.Organization_invoice_settings = exports.Kms_key = exports.Bassem_labs_staff = exports.Organization_profile_settings_service = exports.Kms_service = exports.Organization_profile_settings = exports.Onboarding_settings_service = exports.Organization_service = exports.Onboarding_steps = exports.Campus_service = exports.Announcement = exports.Organization_owner_service = exports.Campus = exports.Timestamp = void 0;
+exports.User_type = exports.Phone_number = exports.Aws_file = exports.Request_context = exports.Object_id = exports.Custom_fields_template = exports.Family = exports.Email_template = exports.Custom_field_entry = exports.Student = exports.Action_required_by_parents = exports.Teacher = exports.Payment_service = exports.Tuition_service = exports.Transaction_service = void 0;
 // Auto-generated index.ts
 const Timestamp = __importStar(require("./google/protobuf/timestamp"));
 exports.Timestamp = Timestamp;
@@ -70,10 +70,14 @@ const Report_layout_service = __importStar(require("./class_service/report_layou
 exports.Report_layout_service = Report_layout_service;
 const Semester_service = __importStar(require("./class_service/semester_service"));
 exports.Semester_service = Semester_service;
+const Evaluation_service = __importStar(require("./class_service/evaluation_service"));
+exports.Evaluation_service = Evaluation_service;
 const Report_layout = __importStar(require("./class_service/report_layout"));
 exports.Report_layout = Report_layout;
-const Student_evaluation_entry = __importStar(require("./class_service/student_evaluation_entry"));
-exports.Student_evaluation_entry = Student_evaluation_entry;
+const Evaluation = __importStar(require("./class_service/evaluation"));
+exports.Evaluation = Evaluation;
+const Mark_category = __importStar(require("./class_service/mark_category"));
+exports.Mark_category = Mark_category;
 const Semester = __importStar(require("./class_service/semester"));
 exports.Semester = Semester;
 const Homeroom_service = __importStar(require("./class_service/homeroom_service"));
@@ -88,6 +92,8 @@ const Lms_course = __importStar(require("./class_service/lms_course"));
 exports.Lms_course = Lms_course;
 const Attendance = __importStar(require("./class_service/attendance"));
 exports.Attendance = Attendance;
+const Evaluation_entry = __importStar(require("./class_service/evaluation_entry"));
+exports.Evaluation_entry = Evaluation_entry;
 const Invoice_to_charge = __importStar(require("./rabbitmq_schemas/invoice_to_charge"));
 exports.Invoice_to_charge = Invoice_to_charge;
 const Sample = __importStar(require("./rabbitmq_schemas/sample"));
