@@ -104,6 +104,8 @@ import * as Tuition_service from './payment_service/tuition_service';
 export { Tuition_service };
 import * as Payment_service from './payment_service/payment_service';
 export { Payment_service };
+import * as Email_template_service from './user_service/email_template_service';
+export { Email_template_service };
 import * as Teacher from './user_service/teacher';
 export { Teacher };
 import * as Action_required_by_parents from './user_service/action_required_by_parents';
