@@ -9,13 +9,13 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
+import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "./user_role";
 
 export const protobufPackage = "user_service";
 
 export enum TeacherStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
-  SUSPENDED = "SUSPENDED",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -27,9 +27,6 @@ export function teacherStatusFromJSON(object: any): TeacherStatus {
     case 1:
     case "INACTIVE":
       return TeacherStatus.INACTIVE;
-    case 2:
-    case "SUSPENDED":
-      return TeacherStatus.SUSPENDED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -43,8 +40,6 @@ export function teacherStatusToJSON(object: TeacherStatus): string {
       return "ACTIVE";
     case TeacherStatus.INACTIVE:
       return "INACTIVE";
-    case TeacherStatus.SUSPENDED:
-      return "SUSPENDED";
     case TeacherStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -57,8 +52,6 @@ export function teacherStatusToNumber(object: TeacherStatus): number {
       return 0;
     case TeacherStatus.INACTIVE:
       return 1;
-    case TeacherStatus.SUSPENDED:
-      return 2;
     case TeacherStatus.UNRECOGNIZED:
     default:
       return -1;
@@ -69,9 +62,10 @@ export function teacherStatusToNumber(object: TeacherStatus): number {
 export interface TeacherBasic {
   id: ObjectId | undefined;
   username: string;
+  emailDomain: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
 }
 
 /** Full teacher model with all fields */
@@ -88,10 +82,21 @@ export interface Teacher {
   dateOfBirth: Date | undefined;
   phoneNumber: PhoneNumber | undefined;
   signatureFileId?: ObjectId | undefined;
+  roles: UserRole[];
+}
+
+export interface TeacherProfile {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  email: string;
+  personalEmail: string;
+  dateOfBirth: Date | undefined;
+  phoneNumber: PhoneNumber | undefined;
 }
 
 function createBaseTeacherBasic(): TeacherBasic {
-  return { id: undefined, username: "", firstName: "", lastName: "", email: "" };
+  return { id: undefined, username: "", emailDomain: "", email: "", firstName: "", lastName: "" };
 }
 
 export const TeacherBasic: MessageFns<TeacherBasic> = {
@@ -100,16 +105,19 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.username !== "") {
-      writer.uint32(42).string(message.username);
+      writer.uint32(18).string(message.username);
     }
-    if (message.firstName !== "") {
-      writer.uint32(58).string(message.firstName);
-    }
-    if (message.lastName !== "") {
-      writer.uint32(66).string(message.lastName);
+    if (message.emailDomain !== "") {
+      writer.uint32(26).string(message.emailDomain);
     }
     if (message.email !== "") {
-      writer.uint32(82).string(message.email);
+      writer.uint32(34).string(message.email);
+    }
+    if (message.firstName !== "") {
+      writer.uint32(42).string(message.firstName);
+    }
+    if (message.lastName !== "") {
+      writer.uint32(50).string(message.lastName);
     }
     return writer;
   },
@@ -128,33 +136,40 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
 
           message.id = ObjectId.decode(reader, reader.uint32());
           continue;
-        case 5:
-          if (tag !== 42) {
+        case 2:
+          if (tag !== 18) {
             break;
           }
 
           message.username = reader.string();
           continue;
-        case 7:
-          if (tag !== 58) {
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.emailDomain = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
             break;
           }
 
           message.firstName = reader.string();
           continue;
-        case 8:
-          if (tag !== 66) {
+        case 6:
+          if (tag !== 50) {
             break;
           }
 
           message.lastName = reader.string();
-          continue;
-        case 10:
-          if (tag !== 82) {
-            break;
-          }
-
-          message.email = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -169,9 +184,10 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
+      emailDomain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
       firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
       lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
     };
   },
 
@@ -183,14 +199,17 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
     if (message.username !== "") {
       obj.username = message.username;
     }
+    if (message.emailDomain !== "") {
+      obj.emailDomain = message.emailDomain;
+    }
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
     if (message.firstName !== "") {
       obj.firstName = message.firstName;
     }
     if (message.lastName !== "") {
       obj.lastName = message.lastName;
-    }
-    if (message.email !== "") {
-      obj.email = message.email;
     }
     return obj;
   },
@@ -202,9 +221,10 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
     const message = createBaseTeacherBasic();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.username = object.username ?? "";
+    message.emailDomain = object.emailDomain ?? "";
+    message.email = object.email ?? "";
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
-    message.email = object.email ?? "";
     return message;
   },
 };
@@ -223,6 +243,7 @@ function createBaseTeacher(): Teacher {
     dateOfBirth: undefined,
     phoneNumber: undefined,
     signatureFileId: undefined,
+    roles: [],
   };
 }
 
@@ -232,38 +253,43 @@ export const Teacher: MessageFns<Teacher> = {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.status !== TeacherStatus.ACTIVE) {
-      writer.uint32(32).int32(teacherStatusToNumber(message.status));
+      writer.uint32(16).int32(teacherStatusToNumber(message.status));
     }
     if (message.username !== "") {
-      writer.uint32(42).string(message.username);
+      writer.uint32(26).string(message.username);
     }
     if (message.emailDomain !== "") {
-      writer.uint32(50).string(message.emailDomain);
+      writer.uint32(34).string(message.emailDomain);
     }
     if (message.firstName !== "") {
-      writer.uint32(58).string(message.firstName);
+      writer.uint32(42).string(message.firstName);
     }
     if (message.lastName !== "") {
-      writer.uint32(66).string(message.lastName);
+      writer.uint32(50).string(message.lastName);
     }
     if (message.gender !== "") {
-      writer.uint32(74).string(message.gender);
+      writer.uint32(58).string(message.gender);
     }
     if (message.email !== "") {
-      writer.uint32(82).string(message.email);
+      writer.uint32(66).string(message.email);
     }
     if (message.personalEmail !== "") {
-      writer.uint32(90).string(message.personalEmail);
+      writer.uint32(74).string(message.personalEmail);
     }
     if (message.dateOfBirth !== undefined) {
-      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(98).fork()).join();
+      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(82).fork()).join();
     }
     if (message.phoneNumber !== undefined) {
-      PhoneNumber.encode(message.phoneNumber, writer.uint32(106).fork()).join();
+      PhoneNumber.encode(message.phoneNumber, writer.uint32(90).fork()).join();
     }
     if (message.signatureFileId !== undefined) {
-      ObjectId.encode(message.signatureFileId, writer.uint32(114).fork()).join();
+      ObjectId.encode(message.signatureFileId, writer.uint32(98).fork()).join();
     }
+    writer.uint32(122).fork();
+    for (const v of message.roles) {
+      writer.int32(userRoleToNumber(v));
+    }
+    writer.join();
     return writer;
   },
 
@@ -281,83 +307,100 @@ export const Teacher: MessageFns<Teacher> = {
 
           message.id = ObjectId.decode(reader, reader.uint32());
           continue;
-        case 4:
-          if (tag !== 32) {
+        case 2:
+          if (tag !== 16) {
             break;
           }
 
           message.status = teacherStatusFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.emailDomain = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.username = reader.string();
+          message.firstName = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.emailDomain = reader.string();
+          message.lastName = reader.string();
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.firstName = reader.string();
+          message.gender = reader.string();
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.lastName = reader.string();
+          message.email = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.gender = reader.string();
+          message.personalEmail = reader.string();
           continue;
         case 10:
           if (tag !== 82) {
             break;
           }
 
-          message.email = reader.string();
+          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 11:
           if (tag !== 90) {
             break;
           }
 
-          message.personalEmail = reader.string();
+          message.phoneNumber = PhoneNumber.decode(reader, reader.uint32());
           continue;
         case 12:
           if (tag !== 98) {
             break;
           }
 
-          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-        case 13:
-          if (tag !== 106) {
-            break;
-          }
-
-          message.phoneNumber = PhoneNumber.decode(reader, reader.uint32());
-          continue;
-        case 14:
-          if (tag !== 114) {
-            break;
-          }
-
           message.signatureFileId = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 15:
+          if (tag === 120) {
+            message.roles.push(userRoleFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 122) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.roles.push(userRoleFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -381,6 +424,7 @@ export const Teacher: MessageFns<Teacher> = {
       dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
       phoneNumber: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
       signatureFileId: isSet(object.signatureFileId) ? ObjectId.fromJSON(object.signatureFileId) : undefined,
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
     };
   },
 
@@ -422,6 +466,9 @@ export const Teacher: MessageFns<Teacher> = {
     if (message.signatureFileId !== undefined) {
       obj.signatureFileId = ObjectId.toJSON(message.signatureFileId);
     }
+    if (message.roles?.length) {
+      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+    }
     return obj;
   },
 
@@ -445,6 +492,166 @@ export const Teacher: MessageFns<Teacher> = {
       : undefined;
     message.signatureFileId = (object.signatureFileId !== undefined && object.signatureFileId !== null)
       ? ObjectId.fromPartial(object.signatureFileId)
+      : undefined;
+    message.roles = object.roles?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseTeacherProfile(): TeacherProfile {
+  return {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    email: "",
+    personalEmail: "",
+    dateOfBirth: undefined,
+    phoneNumber: undefined,
+  };
+}
+
+export const TeacherProfile: MessageFns<TeacherProfile> = {
+  encode(message: TeacherProfile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.firstName !== "") {
+      writer.uint32(10).string(message.firstName);
+    }
+    if (message.lastName !== "") {
+      writer.uint32(18).string(message.lastName);
+    }
+    if (message.gender !== "") {
+      writer.uint32(26).string(message.gender);
+    }
+    if (message.email !== "") {
+      writer.uint32(34).string(message.email);
+    }
+    if (message.personalEmail !== "") {
+      writer.uint32(42).string(message.personalEmail);
+    }
+    if (message.dateOfBirth !== undefined) {
+      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(50).fork()).join();
+    }
+    if (message.phoneNumber !== undefined) {
+      PhoneNumber.encode(message.phoneNumber, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TeacherProfile {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTeacherProfile();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.firstName = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.lastName = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.gender = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.personalEmail = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.phoneNumber = PhoneNumber.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TeacherProfile {
+    return {
+      firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+      lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+      dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      phoneNumber: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
+    };
+  },
+
+  toJSON(message: TeacherProfile): unknown {
+    const obj: any = {};
+    if (message.firstName !== "") {
+      obj.firstName = message.firstName;
+    }
+    if (message.lastName !== "") {
+      obj.lastName = message.lastName;
+    }
+    if (message.gender !== "") {
+      obj.gender = message.gender;
+    }
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
+    if (message.personalEmail !== "") {
+      obj.personalEmail = message.personalEmail;
+    }
+    if (message.dateOfBirth !== undefined) {
+      obj.dateOfBirth = message.dateOfBirth.toISOString();
+    }
+    if (message.phoneNumber !== undefined) {
+      obj.phoneNumber = PhoneNumber.toJSON(message.phoneNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TeacherProfile>, I>>(base?: I): TeacherProfile {
+    return TeacherProfile.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TeacherProfile>, I>>(object: I): TeacherProfile {
+    const message = createBaseTeacherProfile();
+    message.firstName = object.firstName ?? "";
+    message.lastName = object.lastName ?? "";
+    message.gender = object.gender ?? "";
+    message.email = object.email ?? "";
+    message.personalEmail = object.personalEmail ?? "";
+    message.dateOfBirth = object.dateOfBirth ?? undefined;
+    message.phoneNumber = (object.phoneNumber !== undefined && object.phoneNumber !== null)
+      ? PhoneNumber.fromPartial(object.phoneNumber)
       : undefined;
     return message;
   },

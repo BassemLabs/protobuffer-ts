@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "../user_service/user_role";
 import { ObjectId } from "./object_id";
 import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "./user_type";
 
@@ -75,7 +76,7 @@ export interface UserContext {
   userType: UserType;
   userAuthToken: string;
   organizationId?: ObjectId | undefined;
-  roles: string[];
+  roles: UserRole[];
   parentFamilyIds: ObjectId[];
   parentStudentIds: ObjectId[];
   fullName: string;
@@ -213,9 +214,11 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.organizationId !== undefined) {
       ObjectId.encode(message.organizationId, writer.uint32(34).fork()).join();
     }
+    writer.uint32(42).fork();
     for (const v of message.roles) {
-      writer.uint32(42).string(v!);
+      writer.int32(userRoleToNumber(v));
     }
+    writer.join();
     for (const v of message.parentFamilyIds) {
       ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
@@ -273,12 +276,22 @@ export const UserContext: MessageFns<UserContext> = {
           message.organizationId = ObjectId.decode(reader, reader.uint32());
           continue;
         case 5:
-          if (tag !== 42) {
-            break;
+          if (tag === 40) {
+            message.roles.push(userRoleFromJSON(reader.int32()));
+
+            continue;
           }
 
-          message.roles.push(reader.string());
-          continue;
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.roles.push(userRoleFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
         case 6:
           if (tag !== 50) {
             break;
@@ -336,7 +349,7 @@ export const UserContext: MessageFns<UserContext> = {
       userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.None,
       userAuthToken: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => globalThis.String(e)) : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
       parentFamilyIds: globalThis.Array.isArray(object?.parentFamilyIds)
         ? object.parentFamilyIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -365,7 +378,7 @@ export const UserContext: MessageFns<UserContext> = {
       obj.organizationId = ObjectId.toJSON(message.organizationId);
     }
     if (message.roles?.length) {
-      obj.roles = message.roles;
+      obj.roles = message.roles.map((e) => userRoleToJSON(e));
     }
     if (message.parentFamilyIds?.length) {
       obj.parentFamilyIds = message.parentFamilyIds.map((e) => ObjectId.toJSON(e));

@@ -1,11 +1,11 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
+import { UserRole } from "./user_role";
 export declare const protobufPackage = "user_service";
 export declare enum TeacherStatus {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",
-    SUSPENDED = "SUSPENDED",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function teacherStatusFromJSON(object: any): TeacherStatus;
@@ -15,9 +15,10 @@ export declare function teacherStatusToNumber(object: TeacherStatus): number;
 export interface TeacherBasic {
     id: ObjectId | undefined;
     username: string;
+    emailDomain: string;
+    email: string;
     firstName: string;
     lastName: string;
-    email: string;
 }
 /** Full teacher model with all fields */
 export interface Teacher {
@@ -33,9 +34,20 @@ export interface Teacher {
     dateOfBirth: Date | undefined;
     phoneNumber: PhoneNumber | undefined;
     signatureFileId?: ObjectId | undefined;
+    roles: UserRole[];
+}
+export interface TeacherProfile {
+    firstName: string;
+    lastName: string;
+    gender: string;
+    email: string;
+    personalEmail: string;
+    dateOfBirth: Date | undefined;
+    phoneNumber: PhoneNumber | undefined;
 }
 export declare const TeacherBasic: MessageFns<TeacherBasic>;
 export declare const Teacher: MessageFns<Teacher>;
+export declare const TeacherProfile: MessageFns<TeacherProfile>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

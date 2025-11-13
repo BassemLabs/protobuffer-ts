@@ -79,11 +79,6 @@ export interface RemoveStudentsRequest {
     homeroomId: ObjectId | undefined;
     studentIds: ObjectId[];
 }
-export interface AddAttendanceTeachersRequest {
-    context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    teacherIds: ObjectId[];
-}
 export interface GetAttendanceClassesRequest {
     context: RequestContext | undefined;
     teacherId: ObjectId | undefined;
@@ -127,7 +122,6 @@ export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;
 export declare const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest>;
 export declare const AddStudentsRequest: MessageFns<AddStudentsRequest>;
 export declare const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest>;
-export declare const AddAttendanceTeachersRequest: MessageFns<AddAttendanceTeachersRequest>;
 export declare const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest>;
 export declare const GetAttendanceClassesResponse: MessageFns<GetAttendanceClassesResponse>;
 export declare const GetAllAttendanceClassesRequest: MessageFns<GetAllAttendanceClassesRequest>;

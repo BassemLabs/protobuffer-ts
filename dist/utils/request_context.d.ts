@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { UserRole } from "../user_service/user_role";
 import { ObjectId } from "./object_id";
 import { UserType } from "./user_type";
 export declare const protobufPackage = "utils";
@@ -21,7 +22,7 @@ export interface UserContext {
     userType: UserType;
     userAuthToken: string;
     organizationId?: ObjectId | undefined;
-    roles: string[];
+    roles: UserRole[];
     parentFamilyIds: ObjectId[];
     parentStudentIds: ObjectId[];
     fullName: string;

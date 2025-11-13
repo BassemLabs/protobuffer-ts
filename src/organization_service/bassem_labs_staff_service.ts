@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "../user_service/user_role";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
@@ -41,7 +42,7 @@ export interface CreateUserRequest {
     | Date
     | undefined;
   /** User roles */
-  roles: string[];
+  roles: UserRole[];
 }
 
 export interface UpdateProfileRequest {
@@ -158,9 +159,11 @@ export const CreateUserRequest: MessageFns<CreateUserRequest> = {
     if (message.dateOfBirth !== undefined) {
       Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(66).fork()).join();
     }
+    writer.uint32(74).fork();
     for (const v of message.roles) {
-      writer.uint32(74).string(v!);
+      writer.int32(userRoleToNumber(v));
     }
+    writer.join();
     return writer;
   },
 
@@ -228,12 +231,22 @@ export const CreateUserRequest: MessageFns<CreateUserRequest> = {
           message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 9:
-          if (tag !== 74) {
-            break;
+          if (tag === 72) {
+            message.roles.push(userRoleFromJSON(reader.int32()));
+
+            continue;
           }
 
-          message.roles.push(reader.string());
-          continue;
+          if (tag === 74) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.roles.push(userRoleFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -253,7 +266,7 @@ export const CreateUserRequest: MessageFns<CreateUserRequest> = {
       personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
       phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
       dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => globalThis.String(e)) : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
     };
   },
 
@@ -284,7 +297,7 @@ export const CreateUserRequest: MessageFns<CreateUserRequest> = {
       obj.dateOfBirth = message.dateOfBirth.toISOString();
     }
     if (message.roles?.length) {
-      obj.roles = message.roles;
+      obj.roles = message.roles.map((e) => userRoleToJSON(e));
     }
     return obj;
   },

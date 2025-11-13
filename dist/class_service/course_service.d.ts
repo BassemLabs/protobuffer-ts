@@ -76,12 +76,6 @@ export interface RemoveStudentsRequest {
     courseId: ObjectId | undefined;
     studentIds: ObjectId[];
 }
-/** Request to add attendance teachers */
-export interface AddAttendanceTeachersRequest {
-    context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
-    teacherIds: ObjectId[];
-}
 /** Request to get attendance classes for a specific teacher */
 export interface AttendanceClassesRequest {
     context: RequestContext | undefined;
@@ -155,7 +149,6 @@ export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;
 export declare const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest>;
 export declare const AddStudentsRequest: MessageFns<AddStudentsRequest>;
 export declare const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest>;
-export declare const AddAttendanceTeachersRequest: MessageFns<AddAttendanceTeachersRequest>;
 export declare const AttendanceClassesRequest: MessageFns<AttendanceClassesRequest>;
 export declare const AllAttendanceClassesRequest: MessageFns<AllAttendanceClassesRequest>;
 export declare const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest>;

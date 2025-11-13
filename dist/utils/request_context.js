@@ -11,6 +11,7 @@ exports.serviceContextToJSON = serviceContextToJSON;
 exports.serviceContextToNumber = serviceContextToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const user_role_1 = require("../user_service/user_role");
 const object_id_1 = require("./object_id");
 const user_type_1 = require("./user_type");
 exports.protobufPackage = "utils";
@@ -179,9 +180,11 @@ exports.UserContext = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(34).fork()).join();
         }
+        writer.uint32(42).fork();
         for (const v of message.roles) {
-            writer.uint32(42).string(v);
+            writer.int32((0, user_role_1.userRoleToNumber)(v));
         }
+        writer.join();
         for (const v of message.parentFamilyIds) {
             object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
@@ -234,11 +237,18 @@ exports.UserContext = {
                     message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 5:
-                    if (tag !== 42) {
-                        break;
+                    if (tag === 40) {
+                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        continue;
                     }
-                    message.roles.push(reader.string());
-                    continue;
+                    if (tag === 42) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
                 case 6:
                     if (tag !== 50) {
                         break;
@@ -289,7 +299,7 @@ exports.UserContext = {
             userType: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.None,
             userAuthToken: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => globalThis.String(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
             parentFamilyIds: globalThis.Array.isArray(object?.parentFamilyIds)
                 ? object.parentFamilyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
@@ -317,7 +327,7 @@ exports.UserContext = {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
         if (message.roles?.length) {
-            obj.roles = message.roles;
+            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
         }
         if (message.parentFamilyIds?.length) {
             obj.parentFamilyIds = message.parentFamilyIds.map((e) => object_id_1.ObjectId.toJSON(e));

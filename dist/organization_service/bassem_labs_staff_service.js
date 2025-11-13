@@ -9,6 +9,7 @@ exports.GetUsersResponse = exports.GetUsersRequest = exports.GetUserByEmailReque
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const user_role_1 = require("../user_service/user_role");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const bassem_labs_staff_1 = require("./bassem_labs_staff");
@@ -52,9 +53,11 @@ exports.CreateUserRequest = {
         if (message.dateOfBirth !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(66).fork()).join();
         }
+        writer.uint32(74).fork();
         for (const v of message.roles) {
-            writer.uint32(74).string(v);
+            writer.int32((0, user_role_1.userRoleToNumber)(v));
         }
+        writer.join();
         return writer;
     },
     decode(input, length) {
@@ -113,11 +116,18 @@ exports.CreateUserRequest = {
                     message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 9:
-                    if (tag !== 74) {
-                        break;
+                    if (tag === 72) {
+                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        continue;
                     }
-                    message.roles.push(reader.string());
-                    continue;
+                    if (tag === 74) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -136,7 +146,7 @@ exports.CreateUserRequest = {
             personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
             phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
             dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => globalThis.String(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
         };
     },
     toJSON(message) {
@@ -166,7 +176,7 @@ exports.CreateUserRequest = {
             obj.dateOfBirth = message.dateOfBirth.toISOString();
         }
         if (message.roles?.length) {
-            obj.roles = message.roles;
+            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
         }
         return obj;
     },

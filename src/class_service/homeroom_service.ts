@@ -110,12 +110,6 @@ export interface RemoveStudentsRequest {
   studentIds: ObjectId[];
 }
 
-export interface AddAttendanceTeachersRequest {
-  context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  teacherIds: ObjectId[];
-}
-
 export interface GetAttendanceClassesRequest {
   context: RequestContext | undefined;
   teacherId: ObjectId | undefined;
@@ -1546,101 +1540,6 @@ export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
       ? ObjectId.fromPartial(object.homeroomId)
       : undefined;
     message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseAddAttendanceTeachersRequest(): AddAttendanceTeachersRequest {
-  return { context: undefined, homeroomId: undefined, teacherIds: [] };
-}
-
-export const AddAttendanceTeachersRequest: MessageFns<AddAttendanceTeachersRequest> = {
-  encode(message: AddAttendanceTeachersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
-    }
-    for (const v of message.teacherIds) {
-      ObjectId.encode(v!, writer.uint32(26).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AddAttendanceTeachersRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAddAttendanceTeachersRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AddAttendanceTeachersRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      teacherIds: globalThis.Array.isArray(object?.teacherIds)
-        ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: AddAttendanceTeachersRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
-    }
-    if (message.teacherIds?.length) {
-      obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AddAttendanceTeachersRequest>, I>>(base?: I): AddAttendanceTeachersRequest {
-    return AddAttendanceTeachersRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AddAttendanceTeachersRequest>, I>>(object: I): AddAttendanceTeachersRequest {
-    const message = createBaseAddAttendanceTeachersRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
-      : undefined;
-    message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

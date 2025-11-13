@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/homeroom_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.AddAttendanceTeachersRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.AggregateHomeroomResponse = exports.AggregateHomeroomRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
+exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.AggregateHomeroomResponse = exports.AggregateHomeroomRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -1275,92 +1275,6 @@ exports.RemoveStudentsRequest = {
             ? object_id_1.ObjectId.fromPartial(object.homeroomId)
             : undefined;
         message.studentIds = object.studentIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        return message;
-    },
-};
-function createBaseAddAttendanceTeachersRequest() {
-    return { context: undefined, homeroomId: undefined, teacherIds: [] };
-}
-exports.AddAttendanceTeachersRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.homeroomId !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
-        }
-        for (const v of message.teacherIds) {
-            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAddAttendanceTeachersRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.homeroomId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.teacherIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            teacherIds: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.homeroomId !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroomId);
-        }
-        if (message.teacherIds?.length) {
-            obj.teacherIds = message.teacherIds.map((e) => object_id_1.ObjectId.toJSON(e));
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AddAttendanceTeachersRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAddAttendanceTeachersRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroomId)
-            : undefined;
-        message.teacherIds = object.teacherIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
