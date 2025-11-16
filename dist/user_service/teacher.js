@@ -59,27 +59,38 @@ function teacherStatusToNumber(object) {
     }
 }
 function createBaseTeacherBasic() {
-    return { id: undefined, username: "", emailDomain: "", email: "", firstName: "", lastName: "" };
+    return {
+        id: undefined,
+        organization: undefined,
+        username: "",
+        emailDomain: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+    };
 }
 exports.TeacherBasic = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
+        if (message.organization !== undefined) {
+            object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+        }
         if (message.username !== "") {
-            writer.uint32(18).string(message.username);
+            writer.uint32(26).string(message.username);
         }
         if (message.emailDomain !== "") {
-            writer.uint32(26).string(message.emailDomain);
+            writer.uint32(34).string(message.emailDomain);
         }
         if (message.email !== "") {
-            writer.uint32(34).string(message.email);
+            writer.uint32(42).string(message.email);
         }
         if (message.firstName !== "") {
-            writer.uint32(42).string(message.firstName);
+            writer.uint32(50).string(message.firstName);
         }
         if (message.lastName !== "") {
-            writer.uint32(50).string(message.lastName);
+            writer.uint32(58).string(message.lastName);
         }
         return writer;
     },
@@ -100,28 +111,34 @@ exports.TeacherBasic = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.username = reader.string();
+                    message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.emailDomain = reader.string();
+                    message.username = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.email = reader.string();
+                    message.emailDomain = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.email = reader.string();
                     continue;
                 case 6:
                     if (tag !== 50) {
+                        break;
+                    }
+                    message.firstName = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
                         break;
                     }
                     message.lastName = reader.string();
@@ -137,6 +154,7 @@ exports.TeacherBasic = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
             emailDomain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
@@ -148,6 +166,9 @@ exports.TeacherBasic = {
         const obj = {};
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.organization !== undefined) {
+            obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
         if (message.username !== "") {
             obj.username = message.username;
@@ -172,6 +193,9 @@ exports.TeacherBasic = {
     fromPartial(object) {
         const message = createBaseTeacherBasic();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.organization = (object.organization !== undefined && object.organization !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization)
+            : undefined;
         message.username = object.username ?? "";
         message.emailDomain = object.emailDomain ?? "";
         message.email = object.email ?? "";

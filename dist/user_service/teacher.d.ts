@@ -14,6 +14,7 @@ export declare function teacherStatusToNumber(object: TeacherStatus): number;
 /** Basic teacher model with only essential fields */
 export interface TeacherBasic {
     id: ObjectId | undefined;
+    organization: ObjectId | undefined;
     username: string;
     emailDomain: string;
     email: string;

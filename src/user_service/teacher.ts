@@ -61,6 +61,7 @@ export function teacherStatusToNumber(object: TeacherStatus): number {
 /** Basic teacher model with only essential fields */
 export interface TeacherBasic {
   id: ObjectId | undefined;
+  organization: ObjectId | undefined;
   username: string;
   emailDomain: string;
   email: string;
@@ -96,7 +97,15 @@ export interface TeacherProfile {
 }
 
 function createBaseTeacherBasic(): TeacherBasic {
-  return { id: undefined, username: "", emailDomain: "", email: "", firstName: "", lastName: "" };
+  return {
+    id: undefined,
+    organization: undefined,
+    username: "",
+    emailDomain: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+  };
 }
 
 export const TeacherBasic: MessageFns<TeacherBasic> = {
@@ -104,20 +113,23 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
     if (message.username !== "") {
-      writer.uint32(18).string(message.username);
+      writer.uint32(26).string(message.username);
     }
     if (message.emailDomain !== "") {
-      writer.uint32(26).string(message.emailDomain);
+      writer.uint32(34).string(message.emailDomain);
     }
     if (message.email !== "") {
-      writer.uint32(34).string(message.email);
+      writer.uint32(42).string(message.email);
     }
     if (message.firstName !== "") {
-      writer.uint32(42).string(message.firstName);
+      writer.uint32(50).string(message.firstName);
     }
     if (message.lastName !== "") {
-      writer.uint32(50).string(message.lastName);
+      writer.uint32(58).string(message.lastName);
     }
     return writer;
   },
@@ -141,31 +153,38 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
             break;
           }
 
-          message.username = reader.string();
+          message.organization = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.emailDomain = reader.string();
+          message.username = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.email = reader.string();
+          message.emailDomain = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.firstName = reader.string();
+          message.email = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
+            break;
+          }
+
+          message.firstName = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
             break;
           }
 
@@ -183,6 +202,7 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
   fromJSON(object: any): TeacherBasic {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       emailDomain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
@@ -195,6 +215,9 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
     const obj: any = {};
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.username !== "") {
       obj.username = message.username;
@@ -220,6 +243,9 @@ export const TeacherBasic: MessageFns<TeacherBasic> = {
   fromPartial<I extends Exact<DeepPartial<TeacherBasic>, I>>(object: I): TeacherBasic {
     const message = createBaseTeacherBasic();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
     message.username = object.username ?? "";
     message.emailDomain = object.emailDomain ?? "";
     message.email = object.email ?? "";
