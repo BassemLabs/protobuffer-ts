@@ -133,5 +133,7 @@ import * as Aws_file from './utils/aws_file';
 export { Aws_file };
 import * as Phone_number from './utils/phone_number';
 export { Phone_number };
+import * as Staging_sync from './utils/staging_sync';
+export { Staging_sync };
 import * as User_type from './utils/user_type';
 export { User_type };

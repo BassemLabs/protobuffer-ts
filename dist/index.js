@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tuition = exports.Tuition_application = exports.Tuition_invoice = exports.Processing_fees_service = exports.Processing_fees = exports.Invoice_service = exports.Organization_payment_plan_service = exports.Organization_payment_plan = exports.Invoice = exports.Tuition_application_service = exports.Transaction = exports.Tuition_invoice_service = exports.Test = exports.Test_service = exports.Sample = exports.Invoice_to_charge = exports.Evaluation_entry = exports.Attendance = exports.Lms_course = exports.Course_service = exports.Attendance_service = exports.Homeroom = exports.Homeroom_service = exports.Semester = exports.Mark_category = exports.Evaluation = exports.Report_layout = exports.Evaluation_service = exports.Semester_service = exports.Report_layout_service = exports.Course = exports.Announcement_service = exports.Bassem_labs_staff_service = exports.Organization = exports.Organization_owner = exports.Onboarding_settings = exports.Organization_invoice_settings = exports.Kms_key = exports.Bassem_labs_staff = exports.Organization_profile_settings_service = exports.Kms_service = exports.Organization_profile_settings = exports.Onboarding_settings_service = exports.Organization_service = exports.Onboarding_steps = exports.Campus_service = exports.Announcement = exports.Organization_owner_service = exports.Campus = exports.Timestamp = void 0;
-exports.User_type = exports.Phone_number = exports.Aws_file = exports.Request_context = exports.Object_id = exports.Teacher_service = exports.Custom_fields_template = exports.Family = exports.Email_template = exports.Custom_field_entry = exports.Student = exports.Action_required_by_parents = exports.Teacher = exports.Email_template_service = exports.User_role = exports.Payment_service = exports.Tuition_service = exports.Transaction_service = void 0;
+exports.User_type = exports.Staging_sync = exports.Phone_number = exports.Aws_file = exports.Request_context = exports.Object_id = exports.Teacher_service = exports.Custom_fields_template = exports.Family = exports.Email_template = exports.Custom_field_entry = exports.Student = exports.Action_required_by_parents = exports.Teacher = exports.Email_template_service = exports.User_role = exports.Payment_service = exports.Tuition_service = exports.Transaction_service = void 0;
 // Auto-generated index.ts
 const Timestamp = __importStar(require("./google/protobuf/timestamp"));
 exports.Timestamp = Timestamp;
@@ -160,5 +160,7 @@ const Aws_file = __importStar(require("./utils/aws_file"));
 exports.Aws_file = Aws_file;
 const Phone_number = __importStar(require("./utils/phone_number"));
 exports.Phone_number = Phone_number;
+const Staging_sync = __importStar(require("./utils/staging_sync"));
+exports.Staging_sync = Staging_sync;
 const User_type = __importStar(require("./utils/user_type"));
 exports.User_type = User_type;

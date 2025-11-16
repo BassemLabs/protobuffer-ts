@@ -16,6 +16,7 @@ export enum ServiceContext {
   AutoPaymentScheduling = "AutoPaymentScheduling",
   AutoPaymentConsumer = "AutoPaymentConsumer",
   OrganizationInvoices = "OrganizationInvoices",
+  StagingDataSyncJob = "StagingDataSyncJob",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -30,6 +31,9 @@ export function serviceContextFromJSON(object: any): ServiceContext {
     case 3:
     case "OrganizationInvoices":
       return ServiceContext.OrganizationInvoices;
+    case 4:
+    case "StagingDataSyncJob":
+      return ServiceContext.StagingDataSyncJob;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -45,6 +49,8 @@ export function serviceContextToJSON(object: ServiceContext): string {
       return "AutoPaymentConsumer";
     case ServiceContext.OrganizationInvoices:
       return "OrganizationInvoices";
+    case ServiceContext.StagingDataSyncJob:
+      return "StagingDataSyncJob";
     case ServiceContext.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -59,6 +65,8 @@ export function serviceContextToNumber(object: ServiceContext): number {
       return 2;
     case ServiceContext.OrganizationInvoices:
       return 3;
+    case ServiceContext.StagingDataSyncJob:
+      return 4;
     case ServiceContext.UNRECOGNIZED:
     default:
       return -1;
