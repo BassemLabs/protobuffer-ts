@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
+exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetTeachersListAdminViewResponse = exports.GetTeachersListAdminViewRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -328,6 +328,110 @@ exports.GetTeachersListResponse = {
         const message = createBaseGetTeachersListResponse();
         message.teachers = object.teachers?.map((e) => teacher_1.TeacherBasic.fromPartial(e)) || [];
         message.teachersCount = object.teachersCount ?? 0;
+        return message;
+    },
+};
+function createBaseGetTeachersListAdminViewRequest() {
+    return { context: undefined };
+}
+exports.GetTeachersListAdminViewRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeachersListAdminViewRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeachersListAdminViewRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeachersListAdminViewRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetTeachersListAdminViewResponse() {
+    return { teachers: [] };
+}
+exports.GetTeachersListAdminViewResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.teachers) {
+            teacher_1.Teacher.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeachersListAdminViewResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.teachers.push(teacher_1.Teacher.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => teacher_1.Teacher.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.teachers?.length) {
+            obj.teachers = message.teachers.map((e) => teacher_1.Teacher.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeachersListAdminViewResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeachersListAdminViewResponse();
+        message.teachers = object.teachers?.map((e) => teacher_1.Teacher.fromPartial(e)) || [];
         return message;
     },
 };

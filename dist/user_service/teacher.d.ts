@@ -36,6 +36,7 @@ export interface Teacher {
     phoneNumber: PhoneNumber | undefined;
     signatureFileId?: ObjectId | undefined;
     roles: UserRole[];
+    organization: ObjectId | undefined;
 }
 export interface TeacherProfile {
     firstName: string;

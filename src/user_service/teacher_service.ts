@@ -11,6 +11,7 @@ import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import {
+  Teacher,
   TeacherBasic,
   TeacherProfile,
   TeacherStatus,
@@ -43,6 +44,14 @@ export interface GetTeachersListRequest {
 export interface GetTeachersListResponse {
   teachers: TeacherBasic[];
   teachersCount: number;
+}
+
+export interface GetTeachersListAdminViewRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetTeachersListAdminViewResponse {
+  teachers: Teacher[];
 }
 
 export interface GetTeachersByIdsRequest {
@@ -481,6 +490,130 @@ export const GetTeachersListResponse: MessageFns<GetTeachersListResponse> = {
     const message = createBaseGetTeachersListResponse();
     message.teachers = object.teachers?.map((e) => TeacherBasic.fromPartial(e)) || [];
     message.teachersCount = object.teachersCount ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetTeachersListAdminViewRequest(): GetTeachersListAdminViewRequest {
+  return { context: undefined };
+}
+
+export const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminViewRequest> = {
+  encode(message: GetTeachersListAdminViewRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeachersListAdminViewRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeachersListAdminViewRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeachersListAdminViewRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetTeachersListAdminViewRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeachersListAdminViewRequest>, I>>(base?: I): GetTeachersListAdminViewRequest {
+    return GetTeachersListAdminViewRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeachersListAdminViewRequest>, I>>(
+    object: I,
+  ): GetTeachersListAdminViewRequest {
+    const message = createBaseGetTeachersListAdminViewRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeachersListAdminViewResponse(): GetTeachersListAdminViewResponse {
+  return { teachers: [] };
+}
+
+export const GetTeachersListAdminViewResponse: MessageFns<GetTeachersListAdminViewResponse> = {
+  encode(message: GetTeachersListAdminViewResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.teachers) {
+      Teacher.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeachersListAdminViewResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeachersListAdminViewResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teachers.push(Teacher.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeachersListAdminViewResponse {
+    return {
+      teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => Teacher.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetTeachersListAdminViewResponse): unknown {
+    const obj: any = {};
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => Teacher.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeachersListAdminViewResponse>, I>>(
+    base?: I,
+  ): GetTeachersListAdminViewResponse {
+    return GetTeachersListAdminViewResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeachersListAdminViewResponse>, I>>(
+    object: I,
+  ): GetTeachersListAdminViewResponse {
+    const message = createBaseGetTeachersListAdminViewResponse();
+    message.teachers = object.teachers?.map((e) => Teacher.fromPartial(e)) || [];
     return message;
   },
 };

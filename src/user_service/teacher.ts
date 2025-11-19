@@ -84,6 +84,7 @@ export interface Teacher {
   phoneNumber: PhoneNumber | undefined;
   signatureFileId?: ObjectId | undefined;
   roles: UserRole[];
+  organization: ObjectId | undefined;
 }
 
 export interface TeacherProfile {
@@ -270,6 +271,7 @@ function createBaseTeacher(): Teacher {
     phoneNumber: undefined,
     signatureFileId: undefined,
     roles: [],
+    organization: undefined,
   };
 }
 
@@ -316,6 +318,9 @@ export const Teacher: MessageFns<Teacher> = {
       writer.int32(userRoleToNumber(v));
     }
     writer.join();
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(130).fork()).join();
+    }
     return writer;
   },
 
@@ -427,6 +432,13 @@ export const Teacher: MessageFns<Teacher> = {
           }
 
           break;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -451,6 +463,7 @@ export const Teacher: MessageFns<Teacher> = {
       phoneNumber: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
       signatureFileId: isSet(object.signatureFileId) ? ObjectId.fromJSON(object.signatureFileId) : undefined,
       roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
     };
   },
 
@@ -495,6 +508,9 @@ export const Teacher: MessageFns<Teacher> = {
     if (message.roles?.length) {
       obj.roles = message.roles.map((e) => userRoleToJSON(e));
     }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
     return obj;
   },
 
@@ -520,6 +536,9 @@ export const Teacher: MessageFns<Teacher> = {
       ? ObjectId.fromPartial(object.signatureFileId)
       : undefined;
     message.roles = object.roles?.map((e) => e) || [];
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
     return message;
   },
 };

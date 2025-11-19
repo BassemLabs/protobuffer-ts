@@ -219,6 +219,7 @@ function createBaseTeacher() {
         phoneNumber: undefined,
         signatureFileId: undefined,
         roles: [],
+        organization: undefined,
     };
 }
 exports.Teacher = {
@@ -264,6 +265,9 @@ exports.Teacher = {
             writer.int32((0, user_role_1.userRoleToNumber)(v));
         }
         writer.join();
+        if (message.organization !== undefined) {
+            object_id_1.ObjectId.encode(message.organization, writer.uint32(130).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -358,6 +362,12 @@ exports.Teacher = {
                         continue;
                     }
                     break;
+                case 16:
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -381,6 +391,7 @@ exports.Teacher = {
             phoneNumber: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
             signatureFileId: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+            organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
         };
     },
     toJSON(message) {
@@ -424,6 +435,9 @@ exports.Teacher = {
         if (message.roles?.length) {
             obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
         }
+        if (message.organization !== undefined) {
+            obj.organization = object_id_1.ObjectId.toJSON(message.organization);
+        }
         return obj;
     },
     create(base) {
@@ -448,6 +462,9 @@ exports.Teacher = {
             ? object_id_1.ObjectId.fromPartial(object.signatureFileId)
             : undefined;
         message.roles = object.roles?.map((e) => e) || [];
+        message.organization = (object.organization !== undefined && object.organization !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization)
+            : undefined;
         return message;
     },
 };

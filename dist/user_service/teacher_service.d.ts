@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
-import { TeacherBasic, TeacherProfile, TeacherStatus } from "./teacher";
+import { Teacher, TeacherBasic, TeacherProfile, TeacherStatus } from "./teacher";
 import { UserRole } from "./user_role";
 export declare const protobufPackage = "user_service";
 export interface GetTeacherRequest {
@@ -23,6 +23,12 @@ export interface GetTeachersListRequest {
 export interface GetTeachersListResponse {
     teachers: TeacherBasic[];
     teachersCount: number;
+}
+export interface GetTeachersListAdminViewRequest {
+    context: RequestContext | undefined;
+}
+export interface GetTeachersListAdminViewResponse {
+    teachers: Teacher[];
 }
 export interface GetTeachersByIdsRequest {
     context: RequestContext | undefined;
@@ -100,6 +106,8 @@ export declare const GetTeacherRequest: MessageFns<GetTeacherRequest>;
 export declare const GetTeacherByEmailRequest: MessageFns<GetTeacherByEmailRequest>;
 export declare const GetTeachersListRequest: MessageFns<GetTeachersListRequest>;
 export declare const GetTeachersListResponse: MessageFns<GetTeachersListResponse>;
+export declare const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminViewRequest>;
+export declare const GetTeachersListAdminViewResponse: MessageFns<GetTeachersListAdminViewResponse>;
 export declare const GetTeachersByIdsRequest: MessageFns<GetTeachersByIdsRequest>;
 export declare const GetTeachersByIdsResponse: MessageFns<GetTeachersByIdsResponse>;
 export declare const GetTeacherSignatureRequest: MessageFns<GetTeacherSignatureRequest>;
