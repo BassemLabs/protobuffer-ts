@@ -106,6 +106,8 @@ import * as Payment_service from './payment_service/payment_service';
 export { Payment_service };
 import * as User_role from './user_service/user_role';
 export { User_role };
+import * as Custom_field from './user_service/custom_field';
+export { Custom_field };
 import * as Email_template_service from './user_service/email_template_service';
 export { Email_template_service };
 import * as Teacher from './user_service/teacher';
