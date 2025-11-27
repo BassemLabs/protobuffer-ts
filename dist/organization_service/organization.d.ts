@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { DayOfWeek } from "../google/type/dayofweek";
 import { ObjectId } from "../utils/object_id";
 import { OnboardingSettings } from "./onboarding_settings";
 import { InvoiceSettings } from "./organization_invoice_settings";
@@ -27,6 +28,8 @@ export interface Organization {
     invoiceSettings: InvoiceSettings | undefined;
     loginId: string;
     mainAddress: string;
+    weekendDays: DayOfWeek[];
+    timezone: string;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;

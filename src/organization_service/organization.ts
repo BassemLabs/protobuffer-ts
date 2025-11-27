@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON, dayOfWeekToNumber } from "../google/type/dayofweek";
 import { ObjectId } from "../utils/object_id";
 import { OnboardingSettings } from "./onboarding_settings";
 import { InvoiceSettings } from "./organization_invoice_settings";
@@ -74,6 +75,8 @@ export interface Organization {
   invoiceSettings: InvoiceSettings | undefined;
   loginId: string;
   mainAddress: string;
+  weekendDays: DayOfWeek[];
+  timezone: string;
 }
 
 export interface SchoolYear {
@@ -109,6 +112,8 @@ function createBaseOrganization(): Organization {
     invoiceSettings: undefined,
     loginId: "",
     mainAddress: "",
+    weekendDays: [],
+    timezone: "",
   };
 }
 
@@ -155,6 +160,14 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.mainAddress !== "") {
       writer.uint32(114).string(message.mainAddress);
+    }
+    writer.uint32(122).fork();
+    for (const v of message.weekendDays) {
+      writer.int32(dayOfWeekToNumber(v));
+    }
+    writer.join();
+    if (message.timezone !== "") {
+      writer.uint32(130).string(message.timezone);
     }
     return writer;
   },
@@ -264,6 +277,30 @@ export const Organization: MessageFns<Organization> = {
 
           message.mainAddress = reader.string();
           continue;
+        case 15:
+          if (tag === 120) {
+            message.weekendDays.push(dayOfWeekFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 122) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.weekendDays.push(dayOfWeekFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.timezone = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -297,6 +334,10 @@ export const Organization: MessageFns<Organization> = {
       invoiceSettings: isSet(object.invoiceSettings) ? InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
       loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
       mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      weekendDays: globalThis.Array.isArray(object?.weekendDays)
+        ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
+        : [],
+      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
     };
   },
 
@@ -344,6 +385,12 @@ export const Organization: MessageFns<Organization> = {
     if (message.mainAddress !== "") {
       obj.mainAddress = message.mainAddress;
     }
+    if (message.weekendDays?.length) {
+      obj.weekendDays = message.weekendDays.map((e) => dayOfWeekToJSON(e));
+    }
+    if (message.timezone !== "") {
+      obj.timezone = message.timezone;
+    }
     return obj;
   },
 
@@ -379,6 +426,8 @@ export const Organization: MessageFns<Organization> = {
       : undefined;
     message.loginId = object.loginId ?? "";
     message.mainAddress = object.mainAddress ?? "";
+    message.weekendDays = object.weekendDays?.map((e) => e) || [];
+    message.timezone = object.timezone ?? "";
     return message;
   },
 };

@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON, dayOfWeekToNumber } from "../google/type/dayofweek";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
@@ -81,6 +82,8 @@ export interface UpdateOrganizationSettingsRequest {
   currency: Currency;
   loginId: string;
   mainAddress: string;
+  weekendDays: DayOfWeek[];
+  timezone: string;
 }
 
 /** Request to fetch all organizations */
@@ -854,6 +857,8 @@ function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettin
     currency: Currency.USD,
     loginId: "",
     mainAddress: "",
+    weekendDays: [],
+    timezone: "",
   };
 }
 
@@ -885,6 +890,14 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.mainAddress !== "") {
       writer.uint32(74).string(message.mainAddress);
+    }
+    writer.uint32(82).fork();
+    for (const v of message.weekendDays) {
+      writer.int32(dayOfWeekToNumber(v));
+    }
+    writer.join();
+    if (message.timezone !== "") {
+      writer.uint32(90).string(message.timezone);
     }
     return writer;
   },
@@ -959,6 +972,30 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
 
           message.mainAddress = reader.string();
           continue;
+        case 10:
+          if (tag === 80) {
+            message.weekendDays.push(dayOfWeekFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 82) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.weekendDays.push(dayOfWeekFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.timezone = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -979,6 +1016,10 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
       loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
       mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      weekendDays: globalThis.Array.isArray(object?.weekendDays)
+        ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
+        : [],
+      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
     };
   },
 
@@ -1011,6 +1052,12 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.mainAddress !== "") {
       obj.mainAddress = message.mainAddress;
     }
+    if (message.weekendDays?.length) {
+      obj.weekendDays = message.weekendDays.map((e) => dayOfWeekToJSON(e));
+    }
+    if (message.timezone !== "") {
+      obj.timezone = message.timezone;
+    }
     return obj;
   },
 
@@ -1036,6 +1083,8 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.currency = object.currency ?? Currency.USD;
     message.loginId = object.loginId ?? "";
     message.mainAddress = object.mainAddress ?? "";
+    message.weekendDays = object.weekendDays?.map((e) => e) || [];
+    message.timezone = object.timezone ?? "";
     return message;
   },
 };

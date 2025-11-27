@@ -12,6 +12,7 @@ exports.currencyToNumber = currencyToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const dayofweek_1 = require("../google/type/dayofweek");
 const object_id_1 = require("../utils/object_id");
 const onboarding_settings_1 = require("./onboarding_settings");
 const organization_invoice_settings_1 = require("./organization_invoice_settings");
@@ -75,6 +76,8 @@ function createBaseOrganization() {
         invoiceSettings: undefined,
         loginId: "",
         mainAddress: "",
+        weekendDays: [],
+        timezone: "",
     };
 }
 exports.Organization = {
@@ -120,6 +123,14 @@ exports.Organization = {
         }
         if (message.mainAddress !== "") {
             writer.uint32(114).string(message.mainAddress);
+        }
+        writer.uint32(122).fork();
+        for (const v of message.weekendDays) {
+            writer.int32((0, dayofweek_1.dayOfWeekToNumber)(v));
+        }
+        writer.join();
+        if (message.timezone !== "") {
+            writer.uint32(130).string(message.timezone);
         }
         return writer;
     },
@@ -214,6 +225,25 @@ exports.Organization = {
                     }
                     message.mainAddress = reader.string();
                     continue;
+                case 15:
+                    if (tag === 120) {
+                        message.weekendDays.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 122) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.weekendDays.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 16:
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.timezone = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -246,6 +276,10 @@ exports.Organization = {
             invoiceSettings: isSet(object.invoiceSettings) ? organization_invoice_settings_1.InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
             loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
             mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+            weekendDays: globalThis.Array.isArray(object?.weekendDays)
+                ? object.weekendDays.map((e) => (0, dayofweek_1.dayOfWeekFromJSON)(e))
+                : [],
+            timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
         };
     },
     toJSON(message) {
@@ -292,6 +326,12 @@ exports.Organization = {
         if (message.mainAddress !== "") {
             obj.mainAddress = message.mainAddress;
         }
+        if (message.weekendDays?.length) {
+            obj.weekendDays = message.weekendDays.map((e) => (0, dayofweek_1.dayOfWeekToJSON)(e));
+        }
+        if (message.timezone !== "") {
+            obj.timezone = message.timezone;
+        }
         return obj;
     },
     create(base) {
@@ -326,6 +366,8 @@ exports.Organization = {
             : undefined;
         message.loginId = object.loginId ?? "";
         message.mainAddress = object.mainAddress ?? "";
+        message.weekendDays = object.weekendDays?.map((e) => e) || [];
+        message.timezone = object.timezone ?? "";
         return message;
     },
 };

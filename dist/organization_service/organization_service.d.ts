@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { DayOfWeek } from "../google/type/dayofweek";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
@@ -57,6 +58,8 @@ export interface UpdateOrganizationSettingsRequest {
     currency: Currency;
     loginId: string;
     mainAddress: string;
+    weekendDays: DayOfWeek[];
+    timezone: string;
 }
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
