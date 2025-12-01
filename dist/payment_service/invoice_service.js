@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
+exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -1129,8 +1129,8 @@ function createBaseCreateInvoiceRequest() {
         description: "",
         showHst: false,
         disableTax: false,
-        user: undefined,
-        family: undefined,
+        users: [],
+        families: [],
         items: [],
         coupons: [],
         dueDate: undefined,
@@ -1158,11 +1158,11 @@ exports.CreateInvoiceRequest = {
         if (message.disableTax !== false) {
             writer.uint32(40).bool(message.disableTax);
         }
-        if (message.user !== undefined) {
-            object_id_1.ObjectId.encode(message.user, writer.uint32(50).fork()).join();
+        for (const v of message.users) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.family !== undefined) {
-            object_id_1.ObjectId.encode(message.family, writer.uint32(58).fork()).join();
+        for (const v of message.families) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
         }
         for (const v of message.items) {
             invoice_1.InvoiceItem.encode(v, writer.uint32(66).fork()).join();
@@ -1231,13 +1231,13 @@ exports.CreateInvoiceRequest = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.user = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.users.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.families.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 8:
                     if (tag !== 66) {
@@ -1302,8 +1302,8 @@ exports.CreateInvoiceRequest = {
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             showHst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
             disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-            user: isSet(object.user) ? object_id_1.ObjectId.fromJSON(object.user) : undefined,
-            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            users: globalThis.Array.isArray(object?.users) ? object.users.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            families: globalThis.Array.isArray(object?.families) ? object.families.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
@@ -1333,11 +1333,11 @@ exports.CreateInvoiceRequest = {
         if (message.disableTax !== false) {
             obj.disableTax = message.disableTax;
         }
-        if (message.user !== undefined) {
-            obj.user = object_id_1.ObjectId.toJSON(message.user);
+        if (message.users?.length) {
+            obj.users = message.users.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.family !== undefined) {
-            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        if (message.families?.length) {
+            obj.families = message.families.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.items?.length) {
             obj.items = message.items.map((e) => invoice_1.InvoiceItem.toJSON(e));
@@ -1377,10 +1377,8 @@ exports.CreateInvoiceRequest = {
         message.description = object.description ?? "";
         message.showHst = object.showHst ?? false;
         message.disableTax = object.disableTax ?? false;
-        message.user = (object.user !== undefined && object.user !== null) ? object_id_1.ObjectId.fromPartial(object.user) : undefined;
-        message.family = (object.family !== undefined && object.family !== null)
-            ? object_id_1.ObjectId.fromPartial(object.family)
-            : undefined;
+        message.users = object.users?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.families = object.families?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.items = object.items?.map((e) => invoice_1.InvoiceItem.fromPartial(e)) || [];
         message.coupons = object.coupons?.map((e) => invoice_1.Coupon.fromPartial(e)) || [];
         message.dueDate = object.dueDate ?? undefined;
@@ -1391,6 +1389,60 @@ exports.CreateInvoiceRequest = {
         message.chargeOnDate = object.chargeOnDate ?? undefined;
         message.autoPaymentStatus = object.autoPaymentStatus ?? invoice_1.AutoPaymentStatus.AutoPayPending;
         message.isTuition = object.isTuition ?? false;
+        return message;
+    },
+};
+function createBaseCreateInvoicesResponse() {
+    return { invoices: [] };
+}
+exports.CreateInvoicesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.invoices) {
+            invoice_1.InvoiceResponse.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateInvoicesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.invoices.push(invoice_1.InvoiceResponse.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            invoices: globalThis.Array.isArray(object?.invoices)
+                ? object.invoices.map((e) => invoice_1.InvoiceResponse.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.invoices?.length) {
+            obj.invoices = message.invoices.map((e) => invoice_1.InvoiceResponse.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateInvoicesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateInvoicesResponse();
+        message.invoices = object.invoices?.map((e) => invoice_1.InvoiceResponse.fromPartial(e)) || [];
         return message;
     },
 };

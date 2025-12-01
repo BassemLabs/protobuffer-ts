@@ -116,8 +116,8 @@ export interface CreateInvoiceRequest {
   description: string;
   showHst: boolean;
   disableTax: boolean;
-  user?: ObjectId | undefined;
-  family?: ObjectId | undefined;
+  users: ObjectId[];
+  families: ObjectId[];
   items: InvoiceItem[];
   coupons: Coupon[];
   dueDate?: Date | undefined;
@@ -126,6 +126,10 @@ export interface CreateInvoiceRequest {
   chargeOnDate?: Date | undefined;
   autoPaymentStatus?: AutoPaymentStatus | undefined;
   isTuition?: boolean | undefined;
+}
+
+export interface CreateInvoicesResponse {
+  invoices: InvoiceResponse[];
 }
 
 export interface CreateInvoiceForClassRequest {
@@ -1524,8 +1528,8 @@ function createBaseCreateInvoiceRequest(): CreateInvoiceRequest {
     description: "",
     showHst: false,
     disableTax: false,
-    user: undefined,
-    family: undefined,
+    users: [],
+    families: [],
     items: [],
     coupons: [],
     dueDate: undefined,
@@ -1554,11 +1558,11 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.disableTax !== false) {
       writer.uint32(40).bool(message.disableTax);
     }
-    if (message.user !== undefined) {
-      ObjectId.encode(message.user, writer.uint32(50).fork()).join();
+    for (const v of message.users) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
-    if (message.family !== undefined) {
-      ObjectId.encode(message.family, writer.uint32(58).fork()).join();
+    for (const v of message.families) {
+      ObjectId.encode(v!, writer.uint32(58).fork()).join();
     }
     for (const v of message.items) {
       InvoiceItem.encode(v!, writer.uint32(66).fork()).join();
@@ -1634,14 +1638,14 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
             break;
           }
 
-          message.user = ObjectId.decode(reader, reader.uint32());
+          message.users.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.family = ObjectId.decode(reader, reader.uint32());
+          message.families.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 8:
           if (tag !== 66) {
@@ -1715,8 +1719,8 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       showHst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
       disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-      user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
-      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      users: globalThis.Array.isArray(object?.users) ? object.users.map((e: any) => ObjectId.fromJSON(e)) : [],
+      families: globalThis.Array.isArray(object?.families) ? object.families.map((e: any) => ObjectId.fromJSON(e)) : [],
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
@@ -1747,11 +1751,11 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.disableTax !== false) {
       obj.disableTax = message.disableTax;
     }
-    if (message.user !== undefined) {
-      obj.user = ObjectId.toJSON(message.user);
+    if (message.users?.length) {
+      obj.users = message.users.map((e) => ObjectId.toJSON(e));
     }
-    if (message.family !== undefined) {
-      obj.family = ObjectId.toJSON(message.family);
+    if (message.families?.length) {
+      obj.families = message.families.map((e) => ObjectId.toJSON(e));
     }
     if (message.items?.length) {
       obj.items = message.items.map((e) => InvoiceItem.toJSON(e));
@@ -1792,10 +1796,8 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     message.description = object.description ?? "";
     message.showHst = object.showHst ?? false;
     message.disableTax = object.disableTax ?? false;
-    message.user = (object.user !== undefined && object.user !== null) ? ObjectId.fromPartial(object.user) : undefined;
-    message.family = (object.family !== undefined && object.family !== null)
-      ? ObjectId.fromPartial(object.family)
-      : undefined;
+    message.users = object.users?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.families = object.families?.map((e) => ObjectId.fromPartial(e)) || [];
     message.items = object.items?.map((e) => InvoiceItem.fromPartial(e)) || [];
     message.coupons = object.coupons?.map((e) => Coupon.fromPartial(e)) || [];
     message.dueDate = object.dueDate ?? undefined;
@@ -1806,6 +1808,67 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     message.chargeOnDate = object.chargeOnDate ?? undefined;
     message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
     message.isTuition = object.isTuition ?? false;
+    return message;
+  },
+};
+
+function createBaseCreateInvoicesResponse(): CreateInvoicesResponse {
+  return { invoices: [] };
+}
+
+export const CreateInvoicesResponse: MessageFns<CreateInvoicesResponse> = {
+  encode(message: CreateInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.invoices) {
+      InvoiceResponse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateInvoicesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateInvoicesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.invoices.push(InvoiceResponse.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateInvoicesResponse {
+    return {
+      invoices: globalThis.Array.isArray(object?.invoices)
+        ? object.invoices.map((e: any) => InvoiceResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateInvoicesResponse): unknown {
+    const obj: any = {};
+    if (message.invoices?.length) {
+      obj.invoices = message.invoices.map((e) => InvoiceResponse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateInvoicesResponse>, I>>(base?: I): CreateInvoicesResponse {
+    return CreateInvoicesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateInvoicesResponse>, I>>(object: I): CreateInvoicesResponse {
+    const message = createBaseCreateInvoicesResponse();
+    message.invoices = object.invoices?.map((e) => InvoiceResponse.fromPartial(e)) || [];
     return message;
   },
 };

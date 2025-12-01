@@ -75,8 +75,8 @@ export interface CreateInvoiceRequest {
     description: string;
     showHst: boolean;
     disableTax: boolean;
-    user?: ObjectId | undefined;
-    family?: ObjectId | undefined;
+    users: ObjectId[];
+    families: ObjectId[];
     items: InvoiceItem[];
     coupons: Coupon[];
     dueDate?: Date | undefined;
@@ -85,6 +85,9 @@ export interface CreateInvoiceRequest {
     chargeOnDate?: Date | undefined;
     autoPaymentStatus?: AutoPaymentStatus | undefined;
     isTuition?: boolean | undefined;
+}
+export interface CreateInvoicesResponse {
+    invoices: InvoiceResponse[];
 }
 export interface CreateInvoiceForClassRequest {
     context: RequestContext | undefined;
@@ -214,6 +217,7 @@ export declare const ListInvoicesResponse: MessageFns<ListInvoicesResponse>;
 export declare const IsInvoicePaidRequest: MessageFns<IsInvoicePaidRequest>;
 export declare const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse>;
 export declare const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest>;
+export declare const CreateInvoicesResponse: MessageFns<CreateInvoicesResponse>;
 export declare const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassRequest>;
 export declare const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFeeInvoiceRequest>;
 export declare const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeInvoiceRequest>;
