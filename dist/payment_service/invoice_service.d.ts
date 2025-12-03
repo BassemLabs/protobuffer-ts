@@ -161,6 +161,11 @@ export interface GetFamilyTuitionInvoicesRequest {
     startDate?: Date | undefined;
     endDate?: Date | undefined;
 }
+export interface DisableFamilyTuitionAutoPayRequest {
+    context: RequestContext | undefined;
+    familyId: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
+}
 export interface GetStudentsWithUnpaidInvoicesRequest {
     context: RequestContext | undefined;
     studentStatuses: StudentStatus[];
@@ -230,6 +235,7 @@ export declare const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest
 export declare const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoicesReadyToChargeRequest>;
 export declare const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusRequest>;
 export declare const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoicesRequest>;
+export declare const DisableFamilyTuitionAutoPayRequest: MessageFns<DisableFamilyTuitionAutoPayRequest>;
 export declare const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnpaidInvoicesRequest>;
 export declare const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUnpaidInvoicesResponse>;
 export declare const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudentsWithReregistrationInvoicesRequest>;

@@ -216,6 +216,12 @@ export interface GetFamilyTuitionInvoicesRequest {
   endDate?: Date | undefined;
 }
 
+export interface DisableFamilyTuitionAutoPayRequest {
+  context: RequestContext | undefined;
+  familyId: ObjectId | undefined;
+  schoolYear: ObjectId | undefined;
+}
+
 export interface GetStudentsWithUnpaidInvoicesRequest {
   context: RequestContext | undefined;
   studentStatuses: StudentStatus[];
@@ -3214,6 +3220,105 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
       : undefined;
     message.startDate = object.startDate ?? undefined;
     message.endDate = object.endDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDisableFamilyTuitionAutoPayRequest(): DisableFamilyTuitionAutoPayRequest {
+  return { context: undefined, familyId: undefined, schoolYear: undefined };
+}
+
+export const DisableFamilyTuitionAutoPayRequest: MessageFns<DisableFamilyTuitionAutoPayRequest> = {
+  encode(message: DisableFamilyTuitionAutoPayRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.familyId !== undefined) {
+      ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DisableFamilyTuitionAutoPayRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDisableFamilyTuitionAutoPayRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.familyId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DisableFamilyTuitionAutoPayRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      familyId: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: DisableFamilyTuitionAutoPayRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.familyId !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.familyId);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DisableFamilyTuitionAutoPayRequest>, I>>(
+    base?: I,
+  ): DisableFamilyTuitionAutoPayRequest {
+    return DisableFamilyTuitionAutoPayRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DisableFamilyTuitionAutoPayRequest>, I>>(
+    object: I,
+  ): DisableFamilyTuitionAutoPayRequest {
+    const message = createBaseDisableFamilyTuitionAutoPayRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.familyId = (object.familyId !== undefined && object.familyId !== null)
+      ? ObjectId.fromPartial(object.familyId)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
     return message;
   },
 };

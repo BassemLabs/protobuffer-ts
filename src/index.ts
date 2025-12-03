@@ -49,6 +49,8 @@ import * as Dayofweek from './google/type/dayofweek';
 export { Dayofweek };
 import * as Timestamp from './google/protobuf/timestamp';
 export { Timestamp };
+import * as Empty from './google/protobuf/empty';
+export { Empty };
 import * as Tuition_application from './payment_service/tuition_application';
 export { Tuition_application };
 import * as Invoice from './payment_service/invoice';
