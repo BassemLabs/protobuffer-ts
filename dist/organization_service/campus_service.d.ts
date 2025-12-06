@@ -1,12 +1,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { Address, Campus } from "./campus";
+import { Campus } from "./campus";
 export declare const protobufPackage = "organization_service";
 export interface CreateCampusRequest {
     context: RequestContext | undefined;
     name: string;
-    address: Address | undefined;
+    address: string;
     email: string;
     phone: string;
     principalId: ObjectId | undefined;
@@ -16,7 +16,7 @@ export interface UpdateCampusRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
     name: string;
-    address: Address | undefined;
+    address: string;
     email: string;
     phone: string;
     principalId: ObjectId | undefined;

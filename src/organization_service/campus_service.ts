@@ -8,14 +8,14 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { Address, Campus } from "./campus";
+import { Campus } from "./campus";
 
 export const protobufPackage = "organization_service";
 
 export interface CreateCampusRequest {
   context: RequestContext | undefined;
   name: string;
-  address: Address | undefined;
+  address: string;
   email: string;
   phone: string;
   principalId: ObjectId | undefined;
@@ -26,7 +26,7 @@ export interface UpdateCampusRequest {
   context: RequestContext | undefined;
   id: ObjectId | undefined;
   name: string;
-  address: Address | undefined;
+  address: string;
   email: string;
   phone: string;
   principalId: ObjectId | undefined;
@@ -58,7 +58,7 @@ function createBaseCreateCampusRequest(): CreateCampusRequest {
   return {
     context: undefined,
     name: "",
-    address: undefined,
+    address: "",
     email: "",
     phone: "",
     principalId: undefined,
@@ -74,8 +74,8 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.address !== undefined) {
-      Address.encode(message.address, writer.uint32(26).fork()).join();
+    if (message.address !== "") {
+      writer.uint32(26).string(message.address);
     }
     if (message.email !== "") {
       writer.uint32(34).string(message.email);
@@ -118,7 +118,7 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
             break;
           }
 
-          message.address = Address.decode(reader, reader.uint32());
+          message.address = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
@@ -161,7 +161,7 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      address: isSet(object.address) ? Address.fromJSON(object.address) : undefined,
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
       principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
@@ -177,8 +177,8 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.address !== undefined) {
-      obj.address = Address.toJSON(message.address);
+    if (message.address !== "") {
+      obj.address = message.address;
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -204,9 +204,7 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? "";
-    message.address = (object.address !== undefined && object.address !== null)
-      ? Address.fromPartial(object.address)
-      : undefined;
+    message.address = object.address ?? "";
     message.email = object.email ?? "";
     message.phone = object.phone ?? "";
     message.principalId = (object.principalId !== undefined && object.principalId !== null)
@@ -224,7 +222,7 @@ function createBaseUpdateCampusRequest(): UpdateCampusRequest {
     context: undefined,
     id: undefined,
     name: "",
-    address: undefined,
+    address: "",
     email: "",
     phone: "",
     principalId: undefined,
@@ -243,8 +241,8 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.address !== undefined) {
-      Address.encode(message.address, writer.uint32(34).fork()).join();
+    if (message.address !== "") {
+      writer.uint32(34).string(message.address);
     }
     if (message.email !== "") {
       writer.uint32(42).string(message.email);
@@ -294,7 +292,7 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
             break;
           }
 
-          message.address = Address.decode(reader, reader.uint32());
+          message.address = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
@@ -338,7 +336,7 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      address: isSet(object.address) ? Address.fromJSON(object.address) : undefined,
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
       principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
@@ -357,8 +355,8 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.address !== undefined) {
-      obj.address = Address.toJSON(message.address);
+    if (message.address !== "") {
+      obj.address = message.address;
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -385,9 +383,7 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.name = object.name ?? "";
-    message.address = (object.address !== undefined && object.address !== null)
-      ? Address.fromPartial(object.address)
-      : undefined;
+    message.address = object.address ?? "";
     message.email = object.email ?? "";
     message.phone = object.phone ?? "";
     message.principalId = (object.principalId !== undefined && object.principalId !== null)

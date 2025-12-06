@@ -2,19 +2,11 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { AWSFile } from "../utils/aws_file";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "organization_service";
-export interface Address {
-    street: string;
-    streetNumber: string;
-    city: string;
-    region: string;
-    addressCode: string;
-    country: string;
-}
 export interface Campus {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     name: string;
-    address: Address | undefined;
+    address: string;
     email: string;
     phone: string;
     logo?: AWSFile | undefined;
@@ -22,7 +14,6 @@ export interface Campus {
     supervisorId: ObjectId | undefined;
     archived: boolean;
 }
-export declare const Address: MessageFns<Address>;
 export declare const Campus: MessageFns<Campus>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

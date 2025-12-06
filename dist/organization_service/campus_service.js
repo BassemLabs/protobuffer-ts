@@ -16,7 +16,7 @@ function createBaseCreateCampusRequest() {
     return {
         context: undefined,
         name: "",
-        address: undefined,
+        address: "",
         email: "",
         phone: "",
         principalId: undefined,
@@ -31,8 +31,8 @@ exports.CreateCampusRequest = {
         if (message.name !== "") {
             writer.uint32(18).string(message.name);
         }
-        if (message.address !== undefined) {
-            campus_1.Address.encode(message.address, writer.uint32(26).fork()).join();
+        if (message.address !== "") {
+            writer.uint32(26).string(message.address);
         }
         if (message.email !== "") {
             writer.uint32(34).string(message.email);
@@ -71,7 +71,7 @@ exports.CreateCampusRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.address = campus_1.Address.decode(reader, reader.uint32());
+                    message.address = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -109,7 +109,7 @@ exports.CreateCampusRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            address: isSet(object.address) ? campus_1.Address.fromJSON(object.address) : undefined,
+            address: isSet(object.address) ? globalThis.String(object.address) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
             principalId: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
@@ -124,8 +124,8 @@ exports.CreateCampusRequest = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.address !== undefined) {
-            obj.address = campus_1.Address.toJSON(message.address);
+        if (message.address !== "") {
+            obj.address = message.address;
         }
         if (message.email !== "") {
             obj.email = message.email;
@@ -150,9 +150,7 @@ exports.CreateCampusRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.name = object.name ?? "";
-        message.address = (object.address !== undefined && object.address !== null)
-            ? campus_1.Address.fromPartial(object.address)
-            : undefined;
+        message.address = object.address ?? "";
         message.email = object.email ?? "";
         message.phone = object.phone ?? "";
         message.principalId = (object.principalId !== undefined && object.principalId !== null)
@@ -169,7 +167,7 @@ function createBaseUpdateCampusRequest() {
         context: undefined,
         id: undefined,
         name: "",
-        address: undefined,
+        address: "",
         email: "",
         phone: "",
         principalId: undefined,
@@ -187,8 +185,8 @@ exports.UpdateCampusRequest = {
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
         }
-        if (message.address !== undefined) {
-            campus_1.Address.encode(message.address, writer.uint32(34).fork()).join();
+        if (message.address !== "") {
+            writer.uint32(34).string(message.address);
         }
         if (message.email !== "") {
             writer.uint32(42).string(message.email);
@@ -233,7 +231,7 @@ exports.UpdateCampusRequest = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.address = campus_1.Address.decode(reader, reader.uint32());
+                    message.address = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -272,7 +270,7 @@ exports.UpdateCampusRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            address: isSet(object.address) ? campus_1.Address.fromJSON(object.address) : undefined,
+            address: isSet(object.address) ? globalThis.String(object.address) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
             principalId: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
@@ -290,8 +288,8 @@ exports.UpdateCampusRequest = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.address !== undefined) {
-            obj.address = campus_1.Address.toJSON(message.address);
+        if (message.address !== "") {
+            obj.address = message.address;
         }
         if (message.email !== "") {
             obj.email = message.email;
@@ -317,9 +315,7 @@ exports.UpdateCampusRequest = {
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? "";
-        message.address = (object.address !== undefined && object.address !== null)
-            ? campus_1.Address.fromPartial(object.address)
-            : undefined;
+        message.address = object.address ?? "";
         message.email = object.email ?? "";
         message.phone = object.phone ?? "";
         message.principalId = (object.principalId !== undefined && object.principalId !== null)

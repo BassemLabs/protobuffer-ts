@@ -11,20 +11,11 @@ import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "organization_service";
 
-export interface Address {
-  street: string;
-  streetNumber: string;
-  city: string;
-  region: string;
-  addressCode: string;
-  country: string;
-}
-
 export interface Campus {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   name: string;
-  address: Address | undefined;
+  address: string;
   email: string;
   phone: string;
   logo?: AWSFile | undefined;
@@ -33,146 +24,12 @@ export interface Campus {
   archived: boolean;
 }
 
-function createBaseAddress(): Address {
-  return { street: "", streetNumber: "", city: "", region: "", addressCode: "", country: "" };
-}
-
-export const Address: MessageFns<Address> = {
-  encode(message: Address, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.street !== "") {
-      writer.uint32(10).string(message.street);
-    }
-    if (message.streetNumber !== "") {
-      writer.uint32(18).string(message.streetNumber);
-    }
-    if (message.city !== "") {
-      writer.uint32(26).string(message.city);
-    }
-    if (message.region !== "") {
-      writer.uint32(34).string(message.region);
-    }
-    if (message.addressCode !== "") {
-      writer.uint32(42).string(message.addressCode);
-    }
-    if (message.country !== "") {
-      writer.uint32(50).string(message.country);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): Address {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAddress();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.street = reader.string();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.streetNumber = reader.string();
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.city = reader.string();
-          continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.region = reader.string();
-          continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.addressCode = reader.string();
-          continue;
-        case 6:
-          if (tag !== 50) {
-            break;
-          }
-
-          message.country = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Address {
-    return {
-      street: isSet(object.street) ? globalThis.String(object.street) : "",
-      streetNumber: isSet(object.streetNumber) ? globalThis.String(object.streetNumber) : "",
-      city: isSet(object.city) ? globalThis.String(object.city) : "",
-      region: isSet(object.region) ? globalThis.String(object.region) : "",
-      addressCode: isSet(object.addressCode) ? globalThis.String(object.addressCode) : "",
-      country: isSet(object.country) ? globalThis.String(object.country) : "",
-    };
-  },
-
-  toJSON(message: Address): unknown {
-    const obj: any = {};
-    if (message.street !== "") {
-      obj.street = message.street;
-    }
-    if (message.streetNumber !== "") {
-      obj.streetNumber = message.streetNumber;
-    }
-    if (message.city !== "") {
-      obj.city = message.city;
-    }
-    if (message.region !== "") {
-      obj.region = message.region;
-    }
-    if (message.addressCode !== "") {
-      obj.addressCode = message.addressCode;
-    }
-    if (message.country !== "") {
-      obj.country = message.country;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<Address>, I>>(base?: I): Address {
-    return Address.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<Address>, I>>(object: I): Address {
-    const message = createBaseAddress();
-    message.street = object.street ?? "";
-    message.streetNumber = object.streetNumber ?? "";
-    message.city = object.city ?? "";
-    message.region = object.region ?? "";
-    message.addressCode = object.addressCode ?? "";
-    message.country = object.country ?? "";
-    return message;
-  },
-};
-
 function createBaseCampus(): Campus {
   return {
     id: undefined,
     organization: undefined,
     name: "",
-    address: undefined,
+    address: "",
     email: "",
     phone: "",
     logo: undefined,
@@ -193,8 +50,8 @@ export const Campus: MessageFns<Campus> = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.address !== undefined) {
-      Address.encode(message.address, writer.uint32(34).fork()).join();
+    if (message.address !== "") {
+      writer.uint32(34).string(message.address);
     }
     if (message.email !== "") {
       writer.uint32(42).string(message.email);
@@ -250,7 +107,7 @@ export const Campus: MessageFns<Campus> = {
             break;
           }
 
-          message.address = Address.decode(reader, reader.uint32());
+          message.address = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
@@ -308,7 +165,7 @@ export const Campus: MessageFns<Campus> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      address: isSet(object.address) ? Address.fromJSON(object.address) : undefined,
+      address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
       logo: isSet(object.logo) ? AWSFile.fromJSON(object.logo) : undefined,
@@ -329,8 +186,8 @@ export const Campus: MessageFns<Campus> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.address !== undefined) {
-      obj.address = Address.toJSON(message.address);
+    if (message.address !== "") {
+      obj.address = message.address;
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -363,9 +220,7 @@ export const Campus: MessageFns<Campus> = {
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.name = object.name ?? "";
-    message.address = (object.address !== undefined && object.address !== null)
-      ? Address.fromPartial(object.address)
-      : undefined;
+    message.address = object.address ?? "";
     message.email = object.email ?? "";
     message.phone = object.phone ?? "";
     message.logo = (object.logo !== undefined && object.logo !== null) ? AWSFile.fromPartial(object.logo) : undefined;

@@ -5,140 +5,18 @@
 //   protoc               unknown
 // source: organization_service/campus.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Campus = exports.Address = exports.protobufPackage = void 0;
+exports.Campus = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const aws_file_1 = require("../utils/aws_file");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "organization_service";
-function createBaseAddress() {
-    return { street: "", streetNumber: "", city: "", region: "", addressCode: "", country: "" };
-}
-exports.Address = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.street !== "") {
-            writer.uint32(10).string(message.street);
-        }
-        if (message.streetNumber !== "") {
-            writer.uint32(18).string(message.streetNumber);
-        }
-        if (message.city !== "") {
-            writer.uint32(26).string(message.city);
-        }
-        if (message.region !== "") {
-            writer.uint32(34).string(message.region);
-        }
-        if (message.addressCode !== "") {
-            writer.uint32(42).string(message.addressCode);
-        }
-        if (message.country !== "") {
-            writer.uint32(50).string(message.country);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAddress();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.street = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.streetNumber = reader.string();
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.city = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.region = reader.string();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.addressCode = reader.string();
-                    continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.country = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            street: isSet(object.street) ? globalThis.String(object.street) : "",
-            streetNumber: isSet(object.streetNumber) ? globalThis.String(object.streetNumber) : "",
-            city: isSet(object.city) ? globalThis.String(object.city) : "",
-            region: isSet(object.region) ? globalThis.String(object.region) : "",
-            addressCode: isSet(object.addressCode) ? globalThis.String(object.addressCode) : "",
-            country: isSet(object.country) ? globalThis.String(object.country) : "",
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.street !== "") {
-            obj.street = message.street;
-        }
-        if (message.streetNumber !== "") {
-            obj.streetNumber = message.streetNumber;
-        }
-        if (message.city !== "") {
-            obj.city = message.city;
-        }
-        if (message.region !== "") {
-            obj.region = message.region;
-        }
-        if (message.addressCode !== "") {
-            obj.addressCode = message.addressCode;
-        }
-        if (message.country !== "") {
-            obj.country = message.country;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.Address.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAddress();
-        message.street = object.street ?? "";
-        message.streetNumber = object.streetNumber ?? "";
-        message.city = object.city ?? "";
-        message.region = object.region ?? "";
-        message.addressCode = object.addressCode ?? "";
-        message.country = object.country ?? "";
-        return message;
-    },
-};
 function createBaseCampus() {
     return {
         id: undefined,
         organization: undefined,
         name: "",
-        address: undefined,
+        address: "",
         email: "",
         phone: "",
         logo: undefined,
@@ -158,8 +36,8 @@ exports.Campus = {
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
         }
-        if (message.address !== undefined) {
-            exports.Address.encode(message.address, writer.uint32(34).fork()).join();
+        if (message.address !== "") {
+            writer.uint32(34).string(message.address);
         }
         if (message.email !== "") {
             writer.uint32(42).string(message.email);
@@ -210,7 +88,7 @@ exports.Campus = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.address = exports.Address.decode(reader, reader.uint32());
+                    message.address = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -261,7 +139,7 @@ exports.Campus = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            address: isSet(object.address) ? exports.Address.fromJSON(object.address) : undefined,
+            address: isSet(object.address) ? globalThis.String(object.address) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
             logo: isSet(object.logo) ? aws_file_1.AWSFile.fromJSON(object.logo) : undefined,
@@ -281,8 +159,8 @@ exports.Campus = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.address !== undefined) {
-            obj.address = exports.Address.toJSON(message.address);
+        if (message.address !== "") {
+            obj.address = message.address;
         }
         if (message.email !== "") {
             obj.email = message.email;
@@ -314,9 +192,7 @@ exports.Campus = {
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
         message.name = object.name ?? "";
-        message.address = (object.address !== undefined && object.address !== null)
-            ? exports.Address.fromPartial(object.address)
-            : undefined;
+        message.address = object.address ?? "";
         message.email = object.email ?? "";
         message.phone = object.phone ?? "";
         message.logo = (object.logo !== undefined && object.logo !== null) ? aws_file_1.AWSFile.fromPartial(object.logo) : undefined;
