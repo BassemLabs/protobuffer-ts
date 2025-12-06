@@ -45,6 +45,8 @@ export interface PaymentInformation {
     stripePayoutsEnabled: boolean;
     stripeDetailsSubmitted: boolean;
     stripeChargesEnabled: boolean;
+    /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
+    autoPayDisabled?: boolean | undefined;
 }
 export declare const Organization: MessageFns<Organization>;
 export declare const SchoolYear: MessageFns<SchoolYear>;

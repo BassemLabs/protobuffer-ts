@@ -61,6 +61,11 @@ export interface UpdateOrganizationSettingsRequest {
     weekendDays: DayOfWeek[];
     timezone: string;
 }
+export interface UpdateOrganizationAutoPayRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    autoPayDisabled: boolean;
+}
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
     context: RequestContext | undefined;
@@ -155,6 +160,7 @@ export declare const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainR
 export declare const AddDomainRequest: MessageFns<AddDomainRequest>;
 export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
 export declare const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSettingsRequest>;
+export declare const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;
 export declare const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse>;
 export declare const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest>;

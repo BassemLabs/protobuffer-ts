@@ -13,6 +13,8 @@ export interface FamilyInformation {
     preferredContact?: ObjectId | undefined;
     emergencyContact: FamilyContact | undefined;
     primaryPayer?: ObjectId | undefined;
+    /** If true, autopay is disabled for this family (will override invoice auto pay setting) */
+    autoPayDisabled?: boolean | undefined;
 }
 export interface Family {
     id: ObjectId | undefined;

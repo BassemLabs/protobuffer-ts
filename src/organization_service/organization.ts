@@ -94,6 +94,8 @@ export interface PaymentInformation {
   stripePayoutsEnabled: boolean;
   stripeDetailsSubmitted: boolean;
   stripeChargesEnabled: boolean;
+  /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
+  autoPayDisabled?: boolean | undefined;
 }
 
 function createBaseOrganization(): Organization {
@@ -584,6 +586,7 @@ function createBasePaymentInformation(): PaymentInformation {
     stripePayoutsEnabled: false,
     stripeDetailsSubmitted: false,
     stripeChargesEnabled: false,
+    autoPayDisabled: false,
   };
 }
 
@@ -603,6 +606,9 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
     }
     if (message.stripeChargesEnabled !== false) {
       writer.uint32(40).bool(message.stripeChargesEnabled);
+    }
+    if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
+      writer.uint32(48).bool(message.autoPayDisabled);
     }
     return writer;
   },
@@ -649,6 +655,13 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
 
           message.stripeChargesEnabled = reader.bool();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.autoPayDisabled = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -671,6 +684,7 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
       stripeChargesEnabled: isSet(object.stripeChargesEnabled)
         ? globalThis.Boolean(object.stripeChargesEnabled)
         : false,
+      autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
     };
   },
 
@@ -691,6 +705,9 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
     if (message.stripeChargesEnabled !== false) {
       obj.stripeChargesEnabled = message.stripeChargesEnabled;
     }
+    if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
+      obj.autoPayDisabled = message.autoPayDisabled;
+    }
     return obj;
   },
 
@@ -704,6 +721,7 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
     message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
     message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
     message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
+    message.autoPayDisabled = object.autoPayDisabled ?? false;
     return message;
   },
 };

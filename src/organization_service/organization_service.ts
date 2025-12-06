@@ -86,6 +86,12 @@ export interface UpdateOrganizationSettingsRequest {
   timezone: string;
 }
 
+export interface UpdateOrganizationAutoPayRequest {
+  context: RequestContext | undefined;
+  organizationId: ObjectId | undefined;
+  autoPayDisabled: boolean;
+}
+
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
   context: RequestContext | undefined;
@@ -1085,6 +1091,103 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.mainAddress = object.mainAddress ?? "";
     message.weekendDays = object.weekendDays?.map((e) => e) || [];
     message.timezone = object.timezone ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateOrganizationAutoPayRequest(): UpdateOrganizationAutoPayRequest {
+  return { context: undefined, organizationId: undefined, autoPayDisabled: false };
+}
+
+export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest> = {
+  encode(message: UpdateOrganizationAutoPayRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organizationId !== undefined) {
+      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    }
+    if (message.autoPayDisabled !== false) {
+      writer.uint32(24).bool(message.autoPayDisabled);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateOrganizationAutoPayRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateOrganizationAutoPayRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.autoPayDisabled = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateOrganizationAutoPayRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+    };
+  },
+
+  toJSON(message: UpdateOrganizationAutoPayRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organizationId !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    }
+    if (message.autoPayDisabled !== false) {
+      obj.autoPayDisabled = message.autoPayDisabled;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateOrganizationAutoPayRequest>, I>>(
+    base?: I,
+  ): UpdateOrganizationAutoPayRequest {
+    return UpdateOrganizationAutoPayRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateOrganizationAutoPayRequest>, I>>(
+    object: I,
+  ): UpdateOrganizationAutoPayRequest {
+    const message = createBaseUpdateOrganizationAutoPayRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
+      ? ObjectId.fromPartial(object.organizationId)
+      : undefined;
+    message.autoPayDisabled = object.autoPayDisabled ?? false;
     return message;
   },
 };

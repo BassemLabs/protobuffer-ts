@@ -22,7 +22,11 @@ export interface FamilyInformation {
   languageSpoken: string;
   preferredContact?: ObjectId | undefined;
   emergencyContact: FamilyContact | undefined;
-  primaryPayer?: ObjectId | undefined;
+  primaryPayer?:
+    | ObjectId
+    | undefined;
+  /** If true, autopay is disabled for this family (will override invoice auto pay setting) */
+  autoPayDisabled?: boolean | undefined;
 }
 
 export interface Family {
@@ -132,6 +136,7 @@ function createBaseFamilyInformation(): FamilyInformation {
     preferredContact: undefined,
     emergencyContact: undefined,
     primaryPayer: undefined,
+    autoPayDisabled: false,
   };
 }
 
@@ -151,6 +156,9 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
     }
     if (message.primaryPayer !== undefined) {
       ObjectId.encode(message.primaryPayer, writer.uint32(42).fork()).join();
+    }
+    if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
+      writer.uint32(48).bool(message.autoPayDisabled);
     }
     return writer;
   },
@@ -197,6 +205,13 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
 
           message.primaryPayer = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.autoPayDisabled = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -213,6 +228,7 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
       preferredContact: isSet(object.preferredContact) ? ObjectId.fromJSON(object.preferredContact) : undefined,
       emergencyContact: isSet(object.emergencyContact) ? FamilyContact.fromJSON(object.emergencyContact) : undefined,
       primaryPayer: isSet(object.primaryPayer) ? ObjectId.fromJSON(object.primaryPayer) : undefined,
+      autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
     };
   },
 
@@ -233,6 +249,9 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
     if (message.primaryPayer !== undefined) {
       obj.primaryPayer = ObjectId.toJSON(message.primaryPayer);
     }
+    if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
+      obj.autoPayDisabled = message.autoPayDisabled;
+    }
     return obj;
   },
 
@@ -252,6 +271,7 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
     message.primaryPayer = (object.primaryPayer !== undefined && object.primaryPayer !== null)
       ? ObjectId.fromPartial(object.primaryPayer)
       : undefined;
+    message.autoPayDisabled = object.autoPayDisabled ?? false;
     return message;
   },
 };

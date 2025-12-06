@@ -100,6 +100,7 @@ function createBaseFamilyInformation() {
         preferredContact: undefined,
         emergencyContact: undefined,
         primaryPayer: undefined,
+        autoPayDisabled: false,
     };
 }
 exports.FamilyInformation = {
@@ -118,6 +119,9 @@ exports.FamilyInformation = {
         }
         if (message.primaryPayer !== undefined) {
             object_id_1.ObjectId.encode(message.primaryPayer, writer.uint32(42).fork()).join();
+        }
+        if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
+            writer.uint32(48).bool(message.autoPayDisabled);
         }
         return writer;
     },
@@ -158,6 +162,12 @@ exports.FamilyInformation = {
                     }
                     message.primaryPayer = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.autoPayDisabled = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -173,6 +183,7 @@ exports.FamilyInformation = {
             preferredContact: isSet(object.preferredContact) ? object_id_1.ObjectId.fromJSON(object.preferredContact) : undefined,
             emergencyContact: isSet(object.emergencyContact) ? exports.FamilyContact.fromJSON(object.emergencyContact) : undefined,
             primaryPayer: isSet(object.primaryPayer) ? object_id_1.ObjectId.fromJSON(object.primaryPayer) : undefined,
+            autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
         };
     },
     toJSON(message) {
@@ -192,6 +203,9 @@ exports.FamilyInformation = {
         if (message.primaryPayer !== undefined) {
             obj.primaryPayer = object_id_1.ObjectId.toJSON(message.primaryPayer);
         }
+        if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
+            obj.autoPayDisabled = message.autoPayDisabled;
+        }
         return obj;
     },
     create(base) {
@@ -210,6 +224,7 @@ exports.FamilyInformation = {
         message.primaryPayer = (object.primaryPayer !== undefined && object.primaryPayer !== null)
             ? object_id_1.ObjectId.fromPartial(object.primaryPayer)
             : undefined;
+        message.autoPayDisabled = object.autoPayDisabled ?? false;
         return message;
     },
 };
