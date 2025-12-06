@@ -130,6 +130,13 @@ export interface UpdateSchoolYearRegistrationStatusRequest {
   newRegistrationStatus: boolean;
 }
 
+export interface UpdateSchoolYearRequest {
+  context: RequestContext | undefined;
+  schoolYearId: ObjectId | undefined;
+  name: string;
+  isOpenForRegistration: boolean;
+}
+
 export interface CreateSchoolYearResponse {
   schoolYears: SchoolYear[];
 }
@@ -1747,6 +1754,116 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
       ? ObjectId.fromPartial(object.schoolYearId)
       : undefined;
     message.newRegistrationStatus = object.newRegistrationStatus ?? false;
+    return message;
+  },
+};
+
+function createBaseUpdateSchoolYearRequest(): UpdateSchoolYearRequest {
+  return { context: undefined, schoolYearId: undefined, name: "", isOpenForRegistration: false };
+}
+
+export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
+  encode(message: UpdateSchoolYearRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.isOpenForRegistration !== false) {
+      writer.uint32(32).bool(message.isOpenForRegistration);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateSchoolYearRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSchoolYearRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.isOpenForRegistration = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSchoolYearRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      isOpenForRegistration: isSet(object.isOpenForRegistration)
+        ? globalThis.Boolean(object.isOpenForRegistration)
+        : false,
+    };
+  },
+
+  toJSON(message: UpdateSchoolYearRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.isOpenForRegistration !== false) {
+      obj.isOpenForRegistration = message.isOpenForRegistration;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateSchoolYearRequest>, I>>(base?: I): UpdateSchoolYearRequest {
+    return UpdateSchoolYearRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateSchoolYearRequest>, I>>(object: I): UpdateSchoolYearRequest {
+    const message = createBaseUpdateSchoolYearRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
+      : undefined;
+    message.name = object.name ?? "";
+    message.isOpenForRegistration = object.isOpenForRegistration ?? false;
     return message;
   },
 };
