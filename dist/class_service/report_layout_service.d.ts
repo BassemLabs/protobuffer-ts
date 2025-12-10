@@ -7,12 +7,26 @@ export interface GetByCourseRequest {
     context: RequestContext | undefined;
     courseId: ObjectId | undefined;
 }
+export interface GetByCoursesRequest {
+    context: RequestContext | undefined;
+    courseIds: ObjectId[];
+}
+export interface GetByCoursesResponse {
+    layouts: CourseReportLayout[];
+}
+export interface CourseReportLayout {
+    courseId: ObjectId | undefined;
+    layout: ReportLayout | undefined;
+}
 export interface UpdateReportLayoutRequest {
     context: RequestContext | undefined;
     reportCardLayoutId: ObjectId | undefined;
     updatedReportCardLayout: ReportLayout | undefined;
 }
 export declare const GetByCourseRequest: MessageFns<GetByCourseRequest>;
+export declare const GetByCoursesRequest: MessageFns<GetByCoursesRequest>;
+export declare const GetByCoursesResponse: MessageFns<GetByCoursesResponse>;
+export declare const CourseReportLayout: MessageFns<CourseReportLayout>;
 export declare const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

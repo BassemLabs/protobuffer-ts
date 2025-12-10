@@ -17,6 +17,20 @@ export interface GetByCourseRequest {
   courseId: ObjectId | undefined;
 }
 
+export interface GetByCoursesRequest {
+  context: RequestContext | undefined;
+  courseIds: ObjectId[];
+}
+
+export interface GetByCoursesResponse {
+  layouts: CourseReportLayout[];
+}
+
+export interface CourseReportLayout {
+  courseId: ObjectId | undefined;
+  layout: ReportLayout | undefined;
+}
+
 export interface UpdateReportLayoutRequest {
   context: RequestContext | undefined;
   reportCardLayoutId: ObjectId | undefined;
@@ -96,6 +110,223 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
       : undefined;
     message.courseId = (object.courseId !== undefined && object.courseId !== null)
       ? ObjectId.fromPartial(object.courseId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetByCoursesRequest(): GetByCoursesRequest {
+  return { context: undefined, courseIds: [] };
+}
+
+export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
+  encode(message: GetByCoursesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.courseIds) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetByCoursesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetByCoursesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.courseIds.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetByCoursesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      courseIds: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetByCoursesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.courseIds?.length) {
+      obj.courseIds = message.courseIds.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetByCoursesRequest>, I>>(base?: I): GetByCoursesRequest {
+    return GetByCoursesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetByCoursesRequest>, I>>(object: I): GetByCoursesRequest {
+    const message = createBaseGetByCoursesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.courseIds = object.courseIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetByCoursesResponse(): GetByCoursesResponse {
+  return { layouts: [] };
+}
+
+export const GetByCoursesResponse: MessageFns<GetByCoursesResponse> = {
+  encode(message: GetByCoursesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.layouts) {
+      CourseReportLayout.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetByCoursesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetByCoursesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.layouts.push(CourseReportLayout.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetByCoursesResponse {
+    return {
+      layouts: globalThis.Array.isArray(object?.layouts)
+        ? object.layouts.map((e: any) => CourseReportLayout.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetByCoursesResponse): unknown {
+    const obj: any = {};
+    if (message.layouts?.length) {
+      obj.layouts = message.layouts.map((e) => CourseReportLayout.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetByCoursesResponse>, I>>(base?: I): GetByCoursesResponse {
+    return GetByCoursesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetByCoursesResponse>, I>>(object: I): GetByCoursesResponse {
+    const message = createBaseGetByCoursesResponse();
+    message.layouts = object.layouts?.map((e) => CourseReportLayout.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCourseReportLayout(): CourseReportLayout {
+  return { courseId: undefined, layout: undefined };
+}
+
+export const CourseReportLayout: MessageFns<CourseReportLayout> = {
+  encode(message: CourseReportLayout, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.courseId !== undefined) {
+      ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+    }
+    if (message.layout !== undefined) {
+      ReportLayout.encode(message.layout, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CourseReportLayout {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCourseReportLayout();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courseId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.layout = ReportLayout.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CourseReportLayout {
+    return {
+      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      layout: isSet(object.layout) ? ReportLayout.fromJSON(object.layout) : undefined,
+    };
+  },
+
+  toJSON(message: CourseReportLayout): unknown {
+    const obj: any = {};
+    if (message.courseId !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.courseId);
+    }
+    if (message.layout !== undefined) {
+      obj.layout = ReportLayout.toJSON(message.layout);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CourseReportLayout>, I>>(base?: I): CourseReportLayout {
+    return CourseReportLayout.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CourseReportLayout>, I>>(object: I): CourseReportLayout {
+    const message = createBaseCourseReportLayout();
+    message.courseId = (object.courseId !== undefined && object.courseId !== null)
+      ? ObjectId.fromPartial(object.courseId)
+      : undefined;
+    message.layout = (object.layout !== undefined && object.layout !== null)
+      ? ReportLayout.fromPartial(object.layout)
       : undefined;
     return message;
   },

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_layout_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateReportLayoutRequest = exports.GetByCourseRequest = exports.protobufPackage = void 0;
+exports.UpdateReportLayoutRequest = exports.CourseReportLayout = exports.GetByCoursesResponse = exports.GetByCoursesRequest = exports.GetByCourseRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -78,6 +78,200 @@ exports.GetByCourseRequest = {
             : undefined;
         message.courseId = (object.courseId !== undefined && object.courseId !== null)
             ? object_id_1.ObjectId.fromPartial(object.courseId)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetByCoursesRequest() {
+    return { context: undefined, courseIds: [] };
+}
+exports.GetByCoursesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.courseIds) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetByCoursesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.courseIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            courseIds: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.courseIds?.length) {
+            obj.courseIds = message.courseIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetByCoursesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetByCoursesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.courseIds = object.courseIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetByCoursesResponse() {
+    return { layouts: [] };
+}
+exports.GetByCoursesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.layouts) {
+            exports.CourseReportLayout.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetByCoursesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.layouts.push(exports.CourseReportLayout.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            layouts: globalThis.Array.isArray(object?.layouts)
+                ? object.layouts.map((e) => exports.CourseReportLayout.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.layouts?.length) {
+            obj.layouts = message.layouts.map((e) => exports.CourseReportLayout.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetByCoursesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetByCoursesResponse();
+        message.layouts = object.layouts?.map((e) => exports.CourseReportLayout.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCourseReportLayout() {
+    return { courseId: undefined, layout: undefined };
+}
+exports.CourseReportLayout = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.courseId !== undefined) {
+            object_id_1.ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+        }
+        if (message.layout !== undefined) {
+            report_layout_1.ReportLayout.encode(message.layout, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCourseReportLayout();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.layout = report_layout_1.ReportLayout.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            layout: isSet(object.layout) ? report_layout_1.ReportLayout.fromJSON(object.layout) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courseId !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        }
+        if (message.layout !== undefined) {
+            obj.layout = report_layout_1.ReportLayout.toJSON(message.layout);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CourseReportLayout.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCourseReportLayout();
+        message.courseId = (object.courseId !== undefined && object.courseId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.courseId)
+            : undefined;
+        message.layout = (object.layout !== undefined && object.layout !== null)
+            ? report_layout_1.ReportLayout.fromPartial(object.layout)
             : undefined;
         return message;
     },
