@@ -95,7 +95,19 @@ export interface PaymentInformation {
   stripeDetailsSubmitted: boolean;
   stripeChargesEnabled: boolean;
   /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
-  autoPayDisabled?: boolean | undefined;
+  autoPayDisabled?:
+    | boolean
+    | undefined;
+  /** Auto payment retry configuratio */
+  autoPayRetryConfig: AutoPayRetryConfig | undefined;
+}
+
+/** Configuration for auto-payment retry behavior */
+export interface AutoPayRetryConfig {
+  /** Maximum number of retry attempts (default: 3, max: 10) */
+  maxRetries: number;
+  /** Retry interval in hours - retries every N hours until max_retries (default: 24) */
+  retryIntervalHours: number;
 }
 
 function createBaseOrganization(): Organization {
@@ -587,6 +599,7 @@ function createBasePaymentInformation(): PaymentInformation {
     stripeDetailsSubmitted: false,
     stripeChargesEnabled: false,
     autoPayDisabled: false,
+    autoPayRetryConfig: undefined,
   };
 }
 
@@ -609,6 +622,9 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
     }
     if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
       writer.uint32(48).bool(message.autoPayDisabled);
+    }
+    if (message.autoPayRetryConfig !== undefined) {
+      AutoPayRetryConfig.encode(message.autoPayRetryConfig, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -662,6 +678,13 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
 
           message.autoPayDisabled = reader.bool();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.autoPayRetryConfig = AutoPayRetryConfig.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -685,6 +708,9 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
         ? globalThis.Boolean(object.stripeChargesEnabled)
         : false,
       autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      autoPayRetryConfig: isSet(object.autoPayRetryConfig)
+        ? AutoPayRetryConfig.fromJSON(object.autoPayRetryConfig)
+        : undefined,
     };
   },
 
@@ -708,6 +734,9 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
     if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
       obj.autoPayDisabled = message.autoPayDisabled;
     }
+    if (message.autoPayRetryConfig !== undefined) {
+      obj.autoPayRetryConfig = AutoPayRetryConfig.toJSON(message.autoPayRetryConfig);
+    }
     return obj;
   },
 
@@ -722,6 +751,83 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
     message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
     message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
     message.autoPayDisabled = object.autoPayDisabled ?? false;
+    message.autoPayRetryConfig = (object.autoPayRetryConfig !== undefined && object.autoPayRetryConfig !== null)
+      ? AutoPayRetryConfig.fromPartial(object.autoPayRetryConfig)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseAutoPayRetryConfig(): AutoPayRetryConfig {
+  return { maxRetries: 0, retryIntervalHours: 0 };
+}
+
+export const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig> = {
+  encode(message: AutoPayRetryConfig, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.maxRetries !== 0) {
+      writer.uint32(8).int32(message.maxRetries);
+    }
+    if (message.retryIntervalHours !== 0) {
+      writer.uint32(16).int32(message.retryIntervalHours);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AutoPayRetryConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAutoPayRetryConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.maxRetries = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.retryIntervalHours = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AutoPayRetryConfig {
+    return {
+      maxRetries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
+      retryIntervalHours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+    };
+  },
+
+  toJSON(message: AutoPayRetryConfig): unknown {
+    const obj: any = {};
+    if (message.maxRetries !== 0) {
+      obj.maxRetries = Math.round(message.maxRetries);
+    }
+    if (message.retryIntervalHours !== 0) {
+      obj.retryIntervalHours = Math.round(message.retryIntervalHours);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AutoPayRetryConfig>, I>>(base?: I): AutoPayRetryConfig {
+    return AutoPayRetryConfig.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AutoPayRetryConfig>, I>>(object: I): AutoPayRetryConfig {
+    const message = createBaseAutoPayRetryConfig();
+    message.maxRetries = object.maxRetries ?? 0;
+    message.retryIntervalHours = object.retryIntervalHours ?? 0;
     return message;
   },
 };

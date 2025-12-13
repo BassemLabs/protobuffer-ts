@@ -184,8 +184,10 @@ export enum AutoPaymentStatus {
   AutoPayProcessing = "AutoPayProcessing",
   /** AutoPaySucceeded - The auto payment succeeded */
   AutoPaySucceeded = "AutoPaySucceeded",
-  /** AutoPayFailed - The auto payment failed */
+  /** AutoPayFailed - The auto payment failed (will be retried) */
   AutoPayFailed = "AutoPayFailed",
+  /** AutoPayPermanentlyFailed - All retries exhausted, permanently failed */
+  AutoPayPermanentlyFailed = "AutoPayPermanentlyFailed",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -209,6 +211,9 @@ export function autoPaymentStatusFromJSON(object: any): AutoPaymentStatus {
     case 6:
     case "AutoPayFailed":
       return AutoPaymentStatus.AutoPayFailed;
+    case 7:
+    case "AutoPayPermanentlyFailed":
+      return AutoPaymentStatus.AutoPayPermanentlyFailed;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -230,6 +235,8 @@ export function autoPaymentStatusToJSON(object: AutoPaymentStatus): string {
       return "AutoPaySucceeded";
     case AutoPaymentStatus.AutoPayFailed:
       return "AutoPayFailed";
+    case AutoPaymentStatus.AutoPayPermanentlyFailed:
+      return "AutoPayPermanentlyFailed";
     case AutoPaymentStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -250,6 +257,8 @@ export function autoPaymentStatusToNumber(object: AutoPaymentStatus): number {
       return 5;
     case AutoPaymentStatus.AutoPayFailed:
       return 6;
+    case AutoPaymentStatus.AutoPayPermanentlyFailed:
+      return 7;
     case AutoPaymentStatus.UNRECOGNIZED:
     default:
       return -1;
@@ -312,7 +321,18 @@ export interface Invoice {
   /** determine if this invoice is a tuition invoice */
   isTuition: boolean;
   /** Organization-specific invoice details */
-  organizationInvoiceDetails?: OrganizationInvoiceDetails | undefined;
+  organizationInvoiceDetails?:
+    | OrganizationInvoiceDetails
+    | undefined;
+  /**
+   * Auto payment retry fields
+   * Number of payment retry attempts made
+   */
+  autoPaymentRetryCount?:
+    | number
+    | undefined;
+  /** Timestamp for the next scheduled retry attempt (used for scheduling job queries) */
+  autoPaymentNextRetryAt?: Date | undefined;
 }
 
 export interface InvoiceResponse {
@@ -340,6 +360,16 @@ export interface InvoiceFilter {
   user?: ObjectId | undefined;
   family?: ObjectId | undefined;
   schoolYear?: ObjectId | undefined;
+}
+
+export interface AutoPaymentAttempt {
+  id: ObjectId | undefined;
+  organization: ObjectId | undefined;
+  invoiceId: ObjectId | undefined;
+  attemptedAt: Date | undefined;
+  status: AutoPaymentStatus;
+  errorMessage?: string | undefined;
+  attemptNumber: number;
 }
 
 function createBaseInvoiceItem(): InvoiceItem {
@@ -701,6 +731,8 @@ function createBaseInvoice(): Invoice {
     autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
     isTuition: false,
     organizationInvoiceDetails: undefined,
+    autoPaymentRetryCount: 0,
+    autoPaymentNextRetryAt: undefined,
   };
 }
 
@@ -768,6 +800,12 @@ export const Invoice: MessageFns<Invoice> = {
     }
     if (message.organizationInvoiceDetails !== undefined) {
       OrganizationInvoiceDetails.encode(message.organizationInvoiceDetails, writer.uint32(162).fork()).join();
+    }
+    if (message.autoPaymentRetryCount !== undefined && message.autoPaymentRetryCount !== 0) {
+      writer.uint32(168).int32(message.autoPaymentRetryCount);
+    }
+    if (message.autoPaymentNextRetryAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.autoPaymentNextRetryAt), writer.uint32(178).fork()).join();
     }
     return writer;
   },
@@ -919,6 +957,20 @@ export const Invoice: MessageFns<Invoice> = {
 
           message.organizationInvoiceDetails = OrganizationInvoiceDetails.decode(reader, reader.uint32());
           continue;
+        case 21:
+          if (tag !== 168) {
+            break;
+          }
+
+          message.autoPaymentRetryCount = reader.int32();
+          continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.autoPaymentNextRetryAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -955,6 +1007,10 @@ export const Invoice: MessageFns<Invoice> = {
       isTuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
       organizationInvoiceDetails: isSet(object.organizationInvoiceDetails)
         ? OrganizationInvoiceDetails.fromJSON(object.organizationInvoiceDetails)
+        : undefined,
+      autoPaymentRetryCount: isSet(object.autoPaymentRetryCount) ? globalThis.Number(object.autoPaymentRetryCount) : 0,
+      autoPaymentNextRetryAt: isSet(object.autoPaymentNextRetryAt)
+        ? fromJsonTimestamp(object.autoPaymentNextRetryAt)
         : undefined,
     };
   },
@@ -1026,6 +1082,12 @@ export const Invoice: MessageFns<Invoice> = {
     if (message.organizationInvoiceDetails !== undefined) {
       obj.organizationInvoiceDetails = OrganizationInvoiceDetails.toJSON(message.organizationInvoiceDetails);
     }
+    if (message.autoPaymentRetryCount !== undefined && message.autoPaymentRetryCount !== 0) {
+      obj.autoPaymentRetryCount = Math.round(message.autoPaymentRetryCount);
+    }
+    if (message.autoPaymentNextRetryAt !== undefined) {
+      obj.autoPaymentNextRetryAt = message.autoPaymentNextRetryAt.toISOString();
+    }
     return obj;
   },
 
@@ -1064,6 +1126,8 @@ export const Invoice: MessageFns<Invoice> = {
       (object.organizationInvoiceDetails !== undefined && object.organizationInvoiceDetails !== null)
         ? OrganizationInvoiceDetails.fromPartial(object.organizationInvoiceDetails)
         : undefined;
+    message.autoPaymentRetryCount = object.autoPaymentRetryCount ?? 0;
+    message.autoPaymentNextRetryAt = object.autoPaymentNextRetryAt ?? undefined;
     return message;
   },
 };
@@ -1436,6 +1500,167 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseAutoPaymentAttempt(): AutoPaymentAttempt {
+  return {
+    id: undefined,
+    organization: undefined,
+    invoiceId: undefined,
+    attemptedAt: undefined,
+    status: AutoPaymentStatus.AutoPayPending,
+    errorMessage: "",
+    attemptNumber: 0,
+  };
+}
+
+export const AutoPaymentAttempt: MessageFns<AutoPaymentAttempt> = {
+  encode(message: AutoPaymentAttempt, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.invoiceId !== undefined) {
+      ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+    }
+    if (message.attemptedAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.attemptedAt), writer.uint32(34).fork()).join();
+    }
+    if (message.status !== AutoPaymentStatus.AutoPayPending) {
+      writer.uint32(40).int32(autoPaymentStatusToNumber(message.status));
+    }
+    if (message.errorMessage !== undefined && message.errorMessage !== "") {
+      writer.uint32(50).string(message.errorMessage);
+    }
+    if (message.attemptNumber !== 0) {
+      writer.uint32(56).int32(message.attemptNumber);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AutoPaymentAttempt {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAutoPaymentAttempt();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.attemptedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.status = autoPaymentStatusFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.errorMessage = reader.string();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.attemptNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AutoPaymentAttempt {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      attemptedAt: isSet(object.attemptedAt) ? fromJsonTimestamp(object.attemptedAt) : undefined,
+      status: isSet(object.status) ? autoPaymentStatusFromJSON(object.status) : AutoPaymentStatus.AutoPayPending,
+      errorMessage: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
+      attemptNumber: isSet(object.attemptNumber) ? globalThis.Number(object.attemptNumber) : 0,
+    };
+  },
+
+  toJSON(message: AutoPaymentAttempt): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.invoiceId !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    }
+    if (message.attemptedAt !== undefined) {
+      obj.attemptedAt = message.attemptedAt.toISOString();
+    }
+    if (message.status !== AutoPaymentStatus.AutoPayPending) {
+      obj.status = autoPaymentStatusToJSON(message.status);
+    }
+    if (message.errorMessage !== undefined && message.errorMessage !== "") {
+      obj.errorMessage = message.errorMessage;
+    }
+    if (message.attemptNumber !== 0) {
+      obj.attemptNumber = Math.round(message.attemptNumber);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AutoPaymentAttempt>, I>>(base?: I): AutoPaymentAttempt {
+    return AutoPaymentAttempt.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AutoPaymentAttempt>, I>>(object: I): AutoPaymentAttempt {
+    const message = createBaseAutoPaymentAttempt();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+      ? ObjectId.fromPartial(object.invoiceId)
+      : undefined;
+    message.attemptedAt = object.attemptedAt ?? undefined;
+    message.status = object.status ?? AutoPaymentStatus.AutoPayPending;
+    message.errorMessage = object.errorMessage ?? "";
+    message.attemptNumber = object.attemptNumber ?? 0;
     return message;
   },
 };

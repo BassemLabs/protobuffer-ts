@@ -39,8 +39,10 @@ export declare enum AutoPaymentStatus {
     AutoPayProcessing = "AutoPayProcessing",
     /** AutoPaySucceeded - The auto payment succeeded */
     AutoPaySucceeded = "AutoPaySucceeded",
-    /** AutoPayFailed - The auto payment failed */
+    /** AutoPayFailed - The auto payment failed (will be retried) */
     AutoPayFailed = "AutoPayFailed",
+    /** AutoPayPermanentlyFailed - All retries exhausted, permanently failed */
+    AutoPayPermanentlyFailed = "AutoPayPermanentlyFailed",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function autoPaymentStatusFromJSON(object: any): AutoPaymentStatus;
@@ -94,6 +96,13 @@ export interface Invoice {
     isTuition: boolean;
     /** Organization-specific invoice details */
     organizationInvoiceDetails?: OrganizationInvoiceDetails | undefined;
+    /**
+     * Auto payment retry fields
+     * Number of payment retry attempts made
+     */
+    autoPaymentRetryCount?: number | undefined;
+    /** Timestamp for the next scheduled retry attempt (used for scheduling job queries) */
+    autoPaymentNextRetryAt?: Date | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;
@@ -120,12 +129,22 @@ export interface InvoiceFilter {
     family?: ObjectId | undefined;
     schoolYear?: ObjectId | undefined;
 }
+export interface AutoPaymentAttempt {
+    id: ObjectId | undefined;
+    organization: ObjectId | undefined;
+    invoiceId: ObjectId | undefined;
+    attemptedAt: Date | undefined;
+    status: AutoPaymentStatus;
+    errorMessage?: string | undefined;
+    attemptNumber: number;
+}
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;
 export declare const OrganizationInvoiceDetails: MessageFns<OrganizationInvoiceDetails>;
 export declare const Invoice: MessageFns<Invoice>;
 export declare const InvoiceResponse: MessageFns<InvoiceResponse>;
 export declare const InvoiceFilter: MessageFns<InvoiceFilter>;
+export declare const AutoPaymentAttempt: MessageFns<AutoPaymentAttempt>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

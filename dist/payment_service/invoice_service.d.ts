@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, StudentStatus } from "./invoice";
+import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, StudentStatus } from "./invoice";
 export declare const protobufPackage = "payment_service";
 /** Invoice messages */
 export interface Invoices {
@@ -199,6 +199,21 @@ export interface GetOrganizationInvoicesRequest {
 export interface GetAllOrganizationInvoicesRequest {
     context: RequestContext | undefined;
 }
+/** Auto payment retry messages */
+export interface GetFailedAutoPayInvoicesRequest {
+    context: RequestContext | undefined;
+}
+export interface GetAutoPaymentAttemptsRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+}
+export interface GetAutoPaymentAttemptsResponse {
+    attempts: AutoPaymentAttempt[];
+}
+export interface ResetAutoPaymentForRetryRequest {
+    context: RequestContext | undefined;
+    invoiceId: ObjectId | undefined;
+}
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
 export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
@@ -239,6 +254,10 @@ export declare const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrg
 export declare const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvoiceRequest>;
 export declare const GetOrganizationInvoicesRequest: MessageFns<GetOrganizationInvoicesRequest>;
 export declare const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInvoicesRequest>;
+export declare const GetFailedAutoPayInvoicesRequest: MessageFns<GetFailedAutoPayInvoicesRequest>;
+export declare const GetAutoPaymentAttemptsRequest: MessageFns<GetAutoPaymentAttemptsRequest>;
+export declare const GetAutoPaymentAttemptsResponse: MessageFns<GetAutoPaymentAttemptsResponse>;
+export declare const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetryRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

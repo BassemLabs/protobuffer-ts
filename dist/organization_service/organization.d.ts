@@ -47,10 +47,20 @@ export interface PaymentInformation {
     stripeChargesEnabled: boolean;
     /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
     autoPayDisabled?: boolean | undefined;
+    /** Auto payment retry configuratio */
+    autoPayRetryConfig: AutoPayRetryConfig | undefined;
+}
+/** Configuration for auto-payment retry behavior */
+export interface AutoPayRetryConfig {
+    /** Maximum number of retry attempts (default: 3, max: 10) */
+    maxRetries: number;
+    /** Retry interval in hours - retries every N hours until max_retries (default: 24) */
+    retryIntervalHours: number;
 }
 export declare const Organization: MessageFns<Organization>;
 export declare const SchoolYear: MessageFns<SchoolYear>;
 export declare const PaymentInformation: MessageFns<PaymentInformation>;
+export declare const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

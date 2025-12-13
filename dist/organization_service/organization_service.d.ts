@@ -66,6 +66,12 @@ export interface UpdateOrganizationAutoPayRequest {
     organizationId: ObjectId | undefined;
     autoPayDisabled: boolean;
 }
+export interface UpdateAutoPayRetryConfigRequest {
+    context: RequestContext | undefined;
+    organizationId: ObjectId | undefined;
+    maxRetries: number;
+    retryIntervalHours: number;
+}
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
     context: RequestContext | undefined;
@@ -167,6 +173,7 @@ export declare const AddDomainRequest: MessageFns<AddDomainRequest>;
 export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
 export declare const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSettingsRequest>;
 export declare const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest>;
+export declare const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfigRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;
 export declare const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse>;
 export declare const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest>;

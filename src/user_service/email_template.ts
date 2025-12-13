@@ -29,6 +29,11 @@ export enum EmailTemplateKey {
   /** REPORT_CARD_CHANGES_REQUESTED_EMAIL - Report card templates */
   REPORT_CARD_CHANGES_REQUESTED_EMAIL = "REPORT_CARD_CHANGES_REQUESTED_EMAIL",
   REPORT_CARD_PUBLISHED_EMAIL = "REPORT_CARD_PUBLISHED_EMAIL",
+  /** AUTO_PAY_RETRY_SCHEDULED_EMAIL - Auto payment templates */
+  AUTO_PAY_RETRY_SCHEDULED_EMAIL = "AUTO_PAY_RETRY_SCHEDULED_EMAIL",
+  AUTO_PAY_PERMANENT_FAILURE_EMAIL = "AUTO_PAY_PERMANENT_FAILURE_EMAIL",
+  /** INVOICE_CREATED_EMAIL - Invoice templates */
+  INVOICE_CREATED_EMAIL = "INVOICE_CREATED_EMAIL",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -79,6 +84,15 @@ export function emailTemplateKeyFromJSON(object: any): EmailTemplateKey {
     case 14:
     case "REPORT_CARD_PUBLISHED_EMAIL":
       return EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL;
+    case 15:
+    case "AUTO_PAY_RETRY_SCHEDULED_EMAIL":
+      return EmailTemplateKey.AUTO_PAY_RETRY_SCHEDULED_EMAIL;
+    case 16:
+    case "AUTO_PAY_PERMANENT_FAILURE_EMAIL":
+      return EmailTemplateKey.AUTO_PAY_PERMANENT_FAILURE_EMAIL;
+    case 17:
+    case "INVOICE_CREATED_EMAIL":
+      return EmailTemplateKey.INVOICE_CREATED_EMAIL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -118,6 +132,12 @@ export function emailTemplateKeyToJSON(object: EmailTemplateKey): string {
       return "REPORT_CARD_CHANGES_REQUESTED_EMAIL";
     case EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL:
       return "REPORT_CARD_PUBLISHED_EMAIL";
+    case EmailTemplateKey.AUTO_PAY_RETRY_SCHEDULED_EMAIL:
+      return "AUTO_PAY_RETRY_SCHEDULED_EMAIL";
+    case EmailTemplateKey.AUTO_PAY_PERMANENT_FAILURE_EMAIL:
+      return "AUTO_PAY_PERMANENT_FAILURE_EMAIL";
+    case EmailTemplateKey.INVOICE_CREATED_EMAIL:
+      return "INVOICE_CREATED_EMAIL";
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -156,6 +176,12 @@ export function emailTemplateKeyToNumber(object: EmailTemplateKey): number {
       return 13;
     case EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL:
       return 14;
+    case EmailTemplateKey.AUTO_PAY_RETRY_SCHEDULED_EMAIL:
+      return 15;
+    case EmailTemplateKey.AUTO_PAY_PERMANENT_FAILURE_EMAIL:
+      return 16;
+    case EmailTemplateKey.INVOICE_CREATED_EMAIL:
+      return 17;
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return -1;

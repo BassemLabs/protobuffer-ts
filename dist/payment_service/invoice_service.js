@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
+exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -3303,6 +3303,252 @@ exports.GetAllOrganizationInvoicesRequest = {
         const message = createBaseGetAllOrganizationInvoicesRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetFailedAutoPayInvoicesRequest() {
+    return { context: undefined };
+}
+exports.GetFailedAutoPayInvoicesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetFailedAutoPayInvoicesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetFailedAutoPayInvoicesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetFailedAutoPayInvoicesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAutoPaymentAttemptsRequest() {
+    return { context: undefined, invoiceId: undefined };
+}
+exports.GetAutoPaymentAttemptsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.invoiceId !== undefined) {
+            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAutoPaymentAttemptsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoiceId !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAutoPaymentAttemptsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAutoPaymentAttemptsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAutoPaymentAttemptsResponse() {
+    return { attempts: [] };
+}
+exports.GetAutoPaymentAttemptsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.attempts) {
+            invoice_1.AutoPaymentAttempt.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAutoPaymentAttemptsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.attempts.push(invoice_1.AutoPaymentAttempt.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            attempts: globalThis.Array.isArray(object?.attempts)
+                ? object.attempts.map((e) => invoice_1.AutoPaymentAttempt.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.attempts?.length) {
+            obj.attempts = message.attempts.map((e) => invoice_1.AutoPaymentAttempt.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAutoPaymentAttemptsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAutoPaymentAttemptsResponse();
+        message.attempts = object.attempts?.map((e) => invoice_1.AutoPaymentAttempt.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseResetAutoPaymentForRetryRequest() {
+    return { context: undefined, invoiceId: undefined };
+}
+exports.ResetAutoPaymentForRetryRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.invoiceId !== undefined) {
+            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResetAutoPaymentForRetryRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoiceId !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResetAutoPaymentForRetryRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResetAutoPaymentForRetryRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
             : undefined;
         return message;
     },

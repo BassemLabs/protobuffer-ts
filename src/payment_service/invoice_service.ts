@@ -11,6 +11,7 @@ import { ActionRequiredByParents } from "../user_service/action_required_by_pare
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
+  AutoPaymentAttempt,
   AutoPaymentStatus,
   autoPaymentStatusFromJSON,
   autoPaymentStatusToJSON,
@@ -261,6 +262,25 @@ export interface GetOrganizationInvoicesRequest {
 
 export interface GetAllOrganizationInvoicesRequest {
   context: RequestContext | undefined;
+}
+
+/** Auto payment retry messages */
+export interface GetFailedAutoPayInvoicesRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetAutoPaymentAttemptsRequest {
+  context: RequestContext | undefined;
+  invoiceId: ObjectId | undefined;
+}
+
+export interface GetAutoPaymentAttemptsResponse {
+  attempts: AutoPaymentAttempt[];
+}
+
+export interface ResetAutoPaymentForRetryRequest {
+  context: RequestContext | undefined;
+  invoiceId: ObjectId | undefined;
 }
 
 function createBaseInvoices(): Invoices {
@@ -3991,6 +4011,290 @@ export const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInv
     const message = createBaseGetAllOrganizationInvoicesRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetFailedAutoPayInvoicesRequest(): GetFailedAutoPayInvoicesRequest {
+  return { context: undefined };
+}
+
+export const GetFailedAutoPayInvoicesRequest: MessageFns<GetFailedAutoPayInvoicesRequest> = {
+  encode(message: GetFailedAutoPayInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetFailedAutoPayInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFailedAutoPayInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFailedAutoPayInvoicesRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetFailedAutoPayInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetFailedAutoPayInvoicesRequest>, I>>(base?: I): GetFailedAutoPayInvoicesRequest {
+    return GetFailedAutoPayInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetFailedAutoPayInvoicesRequest>, I>>(
+    object: I,
+  ): GetFailedAutoPayInvoicesRequest {
+    const message = createBaseGetFailedAutoPayInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAutoPaymentAttemptsRequest(): GetAutoPaymentAttemptsRequest {
+  return { context: undefined, invoiceId: undefined };
+}
+
+export const GetAutoPaymentAttemptsRequest: MessageFns<GetAutoPaymentAttemptsRequest> = {
+  encode(message: GetAutoPaymentAttemptsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.invoiceId !== undefined) {
+      ObjectId.encode(message.invoiceId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAutoPaymentAttemptsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAutoPaymentAttemptsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAutoPaymentAttemptsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+    };
+  },
+
+  toJSON(message: GetAutoPaymentAttemptsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoiceId !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAutoPaymentAttemptsRequest>, I>>(base?: I): GetAutoPaymentAttemptsRequest {
+    return GetAutoPaymentAttemptsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAutoPaymentAttemptsRequest>, I>>(
+    object: I,
+  ): GetAutoPaymentAttemptsRequest {
+    const message = createBaseGetAutoPaymentAttemptsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+      ? ObjectId.fromPartial(object.invoiceId)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAutoPaymentAttemptsResponse(): GetAutoPaymentAttemptsResponse {
+  return { attempts: [] };
+}
+
+export const GetAutoPaymentAttemptsResponse: MessageFns<GetAutoPaymentAttemptsResponse> = {
+  encode(message: GetAutoPaymentAttemptsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.attempts) {
+      AutoPaymentAttempt.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAutoPaymentAttemptsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAutoPaymentAttemptsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.attempts.push(AutoPaymentAttempt.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAutoPaymentAttemptsResponse {
+    return {
+      attempts: globalThis.Array.isArray(object?.attempts)
+        ? object.attempts.map((e: any) => AutoPaymentAttempt.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetAutoPaymentAttemptsResponse): unknown {
+    const obj: any = {};
+    if (message.attempts?.length) {
+      obj.attempts = message.attempts.map((e) => AutoPaymentAttempt.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAutoPaymentAttemptsResponse>, I>>(base?: I): GetAutoPaymentAttemptsResponse {
+    return GetAutoPaymentAttemptsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAutoPaymentAttemptsResponse>, I>>(
+    object: I,
+  ): GetAutoPaymentAttemptsResponse {
+    const message = createBaseGetAutoPaymentAttemptsResponse();
+    message.attempts = object.attempts?.map((e) => AutoPaymentAttempt.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseResetAutoPaymentForRetryRequest(): ResetAutoPaymentForRetryRequest {
+  return { context: undefined, invoiceId: undefined };
+}
+
+export const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetryRequest> = {
+  encode(message: ResetAutoPaymentForRetryRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.invoiceId !== undefined) {
+      ObjectId.encode(message.invoiceId, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ResetAutoPaymentForRetryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResetAutoPaymentForRetryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResetAutoPaymentForRetryRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+    };
+  },
+
+  toJSON(message: ResetAutoPaymentForRetryRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoiceId !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ResetAutoPaymentForRetryRequest>, I>>(base?: I): ResetAutoPaymentForRetryRequest {
+    return ResetAutoPaymentForRetryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ResetAutoPaymentForRetryRequest>, I>>(
+    object: I,
+  ): ResetAutoPaymentForRetryRequest {
+    const message = createBaseResetAutoPaymentForRetryRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
+      ? ObjectId.fromPartial(object.invoiceId)
       : undefined;
     return message;
   },
