@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.ReportType = exports.protobufPackage = void 0;
+exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.ReportType = exports.protobufPackage = void 0;
 exports.reportTypeFromJSON = reportTypeFromJSON;
 exports.reportTypeToJSON = reportTypeToJSON;
 exports.reportTypeToNumber = reportTypeToNumber;
@@ -545,6 +545,182 @@ exports.SemesterLearningSkill = {
         return message;
     },
 };
+function createBaseListSemester() {
+    return { id: undefined, archived: false, name: "", startDate: undefined, endDate: undefined };
+}
+exports.ListSemester = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.archived !== false) {
+            writer.uint32(16).bool(message.archived);
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.startDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+        }
+        if (message.endDate !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListSemester();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.archived !== false) {
+            obj.archived = message.archived;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.startDate !== undefined) {
+            obj.startDate = message.startDate.toISOString();
+        }
+        if (message.endDate !== undefined) {
+            obj.endDate = message.endDate.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListSemester.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListSemester();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.archived = object.archived ?? false;
+        message.name = object.name ?? "";
+        message.startDate = object.startDate ?? undefined;
+        message.endDate = object.endDate ?? undefined;
+        return message;
+    },
+};
+function createBaseSemesterList() {
+    return { semesters: [], semestersCount: 0 };
+}
+exports.SemesterList = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.semesters) {
+            exports.ListSemester.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.semestersCount !== 0) {
+            writer.uint32(16).uint64(message.semestersCount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSemesterList();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.semesters.push(exports.ListSemester.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.semestersCount = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            semesters: globalThis.Array.isArray(object?.semesters)
+                ? object.semesters.map((e) => exports.ListSemester.fromJSON(e))
+                : [],
+            semestersCount: isSet(object.semestersCount) ? globalThis.Number(object.semestersCount) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.semesters?.length) {
+            obj.semesters = message.semesters.map((e) => exports.ListSemester.toJSON(e));
+        }
+        if (message.semestersCount !== 0) {
+            obj.semestersCount = Math.round(message.semestersCount);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SemesterList.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSemesterList();
+        message.semesters = object.semesters?.map((e) => exports.ListSemester.fromPartial(e)) || [];
+        message.semestersCount = object.semestersCount ?? 0;
+        return message;
+    },
+};
 function toTimestamp(date) {
     const seconds = Math.trunc(date.getTime() / 1_000);
     const nanos = (date.getTime() % 1_000) * 1_000_000;
@@ -565,6 +741,16 @@ function fromJsonTimestamp(o) {
     else {
         return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
     }
+}
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
 }
 function isSet(value) {
     return value !== null && value !== undefined;

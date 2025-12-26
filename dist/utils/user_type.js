@@ -13,34 +13,34 @@ exports.userTypeToNumber = userTypeToNumber;
 exports.protobufPackage = "utils";
 var UserType;
 (function (UserType) {
-    UserType["None"] = "None";
-    UserType["Student"] = "Student";
-    UserType["Teacher"] = "Teacher";
-    UserType["Parent"] = "Parent";
-    UserType["BassemLabsStaff"] = "BassemLabsStaff";
-    UserType["OrganizationOwner"] = "OrganizationOwner";
+    UserType["NONE"] = "NONE";
+    UserType["STUDENT"] = "STUDENT";
+    UserType["TEACHER"] = "TEACHER";
+    UserType["PARENT"] = "PARENT";
+    UserType["BASSEM_LABS_STAFF"] = "BASSEM_LABS_STAFF";
+    UserType["ORGANIZATION_OWNER"] = "ORGANIZATION_OWNER";
     UserType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(UserType || (exports.UserType = UserType = {}));
 function userTypeFromJSON(object) {
     switch (object) {
         case 0:
-        case "None":
-            return UserType.None;
+        case "NONE":
+            return UserType.NONE;
         case 1:
-        case "Student":
-            return UserType.Student;
+        case "STUDENT":
+            return UserType.STUDENT;
         case 2:
-        case "Teacher":
-            return UserType.Teacher;
+        case "TEACHER":
+            return UserType.TEACHER;
         case 3:
-        case "Parent":
-            return UserType.Parent;
+        case "PARENT":
+            return UserType.PARENT;
         case 4:
-        case "BassemLabsStaff":
-            return UserType.BassemLabsStaff;
+        case "BASSEM_LABS_STAFF":
+            return UserType.BASSEM_LABS_STAFF;
         case 5:
-        case "OrganizationOwner":
-            return UserType.OrganizationOwner;
+        case "ORGANIZATION_OWNER":
+            return UserType.ORGANIZATION_OWNER;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -49,18 +49,18 @@ function userTypeFromJSON(object) {
 }
 function userTypeToJSON(object) {
     switch (object) {
-        case UserType.None:
-            return "None";
-        case UserType.Student:
-            return "Student";
-        case UserType.Teacher:
-            return "Teacher";
-        case UserType.Parent:
-            return "Parent";
-        case UserType.BassemLabsStaff:
-            return "BassemLabsStaff";
-        case UserType.OrganizationOwner:
-            return "OrganizationOwner";
+        case UserType.NONE:
+            return "NONE";
+        case UserType.STUDENT:
+            return "STUDENT";
+        case UserType.TEACHER:
+            return "TEACHER";
+        case UserType.PARENT:
+            return "PARENT";
+        case UserType.BASSEM_LABS_STAFF:
+            return "BASSEM_LABS_STAFF";
+        case UserType.ORGANIZATION_OWNER:
+            return "ORGANIZATION_OWNER";
         case UserType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -68,17 +68,17 @@ function userTypeToJSON(object) {
 }
 function userTypeToNumber(object) {
     switch (object) {
-        case UserType.None:
+        case UserType.NONE:
             return 0;
-        case UserType.Student:
+        case UserType.STUDENT:
             return 1;
-        case UserType.Teacher:
+        case UserType.TEACHER:
             return 2;
-        case UserType.Parent:
+        case UserType.PARENT:
             return 3;
-        case UserType.BassemLabsStaff:
+        case UserType.BASSEM_LABS_STAFF:
             return 4;
-        case UserType.OrganizationOwner:
+        case UserType.ORGANIZATION_OWNER:
             return 5;
         case UserType.UNRECOGNIZED:
         default:

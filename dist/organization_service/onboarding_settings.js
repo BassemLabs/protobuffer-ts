@@ -5,9 +5,10 @@
 //   protoc               unknown
 // source: organization_service/onboarding_settings.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FeeItem = exports.ItemizedFee = exports.OnboardingSettings_ReregistrationFeesEntry = exports.OnboardingSettings_RegistrationFeesEntry = exports.OnboardingSettings = exports.protobufPackage = void 0;
+exports.FeeItem = exports.ItemizedFee = exports.GradeFeeMapping = exports.OnboardingSettings = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const student_1 = require("../user_service/student");
 const aws_file_1 = require("../utils/aws_file");
 exports.protobufPackage = "organization_service";
 function createBaseOnboardingSettings() {
@@ -15,8 +16,8 @@ function createBaseOnboardingSettings() {
         hasInterviewForNewcomers: false,
         enableGroupApprovalSystem: false,
         waitlistFee: 0,
-        registrationFees: {},
-        reregistrationFees: {},
+        registrationFees: [],
+        reregistrationFees: [],
         schoolHandbook: [],
         interviewFee: 0,
     };
@@ -32,12 +33,12 @@ exports.OnboardingSettings = {
         if (message.waitlistFee !== 0) {
             writer.uint32(29).float(message.waitlistFee);
         }
-        Object.entries(message.registrationFees).forEach(([key, value]) => {
-            exports.OnboardingSettings_RegistrationFeesEntry.encode({ key: key, value }, writer.uint32(34).fork()).join();
-        });
-        Object.entries(message.reregistrationFees).forEach(([key, value]) => {
-            exports.OnboardingSettings_ReregistrationFeesEntry.encode({ key: key, value }, writer.uint32(42).fork()).join();
-        });
+        for (const v of message.registrationFees) {
+            exports.GradeFeeMapping.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.reregistrationFees) {
+            exports.GradeFeeMapping.encode(v, writer.uint32(42).fork()).join();
+        }
         for (const v of message.schoolHandbook) {
             aws_file_1.AWSFile.encode(v, writer.uint32(50).fork()).join();
         }
@@ -75,19 +76,13 @@ exports.OnboardingSettings = {
                     if (tag !== 34) {
                         break;
                     }
-                    const entry4 = exports.OnboardingSettings_RegistrationFeesEntry.decode(reader, reader.uint32());
-                    if (entry4.value !== undefined) {
-                        message.registrationFees[entry4.key] = entry4.value;
-                    }
+                    message.registrationFees.push(exports.GradeFeeMapping.decode(reader, reader.uint32()));
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    const entry5 = exports.OnboardingSettings_ReregistrationFeesEntry.decode(reader, reader.uint32());
-                    if (entry5.value !== undefined) {
-                        message.reregistrationFees[entry5.key] = entry5.value;
-                    }
+                    message.reregistrationFees.push(exports.GradeFeeMapping.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -118,18 +113,12 @@ exports.OnboardingSettings = {
                 ? globalThis.Boolean(object.enableGroupApprovalSystem)
                 : false,
             waitlistFee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
-            registrationFees: isObject(object.registrationFees)
-                ? Object.entries(object.registrationFees).reduce((acc, [key, value]) => {
-                    acc[key] = exports.ItemizedFee.fromJSON(value);
-                    return acc;
-                }, {})
-                : {},
-            reregistrationFees: isObject(object.reregistrationFees)
-                ? Object.entries(object.reregistrationFees).reduce((acc, [key, value]) => {
-                    acc[key] = exports.ItemizedFee.fromJSON(value);
-                    return acc;
-                }, {})
-                : {},
+            registrationFees: globalThis.Array.isArray(object?.registrationFees)
+                ? object.registrationFees.map((e) => exports.GradeFeeMapping.fromJSON(e))
+                : [],
+            reregistrationFees: globalThis.Array.isArray(object?.reregistrationFees)
+                ? object.reregistrationFees.map((e) => exports.GradeFeeMapping.fromJSON(e))
+                : [],
             schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
                 ? object.schoolHandbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
                 : [],
@@ -147,23 +136,11 @@ exports.OnboardingSettings = {
         if (message.waitlistFee !== 0) {
             obj.waitlistFee = message.waitlistFee;
         }
-        if (message.registrationFees) {
-            const entries = Object.entries(message.registrationFees);
-            if (entries.length > 0) {
-                obj.registrationFees = {};
-                entries.forEach(([k, v]) => {
-                    obj.registrationFees[k] = exports.ItemizedFee.toJSON(v);
-                });
-            }
+        if (message.registrationFees?.length) {
+            obj.registrationFees = message.registrationFees.map((e) => exports.GradeFeeMapping.toJSON(e));
         }
-        if (message.reregistrationFees) {
-            const entries = Object.entries(message.reregistrationFees);
-            if (entries.length > 0) {
-                obj.reregistrationFees = {};
-                entries.forEach(([k, v]) => {
-                    obj.reregistrationFees[k] = exports.ItemizedFee.toJSON(v);
-                });
-            }
+        if (message.reregistrationFees?.length) {
+            obj.reregistrationFees = message.reregistrationFees.map((e) => exports.GradeFeeMapping.toJSON(e));
         }
         if (message.schoolHandbook?.length) {
             obj.schoolHandbook = message.schoolHandbook.map((e) => aws_file_1.AWSFile.toJSON(e));
@@ -181,54 +158,44 @@ exports.OnboardingSettings = {
         message.hasInterviewForNewcomers = object.hasInterviewForNewcomers ?? false;
         message.enableGroupApprovalSystem = object.enableGroupApprovalSystem ?? false;
         message.waitlistFee = object.waitlistFee ?? 0;
-        message.registrationFees = Object.entries(object.registrationFees ?? {}).reduce((acc, [key, value]) => {
-            if (value !== undefined) {
-                acc[key] = exports.ItemizedFee.fromPartial(value);
-            }
-            return acc;
-        }, {});
-        message.reregistrationFees = Object.entries(object.reregistrationFees ?? {}).reduce((acc, [key, value]) => {
-            if (value !== undefined) {
-                acc[key] = exports.ItemizedFee.fromPartial(value);
-            }
-            return acc;
-        }, {});
+        message.registrationFees = object.registrationFees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];
+        message.reregistrationFees = object.reregistrationFees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];
         message.schoolHandbook = object.schoolHandbook?.map((e) => aws_file_1.AWSFile.fromPartial(e)) || [];
         message.interviewFee = object.interviewFee ?? 0;
         return message;
     },
 };
-function createBaseOnboardingSettings_RegistrationFeesEntry() {
-    return { key: "", value: undefined };
+function createBaseGradeFeeMapping() {
+    return { grade: student_1.StudentGrade.PRE_K, fee: undefined };
 }
-exports.OnboardingSettings_RegistrationFeesEntry = {
+exports.GradeFeeMapping = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.key !== "") {
-            writer.uint32(10).string(message.key);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(8).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
-        if (message.value !== undefined) {
-            exports.ItemizedFee.encode(message.value, writer.uint32(18).fork()).join();
+        if (message.fee !== undefined) {
+            exports.ItemizedFee.encode(message.fee, writer.uint32(18).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseOnboardingSettings_RegistrationFeesEntry();
+        const message = createBaseGradeFeeMapping();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.key = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.value = exports.ItemizedFee.decode(reader, reader.uint32());
+                    message.fee = exports.ItemizedFee.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -240,97 +207,27 @@ exports.OnboardingSettings_RegistrationFeesEntry = {
     },
     fromJSON(object) {
         return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? exports.ItemizedFee.fromJSON(object.value) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
+            fee: isSet(object.fee) ? exports.ItemizedFee.fromJSON(object.fee) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.key !== "") {
-            obj.key = message.key;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
-        if (message.value !== undefined) {
-            obj.value = exports.ItemizedFee.toJSON(message.value);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.OnboardingSettings_RegistrationFeesEntry.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseOnboardingSettings_RegistrationFeesEntry();
-        message.key = object.key ?? "";
-        message.value = (object.value !== undefined && object.value !== null)
-            ? exports.ItemizedFee.fromPartial(object.value)
-            : undefined;
-        return message;
-    },
-};
-function createBaseOnboardingSettings_ReregistrationFeesEntry() {
-    return { key: "", value: undefined };
-}
-exports.OnboardingSettings_ReregistrationFeesEntry = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.key !== "") {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== undefined) {
-            exports.ItemizedFee.encode(message.value, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseOnboardingSettings_ReregistrationFeesEntry();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.key = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.value = exports.ItemizedFee.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? exports.ItemizedFee.fromJSON(object.value) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.key !== "") {
-            obj.key = message.key;
-        }
-        if (message.value !== undefined) {
-            obj.value = exports.ItemizedFee.toJSON(message.value);
+        if (message.fee !== undefined) {
+            obj.fee = exports.ItemizedFee.toJSON(message.fee);
         }
         return obj;
     },
     create(base) {
-        return exports.OnboardingSettings_ReregistrationFeesEntry.fromPartial(base ?? {});
+        return exports.GradeFeeMapping.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseOnboardingSettings_ReregistrationFeesEntry();
-        message.key = object.key ?? "";
-        message.value = (object.value !== undefined && object.value !== null)
-            ? exports.ItemizedFee.fromPartial(object.value)
-            : undefined;
+        const message = createBaseGradeFeeMapping();
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
+        message.fee = (object.fee !== undefined && object.fee !== null) ? exports.ItemizedFee.fromPartial(object.fee) : undefined;
         return message;
     },
 };
@@ -508,9 +405,6 @@ exports.FeeItem = {
         return message;
     },
 };
-function isObject(value) {
-    return typeof value === "object" && value !== null;
-}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

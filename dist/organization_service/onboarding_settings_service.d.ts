@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { ItemizedFee } from "./onboarding_settings";
+import { GradeFeeMapping } from "./onboarding_settings";
 export declare const protobufPackage = "organization_service";
 export interface GetOnboardingSettingsRequest {
     context: RequestContext | undefined;
@@ -32,24 +32,12 @@ export interface UpdateWaitlistFeeRequest {
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;
     organizationId: ObjectId | undefined;
-    registrationFees: {
-        [key: string]: ItemizedFee;
-    };
-}
-export interface UpdateRegistrationFeeRequest_RegistrationFeesEntry {
-    key: string;
-    value: ItemizedFee | undefined;
+    registrationFees: GradeFeeMapping[];
 }
 export interface UpdateReregistrationFeeRequest {
     context: RequestContext | undefined;
     organizationId: ObjectId | undefined;
-    reregistrationFees: {
-        [key: string]: ItemizedFee;
-    };
-}
-export interface UpdateReregistrationFeeRequest_ReregistrationFeesEntry {
-    key: string;
-    value: ItemizedFee | undefined;
+    reregistrationFees: GradeFeeMapping[];
 }
 export interface UpdateInterviewFeeRequest {
     context: RequestContext | undefined;
@@ -62,9 +50,7 @@ export declare const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookF
 export declare const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFileRequest>;
 export declare const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest>;
 export declare const UpdateRegistrationFeeRequest: MessageFns<UpdateRegistrationFeeRequest>;
-export declare const UpdateRegistrationFeeRequest_RegistrationFeesEntry: MessageFns<UpdateRegistrationFeeRequest_RegistrationFeesEntry>;
 export declare const UpdateReregistrationFeeRequest: MessageFns<UpdateReregistrationFeeRequest>;
-export declare const UpdateReregistrationFeeRequest_ReregistrationFeesEntry: MessageFns<UpdateReregistrationFeeRequest_ReregistrationFeesEntry>;
 export declare const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

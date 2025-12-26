@@ -25,13 +25,16 @@ export interface GetCourseRequest {
   courseId: ObjectId | undefined;
 }
 
-export interface AggregateCourseRequest {
+export interface ListCoursesRequest {
   context: RequestContext | undefined;
-  aggregationDocument: string;
-}
-
-export interface AggregateCourseResponse {
-  result: string;
+  perPage?: number | undefined;
+  page?: number | undefined;
+  nameSearch?: string | undefined;
+  semester?: ObjectId | undefined;
+  schoolYear?: ObjectId | undefined;
+  archived?: boolean | undefined;
+  hideHomeroomCourses?: boolean | undefined;
+  teacherId?: ObjectId | undefined;
 }
 
 export interface CourseResponse {
@@ -251,25 +254,56 @@ export const GetCourseRequest: MessageFns<GetCourseRequest> = {
   },
 };
 
-function createBaseAggregateCourseRequest(): AggregateCourseRequest {
-  return { context: undefined, aggregationDocument: "" };
+function createBaseListCoursesRequest(): ListCoursesRequest {
+  return {
+    context: undefined,
+    perPage: 0,
+    page: 0,
+    nameSearch: "",
+    semester: undefined,
+    schoolYear: undefined,
+    archived: false,
+    hideHomeroomCourses: false,
+    teacherId: undefined,
+  };
 }
 
-export const AggregateCourseRequest: MessageFns<AggregateCourseRequest> = {
-  encode(message: AggregateCourseRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const ListCoursesRequest: MessageFns<ListCoursesRequest> = {
+  encode(message: ListCoursesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.aggregationDocument !== "") {
-      writer.uint32(18).string(message.aggregationDocument);
+    if (message.perPage !== undefined && message.perPage !== 0) {
+      writer.uint32(16).uint64(message.perPage);
+    }
+    if (message.page !== undefined && message.page !== 0) {
+      writer.uint32(24).uint64(message.page);
+    }
+    if (message.nameSearch !== undefined && message.nameSearch !== "") {
+      writer.uint32(34).string(message.nameSearch);
+    }
+    if (message.semester !== undefined) {
+      ObjectId.encode(message.semester, writer.uint32(42).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(50).fork()).join();
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      writer.uint32(56).bool(message.archived);
+    }
+    if (message.hideHomeroomCourses !== undefined && message.hideHomeroomCourses !== false) {
+      writer.uint32(64).bool(message.hideHomeroomCourses);
+    }
+    if (message.teacherId !== undefined) {
+      ObjectId.encode(message.teacherId, writer.uint32(74).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): AggregateCourseRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): ListCoursesRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregateCourseRequest();
+    const message = createBaseListCoursesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -281,11 +315,60 @@ export const AggregateCourseRequest: MessageFns<AggregateCourseRequest> = {
           message.context = RequestContext.decode(reader, reader.uint32());
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.aggregationDocument = reader.string();
+          message.perPage = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.page = longToNumber(reader.uint64());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.nameSearch = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.semester = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.hideHomeroomCourses = reader.bool();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.teacherId = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -296,90 +379,74 @@ export const AggregateCourseRequest: MessageFns<AggregateCourseRequest> = {
     return message;
   },
 
-  fromJSON(object: any): AggregateCourseRequest {
+  fromJSON(object: any): ListCoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      aggregationDocument: isSet(object.aggregationDocument) ? globalThis.String(object.aggregationDocument) : "",
+      perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+      semester: isSet(object.semester) ? ObjectId.fromJSON(object.semester) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      hideHomeroomCourses: isSet(object.hideHomeroomCourses) ? globalThis.Boolean(object.hideHomeroomCourses) : false,
+      teacherId: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
-  toJSON(message: AggregateCourseRequest): unknown {
+  toJSON(message: ListCoursesRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.aggregationDocument !== "") {
-      obj.aggregationDocument = message.aggregationDocument;
+    if (message.perPage !== undefined && message.perPage !== 0) {
+      obj.perPage = Math.round(message.perPage);
+    }
+    if (message.page !== undefined && message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.nameSearch !== undefined && message.nameSearch !== "") {
+      obj.nameSearch = message.nameSearch;
+    }
+    if (message.semester !== undefined) {
+      obj.semester = ObjectId.toJSON(message.semester);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    if (message.hideHomeroomCourses !== undefined && message.hideHomeroomCourses !== false) {
+      obj.hideHomeroomCourses = message.hideHomeroomCourses;
+    }
+    if (message.teacherId !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacherId);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AggregateCourseRequest>, I>>(base?: I): AggregateCourseRequest {
-    return AggregateCourseRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<ListCoursesRequest>, I>>(base?: I): ListCoursesRequest {
+    return ListCoursesRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<AggregateCourseRequest>, I>>(object: I): AggregateCourseRequest {
-    const message = createBaseAggregateCourseRequest();
+  fromPartial<I extends Exact<DeepPartial<ListCoursesRequest>, I>>(object: I): ListCoursesRequest {
+    const message = createBaseListCoursesRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.aggregationDocument = object.aggregationDocument ?? "";
-    return message;
-  },
-};
-
-function createBaseAggregateCourseResponse(): AggregateCourseResponse {
-  return { result: "" };
-}
-
-export const AggregateCourseResponse: MessageFns<AggregateCourseResponse> = {
-  encode(message: AggregateCourseResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.result !== "") {
-      writer.uint32(10).string(message.result);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AggregateCourseResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregateCourseResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.result = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AggregateCourseResponse {
-    return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
-  },
-
-  toJSON(message: AggregateCourseResponse): unknown {
-    const obj: any = {};
-    if (message.result !== "") {
-      obj.result = message.result;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AggregateCourseResponse>, I>>(base?: I): AggregateCourseResponse {
-    return AggregateCourseResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AggregateCourseResponse>, I>>(object: I): AggregateCourseResponse {
-    const message = createBaseAggregateCourseResponse();
-    message.result = object.result ?? "";
+    message.perPage = object.perPage ?? 0;
+    message.page = object.page ?? 0;
+    message.nameSearch = object.nameSearch ?? "";
+    message.semester = (object.semester !== undefined && object.semester !== null)
+      ? ObjectId.fromPartial(object.semester)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.archived = object.archived ?? false;
+    message.hideHomeroomCourses = object.hideHomeroomCourses ?? false;
+    message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
+      ? ObjectId.fromPartial(object.teacherId)
+      : undefined;
     return message;
   },
 };
@@ -2361,6 +2428,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

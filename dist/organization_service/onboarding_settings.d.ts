@@ -1,26 +1,19 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade } from "../user_service/student";
 import { AWSFile } from "../utils/aws_file";
 export declare const protobufPackage = "organization_service";
 export interface OnboardingSettings {
     hasInterviewForNewcomers: boolean;
     enableGroupApprovalSystem: boolean;
     waitlistFee: number;
-    registrationFees: {
-        [key: string]: ItemizedFee;
-    };
-    reregistrationFees: {
-        [key: string]: ItemizedFee;
-    };
+    registrationFees: GradeFeeMapping[];
+    reregistrationFees: GradeFeeMapping[];
     schoolHandbook: AWSFile[];
     interviewFee: number;
 }
-export interface OnboardingSettings_RegistrationFeesEntry {
-    key: string;
-    value: ItemizedFee | undefined;
-}
-export interface OnboardingSettings_ReregistrationFeesEntry {
-    key: string;
-    value: ItemizedFee | undefined;
+export interface GradeFeeMapping {
+    grade: StudentGrade;
+    fee: ItemizedFee | undefined;
 }
 export interface ItemizedFee {
     title: string;
@@ -34,8 +27,7 @@ export interface FeeItem {
     quantity: number;
 }
 export declare const OnboardingSettings: MessageFns<OnboardingSettings>;
-export declare const OnboardingSettings_RegistrationFeesEntry: MessageFns<OnboardingSettings_RegistrationFeesEntry>;
-export declare const OnboardingSettings_ReregistrationFeesEntry: MessageFns<OnboardingSettings_ReregistrationFeesEntry>;
+export declare const GradeFeeMapping: MessageFns<GradeFeeMapping>;
 export declare const ItemizedFee: MessageFns<ItemizedFee>;
 export declare const FeeItem: MessageFns<FeeItem>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

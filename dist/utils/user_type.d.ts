@@ -1,11 +1,11 @@
 export declare const protobufPackage = "utils";
 export declare enum UserType {
-    None = "None",
-    Student = "Student",
-    Teacher = "Teacher",
-    Parent = "Parent",
-    BassemLabsStaff = "BassemLabsStaff",
-    OrganizationOwner = "OrganizationOwner",
+    NONE = "NONE",
+    STUDENT = "STUDENT",
+    TEACHER = "TEACHER",
+    PARENT = "PARENT",
+    BASSEM_LABS_STAFF = "BASSEM_LABS_STAFF",
+    ORGANIZATION_OWNER = "ORGANIZATION_OWNER",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function userTypeFromJSON(object: any): UserType;

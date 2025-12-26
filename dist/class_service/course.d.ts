@@ -1,9 +1,9 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-import { Homeroom } from "./homeroom";
+import { Homeroom, ListHomeroom } from "./homeroom";
 import { LmsCourse } from "./lms_course";
 import { ReportLayout } from "./report_layout";
-import { Semester } from "./semester";
+import { ListSemester, Semester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Course {
     id: ObjectId | undefined;
@@ -17,7 +17,22 @@ export interface Course {
     lmsCourse?: LmsCourse | undefined;
     reportLayout: ReportLayout | undefined;
 }
+export interface ListCourse {
+    id: ObjectId | undefined;
+    archived: boolean;
+    name: string;
+    semester: ListSemester | undefined;
+    courseCode: string;
+    homeroom?: ListHomeroom | undefined;
+    teachers: ObjectId[];
+}
+export interface CourseList {
+    courses: ListCourse[];
+    coursesCount: number;
+}
 export declare const Course: MessageFns<Course>;
+export declare const ListCourse: MessageFns<ListCourse>;
+export declare const CourseList: MessageFns<CourseList>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

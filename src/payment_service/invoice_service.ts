@@ -8,6 +8,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
+import {
+  StudentStatus,
+  studentStatusFromJSON,
+  studentStatusToJSON,
+  studentStatusToNumber,
+} from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
@@ -21,10 +27,6 @@ import {
   InvoiceFilter,
   InvoiceItem,
   InvoiceResponse,
-  StudentStatus,
-  studentStatusFromJSON,
-  studentStatusToJSON,
-  studentStatusToNumber,
 } from "./invoice";
 
 export const protobufPackage = "payment_service";
@@ -153,11 +155,13 @@ export interface CreateInvoiceForClassRequest {
 export interface GenerateInterviewFeeInvoiceRequest {
   context: RequestContext | undefined;
   studentId: ObjectId | undefined;
+  schoolYear: ObjectId | undefined;
 }
 
 export interface GenerateWaitlistFeeInvoiceRequest {
   context: RequestContext | undefined;
   studentId: ObjectId | undefined;
+  schoolYear: ObjectId | undefined;
 }
 
 export interface GenerateRegistrationFeesInvoiceRequest {
@@ -2171,7 +2175,7 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
 };
 
 function createBaseGenerateInterviewFeeInvoiceRequest(): GenerateInterviewFeeInvoiceRequest {
-  return { context: undefined, studentId: undefined };
+  return { context: undefined, studentId: undefined, schoolYear: undefined };
 }
 
 export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFeeInvoiceRequest> = {
@@ -2181,6 +2185,9 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
     }
     if (message.studentId !== undefined) {
       ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -2206,6 +2213,13 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
 
           message.studentId = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2219,6 +2233,7 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -2229,6 +2244,9 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
     }
     if (message.studentId !== undefined) {
       obj.studentId = ObjectId.toJSON(message.studentId);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
     }
     return obj;
   },
@@ -2248,12 +2266,15 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
     message.studentId = (object.studentId !== undefined && object.studentId !== null)
       ? ObjectId.fromPartial(object.studentId)
       : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
     return message;
   },
 };
 
 function createBaseGenerateWaitlistFeeInvoiceRequest(): GenerateWaitlistFeeInvoiceRequest {
-  return { context: undefined, studentId: undefined };
+  return { context: undefined, studentId: undefined, schoolYear: undefined };
 }
 
 export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeInvoiceRequest> = {
@@ -2263,6 +2284,9 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
     }
     if (message.studentId !== undefined) {
       ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -2288,6 +2312,13 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
 
           message.studentId = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2301,6 +2332,7 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -2311,6 +2343,9 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
     }
     if (message.studentId !== undefined) {
       obj.studentId = ObjectId.toJSON(message.studentId);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
     }
     return obj;
   },
@@ -2329,6 +2364,9 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
       : undefined;
     message.studentId = (object.studentId !== undefined && object.studentId !== null)
       ? ObjectId.fromPartial(object.studentId)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
       : undefined;
     return message;
   },

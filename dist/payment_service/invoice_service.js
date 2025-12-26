@@ -10,6 +10,7 @@ exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const action_required_by_parents_1 = require("../user_service/action_required_by_parents");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const invoice_1 = require("./invoice");
@@ -1704,7 +1705,7 @@ exports.CreateInvoiceForClassRequest = {
     },
 };
 function createBaseGenerateInterviewFeeInvoiceRequest() {
-    return { context: undefined, studentId: undefined };
+    return { context: undefined, studentId: undefined, schoolYear: undefined };
 }
 exports.GenerateInterviewFeeInvoiceRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1713,6 +1714,9 @@ exports.GenerateInterviewFeeInvoiceRequest = {
         }
         if (message.studentId !== undefined) {
             object_id_1.ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -1735,6 +1739,12 @@ exports.GenerateInterviewFeeInvoiceRequest = {
                     }
                     message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1747,6 +1757,7 @@ exports.GenerateInterviewFeeInvoiceRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -1756,6 +1767,9 @@ exports.GenerateInterviewFeeInvoiceRequest = {
         }
         if (message.studentId !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
         return obj;
     },
@@ -1770,11 +1784,14 @@ exports.GenerateInterviewFeeInvoiceRequest = {
         message.studentId = (object.studentId !== undefined && object.studentId !== null)
             ? object_id_1.ObjectId.fromPartial(object.studentId)
             : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
         return message;
     },
 };
 function createBaseGenerateWaitlistFeeInvoiceRequest() {
-    return { context: undefined, studentId: undefined };
+    return { context: undefined, studentId: undefined, schoolYear: undefined };
 }
 exports.GenerateWaitlistFeeInvoiceRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1783,6 +1800,9 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
         }
         if (message.studentId !== undefined) {
             object_id_1.ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -1805,6 +1825,12 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
                     }
                     message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1817,6 +1843,7 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -1826,6 +1853,9 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
         }
         if (message.studentId !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
         return obj;
     },
@@ -1839,6 +1869,9 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
             : undefined;
         message.studentId = (object.studentId !== undefined && object.studentId !== null)
             ? object_id_1.ObjectId.fromPartial(object.studentId)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
         return message;
     },
@@ -2657,7 +2690,7 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
         }
         writer.uint32(18).fork();
         for (const v of message.studentStatuses) {
-            writer.int32((0, invoice_1.studentStatusToNumber)(v));
+            writer.int32((0, student_1.studentStatusToNumber)(v));
         }
         writer.join();
         if (message.schoolYear !== undefined) {
@@ -2680,13 +2713,13 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
                     continue;
                 case 2:
                     if (tag === 16) {
-                        message.studentStatuses.push((0, invoice_1.studentStatusFromJSON)(reader.int32()));
+                        message.studentStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 18) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.studentStatuses.push((0, invoice_1.studentStatusFromJSON)(reader.int32()));
+                            message.studentStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -2709,7 +2742,7 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             studentStatuses: globalThis.Array.isArray(object?.studentStatuses)
-                ? object.studentStatuses.map((e) => (0, invoice_1.studentStatusFromJSON)(e))
+                ? object.studentStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
@@ -2720,7 +2753,7 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.studentStatuses?.length) {
-            obj.studentStatuses = message.studentStatuses.map((e) => (0, invoice_1.studentStatusToJSON)(e));
+            obj.studentStatuses = message.studentStatuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);

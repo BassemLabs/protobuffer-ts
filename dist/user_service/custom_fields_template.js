@@ -5,13 +5,353 @@
 //   protoc               unknown
 // source: user_service/custom_fields_template.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.organizationUsedTemplates = exports.TemplateFieldDefinition = exports.TemplateGroupDefinition = exports.CustomFieldsTemplate = exports.protobufPackage = void 0;
+exports.OrganizationUsedTemplates = exports.CustomFieldsTemplate = exports.TemplateGroupDefinition = exports.TemplateFieldDefinition = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
 const object_id_1 = require("../utils/object_id");
 const user_type_1 = require("../utils/user_type");
+const custom_field_1 = require("./custom_field");
+const student_1 = require("./student");
 exports.protobufPackage = "user_service";
+function createBaseTemplateFieldDefinition() {
+    return {
+        fieldId: undefined,
+        fieldName: "",
+        fieldType: custom_field_1.CustomFieldType.STRING,
+        fieldIsRequired: false,
+        fieldDescription: "",
+        fieldRegexPattern: "",
+        fieldOptions: [],
+    };
+}
+exports.TemplateFieldDefinition = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.fieldId !== undefined) {
+            object_id_1.ObjectId.encode(message.fieldId, writer.uint32(10).fork()).join();
+        }
+        if (message.fieldName !== "") {
+            writer.uint32(18).string(message.fieldName);
+        }
+        if (message.fieldType !== custom_field_1.CustomFieldType.STRING) {
+            writer.uint32(24).int32((0, custom_field_1.customFieldTypeToNumber)(message.fieldType));
+        }
+        if (message.fieldIsRequired !== false) {
+            writer.uint32(32).bool(message.fieldIsRequired);
+        }
+        if (message.fieldDescription !== "") {
+            writer.uint32(42).string(message.fieldDescription);
+        }
+        if (message.fieldRegexPattern !== undefined && message.fieldRegexPattern !== "") {
+            writer.uint32(50).string(message.fieldRegexPattern);
+        }
+        for (const v of message.fieldOptions) {
+            writer.uint32(58).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTemplateFieldDefinition();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.fieldId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.fieldName = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.fieldType = (0, custom_field_1.customFieldTypeFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.fieldIsRequired = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.fieldDescription = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.fieldRegexPattern = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.fieldOptions.push(reader.string());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            fieldId: isSet(object.fieldId) ? object_id_1.ObjectId.fromJSON(object.fieldId) : undefined,
+            fieldName: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
+            fieldType: isSet(object.fieldType) ? (0, custom_field_1.customFieldTypeFromJSON)(object.fieldType) : custom_field_1.CustomFieldType.STRING,
+            fieldIsRequired: isSet(object.fieldIsRequired) ? globalThis.Boolean(object.fieldIsRequired) : false,
+            fieldDescription: isSet(object.fieldDescription) ? globalThis.String(object.fieldDescription) : "",
+            fieldRegexPattern: isSet(object.fieldRegexPattern) ? globalThis.String(object.fieldRegexPattern) : "",
+            fieldOptions: globalThis.Array.isArray(object?.fieldOptions)
+                ? object.fieldOptions.map((e) => globalThis.String(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.fieldId !== undefined) {
+            obj.fieldId = object_id_1.ObjectId.toJSON(message.fieldId);
+        }
+        if (message.fieldName !== "") {
+            obj.fieldName = message.fieldName;
+        }
+        if (message.fieldType !== custom_field_1.CustomFieldType.STRING) {
+            obj.fieldType = (0, custom_field_1.customFieldTypeToJSON)(message.fieldType);
+        }
+        if (message.fieldIsRequired !== false) {
+            obj.fieldIsRequired = message.fieldIsRequired;
+        }
+        if (message.fieldDescription !== "") {
+            obj.fieldDescription = message.fieldDescription;
+        }
+        if (message.fieldRegexPattern !== undefined && message.fieldRegexPattern !== "") {
+            obj.fieldRegexPattern = message.fieldRegexPattern;
+        }
+        if (message.fieldOptions?.length) {
+            obj.fieldOptions = message.fieldOptions;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TemplateFieldDefinition.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTemplateFieldDefinition();
+        message.fieldId = (object.fieldId !== undefined && object.fieldId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.fieldId)
+            : undefined;
+        message.fieldName = object.fieldName ?? "";
+        message.fieldType = object.fieldType ?? custom_field_1.CustomFieldType.STRING;
+        message.fieldIsRequired = object.fieldIsRequired ?? false;
+        message.fieldDescription = object.fieldDescription ?? "";
+        message.fieldRegexPattern = object.fieldRegexPattern ?? "";
+        message.fieldOptions = object.fieldOptions?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseTemplateGroupDefinition() {
+    return {
+        groupId: undefined,
+        groupName: "",
+        groupUserType: user_type_1.UserType.NONE,
+        groupProfileSection: organization_profile_settings_1.ProfileSection.OVERVIEW,
+        groupHints: [],
+        groupFieldDefinitions: [],
+        groupVisibleToParentsForStatuses: [],
+        groupVisibleToTeachersForStatuses: [],
+    };
+}
+exports.TemplateGroupDefinition = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.groupId !== undefined) {
+            object_id_1.ObjectId.encode(message.groupId, writer.uint32(10).fork()).join();
+        }
+        if (message.groupName !== "") {
+            writer.uint32(18).string(message.groupName);
+        }
+        if (message.groupUserType !== user_type_1.UserType.NONE) {
+            writer.uint32(24).int32((0, user_type_1.userTypeToNumber)(message.groupUserType));
+        }
+        if (message.groupProfileSection !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+            writer.uint32(32).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.groupProfileSection));
+        }
+        for (const v of message.groupHints) {
+            writer.uint32(42).string(v);
+        }
+        for (const v of message.groupFieldDefinitions) {
+            exports.TemplateFieldDefinition.encode(v, writer.uint32(50).fork()).join();
+        }
+        writer.uint32(58).fork();
+        for (const v of message.groupVisibleToParentsForStatuses) {
+            writer.int32((0, student_1.studentStatusToNumber)(v));
+        }
+        writer.join();
+        writer.uint32(66).fork();
+        for (const v of message.groupVisibleToTeachersForStatuses) {
+            writer.int32((0, student_1.studentStatusToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTemplateGroupDefinition();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.groupId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.groupName = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.groupUserType = (0, user_type_1.userTypeFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.groupProfileSection = (0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.groupHints.push(reader.string());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.groupFieldDefinitions.push(exports.TemplateFieldDefinition.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag === 56) {
+                        message.groupVisibleToParentsForStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 58) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.groupVisibleToParentsForStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 8:
+                    if (tag === 64) {
+                        message.groupVisibleToTeachersForStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 66) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.groupVisibleToTeachersForStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            groupId: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+            groupUserType: isSet(object.groupUserType) ? (0, user_type_1.userTypeFromJSON)(object.groupUserType) : user_type_1.UserType.NONE,
+            groupProfileSection: isSet(object.groupProfileSection)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.groupProfileSection)
+                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+            groupHints: globalThis.Array.isArray(object?.groupHints)
+                ? object.groupHints.map((e) => globalThis.String(e))
+                : [],
+            groupFieldDefinitions: globalThis.Array.isArray(object?.groupFieldDefinitions)
+                ? object.groupFieldDefinitions.map((e) => exports.TemplateFieldDefinition.fromJSON(e))
+                : [],
+            groupVisibleToParentsForStatuses: globalThis.Array.isArray(object?.groupVisibleToParentsForStatuses)
+                ? object.groupVisibleToParentsForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+                : [],
+            groupVisibleToTeachersForStatuses: globalThis.Array.isArray(object?.groupVisibleToTeachersForStatuses)
+                ? object.groupVisibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.groupId !== undefined) {
+            obj.groupId = object_id_1.ObjectId.toJSON(message.groupId);
+        }
+        if (message.groupName !== "") {
+            obj.groupName = message.groupName;
+        }
+        if (message.groupUserType !== user_type_1.UserType.NONE) {
+            obj.groupUserType = (0, user_type_1.userTypeToJSON)(message.groupUserType);
+        }
+        if (message.groupProfileSection !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+            obj.groupProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.groupProfileSection);
+        }
+        if (message.groupHints?.length) {
+            obj.groupHints = message.groupHints;
+        }
+        if (message.groupFieldDefinitions?.length) {
+            obj.groupFieldDefinitions = message.groupFieldDefinitions.map((e) => exports.TemplateFieldDefinition.toJSON(e));
+        }
+        if (message.groupVisibleToParentsForStatuses?.length) {
+            obj.groupVisibleToParentsForStatuses = message.groupVisibleToParentsForStatuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+        }
+        if (message.groupVisibleToTeachersForStatuses?.length) {
+            obj.groupVisibleToTeachersForStatuses = message.groupVisibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TemplateGroupDefinition.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTemplateGroupDefinition();
+        message.groupId = (object.groupId !== undefined && object.groupId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.groupId)
+            : undefined;
+        message.groupName = object.groupName ?? "";
+        message.groupUserType = object.groupUserType ?? user_type_1.UserType.NONE;
+        message.groupProfileSection = object.groupProfileSection ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.groupHints = object.groupHints?.map((e) => e) || [];
+        message.groupFieldDefinitions = object.groupFieldDefinitions?.map((e) => exports.TemplateFieldDefinition.fromPartial(e)) ||
+            [];
+        message.groupVisibleToParentsForStatuses = object.groupVisibleToParentsForStatuses?.map((e) => e) || [];
+        message.groupVisibleToTeachersForStatuses = object.groupVisibleToTeachersForStatuses?.map((e) => e) || [];
+        return message;
+    },
+};
 function createBaseCustomFieldsTemplate() {
     return {
         templateId: undefined,
@@ -130,330 +470,10 @@ exports.CustomFieldsTemplate = {
         return message;
     },
 };
-function createBaseTemplateGroupDefinition() {
-    return {
-        groupId: undefined,
-        groupName: "",
-        groupUserType: user_type_1.UserType.None,
-        groupProfileSection: organization_profile_settings_1.ProfileSection.OVERVIEW,
-        groupHints: [],
-        groupFieldDefinitions: [],
-        groupVisibleToParentsForStatuses: [],
-        groupVisibleToTeachersForStatuses: [],
-    };
-}
-exports.TemplateGroupDefinition = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.groupId !== undefined) {
-            object_id_1.ObjectId.encode(message.groupId, writer.uint32(10).fork()).join();
-        }
-        if (message.groupName !== "") {
-            writer.uint32(18).string(message.groupName);
-        }
-        if (message.groupUserType !== user_type_1.UserType.None) {
-            writer.uint32(24).int32((0, user_type_1.userTypeToNumber)(message.groupUserType));
-        }
-        if (message.groupProfileSection !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            writer.uint32(32).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.groupProfileSection));
-        }
-        for (const v of message.groupHints) {
-            writer.uint32(42).string(v);
-        }
-        for (const v of message.groupFieldDefinitions) {
-            exports.TemplateFieldDefinition.encode(v, writer.uint32(50).fork()).join();
-        }
-        for (const v of message.groupVisibleToParentsForStatuses) {
-            writer.uint32(58).string(v);
-        }
-        for (const v of message.groupVisibleToTeachersForStatuses) {
-            writer.uint32(66).string(v);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseTemplateGroupDefinition();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.groupId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.groupName = reader.string();
-                    continue;
-                case 3:
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.groupUserType = (0, user_type_1.userTypeFromJSON)(reader.int32());
-                    continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.groupProfileSection = (0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32());
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.groupHints.push(reader.string());
-                    continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.groupFieldDefinitions.push(exports.TemplateFieldDefinition.decode(reader, reader.uint32()));
-                    continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.groupVisibleToParentsForStatuses.push(reader.string());
-                    continue;
-                case 8:
-                    if (tag !== 66) {
-                        break;
-                    }
-                    message.groupVisibleToTeachersForStatuses.push(reader.string());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            groupId: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-            groupUserType: isSet(object.groupUserType) ? (0, user_type_1.userTypeFromJSON)(object.groupUserType) : user_type_1.UserType.None,
-            groupProfileSection: isSet(object.groupProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.groupProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
-            groupHints: globalThis.Array.isArray(object?.groupHints)
-                ? object.groupHints.map((e) => globalThis.String(e))
-                : [],
-            groupFieldDefinitions: globalThis.Array.isArray(object?.groupFieldDefinitions)
-                ? object.groupFieldDefinitions.map((e) => exports.TemplateFieldDefinition.fromJSON(e))
-                : [],
-            groupVisibleToParentsForStatuses: globalThis.Array.isArray(object?.groupVisibleToParentsForStatuses)
-                ? object.groupVisibleToParentsForStatuses.map((e) => globalThis.String(e))
-                : [],
-            groupVisibleToTeachersForStatuses: globalThis.Array.isArray(object?.groupVisibleToTeachersForStatuses)
-                ? object.groupVisibleToTeachersForStatuses.map((e) => globalThis.String(e))
-                : [],
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.groupId !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.groupId);
-        }
-        if (message.groupName !== "") {
-            obj.groupName = message.groupName;
-        }
-        if (message.groupUserType !== user_type_1.UserType.None) {
-            obj.groupUserType = (0, user_type_1.userTypeToJSON)(message.groupUserType);
-        }
-        if (message.groupProfileSection !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.groupProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.groupProfileSection);
-        }
-        if (message.groupHints?.length) {
-            obj.groupHints = message.groupHints;
-        }
-        if (message.groupFieldDefinitions?.length) {
-            obj.groupFieldDefinitions = message.groupFieldDefinitions.map((e) => exports.TemplateFieldDefinition.toJSON(e));
-        }
-        if (message.groupVisibleToParentsForStatuses?.length) {
-            obj.groupVisibleToParentsForStatuses = message.groupVisibleToParentsForStatuses;
-        }
-        if (message.groupVisibleToTeachersForStatuses?.length) {
-            obj.groupVisibleToTeachersForStatuses = message.groupVisibleToTeachersForStatuses;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.TemplateGroupDefinition.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseTemplateGroupDefinition();
-        message.groupId = (object.groupId !== undefined && object.groupId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.groupId)
-            : undefined;
-        message.groupName = object.groupName ?? "";
-        message.groupUserType = object.groupUserType ?? user_type_1.UserType.None;
-        message.groupProfileSection = object.groupProfileSection ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
-        message.groupHints = object.groupHints?.map((e) => e) || [];
-        message.groupFieldDefinitions = object.groupFieldDefinitions?.map((e) => exports.TemplateFieldDefinition.fromPartial(e)) ||
-            [];
-        message.groupVisibleToParentsForStatuses = object.groupVisibleToParentsForStatuses?.map((e) => e) || [];
-        message.groupVisibleToTeachersForStatuses = object.groupVisibleToTeachersForStatuses?.map((e) => e) || [];
-        return message;
-    },
-};
-function createBaseTemplateFieldDefinition() {
-    return {
-        fieldId: undefined,
-        fieldName: "",
-        fieldType: "",
-        fieldIsRequired: false,
-        fieldDescription: "",
-        fieldRegexPattern: "",
-        fieldOptions: [],
-    };
-}
-exports.TemplateFieldDefinition = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.fieldId !== undefined) {
-            object_id_1.ObjectId.encode(message.fieldId, writer.uint32(10).fork()).join();
-        }
-        if (message.fieldName !== "") {
-            writer.uint32(18).string(message.fieldName);
-        }
-        if (message.fieldType !== "") {
-            writer.uint32(26).string(message.fieldType);
-        }
-        if (message.fieldIsRequired !== false) {
-            writer.uint32(32).bool(message.fieldIsRequired);
-        }
-        if (message.fieldDescription !== "") {
-            writer.uint32(42).string(message.fieldDescription);
-        }
-        if (message.fieldRegexPattern !== undefined && message.fieldRegexPattern !== "") {
-            writer.uint32(50).string(message.fieldRegexPattern);
-        }
-        for (const v of message.fieldOptions) {
-            writer.uint32(58).string(v);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseTemplateFieldDefinition();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.fieldId = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.fieldName = reader.string();
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.fieldType = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.fieldIsRequired = reader.bool();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.fieldDescription = reader.string();
-                    continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.fieldRegexPattern = reader.string();
-                    continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.fieldOptions.push(reader.string());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            fieldId: isSet(object.fieldId) ? object_id_1.ObjectId.fromJSON(object.fieldId) : undefined,
-            fieldName: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
-            fieldType: isSet(object.fieldType) ? globalThis.String(object.fieldType) : "",
-            fieldIsRequired: isSet(object.fieldIsRequired) ? globalThis.Boolean(object.fieldIsRequired) : false,
-            fieldDescription: isSet(object.fieldDescription) ? globalThis.String(object.fieldDescription) : "",
-            fieldRegexPattern: isSet(object.fieldRegexPattern) ? globalThis.String(object.fieldRegexPattern) : "",
-            fieldOptions: globalThis.Array.isArray(object?.fieldOptions)
-                ? object.fieldOptions.map((e) => globalThis.String(e))
-                : [],
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.fieldId !== undefined) {
-            obj.fieldId = object_id_1.ObjectId.toJSON(message.fieldId);
-        }
-        if (message.fieldName !== "") {
-            obj.fieldName = message.fieldName;
-        }
-        if (message.fieldType !== "") {
-            obj.fieldType = message.fieldType;
-        }
-        if (message.fieldIsRequired !== false) {
-            obj.fieldIsRequired = message.fieldIsRequired;
-        }
-        if (message.fieldDescription !== "") {
-            obj.fieldDescription = message.fieldDescription;
-        }
-        if (message.fieldRegexPattern !== undefined && message.fieldRegexPattern !== "") {
-            obj.fieldRegexPattern = message.fieldRegexPattern;
-        }
-        if (message.fieldOptions?.length) {
-            obj.fieldOptions = message.fieldOptions;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.TemplateFieldDefinition.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseTemplateFieldDefinition();
-        message.fieldId = (object.fieldId !== undefined && object.fieldId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.fieldId)
-            : undefined;
-        message.fieldName = object.fieldName ?? "";
-        message.fieldType = object.fieldType ?? "";
-        message.fieldIsRequired = object.fieldIsRequired ?? false;
-        message.fieldDescription = object.fieldDescription ?? "";
-        message.fieldRegexPattern = object.fieldRegexPattern ?? "";
-        message.fieldOptions = object.fieldOptions?.map((e) => e) || [];
-        return message;
-    },
-};
-function createBaseorganizationUsedTemplates() {
+function createBaseOrganizationUsedTemplates() {
     return { id: undefined, organizationId: undefined, templates: [] };
 }
-exports.organizationUsedTemplates = {
+exports.OrganizationUsedTemplates = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
@@ -469,7 +489,7 @@ exports.organizationUsedTemplates = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseorganizationUsedTemplates();
+        const message = createBaseOrganizationUsedTemplates();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -522,10 +542,10 @@ exports.organizationUsedTemplates = {
         return obj;
     },
     create(base) {
-        return exports.organizationUsedTemplates.fromPartial(base ?? {});
+        return exports.OrganizationUsedTemplates.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseorganizationUsedTemplates();
+        const message = createBaseOrganizationUsedTemplates();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)

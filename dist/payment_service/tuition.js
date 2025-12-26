@@ -24,6 +24,7 @@ exports.discountStackModeToNumber = discountStackModeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "payment_service";
 var DiscountType;
@@ -249,7 +250,7 @@ function discountStackModeToNumber(object) {
     }
 }
 function createBaseTuitionRate() {
-    return { id: undefined, organization: undefined, schoolYear: undefined, grade: "", amount: 0 };
+    return { id: undefined, organization: undefined, schoolYear: undefined, grade: student_1.StudentGrade.PRE_K, amount: 0 };
 }
 exports.TuitionRate = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -262,8 +263,8 @@ exports.TuitionRate = {
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
         }
-        if (message.grade !== "") {
-            writer.uint32(34).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(32).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         if (message.amount !== 0) {
             writer.uint32(41).double(message.amount);
@@ -296,10 +297,10 @@ exports.TuitionRate = {
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
-                    if (tag !== 34) {
+                    if (tag !== 32) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
                 case 5:
                     if (tag !== 41) {
@@ -320,7 +321,7 @@ exports.TuitionRate = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
@@ -335,8 +336,8 @@ exports.TuitionRate = {
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -355,7 +356,7 @@ exports.TuitionRate = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         message.amount = object.amount ?? 0;
         return message;
     },

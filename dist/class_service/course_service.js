@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.AggregateCourseResponse = exports.AggregateCourseRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -83,23 +83,54 @@ exports.GetCourseRequest = {
         return message;
     },
 };
-function createBaseAggregateCourseRequest() {
-    return { context: undefined, aggregationDocument: "" };
+function createBaseListCoursesRequest() {
+    return {
+        context: undefined,
+        perPage: 0,
+        page: 0,
+        nameSearch: "",
+        semester: undefined,
+        schoolYear: undefined,
+        archived: false,
+        hideHomeroomCourses: false,
+        teacherId: undefined,
+    };
 }
-exports.AggregateCourseRequest = {
+exports.ListCoursesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.aggregationDocument !== "") {
-            writer.uint32(18).string(message.aggregationDocument);
+        if (message.perPage !== undefined && message.perPage !== 0) {
+            writer.uint32(16).uint64(message.perPage);
+        }
+        if (message.page !== undefined && message.page !== 0) {
+            writer.uint32(24).uint64(message.page);
+        }
+        if (message.nameSearch !== undefined && message.nameSearch !== "") {
+            writer.uint32(34).string(message.nameSearch);
+        }
+        if (message.semester !== undefined) {
+            object_id_1.ObjectId.encode(message.semester, writer.uint32(42).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(50).fork()).join();
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            writer.uint32(56).bool(message.archived);
+        }
+        if (message.hideHomeroomCourses !== undefined && message.hideHomeroomCourses !== false) {
+            writer.uint32(64).bool(message.hideHomeroomCourses);
+        }
+        if (message.teacherId !== undefined) {
+            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(74).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAggregateCourseRequest();
+        const message = createBaseListCoursesRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -110,10 +141,52 @@ exports.AggregateCourseRequest = {
                     message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
                     continue;
                 case 2:
-                    if (tag !== 18) {
+                    if (tag !== 16) {
                         break;
                     }
-                    message.aggregationDocument = reader.string();
+                    message.perPage = longToNumber(reader.uint64());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.page = longToNumber(reader.uint64());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.nameSearch = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.semester = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.hideHomeroomCourses = reader.bool();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -126,7 +199,14 @@ exports.AggregateCourseRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            aggregationDocument: isSet(object.aggregationDocument) ? globalThis.String(object.aggregationDocument) : "",
+            perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            semester: isSet(object.semester) ? object_id_1.ObjectId.fromJSON(object.semester) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+            hideHomeroomCourses: isSet(object.hideHomeroomCourses) ? globalThis.Boolean(object.hideHomeroomCourses) : false,
+            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -134,70 +214,54 @@ exports.AggregateCourseRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.aggregationDocument !== "") {
-            obj.aggregationDocument = message.aggregationDocument;
+        if (message.perPage !== undefined && message.perPage !== 0) {
+            obj.perPage = Math.round(message.perPage);
+        }
+        if (message.page !== undefined && message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.nameSearch !== undefined && message.nameSearch !== "") {
+            obj.nameSearch = message.nameSearch;
+        }
+        if (message.semester !== undefined) {
+            obj.semester = object_id_1.ObjectId.toJSON(message.semester);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            obj.archived = message.archived;
+        }
+        if (message.hideHomeroomCourses !== undefined && message.hideHomeroomCourses !== false) {
+            obj.hideHomeroomCourses = message.hideHomeroomCourses;
+        }
+        if (message.teacherId !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
         }
         return obj;
     },
     create(base) {
-        return exports.AggregateCourseRequest.fromPartial(base ?? {});
+        return exports.ListCoursesRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseAggregateCourseRequest();
+        const message = createBaseListCoursesRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.aggregationDocument = object.aggregationDocument ?? "";
-        return message;
-    },
-};
-function createBaseAggregateCourseResponse() {
-    return { result: "" };
-}
-exports.AggregateCourseResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.result !== "") {
-            writer.uint32(10).string(message.result);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAggregateCourseResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.result = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.result !== "") {
-            obj.result = message.result;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AggregateCourseResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAggregateCourseResponse();
-        message.result = object.result ?? "";
+        message.perPage = object.perPage ?? 0;
+        message.page = object.page ?? 0;
+        message.nameSearch = object.nameSearch ?? "";
+        message.semester = (object.semester !== undefined && object.semester !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.archived = object.archived ?? false;
+        message.hideHomeroomCourses = object.hideHomeroomCourses ?? false;
+        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+            : undefined;
         return message;
     },
 };
@@ -1977,6 +2041,16 @@ exports.HomeroomCloneRequest = {
         return message;
     },
 };
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

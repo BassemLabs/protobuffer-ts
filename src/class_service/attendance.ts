@@ -108,7 +108,7 @@ function createBaseAttendance(): Attendance {
     status: AttendanceStatus.None,
     lateDismissalDate: undefined,
     studentExcusedBy: undefined,
-    studentExcusedByUserType: UserType.None,
+    studentExcusedByUserType: UserType.NONE,
   };
 }
 
@@ -153,7 +153,7 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.studentExcusedBy !== undefined) {
       ObjectId.encode(message.studentExcusedBy, writer.uint32(106).fork()).join();
     }
-    if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== UserType.None) {
+    if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== UserType.NONE) {
       writer.uint32(112).int32(userTypeToNumber(message.studentExcusedByUserType));
     }
     return writer;
@@ -290,7 +290,7 @@ export const Attendance: MessageFns<Attendance> = {
       studentExcusedBy: isSet(object.studentExcusedBy) ? ObjectId.fromJSON(object.studentExcusedBy) : undefined,
       studentExcusedByUserType: isSet(object.studentExcusedByUserType)
         ? userTypeFromJSON(object.studentExcusedByUserType)
-        : UserType.None,
+        : UserType.NONE,
     };
   },
 
@@ -335,7 +335,7 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.studentExcusedBy !== undefined) {
       obj.studentExcusedBy = ObjectId.toJSON(message.studentExcusedBy);
     }
-    if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== UserType.None) {
+    if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== UserType.NONE) {
       obj.studentExcusedByUserType = userTypeToJSON(message.studentExcusedByUserType);
     }
     return obj;
@@ -369,7 +369,7 @@ export const Attendance: MessageFns<Attendance> = {
     message.studentExcusedBy = (object.studentExcusedBy !== undefined && object.studentExcusedBy !== null)
       ? ObjectId.fromPartial(object.studentExcusedBy)
       : undefined;
-    message.studentExcusedByUserType = object.studentExcusedByUserType ?? UserType.None;
+    message.studentExcusedByUserType = object.studentExcusedByUserType ?? UserType.NONE;
     return message;
   },
 };

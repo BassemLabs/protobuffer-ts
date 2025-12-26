@@ -5,9 +5,10 @@
 //   protoc               unknown
 // source: class_service/homeroom_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.AggregateHomeroomResponse = exports.AggregateHomeroomRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
+exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const course_1 = require("./course");
@@ -84,23 +85,50 @@ exports.GetHomeroomRequest = {
         return message;
     },
 };
-function createBaseAggregateHomeroomRequest() {
-    return { context: undefined, aggregationDocument: "" };
+function createBaseListHomeroomsRequest() {
+    return {
+        context: undefined,
+        perPage: 0,
+        page: 0,
+        nameSearch: "",
+        semester: undefined,
+        schoolYear: undefined,
+        archived: false,
+        teacherId: undefined,
+    };
 }
-exports.AggregateHomeroomRequest = {
+exports.ListHomeroomsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.aggregationDocument !== "") {
-            writer.uint32(18).string(message.aggregationDocument);
+        if (message.perPage !== undefined && message.perPage !== 0) {
+            writer.uint32(16).uint64(message.perPage);
+        }
+        if (message.page !== undefined && message.page !== 0) {
+            writer.uint32(24).uint64(message.page);
+        }
+        if (message.nameSearch !== undefined && message.nameSearch !== "") {
+            writer.uint32(34).string(message.nameSearch);
+        }
+        if (message.semester !== undefined) {
+            object_id_1.ObjectId.encode(message.semester, writer.uint32(42).fork()).join();
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(50).fork()).join();
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            writer.uint32(56).bool(message.archived);
+        }
+        if (message.teacherId !== undefined) {
+            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(66).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAggregateHomeroomRequest();
+        const message = createBaseListHomeroomsRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -111,10 +139,46 @@ exports.AggregateHomeroomRequest = {
                     message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
                     continue;
                 case 2:
-                    if (tag !== 18) {
+                    if (tag !== 16) {
                         break;
                     }
-                    message.aggregationDocument = reader.string();
+                    message.perPage = longToNumber(reader.uint64());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.page = longToNumber(reader.uint64());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.nameSearch = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.semester = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -127,7 +191,13 @@ exports.AggregateHomeroomRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            aggregationDocument: isSet(object.aggregationDocument) ? globalThis.String(object.aggregationDocument) : "",
+            perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            semester: isSet(object.semester) ? object_id_1.ObjectId.fromJSON(object.semester) : undefined,
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -135,70 +205,50 @@ exports.AggregateHomeroomRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.aggregationDocument !== "") {
-            obj.aggregationDocument = message.aggregationDocument;
+        if (message.perPage !== undefined && message.perPage !== 0) {
+            obj.perPage = Math.round(message.perPage);
+        }
+        if (message.page !== undefined && message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.nameSearch !== undefined && message.nameSearch !== "") {
+            obj.nameSearch = message.nameSearch;
+        }
+        if (message.semester !== undefined) {
+            obj.semester = object_id_1.ObjectId.toJSON(message.semester);
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            obj.archived = message.archived;
+        }
+        if (message.teacherId !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
         }
         return obj;
     },
     create(base) {
-        return exports.AggregateHomeroomRequest.fromPartial(base ?? {});
+        return exports.ListHomeroomsRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseAggregateHomeroomRequest();
+        const message = createBaseListHomeroomsRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.aggregationDocument = object.aggregationDocument ?? "";
-        return message;
-    },
-};
-function createBaseAggregateHomeroomResponse() {
-    return { result: "" };
-}
-exports.AggregateHomeroomResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.result !== "") {
-            writer.uint32(10).string(message.result);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAggregateHomeroomResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.result = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.result !== "") {
-            obj.result = message.result;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AggregateHomeroomResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAggregateHomeroomResponse();
-        message.result = object.result ?? "";
+        message.perPage = object.perPage ?? 0;
+        message.page = object.page ?? 0;
+        message.nameSearch = object.nameSearch ?? "";
+        message.semester = (object.semester !== undefined && object.semester !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester)
+            : undefined;
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.archived = object.archived ?? false;
+        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+            : undefined;
         return message;
     },
 };
@@ -208,7 +258,7 @@ function createBaseCreateHomeroomRequest() {
         name: "",
         semesterId: undefined,
         teacherIds: [],
-        grade: "",
+        grade: student_1.StudentGrade.PRE_K,
         lmsProvider: lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
     };
 }
@@ -226,8 +276,8 @@ exports.CreateHomeroomRequest = {
         for (const v of message.teacherIds) {
             object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
         }
-        if (message.grade !== "") {
-            writer.uint32(42).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(40).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         if (message.lmsProvider !== undefined && message.lmsProvider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
             writer.uint32(48).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.lmsProvider));
@@ -266,10 +316,10 @@ exports.CreateHomeroomRequest = {
                     message.teacherIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 5:
-                    if (tag !== 42) {
+                    if (tag !== 40) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
                 case 6:
                     if (tag !== 48) {
@@ -293,7 +343,7 @@ exports.CreateHomeroomRequest = {
             teacherIds: globalThis.Array.isArray(object?.teacherIds)
                 ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
             lmsProvider: isSet(object.lmsProvider)
                 ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.lmsProvider)
                 : lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
@@ -313,8 +363,8 @@ exports.CreateHomeroomRequest = {
         if (message.teacherIds?.length) {
             obj.teacherIds = message.teacherIds.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.lmsProvider !== undefined && message.lmsProvider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
             obj.lmsProvider = (0, lms_course_1.lmsProviderTypeToJSON)(message.lmsProvider);
@@ -334,7 +384,7 @@ exports.CreateHomeroomRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semesterId)
             : undefined;
         message.teacherIds = object.teacherIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         message.lmsProvider = object.lmsProvider ?? lms_course_1.LmsProviderType.GOOGLE_CLASSROOM;
         return message;
     },
@@ -346,7 +396,7 @@ function createBaseCloneHomeroomRequest() {
         name: "",
         semesterId: undefined,
         teacherIds: [],
-        grade: "",
+        grade: student_1.StudentGrade.PRE_K,
     };
 }
 exports.CloneHomeroomRequest = {
@@ -366,8 +416,8 @@ exports.CloneHomeroomRequest = {
         for (const v of message.teacherIds) {
             object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
         }
-        if (message.grade !== "") {
-            writer.uint32(50).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(48).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -409,10 +459,10 @@ exports.CloneHomeroomRequest = {
                     message.teacherIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 6:
-                    if (tag !== 50) {
+                    if (tag !== 48) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -431,7 +481,7 @@ exports.CloneHomeroomRequest = {
             teacherIds: globalThis.Array.isArray(object?.teacherIds)
                 ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
         };
     },
     toJSON(message) {
@@ -451,8 +501,8 @@ exports.CloneHomeroomRequest = {
         if (message.teacherIds?.length) {
             obj.teacherIds = message.teacherIds.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         return obj;
     },
@@ -472,7 +522,7 @@ exports.CloneHomeroomRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semesterId)
             : undefined;
         message.teacherIds = object.teacherIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         return message;
     },
 };
@@ -821,7 +871,7 @@ exports.ArchiveHomeroomRequest = {
     },
 };
 function createBaseUpdateHomeroomRequest() {
-    return { context: undefined, homeroomId: undefined, semesterId: undefined, name: "", grade: "" };
+    return { context: undefined, homeroomId: undefined, semesterId: undefined, name: "", grade: student_1.StudentGrade.PRE_K };
 }
 exports.UpdateHomeroomRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -837,8 +887,8 @@ exports.UpdateHomeroomRequest = {
         if (message.name !== "") {
             writer.uint32(34).string(message.name);
         }
-        if (message.grade !== "") {
-            writer.uint32(42).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(40).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -874,10 +924,10 @@ exports.UpdateHomeroomRequest = {
                     message.name = reader.string();
                     continue;
                 case 5:
-                    if (tag !== 42) {
+                    if (tag !== 40) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -893,7 +943,7 @@ exports.UpdateHomeroomRequest = {
             homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             semesterId: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
         };
     },
     toJSON(message) {
@@ -910,8 +960,8 @@ exports.UpdateHomeroomRequest = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         return obj;
     },
@@ -930,7 +980,7 @@ exports.UpdateHomeroomRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semesterId)
             : undefined;
         message.name = object.name ?? "";
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         return message;
     },
 };
@@ -1772,6 +1822,16 @@ exports.LmsStudentSubmissionResponse = {
         return message;
     },
 };
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

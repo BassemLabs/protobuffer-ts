@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentStatus } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RefundTransaction, Transaction } from "./transaction";
 import { DiscountValueType } from "./tuition";
@@ -14,20 +15,6 @@ export declare enum InvoiceStatus {
 export declare function invoiceStatusFromJSON(object: any): InvoiceStatus;
 export declare function invoiceStatusToJSON(object: InvoiceStatus): string;
 export declare function invoiceStatusToNumber(object: InvoiceStatus): number;
-/** TODO: this is was fetched automatically from user-service */
-export declare enum StudentStatus {
-    Waitlist = "Waitlist",
-    Interview = "Interview",
-    Applicant = "Applicant",
-    Rejected = "Rejected",
-    Enrolled = "Enrolled",
-    ReRegistration = "ReRegistration",
-    Withdrawn = "Withdrawn",
-    UNRECOGNIZED = "UNRECOGNIZED"
-}
-export declare function studentStatusFromJSON(object: any): StudentStatus;
-export declare function studentStatusToJSON(object: StudentStatus): string;
-export declare function studentStatusToNumber(object: StudentStatus): number;
 export declare enum AutoPaymentStatus {
     /** AutoPayPending - Pending to be paid, not yet queued */
     AutoPayPending = "AutoPayPending",

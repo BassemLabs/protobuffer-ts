@@ -97,6 +97,19 @@ export interface SemesterLearningSkill {
   description: string;
 }
 
+export interface ListSemester {
+  id: ObjectId | undefined;
+  archived: boolean;
+  name: string;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+}
+
+export interface SemesterList {
+  semesters: ListSemester[];
+  semestersCount: number;
+}
+
 function createBaseSemester(): Semester {
   return {
     id: undefined,
@@ -623,6 +636,201 @@ export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
   },
 };
 
+function createBaseListSemester(): ListSemester {
+  return { id: undefined, archived: false, name: "", startDate: undefined, endDate: undefined };
+}
+
+export const ListSemester: MessageFns<ListSemester> = {
+  encode(message: ListSemester, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.archived !== false) {
+      writer.uint32(16).bool(message.archived);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListSemester {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListSemester();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListSemester {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+    };
+  },
+
+  toJSON(message: ListSemester): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListSemester>, I>>(base?: I): ListSemester {
+    return ListSemester.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListSemester>, I>>(object: I): ListSemester {
+    const message = createBaseListSemester();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.archived = object.archived ?? false;
+    message.name = object.name ?? "";
+    message.startDate = object.startDate ?? undefined;
+    message.endDate = object.endDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSemesterList(): SemesterList {
+  return { semesters: [], semestersCount: 0 };
+}
+
+export const SemesterList: MessageFns<SemesterList> = {
+  encode(message: SemesterList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.semesters) {
+      ListSemester.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.semestersCount !== 0) {
+      writer.uint32(16).uint64(message.semestersCount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SemesterList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSemesterList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.semesters.push(ListSemester.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.semestersCount = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SemesterList {
+    return {
+      semesters: globalThis.Array.isArray(object?.semesters)
+        ? object.semesters.map((e: any) => ListSemester.fromJSON(e))
+        : [],
+      semestersCount: isSet(object.semestersCount) ? globalThis.Number(object.semestersCount) : 0,
+    };
+  },
+
+  toJSON(message: SemesterList): unknown {
+    const obj: any = {};
+    if (message.semesters?.length) {
+      obj.semesters = message.semesters.map((e) => ListSemester.toJSON(e));
+    }
+    if (message.semestersCount !== 0) {
+      obj.semestersCount = Math.round(message.semestersCount);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SemesterList>, I>>(base?: I): SemesterList {
+    return SemesterList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SemesterList>, I>>(object: I): SemesterList {
+    const message = createBaseSemesterList();
+    message.semesters = object.semesters?.map((e) => ListSemester.fromPartial(e)) || [];
+    message.semestersCount = object.semestersCount ?? 0;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -655,6 +863,17 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
 }
 
 function isSet(value: any): boolean {

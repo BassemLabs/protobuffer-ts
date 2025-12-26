@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "payment_service";
 export declare enum DiscountType {
@@ -50,7 +51,7 @@ export interface TuitionRate {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     schoolYear: ObjectId | undefined;
-    grade: string;
+    grade: StudentGrade;
     amount: number;
 }
 export interface AdditionalFee {

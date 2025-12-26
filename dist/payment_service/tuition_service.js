@@ -9,12 +9,13 @@ exports.UnarchiveTuitionPlanRequest = exports.ArchiveTuitionPlanRequest = export
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const tuition_1 = require("./tuition");
 exports.protobufPackage = "payment_service";
 function createBaseGetTuitionRateRequest() {
-    return { context: undefined, schoolYear: undefined, grade: "" };
+    return { context: undefined, schoolYear: undefined, grade: student_1.StudentGrade.PRE_K };
 }
 exports.GetTuitionRateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -24,8 +25,8 @@ exports.GetTuitionRateRequest = {
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(18).fork()).join();
         }
-        if (message.grade !== "") {
-            writer.uint32(26).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(24).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -49,10 +50,10 @@ exports.GetTuitionRateRequest = {
                     message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -66,7 +67,7 @@ exports.GetTuitionRateRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
         };
     },
     toJSON(message) {
@@ -77,8 +78,8 @@ exports.GetTuitionRateRequest = {
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         return obj;
     },
@@ -93,7 +94,7 @@ exports.GetTuitionRateRequest = {
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         return message;
     },
 };
@@ -220,12 +221,12 @@ exports.ListTuitionRatesResponse = {
     },
 };
 function createBaseGradeAmount() {
-    return { grade: "", amount: 0 };
+    return { grade: student_1.StudentGrade.PRE_K, amount: 0 };
 }
 exports.GradeAmount = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.grade !== "") {
-            writer.uint32(10).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(8).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         if (message.amount !== 0) {
             writer.uint32(17).double(message.amount);
@@ -240,10 +241,10 @@ exports.GradeAmount = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
                 case 2:
                     if (tag !== 17) {
@@ -261,14 +262,14 @@ exports.GradeAmount = {
     },
     fromJSON(object) {
         return {
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -280,7 +281,7 @@ exports.GradeAmount = {
     },
     fromPartial(object) {
         const message = createBaseGradeAmount();
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         message.amount = object.amount ?? 0;
         return message;
     },

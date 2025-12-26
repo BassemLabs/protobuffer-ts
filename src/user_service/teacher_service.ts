@@ -46,11 +46,11 @@ export interface GetTeachersListResponse {
   teachersCount: number;
 }
 
-export interface GetTeachersListAdminViewRequest {
+export interface GetAllTeachersForStagingRequest {
   context: RequestContext | undefined;
 }
 
-export interface GetTeachersListAdminViewResponse {
+export interface GetAllTeachersForStagingResponse {
   teachers: Teacher[];
 }
 
@@ -141,6 +141,17 @@ export interface UploadTeachersResponse {
   failedCount: number;
   /** Base64 encoded CSV with errors (if any) */
   errorCsvBase64?: string | undefined;
+}
+
+export interface CheckCanRemoveOrgDomainRequest {
+  context: RequestContext | undefined;
+  domain: string;
+}
+
+export interface CheckCanRemoveOrgDomainResponse {
+  canRemove: boolean;
+  activeTeachersCount: number;
+  studentsCount: number;
 }
 
 function createBaseGetTeacherRequest(): GetTeacherRequest {
@@ -494,22 +505,22 @@ export const GetTeachersListResponse: MessageFns<GetTeachersListResponse> = {
   },
 };
 
-function createBaseGetTeachersListAdminViewRequest(): GetTeachersListAdminViewRequest {
+function createBaseGetAllTeachersForStagingRequest(): GetAllTeachersForStagingRequest {
   return { context: undefined };
 }
 
-export const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminViewRequest> = {
-  encode(message: GetTeachersListAdminViewRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetAllTeachersForStagingRequest: MessageFns<GetAllTeachersForStagingRequest> = {
+  encode(message: GetAllTeachersForStagingRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetTeachersListAdminViewRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAllTeachersForStagingRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetTeachersListAdminViewRequest();
+    const message = createBaseGetAllTeachersForStagingRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -529,11 +540,11 @@ export const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminVie
     return message;
   },
 
-  fromJSON(object: any): GetTeachersListAdminViewRequest {
+  fromJSON(object: any): GetAllTeachersForStagingRequest {
     return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
   },
 
-  toJSON(message: GetTeachersListAdminViewRequest): unknown {
+  toJSON(message: GetAllTeachersForStagingRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -541,13 +552,13 @@ export const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminVie
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetTeachersListAdminViewRequest>, I>>(base?: I): GetTeachersListAdminViewRequest {
-    return GetTeachersListAdminViewRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetAllTeachersForStagingRequest>, I>>(base?: I): GetAllTeachersForStagingRequest {
+    return GetAllTeachersForStagingRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetTeachersListAdminViewRequest>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetAllTeachersForStagingRequest>, I>>(
     object: I,
-  ): GetTeachersListAdminViewRequest {
-    const message = createBaseGetTeachersListAdminViewRequest();
+  ): GetAllTeachersForStagingRequest {
+    const message = createBaseGetAllTeachersForStagingRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
@@ -555,22 +566,22 @@ export const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminVie
   },
 };
 
-function createBaseGetTeachersListAdminViewResponse(): GetTeachersListAdminViewResponse {
+function createBaseGetAllTeachersForStagingResponse(): GetAllTeachersForStagingResponse {
   return { teachers: [] };
 }
 
-export const GetTeachersListAdminViewResponse: MessageFns<GetTeachersListAdminViewResponse> = {
-  encode(message: GetTeachersListAdminViewResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetAllTeachersForStagingResponse: MessageFns<GetAllTeachersForStagingResponse> = {
+  encode(message: GetAllTeachersForStagingResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.teachers) {
       Teacher.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetTeachersListAdminViewResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAllTeachersForStagingResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetTeachersListAdminViewResponse();
+    const message = createBaseGetAllTeachersForStagingResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -590,13 +601,13 @@ export const GetTeachersListAdminViewResponse: MessageFns<GetTeachersListAdminVi
     return message;
   },
 
-  fromJSON(object: any): GetTeachersListAdminViewResponse {
+  fromJSON(object: any): GetAllTeachersForStagingResponse {
     return {
       teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => Teacher.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: GetTeachersListAdminViewResponse): unknown {
+  toJSON(message: GetAllTeachersForStagingResponse): unknown {
     const obj: any = {};
     if (message.teachers?.length) {
       obj.teachers = message.teachers.map((e) => Teacher.toJSON(e));
@@ -604,15 +615,15 @@ export const GetTeachersListAdminViewResponse: MessageFns<GetTeachersListAdminVi
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetTeachersListAdminViewResponse>, I>>(
+  create<I extends Exact<DeepPartial<GetAllTeachersForStagingResponse>, I>>(
     base?: I,
-  ): GetTeachersListAdminViewResponse {
-    return GetTeachersListAdminViewResponse.fromPartial(base ?? ({} as any));
+  ): GetAllTeachersForStagingResponse {
+    return GetAllTeachersForStagingResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetTeachersListAdminViewResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GetAllTeachersForStagingResponse>, I>>(
     object: I,
-  ): GetTeachersListAdminViewResponse {
-    const message = createBaseGetTeachersListAdminViewResponse();
+  ): GetAllTeachersForStagingResponse {
+    const message = createBaseGetAllTeachersForStagingResponse();
     message.teachers = object.teachers?.map((e) => Teacher.fromPartial(e)) || [];
     return message;
   },
@@ -1940,6 +1951,175 @@ export const UploadTeachersResponse: MessageFns<UploadTeachersResponse> = {
     message.successCount = object.successCount ?? 0;
     message.failedCount = object.failedCount ?? 0;
     message.errorCsvBase64 = object.errorCsvBase64 ?? "";
+    return message;
+  },
+};
+
+function createBaseCheckCanRemoveOrgDomainRequest(): CheckCanRemoveOrgDomainRequest {
+  return { context: undefined, domain: "" };
+}
+
+export const CheckCanRemoveOrgDomainRequest: MessageFns<CheckCanRemoveOrgDomainRequest> = {
+  encode(message: CheckCanRemoveOrgDomainRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.domain !== "") {
+      writer.uint32(18).string(message.domain);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CheckCanRemoveOrgDomainRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCheckCanRemoveOrgDomainRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.domain = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CheckCanRemoveOrgDomainRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      domain: isSet(object.domain) ? globalThis.String(object.domain) : "",
+    };
+  },
+
+  toJSON(message: CheckCanRemoveOrgDomainRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.domain !== "") {
+      obj.domain = message.domain;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CheckCanRemoveOrgDomainRequest>, I>>(base?: I): CheckCanRemoveOrgDomainRequest {
+    return CheckCanRemoveOrgDomainRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CheckCanRemoveOrgDomainRequest>, I>>(
+    object: I,
+  ): CheckCanRemoveOrgDomainRequest {
+    const message = createBaseCheckCanRemoveOrgDomainRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.domain = object.domain ?? "";
+    return message;
+  },
+};
+
+function createBaseCheckCanRemoveOrgDomainResponse(): CheckCanRemoveOrgDomainResponse {
+  return { canRemove: false, activeTeachersCount: 0, studentsCount: 0 };
+}
+
+export const CheckCanRemoveOrgDomainResponse: MessageFns<CheckCanRemoveOrgDomainResponse> = {
+  encode(message: CheckCanRemoveOrgDomainResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.canRemove !== false) {
+      writer.uint32(8).bool(message.canRemove);
+    }
+    if (message.activeTeachersCount !== 0) {
+      writer.uint32(16).uint64(message.activeTeachersCount);
+    }
+    if (message.studentsCount !== 0) {
+      writer.uint32(24).uint64(message.studentsCount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CheckCanRemoveOrgDomainResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCheckCanRemoveOrgDomainResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.canRemove = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.activeTeachersCount = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.studentsCount = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CheckCanRemoveOrgDomainResponse {
+    return {
+      canRemove: isSet(object.canRemove) ? globalThis.Boolean(object.canRemove) : false,
+      activeTeachersCount: isSet(object.activeTeachersCount) ? globalThis.Number(object.activeTeachersCount) : 0,
+      studentsCount: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
+    };
+  },
+
+  toJSON(message: CheckCanRemoveOrgDomainResponse): unknown {
+    const obj: any = {};
+    if (message.canRemove !== false) {
+      obj.canRemove = message.canRemove;
+    }
+    if (message.activeTeachersCount !== 0) {
+      obj.activeTeachersCount = Math.round(message.activeTeachersCount);
+    }
+    if (message.studentsCount !== 0) {
+      obj.studentsCount = Math.round(message.studentsCount);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CheckCanRemoveOrgDomainResponse>, I>>(base?: I): CheckCanRemoveOrgDomainResponse {
+    return CheckCanRemoveOrgDomainResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CheckCanRemoveOrgDomainResponse>, I>>(
+    object: I,
+  ): CheckCanRemoveOrgDomainResponse {
+    const message = createBaseCheckCanRemoveOrgDomainResponse();
+    message.canRemove = object.canRemove ?? false;
+    message.activeTeachersCount = object.activeTeachersCount ?? 0;
+    message.studentsCount = object.studentsCount ?? 0;
     return message;
   },
 };

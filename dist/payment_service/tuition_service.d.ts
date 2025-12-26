@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { AdditionalFee, DiscountStackMode, DiscountType, DiscountValueType, PaymentInstallment, PaymentScheduleType, Scope, TuitionDiscount, TuitionPlan, TuitionRate } from "./tuition";
@@ -7,7 +8,7 @@ export declare const protobufPackage = "payment_service";
 export interface GetTuitionRateRequest {
     context: RequestContext | undefined;
     schoolYear: ObjectId | undefined;
-    grade: string;
+    grade: StudentGrade;
 }
 export interface ListTuitionRatesRequest {
     context: RequestContext | undefined;
@@ -17,7 +18,7 @@ export interface ListTuitionRatesResponse {
     rates: TuitionRate[];
 }
 export interface GradeAmount {
-    grade: string;
+    grade: StudentGrade;
     amount: number;
 }
 export interface UpsertTuitionRatesRequest {

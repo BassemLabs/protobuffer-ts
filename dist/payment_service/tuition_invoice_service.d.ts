@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Family } from "../user_service/family";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { TuitionInvoice, TuitionInvoiceStatus } from "./tuition_invoice";
@@ -8,7 +9,7 @@ export declare const protobufPackage = "payment_service";
 export interface StudentObj {
     id: ObjectId | undefined;
     name: string;
-    grade: string;
+    grade: StudentGrade;
 }
 export interface GetFamilyTuitionInvoiceRequest {
     context: RequestContext | undefined;

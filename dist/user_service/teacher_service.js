@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetTeachersListAdminViewResponse = exports.GetTeachersListAdminViewRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
+exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -331,10 +331,10 @@ exports.GetTeachersListResponse = {
         return message;
     },
 };
-function createBaseGetTeachersListAdminViewRequest() {
+function createBaseGetAllTeachersForStagingRequest() {
     return { context: undefined };
 }
-exports.GetTeachersListAdminViewRequest = {
+exports.GetAllTeachersForStagingRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -344,7 +344,7 @@ exports.GetTeachersListAdminViewRequest = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetTeachersListAdminViewRequest();
+        const message = createBaseGetAllTeachersForStagingRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -373,20 +373,20 @@ exports.GetTeachersListAdminViewRequest = {
         return obj;
     },
     create(base) {
-        return exports.GetTeachersListAdminViewRequest.fromPartial(base ?? {});
+        return exports.GetAllTeachersForStagingRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetTeachersListAdminViewRequest();
+        const message = createBaseGetAllTeachersForStagingRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         return message;
     },
 };
-function createBaseGetTeachersListAdminViewResponse() {
+function createBaseGetAllTeachersForStagingResponse() {
     return { teachers: [] };
 }
-exports.GetTeachersListAdminViewResponse = {
+exports.GetAllTeachersForStagingResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.teachers) {
             teacher_1.Teacher.encode(v, writer.uint32(10).fork()).join();
@@ -396,7 +396,7 @@ exports.GetTeachersListAdminViewResponse = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetTeachersListAdminViewResponse();
+        const message = createBaseGetAllTeachersForStagingResponse();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -427,10 +427,10 @@ exports.GetTeachersListAdminViewResponse = {
         return obj;
     },
     create(base) {
-        return exports.GetTeachersListAdminViewResponse.fromPartial(base ?? {});
+        return exports.GetAllTeachersForStagingResponse.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetTeachersListAdminViewResponse();
+        const message = createBaseGetAllTeachersForStagingResponse();
         message.teachers = object.teachers?.map((e) => teacher_1.Teacher.fromPartial(e)) || [];
         return message;
     },
@@ -1624,6 +1624,154 @@ exports.UploadTeachersResponse = {
         message.successCount = object.successCount ?? 0;
         message.failedCount = object.failedCount ?? 0;
         message.errorCsvBase64 = object.errorCsvBase64 ?? "";
+        return message;
+    },
+};
+function createBaseCheckCanRemoveOrgDomainRequest() {
+    return { context: undefined, domain: "" };
+}
+exports.CheckCanRemoveOrgDomainRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.domain !== "") {
+            writer.uint32(18).string(message.domain);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCheckCanRemoveOrgDomainRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.domain = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            domain: isSet(object.domain) ? globalThis.String(object.domain) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.domain !== "") {
+            obj.domain = message.domain;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CheckCanRemoveOrgDomainRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCheckCanRemoveOrgDomainRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.domain = object.domain ?? "";
+        return message;
+    },
+};
+function createBaseCheckCanRemoveOrgDomainResponse() {
+    return { canRemove: false, activeTeachersCount: 0, studentsCount: 0 };
+}
+exports.CheckCanRemoveOrgDomainResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.canRemove !== false) {
+            writer.uint32(8).bool(message.canRemove);
+        }
+        if (message.activeTeachersCount !== 0) {
+            writer.uint32(16).uint64(message.activeTeachersCount);
+        }
+        if (message.studentsCount !== 0) {
+            writer.uint32(24).uint64(message.studentsCount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCheckCanRemoveOrgDomainResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.canRemove = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.activeTeachersCount = longToNumber(reader.uint64());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.studentsCount = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            canRemove: isSet(object.canRemove) ? globalThis.Boolean(object.canRemove) : false,
+            activeTeachersCount: isSet(object.activeTeachersCount) ? globalThis.Number(object.activeTeachersCount) : 0,
+            studentsCount: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.canRemove !== false) {
+            obj.canRemove = message.canRemove;
+        }
+        if (message.activeTeachersCount !== 0) {
+            obj.activeTeachersCount = Math.round(message.activeTeachersCount);
+        }
+        if (message.studentsCount !== 0) {
+            obj.studentsCount = Math.round(message.studentsCount);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CheckCanRemoveOrgDomainResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCheckCanRemoveOrgDomainResponse();
+        message.canRemove = object.canRemove ?? false;
+        message.activeTeachersCount = object.activeTeachersCount ?? 0;
+        message.studentsCount = object.studentsCount ?? 0;
         return message;
     },
 };

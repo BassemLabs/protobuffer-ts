@@ -88,7 +88,7 @@ function createBaseAttendance() {
         status: AttendanceStatus.None,
         lateDismissalDate: undefined,
         studentExcusedBy: undefined,
-        studentExcusedByUserType: user_type_1.UserType.None,
+        studentExcusedByUserType: user_type_1.UserType.NONE,
     };
 }
 exports.Attendance = {
@@ -132,7 +132,7 @@ exports.Attendance = {
         if (message.studentExcusedBy !== undefined) {
             object_id_1.ObjectId.encode(message.studentExcusedBy, writer.uint32(106).fork()).join();
         }
-        if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== user_type_1.UserType.None) {
+        if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== user_type_1.UserType.NONE) {
             writer.uint32(112).int32((0, user_type_1.userTypeToNumber)(message.studentExcusedByUserType));
         }
         return writer;
@@ -253,7 +253,7 @@ exports.Attendance = {
             studentExcusedBy: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
             studentExcusedByUserType: isSet(object.studentExcusedByUserType)
                 ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
-                : user_type_1.UserType.None,
+                : user_type_1.UserType.NONE,
         };
     },
     toJSON(message) {
@@ -297,7 +297,7 @@ exports.Attendance = {
         if (message.studentExcusedBy !== undefined) {
             obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.studentExcusedBy);
         }
-        if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== user_type_1.UserType.None) {
+        if (message.studentExcusedByUserType !== undefined && message.studentExcusedByUserType !== user_type_1.UserType.NONE) {
             obj.studentExcusedByUserType = (0, user_type_1.userTypeToJSON)(message.studentExcusedByUserType);
         }
         return obj;
@@ -330,7 +330,7 @@ exports.Attendance = {
         message.studentExcusedBy = (object.studentExcusedBy !== undefined && object.studentExcusedBy !== null)
             ? object_id_1.ObjectId.fromPartial(object.studentExcusedBy)
             : undefined;
-        message.studentExcusedByUserType = object.studentExcusedByUserType ?? user_type_1.UserType.None;
+        message.studentExcusedByUserType = object.studentExcusedByUserType ?? user_type_1.UserType.NONE;
         return message;
     },
 };

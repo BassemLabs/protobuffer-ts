@@ -7,6 +7,12 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import {
+  StudentStatus,
+  studentStatusFromJSON,
+  studentStatusToJSON,
+  studentStatusToNumber,
+} from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RefundTransaction, Transaction } from "./transaction";
 import {
@@ -82,92 +88,6 @@ export function invoiceStatusToNumber(object: InvoiceStatus): number {
     case InvoiceStatus.Processing:
       return 5;
     case InvoiceStatus.UNRECOGNIZED:
-    default:
-      return -1;
-  }
-}
-
-/** TODO: this is was fetched automatically from user-service */
-export enum StudentStatus {
-  Waitlist = "Waitlist",
-  Interview = "Interview",
-  Applicant = "Applicant",
-  Rejected = "Rejected",
-  Enrolled = "Enrolled",
-  ReRegistration = "ReRegistration",
-  Withdrawn = "Withdrawn",
-  UNRECOGNIZED = "UNRECOGNIZED",
-}
-
-export function studentStatusFromJSON(object: any): StudentStatus {
-  switch (object) {
-    case 1:
-    case "Waitlist":
-      return StudentStatus.Waitlist;
-    case 2:
-    case "Interview":
-      return StudentStatus.Interview;
-    case 3:
-    case "Applicant":
-      return StudentStatus.Applicant;
-    case 4:
-    case "Rejected":
-      return StudentStatus.Rejected;
-    case 5:
-    case "Enrolled":
-      return StudentStatus.Enrolled;
-    case 6:
-    case "ReRegistration":
-      return StudentStatus.ReRegistration;
-    case 7:
-    case "Withdrawn":
-      return StudentStatus.Withdrawn;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return StudentStatus.UNRECOGNIZED;
-  }
-}
-
-export function studentStatusToJSON(object: StudentStatus): string {
-  switch (object) {
-    case StudentStatus.Waitlist:
-      return "Waitlist";
-    case StudentStatus.Interview:
-      return "Interview";
-    case StudentStatus.Applicant:
-      return "Applicant";
-    case StudentStatus.Rejected:
-      return "Rejected";
-    case StudentStatus.Enrolled:
-      return "Enrolled";
-    case StudentStatus.ReRegistration:
-      return "ReRegistration";
-    case StudentStatus.Withdrawn:
-      return "Withdrawn";
-    case StudentStatus.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-export function studentStatusToNumber(object: StudentStatus): number {
-  switch (object) {
-    case StudentStatus.Waitlist:
-      return 1;
-    case StudentStatus.Interview:
-      return 2;
-    case StudentStatus.Applicant:
-      return 3;
-    case StudentStatus.Rejected:
-      return 4;
-    case StudentStatus.Enrolled:
-      return 5;
-    case StudentStatus.ReRegistration:
-      return 6;
-    case StudentStatus.Withdrawn:
-      return 7;
-    case StudentStatus.UNRECOGNIZED:
     default:
       return -1;
   }
@@ -724,7 +644,7 @@ function createBaseInvoice(): Invoice {
     items: [],
     coupons: [],
     dueDate: undefined,
-    invoiceStudentRegistrationPipelineStatus: StudentStatus.Waitlist,
+    invoiceStudentRegistrationPipelineStatus: StudentStatus.WAITLIST,
     schoolYear: undefined,
     autoPayEnabled: false,
     chargeOnDate: undefined,
@@ -779,7 +699,7 @@ export const Invoice: MessageFns<Invoice> = {
     }
     if (
       message.invoiceStudentRegistrationPipelineStatus !== undefined &&
-      message.invoiceStudentRegistrationPipelineStatus !== StudentStatus.Waitlist
+      message.invoiceStudentRegistrationPipelineStatus !== StudentStatus.WAITLIST
     ) {
       writer.uint32(112).int32(studentStatusToNumber(message.invoiceStudentRegistrationPipelineStatus));
     }
@@ -997,7 +917,7 @@ export const Invoice: MessageFns<Invoice> = {
       dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       invoiceStudentRegistrationPipelineStatus: isSet(object.invoiceStudentRegistrationPipelineStatus)
         ? studentStatusFromJSON(object.invoiceStudentRegistrationPipelineStatus)
-        : StudentStatus.Waitlist,
+        : StudentStatus.WAITLIST,
       schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
       chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
@@ -1058,7 +978,7 @@ export const Invoice: MessageFns<Invoice> = {
     }
     if (
       message.invoiceStudentRegistrationPipelineStatus !== undefined &&
-      message.invoiceStudentRegistrationPipelineStatus !== StudentStatus.Waitlist
+      message.invoiceStudentRegistrationPipelineStatus !== StudentStatus.WAITLIST
     ) {
       obj.invoiceStudentRegistrationPipelineStatus = studentStatusToJSON(
         message.invoiceStudentRegistrationPipelineStatus,
@@ -1114,7 +1034,7 @@ export const Invoice: MessageFns<Invoice> = {
     message.coupons = object.coupons?.map((e) => Coupon.fromPartial(e)) || [];
     message.dueDate = object.dueDate ?? undefined;
     message.invoiceStudentRegistrationPipelineStatus = object.invoiceStudentRegistrationPipelineStatus ??
-      StudentStatus.Waitlist;
+      StudentStatus.WAITLIST;
     message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
       ? ObjectId.fromPartial(object.schoolYear)
       : undefined;

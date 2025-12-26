@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { Family } from "../user_service/family";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
@@ -24,7 +25,7 @@ export const protobufPackage = "payment_service";
 export interface StudentObj {
   id: ObjectId | undefined;
   name: string;
-  grade: string;
+  grade: StudentGrade;
 }
 
 export interface GetFamilyTuitionInvoiceRequest {
@@ -67,7 +68,7 @@ export interface FamilyWithTuitionInvoice {
 }
 
 function createBaseStudentObj(): StudentObj {
-  return { id: undefined, name: "", grade: "" };
+  return { id: undefined, name: "", grade: StudentGrade.PRE_K };
 }
 
 export const StudentObj: MessageFns<StudentObj> = {
@@ -78,8 +79,8 @@ export const StudentObj: MessageFns<StudentObj> = {
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.grade !== "") {
-      writer.uint32(26).string(message.grade);
+    if (message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(24).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -106,11 +107,11 @@ export const StudentObj: MessageFns<StudentObj> = {
           message.name = reader.string();
           continue;
         case 3:
-          if (tag !== 26) {
+          if (tag !== 24) {
             break;
           }
 
-          message.grade = reader.string();
+          message.grade = studentGradeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -125,7 +126,7 @@ export const StudentObj: MessageFns<StudentObj> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
   },
 
@@ -137,8 +138,8 @@ export const StudentObj: MessageFns<StudentObj> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.grade !== "") {
-      obj.grade = message.grade;
+    if (message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
     }
     return obj;
   },
@@ -150,7 +151,7 @@ export const StudentObj: MessageFns<StudentObj> = {
     const message = createBaseStudentObj();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.name = object.name ?? "";
-    message.grade = object.grade ?? "";
+    message.grade = object.grade ?? StudentGrade.PRE_K;
     return message;
   },
 };

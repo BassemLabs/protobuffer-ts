@@ -13,13 +13,6 @@ export interface GetSemestersRequest {
     context: RequestContext | undefined;
     semesterIds: ObjectId[];
 }
-export interface AggregateSemesterRequest {
-    context: RequestContext | undefined;
-    aggregationDocument: string;
-}
-export interface AggregateSemesterResponse {
-    result: string;
-}
 export interface GetActiveSemestersRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
@@ -82,10 +75,16 @@ export interface GetStudentSemestersRequest {
 export interface GetStudentSemestersResponse {
     semesters: Semester[];
 }
+export interface ListSemestersRequest {
+    context: RequestContext | undefined;
+    perPage?: number | undefined;
+    page?: number | undefined;
+    nameSearch?: string | undefined;
+    schoolYear: ObjectId | undefined;
+    archived?: boolean | undefined;
+}
 export declare const GetSemesterRequest: MessageFns<GetSemesterRequest>;
 export declare const GetSemestersRequest: MessageFns<GetSemestersRequest>;
-export declare const AggregateSemesterRequest: MessageFns<AggregateSemesterRequest>;
-export declare const AggregateSemesterResponse: MessageFns<AggregateSemesterResponse>;
 export declare const GetActiveSemestersRequest: MessageFns<GetActiveSemestersRequest>;
 export declare const GetActiveSemestersResponse: MessageFns<GetActiveSemestersResponse>;
 export declare const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemestersBySchoolYearRequest>;
@@ -99,6 +98,7 @@ export declare const CreateRequest: MessageFns<CreateRequest>;
 export declare const SemesterResponse: MessageFns<SemesterResponse>;
 export declare const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest>;
 export declare const GetStudentSemestersResponse: MessageFns<GetStudentSemestersResponse>;
+export declare const ListSemestersRequest: MessageFns<ListSemestersRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

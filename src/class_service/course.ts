@@ -7,10 +7,10 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-import { Homeroom } from "./homeroom";
+import { Homeroom, ListHomeroom } from "./homeroom";
 import { LmsCourse } from "./lms_course";
 import { ReportLayout } from "./report_layout";
-import { Semester } from "./semester";
+import { ListSemester, Semester } from "./semester";
 
 export const protobufPackage = "class_service";
 
@@ -25,6 +25,21 @@ export interface Course {
   studentIds: ObjectId[];
   lmsCourse?: LmsCourse | undefined;
   reportLayout: ReportLayout | undefined;
+}
+
+export interface ListCourse {
+  id: ObjectId | undefined;
+  archived: boolean;
+  name: string;
+  semester: ListSemester | undefined;
+  courseCode: string;
+  homeroom?: ListHomeroom | undefined;
+  teachers: ObjectId[];
+}
+
+export interface CourseList {
+  courses: ListCourse[];
+  coursesCount: number;
 }
 
 function createBaseCourse(): Course {
@@ -244,6 +259,241 @@ export const Course: MessageFns<Course> = {
   },
 };
 
+function createBaseListCourse(): ListCourse {
+  return {
+    id: undefined,
+    archived: false,
+    name: "",
+    semester: undefined,
+    courseCode: "",
+    homeroom: undefined,
+    teachers: [],
+  };
+}
+
+export const ListCourse: MessageFns<ListCourse> = {
+  encode(message: ListCourse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.archived !== false) {
+      writer.uint32(16).bool(message.archived);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.semester !== undefined) {
+      ListSemester.encode(message.semester, writer.uint32(34).fork()).join();
+    }
+    if (message.courseCode !== "") {
+      writer.uint32(42).string(message.courseCode);
+    }
+    if (message.homeroom !== undefined) {
+      ListHomeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.teachers) {
+      ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListCourse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListCourse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.semester = ListSemester.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.courseCode = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.homeroom = ListHomeroom.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.teachers.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListCourse {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
+      courseCode: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
+      homeroom: isSet(object.homeroom) ? ListHomeroom.fromJSON(object.homeroom) : undefined,
+      teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => ObjectId.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: ListCourse): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.semester !== undefined) {
+      obj.semester = ListSemester.toJSON(message.semester);
+    }
+    if (message.courseCode !== "") {
+      obj.courseCode = message.courseCode;
+    }
+    if (message.homeroom !== undefined) {
+      obj.homeroom = ListHomeroom.toJSON(message.homeroom);
+    }
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListCourse>, I>>(base?: I): ListCourse {
+    return ListCourse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListCourse>, I>>(object: I): ListCourse {
+    const message = createBaseListCourse();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.archived = object.archived ?? false;
+    message.name = object.name ?? "";
+    message.semester = (object.semester !== undefined && object.semester !== null)
+      ? ListSemester.fromPartial(object.semester)
+      : undefined;
+    message.courseCode = object.courseCode ?? "";
+    message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+      ? ListHomeroom.fromPartial(object.homeroom)
+      : undefined;
+    message.teachers = object.teachers?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCourseList(): CourseList {
+  return { courses: [], coursesCount: 0 };
+}
+
+export const CourseList: MessageFns<CourseList> = {
+  encode(message: CourseList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      ListCourse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.coursesCount !== 0) {
+      writer.uint32(16).uint64(message.coursesCount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CourseList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCourseList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(ListCourse.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.coursesCount = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CourseList {
+    return {
+      courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => ListCourse.fromJSON(e)) : [],
+      coursesCount: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : 0,
+    };
+  },
+
+  toJSON(message: CourseList): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => ListCourse.toJSON(e));
+    }
+    if (message.coursesCount !== 0) {
+      obj.coursesCount = Math.round(message.coursesCount);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CourseList>, I>>(base?: I): CourseList {
+    return CourseList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CourseList>, I>>(object: I): CourseList {
+    const message = createBaseCourseList();
+    message.courses = object.courses?.map((e) => ListCourse.fromPartial(e)) || [];
+    message.coursesCount = object.coursesCount ?? 0;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -255,6 +505,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

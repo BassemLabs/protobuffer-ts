@@ -39,10 +39,23 @@ export interface SemesterLearningSkill {
     title: string;
     description: string;
 }
+export interface ListSemester {
+    id: ObjectId | undefined;
+    archived: boolean;
+    name: string;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
+}
+export interface SemesterList {
+    semesters: ListSemester[];
+    semestersCount: number;
+}
 export declare const Semester: MessageFns<Semester>;
 export declare const SemesterReportLayout: MessageFns<SemesterReportLayout>;
 export declare const ReportDates: MessageFns<ReportDates>;
 export declare const SemesterLearningSkill: MessageFns<SemesterLearningSkill>;
+export declare const ListSemester: MessageFns<ListSemester>;
+export declare const SemesterList: MessageFns<SemesterList>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
@@ -9,19 +10,22 @@ export interface GetHomeroomRequest {
     context: RequestContext | undefined;
     homeroomId: ObjectId | undefined;
 }
-export interface AggregateHomeroomRequest {
+export interface ListHomeroomsRequest {
     context: RequestContext | undefined;
-    aggregationDocument: string;
-}
-export interface AggregateHomeroomResponse {
-    result: string;
+    perPage?: number | undefined;
+    page?: number | undefined;
+    nameSearch?: string | undefined;
+    semester?: ObjectId | undefined;
+    schoolYear?: ObjectId | undefined;
+    archived?: boolean | undefined;
+    teacherId?: ObjectId | undefined;
 }
 export interface CreateHomeroomRequest {
     context: RequestContext | undefined;
     name: string;
     semesterId: ObjectId | undefined;
     teacherIds: ObjectId[];
-    grade: string;
+    grade: StudentGrade;
     lmsProvider?: LmsProviderType | undefined;
 }
 export interface CloneHomeroomRequest {
@@ -30,7 +34,7 @@ export interface CloneHomeroomRequest {
     name: string;
     semesterId: ObjectId | undefined;
     teacherIds: ObjectId[];
-    grade: string;
+    grade: StudentGrade;
 }
 export interface GetHomeroomCoursesRequest {
     context: RequestContext | undefined;
@@ -57,7 +61,7 @@ export interface UpdateHomeroomRequest {
     homeroomId: ObjectId | undefined;
     semesterId: ObjectId | undefined;
     name: string;
-    grade: string;
+    grade: StudentGrade;
 }
 export interface AddTeachersRequest {
     context: RequestContext | undefined;
@@ -108,8 +112,7 @@ export interface LmsStudentSubmissionResponse {
     lmsStudentSubmission: LmsSubmission[];
 }
 export declare const GetHomeroomRequest: MessageFns<GetHomeroomRequest>;
-export declare const AggregateHomeroomRequest: MessageFns<AggregateHomeroomRequest>;
-export declare const AggregateHomeroomResponse: MessageFns<AggregateHomeroomResponse>;
+export declare const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest>;
 export declare const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest>;
 export declare const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest>;
 export declare const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest>;

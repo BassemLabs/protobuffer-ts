@@ -10,12 +10,13 @@ exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesRespon
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const family_1 = require("../user_service/family");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const tuition_invoice_1 = require("./tuition_invoice");
 exports.protobufPackage = "payment_service";
 function createBaseStudentObj() {
-    return { id: undefined, name: "", grade: "" };
+    return { id: undefined, name: "", grade: student_1.StudentGrade.PRE_K };
 }
 exports.StudentObj = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -25,8 +26,8 @@ exports.StudentObj = {
         if (message.name !== "") {
             writer.uint32(18).string(message.name);
         }
-        if (message.grade !== "") {
-            writer.uint32(26).string(message.grade);
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            writer.uint32(24).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -50,10 +51,10 @@ exports.StudentObj = {
                     message.name = reader.string();
                     continue;
                 case 3:
-                    if (tag !== 26) {
+                    if (tag !== 24) {
                         break;
                     }
-                    message.grade = reader.string();
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -67,7 +68,7 @@ exports.StudentObj = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
         };
     },
     toJSON(message) {
@@ -78,8 +79,8 @@ exports.StudentObj = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.grade !== "") {
-            obj.grade = message.grade;
+        if (message.grade !== student_1.StudentGrade.PRE_K) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         return obj;
     },
@@ -90,7 +91,7 @@ exports.StudentObj = {
         const message = createBaseStudentObj();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? "";
-        message.grade = object.grade ?? "";
+        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         return message;
     },
 };

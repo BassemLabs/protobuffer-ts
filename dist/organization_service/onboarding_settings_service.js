@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/onboarding_settings_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateInterviewFeeRequest = exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry = exports.UpdateReregistrationFeeRequest = exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry = exports.UpdateRegistrationFeeRequest = exports.UpdateWaitlistFeeRequest = exports.RemoveSchoolHandbookFileRequest = exports.AddSchoolHandbookFileRequest = exports.UpdateEnrollmentConfigurationRequest = exports.GetOnboardingSettingsRequest = exports.protobufPackage = void 0;
+exports.UpdateInterviewFeeRequest = exports.UpdateReregistrationFeeRequest = exports.UpdateRegistrationFeeRequest = exports.UpdateWaitlistFeeRequest = exports.RemoveSchoolHandbookFileRequest = exports.AddSchoolHandbookFileRequest = exports.UpdateEnrollmentConfigurationRequest = exports.GetOnboardingSettingsRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -456,7 +456,7 @@ exports.UpdateWaitlistFeeRequest = {
     },
 };
 function createBaseUpdateRegistrationFeeRequest() {
-    return { context: undefined, organizationId: undefined, registrationFees: {} };
+    return { context: undefined, organizationId: undefined, registrationFees: [] };
 }
 exports.UpdateRegistrationFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -466,10 +466,9 @@ exports.UpdateRegistrationFeeRequest = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
         }
-        Object.entries(message.registrationFees).forEach(([key, value]) => {
-            exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry.encode({ key: key, value }, writer.uint32(26).fork())
-                .join();
-        });
+        for (const v of message.registrationFees) {
+            onboarding_settings_1.GradeFeeMapping.encode(v, writer.uint32(26).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -495,10 +494,7 @@ exports.UpdateRegistrationFeeRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    const entry3 = exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry.decode(reader, reader.uint32());
-                    if (entry3.value !== undefined) {
-                        message.registrationFees[entry3.key] = entry3.value;
-                    }
+                    message.registrationFees.push(onboarding_settings_1.GradeFeeMapping.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -512,12 +508,9 @@ exports.UpdateRegistrationFeeRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            registrationFees: isObject(object.registrationFees)
-                ? Object.entries(object.registrationFees).reduce((acc, [key, value]) => {
-                    acc[key] = onboarding_settings_1.ItemizedFee.fromJSON(value);
-                    return acc;
-                }, {})
-                : {},
+            registrationFees: globalThis.Array.isArray(object?.registrationFees)
+                ? object.registrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -528,14 +521,8 @@ exports.UpdateRegistrationFeeRequest = {
         if (message.organizationId !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
-        if (message.registrationFees) {
-            const entries = Object.entries(message.registrationFees);
-            if (entries.length > 0) {
-                obj.registrationFees = {};
-                entries.forEach(([k, v]) => {
-                    obj.registrationFees[k] = onboarding_settings_1.ItemizedFee.toJSON(v);
-                });
-            }
+        if (message.registrationFees?.length) {
+            obj.registrationFees = message.registrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
         }
         return obj;
     },
@@ -550,85 +537,12 @@ exports.UpdateRegistrationFeeRequest = {
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
-        message.registrationFees = Object.entries(object.registrationFees ?? {}).reduce((acc, [key, value]) => {
-            if (value !== undefined) {
-                acc[key] = onboarding_settings_1.ItemizedFee.fromPartial(value);
-            }
-            return acc;
-        }, {});
-        return message;
-    },
-};
-function createBaseUpdateRegistrationFeeRequest_RegistrationFeesEntry() {
-    return { key: "", value: undefined };
-}
-exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.key !== "") {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== undefined) {
-            onboarding_settings_1.ItemizedFee.encode(message.value, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUpdateRegistrationFeeRequest_RegistrationFeesEntry();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.key = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.value = onboarding_settings_1.ItemizedFee.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? onboarding_settings_1.ItemizedFee.fromJSON(object.value) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.key !== "") {
-            obj.key = message.key;
-        }
-        if (message.value !== undefined) {
-            obj.value = onboarding_settings_1.ItemizedFee.toJSON(message.value);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.UpdateRegistrationFeeRequest_RegistrationFeesEntry.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseUpdateRegistrationFeeRequest_RegistrationFeesEntry();
-        message.key = object.key ?? "";
-        message.value = (object.value !== undefined && object.value !== null)
-            ? onboarding_settings_1.ItemizedFee.fromPartial(object.value)
-            : undefined;
+        message.registrationFees = object.registrationFees?.map((e) => onboarding_settings_1.GradeFeeMapping.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseUpdateReregistrationFeeRequest() {
-    return { context: undefined, organizationId: undefined, reregistrationFees: {} };
+    return { context: undefined, organizationId: undefined, reregistrationFees: [] };
 }
 exports.UpdateReregistrationFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -638,9 +552,9 @@ exports.UpdateReregistrationFeeRequest = {
         if (message.organizationId !== undefined) {
             object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
         }
-        Object.entries(message.reregistrationFees).forEach(([key, value]) => {
-            exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry.encode({ key: key, value }, writer.uint32(26).fork()).join();
-        });
+        for (const v of message.reregistrationFees) {
+            onboarding_settings_1.GradeFeeMapping.encode(v, writer.uint32(26).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -666,10 +580,7 @@ exports.UpdateReregistrationFeeRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    const entry3 = exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry.decode(reader, reader.uint32());
-                    if (entry3.value !== undefined) {
-                        message.reregistrationFees[entry3.key] = entry3.value;
-                    }
+                    message.reregistrationFees.push(onboarding_settings_1.GradeFeeMapping.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -683,12 +594,9 @@ exports.UpdateReregistrationFeeRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            reregistrationFees: isObject(object.reregistrationFees)
-                ? Object.entries(object.reregistrationFees).reduce((acc, [key, value]) => {
-                    acc[key] = onboarding_settings_1.ItemizedFee.fromJSON(value);
-                    return acc;
-                }, {})
-                : {},
+            reregistrationFees: globalThis.Array.isArray(object?.reregistrationFees)
+                ? object.reregistrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -699,14 +607,8 @@ exports.UpdateReregistrationFeeRequest = {
         if (message.organizationId !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
         }
-        if (message.reregistrationFees) {
-            const entries = Object.entries(message.reregistrationFees);
-            if (entries.length > 0) {
-                obj.reregistrationFees = {};
-                entries.forEach(([k, v]) => {
-                    obj.reregistrationFees[k] = onboarding_settings_1.ItemizedFee.toJSON(v);
-                });
-            }
+        if (message.reregistrationFees?.length) {
+            obj.reregistrationFees = message.reregistrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
         }
         return obj;
     },
@@ -721,80 +623,7 @@ exports.UpdateReregistrationFeeRequest = {
         message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
             ? object_id_1.ObjectId.fromPartial(object.organizationId)
             : undefined;
-        message.reregistrationFees = Object.entries(object.reregistrationFees ?? {}).reduce((acc, [key, value]) => {
-            if (value !== undefined) {
-                acc[key] = onboarding_settings_1.ItemizedFee.fromPartial(value);
-            }
-            return acc;
-        }, {});
-        return message;
-    },
-};
-function createBaseUpdateReregistrationFeeRequest_ReregistrationFeesEntry() {
-    return { key: "", value: undefined };
-}
-exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.key !== "") {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== undefined) {
-            onboarding_settings_1.ItemizedFee.encode(message.value, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUpdateReregistrationFeeRequest_ReregistrationFeesEntry();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.key = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.value = onboarding_settings_1.ItemizedFee.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? onboarding_settings_1.ItemizedFee.fromJSON(object.value) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.key !== "") {
-            obj.key = message.key;
-        }
-        if (message.value !== undefined) {
-            obj.value = onboarding_settings_1.ItemizedFee.toJSON(message.value);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.UpdateReregistrationFeeRequest_ReregistrationFeesEntry.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseUpdateReregistrationFeeRequest_ReregistrationFeesEntry();
-        message.key = object.key ?? "";
-        message.value = (object.value !== undefined && object.value !== null)
-            ? onboarding_settings_1.ItemizedFee.fromPartial(object.value)
-            : undefined;
+        message.reregistrationFees = object.reregistrationFees?.map((e) => onboarding_settings_1.GradeFeeMapping.fromPartial(e)) || [];
         return message;
     },
 };
@@ -882,9 +711,6 @@ exports.UpdateInterviewFeeRequest = {
         return message;
     },
 };
-function isObject(value) {
-    return typeof value === "object" && value !== null;
-}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

@@ -1,20 +1,35 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { LmsCourse } from "./lms_course";
-import { Semester } from "./semester";
+import { ListSemester, Semester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Homeroom {
     id: ObjectId | undefined;
     archived: boolean;
     semester: Semester | undefined;
     name: string;
-    /** Option<String> is represented as a regular string */
-    grade?: string | undefined;
+    grade?: StudentGrade | undefined;
     teacherIds: ObjectId[];
     studentIds: ObjectId[];
     lmsCourse?: LmsCourse | undefined;
 }
+export interface ListHomeroom {
+    id: ObjectId | undefined;
+    archived: boolean;
+    name: string;
+    grade?: string | undefined;
+    semester: ListSemester | undefined;
+    teacherIds: ObjectId[];
+    studentIds: ObjectId[];
+}
+export interface HomeroomList {
+    homerooms: ListHomeroom[];
+    homeroomsCount: number;
+}
 export declare const Homeroom: MessageFns<Homeroom>;
+export declare const ListHomeroom: MessageFns<ListHomeroom>;
+export declare const HomeroomList: MessageFns<HomeroomList>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

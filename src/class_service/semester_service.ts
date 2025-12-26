@@ -25,15 +25,6 @@ export interface GetSemestersRequest {
   semesterIds: ObjectId[];
 }
 
-export interface AggregateSemesterRequest {
-  context: RequestContext | undefined;
-  aggregationDocument: string;
-}
-
-export interface AggregateSemesterResponse {
-  result: string;
-}
-
 export interface GetActiveSemestersRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
@@ -107,6 +98,15 @@ export interface GetStudentSemestersRequest {
 
 export interface GetStudentSemestersResponse {
   semesters: Semester[];
+}
+
+export interface ListSemestersRequest {
+  context: RequestContext | undefined;
+  perPage?: number | undefined;
+  page?: number | undefined;
+  nameSearch?: string | undefined;
+  schoolYear: ObjectId | undefined;
+  archived?: boolean | undefined;
 }
 
 function createBaseGetSemesterRequest(): GetSemesterRequest {
@@ -261,139 +261,6 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.semesterIds = object.semesterIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseAggregateSemesterRequest(): AggregateSemesterRequest {
-  return { context: undefined, aggregationDocument: "" };
-}
-
-export const AggregateSemesterRequest: MessageFns<AggregateSemesterRequest> = {
-  encode(message: AggregateSemesterRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.aggregationDocument !== "") {
-      writer.uint32(18).string(message.aggregationDocument);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AggregateSemesterRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregateSemesterRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.aggregationDocument = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AggregateSemesterRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      aggregationDocument: isSet(object.aggregationDocument) ? globalThis.String(object.aggregationDocument) : "",
-    };
-  },
-
-  toJSON(message: AggregateSemesterRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.aggregationDocument !== "") {
-      obj.aggregationDocument = message.aggregationDocument;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AggregateSemesterRequest>, I>>(base?: I): AggregateSemesterRequest {
-    return AggregateSemesterRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AggregateSemesterRequest>, I>>(object: I): AggregateSemesterRequest {
-    const message = createBaseAggregateSemesterRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.aggregationDocument = object.aggregationDocument ?? "";
-    return message;
-  },
-};
-
-function createBaseAggregateSemesterResponse(): AggregateSemesterResponse {
-  return { result: "" };
-}
-
-export const AggregateSemesterResponse: MessageFns<AggregateSemesterResponse> = {
-  encode(message: AggregateSemesterResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.result !== "") {
-      writer.uint32(10).string(message.result);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AggregateSemesterResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregateSemesterResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.result = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AggregateSemesterResponse {
-    return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
-  },
-
-  toJSON(message: AggregateSemesterResponse): unknown {
-    const obj: any = {};
-    if (message.result !== "") {
-      obj.result = message.result;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AggregateSemesterResponse>, I>>(base?: I): AggregateSemesterResponse {
-    return AggregateSemesterResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AggregateSemesterResponse>, I>>(object: I): AggregateSemesterResponse {
-    const message = createBaseAggregateSemesterResponse();
-    message.result = object.result ?? "";
     return message;
   },
 };
@@ -1479,6 +1346,144 @@ export const GetStudentSemestersResponse: MessageFns<GetStudentSemestersResponse
   },
 };
 
+function createBaseListSemestersRequest(): ListSemestersRequest {
+  return { context: undefined, perPage: 0, page: 0, nameSearch: "", schoolYear: undefined, archived: false };
+}
+
+export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
+  encode(message: ListSemestersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.perPage !== undefined && message.perPage !== 0) {
+      writer.uint32(16).uint64(message.perPage);
+    }
+    if (message.page !== undefined && message.page !== 0) {
+      writer.uint32(24).uint64(message.page);
+    }
+    if (message.nameSearch !== undefined && message.nameSearch !== "") {
+      writer.uint32(34).string(message.nameSearch);
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(42).fork()).join();
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      writer.uint32(48).bool(message.archived);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListSemestersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListSemestersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.perPage = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.page = longToNumber(reader.uint64());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.nameSearch = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListSemestersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+    };
+  },
+
+  toJSON(message: ListSemestersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.perPage !== undefined && message.perPage !== 0) {
+      obj.perPage = Math.round(message.perPage);
+    }
+    if (message.page !== undefined && message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.nameSearch !== undefined && message.nameSearch !== "") {
+      obj.nameSearch = message.nameSearch;
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListSemestersRequest>, I>>(base?: I): ListSemestersRequest {
+    return ListSemestersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListSemestersRequest>, I>>(object: I): ListSemestersRequest {
+    const message = createBaseListSemestersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.perPage = object.perPage ?? 0;
+    message.page = object.page ?? 0;
+    message.nameSearch = object.nameSearch ?? "";
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.archived = object.archived ?? false;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -1511,6 +1516,17 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
 }
 
 function isSet(value: any): boolean {

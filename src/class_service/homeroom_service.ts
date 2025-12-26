@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
@@ -26,13 +27,15 @@ export interface GetHomeroomRequest {
   homeroomId: ObjectId | undefined;
 }
 
-export interface AggregateHomeroomRequest {
+export interface ListHomeroomsRequest {
   context: RequestContext | undefined;
-  aggregationDocument: string;
-}
-
-export interface AggregateHomeroomResponse {
-  result: string;
+  perPage?: number | undefined;
+  page?: number | undefined;
+  nameSearch?: string | undefined;
+  semester?: ObjectId | undefined;
+  schoolYear?: ObjectId | undefined;
+  archived?: boolean | undefined;
+  teacherId?: ObjectId | undefined;
 }
 
 export interface CreateHomeroomRequest {
@@ -40,7 +43,7 @@ export interface CreateHomeroomRequest {
   name: string;
   semesterId: ObjectId | undefined;
   teacherIds: ObjectId[];
-  grade: string;
+  grade: StudentGrade;
   lmsProvider?: LmsProviderType | undefined;
 }
 
@@ -50,7 +53,7 @@ export interface CloneHomeroomRequest {
   name: string;
   semesterId: ObjectId | undefined;
   teacherIds: ObjectId[];
-  grade: string;
+  grade: StudentGrade;
 }
 
 export interface GetHomeroomCoursesRequest {
@@ -83,7 +86,7 @@ export interface UpdateHomeroomRequest {
   homeroomId: ObjectId | undefined;
   semesterId: ObjectId | undefined;
   name: string;
-  grade: string;
+  grade: StudentGrade;
 }
 
 export interface AddTeachersRequest {
@@ -224,25 +227,52 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
   },
 };
 
-function createBaseAggregateHomeroomRequest(): AggregateHomeroomRequest {
-  return { context: undefined, aggregationDocument: "" };
+function createBaseListHomeroomsRequest(): ListHomeroomsRequest {
+  return {
+    context: undefined,
+    perPage: 0,
+    page: 0,
+    nameSearch: "",
+    semester: undefined,
+    schoolYear: undefined,
+    archived: false,
+    teacherId: undefined,
+  };
 }
 
-export const AggregateHomeroomRequest: MessageFns<AggregateHomeroomRequest> = {
-  encode(message: AggregateHomeroomRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
+  encode(message: ListHomeroomsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.aggregationDocument !== "") {
-      writer.uint32(18).string(message.aggregationDocument);
+    if (message.perPage !== undefined && message.perPage !== 0) {
+      writer.uint32(16).uint64(message.perPage);
+    }
+    if (message.page !== undefined && message.page !== 0) {
+      writer.uint32(24).uint64(message.page);
+    }
+    if (message.nameSearch !== undefined && message.nameSearch !== "") {
+      writer.uint32(34).string(message.nameSearch);
+    }
+    if (message.semester !== undefined) {
+      ObjectId.encode(message.semester, writer.uint32(42).fork()).join();
+    }
+    if (message.schoolYear !== undefined) {
+      ObjectId.encode(message.schoolYear, writer.uint32(50).fork()).join();
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      writer.uint32(56).bool(message.archived);
+    }
+    if (message.teacherId !== undefined) {
+      ObjectId.encode(message.teacherId, writer.uint32(66).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): AggregateHomeroomRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): ListHomeroomsRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregateHomeroomRequest();
+    const message = createBaseListHomeroomsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -254,11 +284,53 @@ export const AggregateHomeroomRequest: MessageFns<AggregateHomeroomRequest> = {
           message.context = RequestContext.decode(reader, reader.uint32());
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.aggregationDocument = reader.string();
+          message.perPage = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.page = longToNumber(reader.uint64());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.nameSearch = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.semester = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.teacherId = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -269,90 +341,69 @@ export const AggregateHomeroomRequest: MessageFns<AggregateHomeroomRequest> = {
     return message;
   },
 
-  fromJSON(object: any): AggregateHomeroomRequest {
+  fromJSON(object: any): ListHomeroomsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      aggregationDocument: isSet(object.aggregationDocument) ? globalThis.String(object.aggregationDocument) : "",
+      perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+      semester: isSet(object.semester) ? ObjectId.fromJSON(object.semester) : undefined,
+      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      teacherId: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
-  toJSON(message: AggregateHomeroomRequest): unknown {
+  toJSON(message: ListHomeroomsRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.aggregationDocument !== "") {
-      obj.aggregationDocument = message.aggregationDocument;
+    if (message.perPage !== undefined && message.perPage !== 0) {
+      obj.perPage = Math.round(message.perPage);
+    }
+    if (message.page !== undefined && message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.nameSearch !== undefined && message.nameSearch !== "") {
+      obj.nameSearch = message.nameSearch;
+    }
+    if (message.semester !== undefined) {
+      obj.semester = ObjectId.toJSON(message.semester);
+    }
+    if (message.schoolYear !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    }
+    if (message.archived !== undefined && message.archived !== false) {
+      obj.archived = message.archived;
+    }
+    if (message.teacherId !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacherId);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AggregateHomeroomRequest>, I>>(base?: I): AggregateHomeroomRequest {
-    return AggregateHomeroomRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<ListHomeroomsRequest>, I>>(base?: I): ListHomeroomsRequest {
+    return ListHomeroomsRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<AggregateHomeroomRequest>, I>>(object: I): AggregateHomeroomRequest {
-    const message = createBaseAggregateHomeroomRequest();
+  fromPartial<I extends Exact<DeepPartial<ListHomeroomsRequest>, I>>(object: I): ListHomeroomsRequest {
+    const message = createBaseListHomeroomsRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.aggregationDocument = object.aggregationDocument ?? "";
-    return message;
-  },
-};
-
-function createBaseAggregateHomeroomResponse(): AggregateHomeroomResponse {
-  return { result: "" };
-}
-
-export const AggregateHomeroomResponse: MessageFns<AggregateHomeroomResponse> = {
-  encode(message: AggregateHomeroomResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.result !== "") {
-      writer.uint32(10).string(message.result);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AggregateHomeroomResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregateHomeroomResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.result = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AggregateHomeroomResponse {
-    return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
-  },
-
-  toJSON(message: AggregateHomeroomResponse): unknown {
-    const obj: any = {};
-    if (message.result !== "") {
-      obj.result = message.result;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AggregateHomeroomResponse>, I>>(base?: I): AggregateHomeroomResponse {
-    return AggregateHomeroomResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AggregateHomeroomResponse>, I>>(object: I): AggregateHomeroomResponse {
-    const message = createBaseAggregateHomeroomResponse();
-    message.result = object.result ?? "";
+    message.perPage = object.perPage ?? 0;
+    message.page = object.page ?? 0;
+    message.nameSearch = object.nameSearch ?? "";
+    message.semester = (object.semester !== undefined && object.semester !== null)
+      ? ObjectId.fromPartial(object.semester)
+      : undefined;
+    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+      ? ObjectId.fromPartial(object.schoolYear)
+      : undefined;
+    message.archived = object.archived ?? false;
+    message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
+      ? ObjectId.fromPartial(object.teacherId)
+      : undefined;
     return message;
   },
 };
@@ -363,7 +414,7 @@ function createBaseCreateHomeroomRequest(): CreateHomeroomRequest {
     name: "",
     semesterId: undefined,
     teacherIds: [],
-    grade: "",
+    grade: StudentGrade.PRE_K,
     lmsProvider: LmsProviderType.GOOGLE_CLASSROOM,
   };
 }
@@ -382,8 +433,8 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     for (const v of message.teacherIds) {
       ObjectId.encode(v!, writer.uint32(34).fork()).join();
     }
-    if (message.grade !== "") {
-      writer.uint32(42).string(message.grade);
+    if (message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(40).int32(studentGradeToNumber(message.grade));
     }
     if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
       writer.uint32(48).int32(lmsProviderTypeToNumber(message.lmsProvider));
@@ -427,11 +478,11 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
           message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 5:
-          if (tag !== 42) {
+          if (tag !== 40) {
             break;
           }
 
-          message.grade = reader.string();
+          message.grade = studentGradeFromJSON(reader.int32());
           continue;
         case 6:
           if (tag !== 48) {
@@ -457,7 +508,7 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
       teacherIds: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
       lmsProvider: isSet(object.lmsProvider)
         ? lmsProviderTypeFromJSON(object.lmsProvider)
         : LmsProviderType.GOOGLE_CLASSROOM,
@@ -478,8 +529,8 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     if (message.teacherIds?.length) {
       obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
     }
-    if (message.grade !== "") {
-      obj.grade = message.grade;
+    if (message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
     }
     if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
       obj.lmsProvider = lmsProviderTypeToJSON(message.lmsProvider);
@@ -500,7 +551,7 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
       ? ObjectId.fromPartial(object.semesterId)
       : undefined;
     message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.grade = object.grade ?? "";
+    message.grade = object.grade ?? StudentGrade.PRE_K;
     message.lmsProvider = object.lmsProvider ?? LmsProviderType.GOOGLE_CLASSROOM;
     return message;
   },
@@ -513,7 +564,7 @@ function createBaseCloneHomeroomRequest(): CloneHomeroomRequest {
     name: "",
     semesterId: undefined,
     teacherIds: [],
-    grade: "",
+    grade: StudentGrade.PRE_K,
   };
 }
 
@@ -534,8 +585,8 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
     for (const v of message.teacherIds) {
       ObjectId.encode(v!, writer.uint32(42).fork()).join();
     }
-    if (message.grade !== "") {
-      writer.uint32(50).string(message.grade);
+    if (message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(48).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -583,11 +634,11 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
           message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 6:
-          if (tag !== 50) {
+          if (tag !== 48) {
             break;
           }
 
-          message.grade = reader.string();
+          message.grade = studentGradeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -607,7 +658,7 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
       teacherIds: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
   },
 
@@ -628,8 +679,8 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
     if (message.teacherIds?.length) {
       obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
     }
-    if (message.grade !== "") {
-      obj.grade = message.grade;
+    if (message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
     }
     return obj;
   },
@@ -650,7 +701,7 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
       ? ObjectId.fromPartial(object.semesterId)
       : undefined;
     message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.grade = object.grade ?? "";
+    message.grade = object.grade ?? StudentGrade.PRE_K;
     return message;
   },
 };
@@ -1040,7 +1091,7 @@ export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
 };
 
 function createBaseUpdateHomeroomRequest(): UpdateHomeroomRequest {
-  return { context: undefined, homeroomId: undefined, semesterId: undefined, name: "", grade: "" };
+  return { context: undefined, homeroomId: undefined, semesterId: undefined, name: "", grade: StudentGrade.PRE_K };
 }
 
 export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
@@ -1057,8 +1108,8 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
     if (message.name !== "") {
       writer.uint32(34).string(message.name);
     }
-    if (message.grade !== "") {
-      writer.uint32(42).string(message.grade);
+    if (message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(40).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -1099,11 +1150,11 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
           message.name = reader.string();
           continue;
         case 5:
-          if (tag !== 42) {
+          if (tag !== 40) {
             break;
           }
 
-          message.grade = reader.string();
+          message.grade = studentGradeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1120,7 +1171,7 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
       homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
   },
 
@@ -1138,8 +1189,8 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.grade !== "") {
-      obj.grade = message.grade;
+    if (message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
     }
     return obj;
   },
@@ -1159,7 +1210,7 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
       ? ObjectId.fromPartial(object.semesterId)
       : undefined;
     message.name = object.name ?? "";
-    message.grade = object.grade ?? "";
+    message.grade = object.grade ?? StudentGrade.PRE_K;
     return message;
   },
 };
@@ -2115,6 +2166,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

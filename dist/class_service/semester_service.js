@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentSemestersResponse = exports.GetStudentSemestersRequest = exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersBySchoolYearRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.AggregateSemesterResponse = exports.AggregateSemesterRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
+exports.ListSemestersRequest = exports.GetStudentSemestersResponse = exports.GetStudentSemestersRequest = exports.SemesterResponse = exports.CreateRequest = exports.ArchiveRequest = exports.UpdateRequest = exports.HomeroomsResponse = exports.HomeroomsRequest = exports.CoursesResponse = exports.CoursesRequest = exports.GetActiveSemestersBySchoolYearRequest = exports.GetActiveSemestersResponse = exports.GetActiveSemestersRequest = exports.GetSemestersRequest = exports.GetSemesterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -152,124 +152,6 @@ exports.GetSemestersRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.semesterIds = object.semesterIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        return message;
-    },
-};
-function createBaseAggregateSemesterRequest() {
-    return { context: undefined, aggregationDocument: "" };
-}
-exports.AggregateSemesterRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.aggregationDocument !== "") {
-            writer.uint32(18).string(message.aggregationDocument);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAggregateSemesterRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.aggregationDocument = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            aggregationDocument: isSet(object.aggregationDocument) ? globalThis.String(object.aggregationDocument) : "",
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.aggregationDocument !== "") {
-            obj.aggregationDocument = message.aggregationDocument;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AggregateSemesterRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAggregateSemesterRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.aggregationDocument = object.aggregationDocument ?? "";
-        return message;
-    },
-};
-function createBaseAggregateSemesterResponse() {
-    return { result: "" };
-}
-exports.AggregateSemesterResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.result !== "") {
-            writer.uint32(10).string(message.result);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAggregateSemesterResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.result = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.result !== "") {
-            obj.result = message.result;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AggregateSemesterResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAggregateSemesterResponse();
-        message.result = object.result ?? "";
         return message;
     },
 };
@@ -1242,6 +1124,132 @@ exports.GetStudentSemestersResponse = {
         return message;
     },
 };
+function createBaseListSemestersRequest() {
+    return { context: undefined, perPage: 0, page: 0, nameSearch: "", schoolYear: undefined, archived: false };
+}
+exports.ListSemestersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.perPage !== undefined && message.perPage !== 0) {
+            writer.uint32(16).uint64(message.perPage);
+        }
+        if (message.page !== undefined && message.page !== 0) {
+            writer.uint32(24).uint64(message.page);
+        }
+        if (message.nameSearch !== undefined && message.nameSearch !== "") {
+            writer.uint32(34).string(message.nameSearch);
+        }
+        if (message.schoolYear !== undefined) {
+            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(42).fork()).join();
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            writer.uint32(48).bool(message.archived);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListSemestersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.perPage = longToNumber(reader.uint64());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.page = longToNumber(reader.uint64());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.nameSearch = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.perPage !== undefined && message.perPage !== 0) {
+            obj.perPage = Math.round(message.perPage);
+        }
+        if (message.page !== undefined && message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.nameSearch !== undefined && message.nameSearch !== "") {
+            obj.nameSearch = message.nameSearch;
+        }
+        if (message.schoolYear !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        }
+        if (message.archived !== undefined && message.archived !== false) {
+            obj.archived = message.archived;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListSemestersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListSemestersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.perPage = object.perPage ?? 0;
+        message.page = object.page ?? 0;
+        message.nameSearch = object.nameSearch ?? "";
+        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
+            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+            : undefined;
+        message.archived = object.archived ?? false;
+        return message;
+    },
+};
 function toTimestamp(date) {
     const seconds = Math.trunc(date.getTime() / 1_000);
     const nanos = (date.getTime() % 1_000) * 1_000_000;
@@ -1262,6 +1270,16 @@ function fromJsonTimestamp(o) {
     else {
         return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
     }
+}
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
 }
 function isSet(value) {
     return value !== null && value !== undefined;

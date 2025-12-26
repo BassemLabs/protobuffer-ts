@@ -1026,7 +1026,7 @@ function createBaseSendEmailByTemplateKeyRequest(): SendEmailByTemplateKeyReques
     context: undefined,
     templateKey: EmailTemplateKey.REJECTION_EMAIL,
     replacements: [],
-    recipientUserType: UserType.None,
+    recipientUserType: UserType.NONE,
     recipientUserId: undefined,
     recipientEmail: "",
     dateToSend: 0,
@@ -1044,7 +1044,7 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
     for (const v of message.replacements) {
       Replacement.encode(v!, writer.uint32(26).fork()).join();
     }
-    if (message.recipientUserType !== UserType.None) {
+    if (message.recipientUserType !== UserType.NONE) {
       writer.uint32(32).int32(userTypeToNumber(message.recipientUserType));
     }
     if (message.recipientUserId !== undefined) {
@@ -1133,7 +1133,7 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
       replacements: globalThis.Array.isArray(object?.replacements)
         ? object.replacements.map((e: any) => Replacement.fromJSON(e))
         : [],
-      recipientUserType: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : UserType.None,
+      recipientUserType: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : UserType.NONE,
       recipientUserId: isSet(object.recipientUserId) ? ObjectId.fromJSON(object.recipientUserId) : undefined,
       recipientEmail: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : "",
       dateToSend: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : 0,
@@ -1151,7 +1151,7 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
     if (message.replacements?.length) {
       obj.replacements = message.replacements.map((e) => Replacement.toJSON(e));
     }
-    if (message.recipientUserType !== UserType.None) {
+    if (message.recipientUserType !== UserType.NONE) {
       obj.recipientUserType = userTypeToJSON(message.recipientUserType);
     }
     if (message.recipientUserId !== undefined) {
@@ -1178,7 +1178,7 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
       : undefined;
     message.templateKey = object.templateKey ?? EmailTemplateKey.REJECTION_EMAIL;
     message.replacements = object.replacements?.map((e) => Replacement.fromPartial(e)) || [];
-    message.recipientUserType = object.recipientUserType ?? UserType.None;
+    message.recipientUserType = object.recipientUserType ?? UserType.NONE;
     message.recipientUserId = (object.recipientUserId !== undefined && object.recipientUserId !== null)
       ? ObjectId.fromPartial(object.recipientUserId)
       : undefined;
@@ -1196,7 +1196,7 @@ function createBaseSendEmailWithTemplateRequest(): SendEmailWithTemplateRequest 
     body: "",
     footer: "",
     replacements: [],
-    recipientUserType: UserType.None,
+    recipientUserType: UserType.NONE,
     recipientUserId: undefined,
     recipientEmail: "",
     dateToSend: 0,
@@ -1223,7 +1223,7 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
     for (const v of message.replacements) {
       Replacement.encode(v!, writer.uint32(50).fork()).join();
     }
-    if (message.recipientUserType !== UserType.None) {
+    if (message.recipientUserType !== UserType.NONE) {
       writer.uint32(56).int32(userTypeToNumber(message.recipientUserType));
     }
     if (message.recipientUserId !== undefined) {
@@ -1334,7 +1334,7 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
       replacements: globalThis.Array.isArray(object?.replacements)
         ? object.replacements.map((e: any) => Replacement.fromJSON(e))
         : [],
-      recipientUserType: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : UserType.None,
+      recipientUserType: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : UserType.NONE,
       recipientUserId: isSet(object.recipientUserId) ? ObjectId.fromJSON(object.recipientUserId) : undefined,
       recipientEmail: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : "",
       dateToSend: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : 0,
@@ -1361,7 +1361,7 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
     if (message.replacements?.length) {
       obj.replacements = message.replacements.map((e) => Replacement.toJSON(e));
     }
-    if (message.recipientUserType !== UserType.None) {
+    if (message.recipientUserType !== UserType.NONE) {
       obj.recipientUserType = userTypeToJSON(message.recipientUserType);
     }
     if (message.recipientUserId !== undefined) {
@@ -1389,7 +1389,7 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
     message.body = object.body ?? "";
     message.footer = object.footer ?? "";
     message.replacements = object.replacements?.map((e) => Replacement.fromPartial(e)) || [];
-    message.recipientUserType = object.recipientUserType ?? UserType.None;
+    message.recipientUserType = object.recipientUserType ?? UserType.NONE;
     message.recipientUserId = (object.recipientUserId !== undefined && object.recipientUserId !== null)
       ? ObjectId.fromPartial(object.recipientUserId)
       : undefined;

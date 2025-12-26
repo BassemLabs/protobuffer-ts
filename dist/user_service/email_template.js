@@ -197,7 +197,7 @@ function createBaseEmailTemplate() {
         header: "",
         body: "",
         footer: "",
-        receiverUserType: user_type_1.UserType.None,
+        receiverUserType: user_type_1.UserType.NONE,
     };
 }
 exports.EmailTemplate = {
@@ -223,7 +223,7 @@ exports.EmailTemplate = {
         if (message.footer !== "") {
             writer.uint32(58).string(message.footer);
         }
-        if (message.receiverUserType !== user_type_1.UserType.None) {
+        if (message.receiverUserType !== user_type_1.UserType.NONE) {
             writer.uint32(64).int32((0, user_type_1.userTypeToNumber)(message.receiverUserType));
         }
         return writer;
@@ -302,7 +302,7 @@ exports.EmailTemplate = {
             header: isSet(object.header) ? globalThis.String(object.header) : "",
             body: isSet(object.body) ? globalThis.String(object.body) : "",
             footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
-            receiverUserType: isSet(object.receiverUserType) ? (0, user_type_1.userTypeFromJSON)(object.receiverUserType) : user_type_1.UserType.None,
+            receiverUserType: isSet(object.receiverUserType) ? (0, user_type_1.userTypeFromJSON)(object.receiverUserType) : user_type_1.UserType.NONE,
         };
     },
     toJSON(message) {
@@ -328,7 +328,7 @@ exports.EmailTemplate = {
         if (message.footer !== "") {
             obj.footer = message.footer;
         }
-        if (message.receiverUserType !== user_type_1.UserType.None) {
+        if (message.receiverUserType !== user_type_1.UserType.NONE) {
             obj.receiverUserType = (0, user_type_1.userTypeToJSON)(message.receiverUserType);
         }
         return obj;
@@ -347,7 +347,7 @@ exports.EmailTemplate = {
         message.header = object.header ?? "";
         message.body = object.body ?? "";
         message.footer = object.footer ?? "";
-        message.receiverUserType = object.receiverUserType ?? user_type_1.UserType.None;
+        message.receiverUserType = object.receiverUserType ?? user_type_1.UserType.NONE;
         return message;
     },
 };

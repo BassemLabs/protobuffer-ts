@@ -208,7 +208,7 @@ function createBaseEmailTemplate(): EmailTemplate {
     header: "",
     body: "",
     footer: "",
-    receiverUserType: UserType.None,
+    receiverUserType: UserType.NONE,
   };
 }
 
@@ -235,7 +235,7 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     if (message.footer !== "") {
       writer.uint32(58).string(message.footer);
     }
-    if (message.receiverUserType !== UserType.None) {
+    if (message.receiverUserType !== UserType.NONE) {
       writer.uint32(64).int32(userTypeToNumber(message.receiverUserType));
     }
     return writer;
@@ -324,7 +324,7 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
       header: isSet(object.header) ? globalThis.String(object.header) : "",
       body: isSet(object.body) ? globalThis.String(object.body) : "",
       footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
-      receiverUserType: isSet(object.receiverUserType) ? userTypeFromJSON(object.receiverUserType) : UserType.None,
+      receiverUserType: isSet(object.receiverUserType) ? userTypeFromJSON(object.receiverUserType) : UserType.NONE,
     };
   },
 
@@ -351,7 +351,7 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     if (message.footer !== "") {
       obj.footer = message.footer;
     }
-    if (message.receiverUserType !== UserType.None) {
+    if (message.receiverUserType !== UserType.NONE) {
       obj.receiverUserType = userTypeToJSON(message.receiverUserType);
     }
     return obj;
@@ -371,7 +371,7 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     message.header = object.header ?? "";
     message.body = object.body ?? "";
     message.footer = object.footer ?? "";
-    message.receiverUserType = object.receiverUserType ?? UserType.None;
+    message.receiverUserType = object.receiverUserType ?? UserType.NONE;
     return message;
   },
 };

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Course = exports.protobufPackage = void 0;
+exports.CourseList = exports.ListCourse = exports.Course = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -215,6 +215,230 @@ exports.Course = {
         return message;
     },
 };
+function createBaseListCourse() {
+    return {
+        id: undefined,
+        archived: false,
+        name: "",
+        semester: undefined,
+        courseCode: "",
+        homeroom: undefined,
+        teachers: [],
+    };
+}
+exports.ListCourse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.archived !== false) {
+            writer.uint32(16).bool(message.archived);
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.semester !== undefined) {
+            semester_1.ListSemester.encode(message.semester, writer.uint32(34).fork()).join();
+        }
+        if (message.courseCode !== "") {
+            writer.uint32(42).string(message.courseCode);
+        }
+        if (message.homeroom !== undefined) {
+            homeroom_1.ListHomeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.teachers) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListCourse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester = semester_1.ListSemester.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.courseCode = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.homeroom = homeroom_1.ListHomeroom.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.teachers.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            semester: isSet(object.semester) ? semester_1.ListSemester.fromJSON(object.semester) : undefined,
+            courseCode: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
+            homeroom: isSet(object.homeroom) ? homeroom_1.ListHomeroom.fromJSON(object.homeroom) : undefined,
+            teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.archived !== false) {
+            obj.archived = message.archived;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.semester !== undefined) {
+            obj.semester = semester_1.ListSemester.toJSON(message.semester);
+        }
+        if (message.courseCode !== "") {
+            obj.courseCode = message.courseCode;
+        }
+        if (message.homeroom !== undefined) {
+            obj.homeroom = homeroom_1.ListHomeroom.toJSON(message.homeroom);
+        }
+        if (message.teachers?.length) {
+            obj.teachers = message.teachers.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListCourse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListCourse();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.archived = object.archived ?? false;
+        message.name = object.name ?? "";
+        message.semester = (object.semester !== undefined && object.semester !== null)
+            ? semester_1.ListSemester.fromPartial(object.semester)
+            : undefined;
+        message.courseCode = object.courseCode ?? "";
+        message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+            ? homeroom_1.ListHomeroom.fromPartial(object.homeroom)
+            : undefined;
+        message.teachers = object.teachers?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCourseList() {
+    return { courses: [], coursesCount: 0 };
+}
+exports.CourseList = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.courses) {
+            exports.ListCourse.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.coursesCount !== 0) {
+            writer.uint32(16).uint64(message.coursesCount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCourseList();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courses.push(exports.ListCourse.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.coursesCount = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => exports.ListCourse.fromJSON(e)) : [],
+            coursesCount: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => exports.ListCourse.toJSON(e));
+        }
+        if (message.coursesCount !== 0) {
+            obj.coursesCount = Math.round(message.coursesCount);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CourseList.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCourseList();
+        message.courses = object.courses?.map((e) => exports.ListCourse.fromPartial(e)) || [];
+        message.coursesCount = object.coursesCount ?? 0;
+        return message;
+    },
+};
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

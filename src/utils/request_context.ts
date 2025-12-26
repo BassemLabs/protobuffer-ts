@@ -195,7 +195,7 @@ export const RequestContext: MessageFns<RequestContext> = {
 function createBaseUserContext(): UserContext {
   return {
     userId: undefined,
-    userType: UserType.None,
+    userType: UserType.NONE,
     userAuthToken: "",
     organizationId: undefined,
     roles: [],
@@ -213,7 +213,7 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.userId !== undefined) {
       ObjectId.encode(message.userId, writer.uint32(10).fork()).join();
     }
-    if (message.userType !== UserType.None) {
+    if (message.userType !== UserType.NONE) {
       writer.uint32(16).int32(userTypeToNumber(message.userType));
     }
     if (message.userAuthToken !== "") {
@@ -354,7 +354,7 @@ export const UserContext: MessageFns<UserContext> = {
   fromJSON(object: any): UserContext {
     return {
       userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.None,
+      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
       userAuthToken: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
       organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
@@ -376,7 +376,7 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.userId !== undefined) {
       obj.userId = ObjectId.toJSON(message.userId);
     }
-    if (message.userType !== UserType.None) {
+    if (message.userType !== UserType.NONE) {
       obj.userType = userTypeToJSON(message.userType);
     }
     if (message.userAuthToken !== "") {
@@ -417,7 +417,7 @@ export const UserContext: MessageFns<UserContext> = {
     message.userId = (object.userId !== undefined && object.userId !== null)
       ? ObjectId.fromPartial(object.userId)
       : undefined;
-    message.userType = object.userType ?? UserType.None;
+    message.userType = object.userType ?? UserType.NONE;
     message.userAuthToken = object.userAuthToken ?? "";
     message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
       ? ObjectId.fromPartial(object.organizationId)

@@ -1,8 +1,9 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
+import { StudentStatus } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse, StudentStatus } from "./invoice";
+import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse } from "./invoice";
 export declare const protobufPackage = "payment_service";
 /** Invoice messages */
 export interface Invoices {
@@ -108,10 +109,12 @@ export interface CreateInvoiceForClassRequest {
 export interface GenerateInterviewFeeInvoiceRequest {
     context: RequestContext | undefined;
     studentId: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
 }
 export interface GenerateWaitlistFeeInvoiceRequest {
     context: RequestContext | undefined;
     studentId: ObjectId | undefined;
+    schoolYear: ObjectId | undefined;
 }
 export interface GenerateRegistrationFeesInvoiceRequest {
     context: RequestContext | undefined;

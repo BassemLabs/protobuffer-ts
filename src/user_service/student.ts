@@ -11,8 +11,259 @@ import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "user_service";
 
+/** Status enum for students */
+export enum StudentStatus {
+  WAITLIST = "WAITLIST",
+  INTERVIEW = "INTERVIEW",
+  APPLICANT = "APPLICANT",
+  REJECTED = "REJECTED",
+  ENROLLED = "ENROLLED",
+  RE_REGISTRATION = "RE_REGISTRATION",
+  WITHDRAWN = "WITHDRAWN",
+  /** NOT_ASSIGNED - Student has no relation with a school year (not stored in DB, used for SchoolYearStudent response only) */
+  NOT_ASSIGNED = "NOT_ASSIGNED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function studentStatusFromJSON(object: any): StudentStatus {
+  switch (object) {
+    case 0:
+    case "WAITLIST":
+      return StudentStatus.WAITLIST;
+    case 1:
+    case "INTERVIEW":
+      return StudentStatus.INTERVIEW;
+    case 2:
+    case "APPLICANT":
+      return StudentStatus.APPLICANT;
+    case 3:
+    case "REJECTED":
+      return StudentStatus.REJECTED;
+    case 4:
+    case "ENROLLED":
+      return StudentStatus.ENROLLED;
+    case 5:
+    case "RE_REGISTRATION":
+      return StudentStatus.RE_REGISTRATION;
+    case 6:
+    case "WITHDRAWN":
+      return StudentStatus.WITHDRAWN;
+    case 7:
+    case "NOT_ASSIGNED":
+      return StudentStatus.NOT_ASSIGNED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StudentStatus.UNRECOGNIZED;
+  }
+}
+
+export function studentStatusToJSON(object: StudentStatus): string {
+  switch (object) {
+    case StudentStatus.WAITLIST:
+      return "WAITLIST";
+    case StudentStatus.INTERVIEW:
+      return "INTERVIEW";
+    case StudentStatus.APPLICANT:
+      return "APPLICANT";
+    case StudentStatus.REJECTED:
+      return "REJECTED";
+    case StudentStatus.ENROLLED:
+      return "ENROLLED";
+    case StudentStatus.RE_REGISTRATION:
+      return "RE_REGISTRATION";
+    case StudentStatus.WITHDRAWN:
+      return "WITHDRAWN";
+    case StudentStatus.NOT_ASSIGNED:
+      return "NOT_ASSIGNED";
+    case StudentStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function studentStatusToNumber(object: StudentStatus): number {
+  switch (object) {
+    case StudentStatus.WAITLIST:
+      return 0;
+    case StudentStatus.INTERVIEW:
+      return 1;
+    case StudentStatus.APPLICANT:
+      return 2;
+    case StudentStatus.REJECTED:
+      return 3;
+    case StudentStatus.ENROLLED:
+      return 4;
+    case StudentStatus.RE_REGISTRATION:
+      return 5;
+    case StudentStatus.WITHDRAWN:
+      return 6;
+    case StudentStatus.NOT_ASSIGNED:
+      return 7;
+    case StudentStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+/** Grade enum for students */
+export enum StudentGrade {
+  PRE_K = "PRE_K",
+  JUNIOR_KINDERGARTEN = "JUNIOR_KINDERGARTEN",
+  SENIOR_KINDERGARTEN = "SENIOR_KINDERGARTEN",
+  GRADE_1 = "GRADE_1",
+  GRADE_2 = "GRADE_2",
+  GRADE_3 = "GRADE_3",
+  GRADE_4 = "GRADE_4",
+  GRADE_5 = "GRADE_5",
+  GRADE_6 = "GRADE_6",
+  GRADE_7 = "GRADE_7",
+  GRADE_8 = "GRADE_8",
+  GRADE_9 = "GRADE_9",
+  GRADE_10 = "GRADE_10",
+  GRADE_11 = "GRADE_11",
+  GRADE_12 = "GRADE_12",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function studentGradeFromJSON(object: any): StudentGrade {
+  switch (object) {
+    case 0:
+    case "PRE_K":
+      return StudentGrade.PRE_K;
+    case 1:
+    case "JUNIOR_KINDERGARTEN":
+      return StudentGrade.JUNIOR_KINDERGARTEN;
+    case 2:
+    case "SENIOR_KINDERGARTEN":
+      return StudentGrade.SENIOR_KINDERGARTEN;
+    case 3:
+    case "GRADE_1":
+      return StudentGrade.GRADE_1;
+    case 4:
+    case "GRADE_2":
+      return StudentGrade.GRADE_2;
+    case 5:
+    case "GRADE_3":
+      return StudentGrade.GRADE_3;
+    case 6:
+    case "GRADE_4":
+      return StudentGrade.GRADE_4;
+    case 7:
+    case "GRADE_5":
+      return StudentGrade.GRADE_5;
+    case 8:
+    case "GRADE_6":
+      return StudentGrade.GRADE_6;
+    case 9:
+    case "GRADE_7":
+      return StudentGrade.GRADE_7;
+    case 10:
+    case "GRADE_8":
+      return StudentGrade.GRADE_8;
+    case 11:
+    case "GRADE_9":
+      return StudentGrade.GRADE_9;
+    case 12:
+    case "GRADE_10":
+      return StudentGrade.GRADE_10;
+    case 13:
+    case "GRADE_11":
+      return StudentGrade.GRADE_11;
+    case 14:
+    case "GRADE_12":
+      return StudentGrade.GRADE_12;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StudentGrade.UNRECOGNIZED;
+  }
+}
+
+export function studentGradeToJSON(object: StudentGrade): string {
+  switch (object) {
+    case StudentGrade.PRE_K:
+      return "PRE_K";
+    case StudentGrade.JUNIOR_KINDERGARTEN:
+      return "JUNIOR_KINDERGARTEN";
+    case StudentGrade.SENIOR_KINDERGARTEN:
+      return "SENIOR_KINDERGARTEN";
+    case StudentGrade.GRADE_1:
+      return "GRADE_1";
+    case StudentGrade.GRADE_2:
+      return "GRADE_2";
+    case StudentGrade.GRADE_3:
+      return "GRADE_3";
+    case StudentGrade.GRADE_4:
+      return "GRADE_4";
+    case StudentGrade.GRADE_5:
+      return "GRADE_5";
+    case StudentGrade.GRADE_6:
+      return "GRADE_6";
+    case StudentGrade.GRADE_7:
+      return "GRADE_7";
+    case StudentGrade.GRADE_8:
+      return "GRADE_8";
+    case StudentGrade.GRADE_9:
+      return "GRADE_9";
+    case StudentGrade.GRADE_10:
+      return "GRADE_10";
+    case StudentGrade.GRADE_11:
+      return "GRADE_11";
+    case StudentGrade.GRADE_12:
+      return "GRADE_12";
+    case StudentGrade.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function studentGradeToNumber(object: StudentGrade): number {
+  switch (object) {
+    case StudentGrade.PRE_K:
+      return 0;
+    case StudentGrade.JUNIOR_KINDERGARTEN:
+      return 1;
+    case StudentGrade.SENIOR_KINDERGARTEN:
+      return 2;
+    case StudentGrade.GRADE_1:
+      return 3;
+    case StudentGrade.GRADE_2:
+      return 4;
+    case StudentGrade.GRADE_3:
+      return 5;
+    case StudentGrade.GRADE_4:
+      return 6;
+    case StudentGrade.GRADE_5:
+      return 7;
+    case StudentGrade.GRADE_6:
+      return 8;
+    case StudentGrade.GRADE_7:
+      return 9;
+    case StudentGrade.GRADE_8:
+      return 10;
+    case StudentGrade.GRADE_9:
+      return 11;
+    case StudentGrade.GRADE_10:
+      return 12;
+    case StudentGrade.GRADE_11:
+      return 13;
+    case StudentGrade.GRADE_12:
+      return 14;
+    case StudentGrade.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+/** Full student model with all fields */
 export interface Student {
   id: ObjectId | undefined;
+  organization:
+    | ObjectId
+    | undefined;
+  /** Student ID like "2024-1234" */
+  idNumber: string;
   username: string;
   emailDomain: string;
   familyId: ObjectId | undefined;
@@ -24,9 +275,60 @@ export interface Student {
   interviewDate?: Date | undefined;
 }
 
+/**
+ * Student item with school year context (used for student lists with filters)
+ * This message represents a student combined with their school year-specific information.
+ * Used in:
+ *   - GetStudentsListWithFiltersResponse: General student lists filtered by course/homeroom
+ *   - GetFilteredStudentsListResponse: Filtered lists by status, grade, school year, etc.
+ *   - GetStudentsByIdsWithSchoolYearResponse: Getting multiple students with school year context
+ *
+ * Important: The status and grade fields represent the student's status/grade for the query's school year.
+ * If no school_year is provided in the query, these fields use the organization's active school year.
+ * If a student has no relation with the specified school year, status will be NOT_ASSIGNED and grade will be absent.
+ */
+export interface SchoolYearStudent {
+  id:
+    | ObjectId
+    | undefined;
+  /** Status for the query's school year (or active school year if not specified) */
+  status: StudentStatus;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  /** Grade for the query's school year (or active school year if not specified). Absent if status is NOT_ASSIGNED. */
+  grade?: StudentGrade | undefined;
+  familyId: ObjectId | undefined;
+  hasNonPaidInvoices?: boolean | undefined;
+  dateOfBirth: Date | undefined;
+  interviewDate?: Date | undefined;
+}
+
+/** Student profile data for updates */
+export interface StudentProfile {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: Date | undefined;
+  interviewDate?: Date | undefined;
+  hasWaitlistPriority?: boolean | undefined;
+}
+
+/** Student school year specific information (mapping table: student + school_year -> status + grade) */
+export interface StudentSchoolYearInformation {
+  id: ObjectId | undefined;
+  organization: ObjectId | undefined;
+  studentId: ObjectId | undefined;
+  schoolYearId: ObjectId | undefined;
+  status: StudentStatus;
+  grade: StudentGrade;
+}
+
 function createBaseStudent(): Student {
   return {
     id: undefined,
+    organization: undefined,
+    idNumber: "",
     username: "",
     emailDomain: "",
     familyId: undefined,
@@ -44,32 +346,38 @@ export const Student: MessageFns<Student> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.idNumber !== "") {
+      writer.uint32(26).string(message.idNumber);
+    }
     if (message.username !== "") {
-      writer.uint32(18).string(message.username);
+      writer.uint32(34).string(message.username);
     }
     if (message.emailDomain !== "") {
-      writer.uint32(26).string(message.emailDomain);
+      writer.uint32(42).string(message.emailDomain);
     }
     if (message.familyId !== undefined) {
-      ObjectId.encode(message.familyId, writer.uint32(34).fork()).join();
+      ObjectId.encode(message.familyId, writer.uint32(50).fork()).join();
     }
     if (message.firstName !== "") {
-      writer.uint32(42).string(message.firstName);
+      writer.uint32(58).string(message.firstName);
     }
     if (message.lastName !== "") {
-      writer.uint32(50).string(message.lastName);
+      writer.uint32(66).string(message.lastName);
     }
     if (message.gender !== "") {
-      writer.uint32(58).string(message.gender);
+      writer.uint32(74).string(message.gender);
     }
     if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
-      writer.uint32(64).bool(message.hasWaitlistPriority);
+      writer.uint32(80).bool(message.hasWaitlistPriority);
     }
     if (message.dateOfBirth !== undefined) {
-      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(74).fork()).join();
+      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(90).fork()).join();
     }
     if (message.interviewDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(82).fork()).join();
+      Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(98).fork()).join();
     }
     return writer;
   },
@@ -93,59 +401,73 @@ export const Student: MessageFns<Student> = {
             break;
           }
 
-          message.username = reader.string();
+          message.organization = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.emailDomain = reader.string();
+          message.idNumber = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.familyId = ObjectId.decode(reader, reader.uint32());
+          message.username = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.firstName = reader.string();
+          message.emailDomain = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.lastName = reader.string();
+          message.familyId = ObjectId.decode(reader, reader.uint32());
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.gender = reader.string();
+          message.firstName = reader.string();
           continue;
         case 8:
-          if (tag !== 64) {
+          if (tag !== 66) {
             break;
           }
 
-          message.hasWaitlistPriority = reader.bool();
+          message.lastName = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.gender = reader.string();
           continue;
         case 10:
-          if (tag !== 82) {
+          if (tag !== 80) {
+            break;
+          }
+
+          message.hasWaitlistPriority = reader.bool();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 12:
+          if (tag !== 98) {
             break;
           }
 
@@ -163,6 +485,8 @@ export const Student: MessageFns<Student> = {
   fromJSON(object: any): Student {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      idNumber: isSet(object.idNumber) ? globalThis.String(object.idNumber) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       emailDomain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
       familyId: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
@@ -179,6 +503,12 @@ export const Student: MessageFns<Student> = {
     const obj: any = {};
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.idNumber !== "") {
+      obj.idNumber = message.idNumber;
     }
     if (message.username !== "") {
       obj.username = message.username;
@@ -216,6 +546,10 @@ export const Student: MessageFns<Student> = {
   fromPartial<I extends Exact<DeepPartial<Student>, I>>(object: I): Student {
     const message = createBaseStudent();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.idNumber = object.idNumber ?? "";
     message.username = object.username ?? "";
     message.emailDomain = object.emailDomain ?? "";
     message.familyId = (object.familyId !== undefined && object.familyId !== null)
@@ -227,6 +561,501 @@ export const Student: MessageFns<Student> = {
     message.hasWaitlistPriority = object.hasWaitlistPriority ?? false;
     message.dateOfBirth = object.dateOfBirth ?? undefined;
     message.interviewDate = object.interviewDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchoolYearStudent(): SchoolYearStudent {
+  return {
+    id: undefined,
+    status: StudentStatus.WAITLIST,
+    firstName: "",
+    lastName: "",
+    gender: "",
+    grade: StudentGrade.PRE_K,
+    familyId: undefined,
+    hasNonPaidInvoices: false,
+    dateOfBirth: undefined,
+    interviewDate: undefined,
+  };
+}
+
+export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
+  encode(message: SchoolYearStudent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.status !== StudentStatus.WAITLIST) {
+      writer.uint32(16).int32(studentStatusToNumber(message.status));
+    }
+    if (message.firstName !== "") {
+      writer.uint32(26).string(message.firstName);
+    }
+    if (message.lastName !== "") {
+      writer.uint32(34).string(message.lastName);
+    }
+    if (message.gender !== "") {
+      writer.uint32(42).string(message.gender);
+    }
+    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(48).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.familyId !== undefined) {
+      ObjectId.encode(message.familyId, writer.uint32(58).fork()).join();
+    }
+    if (message.hasNonPaidInvoices !== undefined && message.hasNonPaidInvoices !== false) {
+      writer.uint32(64).bool(message.hasNonPaidInvoices);
+    }
+    if (message.dateOfBirth !== undefined) {
+      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(74).fork()).join();
+    }
+    if (message.interviewDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(82).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchoolYearStudent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchoolYearStudent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.status = studentStatusFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.firstName = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.lastName = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.gender = reader.string();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.familyId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.hasNonPaidInvoices = reader.bool();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.interviewDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchoolYearStudent {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
+      firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+      lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      familyId: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      hasNonPaidInvoices: isSet(object.hasNonPaidInvoices) ? globalThis.Boolean(object.hasNonPaidInvoices) : false,
+      dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      interviewDate: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+    };
+  },
+
+  toJSON(message: SchoolYearStudent): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.status !== StudentStatus.WAITLIST) {
+      obj.status = studentStatusToJSON(message.status);
+    }
+    if (message.firstName !== "") {
+      obj.firstName = message.firstName;
+    }
+    if (message.lastName !== "") {
+      obj.lastName = message.lastName;
+    }
+    if (message.gender !== "") {
+      obj.gender = message.gender;
+    }
+    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.familyId !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.familyId);
+    }
+    if (message.hasNonPaidInvoices !== undefined && message.hasNonPaidInvoices !== false) {
+      obj.hasNonPaidInvoices = message.hasNonPaidInvoices;
+    }
+    if (message.dateOfBirth !== undefined) {
+      obj.dateOfBirth = message.dateOfBirth.toISOString();
+    }
+    if (message.interviewDate !== undefined) {
+      obj.interviewDate = message.interviewDate.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchoolYearStudent>, I>>(base?: I): SchoolYearStudent {
+    return SchoolYearStudent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchoolYearStudent>, I>>(object: I): SchoolYearStudent {
+    const message = createBaseSchoolYearStudent();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.status = object.status ?? StudentStatus.WAITLIST;
+    message.firstName = object.firstName ?? "";
+    message.lastName = object.lastName ?? "";
+    message.gender = object.gender ?? "";
+    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.familyId = (object.familyId !== undefined && object.familyId !== null)
+      ? ObjectId.fromPartial(object.familyId)
+      : undefined;
+    message.hasNonPaidInvoices = object.hasNonPaidInvoices ?? false;
+    message.dateOfBirth = object.dateOfBirth ?? undefined;
+    message.interviewDate = object.interviewDate ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStudentProfile(): StudentProfile {
+  return {
+    firstName: "",
+    lastName: "",
+    gender: "",
+    dateOfBirth: undefined,
+    interviewDate: undefined,
+    hasWaitlistPriority: false,
+  };
+}
+
+export const StudentProfile: MessageFns<StudentProfile> = {
+  encode(message: StudentProfile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.firstName !== "") {
+      writer.uint32(10).string(message.firstName);
+    }
+    if (message.lastName !== "") {
+      writer.uint32(18).string(message.lastName);
+    }
+    if (message.gender !== "") {
+      writer.uint32(26).string(message.gender);
+    }
+    if (message.dateOfBirth !== undefined) {
+      Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(34).fork()).join();
+    }
+    if (message.interviewDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(42).fork()).join();
+    }
+    if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
+      writer.uint32(48).bool(message.hasWaitlistPriority);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StudentProfile {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStudentProfile();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.firstName = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.lastName = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.gender = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.dateOfBirth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.interviewDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.hasWaitlistPriority = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StudentProfile {
+    return {
+      firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+      lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
+      dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      interviewDate: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+      hasWaitlistPriority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
+    };
+  },
+
+  toJSON(message: StudentProfile): unknown {
+    const obj: any = {};
+    if (message.firstName !== "") {
+      obj.firstName = message.firstName;
+    }
+    if (message.lastName !== "") {
+      obj.lastName = message.lastName;
+    }
+    if (message.gender !== "") {
+      obj.gender = message.gender;
+    }
+    if (message.dateOfBirth !== undefined) {
+      obj.dateOfBirth = message.dateOfBirth.toISOString();
+    }
+    if (message.interviewDate !== undefined) {
+      obj.interviewDate = message.interviewDate.toISOString();
+    }
+    if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
+      obj.hasWaitlistPriority = message.hasWaitlistPriority;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StudentProfile>, I>>(base?: I): StudentProfile {
+    return StudentProfile.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StudentProfile>, I>>(object: I): StudentProfile {
+    const message = createBaseStudentProfile();
+    message.firstName = object.firstName ?? "";
+    message.lastName = object.lastName ?? "";
+    message.gender = object.gender ?? "";
+    message.dateOfBirth = object.dateOfBirth ?? undefined;
+    message.interviewDate = object.interviewDate ?? undefined;
+    message.hasWaitlistPriority = object.hasWaitlistPriority ?? false;
+    return message;
+  },
+};
+
+function createBaseStudentSchoolYearInformation(): StudentSchoolYearInformation {
+  return {
+    id: undefined,
+    organization: undefined,
+    studentId: undefined,
+    schoolYearId: undefined,
+    status: StudentStatus.WAITLIST,
+    grade: StudentGrade.PRE_K,
+  };
+}
+
+export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformation> = {
+  encode(message: StudentSchoolYearInformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.studentId !== undefined) {
+      ObjectId.encode(message.studentId, writer.uint32(26).fork()).join();
+    }
+    if (message.schoolYearId !== undefined) {
+      ObjectId.encode(message.schoolYearId, writer.uint32(34).fork()).join();
+    }
+    if (message.status !== StudentStatus.WAITLIST) {
+      writer.uint32(40).int32(studentStatusToNumber(message.status));
+    }
+    if (message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(48).int32(studentGradeToNumber(message.grade));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StudentSchoolYearInformation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStudentSchoolYearInformation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.studentId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.status = studentStatusFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StudentSchoolYearInformation {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+    };
+  },
+
+  toJSON(message: StudentSchoolYearInformation): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.studentId !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.studentId);
+    }
+    if (message.schoolYearId !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    }
+    if (message.status !== StudentStatus.WAITLIST) {
+      obj.status = studentStatusToJSON(message.status);
+    }
+    if (message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StudentSchoolYearInformation>, I>>(base?: I): StudentSchoolYearInformation {
+    return StudentSchoolYearInformation.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StudentSchoolYearInformation>, I>>(object: I): StudentSchoolYearInformation {
+    const message = createBaseStudentSchoolYearInformation();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.studentId = (object.studentId !== undefined && object.studentId !== null)
+      ? ObjectId.fromPartial(object.studentId)
+      : undefined;
+    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
+      ? ObjectId.fromPartial(object.schoolYearId)
+      : undefined;
+    message.status = object.status ?? StudentStatus.WAITLIST;
+    message.grade = object.grade ?? StudentGrade.PRE_K;
     return message;
   },
 };

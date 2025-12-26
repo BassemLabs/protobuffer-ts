@@ -8,12 +8,16 @@ export interface GetCourseRequest {
     context: RequestContext | undefined;
     courseId: ObjectId | undefined;
 }
-export interface AggregateCourseRequest {
+export interface ListCoursesRequest {
     context: RequestContext | undefined;
-    aggregationDocument: string;
-}
-export interface AggregateCourseResponse {
-    result: string;
+    perPage?: number | undefined;
+    page?: number | undefined;
+    nameSearch?: string | undefined;
+    semester?: ObjectId | undefined;
+    schoolYear?: ObjectId | undefined;
+    archived?: boolean | undefined;
+    hideHomeroomCourses?: boolean | undefined;
+    teacherId?: ObjectId | undefined;
 }
 export interface CourseResponse {
     course: Course[];
@@ -135,8 +139,7 @@ export interface HomeroomCloneRequest {
     gclassCreate: boolean;
 }
 export declare const GetCourseRequest: MessageFns<GetCourseRequest>;
-export declare const AggregateCourseRequest: MessageFns<AggregateCourseRequest>;
-export declare const AggregateCourseResponse: MessageFns<AggregateCourseResponse>;
+export declare const ListCoursesRequest: MessageFns<ListCoursesRequest>;
 export declare const CourseResponse: MessageFns<CourseResponse>;
 export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
 export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;

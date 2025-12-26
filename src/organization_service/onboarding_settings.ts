@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { AWSFile } from "../utils/aws_file";
 
 export const protobufPackage = "organization_service";
@@ -14,20 +15,15 @@ export interface OnboardingSettings {
   hasInterviewForNewcomers: boolean;
   enableGroupApprovalSystem: boolean;
   waitlistFee: number;
-  registrationFees: { [key: string]: ItemizedFee };
-  reregistrationFees: { [key: string]: ItemizedFee };
+  registrationFees: GradeFeeMapping[];
+  reregistrationFees: GradeFeeMapping[];
   schoolHandbook: AWSFile[];
   interviewFee: number;
 }
 
-export interface OnboardingSettings_RegistrationFeesEntry {
-  key: string;
-  value: ItemizedFee | undefined;
-}
-
-export interface OnboardingSettings_ReregistrationFeesEntry {
-  key: string;
-  value: ItemizedFee | undefined;
+export interface GradeFeeMapping {
+  grade: StudentGrade;
+  fee: ItemizedFee | undefined;
 }
 
 export interface ItemizedFee {
@@ -48,8 +44,8 @@ function createBaseOnboardingSettings(): OnboardingSettings {
     hasInterviewForNewcomers: false,
     enableGroupApprovalSystem: false,
     waitlistFee: 0,
-    registrationFees: {},
-    reregistrationFees: {},
+    registrationFees: [],
+    reregistrationFees: [],
     schoolHandbook: [],
     interviewFee: 0,
   };
@@ -66,12 +62,12 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     if (message.waitlistFee !== 0) {
       writer.uint32(29).float(message.waitlistFee);
     }
-    Object.entries(message.registrationFees).forEach(([key, value]) => {
-      OnboardingSettings_RegistrationFeesEntry.encode({ key: key as any, value }, writer.uint32(34).fork()).join();
-    });
-    Object.entries(message.reregistrationFees).forEach(([key, value]) => {
-      OnboardingSettings_ReregistrationFeesEntry.encode({ key: key as any, value }, writer.uint32(42).fork()).join();
-    });
+    for (const v of message.registrationFees) {
+      GradeFeeMapping.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.reregistrationFees) {
+      GradeFeeMapping.encode(v!, writer.uint32(42).fork()).join();
+    }
     for (const v of message.schoolHandbook) {
       AWSFile.encode(v!, writer.uint32(50).fork()).join();
     }
@@ -114,20 +110,14 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
             break;
           }
 
-          const entry4 = OnboardingSettings_RegistrationFeesEntry.decode(reader, reader.uint32());
-          if (entry4.value !== undefined) {
-            message.registrationFees[entry4.key] = entry4.value;
-          }
+          message.registrationFees.push(GradeFeeMapping.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          const entry5 = OnboardingSettings_ReregistrationFeesEntry.decode(reader, reader.uint32());
-          if (entry5.value !== undefined) {
-            message.reregistrationFees[entry5.key] = entry5.value;
-          }
+          message.reregistrationFees.push(GradeFeeMapping.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
@@ -161,18 +151,12 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
         ? globalThis.Boolean(object.enableGroupApprovalSystem)
         : false,
       waitlistFee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
-      registrationFees: isObject(object.registrationFees)
-        ? Object.entries(object.registrationFees).reduce<{ [key: string]: ItemizedFee }>((acc, [key, value]) => {
-          acc[key] = ItemizedFee.fromJSON(value);
-          return acc;
-        }, {})
-        : {},
-      reregistrationFees: isObject(object.reregistrationFees)
-        ? Object.entries(object.reregistrationFees).reduce<{ [key: string]: ItemizedFee }>((acc, [key, value]) => {
-          acc[key] = ItemizedFee.fromJSON(value);
-          return acc;
-        }, {})
-        : {},
+      registrationFees: globalThis.Array.isArray(object?.registrationFees)
+        ? object.registrationFees.map((e: any) => GradeFeeMapping.fromJSON(e))
+        : [],
+      reregistrationFees: globalThis.Array.isArray(object?.reregistrationFees)
+        ? object.reregistrationFees.map((e: any) => GradeFeeMapping.fromJSON(e))
+        : [],
       schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
         ? object.schoolHandbook.map((e: any) => AWSFile.fromJSON(e))
         : [],
@@ -191,23 +175,11 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     if (message.waitlistFee !== 0) {
       obj.waitlistFee = message.waitlistFee;
     }
-    if (message.registrationFees) {
-      const entries = Object.entries(message.registrationFees);
-      if (entries.length > 0) {
-        obj.registrationFees = {};
-        entries.forEach(([k, v]) => {
-          obj.registrationFees[k] = ItemizedFee.toJSON(v);
-        });
-      }
+    if (message.registrationFees?.length) {
+      obj.registrationFees = message.registrationFees.map((e) => GradeFeeMapping.toJSON(e));
     }
-    if (message.reregistrationFees) {
-      const entries = Object.entries(message.reregistrationFees);
-      if (entries.length > 0) {
-        obj.reregistrationFees = {};
-        entries.forEach(([k, v]) => {
-          obj.reregistrationFees[k] = ItemizedFee.toJSON(v);
-        });
-      }
+    if (message.reregistrationFees?.length) {
+      obj.reregistrationFees = message.reregistrationFees.map((e) => GradeFeeMapping.toJSON(e));
     }
     if (message.schoolHandbook?.length) {
       obj.schoolHandbook = message.schoolHandbook.map((e) => AWSFile.toJSON(e));
@@ -226,65 +198,49 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
     message.hasInterviewForNewcomers = object.hasInterviewForNewcomers ?? false;
     message.enableGroupApprovalSystem = object.enableGroupApprovalSystem ?? false;
     message.waitlistFee = object.waitlistFee ?? 0;
-    message.registrationFees = Object.entries(object.registrationFees ?? {}).reduce<{ [key: string]: ItemizedFee }>(
-      (acc, [key, value]) => {
-        if (value !== undefined) {
-          acc[key] = ItemizedFee.fromPartial(value);
-        }
-        return acc;
-      },
-      {},
-    );
-    message.reregistrationFees = Object.entries(object.reregistrationFees ?? {}).reduce<{ [key: string]: ItemizedFee }>(
-      (acc, [key, value]) => {
-        if (value !== undefined) {
-          acc[key] = ItemizedFee.fromPartial(value);
-        }
-        return acc;
-      },
-      {},
-    );
+    message.registrationFees = object.registrationFees?.map((e) => GradeFeeMapping.fromPartial(e)) || [];
+    message.reregistrationFees = object.reregistrationFees?.map((e) => GradeFeeMapping.fromPartial(e)) || [];
     message.schoolHandbook = object.schoolHandbook?.map((e) => AWSFile.fromPartial(e)) || [];
     message.interviewFee = object.interviewFee ?? 0;
     return message;
   },
 };
 
-function createBaseOnboardingSettings_RegistrationFeesEntry(): OnboardingSettings_RegistrationFeesEntry {
-  return { key: "", value: undefined };
+function createBaseGradeFeeMapping(): GradeFeeMapping {
+  return { grade: StudentGrade.PRE_K, fee: undefined };
 }
 
-export const OnboardingSettings_RegistrationFeesEntry: MessageFns<OnboardingSettings_RegistrationFeesEntry> = {
-  encode(message: OnboardingSettings_RegistrationFeesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
+export const GradeFeeMapping: MessageFns<GradeFeeMapping> = {
+  encode(message: GradeFeeMapping, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.grade !== StudentGrade.PRE_K) {
+      writer.uint32(8).int32(studentGradeToNumber(message.grade));
     }
-    if (message.value !== undefined) {
-      ItemizedFee.encode(message.value, writer.uint32(18).fork()).join();
+    if (message.fee !== undefined) {
+      ItemizedFee.encode(message.fee, writer.uint32(18).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): OnboardingSettings_RegistrationFeesEntry {
+  decode(input: BinaryReader | Uint8Array, length?: number): GradeFeeMapping {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseOnboardingSettings_RegistrationFeesEntry();
+    const message = createBaseGradeFeeMapping();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.key = reader.string();
+          message.grade = studentGradeFromJSON(reader.int32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.value = ItemizedFee.decode(reader, reader.uint32());
+          message.fee = ItemizedFee.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -295,117 +251,31 @@ export const OnboardingSettings_RegistrationFeesEntry: MessageFns<OnboardingSett
     return message;
   },
 
-  fromJSON(object: any): OnboardingSettings_RegistrationFeesEntry {
+  fromJSON(object: any): GradeFeeMapping {
     return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? ItemizedFee.fromJSON(object.value) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      fee: isSet(object.fee) ? ItemizedFee.fromJSON(object.fee) : undefined,
     };
   },
 
-  toJSON(message: OnboardingSettings_RegistrationFeesEntry): unknown {
+  toJSON(message: GradeFeeMapping): unknown {
     const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
+    if (message.grade !== StudentGrade.PRE_K) {
+      obj.grade = studentGradeToJSON(message.grade);
     }
-    if (message.value !== undefined) {
-      obj.value = ItemizedFee.toJSON(message.value);
+    if (message.fee !== undefined) {
+      obj.fee = ItemizedFee.toJSON(message.fee);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<OnboardingSettings_RegistrationFeesEntry>, I>>(
-    base?: I,
-  ): OnboardingSettings_RegistrationFeesEntry {
-    return OnboardingSettings_RegistrationFeesEntry.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GradeFeeMapping>, I>>(base?: I): GradeFeeMapping {
+    return GradeFeeMapping.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<OnboardingSettings_RegistrationFeesEntry>, I>>(
-    object: I,
-  ): OnboardingSettings_RegistrationFeesEntry {
-    const message = createBaseOnboardingSettings_RegistrationFeesEntry();
-    message.key = object.key ?? "";
-    message.value = (object.value !== undefined && object.value !== null)
-      ? ItemizedFee.fromPartial(object.value)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseOnboardingSettings_ReregistrationFeesEntry(): OnboardingSettings_ReregistrationFeesEntry {
-  return { key: "", value: undefined };
-}
-
-export const OnboardingSettings_ReregistrationFeesEntry: MessageFns<OnboardingSettings_ReregistrationFeesEntry> = {
-  encode(message: OnboardingSettings_ReregistrationFeesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== undefined) {
-      ItemizedFee.encode(message.value, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): OnboardingSettings_ReregistrationFeesEntry {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseOnboardingSettings_ReregistrationFeesEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.key = reader.string();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.value = ItemizedFee.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): OnboardingSettings_ReregistrationFeesEntry {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? ItemizedFee.fromJSON(object.value) : undefined,
-    };
-  },
-
-  toJSON(message: OnboardingSettings_ReregistrationFeesEntry): unknown {
-    const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
-    }
-    if (message.value !== undefined) {
-      obj.value = ItemizedFee.toJSON(message.value);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<OnboardingSettings_ReregistrationFeesEntry>, I>>(
-    base?: I,
-  ): OnboardingSettings_ReregistrationFeesEntry {
-    return OnboardingSettings_ReregistrationFeesEntry.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<OnboardingSettings_ReregistrationFeesEntry>, I>>(
-    object: I,
-  ): OnboardingSettings_ReregistrationFeesEntry {
-    const message = createBaseOnboardingSettings_ReregistrationFeesEntry();
-    message.key = object.key ?? "";
-    message.value = (object.value !== undefined && object.value !== null)
-      ? ItemizedFee.fromPartial(object.value)
-      : undefined;
+  fromPartial<I extends Exact<DeepPartial<GradeFeeMapping>, I>>(object: I): GradeFeeMapping {
+    const message = createBaseGradeFeeMapping();
+    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.fee = (object.fee !== undefined && object.fee !== null) ? ItemizedFee.fromPartial(object.fee) : undefined;
     return message;
   },
 };
@@ -614,10 +484,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function isObject(value: any): boolean {
-  return typeof value === "object" && value !== null;
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

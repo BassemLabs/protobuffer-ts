@@ -824,7 +824,7 @@ function createBaseUpdateExcuseStudentRequest() {
         attendanceEntryId: undefined,
         reason: "",
         studentExcusedBy: undefined,
-        studentExcusedByUserType: user_type_1.UserType.None,
+        studentExcusedByUserType: user_type_1.UserType.NONE,
     };
 }
 exports.UpdateExcuseStudentRequest = {
@@ -841,7 +841,7 @@ exports.UpdateExcuseStudentRequest = {
         if (message.studentExcusedBy !== undefined) {
             object_id_1.ObjectId.encode(message.studentExcusedBy, writer.uint32(34).fork()).join();
         }
-        if (message.studentExcusedByUserType !== user_type_1.UserType.None) {
+        if (message.studentExcusedByUserType !== user_type_1.UserType.NONE) {
             writer.uint32(40).int32((0, user_type_1.userTypeToNumber)(message.studentExcusedByUserType));
         }
         return writer;
@@ -899,7 +899,7 @@ exports.UpdateExcuseStudentRequest = {
             studentExcusedBy: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
             studentExcusedByUserType: isSet(object.studentExcusedByUserType)
                 ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
-                : user_type_1.UserType.None,
+                : user_type_1.UserType.NONE,
         };
     },
     toJSON(message) {
@@ -916,7 +916,7 @@ exports.UpdateExcuseStudentRequest = {
         if (message.studentExcusedBy !== undefined) {
             obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.studentExcusedBy);
         }
-        if (message.studentExcusedByUserType !== user_type_1.UserType.None) {
+        if (message.studentExcusedByUserType !== user_type_1.UserType.NONE) {
             obj.studentExcusedByUserType = (0, user_type_1.userTypeToJSON)(message.studentExcusedByUserType);
         }
         return obj;
@@ -936,7 +936,7 @@ exports.UpdateExcuseStudentRequest = {
         message.studentExcusedBy = (object.studentExcusedBy !== undefined && object.studentExcusedBy !== null)
             ? object_id_1.ObjectId.fromPartial(object.studentExcusedBy)
             : undefined;
-        message.studentExcusedByUserType = object.studentExcusedByUserType ?? user_type_1.UserType.None;
+        message.studentExcusedByUserType = object.studentExcusedByUserType ?? user_type_1.UserType.NONE;
         return message;
     },
 };

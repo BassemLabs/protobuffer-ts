@@ -24,10 +24,10 @@ export interface GetTeachersListResponse {
     teachers: TeacherBasic[];
     teachersCount: number;
 }
-export interface GetTeachersListAdminViewRequest {
+export interface GetAllTeachersForStagingRequest {
     context: RequestContext | undefined;
 }
-export interface GetTeachersListAdminViewResponse {
+export interface GetAllTeachersForStagingResponse {
     teachers: Teacher[];
 }
 export interface GetTeachersByIdsRequest {
@@ -102,12 +102,21 @@ export interface UploadTeachersResponse {
     /** Base64 encoded CSV with errors (if any) */
     errorCsvBase64?: string | undefined;
 }
+export interface CheckCanRemoveOrgDomainRequest {
+    context: RequestContext | undefined;
+    domain: string;
+}
+export interface CheckCanRemoveOrgDomainResponse {
+    canRemove: boolean;
+    activeTeachersCount: number;
+    studentsCount: number;
+}
 export declare const GetTeacherRequest: MessageFns<GetTeacherRequest>;
 export declare const GetTeacherByEmailRequest: MessageFns<GetTeacherByEmailRequest>;
 export declare const GetTeachersListRequest: MessageFns<GetTeachersListRequest>;
 export declare const GetTeachersListResponse: MessageFns<GetTeachersListResponse>;
-export declare const GetTeachersListAdminViewRequest: MessageFns<GetTeachersListAdminViewRequest>;
-export declare const GetTeachersListAdminViewResponse: MessageFns<GetTeachersListAdminViewResponse>;
+export declare const GetAllTeachersForStagingRequest: MessageFns<GetAllTeachersForStagingRequest>;
+export declare const GetAllTeachersForStagingResponse: MessageFns<GetAllTeachersForStagingResponse>;
 export declare const GetTeachersByIdsRequest: MessageFns<GetTeachersByIdsRequest>;
 export declare const GetTeachersByIdsResponse: MessageFns<GetTeachersByIdsResponse>;
 export declare const GetTeacherSignatureRequest: MessageFns<GetTeacherSignatureRequest>;
@@ -123,6 +132,8 @@ export declare const AddTeacherRoleRequest: MessageFns<AddTeacherRoleRequest>;
 export declare const RemoveTeacherRoleRequest: MessageFns<RemoveTeacherRoleRequest>;
 export declare const UploadTeachersRequest: MessageFns<UploadTeachersRequest>;
 export declare const UploadTeachersResponse: MessageFns<UploadTeachersResponse>;
+export declare const CheckCanRemoveOrgDomainRequest: MessageFns<CheckCanRemoveOrgDomainRequest>;
+export declare const CheckCanRemoveOrgDomainResponse: MessageFns<CheckCanRemoveOrgDomainResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

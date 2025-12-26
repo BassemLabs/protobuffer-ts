@@ -5,19 +5,17 @@
 //   protoc               unknown
 // source: payment_service/invoice.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutoPaymentAttempt = exports.InvoiceFilter = exports.InvoiceResponse = exports.Invoice = exports.OrganizationInvoiceDetails = exports.Coupon = exports.InvoiceItem = exports.AutoPaymentStatus = exports.StudentStatus = exports.InvoiceStatus = exports.protobufPackage = void 0;
+exports.AutoPaymentAttempt = exports.InvoiceFilter = exports.InvoiceResponse = exports.Invoice = exports.OrganizationInvoiceDetails = exports.Coupon = exports.InvoiceItem = exports.AutoPaymentStatus = exports.InvoiceStatus = exports.protobufPackage = void 0;
 exports.invoiceStatusFromJSON = invoiceStatusFromJSON;
 exports.invoiceStatusToJSON = invoiceStatusToJSON;
 exports.invoiceStatusToNumber = invoiceStatusToNumber;
-exports.studentStatusFromJSON = studentStatusFromJSON;
-exports.studentStatusToJSON = studentStatusToJSON;
-exports.studentStatusToNumber = studentStatusToNumber;
 exports.autoPaymentStatusFromJSON = autoPaymentStatusFromJSON;
 exports.autoPaymentStatusToJSON = autoPaymentStatusToJSON;
 exports.autoPaymentStatusToNumber = autoPaymentStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const transaction_1 = require("./transaction");
 const tuition_1 = require("./tuition");
@@ -84,89 +82,6 @@ function invoiceStatusToNumber(object) {
         case InvoiceStatus.Processing:
             return 5;
         case InvoiceStatus.UNRECOGNIZED:
-        default:
-            return -1;
-    }
-}
-/** TODO: this is was fetched automatically from user-service */
-var StudentStatus;
-(function (StudentStatus) {
-    StudentStatus["Waitlist"] = "Waitlist";
-    StudentStatus["Interview"] = "Interview";
-    StudentStatus["Applicant"] = "Applicant";
-    StudentStatus["Rejected"] = "Rejected";
-    StudentStatus["Enrolled"] = "Enrolled";
-    StudentStatus["ReRegistration"] = "ReRegistration";
-    StudentStatus["Withdrawn"] = "Withdrawn";
-    StudentStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
-})(StudentStatus || (exports.StudentStatus = StudentStatus = {}));
-function studentStatusFromJSON(object) {
-    switch (object) {
-        case 1:
-        case "Waitlist":
-            return StudentStatus.Waitlist;
-        case 2:
-        case "Interview":
-            return StudentStatus.Interview;
-        case 3:
-        case "Applicant":
-            return StudentStatus.Applicant;
-        case 4:
-        case "Rejected":
-            return StudentStatus.Rejected;
-        case 5:
-        case "Enrolled":
-            return StudentStatus.Enrolled;
-        case 6:
-        case "ReRegistration":
-            return StudentStatus.ReRegistration;
-        case 7:
-        case "Withdrawn":
-            return StudentStatus.Withdrawn;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return StudentStatus.UNRECOGNIZED;
-    }
-}
-function studentStatusToJSON(object) {
-    switch (object) {
-        case StudentStatus.Waitlist:
-            return "Waitlist";
-        case StudentStatus.Interview:
-            return "Interview";
-        case StudentStatus.Applicant:
-            return "Applicant";
-        case StudentStatus.Rejected:
-            return "Rejected";
-        case StudentStatus.Enrolled:
-            return "Enrolled";
-        case StudentStatus.ReRegistration:
-            return "ReRegistration";
-        case StudentStatus.Withdrawn:
-            return "Withdrawn";
-        case StudentStatus.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-function studentStatusToNumber(object) {
-    switch (object) {
-        case StudentStatus.Waitlist:
-            return 1;
-        case StudentStatus.Interview:
-            return 2;
-        case StudentStatus.Applicant:
-            return 3;
-        case StudentStatus.Rejected:
-            return 4;
-        case StudentStatus.Enrolled:
-            return 5;
-        case StudentStatus.ReRegistration:
-            return 6;
-        case StudentStatus.Withdrawn:
-            return 7;
-        case StudentStatus.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -581,7 +496,7 @@ function createBaseInvoice() {
         items: [],
         coupons: [],
         dueDate: undefined,
-        invoiceStudentRegistrationPipelineStatus: StudentStatus.Waitlist,
+        invoiceStudentRegistrationPipelineStatus: student_1.StudentStatus.WAITLIST,
         schoolYear: undefined,
         autoPayEnabled: false,
         chargeOnDate: undefined,
@@ -634,8 +549,8 @@ exports.Invoice = {
             timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(106).fork()).join();
         }
         if (message.invoiceStudentRegistrationPipelineStatus !== undefined &&
-            message.invoiceStudentRegistrationPipelineStatus !== StudentStatus.Waitlist) {
-            writer.uint32(112).int32(studentStatusToNumber(message.invoiceStudentRegistrationPipelineStatus));
+            message.invoiceStudentRegistrationPipelineStatus !== student_1.StudentStatus.WAITLIST) {
+            writer.uint32(112).int32((0, student_1.studentStatusToNumber)(message.invoiceStudentRegistrationPipelineStatus));
         }
         if (message.schoolYear !== undefined) {
             object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(122).fork()).join();
@@ -752,7 +667,7 @@ exports.Invoice = {
                     if (tag !== 112) {
                         break;
                     }
-                    message.invoiceStudentRegistrationPipelineStatus = studentStatusFromJSON(reader.int32());
+                    message.invoiceStudentRegistrationPipelineStatus = (0, student_1.studentStatusFromJSON)(reader.int32());
                     continue;
                 case 15:
                     if (tag !== 122) {
@@ -826,8 +741,8 @@ exports.Invoice = {
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => exports.Coupon.fromJSON(e)) : [],
             dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
             invoiceStudentRegistrationPipelineStatus: isSet(object.invoiceStudentRegistrationPipelineStatus)
-                ? studentStatusFromJSON(object.invoiceStudentRegistrationPipelineStatus)
-                : StudentStatus.Waitlist,
+                ? (0, student_1.studentStatusFromJSON)(object.invoiceStudentRegistrationPipelineStatus)
+                : student_1.StudentStatus.WAITLIST,
             schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
             chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
@@ -886,8 +801,8 @@ exports.Invoice = {
             obj.dueDate = message.dueDate.toISOString();
         }
         if (message.invoiceStudentRegistrationPipelineStatus !== undefined &&
-            message.invoiceStudentRegistrationPipelineStatus !== StudentStatus.Waitlist) {
-            obj.invoiceStudentRegistrationPipelineStatus = studentStatusToJSON(message.invoiceStudentRegistrationPipelineStatus);
+            message.invoiceStudentRegistrationPipelineStatus !== student_1.StudentStatus.WAITLIST) {
+            obj.invoiceStudentRegistrationPipelineStatus = (0, student_1.studentStatusToJSON)(message.invoiceStudentRegistrationPipelineStatus);
         }
         if (message.schoolYear !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
@@ -938,7 +853,7 @@ exports.Invoice = {
         message.coupons = object.coupons?.map((e) => exports.Coupon.fromPartial(e)) || [];
         message.dueDate = object.dueDate ?? undefined;
         message.invoiceStudentRegistrationPipelineStatus = object.invoiceStudentRegistrationPipelineStatus ??
-            StudentStatus.Waitlist;
+            student_1.StudentStatus.WAITLIST;
         message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
             ? object_id_1.ObjectId.fromPartial(object.schoolYear)
             : undefined;
