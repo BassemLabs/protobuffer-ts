@@ -128,8 +128,8 @@ export interface AttendanceResponse {
 
 /** One-of to reference class context */
 export interface ClassRef {
-  courseId?: ObjectId | undefined;
-  homeroomId?: ObjectId | undefined;
+  course_id?: ObjectId | undefined;
+  homeroom_id?: ObjectId | undefined;
 }
 
 /** Queries */
@@ -138,14 +138,14 @@ export interface GetStudentEntriesRequest {
     | RequestContext
     | undefined;
   /** when omitted, fetch across all classes */
-  classRef?: ClassRef | undefined;
-  studentId:
+  class_ref?: ClassRef | undefined;
+  student_id:
     | ObjectId
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
-  startDate: string;
+  start_date: string;
   /** YYYY-MM-DD format for NaiveDate */
-  endDate: string;
+  end_date: string;
 }
 
 export interface GetStudentsEntriesCountRequest {
@@ -153,46 +153,46 @@ export interface GetStudentsEntriesCountRequest {
     | RequestContext
     | undefined;
   /** when omitted, fetch across all classes */
-  classRef?: ClassRef | undefined;
-  studentIds: ObjectId[];
+  class_ref?: ClassRef | undefined;
+  student_ids: ObjectId[];
   /** YYYY-MM-DD format for NaiveDate */
-  startDate: string;
+  start_date: string;
   /** YYYY-MM-DD format for NaiveDate */
-  endDate: string;
+  end_date: string;
 }
 
 /** Updates */
 export interface UpdateStatusRequest {
   context: RequestContext | undefined;
-  attendanceEntryId: ObjectId | undefined;
+  attendance_entry_id: ObjectId | undefined;
   status: AttendanceStatus;
 }
 
 export interface UpdateTimeRequest {
   context: RequestContext | undefined;
-  attendanceEntryId: ObjectId | undefined;
-  timeType: TimeType;
+  attendance_entry_id: ObjectId | undefined;
+  time_type: TimeType;
   time: Date | undefined;
 }
 
 export interface UpdateReasonRequest {
   context: RequestContext | undefined;
-  attendanceEntryId: ObjectId | undefined;
+  attendance_entry_id: ObjectId | undefined;
   reason: string;
 }
 
 export interface UpdateLateDismissalDateRequest {
   context: RequestContext | undefined;
-  attendanceEntryId: ObjectId | undefined;
-  lateDismissalDate?: Date | undefined;
+  attendance_entry_id: ObjectId | undefined;
+  late_dismissal_date?: Date | undefined;
 }
 
 export interface UpdateExcuseStudentRequest {
   context: RequestContext | undefined;
-  attendanceEntryId: ObjectId | undefined;
+  attendance_entry_id: ObjectId | undefined;
   reason: string;
-  studentExcusedBy: ObjectId | undefined;
-  studentExcusedByUserType: UserType;
+  student_excused_by: ObjectId | undefined;
+  student_excused_by_user_type: UserType;
 }
 
 /** Aggregations */
@@ -201,8 +201,8 @@ export interface AttendanceCounts {
   present: number;
   late: number;
   absent: number;
-  excusedAbsent: number;
-  nonExcusedAbsent: number;
+  excused_absent: number;
+  non_excused_absent: number;
 }
 
 export interface StudentAttendanceCounts {
@@ -211,7 +211,7 @@ export interface StudentAttendanceCounts {
 }
 
 export interface StudentsAttendanceCountsResponse {
-  studentCounts: StudentAttendanceCounts[];
+  student_counts: StudentAttendanceCounts[];
 }
 
 export interface GetCoursesAttendanceOverviewRequest {
@@ -220,18 +220,18 @@ export interface GetCoursesAttendanceOverviewRequest {
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
-  showAllClasses: boolean;
+  show_all_classes: boolean;
 }
 
 export interface GetCoursesAttendanceOverviewResponse {
   courses: Course[];
   teachers: TeacherBasic[];
-  entryStatus: CourseEntryStatus[];
+  entry_status: CourseEntryStatus[];
 }
 
 export interface CourseEntryStatus {
-  courseId: ObjectId | undefined;
-  isComplete: boolean;
+  course_id: ObjectId | undefined;
+  is_complete: boolean;
 }
 
 export interface GetHomeroomsAttendanceOverviewRequest {
@@ -240,40 +240,40 @@ export interface GetHomeroomsAttendanceOverviewRequest {
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
-  showAllClasses: boolean;
+  show_all_classes: boolean;
 }
 
 export interface GetHomeroomsAttendanceOverviewResponse {
   homerooms: Homeroom[];
   teachers: TeacherBasic[];
-  entryStatus: HomeroomEntryStatus[];
+  entry_status: HomeroomEntryStatus[];
 }
 
 export interface HomeroomEntryStatus {
-  homeroomId: ObjectId | undefined;
-  isComplete: boolean;
+  homeroom_id: ObjectId | undefined;
+  is_complete: boolean;
 }
 
 export interface GetHomeroomAttendanceDetailsRequest {
   context: RequestContext | undefined;
-  homeroomId:
+  homeroom_id:
     | ObjectId
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
-  periodNumber: number;
+  period_number: number;
 }
 
 export interface GetHomeroomAttendanceDetailsResponse {
   homeroom: Homeroom | undefined;
   students: Student[];
-  attendanceEntries: Attendance[];
+  attendance_entries: Attendance[];
 }
 
 export interface GetSingleStudentHomeroomAttendanceEntryRequest {
   context: RequestContext | undefined;
-  studentId: ObjectId | undefined;
-  homeroomId:
+  student_id: ObjectId | undefined;
+  homeroom_id:
     | ObjectId
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
@@ -282,19 +282,19 @@ export interface GetSingleStudentHomeroomAttendanceEntryRequest {
 
 export interface GetSingleStudentHomeroomAttendanceEntryResponse {
   student: Student | undefined;
-  attendanceEntry: Attendance | undefined;
+  attendance_entry: Attendance | undefined;
   homeroom: Homeroom | undefined;
 }
 
 export interface GetAttendanceDateMapRequest {
   context: RequestContext | undefined;
-  classRef:
+  class_ref:
     | ClassRef
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
-  startDate: string;
+  start_date: string;
   /** YYYY-MM-DD format for NaiveDate */
-  endDate: string;
+  end_date: string;
 }
 
 export interface GetAttendanceDateMapResponse {
@@ -304,55 +304,55 @@ export interface GetAttendanceDateMapResponse {
 export interface AttendanceDateMapEntry {
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
-  completionStatus: AttendanceCompletionStatus;
+  completion_status: AttendanceCompletionStatus;
 }
 
 export interface GetAttendanceCsvDataRequest {
   context: RequestContext | undefined;
-  classRef:
+  class_ref:
     | ClassRef
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
-  startDate: string;
+  start_date: string;
   /** YYYY-MM-DD format for NaiveDate */
-  endDate: string;
+  end_date: string;
 }
 
 export interface GetAttendanceCsvDataResponse {
-  csvData: string;
+  csv_data: string;
   filename: string;
 }
 
 export interface GetCourseAttendanceDetailsRequest {
   context: RequestContext | undefined;
-  courseId:
+  course_id:
     | ObjectId
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
-  periodNumber: number;
+  period_number: number;
 }
 
 export interface GetCourseAttendanceDetailsResponse {
   course: Course | undefined;
   students: Student[];
-  attendanceEntries: Attendance[];
+  attendance_entries: Attendance[];
 }
 
 export interface GetSingleStudentCourseAttendanceEntryRequest {
   context: RequestContext | undefined;
-  studentId: ObjectId | undefined;
-  courseId:
+  student_id: ObjectId | undefined;
+  course_id:
     | ObjectId
     | undefined;
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
-  periodNumber: number;
+  period_number: number;
 }
 
 export interface GetSingleStudentCourseAttendanceEntryResponse {
   student: Student | undefined;
-  attendanceEntry: Attendance | undefined;
+  attendance_entry: Attendance | undefined;
   course: Course | undefined;
 }
 
@@ -418,16 +418,16 @@ export const AttendanceResponse: MessageFns<AttendanceResponse> = {
 };
 
 function createBaseClassRef(): ClassRef {
-  return { courseId: undefined, homeroomId: undefined };
+  return { course_id: undefined, homeroom_id: undefined };
 }
 
 export const ClassRef: MessageFns<ClassRef> = {
   encode(message: ClassRef, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -444,14 +444,14 @@ export const ClassRef: MessageFns<ClassRef> = {
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -464,18 +464,18 @@ export const ClassRef: MessageFns<ClassRef> = {
 
   fromJSON(object: any): ClassRef {
     return {
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
     };
   },
 
   toJSON(message: ClassRef): unknown {
     const obj: any = {};
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     return obj;
   },
@@ -485,18 +485,18 @@ export const ClassRef: MessageFns<ClassRef> = {
   },
   fromPartial<I extends Exact<DeepPartial<ClassRef>, I>>(object: I): ClassRef {
     const message = createBaseClassRef();
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetStudentEntriesRequest(): GetStudentEntriesRequest {
-  return { context: undefined, classRef: undefined, studentId: undefined, startDate: "", endDate: "" };
+  return { context: undefined, class_ref: undefined, student_id: undefined, start_date: "", end_date: "" };
 }
 
 export const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest> = {
@@ -504,17 +504,17 @@ export const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.classRef !== undefined) {
-      ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+    if (message.class_ref !== undefined) {
+      ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(26).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(26).fork()).join();
     }
-    if (message.startDate !== "") {
-      writer.uint32(34).string(message.startDate);
+    if (message.start_date !== "") {
+      writer.uint32(34).string(message.start_date);
     }
-    if (message.endDate !== "") {
-      writer.uint32(42).string(message.endDate);
+    if (message.end_date !== "") {
+      writer.uint32(42).string(message.end_date);
     }
     return writer;
   },
@@ -538,28 +538,28 @@ export const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest> = {
             break;
           }
 
-          message.classRef = ClassRef.decode(reader, reader.uint32());
+          message.class_ref = ClassRef.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.startDate = reader.string();
+          message.start_date = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.endDate = reader.string();
+          message.end_date = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -573,10 +573,10 @@ export const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest> = {
   fromJSON(object: any): GetStudentEntriesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      classRef: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-      endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+      class_ref: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
     };
   },
 
@@ -585,17 +585,17 @@ export const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.classRef !== undefined) {
-      obj.classRef = ClassRef.toJSON(message.classRef);
+    if (message.class_ref !== undefined) {
+      obj.classRef = ClassRef.toJSON(message.class_ref);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.startDate !== "") {
-      obj.startDate = message.startDate;
+    if (message.start_date !== "") {
+      obj.startDate = message.start_date;
     }
-    if (message.endDate !== "") {
-      obj.endDate = message.endDate;
+    if (message.end_date !== "") {
+      obj.endDate = message.end_date;
     }
     return obj;
   },
@@ -608,20 +608,20 @@ export const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.classRef = (object.classRef !== undefined && object.classRef !== null)
-      ? ClassRef.fromPartial(object.classRef)
+    message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+      ? ClassRef.fromPartial(object.class_ref)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.startDate = object.startDate ?? "";
-    message.endDate = object.endDate ?? "";
+    message.start_date = object.start_date ?? "";
+    message.end_date = object.end_date ?? "";
     return message;
   },
 };
 
 function createBaseGetStudentsEntriesCountRequest(): GetStudentsEntriesCountRequest {
-  return { context: undefined, classRef: undefined, studentIds: [], startDate: "", endDate: "" };
+  return { context: undefined, class_ref: undefined, student_ids: [], start_date: "", end_date: "" };
 }
 
 export const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountRequest> = {
@@ -629,17 +629,17 @@ export const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.classRef !== undefined) {
-      ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+    if (message.class_ref !== undefined) {
+      ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
     }
-    for (const v of message.studentIds) {
+    for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
-    if (message.startDate !== "") {
-      writer.uint32(34).string(message.startDate);
+    if (message.start_date !== "") {
+      writer.uint32(34).string(message.start_date);
     }
-    if (message.endDate !== "") {
-      writer.uint32(42).string(message.endDate);
+    if (message.end_date !== "") {
+      writer.uint32(42).string(message.end_date);
     }
     return writer;
   },
@@ -663,28 +663,28 @@ export const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountR
             break;
           }
 
-          message.classRef = ClassRef.decode(reader, reader.uint32());
+          message.class_ref = ClassRef.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.startDate = reader.string();
+          message.start_date = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.endDate = reader.string();
+          message.end_date = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -698,12 +698,12 @@ export const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountR
   fromJSON(object: any): GetStudentsEntriesCountRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      classRef: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
-      studentIds: globalThis.Array.isArray(object?.studentIds)
+      class_ref: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-      endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
     };
   },
 
@@ -712,17 +712,17 @@ export const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.classRef !== undefined) {
-      obj.classRef = ClassRef.toJSON(message.classRef);
+    if (message.class_ref !== undefined) {
+      obj.classRef = ClassRef.toJSON(message.class_ref);
     }
-    if (message.studentIds?.length) {
-      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
-    if (message.startDate !== "") {
-      obj.startDate = message.startDate;
+    if (message.start_date !== "") {
+      obj.startDate = message.start_date;
     }
-    if (message.endDate !== "") {
-      obj.endDate = message.endDate;
+    if (message.end_date !== "") {
+      obj.endDate = message.end_date;
     }
     return obj;
   },
@@ -737,18 +737,18 @@ export const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.classRef = (object.classRef !== undefined && object.classRef !== null)
-      ? ClassRef.fromPartial(object.classRef)
+    message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+      ? ClassRef.fromPartial(object.class_ref)
       : undefined;
-    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.startDate = object.startDate ?? "";
-    message.endDate = object.endDate ?? "";
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.start_date = object.start_date ?? "";
+    message.end_date = object.end_date ?? "";
     return message;
   },
 };
 
 function createBaseUpdateStatusRequest(): UpdateStatusRequest {
-  return { context: undefined, attendanceEntryId: undefined, status: AttendanceStatus.None };
+  return { context: undefined, attendance_entry_id: undefined, status: AttendanceStatus.None };
 }
 
 export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
@@ -756,8 +756,8 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.attendanceEntryId !== undefined) {
-      ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+    if (message.attendance_entry_id !== undefined) {
+      ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
     if (message.status !== AttendanceStatus.None) {
       writer.uint32(24).int32(attendanceStatusToNumber(message.status));
@@ -784,7 +784,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
             break;
           }
 
-          message.attendanceEntryId = ObjectId.decode(reader, reader.uint32());
+          message.attendance_entry_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
@@ -805,7 +805,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
   fromJSON(object: any): UpdateStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      attendanceEntryId: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+      attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
       status: isSet(object.status) ? attendanceStatusFromJSON(object.status) : AttendanceStatus.None,
     };
   },
@@ -815,8 +815,8 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.attendanceEntryId !== undefined) {
-      obj.attendanceEntryId = ObjectId.toJSON(message.attendanceEntryId);
+    if (message.attendance_entry_id !== undefined) {
+      obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
     if (message.status !== AttendanceStatus.None) {
       obj.status = attendanceStatusToJSON(message.status);
@@ -832,8 +832,8 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-      ? ObjectId.fromPartial(object.attendanceEntryId)
+    message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+      ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
     message.status = object.status ?? AttendanceStatus.None;
     return message;
@@ -841,7 +841,7 @@ export const UpdateStatusRequest: MessageFns<UpdateStatusRequest> = {
 };
 
 function createBaseUpdateTimeRequest(): UpdateTimeRequest {
-  return { context: undefined, attendanceEntryId: undefined, timeType: TimeType.SignIn, time: undefined };
+  return { context: undefined, attendance_entry_id: undefined, time_type: TimeType.SignIn, time: undefined };
 }
 
 export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
@@ -849,11 +849,11 @@ export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.attendanceEntryId !== undefined) {
-      ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+    if (message.attendance_entry_id !== undefined) {
+      ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
-    if (message.timeType !== TimeType.SignIn) {
-      writer.uint32(24).int32(timeTypeToNumber(message.timeType));
+    if (message.time_type !== TimeType.SignIn) {
+      writer.uint32(24).int32(timeTypeToNumber(message.time_type));
     }
     if (message.time !== undefined) {
       Timestamp.encode(toTimestamp(message.time), writer.uint32(34).fork()).join();
@@ -880,14 +880,14 @@ export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
             break;
           }
 
-          message.attendanceEntryId = ObjectId.decode(reader, reader.uint32());
+          message.attendance_entry_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.timeType = timeTypeFromJSON(reader.int32());
+          message.time_type = timeTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -908,8 +908,8 @@ export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
   fromJSON(object: any): UpdateTimeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      attendanceEntryId: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-      timeType: isSet(object.timeType) ? timeTypeFromJSON(object.timeType) : TimeType.SignIn,
+      attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+      time_type: isSet(object.timeType) ? timeTypeFromJSON(object.timeType) : TimeType.SignIn,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
     };
   },
@@ -919,11 +919,11 @@ export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.attendanceEntryId !== undefined) {
-      obj.attendanceEntryId = ObjectId.toJSON(message.attendanceEntryId);
+    if (message.attendance_entry_id !== undefined) {
+      obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
-    if (message.timeType !== TimeType.SignIn) {
-      obj.timeType = timeTypeToJSON(message.timeType);
+    if (message.time_type !== TimeType.SignIn) {
+      obj.timeType = timeTypeToJSON(message.time_type);
     }
     if (message.time !== undefined) {
       obj.time = message.time.toISOString();
@@ -939,17 +939,17 @@ export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-      ? ObjectId.fromPartial(object.attendanceEntryId)
+    message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+      ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
-    message.timeType = object.timeType ?? TimeType.SignIn;
+    message.time_type = object.time_type ?? TimeType.SignIn;
     message.time = object.time ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateReasonRequest(): UpdateReasonRequest {
-  return { context: undefined, attendanceEntryId: undefined, reason: "" };
+  return { context: undefined, attendance_entry_id: undefined, reason: "" };
 }
 
 export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
@@ -957,8 +957,8 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.attendanceEntryId !== undefined) {
-      ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+    if (message.attendance_entry_id !== undefined) {
+      ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
     if (message.reason !== "") {
       writer.uint32(26).string(message.reason);
@@ -985,7 +985,7 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
             break;
           }
 
-          message.attendanceEntryId = ObjectId.decode(reader, reader.uint32());
+          message.attendance_entry_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1006,7 +1006,7 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
   fromJSON(object: any): UpdateReasonRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      attendanceEntryId: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+      attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
       reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
     };
   },
@@ -1016,8 +1016,8 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.attendanceEntryId !== undefined) {
-      obj.attendanceEntryId = ObjectId.toJSON(message.attendanceEntryId);
+    if (message.attendance_entry_id !== undefined) {
+      obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
     if (message.reason !== "") {
       obj.reason = message.reason;
@@ -1033,8 +1033,8 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-      ? ObjectId.fromPartial(object.attendanceEntryId)
+    message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+      ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
     message.reason = object.reason ?? "";
     return message;
@@ -1042,7 +1042,7 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
 };
 
 function createBaseUpdateLateDismissalDateRequest(): UpdateLateDismissalDateRequest {
-  return { context: undefined, attendanceEntryId: undefined, lateDismissalDate: undefined };
+  return { context: undefined, attendance_entry_id: undefined, late_dismissal_date: undefined };
 }
 
 export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateRequest> = {
@@ -1050,11 +1050,11 @@ export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.attendanceEntryId !== undefined) {
-      ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+    if (message.attendance_entry_id !== undefined) {
+      ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
-    if (message.lateDismissalDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.lateDismissalDate), writer.uint32(26).fork()).join();
+    if (message.late_dismissal_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.late_dismissal_date), writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -1078,14 +1078,14 @@ export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateR
             break;
           }
 
-          message.attendanceEntryId = ObjectId.decode(reader, reader.uint32());
+          message.attendance_entry_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.lateDismissalDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.late_dismissal_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1099,8 +1099,8 @@ export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateR
   fromJSON(object: any): UpdateLateDismissalDateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      attendanceEntryId: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-      lateDismissalDate: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
+      attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+      late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
     };
   },
 
@@ -1109,11 +1109,11 @@ export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.attendanceEntryId !== undefined) {
-      obj.attendanceEntryId = ObjectId.toJSON(message.attendanceEntryId);
+    if (message.attendance_entry_id !== undefined) {
+      obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
-    if (message.lateDismissalDate !== undefined) {
-      obj.lateDismissalDate = message.lateDismissalDate.toISOString();
+    if (message.late_dismissal_date !== undefined) {
+      obj.lateDismissalDate = message.late_dismissal_date.toISOString();
     }
     return obj;
   },
@@ -1128,10 +1128,10 @@ export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-      ? ObjectId.fromPartial(object.attendanceEntryId)
+    message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+      ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
-    message.lateDismissalDate = object.lateDismissalDate ?? undefined;
+    message.late_dismissal_date = object.late_dismissal_date ?? undefined;
     return message;
   },
 };
@@ -1139,10 +1139,10 @@ export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateR
 function createBaseUpdateExcuseStudentRequest(): UpdateExcuseStudentRequest {
   return {
     context: undefined,
-    attendanceEntryId: undefined,
+    attendance_entry_id: undefined,
     reason: "",
-    studentExcusedBy: undefined,
-    studentExcusedByUserType: UserType.NONE,
+    student_excused_by: undefined,
+    student_excused_by_user_type: UserType.NONE,
   };
 }
 
@@ -1151,17 +1151,17 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.attendanceEntryId !== undefined) {
-      ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+    if (message.attendance_entry_id !== undefined) {
+      ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
     if (message.reason !== "") {
       writer.uint32(26).string(message.reason);
     }
-    if (message.studentExcusedBy !== undefined) {
-      ObjectId.encode(message.studentExcusedBy, writer.uint32(34).fork()).join();
+    if (message.student_excused_by !== undefined) {
+      ObjectId.encode(message.student_excused_by, writer.uint32(34).fork()).join();
     }
-    if (message.studentExcusedByUserType !== UserType.NONE) {
-      writer.uint32(40).int32(userTypeToNumber(message.studentExcusedByUserType));
+    if (message.student_excused_by_user_type !== UserType.NONE) {
+      writer.uint32(40).int32(userTypeToNumber(message.student_excused_by_user_type));
     }
     return writer;
   },
@@ -1185,7 +1185,7 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
             break;
           }
 
-          message.attendanceEntryId = ObjectId.decode(reader, reader.uint32());
+          message.attendance_entry_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1199,14 +1199,14 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
             break;
           }
 
-          message.studentExcusedBy = ObjectId.decode(reader, reader.uint32());
+          message.student_excused_by = ObjectId.decode(reader, reader.uint32());
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.studentExcusedByUserType = userTypeFromJSON(reader.int32());
+          message.student_excused_by_user_type = userTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1220,10 +1220,10 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
   fromJSON(object: any): UpdateExcuseStudentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      attendanceEntryId: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+      attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
       reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
-      studentExcusedBy: isSet(object.studentExcusedBy) ? ObjectId.fromJSON(object.studentExcusedBy) : undefined,
-      studentExcusedByUserType: isSet(object.studentExcusedByUserType)
+      student_excused_by: isSet(object.studentExcusedBy) ? ObjectId.fromJSON(object.studentExcusedBy) : undefined,
+      student_excused_by_user_type: isSet(object.studentExcusedByUserType)
         ? userTypeFromJSON(object.studentExcusedByUserType)
         : UserType.NONE,
     };
@@ -1234,17 +1234,17 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.attendanceEntryId !== undefined) {
-      obj.attendanceEntryId = ObjectId.toJSON(message.attendanceEntryId);
+    if (message.attendance_entry_id !== undefined) {
+      obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
     if (message.reason !== "") {
       obj.reason = message.reason;
     }
-    if (message.studentExcusedBy !== undefined) {
-      obj.studentExcusedBy = ObjectId.toJSON(message.studentExcusedBy);
+    if (message.student_excused_by !== undefined) {
+      obj.studentExcusedBy = ObjectId.toJSON(message.student_excused_by);
     }
-    if (message.studentExcusedByUserType !== UserType.NONE) {
-      obj.studentExcusedByUserType = userTypeToJSON(message.studentExcusedByUserType);
+    if (message.student_excused_by_user_type !== UserType.NONE) {
+      obj.studentExcusedByUserType = userTypeToJSON(message.student_excused_by_user_type);
     }
     return obj;
   },
@@ -1257,20 +1257,20 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-      ? ObjectId.fromPartial(object.attendanceEntryId)
+    message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+      ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
     message.reason = object.reason ?? "";
-    message.studentExcusedBy = (object.studentExcusedBy !== undefined && object.studentExcusedBy !== null)
-      ? ObjectId.fromPartial(object.studentExcusedBy)
+    message.student_excused_by = (object.student_excused_by !== undefined && object.student_excused_by !== null)
+      ? ObjectId.fromPartial(object.student_excused_by)
       : undefined;
-    message.studentExcusedByUserType = object.studentExcusedByUserType ?? UserType.NONE;
+    message.student_excused_by_user_type = object.student_excused_by_user_type ?? UserType.NONE;
     return message;
   },
 };
 
 function createBaseAttendanceCounts(): AttendanceCounts {
-  return { none: 0, present: 0, late: 0, absent: 0, excusedAbsent: 0, nonExcusedAbsent: 0 };
+  return { none: 0, present: 0, late: 0, absent: 0, excused_absent: 0, non_excused_absent: 0 };
 }
 
 export const AttendanceCounts: MessageFns<AttendanceCounts> = {
@@ -1287,11 +1287,11 @@ export const AttendanceCounts: MessageFns<AttendanceCounts> = {
     if (message.absent !== 0) {
       writer.uint32(32).uint32(message.absent);
     }
-    if (message.excusedAbsent !== 0) {
-      writer.uint32(40).uint32(message.excusedAbsent);
+    if (message.excused_absent !== 0) {
+      writer.uint32(40).uint32(message.excused_absent);
     }
-    if (message.nonExcusedAbsent !== 0) {
-      writer.uint32(48).uint32(message.nonExcusedAbsent);
+    if (message.non_excused_absent !== 0) {
+      writer.uint32(48).uint32(message.non_excused_absent);
     }
     return writer;
   },
@@ -1336,14 +1336,14 @@ export const AttendanceCounts: MessageFns<AttendanceCounts> = {
             break;
           }
 
-          message.excusedAbsent = reader.uint32();
+          message.excused_absent = reader.uint32();
           continue;
         case 6:
           if (tag !== 48) {
             break;
           }
 
-          message.nonExcusedAbsent = reader.uint32();
+          message.non_excused_absent = reader.uint32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1360,8 +1360,8 @@ export const AttendanceCounts: MessageFns<AttendanceCounts> = {
       present: isSet(object.present) ? globalThis.Number(object.present) : 0,
       late: isSet(object.late) ? globalThis.Number(object.late) : 0,
       absent: isSet(object.absent) ? globalThis.Number(object.absent) : 0,
-      excusedAbsent: isSet(object.excusedAbsent) ? globalThis.Number(object.excusedAbsent) : 0,
-      nonExcusedAbsent: isSet(object.nonExcusedAbsent) ? globalThis.Number(object.nonExcusedAbsent) : 0,
+      excused_absent: isSet(object.excusedAbsent) ? globalThis.Number(object.excusedAbsent) : 0,
+      non_excused_absent: isSet(object.nonExcusedAbsent) ? globalThis.Number(object.nonExcusedAbsent) : 0,
     };
   },
 
@@ -1379,11 +1379,11 @@ export const AttendanceCounts: MessageFns<AttendanceCounts> = {
     if (message.absent !== 0) {
       obj.absent = Math.round(message.absent);
     }
-    if (message.excusedAbsent !== 0) {
-      obj.excusedAbsent = Math.round(message.excusedAbsent);
+    if (message.excused_absent !== 0) {
+      obj.excusedAbsent = Math.round(message.excused_absent);
     }
-    if (message.nonExcusedAbsent !== 0) {
-      obj.nonExcusedAbsent = Math.round(message.nonExcusedAbsent);
+    if (message.non_excused_absent !== 0) {
+      obj.nonExcusedAbsent = Math.round(message.non_excused_absent);
     }
     return obj;
   },
@@ -1397,8 +1397,8 @@ export const AttendanceCounts: MessageFns<AttendanceCounts> = {
     message.present = object.present ?? 0;
     message.late = object.late ?? 0;
     message.absent = object.absent ?? 0;
-    message.excusedAbsent = object.excusedAbsent ?? 0;
-    message.nonExcusedAbsent = object.nonExcusedAbsent ?? 0;
+    message.excused_absent = object.excused_absent ?? 0;
+    message.non_excused_absent = object.non_excused_absent ?? 0;
     return message;
   },
 };
@@ -1482,12 +1482,12 @@ export const StudentAttendanceCounts: MessageFns<StudentAttendanceCounts> = {
 };
 
 function createBaseStudentsAttendanceCountsResponse(): StudentsAttendanceCountsResponse {
-  return { studentCounts: [] };
+  return { student_counts: [] };
 }
 
 export const StudentsAttendanceCountsResponse: MessageFns<StudentsAttendanceCountsResponse> = {
   encode(message: StudentsAttendanceCountsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.studentCounts) {
+    for (const v of message.student_counts) {
       StudentAttendanceCounts.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -1505,7 +1505,7 @@ export const StudentsAttendanceCountsResponse: MessageFns<StudentsAttendanceCoun
             break;
           }
 
-          message.studentCounts.push(StudentAttendanceCounts.decode(reader, reader.uint32()));
+          message.student_counts.push(StudentAttendanceCounts.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1518,7 +1518,7 @@ export const StudentsAttendanceCountsResponse: MessageFns<StudentsAttendanceCoun
 
   fromJSON(object: any): StudentsAttendanceCountsResponse {
     return {
-      studentCounts: globalThis.Array.isArray(object?.studentCounts)
+      student_counts: globalThis.Array.isArray(object?.studentCounts)
         ? object.studentCounts.map((e: any) => StudentAttendanceCounts.fromJSON(e))
         : [],
     };
@@ -1526,8 +1526,8 @@ export const StudentsAttendanceCountsResponse: MessageFns<StudentsAttendanceCoun
 
   toJSON(message: StudentsAttendanceCountsResponse): unknown {
     const obj: any = {};
-    if (message.studentCounts?.length) {
-      obj.studentCounts = message.studentCounts.map((e) => StudentAttendanceCounts.toJSON(e));
+    if (message.student_counts?.length) {
+      obj.studentCounts = message.student_counts.map((e) => StudentAttendanceCounts.toJSON(e));
     }
     return obj;
   },
@@ -1541,13 +1541,13 @@ export const StudentsAttendanceCountsResponse: MessageFns<StudentsAttendanceCoun
     object: I,
   ): StudentsAttendanceCountsResponse {
     const message = createBaseStudentsAttendanceCountsResponse();
-    message.studentCounts = object.studentCounts?.map((e) => StudentAttendanceCounts.fromPartial(e)) || [];
+    message.student_counts = object.student_counts?.map((e) => StudentAttendanceCounts.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetCoursesAttendanceOverviewRequest(): GetCoursesAttendanceOverviewRequest {
-  return { context: undefined, date: "", showAllClasses: false };
+  return { context: undefined, date: "", show_all_classes: false };
 }
 
 export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanceOverviewRequest> = {
@@ -1558,8 +1558,8 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
     if (message.date !== "") {
       writer.uint32(18).string(message.date);
     }
-    if (message.showAllClasses !== false) {
-      writer.uint32(24).bool(message.showAllClasses);
+    if (message.show_all_classes !== false) {
+      writer.uint32(24).bool(message.show_all_classes);
     }
     return writer;
   },
@@ -1590,7 +1590,7 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
             break;
           }
 
-          message.showAllClasses = reader.bool();
+          message.show_all_classes = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1605,7 +1605,7 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      showAllClasses: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+      show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
     };
   },
 
@@ -1617,8 +1617,8 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
     if (message.date !== "") {
       obj.date = message.date;
     }
-    if (message.showAllClasses !== false) {
-      obj.showAllClasses = message.showAllClasses;
+    if (message.show_all_classes !== false) {
+      obj.showAllClasses = message.show_all_classes;
     }
     return obj;
   },
@@ -1636,13 +1636,13 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.date = object.date ?? "";
-    message.showAllClasses = object.showAllClasses ?? false;
+    message.show_all_classes = object.show_all_classes ?? false;
     return message;
   },
 };
 
 function createBaseGetCoursesAttendanceOverviewResponse(): GetCoursesAttendanceOverviewResponse {
-  return { courses: [], teachers: [], entryStatus: [] };
+  return { courses: [], teachers: [], entry_status: [] };
 }
 
 export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendanceOverviewResponse> = {
@@ -1653,7 +1653,7 @@ export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendan
     for (const v of message.teachers) {
       TeacherBasic.encode(v!, writer.uint32(18).fork()).join();
     }
-    for (const v of message.entryStatus) {
+    for (const v of message.entry_status) {
       CourseEntryStatus.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1685,7 +1685,7 @@ export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendan
             break;
           }
 
-          message.entryStatus.push(CourseEntryStatus.decode(reader, reader.uint32()));
+          message.entry_status.push(CourseEntryStatus.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1702,7 +1702,7 @@ export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendan
       teachers: globalThis.Array.isArray(object?.teachers)
         ? object.teachers.map((e: any) => TeacherBasic.fromJSON(e))
         : [],
-      entryStatus: globalThis.Array.isArray(object?.entryStatus)
+      entry_status: globalThis.Array.isArray(object?.entryStatus)
         ? object.entryStatus.map((e: any) => CourseEntryStatus.fromJSON(e))
         : [],
     };
@@ -1716,8 +1716,8 @@ export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendan
     if (message.teachers?.length) {
       obj.teachers = message.teachers.map((e) => TeacherBasic.toJSON(e));
     }
-    if (message.entryStatus?.length) {
-      obj.entryStatus = message.entryStatus.map((e) => CourseEntryStatus.toJSON(e));
+    if (message.entry_status?.length) {
+      obj.entryStatus = message.entry_status.map((e) => CourseEntryStatus.toJSON(e));
     }
     return obj;
   },
@@ -1733,22 +1733,22 @@ export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendan
     const message = createBaseGetCoursesAttendanceOverviewResponse();
     message.courses = object.courses?.map((e) => Course.fromPartial(e)) || [];
     message.teachers = object.teachers?.map((e) => TeacherBasic.fromPartial(e)) || [];
-    message.entryStatus = object.entryStatus?.map((e) => CourseEntryStatus.fromPartial(e)) || [];
+    message.entry_status = object.entry_status?.map((e) => CourseEntryStatus.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseCourseEntryStatus(): CourseEntryStatus {
-  return { courseId: undefined, isComplete: false };
+  return { course_id: undefined, is_complete: false };
 }
 
 export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
   encode(message: CourseEntryStatus, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
     }
-    if (message.isComplete !== false) {
-      writer.uint32(16).bool(message.isComplete);
+    if (message.is_complete !== false) {
+      writer.uint32(16).bool(message.is_complete);
     }
     return writer;
   },
@@ -1765,14 +1765,14 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 16) {
             break;
           }
 
-          message.isComplete = reader.bool();
+          message.is_complete = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1785,18 +1785,18 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
 
   fromJSON(object: any): CourseEntryStatus {
     return {
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
-      isComplete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
     };
   },
 
   toJSON(message: CourseEntryStatus): unknown {
     const obj: any = {};
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
-    if (message.isComplete !== false) {
-      obj.isComplete = message.isComplete;
+    if (message.is_complete !== false) {
+      obj.isComplete = message.is_complete;
     }
     return obj;
   },
@@ -1806,16 +1806,16 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
   },
   fromPartial<I extends Exact<DeepPartial<CourseEntryStatus>, I>>(object: I): CourseEntryStatus {
     const message = createBaseCourseEntryStatus();
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
-    message.isComplete = object.isComplete ?? false;
+    message.is_complete = object.is_complete ?? false;
     return message;
   },
 };
 
 function createBaseGetHomeroomsAttendanceOverviewRequest(): GetHomeroomsAttendanceOverviewRequest {
-  return { context: undefined, date: "", showAllClasses: false };
+  return { context: undefined, date: "", show_all_classes: false };
 }
 
 export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAttendanceOverviewRequest> = {
@@ -1826,8 +1826,8 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
     if (message.date !== "") {
       writer.uint32(18).string(message.date);
     }
-    if (message.showAllClasses !== false) {
-      writer.uint32(24).bool(message.showAllClasses);
+    if (message.show_all_classes !== false) {
+      writer.uint32(24).bool(message.show_all_classes);
     }
     return writer;
   },
@@ -1858,7 +1858,7 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
             break;
           }
 
-          message.showAllClasses = reader.bool();
+          message.show_all_classes = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1873,7 +1873,7 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      showAllClasses: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+      show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
     };
   },
 
@@ -1885,8 +1885,8 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
     if (message.date !== "") {
       obj.date = message.date;
     }
-    if (message.showAllClasses !== false) {
-      obj.showAllClasses = message.showAllClasses;
+    if (message.show_all_classes !== false) {
+      obj.showAllClasses = message.show_all_classes;
     }
     return obj;
   },
@@ -1904,13 +1904,13 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.date = object.date ?? "";
-    message.showAllClasses = object.showAllClasses ?? false;
+    message.show_all_classes = object.show_all_classes ?? false;
     return message;
   },
 };
 
 function createBaseGetHomeroomsAttendanceOverviewResponse(): GetHomeroomsAttendanceOverviewResponse {
-  return { homerooms: [], teachers: [], entryStatus: [] };
+  return { homerooms: [], teachers: [], entry_status: [] };
 }
 
 export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAttendanceOverviewResponse> = {
@@ -1921,7 +1921,7 @@ export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAtte
     for (const v of message.teachers) {
       TeacherBasic.encode(v!, writer.uint32(18).fork()).join();
     }
-    for (const v of message.entryStatus) {
+    for (const v of message.entry_status) {
       HomeroomEntryStatus.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1953,7 +1953,7 @@ export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAtte
             break;
           }
 
-          message.entryStatus.push(HomeroomEntryStatus.decode(reader, reader.uint32()));
+          message.entry_status.push(HomeroomEntryStatus.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1972,7 +1972,7 @@ export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAtte
       teachers: globalThis.Array.isArray(object?.teachers)
         ? object.teachers.map((e: any) => TeacherBasic.fromJSON(e))
         : [],
-      entryStatus: globalThis.Array.isArray(object?.entryStatus)
+      entry_status: globalThis.Array.isArray(object?.entryStatus)
         ? object.entryStatus.map((e: any) => HomeroomEntryStatus.fromJSON(e))
         : [],
     };
@@ -1986,8 +1986,8 @@ export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAtte
     if (message.teachers?.length) {
       obj.teachers = message.teachers.map((e) => TeacherBasic.toJSON(e));
     }
-    if (message.entryStatus?.length) {
-      obj.entryStatus = message.entryStatus.map((e) => HomeroomEntryStatus.toJSON(e));
+    if (message.entry_status?.length) {
+      obj.entryStatus = message.entry_status.map((e) => HomeroomEntryStatus.toJSON(e));
     }
     return obj;
   },
@@ -2003,22 +2003,22 @@ export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAtte
     const message = createBaseGetHomeroomsAttendanceOverviewResponse();
     message.homerooms = object.homerooms?.map((e) => Homeroom.fromPartial(e)) || [];
     message.teachers = object.teachers?.map((e) => TeacherBasic.fromPartial(e)) || [];
-    message.entryStatus = object.entryStatus?.map((e) => HomeroomEntryStatus.fromPartial(e)) || [];
+    message.entry_status = object.entry_status?.map((e) => HomeroomEntryStatus.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseHomeroomEntryStatus(): HomeroomEntryStatus {
-  return { homeroomId: undefined, isComplete: false };
+  return { homeroom_id: undefined, is_complete: false };
 }
 
 export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
   encode(message: HomeroomEntryStatus, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(10).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(10).fork()).join();
     }
-    if (message.isComplete !== false) {
-      writer.uint32(16).bool(message.isComplete);
+    if (message.is_complete !== false) {
+      writer.uint32(16).bool(message.is_complete);
     }
     return writer;
   },
@@ -2035,14 +2035,14 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 16) {
             break;
           }
 
-          message.isComplete = reader.bool();
+          message.is_complete = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2055,18 +2055,18 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
 
   fromJSON(object: any): HomeroomEntryStatus {
     return {
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      isComplete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
     };
   },
 
   toJSON(message: HomeroomEntryStatus): unknown {
     const obj: any = {};
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.isComplete !== false) {
-      obj.isComplete = message.isComplete;
+    if (message.is_complete !== false) {
+      obj.isComplete = message.is_complete;
     }
     return obj;
   },
@@ -2076,16 +2076,16 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
   },
   fromPartial<I extends Exact<DeepPartial<HomeroomEntryStatus>, I>>(object: I): HomeroomEntryStatus {
     const message = createBaseHomeroomEntryStatus();
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.isComplete = object.isComplete ?? false;
+    message.is_complete = object.is_complete ?? false;
     return message;
   },
 };
 
 function createBaseGetHomeroomAttendanceDetailsRequest(): GetHomeroomAttendanceDetailsRequest {
-  return { context: undefined, homeroomId: undefined, date: "", periodNumber: 0 };
+  return { context: undefined, homeroom_id: undefined, date: "", period_number: 0 };
 }
 
 export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendanceDetailsRequest> = {
@@ -2093,14 +2093,14 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
     if (message.date !== "") {
       writer.uint32(26).string(message.date);
     }
-    if (message.periodNumber !== 0) {
-      writer.uint32(32).uint32(message.periodNumber);
+    if (message.period_number !== 0) {
+      writer.uint32(32).uint32(message.period_number);
     }
     return writer;
   },
@@ -2124,7 +2124,7 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -2138,7 +2138,7 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
             break;
           }
 
-          message.periodNumber = reader.uint32();
+          message.period_number = reader.uint32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2152,9 +2152,9 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
   fromJSON(object: any): GetHomeroomAttendanceDetailsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      periodNumber: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
+      period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
     };
   },
 
@@ -2163,14 +2163,14 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     if (message.date !== "") {
       obj.date = message.date;
     }
-    if (message.periodNumber !== 0) {
-      obj.periodNumber = Math.round(message.periodNumber);
+    if (message.period_number !== 0) {
+      obj.periodNumber = Math.round(message.period_number);
     }
     return obj;
   },
@@ -2187,17 +2187,17 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     message.date = object.date ?? "";
-    message.periodNumber = object.periodNumber ?? 0;
+    message.period_number = object.period_number ?? 0;
     return message;
   },
 };
 
 function createBaseGetHomeroomAttendanceDetailsResponse(): GetHomeroomAttendanceDetailsResponse {
-  return { homeroom: undefined, students: [], attendanceEntries: [] };
+  return { homeroom: undefined, students: [], attendance_entries: [] };
 }
 
 export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttendanceDetailsResponse> = {
@@ -2208,7 +2208,7 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
     for (const v of message.students) {
       Student.encode(v!, writer.uint32(18).fork()).join();
     }
-    for (const v of message.attendanceEntries) {
+    for (const v of message.attendance_entries) {
       Attendance.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -2240,7 +2240,7 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
             break;
           }
 
-          message.attendanceEntries.push(Attendance.decode(reader, reader.uint32()));
+          message.attendance_entries.push(Attendance.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2255,7 +2255,7 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
     return {
       homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
       students: globalThis.Array.isArray(object?.students) ? object.students.map((e: any) => Student.fromJSON(e)) : [],
-      attendanceEntries: globalThis.Array.isArray(object?.attendanceEntries)
+      attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
         ? object.attendanceEntries.map((e: any) => Attendance.fromJSON(e))
         : [],
     };
@@ -2269,8 +2269,8 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
     if (message.students?.length) {
       obj.students = message.students.map((e) => Student.toJSON(e));
     }
-    if (message.attendanceEntries?.length) {
-      obj.attendanceEntries = message.attendanceEntries.map((e) => Attendance.toJSON(e));
+    if (message.attendance_entries?.length) {
+      obj.attendanceEntries = message.attendance_entries.map((e) => Attendance.toJSON(e));
     }
     return obj;
   },
@@ -2288,13 +2288,13 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
       ? Homeroom.fromPartial(object.homeroom)
       : undefined;
     message.students = object.students?.map((e) => Student.fromPartial(e)) || [];
-    message.attendanceEntries = object.attendanceEntries?.map((e) => Attendance.fromPartial(e)) || [];
+    message.attendance_entries = object.attendance_entries?.map((e) => Attendance.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetSingleStudentHomeroomAttendanceEntryRequest(): GetSingleStudentHomeroomAttendanceEntryRequest {
-  return { context: undefined, studentId: undefined, homeroomId: undefined, date: "" };
+  return { context: undefined, student_id: undefined, homeroom_id: undefined, date: "" };
 }
 
 export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
@@ -2307,11 +2307,11 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(26).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(26).fork()).join();
     }
     if (message.date !== "") {
       writer.uint32(34).string(message.date);
@@ -2338,14 +2338,14 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -2366,8 +2366,8 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
   fromJSON(object: any): GetSingleStudentHomeroomAttendanceEntryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
     };
   },
@@ -2377,11 +2377,11 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     if (message.date !== "") {
       obj.date = message.date;
@@ -2401,11 +2401,11 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     message.date = object.date ?? "";
     return message;
@@ -2413,7 +2413,7 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
 };
 
 function createBaseGetSingleStudentHomeroomAttendanceEntryResponse(): GetSingleStudentHomeroomAttendanceEntryResponse {
-  return { student: undefined, attendanceEntry: undefined, homeroom: undefined };
+  return { student: undefined, attendance_entry: undefined, homeroom: undefined };
 }
 
 export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
@@ -2426,8 +2426,8 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
     if (message.student !== undefined) {
       Student.encode(message.student, writer.uint32(10).fork()).join();
     }
-    if (message.attendanceEntry !== undefined) {
-      Attendance.encode(message.attendanceEntry, writer.uint32(18).fork()).join();
+    if (message.attendance_entry !== undefined) {
+      Attendance.encode(message.attendance_entry, writer.uint32(18).fork()).join();
     }
     if (message.homeroom !== undefined) {
       Homeroom.encode(message.homeroom, writer.uint32(26).fork()).join();
@@ -2454,7 +2454,7 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
             break;
           }
 
-          message.attendanceEntry = Attendance.decode(reader, reader.uint32());
+          message.attendance_entry = Attendance.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -2475,7 +2475,7 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
   fromJSON(object: any): GetSingleStudentHomeroomAttendanceEntryResponse {
     return {
       student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
-      attendanceEntry: isSet(object.attendanceEntry) ? Attendance.fromJSON(object.attendanceEntry) : undefined,
+      attendance_entry: isSet(object.attendanceEntry) ? Attendance.fromJSON(object.attendanceEntry) : undefined,
       homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
     };
   },
@@ -2485,8 +2485,8 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
     if (message.student !== undefined) {
       obj.student = Student.toJSON(message.student);
     }
-    if (message.attendanceEntry !== undefined) {
-      obj.attendanceEntry = Attendance.toJSON(message.attendanceEntry);
+    if (message.attendance_entry !== undefined) {
+      obj.attendanceEntry = Attendance.toJSON(message.attendance_entry);
     }
     if (message.homeroom !== undefined) {
       obj.homeroom = Homeroom.toJSON(message.homeroom);
@@ -2506,8 +2506,8 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
     message.student = (object.student !== undefined && object.student !== null)
       ? Student.fromPartial(object.student)
       : undefined;
-    message.attendanceEntry = (object.attendanceEntry !== undefined && object.attendanceEntry !== null)
-      ? Attendance.fromPartial(object.attendanceEntry)
+    message.attendance_entry = (object.attendance_entry !== undefined && object.attendance_entry !== null)
+      ? Attendance.fromPartial(object.attendance_entry)
       : undefined;
     message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
       ? Homeroom.fromPartial(object.homeroom)
@@ -2517,7 +2517,7 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
 };
 
 function createBaseGetAttendanceDateMapRequest(): GetAttendanceDateMapRequest {
-  return { context: undefined, classRef: undefined, startDate: "", endDate: "" };
+  return { context: undefined, class_ref: undefined, start_date: "", end_date: "" };
 }
 
 export const GetAttendanceDateMapRequest: MessageFns<GetAttendanceDateMapRequest> = {
@@ -2525,14 +2525,14 @@ export const GetAttendanceDateMapRequest: MessageFns<GetAttendanceDateMapRequest
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.classRef !== undefined) {
-      ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+    if (message.class_ref !== undefined) {
+      ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
     }
-    if (message.startDate !== "") {
-      writer.uint32(26).string(message.startDate);
+    if (message.start_date !== "") {
+      writer.uint32(26).string(message.start_date);
     }
-    if (message.endDate !== "") {
-      writer.uint32(34).string(message.endDate);
+    if (message.end_date !== "") {
+      writer.uint32(34).string(message.end_date);
     }
     return writer;
   },
@@ -2556,21 +2556,21 @@ export const GetAttendanceDateMapRequest: MessageFns<GetAttendanceDateMapRequest
             break;
           }
 
-          message.classRef = ClassRef.decode(reader, reader.uint32());
+          message.class_ref = ClassRef.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.startDate = reader.string();
+          message.start_date = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.endDate = reader.string();
+          message.end_date = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2584,9 +2584,9 @@ export const GetAttendanceDateMapRequest: MessageFns<GetAttendanceDateMapRequest
   fromJSON(object: any): GetAttendanceDateMapRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      classRef: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
-      startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-      endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+      class_ref: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
     };
   },
 
@@ -2595,14 +2595,14 @@ export const GetAttendanceDateMapRequest: MessageFns<GetAttendanceDateMapRequest
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.classRef !== undefined) {
-      obj.classRef = ClassRef.toJSON(message.classRef);
+    if (message.class_ref !== undefined) {
+      obj.classRef = ClassRef.toJSON(message.class_ref);
     }
-    if (message.startDate !== "") {
-      obj.startDate = message.startDate;
+    if (message.start_date !== "") {
+      obj.startDate = message.start_date;
     }
-    if (message.endDate !== "") {
-      obj.endDate = message.endDate;
+    if (message.end_date !== "") {
+      obj.endDate = message.end_date;
     }
     return obj;
   },
@@ -2615,11 +2615,11 @@ export const GetAttendanceDateMapRequest: MessageFns<GetAttendanceDateMapRequest
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.classRef = (object.classRef !== undefined && object.classRef !== null)
-      ? ClassRef.fromPartial(object.classRef)
+    message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+      ? ClassRef.fromPartial(object.class_ref)
       : undefined;
-    message.startDate = object.startDate ?? "";
-    message.endDate = object.endDate ?? "";
+    message.start_date = object.start_date ?? "";
+    message.end_date = object.end_date ?? "";
     return message;
   },
 };
@@ -2686,7 +2686,7 @@ export const GetAttendanceDateMapResponse: MessageFns<GetAttendanceDateMapRespon
 };
 
 function createBaseAttendanceDateMapEntry(): AttendanceDateMapEntry {
-  return { date: "", completionStatus: AttendanceCompletionStatus.EMPTY };
+  return { date: "", completion_status: AttendanceCompletionStatus.EMPTY };
 }
 
 export const AttendanceDateMapEntry: MessageFns<AttendanceDateMapEntry> = {
@@ -2694,8 +2694,8 @@ export const AttendanceDateMapEntry: MessageFns<AttendanceDateMapEntry> = {
     if (message.date !== "") {
       writer.uint32(10).string(message.date);
     }
-    if (message.completionStatus !== AttendanceCompletionStatus.EMPTY) {
-      writer.uint32(16).int32(attendanceCompletionStatusToNumber(message.completionStatus));
+    if (message.completion_status !== AttendanceCompletionStatus.EMPTY) {
+      writer.uint32(16).int32(attendanceCompletionStatusToNumber(message.completion_status));
     }
     return writer;
   },
@@ -2719,7 +2719,7 @@ export const AttendanceDateMapEntry: MessageFns<AttendanceDateMapEntry> = {
             break;
           }
 
-          message.completionStatus = attendanceCompletionStatusFromJSON(reader.int32());
+          message.completion_status = attendanceCompletionStatusFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2733,7 +2733,7 @@ export const AttendanceDateMapEntry: MessageFns<AttendanceDateMapEntry> = {
   fromJSON(object: any): AttendanceDateMapEntry {
     return {
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      completionStatus: isSet(object.completionStatus)
+      completion_status: isSet(object.completionStatus)
         ? attendanceCompletionStatusFromJSON(object.completionStatus)
         : AttendanceCompletionStatus.EMPTY,
     };
@@ -2744,8 +2744,8 @@ export const AttendanceDateMapEntry: MessageFns<AttendanceDateMapEntry> = {
     if (message.date !== "") {
       obj.date = message.date;
     }
-    if (message.completionStatus !== AttendanceCompletionStatus.EMPTY) {
-      obj.completionStatus = attendanceCompletionStatusToJSON(message.completionStatus);
+    if (message.completion_status !== AttendanceCompletionStatus.EMPTY) {
+      obj.completionStatus = attendanceCompletionStatusToJSON(message.completion_status);
     }
     return obj;
   },
@@ -2756,13 +2756,13 @@ export const AttendanceDateMapEntry: MessageFns<AttendanceDateMapEntry> = {
   fromPartial<I extends Exact<DeepPartial<AttendanceDateMapEntry>, I>>(object: I): AttendanceDateMapEntry {
     const message = createBaseAttendanceDateMapEntry();
     message.date = object.date ?? "";
-    message.completionStatus = object.completionStatus ?? AttendanceCompletionStatus.EMPTY;
+    message.completion_status = object.completion_status ?? AttendanceCompletionStatus.EMPTY;
     return message;
   },
 };
 
 function createBaseGetAttendanceCsvDataRequest(): GetAttendanceCsvDataRequest {
-  return { context: undefined, classRef: undefined, startDate: "", endDate: "" };
+  return { context: undefined, class_ref: undefined, start_date: "", end_date: "" };
 }
 
 export const GetAttendanceCsvDataRequest: MessageFns<GetAttendanceCsvDataRequest> = {
@@ -2770,14 +2770,14 @@ export const GetAttendanceCsvDataRequest: MessageFns<GetAttendanceCsvDataRequest
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.classRef !== undefined) {
-      ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+    if (message.class_ref !== undefined) {
+      ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
     }
-    if (message.startDate !== "") {
-      writer.uint32(26).string(message.startDate);
+    if (message.start_date !== "") {
+      writer.uint32(26).string(message.start_date);
     }
-    if (message.endDate !== "") {
-      writer.uint32(34).string(message.endDate);
+    if (message.end_date !== "") {
+      writer.uint32(34).string(message.end_date);
     }
     return writer;
   },
@@ -2801,21 +2801,21 @@ export const GetAttendanceCsvDataRequest: MessageFns<GetAttendanceCsvDataRequest
             break;
           }
 
-          message.classRef = ClassRef.decode(reader, reader.uint32());
+          message.class_ref = ClassRef.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.startDate = reader.string();
+          message.start_date = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.endDate = reader.string();
+          message.end_date = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2829,9 +2829,9 @@ export const GetAttendanceCsvDataRequest: MessageFns<GetAttendanceCsvDataRequest
   fromJSON(object: any): GetAttendanceCsvDataRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      classRef: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
-      startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-      endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+      class_ref: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
     };
   },
 
@@ -2840,14 +2840,14 @@ export const GetAttendanceCsvDataRequest: MessageFns<GetAttendanceCsvDataRequest
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.classRef !== undefined) {
-      obj.classRef = ClassRef.toJSON(message.classRef);
+    if (message.class_ref !== undefined) {
+      obj.classRef = ClassRef.toJSON(message.class_ref);
     }
-    if (message.startDate !== "") {
-      obj.startDate = message.startDate;
+    if (message.start_date !== "") {
+      obj.startDate = message.start_date;
     }
-    if (message.endDate !== "") {
-      obj.endDate = message.endDate;
+    if (message.end_date !== "") {
+      obj.endDate = message.end_date;
     }
     return obj;
   },
@@ -2860,23 +2860,23 @@ export const GetAttendanceCsvDataRequest: MessageFns<GetAttendanceCsvDataRequest
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.classRef = (object.classRef !== undefined && object.classRef !== null)
-      ? ClassRef.fromPartial(object.classRef)
+    message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+      ? ClassRef.fromPartial(object.class_ref)
       : undefined;
-    message.startDate = object.startDate ?? "";
-    message.endDate = object.endDate ?? "";
+    message.start_date = object.start_date ?? "";
+    message.end_date = object.end_date ?? "";
     return message;
   },
 };
 
 function createBaseGetAttendanceCsvDataResponse(): GetAttendanceCsvDataResponse {
-  return { csvData: "", filename: "" };
+  return { csv_data: "", filename: "" };
 }
 
 export const GetAttendanceCsvDataResponse: MessageFns<GetAttendanceCsvDataResponse> = {
   encode(message: GetAttendanceCsvDataResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.csvData !== "") {
-      writer.uint32(10).string(message.csvData);
+    if (message.csv_data !== "") {
+      writer.uint32(10).string(message.csv_data);
     }
     if (message.filename !== "") {
       writer.uint32(18).string(message.filename);
@@ -2896,7 +2896,7 @@ export const GetAttendanceCsvDataResponse: MessageFns<GetAttendanceCsvDataRespon
             break;
           }
 
-          message.csvData = reader.string();
+          message.csv_data = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
@@ -2916,15 +2916,15 @@ export const GetAttendanceCsvDataResponse: MessageFns<GetAttendanceCsvDataRespon
 
   fromJSON(object: any): GetAttendanceCsvDataResponse {
     return {
-      csvData: isSet(object.csvData) ? globalThis.String(object.csvData) : "",
+      csv_data: isSet(object.csvData) ? globalThis.String(object.csvData) : "",
       filename: isSet(object.filename) ? globalThis.String(object.filename) : "",
     };
   },
 
   toJSON(message: GetAttendanceCsvDataResponse): unknown {
     const obj: any = {};
-    if (message.csvData !== "") {
-      obj.csvData = message.csvData;
+    if (message.csv_data !== "") {
+      obj.csvData = message.csv_data;
     }
     if (message.filename !== "") {
       obj.filename = message.filename;
@@ -2937,14 +2937,14 @@ export const GetAttendanceCsvDataResponse: MessageFns<GetAttendanceCsvDataRespon
   },
   fromPartial<I extends Exact<DeepPartial<GetAttendanceCsvDataResponse>, I>>(object: I): GetAttendanceCsvDataResponse {
     const message = createBaseGetAttendanceCsvDataResponse();
-    message.csvData = object.csvData ?? "";
+    message.csv_data = object.csv_data ?? "";
     message.filename = object.filename ?? "";
     return message;
   },
 };
 
 function createBaseGetCourseAttendanceDetailsRequest(): GetCourseAttendanceDetailsRequest {
-  return { context: undefined, courseId: undefined, date: "", periodNumber: 0 };
+  return { context: undefined, course_id: undefined, date: "", period_number: 0 };
 }
 
 export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDetailsRequest> = {
@@ -2952,14 +2952,14 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
     }
     if (message.date !== "") {
       writer.uint32(26).string(message.date);
     }
-    if (message.periodNumber !== 0) {
-      writer.uint32(32).uint32(message.periodNumber);
+    if (message.period_number !== 0) {
+      writer.uint32(32).uint32(message.period_number);
     }
     return writer;
   },
@@ -2983,7 +2983,7 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -2997,7 +2997,7 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
             break;
           }
 
-          message.periodNumber = reader.uint32();
+          message.period_number = reader.uint32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3011,9 +3011,9 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
   fromJSON(object: any): GetCourseAttendanceDetailsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      periodNumber: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
+      period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
     };
   },
 
@@ -3022,14 +3022,14 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.date !== "") {
       obj.date = message.date;
     }
-    if (message.periodNumber !== 0) {
-      obj.periodNumber = Math.round(message.periodNumber);
+    if (message.period_number !== 0) {
+      obj.periodNumber = Math.round(message.period_number);
     }
     return obj;
   },
@@ -3046,17 +3046,17 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
     message.date = object.date ?? "";
-    message.periodNumber = object.periodNumber ?? 0;
+    message.period_number = object.period_number ?? 0;
     return message;
   },
 };
 
 function createBaseGetCourseAttendanceDetailsResponse(): GetCourseAttendanceDetailsResponse {
-  return { course: undefined, students: [], attendanceEntries: [] };
+  return { course: undefined, students: [], attendance_entries: [] };
 }
 
 export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceDetailsResponse> = {
@@ -3067,7 +3067,7 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
     for (const v of message.students) {
       Student.encode(v!, writer.uint32(18).fork()).join();
     }
-    for (const v of message.attendanceEntries) {
+    for (const v of message.attendance_entries) {
       Attendance.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -3099,7 +3099,7 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
             break;
           }
 
-          message.attendanceEntries.push(Attendance.decode(reader, reader.uint32()));
+          message.attendance_entries.push(Attendance.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3114,7 +3114,7 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
     return {
       course: isSet(object.course) ? Course.fromJSON(object.course) : undefined,
       students: globalThis.Array.isArray(object?.students) ? object.students.map((e: any) => Student.fromJSON(e)) : [],
-      attendanceEntries: globalThis.Array.isArray(object?.attendanceEntries)
+      attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
         ? object.attendanceEntries.map((e: any) => Attendance.fromJSON(e))
         : [],
     };
@@ -3128,8 +3128,8 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
     if (message.students?.length) {
       obj.students = message.students.map((e) => Student.toJSON(e));
     }
-    if (message.attendanceEntries?.length) {
-      obj.attendanceEntries = message.attendanceEntries.map((e) => Attendance.toJSON(e));
+    if (message.attendance_entries?.length) {
+      obj.attendanceEntries = message.attendance_entries.map((e) => Attendance.toJSON(e));
     }
     return obj;
   },
@@ -3147,13 +3147,13 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
       ? Course.fromPartial(object.course)
       : undefined;
     message.students = object.students?.map((e) => Student.fromPartial(e)) || [];
-    message.attendanceEntries = object.attendanceEntries?.map((e) => Attendance.fromPartial(e)) || [];
+    message.attendance_entries = object.attendance_entries?.map((e) => Attendance.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetSingleStudentCourseAttendanceEntryRequest(): GetSingleStudentCourseAttendanceEntryRequest {
-  return { context: undefined, studentId: undefined, courseId: undefined, date: "", periodNumber: 0 };
+  return { context: undefined, student_id: undefined, course_id: undefined, date: "", period_number: 0 };
 }
 
 export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleStudentCourseAttendanceEntryRequest> = {
@@ -3164,17 +3164,17 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(26).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
     }
     if (message.date !== "") {
       writer.uint32(34).string(message.date);
     }
-    if (message.periodNumber !== 0) {
-      writer.uint32(40).uint32(message.periodNumber);
+    if (message.period_number !== 0) {
+      writer.uint32(40).uint32(message.period_number);
     }
     return writer;
   },
@@ -3198,14 +3198,14 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -3219,7 +3219,7 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
             break;
           }
 
-          message.periodNumber = reader.uint32();
+          message.period_number = reader.uint32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3233,10 +3233,10 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
   fromJSON(object: any): GetSingleStudentCourseAttendanceEntryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      periodNumber: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
+      period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
     };
   },
 
@@ -3245,17 +3245,17 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.date !== "") {
       obj.date = message.date;
     }
-    if (message.periodNumber !== 0) {
-      obj.periodNumber = Math.round(message.periodNumber);
+    if (message.period_number !== 0) {
+      obj.periodNumber = Math.round(message.period_number);
     }
     return obj;
   },
@@ -3272,20 +3272,20 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
     message.date = object.date ?? "";
-    message.periodNumber = object.periodNumber ?? 0;
+    message.period_number = object.period_number ?? 0;
     return message;
   },
 };
 
 function createBaseGetSingleStudentCourseAttendanceEntryResponse(): GetSingleStudentCourseAttendanceEntryResponse {
-  return { student: undefined, attendanceEntry: undefined, course: undefined };
+  return { student: undefined, attendance_entry: undefined, course: undefined };
 }
 
 export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingleStudentCourseAttendanceEntryResponse> =
@@ -3297,8 +3297,8 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       if (message.student !== undefined) {
         Student.encode(message.student, writer.uint32(10).fork()).join();
       }
-      if (message.attendanceEntry !== undefined) {
-        Attendance.encode(message.attendanceEntry, writer.uint32(18).fork()).join();
+      if (message.attendance_entry !== undefined) {
+        Attendance.encode(message.attendance_entry, writer.uint32(18).fork()).join();
       }
       if (message.course !== undefined) {
         Course.encode(message.course, writer.uint32(26).fork()).join();
@@ -3325,7 +3325,7 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
               break;
             }
 
-            message.attendanceEntry = Attendance.decode(reader, reader.uint32());
+            message.attendance_entry = Attendance.decode(reader, reader.uint32());
             continue;
           case 3:
             if (tag !== 26) {
@@ -3346,7 +3346,7 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
     fromJSON(object: any): GetSingleStudentCourseAttendanceEntryResponse {
       return {
         student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
-        attendanceEntry: isSet(object.attendanceEntry) ? Attendance.fromJSON(object.attendanceEntry) : undefined,
+        attendance_entry: isSet(object.attendanceEntry) ? Attendance.fromJSON(object.attendanceEntry) : undefined,
         course: isSet(object.course) ? Course.fromJSON(object.course) : undefined,
       };
     },
@@ -3356,8 +3356,8 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       if (message.student !== undefined) {
         obj.student = Student.toJSON(message.student);
       }
-      if (message.attendanceEntry !== undefined) {
-        obj.attendanceEntry = Attendance.toJSON(message.attendanceEntry);
+      if (message.attendance_entry !== undefined) {
+        obj.attendanceEntry = Attendance.toJSON(message.attendance_entry);
       }
       if (message.course !== undefined) {
         obj.course = Course.toJSON(message.course);
@@ -3377,8 +3377,8 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       message.student = (object.student !== undefined && object.student !== null)
         ? Student.fromPartial(object.student)
         : undefined;
-      message.attendanceEntry = (object.attendanceEntry !== undefined && object.attendanceEntry !== null)
-        ? Attendance.fromPartial(object.attendanceEntry)
+      message.attendance_entry = (object.attendance_entry !== undefined && object.attendance_entry !== null)
+        ? Attendance.fromPartial(object.attendance_entry)
         : undefined;
       message.course = (object.course !== undefined && object.course !== null)
         ? Course.fromPartial(object.course)

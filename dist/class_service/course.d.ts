@@ -11,24 +11,24 @@ export interface Course {
     semester: Semester | undefined;
     homeroom?: Homeroom | undefined;
     name: string;
-    courseCode: string;
-    teacherIds: ObjectId[];
-    studentIds: ObjectId[];
-    lmsCourse?: LmsCourse | undefined;
-    reportLayout: ReportLayout | undefined;
+    course_code: string;
+    teacher_ids: ObjectId[];
+    student_ids: ObjectId[];
+    lms_course?: LmsCourse | undefined;
+    report_layout: ReportLayout | undefined;
 }
 export interface ListCourse {
     id: ObjectId | undefined;
     archived: boolean;
     name: string;
     semester: ListSemester | undefined;
-    courseCode: string;
+    course_code: string;
     homeroom?: ListHomeroom | undefined;
     teachers: ObjectId[];
 }
 export interface CourseList {
     courses: ListCourse[];
-    coursesCount: number;
+    courses_count: number;
 }
 export declare const Course: MessageFns<Course>;
 export declare const ListCourse: MessageFns<ListCourse>;

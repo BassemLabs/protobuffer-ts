@@ -14,7 +14,7 @@ export const protobufPackage = "payment_service";
 
 export interface HandleWebhookRequest {
   payload: string;
-  stripeSignature: string;
+  stripe_signature: string;
 }
 
 export interface HandleWebhookResponse {
@@ -26,7 +26,7 @@ export interface GetSetupAutoIntentRequest {
 }
 
 export interface GetSetupAutoIntentResponse {
-  setupAutoIntentSecret: string;
+  setup_auto_intent_secret: string;
 }
 
 export interface VerifyMicroDepositsRequest {
@@ -41,26 +41,26 @@ export interface VerifyMicroDepositsResponse {
 
 export interface CreatePaymentIntentRequest {
   context: RequestContext | undefined;
-  paymentType: PaymentType;
-  invoiceId: ObjectId | undefined;
+  payment_type: PaymentType;
+  invoice_id: ObjectId | undefined;
   amount: number;
 }
 
 export interface CreatePaymentIntentResponse {
-  clientSecret: string;
+  client_secret: string;
 }
 
 export interface OnboardOrganizationStripeAccountRequest {
   context: RequestContext | undefined;
-  frontendUrl: string;
+  frontend_url: string;
 }
 
 export interface OnboardOrganizationStripeAccountResponse {
-  accountLinkUrl: string;
+  account_link_url: string;
 }
 
 function createBaseHandleWebhookRequest(): HandleWebhookRequest {
-  return { payload: "", stripeSignature: "" };
+  return { payload: "", stripe_signature: "" };
 }
 
 export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
@@ -68,8 +68,8 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
     if (message.payload !== "") {
       writer.uint32(10).string(message.payload);
     }
-    if (message.stripeSignature !== "") {
-      writer.uint32(18).string(message.stripeSignature);
+    if (message.stripe_signature !== "") {
+      writer.uint32(18).string(message.stripe_signature);
     }
     return writer;
   },
@@ -93,7 +93,7 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
             break;
           }
 
-          message.stripeSignature = reader.string();
+          message.stripe_signature = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -107,7 +107,7 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
   fromJSON(object: any): HandleWebhookRequest {
     return {
       payload: isSet(object.payload) ? globalThis.String(object.payload) : "",
-      stripeSignature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : "",
+      stripe_signature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : "",
     };
   },
 
@@ -116,8 +116,8 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
     if (message.payload !== "") {
       obj.payload = message.payload;
     }
-    if (message.stripeSignature !== "") {
-      obj.stripeSignature = message.stripeSignature;
+    if (message.stripe_signature !== "") {
+      obj.stripeSignature = message.stripe_signature;
     }
     return obj;
   },
@@ -128,7 +128,7 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
   fromPartial<I extends Exact<DeepPartial<HandleWebhookRequest>, I>>(object: I): HandleWebhookRequest {
     const message = createBaseHandleWebhookRequest();
     message.payload = object.payload ?? "";
-    message.stripeSignature = object.stripeSignature ?? "";
+    message.stripe_signature = object.stripe_signature ?? "";
     return message;
   },
 };
@@ -250,13 +250,13 @@ export const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest> = 
 };
 
 function createBaseGetSetupAutoIntentResponse(): GetSetupAutoIntentResponse {
-  return { setupAutoIntentSecret: "" };
+  return { setup_auto_intent_secret: "" };
 }
 
 export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> = {
   encode(message: GetSetupAutoIntentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.setupAutoIntentSecret !== "") {
-      writer.uint32(10).string(message.setupAutoIntentSecret);
+    if (message.setup_auto_intent_secret !== "") {
+      writer.uint32(10).string(message.setup_auto_intent_secret);
     }
     return writer;
   },
@@ -273,7 +273,7 @@ export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> 
             break;
           }
 
-          message.setupAutoIntentSecret = reader.string();
+          message.setup_auto_intent_secret = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -286,14 +286,16 @@ export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> 
 
   fromJSON(object: any): GetSetupAutoIntentResponse {
     return {
-      setupAutoIntentSecret: isSet(object.setupAutoIntentSecret) ? globalThis.String(object.setupAutoIntentSecret) : "",
+      setup_auto_intent_secret: isSet(object.setupAutoIntentSecret)
+        ? globalThis.String(object.setupAutoIntentSecret)
+        : "",
     };
   },
 
   toJSON(message: GetSetupAutoIntentResponse): unknown {
     const obj: any = {};
-    if (message.setupAutoIntentSecret !== "") {
-      obj.setupAutoIntentSecret = message.setupAutoIntentSecret;
+    if (message.setup_auto_intent_secret !== "") {
+      obj.setupAutoIntentSecret = message.setup_auto_intent_secret;
     }
     return obj;
   },
@@ -303,7 +305,7 @@ export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> 
   },
   fromPartial<I extends Exact<DeepPartial<GetSetupAutoIntentResponse>, I>>(object: I): GetSetupAutoIntentResponse {
     const message = createBaseGetSetupAutoIntentResponse();
-    message.setupAutoIntentSecret = object.setupAutoIntentSecret ?? "";
+    message.setup_auto_intent_secret = object.setup_auto_intent_secret ?? "";
     return message;
   },
 };
@@ -457,7 +459,7 @@ export const VerifyMicroDepositsResponse: MessageFns<VerifyMicroDepositsResponse
 };
 
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
-  return { context: undefined, paymentType: PaymentType.Stripe, invoiceId: undefined, amount: 0 };
+  return { context: undefined, payment_type: PaymentType.Stripe, invoice_id: undefined, amount: 0 };
 }
 
 export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> = {
@@ -465,11 +467,11 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.paymentType !== PaymentType.Stripe) {
-      writer.uint32(16).int32(paymentTypeToNumber(message.paymentType));
+    if (message.payment_type !== PaymentType.Stripe) {
+      writer.uint32(16).int32(paymentTypeToNumber(message.payment_type));
     }
-    if (message.invoiceId !== undefined) {
-      ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+    if (message.invoice_id !== undefined) {
+      ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
     }
     if (message.amount !== 0) {
       writer.uint32(33).double(message.amount);
@@ -496,14 +498,14 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
             break;
           }
 
-          message.paymentType = paymentTypeFromJSON(reader.int32());
+          message.payment_type = paymentTypeFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          message.invoice_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 33) {
@@ -524,8 +526,8 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
   fromJSON(object: any): CreatePaymentIntentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
-      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
     };
   },
@@ -535,11 +537,11 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.paymentType !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.paymentType);
+    if (message.payment_type !== PaymentType.Stripe) {
+      obj.paymentType = paymentTypeToJSON(message.payment_type);
     }
-    if (message.invoiceId !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    if (message.invoice_id !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
     }
     if (message.amount !== 0) {
       obj.amount = message.amount;
@@ -555,9 +557,9 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.paymentType = object.paymentType ?? PaymentType.Stripe;
-    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-      ? ObjectId.fromPartial(object.invoiceId)
+    message.payment_type = object.payment_type ?? PaymentType.Stripe;
+    message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+      ? ObjectId.fromPartial(object.invoice_id)
       : undefined;
     message.amount = object.amount ?? 0;
     return message;
@@ -565,13 +567,13 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
 };
 
 function createBaseCreatePaymentIntentResponse(): CreatePaymentIntentResponse {
-  return { clientSecret: "" };
+  return { client_secret: "" };
 }
 
 export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse> = {
   encode(message: CreatePaymentIntentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.clientSecret !== "") {
-      writer.uint32(10).string(message.clientSecret);
+    if (message.client_secret !== "") {
+      writer.uint32(10).string(message.client_secret);
     }
     return writer;
   },
@@ -588,7 +590,7 @@ export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse
             break;
           }
 
-          message.clientSecret = reader.string();
+          message.client_secret = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -600,13 +602,13 @@ export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse
   },
 
   fromJSON(object: any): CreatePaymentIntentResponse {
-    return { clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : "" };
+    return { client_secret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : "" };
   },
 
   toJSON(message: CreatePaymentIntentResponse): unknown {
     const obj: any = {};
-    if (message.clientSecret !== "") {
-      obj.clientSecret = message.clientSecret;
+    if (message.client_secret !== "") {
+      obj.clientSecret = message.client_secret;
     }
     return obj;
   },
@@ -616,13 +618,13 @@ export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse
   },
   fromPartial<I extends Exact<DeepPartial<CreatePaymentIntentResponse>, I>>(object: I): CreatePaymentIntentResponse {
     const message = createBaseCreatePaymentIntentResponse();
-    message.clientSecret = object.clientSecret ?? "";
+    message.client_secret = object.client_secret ?? "";
     return message;
   },
 };
 
 function createBaseOnboardOrganizationStripeAccountRequest(): OnboardOrganizationStripeAccountRequest {
-  return { context: undefined, frontendUrl: "" };
+  return { context: undefined, frontend_url: "" };
 }
 
 export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganizationStripeAccountRequest> = {
@@ -630,8 +632,8 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.frontendUrl !== "") {
-      writer.uint32(18).string(message.frontendUrl);
+    if (message.frontend_url !== "") {
+      writer.uint32(18).string(message.frontend_url);
     }
     return writer;
   },
@@ -655,7 +657,7 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
             break;
           }
 
-          message.frontendUrl = reader.string();
+          message.frontend_url = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -669,7 +671,7 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
   fromJSON(object: any): OnboardOrganizationStripeAccountRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      frontendUrl: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : "",
+      frontend_url: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : "",
     };
   },
 
@@ -678,8 +680,8 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.frontendUrl !== "") {
-      obj.frontendUrl = message.frontendUrl;
+    if (message.frontend_url !== "") {
+      obj.frontendUrl = message.frontend_url;
     }
     return obj;
   },
@@ -696,19 +698,19 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.frontendUrl = object.frontendUrl ?? "";
+    message.frontend_url = object.frontend_url ?? "";
     return message;
   },
 };
 
 function createBaseOnboardOrganizationStripeAccountResponse(): OnboardOrganizationStripeAccountResponse {
-  return { accountLinkUrl: "" };
+  return { account_link_url: "" };
 }
 
 export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganizationStripeAccountResponse> = {
   encode(message: OnboardOrganizationStripeAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.accountLinkUrl !== "") {
-      writer.uint32(10).string(message.accountLinkUrl);
+    if (message.account_link_url !== "") {
+      writer.uint32(10).string(message.account_link_url);
     }
     return writer;
   },
@@ -725,7 +727,7 @@ export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganiz
             break;
           }
 
-          message.accountLinkUrl = reader.string();
+          message.account_link_url = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -737,13 +739,13 @@ export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganiz
   },
 
   fromJSON(object: any): OnboardOrganizationStripeAccountResponse {
-    return { accountLinkUrl: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : "" };
+    return { account_link_url: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : "" };
   },
 
   toJSON(message: OnboardOrganizationStripeAccountResponse): unknown {
     const obj: any = {};
-    if (message.accountLinkUrl !== "") {
-      obj.accountLinkUrl = message.accountLinkUrl;
+    if (message.account_link_url !== "") {
+      obj.accountLinkUrl = message.account_link_url;
     }
     return obj;
   },
@@ -757,7 +759,7 @@ export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganiz
     object: I,
   ): OnboardOrganizationStripeAccountResponse {
     const message = createBaseOnboardOrganizationStripeAccountResponse();
-    message.accountLinkUrl = object.accountLinkUrl ?? "";
+    message.account_link_url = object.account_link_url ?? "";
     return message;
   },
 };

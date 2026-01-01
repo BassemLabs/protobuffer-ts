@@ -4,30 +4,30 @@ import { PhoneNumber } from "../utils/phone_number";
 export declare const protobufPackage = "user_service";
 /** Parent payment information structure */
 export interface ParentPaymentInformation {
-    enableAutoPay: boolean;
+    enable_auto_pay: boolean;
     /** Setup Intent ID - this is only set when an action is required */
-    setupIntentRequiresAction?: string | undefined;
-    setupIntentFailure?: string | undefined;
-    defaultPaymentMethodId?: string | undefined;
-    defaultPaymentMethodType?: string | undefined;
-    paymentMethodBrand?: string | undefined;
-    paymentMethodLast4?: string | undefined;
+    setup_intent_requires_action?: string | undefined;
+    setup_intent_failure?: string | undefined;
+    default_payment_method_id?: string | undefined;
+    default_payment_method_type?: string | undefined;
+    payment_method_brand?: string | undefined;
+    payment_method_last4?: string | undefined;
     /** (for cards only) */
-    paymentMethodExpiry?: string | undefined;
+    payment_method_expiry?: string | undefined;
     /** (for Banks only) */
-    paymentMethodMandateId?: string | undefined;
+    payment_method_mandate_id?: string | undefined;
 }
 /** Full parent model with all fields */
 export interface Parent {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     /** If this is null, it means that the parent never signed-in */
-    firebaseUserId?: string | undefined;
+    firebase_user_id?: string | undefined;
     name: string;
     email: string;
     phone?: PhoneNumber | undefined;
-    stripeCustomerId?: string | undefined;
-    paymentInformation: ParentPaymentInformation | undefined;
+    stripe_customer_id?: string | undefined;
+    payment_information: ParentPaymentInformation | undefined;
 }
 /** Parent profile data for updates */
 export interface ParentProfile {

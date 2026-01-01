@@ -30,58 +30,58 @@ export interface AttendanceResponse {
 }
 /** One-of to reference class context */
 export interface ClassRef {
-    courseId?: ObjectId | undefined;
-    homeroomId?: ObjectId | undefined;
+    course_id?: ObjectId | undefined;
+    homeroom_id?: ObjectId | undefined;
 }
 /** Queries */
 export interface GetStudentEntriesRequest {
     context: RequestContext | undefined;
     /** when omitted, fetch across all classes */
-    classRef?: ClassRef | undefined;
-    studentId: ObjectId | undefined;
+    class_ref?: ClassRef | undefined;
+    student_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    startDate: string;
+    start_date: string;
     /** YYYY-MM-DD format for NaiveDate */
-    endDate: string;
+    end_date: string;
 }
 export interface GetStudentsEntriesCountRequest {
     context: RequestContext | undefined;
     /** when omitted, fetch across all classes */
-    classRef?: ClassRef | undefined;
-    studentIds: ObjectId[];
+    class_ref?: ClassRef | undefined;
+    student_ids: ObjectId[];
     /** YYYY-MM-DD format for NaiveDate */
-    startDate: string;
+    start_date: string;
     /** YYYY-MM-DD format for NaiveDate */
-    endDate: string;
+    end_date: string;
 }
 /** Updates */
 export interface UpdateStatusRequest {
     context: RequestContext | undefined;
-    attendanceEntryId: ObjectId | undefined;
+    attendance_entry_id: ObjectId | undefined;
     status: AttendanceStatus;
 }
 export interface UpdateTimeRequest {
     context: RequestContext | undefined;
-    attendanceEntryId: ObjectId | undefined;
-    timeType: TimeType;
+    attendance_entry_id: ObjectId | undefined;
+    time_type: TimeType;
     time: Date | undefined;
 }
 export interface UpdateReasonRequest {
     context: RequestContext | undefined;
-    attendanceEntryId: ObjectId | undefined;
+    attendance_entry_id: ObjectId | undefined;
     reason: string;
 }
 export interface UpdateLateDismissalDateRequest {
     context: RequestContext | undefined;
-    attendanceEntryId: ObjectId | undefined;
-    lateDismissalDate?: Date | undefined;
+    attendance_entry_id: ObjectId | undefined;
+    late_dismissal_date?: Date | undefined;
 }
 export interface UpdateExcuseStudentRequest {
     context: RequestContext | undefined;
-    attendanceEntryId: ObjectId | undefined;
+    attendance_entry_id: ObjectId | undefined;
     reason: string;
-    studentExcusedBy: ObjectId | undefined;
-    studentExcusedByUserType: UserType;
+    student_excused_by: ObjectId | undefined;
+    student_excused_by_user_type: UserType;
 }
 /** Aggregations */
 export interface AttendanceCounts {
@@ -89,77 +89,77 @@ export interface AttendanceCounts {
     present: number;
     late: number;
     absent: number;
-    excusedAbsent: number;
-    nonExcusedAbsent: number;
+    excused_absent: number;
+    non_excused_absent: number;
 }
 export interface StudentAttendanceCounts {
     student: Student | undefined;
     counts: AttendanceCounts | undefined;
 }
 export interface StudentsAttendanceCountsResponse {
-    studentCounts: StudentAttendanceCounts[];
+    student_counts: StudentAttendanceCounts[];
 }
 export interface GetCoursesAttendanceOverviewRequest {
     context: RequestContext | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    showAllClasses: boolean;
+    show_all_classes: boolean;
 }
 export interface GetCoursesAttendanceOverviewResponse {
     courses: Course[];
     teachers: TeacherBasic[];
-    entryStatus: CourseEntryStatus[];
+    entry_status: CourseEntryStatus[];
 }
 export interface CourseEntryStatus {
-    courseId: ObjectId | undefined;
-    isComplete: boolean;
+    course_id: ObjectId | undefined;
+    is_complete: boolean;
 }
 export interface GetHomeroomsAttendanceOverviewRequest {
     context: RequestContext | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    showAllClasses: boolean;
+    show_all_classes: boolean;
 }
 export interface GetHomeroomsAttendanceOverviewResponse {
     homerooms: Homeroom[];
     teachers: TeacherBasic[];
-    entryStatus: HomeroomEntryStatus[];
+    entry_status: HomeroomEntryStatus[];
 }
 export interface HomeroomEntryStatus {
-    homeroomId: ObjectId | undefined;
-    isComplete: boolean;
+    homeroom_id: ObjectId | undefined;
+    is_complete: boolean;
 }
 export interface GetHomeroomAttendanceDetailsRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    periodNumber: number;
+    period_number: number;
 }
 export interface GetHomeroomAttendanceDetailsResponse {
     homeroom: Homeroom | undefined;
     students: Student[];
-    attendanceEntries: Attendance[];
+    attendance_entries: Attendance[];
 }
 export interface GetSingleStudentHomeroomAttendanceEntryRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    homeroomId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
 }
 export interface GetSingleStudentHomeroomAttendanceEntryResponse {
     student: Student | undefined;
-    attendanceEntry: Attendance | undefined;
+    attendance_entry: Attendance | undefined;
     homeroom: Homeroom | undefined;
 }
 export interface GetAttendanceDateMapRequest {
     context: RequestContext | undefined;
-    classRef: ClassRef | undefined;
+    class_ref: ClassRef | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    startDate: string;
+    start_date: string;
     /** YYYY-MM-DD format for NaiveDate */
-    endDate: string;
+    end_date: string;
 }
 export interface GetAttendanceDateMapResponse {
     entries: AttendanceDateMapEntry[];
@@ -167,43 +167,43 @@ export interface GetAttendanceDateMapResponse {
 export interface AttendanceDateMapEntry {
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    completionStatus: AttendanceCompletionStatus;
+    completion_status: AttendanceCompletionStatus;
 }
 export interface GetAttendanceCsvDataRequest {
     context: RequestContext | undefined;
-    classRef: ClassRef | undefined;
+    class_ref: ClassRef | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    startDate: string;
+    start_date: string;
     /** YYYY-MM-DD format for NaiveDate */
-    endDate: string;
+    end_date: string;
 }
 export interface GetAttendanceCsvDataResponse {
-    csvData: string;
+    csv_data: string;
     filename: string;
 }
 export interface GetCourseAttendanceDetailsRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    periodNumber: number;
+    period_number: number;
 }
 export interface GetCourseAttendanceDetailsResponse {
     course: Course | undefined;
     students: Student[];
-    attendanceEntries: Attendance[];
+    attendance_entries: Attendance[];
 }
 export interface GetSingleStudentCourseAttendanceEntryRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    periodNumber: number;
+    period_number: number;
 }
 export interface GetSingleStudentCourseAttendanceEntryResponse {
     student: Student | undefined;
-    attendanceEntry: Attendance | undefined;
+    attendance_entry: Attendance | undefined;
     course: Course | undefined;
 }
 export declare const AttendanceResponse: MessageFns<AttendanceResponse>;

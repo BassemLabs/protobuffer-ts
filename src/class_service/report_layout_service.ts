@@ -14,12 +14,12 @@ export const protobufPackage = "class_service.report_layout_service";
 
 export interface GetByCourseRequest {
   context: RequestContext | undefined;
-  courseId: ObjectId | undefined;
+  course_id: ObjectId | undefined;
 }
 
 export interface GetByCoursesRequest {
   context: RequestContext | undefined;
-  courseIds: ObjectId[];
+  course_ids: ObjectId[];
 }
 
 export interface GetByCoursesResponse {
@@ -27,18 +27,18 @@ export interface GetByCoursesResponse {
 }
 
 export interface CourseReportLayout {
-  courseId: ObjectId | undefined;
+  course_id: ObjectId | undefined;
   layout: ReportLayout | undefined;
 }
 
 export interface UpdateReportLayoutRequest {
   context: RequestContext | undefined;
-  reportCardLayoutId: ObjectId | undefined;
-  updatedReportCardLayout: ReportLayout | undefined;
+  report_card_layout_id: ObjectId | undefined;
+  updated_report_card_layout: ReportLayout | undefined;
 }
 
 function createBaseGetByCourseRequest(): GetByCourseRequest {
-  return { context: undefined, courseId: undefined };
+  return { context: undefined, course_id: undefined };
 }
 
 export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
@@ -46,8 +46,8 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -71,7 +71,7 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -85,7 +85,7 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
   fromJSON(object: any): GetByCourseRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
     };
   },
 
@@ -94,8 +94,8 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -108,15 +108,15 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetByCoursesRequest(): GetByCoursesRequest {
-  return { context: undefined, courseIds: [] };
+  return { context: undefined, course_ids: [] };
 }
 
 export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
@@ -124,7 +124,7 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    for (const v of message.courseIds) {
+    for (const v of message.course_ids) {
       ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
@@ -149,7 +149,7 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
             break;
           }
 
-          message.courseIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.course_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -163,7 +163,7 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
   fromJSON(object: any): GetByCoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      courseIds: globalThis.Array.isArray(object?.courseIds)
+      course_ids: globalThis.Array.isArray(object?.courseIds)
         ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -174,8 +174,8 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.courseIds?.length) {
-      obj.courseIds = message.courseIds.map((e) => ObjectId.toJSON(e));
+    if (message.course_ids?.length) {
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -188,7 +188,7 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.courseIds = object.courseIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -255,13 +255,13 @@ export const GetByCoursesResponse: MessageFns<GetByCoursesResponse> = {
 };
 
 function createBaseCourseReportLayout(): CourseReportLayout {
-  return { courseId: undefined, layout: undefined };
+  return { course_id: undefined, layout: undefined };
 }
 
 export const CourseReportLayout: MessageFns<CourseReportLayout> = {
   encode(message: CourseReportLayout, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
     }
     if (message.layout !== undefined) {
       ReportLayout.encode(message.layout, writer.uint32(18).fork()).join();
@@ -281,7 +281,7 @@ export const CourseReportLayout: MessageFns<CourseReportLayout> = {
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -301,15 +301,15 @@ export const CourseReportLayout: MessageFns<CourseReportLayout> = {
 
   fromJSON(object: any): CourseReportLayout {
     return {
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       layout: isSet(object.layout) ? ReportLayout.fromJSON(object.layout) : undefined,
     };
   },
 
   toJSON(message: CourseReportLayout): unknown {
     const obj: any = {};
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.layout !== undefined) {
       obj.layout = ReportLayout.toJSON(message.layout);
@@ -322,8 +322,8 @@ export const CourseReportLayout: MessageFns<CourseReportLayout> = {
   },
   fromPartial<I extends Exact<DeepPartial<CourseReportLayout>, I>>(object: I): CourseReportLayout {
     const message = createBaseCourseReportLayout();
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
     message.layout = (object.layout !== undefined && object.layout !== null)
       ? ReportLayout.fromPartial(object.layout)
@@ -333,7 +333,7 @@ export const CourseReportLayout: MessageFns<CourseReportLayout> = {
 };
 
 function createBaseUpdateReportLayoutRequest(): UpdateReportLayoutRequest {
-  return { context: undefined, reportCardLayoutId: undefined, updatedReportCardLayout: undefined };
+  return { context: undefined, report_card_layout_id: undefined, updated_report_card_layout: undefined };
 }
 
 export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = {
@@ -341,11 +341,11 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.reportCardLayoutId !== undefined) {
-      ObjectId.encode(message.reportCardLayoutId, writer.uint32(18).fork()).join();
+    if (message.report_card_layout_id !== undefined) {
+      ObjectId.encode(message.report_card_layout_id, writer.uint32(18).fork()).join();
     }
-    if (message.updatedReportCardLayout !== undefined) {
-      ReportLayout.encode(message.updatedReportCardLayout, writer.uint32(26).fork()).join();
+    if (message.updated_report_card_layout !== undefined) {
+      ReportLayout.encode(message.updated_report_card_layout, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -369,14 +369,14 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
             break;
           }
 
-          message.reportCardLayoutId = ObjectId.decode(reader, reader.uint32());
+          message.report_card_layout_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.updatedReportCardLayout = ReportLayout.decode(reader, reader.uint32());
+          message.updated_report_card_layout = ReportLayout.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -390,8 +390,10 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
   fromJSON(object: any): UpdateReportLayoutRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      reportCardLayoutId: isSet(object.reportCardLayoutId) ? ObjectId.fromJSON(object.reportCardLayoutId) : undefined,
-      updatedReportCardLayout: isSet(object.updatedReportCardLayout)
+      report_card_layout_id: isSet(object.reportCardLayoutId)
+        ? ObjectId.fromJSON(object.reportCardLayoutId)
+        : undefined,
+      updated_report_card_layout: isSet(object.updatedReportCardLayout)
         ? ReportLayout.fromJSON(object.updatedReportCardLayout)
         : undefined,
     };
@@ -402,11 +404,11 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.reportCardLayoutId !== undefined) {
-      obj.reportCardLayoutId = ObjectId.toJSON(message.reportCardLayoutId);
+    if (message.report_card_layout_id !== undefined) {
+      obj.reportCardLayoutId = ObjectId.toJSON(message.report_card_layout_id);
     }
-    if (message.updatedReportCardLayout !== undefined) {
-      obj.updatedReportCardLayout = ReportLayout.toJSON(message.updatedReportCardLayout);
+    if (message.updated_report_card_layout !== undefined) {
+      obj.updatedReportCardLayout = ReportLayout.toJSON(message.updated_report_card_layout);
     }
     return obj;
   },
@@ -419,12 +421,13 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.reportCardLayoutId = (object.reportCardLayoutId !== undefined && object.reportCardLayoutId !== null)
-      ? ObjectId.fromPartial(object.reportCardLayoutId)
-      : undefined;
-    message.updatedReportCardLayout =
-      (object.updatedReportCardLayout !== undefined && object.updatedReportCardLayout !== null)
-        ? ReportLayout.fromPartial(object.updatedReportCardLayout)
+    message.report_card_layout_id =
+      (object.report_card_layout_id !== undefined && object.report_card_layout_id !== null)
+        ? ObjectId.fromPartial(object.report_card_layout_id)
+        : undefined;
+    message.updated_report_card_layout =
+      (object.updated_report_card_layout !== undefined && object.updated_report_card_layout !== null)
+        ? ReportLayout.fromPartial(object.updated_report_card_layout)
         : undefined;
     return message;
   },

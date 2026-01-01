@@ -32,13 +32,13 @@ export declare function emailTemplateKeyToJSON(object: EmailTemplateKey): string
 export declare function emailTemplateKeyToNumber(object: EmailTemplateKey): number;
 export interface EmailTemplate {
     id: ObjectId | undefined;
-    organizationId: ObjectId | undefined;
-    templateKey: EmailTemplateKey;
+    organization_id: ObjectId | undefined;
+    template_key: EmailTemplateKey;
     title: string;
     header: string;
     body: string;
     footer: string;
-    receiverUserType: UserType;
+    receiver_user_type: UserType;
 }
 export declare const EmailTemplate: MessageFns<EmailTemplate>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

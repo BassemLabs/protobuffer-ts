@@ -233,7 +233,7 @@ exports.RemoveDiscountResponse = {
     },
 };
 function createBaseListStudentDiscountsRequest() {
-    return { context: undefined, student: undefined, schoolYear: undefined };
+    return { context: undefined, student: undefined, school_year: undefined };
 }
 exports.ListStudentDiscountsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -243,8 +243,8 @@ exports.ListStudentDiscountsRequest = {
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -271,7 +271,7 @@ exports.ListStudentDiscountsRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -285,7 +285,7 @@ exports.ListStudentDiscountsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -296,8 +296,8 @@ exports.ListStudentDiscountsRequest = {
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -312,8 +312,8 @@ exports.ListStudentDiscountsRequest = {
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         return message;
     },
@@ -373,7 +373,7 @@ exports.ListStudentDiscountsResponse = {
     },
 };
 function createBaseListFamilyDiscountsRequest() {
-    return { context: undefined, family: undefined, schoolYear: undefined };
+    return { context: undefined, family: undefined, school_year: undefined };
 }
 exports.ListFamilyDiscountsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -383,8 +383,8 @@ exports.ListFamilyDiscountsRequest = {
         if (message.family !== undefined) {
             object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -411,7 +411,7 @@ exports.ListFamilyDiscountsRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -425,7 +425,7 @@ exports.ListFamilyDiscountsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -436,8 +436,8 @@ exports.ListFamilyDiscountsRequest = {
         if (message.family !== undefined) {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -452,8 +452,8 @@ exports.ListFamilyDiscountsRequest = {
         message.family = (object.family !== undefined && object.family !== null)
             ? object_id_1.ObjectId.fromPartial(object.family)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         return message;
     },
@@ -513,15 +513,15 @@ exports.ListFamilyDiscountsResponse = {
     },
 };
 function createBaseApplyAdditionalFeeRequest() {
-    return { context: undefined, additionalFee: undefined, student: undefined, family: undefined };
+    return { context: undefined, additional_fee: undefined, student: undefined, family: undefined };
 }
 exports.ApplyAdditionalFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.additionalFee !== undefined) {
-            object_id_1.ObjectId.encode(message.additionalFee, writer.uint32(18).fork()).join();
+        if (message.additional_fee !== undefined) {
+            object_id_1.ObjectId.encode(message.additional_fee, writer.uint32(18).fork()).join();
         }
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(26).fork()).join();
@@ -548,7 +548,7 @@ exports.ApplyAdditionalFeeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.additionalFee = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.additional_fee = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -573,7 +573,7 @@ exports.ApplyAdditionalFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            additionalFee: isSet(object.additionalFee) ? object_id_1.ObjectId.fromJSON(object.additionalFee) : undefined,
+            additional_fee: isSet(object.additionalFee) ? object_id_1.ObjectId.fromJSON(object.additionalFee) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
         };
@@ -583,8 +583,8 @@ exports.ApplyAdditionalFeeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.additionalFee !== undefined) {
-            obj.additionalFee = object_id_1.ObjectId.toJSON(message.additionalFee);
+        if (message.additional_fee !== undefined) {
+            obj.additionalFee = object_id_1.ObjectId.toJSON(message.additional_fee);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
@@ -602,8 +602,8 @@ exports.ApplyAdditionalFeeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.additionalFee = (object.additionalFee !== undefined && object.additionalFee !== null)
-            ? object_id_1.ObjectId.fromPartial(object.additionalFee)
+        message.additional_fee = (object.additional_fee !== undefined && object.additional_fee !== null)
+            ? object_id_1.ObjectId.fromPartial(object.additional_fee)
             : undefined;
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
@@ -733,7 +733,7 @@ exports.RemoveAdditionalFeeResponse = {
     },
 };
 function createBaseListStudentAdditionalFeesRequest() {
-    return { context: undefined, student: undefined, schoolYear: undefined };
+    return { context: undefined, student: undefined, school_year: undefined };
 }
 exports.ListStudentAdditionalFeesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -743,8 +743,8 @@ exports.ListStudentAdditionalFeesRequest = {
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -771,7 +771,7 @@ exports.ListStudentAdditionalFeesRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -785,7 +785,7 @@ exports.ListStudentAdditionalFeesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -796,8 +796,8 @@ exports.ListStudentAdditionalFeesRequest = {
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -812,8 +812,8 @@ exports.ListStudentAdditionalFeesRequest = {
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         return message;
     },
@@ -873,7 +873,7 @@ exports.ListStudentAdditionalFeesResponse = {
     },
 };
 function createBaseListFamilyAdditionalFeesRequest() {
-    return { context: undefined, family: undefined, schoolYear: undefined };
+    return { context: undefined, family: undefined, school_year: undefined };
 }
 exports.ListFamilyAdditionalFeesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -883,8 +883,8 @@ exports.ListFamilyAdditionalFeesRequest = {
         if (message.family !== undefined) {
             object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -911,7 +911,7 @@ exports.ListFamilyAdditionalFeesRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -925,7 +925,7 @@ exports.ListFamilyAdditionalFeesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -936,8 +936,8 @@ exports.ListFamilyAdditionalFeesRequest = {
         if (message.family !== undefined) {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -952,8 +952,8 @@ exports.ListFamilyAdditionalFeesRequest = {
         message.family = (object.family !== undefined && object.family !== null)
             ? object_id_1.ObjectId.fromPartial(object.family)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         return message;
     },

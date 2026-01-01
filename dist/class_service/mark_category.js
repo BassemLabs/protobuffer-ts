@@ -11,15 +11,15 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseMarkCategory() {
-    return { id: undefined, courseId: undefined, name: "", percentage: 0 };
+    return { id: undefined, course_id: undefined, name: "", percentage: 0 };
 }
 exports.MarkCategory = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
@@ -46,7 +46,7 @@ exports.MarkCategory = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -71,7 +71,7 @@ exports.MarkCategory = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
         };
@@ -81,8 +81,8 @@ exports.MarkCategory = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -98,8 +98,8 @@ exports.MarkCategory = {
     fromPartial(object) {
         const message = createBaseMarkCategory();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
         message.name = object.name ?? "";
         message.percentage = object.percentage ?? 0;
@@ -107,15 +107,15 @@ exports.MarkCategory = {
     },
 };
 function createBaseDetailedMarkCategory() {
-    return { id: undefined, courseId: undefined, name: "", percentage: 0, effectivePercentage: 0 };
+    return { id: undefined, course_id: undefined, name: "", percentage: 0, effective_percentage: 0 };
 }
 exports.DetailedMarkCategory = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
@@ -123,8 +123,8 @@ exports.DetailedMarkCategory = {
         if (message.percentage !== 0) {
             writer.uint32(32).uint32(message.percentage);
         }
-        if (message.effectivePercentage !== 0) {
-            writer.uint32(41).double(message.effectivePercentage);
+        if (message.effective_percentage !== 0) {
+            writer.uint32(41).double(message.effective_percentage);
         }
         return writer;
     },
@@ -145,7 +145,7 @@ exports.DetailedMarkCategory = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -163,7 +163,7 @@ exports.DetailedMarkCategory = {
                     if (tag !== 41) {
                         break;
                     }
-                    message.effectivePercentage = reader.double();
+                    message.effective_percentage = reader.double();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -176,10 +176,10 @@ exports.DetailedMarkCategory = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
-            effectivePercentage: isSet(object.effectivePercentage) ? globalThis.Number(object.effectivePercentage) : 0,
+            effective_percentage: isSet(object.effectivePercentage) ? globalThis.Number(object.effectivePercentage) : 0,
         };
     },
     toJSON(message) {
@@ -187,8 +187,8 @@ exports.DetailedMarkCategory = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -196,8 +196,8 @@ exports.DetailedMarkCategory = {
         if (message.percentage !== 0) {
             obj.percentage = Math.round(message.percentage);
         }
-        if (message.effectivePercentage !== 0) {
-            obj.effectivePercentage = message.effectivePercentage;
+        if (message.effective_percentage !== 0) {
+            obj.effectivePercentage = message.effective_percentage;
         }
         return obj;
     },
@@ -207,23 +207,23 @@ exports.DetailedMarkCategory = {
     fromPartial(object) {
         const message = createBaseDetailedMarkCategory();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
         message.name = object.name ?? "";
         message.percentage = object.percentage ?? 0;
-        message.effectivePercentage = object.effectivePercentage ?? 0;
+        message.effective_percentage = object.effective_percentage ?? 0;
         return message;
     },
 };
 function createBasePersonalizedMarkCategory() {
     return {
         id: undefined,
-        courseId: undefined,
-        studentId: undefined,
+        course_id: undefined,
+        student_id: undefined,
         name: "",
         percentage: 0,
-        effectivePercentageForStudent: 0,
+        effective_percentage_for_student: 0,
     };
 }
 exports.PersonalizedMarkCategory = {
@@ -231,11 +231,11 @@ exports.PersonalizedMarkCategory = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
-        if (message.studentId !== undefined) {
-            object_id_1.ObjectId.encode(message.studentId, writer.uint32(26).fork()).join();
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(26).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(34).string(message.name);
@@ -243,8 +243,8 @@ exports.PersonalizedMarkCategory = {
         if (message.percentage !== 0) {
             writer.uint32(40).uint32(message.percentage);
         }
-        if (message.effectivePercentageForStudent !== 0) {
-            writer.uint32(49).double(message.effectivePercentageForStudent);
+        if (message.effective_percentage_for_student !== 0) {
+            writer.uint32(49).double(message.effective_percentage_for_student);
         }
         return writer;
     },
@@ -265,13 +265,13 @@ exports.PersonalizedMarkCategory = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -289,7 +289,7 @@ exports.PersonalizedMarkCategory = {
                     if (tag !== 49) {
                         break;
                     }
-                    message.effectivePercentageForStudent = reader.double();
+                    message.effective_percentage_for_student = reader.double();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -302,11 +302,11 @@ exports.PersonalizedMarkCategory = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
-            effectivePercentageForStudent: isSet(object.effectivePercentageForStudent)
+            effective_percentage_for_student: isSet(object.effectivePercentageForStudent)
                 ? globalThis.Number(object.effectivePercentageForStudent)
                 : 0,
         };
@@ -316,11 +316,11 @@ exports.PersonalizedMarkCategory = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.studentId !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -328,8 +328,8 @@ exports.PersonalizedMarkCategory = {
         if (message.percentage !== 0) {
             obj.percentage = Math.round(message.percentage);
         }
-        if (message.effectivePercentageForStudent !== 0) {
-            obj.effectivePercentageForStudent = message.effectivePercentageForStudent;
+        if (message.effective_percentage_for_student !== 0) {
+            obj.effectivePercentageForStudent = message.effective_percentage_for_student;
         }
         return obj;
     },
@@ -339,15 +339,15 @@ exports.PersonalizedMarkCategory = {
     fromPartial(object) {
         const message = createBasePersonalizedMarkCategory();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.studentId = (object.studentId !== undefined && object.studentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentId)
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
         message.name = object.name ?? "";
         message.percentage = object.percentage ?? 0;
-        message.effectivePercentageForStudent = object.effectivePercentageForStudent ?? 0;
+        message.effective_percentage_for_student = object.effective_percentage_for_student ?? 0;
         return message;
     },
 };

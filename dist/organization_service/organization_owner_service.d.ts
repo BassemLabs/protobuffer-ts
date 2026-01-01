@@ -13,7 +13,7 @@ export interface GetOwnerByEmailRequest {
 }
 export interface GetOwnerRequest {
     context: RequestContext | undefined;
-    ownerId: ObjectId | undefined;
+    owner_id: ObjectId | undefined;
 }
 export interface GetOrganizationOwnerRequest {
     context: RequestContext | undefined;
@@ -21,8 +21,8 @@ export interface GetOrganizationOwnerRequest {
 export interface UpdateOwnerProfileRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
-    mainAddress?: string | undefined;
-    phoneNumber?: string | undefined;
+    main_address?: string | undefined;
+    phone_number?: string | undefined;
 }
 export declare const CreateOwnerRequest: MessageFns<CreateOwnerRequest>;
 export declare const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest>;

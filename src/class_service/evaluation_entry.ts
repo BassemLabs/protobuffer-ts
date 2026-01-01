@@ -13,14 +13,14 @@ export const protobufPackage = "class_service";
 
 export interface EvaluationEntry {
   id: ObjectId | undefined;
-  evaluationId: ObjectId | undefined;
+  evaluation_id: ObjectId | undefined;
   student: ObjectId | undefined;
   mark: number;
-  lastPublishedAt?: Date | undefined;
+  last_published_at?: Date | undefined;
 }
 
 function createBaseEvaluationEntry(): EvaluationEntry {
-  return { id: undefined, evaluationId: undefined, student: undefined, mark: 0, lastPublishedAt: undefined };
+  return { id: undefined, evaluation_id: undefined, student: undefined, mark: 0, last_published_at: undefined };
 }
 
 export const EvaluationEntry: MessageFns<EvaluationEntry> = {
@@ -28,8 +28,8 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.evaluationId !== undefined) {
-      ObjectId.encode(message.evaluationId, writer.uint32(18).fork()).join();
+    if (message.evaluation_id !== undefined) {
+      ObjectId.encode(message.evaluation_id, writer.uint32(18).fork()).join();
     }
     if (message.student !== undefined) {
       ObjectId.encode(message.student, writer.uint32(26).fork()).join();
@@ -37,8 +37,8 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     if (message.mark !== 0) {
       writer.uint32(33).double(message.mark);
     }
-    if (message.lastPublishedAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.lastPublishedAt), writer.uint32(42).fork()).join();
+    if (message.last_published_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.last_published_at), writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -62,7 +62,7 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
             break;
           }
 
-          message.evaluationId = ObjectId.decode(reader, reader.uint32());
+          message.evaluation_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -83,7 +83,7 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
             break;
           }
 
-          message.lastPublishedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.last_published_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -97,10 +97,10 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
   fromJSON(object: any): EvaluationEntry {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      evaluationId: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
       mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
-      lastPublishedAt: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
+      last_published_at: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
     };
   },
 
@@ -109,8 +109,8 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.evaluationId !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluationId);
+    if (message.evaluation_id !== undefined) {
+      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
     }
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);
@@ -118,8 +118,8 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     if (message.mark !== 0) {
       obj.mark = message.mark;
     }
-    if (message.lastPublishedAt !== undefined) {
-      obj.lastPublishedAt = message.lastPublishedAt.toISOString();
+    if (message.last_published_at !== undefined) {
+      obj.lastPublishedAt = message.last_published_at.toISOString();
     }
     return obj;
   },
@@ -130,14 +130,14 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
   fromPartial<I extends Exact<DeepPartial<EvaluationEntry>, I>>(object: I): EvaluationEntry {
     const message = createBaseEvaluationEntry();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.evaluationId = (object.evaluationId !== undefined && object.evaluationId !== null)
-      ? ObjectId.fromPartial(object.evaluationId)
+    message.evaluation_id = (object.evaluation_id !== undefined && object.evaluation_id !== null)
+      ? ObjectId.fromPartial(object.evaluation_id)
       : undefined;
     message.student = (object.student !== undefined && object.student !== null)
       ? ObjectId.fromPartial(object.student)
       : undefined;
     message.mark = object.mark ?? 0;
-    message.lastPublishedAt = object.lastPublishedAt ?? undefined;
+    message.last_published_at = object.last_published_at ?? undefined;
     return message;
   },
 };

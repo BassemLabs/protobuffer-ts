@@ -50,50 +50,50 @@ export declare function discountStackModeToNumber(object: DiscountStackMode): nu
 export interface TuitionRate {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
     grade: StudentGrade;
     amount: number;
 }
 export interface AdditionalFee {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
     name: string;
     description: string;
     amount: number;
-    isOptional: boolean;
+    is_optional: boolean;
     scope: Scope;
 }
 export interface TuitionDiscount {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
     name: string;
-    discountType: DiscountType;
+    discount_type: DiscountType;
     scope: Scope;
-    valueType: DiscountValueType;
+    value_type: DiscountValueType;
     value: number;
     description: string;
-    stackMode: DiscountStackMode;
+    stack_mode: DiscountStackMode;
 }
 export interface TuitionPlan {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
     name: string;
     description: string;
-    scheduleType: PaymentScheduleType;
+    schedule_type: PaymentScheduleType;
     /** For monthly plans : the day of the month that the payment is due */
-    dayOfMonth?: number | undefined;
+    day_of_month?: number | undefined;
     /** For custom plans */
     installments: PaymentInstallment[];
     archived: boolean;
     /** plan dates */
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
 }
 export interface PaymentInstallment {
-    dueDate: Date | undefined;
+    due_date: Date | undefined;
 }
 export declare const TuitionRate: MessageFns<TuitionRate>;
 export declare const AdditionalFee: MessageFns<AdditionalFee>;

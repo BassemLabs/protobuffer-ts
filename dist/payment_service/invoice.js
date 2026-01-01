@@ -176,7 +176,7 @@ function autoPaymentStatusToNumber(object) {
     }
 }
 function createBaseInvoiceItem() {
-    return { title: "", description: "", price: 0, quantity: 0, isBassemLabsFee: false };
+    return { title: "", description: "", price: 0, quantity: 0, is_bassem_labs_fee: false };
 }
 exports.InvoiceItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -192,8 +192,8 @@ exports.InvoiceItem = {
         if (message.quantity !== 0) {
             writer.uint32(32).int32(message.quantity);
         }
-        if (message.isBassemLabsFee !== undefined && message.isBassemLabsFee !== false) {
-            writer.uint32(40).bool(message.isBassemLabsFee);
+        if (message.is_bassem_labs_fee !== undefined && message.is_bassem_labs_fee !== false) {
+            writer.uint32(40).bool(message.is_bassem_labs_fee);
         }
         return writer;
     },
@@ -232,7 +232,7 @@ exports.InvoiceItem = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.isBassemLabsFee = reader.bool();
+                    message.is_bassem_labs_fee = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -248,7 +248,7 @@ exports.InvoiceItem = {
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             price: isSet(object.price) ? globalThis.Number(object.price) : 0,
             quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
-            isBassemLabsFee: isSet(object.isBassemLabsFee) ? globalThis.Boolean(object.isBassemLabsFee) : false,
+            is_bassem_labs_fee: isSet(object.isBassemLabsFee) ? globalThis.Boolean(object.isBassemLabsFee) : false,
         };
     },
     toJSON(message) {
@@ -265,8 +265,8 @@ exports.InvoiceItem = {
         if (message.quantity !== 0) {
             obj.quantity = Math.round(message.quantity);
         }
-        if (message.isBassemLabsFee !== undefined && message.isBassemLabsFee !== false) {
-            obj.isBassemLabsFee = message.isBassemLabsFee;
+        if (message.is_bassem_labs_fee !== undefined && message.is_bassem_labs_fee !== false) {
+            obj.isBassemLabsFee = message.is_bassem_labs_fee;
         }
         return obj;
     },
@@ -279,20 +279,20 @@ exports.InvoiceItem = {
         message.description = object.description ?? "";
         message.price = object.price ?? 0;
         message.quantity = object.quantity ?? 0;
-        message.isBassemLabsFee = object.isBassemLabsFee ?? false;
+        message.is_bassem_labs_fee = object.is_bassem_labs_fee ?? false;
         return message;
     },
 };
 function createBaseCoupon() {
-    return { title: "", valueType: tuition_1.DiscountValueType.AMOUNT, value: 0 };
+    return { title: "", value_type: tuition_1.DiscountValueType.AMOUNT, value: 0 };
 }
 exports.Coupon = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.title !== "") {
             writer.uint32(10).string(message.title);
         }
-        if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
-            writer.uint32(16).int32((0, tuition_1.discountValueTypeToNumber)(message.valueType));
+        if (message.value_type !== tuition_1.DiscountValueType.AMOUNT) {
+            writer.uint32(16).int32((0, tuition_1.discountValueTypeToNumber)(message.value_type));
         }
         if (message.value !== 0) {
             writer.uint32(25).double(message.value);
@@ -316,7 +316,7 @@ exports.Coupon = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.valueType = (0, tuition_1.discountValueTypeFromJSON)(reader.int32());
+                    message.value_type = (0, tuition_1.discountValueTypeFromJSON)(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 25) {
@@ -335,7 +335,7 @@ exports.Coupon = {
     fromJSON(object) {
         return {
             title: isSet(object.title) ? globalThis.String(object.title) : "",
-            valueType: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
+            value_type: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
         };
     },
@@ -344,8 +344,8 @@ exports.Coupon = {
         if (message.title !== "") {
             obj.title = message.title;
         }
-        if (message.valueType !== tuition_1.DiscountValueType.AMOUNT) {
-            obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.valueType);
+        if (message.value_type !== tuition_1.DiscountValueType.AMOUNT) {
+            obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.value_type);
         }
         if (message.value !== 0) {
             obj.value = message.value;
@@ -358,36 +358,36 @@ exports.Coupon = {
     fromPartial(object) {
         const message = createBaseCoupon();
         message.title = object.title ?? "";
-        message.valueType = object.valueType ?? tuition_1.DiscountValueType.AMOUNT;
+        message.value_type = object.value_type ?? tuition_1.DiscountValueType.AMOUNT;
         message.value = object.value ?? 0;
         return message;
     },
 };
 function createBaseOrganizationInvoiceDetails() {
     return {
-        periodStartDate: undefined,
-        periodEndDate: undefined,
-        numberOfStudents: 0,
-        paymentPlanId: undefined,
-        paymentPlanInfoId: undefined,
+        period_start_date: undefined,
+        period_end_date: undefined,
+        number_of_students: 0,
+        payment_plan_id: undefined,
+        payment_plan_info_id: undefined,
     };
 }
 exports.OrganizationInvoiceDetails = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.periodStartDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.periodStartDate), writer.uint32(10).fork()).join();
+        if (message.period_start_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.period_start_date), writer.uint32(10).fork()).join();
         }
-        if (message.periodEndDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.periodEndDate), writer.uint32(18).fork()).join();
+        if (message.period_end_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.period_end_date), writer.uint32(18).fork()).join();
         }
-        if (message.numberOfStudents !== 0) {
-            writer.uint32(24).uint32(message.numberOfStudents);
+        if (message.number_of_students !== 0) {
+            writer.uint32(24).uint32(message.number_of_students);
         }
-        if (message.paymentPlanId !== undefined) {
-            object_id_1.ObjectId.encode(message.paymentPlanId, writer.uint32(34).fork()).join();
+        if (message.payment_plan_id !== undefined) {
+            object_id_1.ObjectId.encode(message.payment_plan_id, writer.uint32(34).fork()).join();
         }
-        if (message.paymentPlanInfoId !== undefined) {
-            object_id_1.ObjectId.encode(message.paymentPlanInfoId, writer.uint32(42).fork()).join();
+        if (message.payment_plan_info_id !== undefined) {
+            object_id_1.ObjectId.encode(message.payment_plan_info_id, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -402,31 +402,31 @@ exports.OrganizationInvoiceDetails = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.periodStartDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.period_start_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.periodEndDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.period_end_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.numberOfStudents = reader.uint32();
+                    message.number_of_students = reader.uint32();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.paymentPlanId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.payment_plan_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.paymentPlanInfoId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.payment_plan_info_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -438,29 +438,29 @@ exports.OrganizationInvoiceDetails = {
     },
     fromJSON(object) {
         return {
-            periodStartDate: isSet(object.periodStartDate) ? fromJsonTimestamp(object.periodStartDate) : undefined,
-            periodEndDate: isSet(object.periodEndDate) ? fromJsonTimestamp(object.periodEndDate) : undefined,
-            numberOfStudents: isSet(object.numberOfStudents) ? globalThis.Number(object.numberOfStudents) : 0,
-            paymentPlanId: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
-            paymentPlanInfoId: isSet(object.paymentPlanInfoId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanInfoId) : undefined,
+            period_start_date: isSet(object.periodStartDate) ? fromJsonTimestamp(object.periodStartDate) : undefined,
+            period_end_date: isSet(object.periodEndDate) ? fromJsonTimestamp(object.periodEndDate) : undefined,
+            number_of_students: isSet(object.numberOfStudents) ? globalThis.Number(object.numberOfStudents) : 0,
+            payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
+            payment_plan_info_id: isSet(object.paymentPlanInfoId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanInfoId) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.periodStartDate !== undefined) {
-            obj.periodStartDate = message.periodStartDate.toISOString();
+        if (message.period_start_date !== undefined) {
+            obj.periodStartDate = message.period_start_date.toISOString();
         }
-        if (message.periodEndDate !== undefined) {
-            obj.periodEndDate = message.periodEndDate.toISOString();
+        if (message.period_end_date !== undefined) {
+            obj.periodEndDate = message.period_end_date.toISOString();
         }
-        if (message.numberOfStudents !== 0) {
-            obj.numberOfStudents = Math.round(message.numberOfStudents);
+        if (message.number_of_students !== 0) {
+            obj.numberOfStudents = Math.round(message.number_of_students);
         }
-        if (message.paymentPlanId !== undefined) {
-            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.paymentPlanId);
+        if (message.payment_plan_id !== undefined) {
+            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
         }
-        if (message.paymentPlanInfoId !== undefined) {
-            obj.paymentPlanInfoId = object_id_1.ObjectId.toJSON(message.paymentPlanInfoId);
+        if (message.payment_plan_info_id !== undefined) {
+            obj.paymentPlanInfoId = object_id_1.ObjectId.toJSON(message.payment_plan_info_id);
         }
         return obj;
     },
@@ -469,14 +469,14 @@ exports.OrganizationInvoiceDetails = {
     },
     fromPartial(object) {
         const message = createBaseOrganizationInvoiceDetails();
-        message.periodStartDate = object.periodStartDate ?? undefined;
-        message.periodEndDate = object.periodEndDate ?? undefined;
-        message.numberOfStudents = object.numberOfStudents ?? 0;
-        message.paymentPlanId = (object.paymentPlanId !== undefined && object.paymentPlanId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.paymentPlanId)
+        message.period_start_date = object.period_start_date ?? undefined;
+        message.period_end_date = object.period_end_date ?? undefined;
+        message.number_of_students = object.number_of_students ?? 0;
+        message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.payment_plan_id)
             : undefined;
-        message.paymentPlanInfoId = (object.paymentPlanInfoId !== undefined && object.paymentPlanInfoId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.paymentPlanInfoId)
+        message.payment_plan_info_id = (object.payment_plan_info_id !== undefined && object.payment_plan_info_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.payment_plan_info_id)
             : undefined;
         return message;
     },
@@ -485,26 +485,26 @@ function createBaseInvoice() {
     return {
         id: undefined,
         organization: undefined,
-        invoiceNumber: 0,
+        invoice_number: 0,
         title: "",
         description: "",
-        showHst: false,
-        disableTax: false,
+        show_hst: false,
+        disable_tax: false,
         archived: false,
         user: undefined,
         family: undefined,
         items: [],
         coupons: [],
-        dueDate: undefined,
-        invoiceStudentRegistrationPipelineStatus: student_1.StudentStatus.WAITLIST,
-        schoolYear: undefined,
-        autoPayEnabled: false,
-        chargeOnDate: undefined,
-        autoPaymentStatus: AutoPaymentStatus.AutoPayPending,
-        isTuition: false,
-        organizationInvoiceDetails: undefined,
-        autoPaymentRetryCount: 0,
-        autoPaymentNextRetryAt: undefined,
+        due_date: undefined,
+        invoice_student_registration_pipeline_status: student_1.StudentStatus.WAITLIST,
+        school_year: undefined,
+        auto_pay_enabled: false,
+        charge_on_date: undefined,
+        auto_payment_status: AutoPaymentStatus.AutoPayPending,
+        is_tuition: false,
+        organization_invoice_details: undefined,
+        auto_payment_retry_count: 0,
+        auto_payment_next_retry_at: undefined,
     };
 }
 exports.Invoice = {
@@ -515,8 +515,8 @@ exports.Invoice = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.invoiceNumber !== 0) {
-            writer.uint32(24).int32(message.invoiceNumber);
+        if (message.invoice_number !== 0) {
+            writer.uint32(24).int32(message.invoice_number);
         }
         if (message.title !== "") {
             writer.uint32(34).string(message.title);
@@ -524,11 +524,11 @@ exports.Invoice = {
         if (message.description !== "") {
             writer.uint32(42).string(message.description);
         }
-        if (message.showHst !== false) {
-            writer.uint32(48).bool(message.showHst);
+        if (message.show_hst !== false) {
+            writer.uint32(48).bool(message.show_hst);
         }
-        if (message.disableTax !== false) {
-            writer.uint32(56).bool(message.disableTax);
+        if (message.disable_tax !== false) {
+            writer.uint32(56).bool(message.disable_tax);
         }
         if (message.archived !== false) {
             writer.uint32(64).bool(message.archived);
@@ -545,36 +545,36 @@ exports.Invoice = {
         for (const v of message.coupons) {
             exports.Coupon.encode(v, writer.uint32(98).fork()).join();
         }
-        if (message.dueDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(106).fork()).join();
+        if (message.due_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(106).fork()).join();
         }
-        if (message.invoiceStudentRegistrationPipelineStatus !== undefined &&
-            message.invoiceStudentRegistrationPipelineStatus !== student_1.StudentStatus.WAITLIST) {
-            writer.uint32(112).int32((0, student_1.studentStatusToNumber)(message.invoiceStudentRegistrationPipelineStatus));
+        if (message.invoice_student_registration_pipeline_status !== undefined &&
+            message.invoice_student_registration_pipeline_status !== student_1.StudentStatus.WAITLIST) {
+            writer.uint32(112).int32((0, student_1.studentStatusToNumber)(message.invoice_student_registration_pipeline_status));
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(122).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(122).fork()).join();
         }
-        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
-            writer.uint32(128).bool(message.autoPayEnabled);
+        if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
+            writer.uint32(128).bool(message.auto_pay_enabled);
         }
-        if (message.chargeOnDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.chargeOnDate), writer.uint32(138).fork()).join();
+        if (message.charge_on_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.charge_on_date), writer.uint32(138).fork()).join();
         }
-        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
-            writer.uint32(144).int32(autoPaymentStatusToNumber(message.autoPaymentStatus));
+        if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+            writer.uint32(144).int32(autoPaymentStatusToNumber(message.auto_payment_status));
         }
-        if (message.isTuition !== false) {
-            writer.uint32(152).bool(message.isTuition);
+        if (message.is_tuition !== false) {
+            writer.uint32(152).bool(message.is_tuition);
         }
-        if (message.organizationInvoiceDetails !== undefined) {
-            exports.OrganizationInvoiceDetails.encode(message.organizationInvoiceDetails, writer.uint32(162).fork()).join();
+        if (message.organization_invoice_details !== undefined) {
+            exports.OrganizationInvoiceDetails.encode(message.organization_invoice_details, writer.uint32(162).fork()).join();
         }
-        if (message.autoPaymentRetryCount !== undefined && message.autoPaymentRetryCount !== 0) {
-            writer.uint32(168).int32(message.autoPaymentRetryCount);
+        if (message.auto_payment_retry_count !== undefined && message.auto_payment_retry_count !== 0) {
+            writer.uint32(168).int32(message.auto_payment_retry_count);
         }
-        if (message.autoPaymentNextRetryAt !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.autoPaymentNextRetryAt), writer.uint32(178).fork()).join();
+        if (message.auto_payment_next_retry_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.auto_payment_next_retry_at), writer.uint32(178).fork()).join();
         }
         return writer;
     },
@@ -601,7 +601,7 @@ exports.Invoice = {
                     if (tag !== 24) {
                         break;
                     }
-                    message.invoiceNumber = reader.int32();
+                    message.invoice_number = reader.int32();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -619,13 +619,13 @@ exports.Invoice = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.showHst = reader.bool();
+                    message.show_hst = reader.bool();
                     continue;
                 case 7:
                     if (tag !== 56) {
                         break;
                     }
-                    message.disableTax = reader.bool();
+                    message.disable_tax = reader.bool();
                     continue;
                 case 8:
                     if (tag !== 64) {
@@ -661,61 +661,61 @@ exports.Invoice = {
                     if (tag !== 106) {
                         break;
                     }
-                    message.dueDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.due_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 14:
                     if (tag !== 112) {
                         break;
                     }
-                    message.invoiceStudentRegistrationPipelineStatus = (0, student_1.studentStatusFromJSON)(reader.int32());
+                    message.invoice_student_registration_pipeline_status = (0, student_1.studentStatusFromJSON)(reader.int32());
                     continue;
                 case 15:
                     if (tag !== 122) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 16:
                     if (tag !== 128) {
                         break;
                     }
-                    message.autoPayEnabled = reader.bool();
+                    message.auto_pay_enabled = reader.bool();
                     continue;
                 case 17:
                     if (tag !== 138) {
                         break;
                     }
-                    message.chargeOnDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.charge_on_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 18:
                     if (tag !== 144) {
                         break;
                     }
-                    message.autoPaymentStatus = autoPaymentStatusFromJSON(reader.int32());
+                    message.auto_payment_status = autoPaymentStatusFromJSON(reader.int32());
                     continue;
                 case 19:
                     if (tag !== 152) {
                         break;
                     }
-                    message.isTuition = reader.bool();
+                    message.is_tuition = reader.bool();
                     continue;
                 case 20:
                     if (tag !== 162) {
                         break;
                     }
-                    message.organizationInvoiceDetails = exports.OrganizationInvoiceDetails.decode(reader, reader.uint32());
+                    message.organization_invoice_details = exports.OrganizationInvoiceDetails.decode(reader, reader.uint32());
                     continue;
                 case 21:
                     if (tag !== 168) {
                         break;
                     }
-                    message.autoPaymentRetryCount = reader.int32();
+                    message.auto_payment_retry_count = reader.int32();
                     continue;
                 case 22:
                     if (tag !== 178) {
                         break;
                     }
-                    message.autoPaymentNextRetryAt = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.auto_payment_next_retry_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -729,32 +729,34 @@ exports.Invoice = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            invoiceNumber: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : 0,
+            invoice_number: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : 0,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            showHst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-            disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+            show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
+            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
             user: isSet(object.user) ? object_id_1.ObjectId.fromJSON(object.user) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => exports.InvoiceItem.fromJSON(e)) : [],
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => exports.Coupon.fromJSON(e)) : [],
-            dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-            invoiceStudentRegistrationPipelineStatus: isSet(object.invoiceStudentRegistrationPipelineStatus)
+            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            invoice_student_registration_pipeline_status: isSet(object.invoiceStudentRegistrationPipelineStatus)
                 ? (0, student_1.studentStatusFromJSON)(object.invoiceStudentRegistrationPipelineStatus)
                 : student_1.StudentStatus.WAITLIST,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            autoPayEnabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-            chargeOnDate: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
-            autoPaymentStatus: isSet(object.autoPaymentStatus)
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+            charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+            auto_payment_status: isSet(object.autoPaymentStatus)
                 ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
                 : AutoPaymentStatus.AutoPayPending,
-            isTuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
-            organizationInvoiceDetails: isSet(object.organizationInvoiceDetails)
+            is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
+            organization_invoice_details: isSet(object.organizationInvoiceDetails)
                 ? exports.OrganizationInvoiceDetails.fromJSON(object.organizationInvoiceDetails)
                 : undefined,
-            autoPaymentRetryCount: isSet(object.autoPaymentRetryCount) ? globalThis.Number(object.autoPaymentRetryCount) : 0,
-            autoPaymentNextRetryAt: isSet(object.autoPaymentNextRetryAt)
+            auto_payment_retry_count: isSet(object.autoPaymentRetryCount)
+                ? globalThis.Number(object.autoPaymentRetryCount)
+                : 0,
+            auto_payment_next_retry_at: isSet(object.autoPaymentNextRetryAt)
                 ? fromJsonTimestamp(object.autoPaymentNextRetryAt)
                 : undefined,
         };
@@ -767,8 +769,8 @@ exports.Invoice = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.invoiceNumber !== 0) {
-            obj.invoiceNumber = Math.round(message.invoiceNumber);
+        if (message.invoice_number !== 0) {
+            obj.invoiceNumber = Math.round(message.invoice_number);
         }
         if (message.title !== "") {
             obj.title = message.title;
@@ -776,11 +778,11 @@ exports.Invoice = {
         if (message.description !== "") {
             obj.description = message.description;
         }
-        if (message.showHst !== false) {
-            obj.showHst = message.showHst;
+        if (message.show_hst !== false) {
+            obj.showHst = message.show_hst;
         }
-        if (message.disableTax !== false) {
-            obj.disableTax = message.disableTax;
+        if (message.disable_tax !== false) {
+            obj.disableTax = message.disable_tax;
         }
         if (message.archived !== false) {
             obj.archived = message.archived;
@@ -797,36 +799,36 @@ exports.Invoice = {
         if (message.coupons?.length) {
             obj.coupons = message.coupons.map((e) => exports.Coupon.toJSON(e));
         }
-        if (message.dueDate !== undefined) {
-            obj.dueDate = message.dueDate.toISOString();
+        if (message.due_date !== undefined) {
+            obj.dueDate = message.due_date.toISOString();
         }
-        if (message.invoiceStudentRegistrationPipelineStatus !== undefined &&
-            message.invoiceStudentRegistrationPipelineStatus !== student_1.StudentStatus.WAITLIST) {
-            obj.invoiceStudentRegistrationPipelineStatus = (0, student_1.studentStatusToJSON)(message.invoiceStudentRegistrationPipelineStatus);
+        if (message.invoice_student_registration_pipeline_status !== undefined &&
+            message.invoice_student_registration_pipeline_status !== student_1.StudentStatus.WAITLIST) {
+            obj.invoiceStudentRegistrationPipelineStatus = (0, student_1.studentStatusToJSON)(message.invoice_student_registration_pipeline_status);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
-        if (message.autoPayEnabled !== undefined && message.autoPayEnabled !== false) {
-            obj.autoPayEnabled = message.autoPayEnabled;
+        if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
+            obj.autoPayEnabled = message.auto_pay_enabled;
         }
-        if (message.chargeOnDate !== undefined) {
-            obj.chargeOnDate = message.chargeOnDate.toISOString();
+        if (message.charge_on_date !== undefined) {
+            obj.chargeOnDate = message.charge_on_date.toISOString();
         }
-        if (message.autoPaymentStatus !== undefined && message.autoPaymentStatus !== AutoPaymentStatus.AutoPayPending) {
-            obj.autoPaymentStatus = autoPaymentStatusToJSON(message.autoPaymentStatus);
+        if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+            obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
         }
-        if (message.isTuition !== false) {
-            obj.isTuition = message.isTuition;
+        if (message.is_tuition !== false) {
+            obj.isTuition = message.is_tuition;
         }
-        if (message.organizationInvoiceDetails !== undefined) {
-            obj.organizationInvoiceDetails = exports.OrganizationInvoiceDetails.toJSON(message.organizationInvoiceDetails);
+        if (message.organization_invoice_details !== undefined) {
+            obj.organizationInvoiceDetails = exports.OrganizationInvoiceDetails.toJSON(message.organization_invoice_details);
         }
-        if (message.autoPaymentRetryCount !== undefined && message.autoPaymentRetryCount !== 0) {
-            obj.autoPaymentRetryCount = Math.round(message.autoPaymentRetryCount);
+        if (message.auto_payment_retry_count !== undefined && message.auto_payment_retry_count !== 0) {
+            obj.autoPaymentRetryCount = Math.round(message.auto_payment_retry_count);
         }
-        if (message.autoPaymentNextRetryAt !== undefined) {
-            obj.autoPaymentNextRetryAt = message.autoPaymentNextRetryAt.toISOString();
+        if (message.auto_payment_next_retry_at !== undefined) {
+            obj.autoPaymentNextRetryAt = message.auto_payment_next_retry_at.toISOString();
         }
         return obj;
     },
@@ -839,11 +841,11 @@ exports.Invoice = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.invoiceNumber = object.invoiceNumber ?? 0;
+        message.invoice_number = object.invoice_number ?? 0;
         message.title = object.title ?? "";
         message.description = object.description ?? "";
-        message.showHst = object.showHst ?? false;
-        message.disableTax = object.disableTax ?? false;
+        message.show_hst = object.show_hst ?? false;
+        message.disable_tax = object.disable_tax ?? false;
         message.archived = object.archived ?? false;
         message.user = (object.user !== undefined && object.user !== null) ? object_id_1.ObjectId.fromPartial(object.user) : undefined;
         message.family = (object.family !== undefined && object.family !== null)
@@ -851,22 +853,22 @@ exports.Invoice = {
             : undefined;
         message.items = object.items?.map((e) => exports.InvoiceItem.fromPartial(e)) || [];
         message.coupons = object.coupons?.map((e) => exports.Coupon.fromPartial(e)) || [];
-        message.dueDate = object.dueDate ?? undefined;
-        message.invoiceStudentRegistrationPipelineStatus = object.invoiceStudentRegistrationPipelineStatus ??
+        message.due_date = object.due_date ?? undefined;
+        message.invoice_student_registration_pipeline_status = object.invoice_student_registration_pipeline_status ??
             student_1.StudentStatus.WAITLIST;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
-        message.autoPayEnabled = object.autoPayEnabled ?? false;
-        message.chargeOnDate = object.chargeOnDate ?? undefined;
-        message.autoPaymentStatus = object.autoPaymentStatus ?? AutoPaymentStatus.AutoPayPending;
-        message.isTuition = object.isTuition ?? false;
-        message.organizationInvoiceDetails =
-            (object.organizationInvoiceDetails !== undefined && object.organizationInvoiceDetails !== null)
-                ? exports.OrganizationInvoiceDetails.fromPartial(object.organizationInvoiceDetails)
+        message.auto_pay_enabled = object.auto_pay_enabled ?? false;
+        message.charge_on_date = object.charge_on_date ?? undefined;
+        message.auto_payment_status = object.auto_payment_status ?? AutoPaymentStatus.AutoPayPending;
+        message.is_tuition = object.is_tuition ?? false;
+        message.organization_invoice_details =
+            (object.organization_invoice_details !== undefined && object.organization_invoice_details !== null)
+                ? exports.OrganizationInvoiceDetails.fromPartial(object.organization_invoice_details)
                 : undefined;
-        message.autoPaymentRetryCount = object.autoPaymentRetryCount ?? 0;
-        message.autoPaymentNextRetryAt = object.autoPaymentNextRetryAt ?? undefined;
+        message.auto_payment_retry_count = object.auto_payment_retry_count ?? 0;
+        message.auto_payment_next_retry_at = object.auto_payment_next_retry_at ?? undefined;
         return message;
     },
 };
@@ -874,13 +876,13 @@ function createBaseInvoiceResponse() {
     return {
         invoice: undefined,
         transactions: [],
-        totalAmount: 0,
-        grossAmountPaid: 0,
+        total_amount: 0,
+        gross_amount_paid: 0,
         status: InvoiceStatus.Paid,
-        billToName: "",
-        refundTransactions: [],
-        totalAmountRefunded: 0,
-        netAmountPaid: 0,
+        bill_to_name: "",
+        refund_transactions: [],
+        total_amount_refunded: 0,
+        net_amount_paid: 0,
     };
 }
 exports.InvoiceResponse = {
@@ -891,26 +893,26 @@ exports.InvoiceResponse = {
         for (const v of message.transactions) {
             transaction_1.Transaction.encode(v, writer.uint32(18).fork()).join();
         }
-        if (message.totalAmount !== 0) {
-            writer.uint32(25).double(message.totalAmount);
+        if (message.total_amount !== 0) {
+            writer.uint32(25).double(message.total_amount);
         }
-        if (message.grossAmountPaid !== 0) {
-            writer.uint32(33).double(message.grossAmountPaid);
+        if (message.gross_amount_paid !== 0) {
+            writer.uint32(33).double(message.gross_amount_paid);
         }
         if (message.status !== InvoiceStatus.Paid) {
             writer.uint32(40).int32(invoiceStatusToNumber(message.status));
         }
-        if (message.billToName !== undefined && message.billToName !== "") {
-            writer.uint32(50).string(message.billToName);
+        if (message.bill_to_name !== undefined && message.bill_to_name !== "") {
+            writer.uint32(50).string(message.bill_to_name);
         }
-        for (const v of message.refundTransactions) {
+        for (const v of message.refund_transactions) {
             transaction_1.RefundTransaction.encode(v, writer.uint32(58).fork()).join();
         }
-        if (message.totalAmountRefunded !== 0) {
-            writer.uint32(65).double(message.totalAmountRefunded);
+        if (message.total_amount_refunded !== 0) {
+            writer.uint32(65).double(message.total_amount_refunded);
         }
-        if (message.netAmountPaid !== 0) {
-            writer.uint32(73).double(message.netAmountPaid);
+        if (message.net_amount_paid !== 0) {
+            writer.uint32(73).double(message.net_amount_paid);
         }
         return writer;
     },
@@ -937,13 +939,13 @@ exports.InvoiceResponse = {
                     if (tag !== 25) {
                         break;
                     }
-                    message.totalAmount = reader.double();
+                    message.total_amount = reader.double();
                     continue;
                 case 4:
                     if (tag !== 33) {
                         break;
                     }
-                    message.grossAmountPaid = reader.double();
+                    message.gross_amount_paid = reader.double();
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -955,25 +957,25 @@ exports.InvoiceResponse = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.billToName = reader.string();
+                    message.bill_to_name = reader.string();
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.refundTransactions.push(transaction_1.RefundTransaction.decode(reader, reader.uint32()));
+                    message.refund_transactions.push(transaction_1.RefundTransaction.decode(reader, reader.uint32()));
                     continue;
                 case 8:
                     if (tag !== 65) {
                         break;
                     }
-                    message.totalAmountRefunded = reader.double();
+                    message.total_amount_refunded = reader.double();
                     continue;
                 case 9:
                     if (tag !== 73) {
                         break;
                     }
-                    message.netAmountPaid = reader.double();
+                    message.net_amount_paid = reader.double();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -989,15 +991,15 @@ exports.InvoiceResponse = {
             transactions: globalThis.Array.isArray(object?.transactions)
                 ? object.transactions.map((e) => transaction_1.Transaction.fromJSON(e))
                 : [],
-            totalAmount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0,
-            grossAmountPaid: isSet(object.grossAmountPaid) ? globalThis.Number(object.grossAmountPaid) : 0,
+            total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0,
+            gross_amount_paid: isSet(object.grossAmountPaid) ? globalThis.Number(object.grossAmountPaid) : 0,
             status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
-            billToName: isSet(object.billToName) ? globalThis.String(object.billToName) : "",
-            refundTransactions: globalThis.Array.isArray(object?.refundTransactions)
+            bill_to_name: isSet(object.billToName) ? globalThis.String(object.billToName) : "",
+            refund_transactions: globalThis.Array.isArray(object?.refundTransactions)
                 ? object.refundTransactions.map((e) => transaction_1.RefundTransaction.fromJSON(e))
                 : [],
-            totalAmountRefunded: isSet(object.totalAmountRefunded) ? globalThis.Number(object.totalAmountRefunded) : 0,
-            netAmountPaid: isSet(object.netAmountPaid) ? globalThis.Number(object.netAmountPaid) : 0,
+            total_amount_refunded: isSet(object.totalAmountRefunded) ? globalThis.Number(object.totalAmountRefunded) : 0,
+            net_amount_paid: isSet(object.netAmountPaid) ? globalThis.Number(object.netAmountPaid) : 0,
         };
     },
     toJSON(message) {
@@ -1008,26 +1010,26 @@ exports.InvoiceResponse = {
         if (message.transactions?.length) {
             obj.transactions = message.transactions.map((e) => transaction_1.Transaction.toJSON(e));
         }
-        if (message.totalAmount !== 0) {
-            obj.totalAmount = message.totalAmount;
+        if (message.total_amount !== 0) {
+            obj.totalAmount = message.total_amount;
         }
-        if (message.grossAmountPaid !== 0) {
-            obj.grossAmountPaid = message.grossAmountPaid;
+        if (message.gross_amount_paid !== 0) {
+            obj.grossAmountPaid = message.gross_amount_paid;
         }
         if (message.status !== InvoiceStatus.Paid) {
             obj.status = invoiceStatusToJSON(message.status);
         }
-        if (message.billToName !== undefined && message.billToName !== "") {
-            obj.billToName = message.billToName;
+        if (message.bill_to_name !== undefined && message.bill_to_name !== "") {
+            obj.billToName = message.bill_to_name;
         }
-        if (message.refundTransactions?.length) {
-            obj.refundTransactions = message.refundTransactions.map((e) => transaction_1.RefundTransaction.toJSON(e));
+        if (message.refund_transactions?.length) {
+            obj.refundTransactions = message.refund_transactions.map((e) => transaction_1.RefundTransaction.toJSON(e));
         }
-        if (message.totalAmountRefunded !== 0) {
-            obj.totalAmountRefunded = message.totalAmountRefunded;
+        if (message.total_amount_refunded !== 0) {
+            obj.totalAmountRefunded = message.total_amount_refunded;
         }
-        if (message.netAmountPaid !== 0) {
-            obj.netAmountPaid = message.netAmountPaid;
+        if (message.net_amount_paid !== 0) {
+            obj.netAmountPaid = message.net_amount_paid;
         }
         return obj;
     },
@@ -1040,32 +1042,32 @@ exports.InvoiceResponse = {
             ? exports.Invoice.fromPartial(object.invoice)
             : undefined;
         message.transactions = object.transactions?.map((e) => transaction_1.Transaction.fromPartial(e)) || [];
-        message.totalAmount = object.totalAmount ?? 0;
-        message.grossAmountPaid = object.grossAmountPaid ?? 0;
+        message.total_amount = object.total_amount ?? 0;
+        message.gross_amount_paid = object.gross_amount_paid ?? 0;
         message.status = object.status ?? InvoiceStatus.Paid;
-        message.billToName = object.billToName ?? "";
-        message.refundTransactions = object.refundTransactions?.map((e) => transaction_1.RefundTransaction.fromPartial(e)) || [];
-        message.totalAmountRefunded = object.totalAmountRefunded ?? 0;
-        message.netAmountPaid = object.netAmountPaid ?? 0;
+        message.bill_to_name = object.bill_to_name ?? "";
+        message.refund_transactions = object.refund_transactions?.map((e) => transaction_1.RefundTransaction.fromPartial(e)) || [];
+        message.total_amount_refunded = object.total_amount_refunded ?? 0;
+        message.net_amount_paid = object.net_amount_paid ?? 0;
         return message;
     },
 };
 function createBaseInvoiceFilter() {
     return {
-        perPage: 0,
+        per_page: 0,
         page: 0,
         title: "",
         status: InvoiceStatus.Paid,
         archived: false,
         user: undefined,
         family: undefined,
-        schoolYear: undefined,
+        school_year: undefined,
     };
 }
 exports.InvoiceFilter = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.perPage !== undefined && message.perPage !== 0) {
-            writer.uint32(8).int32(message.perPage);
+        if (message.per_page !== undefined && message.per_page !== 0) {
+            writer.uint32(8).int32(message.per_page);
         }
         if (message.page !== undefined && message.page !== 0) {
             writer.uint32(16).int32(message.page);
@@ -1085,8 +1087,8 @@ exports.InvoiceFilter = {
         if (message.family !== undefined) {
             object_id_1.ObjectId.encode(message.family, writer.uint32(58).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(66).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -1101,7 +1103,7 @@ exports.InvoiceFilter = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.perPage = reader.int32();
+                    message.per_page = reader.int32();
                     continue;
                 case 2:
                     if (tag !== 16) {
@@ -1143,7 +1145,7 @@ exports.InvoiceFilter = {
                     if (tag !== 66) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1155,20 +1157,20 @@ exports.InvoiceFilter = {
     },
     fromJSON(object) {
         return {
-            perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
             user: isSet(object.user) ? object_id_1.ObjectId.fromJSON(object.user) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.perPage !== undefined && message.perPage !== 0) {
-            obj.perPage = Math.round(message.perPage);
+        if (message.per_page !== undefined && message.per_page !== 0) {
+            obj.perPage = Math.round(message.per_page);
         }
         if (message.page !== undefined && message.page !== 0) {
             obj.page = Math.round(message.page);
@@ -1188,8 +1190,8 @@ exports.InvoiceFilter = {
         if (message.family !== undefined) {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -1198,7 +1200,7 @@ exports.InvoiceFilter = {
     },
     fromPartial(object) {
         const message = createBaseInvoiceFilter();
-        message.perPage = object.perPage ?? 0;
+        message.per_page = object.per_page ?? 0;
         message.page = object.page ?? 0;
         message.title = object.title ?? "";
         message.status = object.status ?? InvoiceStatus.Paid;
@@ -1207,8 +1209,8 @@ exports.InvoiceFilter = {
         message.family = (object.family !== undefined && object.family !== null)
             ? object_id_1.ObjectId.fromPartial(object.family)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         return message;
     },
@@ -1217,11 +1219,11 @@ function createBaseAutoPaymentAttempt() {
     return {
         id: undefined,
         organization: undefined,
-        invoiceId: undefined,
-        attemptedAt: undefined,
+        invoice_id: undefined,
+        attempted_at: undefined,
         status: AutoPaymentStatus.AutoPayPending,
-        errorMessage: "",
-        attemptNumber: 0,
+        error_message: "",
+        attempt_number: 0,
     };
 }
 exports.AutoPaymentAttempt = {
@@ -1232,20 +1234,20 @@ exports.AutoPaymentAttempt = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.invoiceId !== undefined) {
-            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
         }
-        if (message.attemptedAt !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.attemptedAt), writer.uint32(34).fork()).join();
+        if (message.attempted_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.attempted_at), writer.uint32(34).fork()).join();
         }
         if (message.status !== AutoPaymentStatus.AutoPayPending) {
             writer.uint32(40).int32(autoPaymentStatusToNumber(message.status));
         }
-        if (message.errorMessage !== undefined && message.errorMessage !== "") {
-            writer.uint32(50).string(message.errorMessage);
+        if (message.error_message !== undefined && message.error_message !== "") {
+            writer.uint32(50).string(message.error_message);
         }
-        if (message.attemptNumber !== 0) {
-            writer.uint32(56).int32(message.attemptNumber);
+        if (message.attempt_number !== 0) {
+            writer.uint32(56).int32(message.attempt_number);
         }
         return writer;
     },
@@ -1272,13 +1274,13 @@ exports.AutoPaymentAttempt = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.attemptedAt = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.attempted_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -1290,13 +1292,13 @@ exports.AutoPaymentAttempt = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.errorMessage = reader.string();
+                    message.error_message = reader.string();
                     continue;
                 case 7:
                     if (tag !== 56) {
                         break;
                     }
-                    message.attemptNumber = reader.int32();
+                    message.attempt_number = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1310,11 +1312,11 @@ exports.AutoPaymentAttempt = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
-            attemptedAt: isSet(object.attemptedAt) ? fromJsonTimestamp(object.attemptedAt) : undefined,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            attempted_at: isSet(object.attemptedAt) ? fromJsonTimestamp(object.attemptedAt) : undefined,
             status: isSet(object.status) ? autoPaymentStatusFromJSON(object.status) : AutoPaymentStatus.AutoPayPending,
-            errorMessage: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
-            attemptNumber: isSet(object.attemptNumber) ? globalThis.Number(object.attemptNumber) : 0,
+            error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
+            attempt_number: isSet(object.attemptNumber) ? globalThis.Number(object.attemptNumber) : 0,
         };
     },
     toJSON(message) {
@@ -1325,20 +1327,20 @@ exports.AutoPaymentAttempt = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.invoiceId !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
-        if (message.attemptedAt !== undefined) {
-            obj.attemptedAt = message.attemptedAt.toISOString();
+        if (message.attempted_at !== undefined) {
+            obj.attemptedAt = message.attempted_at.toISOString();
         }
         if (message.status !== AutoPaymentStatus.AutoPayPending) {
             obj.status = autoPaymentStatusToJSON(message.status);
         }
-        if (message.errorMessage !== undefined && message.errorMessage !== "") {
-            obj.errorMessage = message.errorMessage;
+        if (message.error_message !== undefined && message.error_message !== "") {
+            obj.errorMessage = message.error_message;
         }
-        if (message.attemptNumber !== 0) {
-            obj.attemptNumber = Math.round(message.attemptNumber);
+        if (message.attempt_number !== 0) {
+            obj.attemptNumber = Math.round(message.attempt_number);
         }
         return obj;
     },
@@ -1351,13 +1353,13 @@ exports.AutoPaymentAttempt = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;
-        message.attemptedAt = object.attemptedAt ?? undefined;
+        message.attempted_at = object.attempted_at ?? undefined;
         message.status = object.status ?? AutoPaymentStatus.AutoPayPending;
-        message.errorMessage = object.errorMessage ?? "";
-        message.attemptNumber = object.attemptNumber ?? 0;
+        message.error_message = object.error_message ?? "";
+        message.attempt_number = object.attempt_number ?? 0;
         return message;
     },
 };

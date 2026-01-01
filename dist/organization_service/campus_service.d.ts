@@ -9,8 +9,8 @@ export interface CreateCampusRequest {
     address: string;
     email: string;
     phone: string;
-    principalId: ObjectId | undefined;
-    supervisorId: ObjectId | undefined;
+    principal_id: ObjectId | undefined;
+    supervisor_id: ObjectId | undefined;
 }
 export interface UpdateCampusRequest {
     context: RequestContext | undefined;
@@ -19,22 +19,22 @@ export interface UpdateCampusRequest {
     address: string;
     email: string;
     phone: string;
-    principalId: ObjectId | undefined;
-    supervisorId: ObjectId | undefined;
+    principal_id: ObjectId | undefined;
+    supervisor_id: ObjectId | undefined;
 }
 export interface UpdateLogoRequest {
     context: RequestContext | undefined;
-    campusId: ObjectId | undefined;
-    fileName: string;
-    awsS3FileLocation: string;
+    campus_id: ObjectId | undefined;
+    file_name: string;
+    aws_s3_file_location: string;
 }
 export interface GetCampusRequest {
     context: RequestContext | undefined;
-    campusId: ObjectId | undefined;
+    campus_id: ObjectId | undefined;
 }
 export interface GetOrganizationCampusesRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface GetOrganizationCampusesResponse {
     campuses: Campus[];

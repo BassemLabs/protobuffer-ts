@@ -40,90 +40,90 @@ export interface InvoiceItem {
     description: string;
     price: number;
     quantity: number;
-    isBassemLabsFee?: boolean | undefined;
+    is_bassem_labs_fee?: boolean | undefined;
 }
 export interface Coupon {
     title: string;
-    valueType: DiscountValueType;
+    value_type: DiscountValueType;
     /** percentage or amount value */
     value: number;
 }
 export interface OrganizationInvoiceDetails {
-    periodStartDate: Date | undefined;
-    periodEndDate: Date | undefined;
-    numberOfStudents: number;
-    paymentPlanId: ObjectId | undefined;
-    paymentPlanInfoId: ObjectId | undefined;
+    period_start_date: Date | undefined;
+    period_end_date: Date | undefined;
+    number_of_students: number;
+    payment_plan_id: ObjectId | undefined;
+    payment_plan_info_id: ObjectId | undefined;
 }
 export interface Invoice {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    invoiceNumber: number;
+    invoice_number: number;
     title: string;
     description: string;
-    showHst: boolean;
-    disableTax: boolean;
+    show_hst: boolean;
+    disable_tax: boolean;
     archived: boolean;
     user?: ObjectId | undefined;
     family?: ObjectId | undefined;
     items: InvoiceItem[];
     coupons: Coupon[];
-    dueDate?: Date | undefined;
-    invoiceStudentRegistrationPipelineStatus?: StudentStatus | undefined;
-    schoolYear: ObjectId | undefined;
+    due_date?: Date | undefined;
+    invoice_student_registration_pipeline_status?: StudentStatus | undefined;
+    school_year: ObjectId | undefined;
     /**
      * Auto pay fields
      * If autopay is enabled for this invoice
      */
-    autoPayEnabled?: boolean | undefined;
+    auto_pay_enabled?: boolean | undefined;
     /** Date when this invoice must be automatically charged one */
-    chargeOnDate?: Date | undefined;
-    autoPaymentStatus?: AutoPaymentStatus | undefined;
+    charge_on_date?: Date | undefined;
+    auto_payment_status?: AutoPaymentStatus | undefined;
     /** determine if this invoice is a tuition invoice */
-    isTuition: boolean;
+    is_tuition: boolean;
     /** Organization-specific invoice details */
-    organizationInvoiceDetails?: OrganizationInvoiceDetails | undefined;
+    organization_invoice_details?: OrganizationInvoiceDetails | undefined;
     /**
      * Auto payment retry fields
      * Number of payment retry attempts made
      */
-    autoPaymentRetryCount?: number | undefined;
+    auto_payment_retry_count?: number | undefined;
     /** Timestamp for the next scheduled retry attempt (used for scheduling job queries) */
-    autoPaymentNextRetryAt?: Date | undefined;
+    auto_payment_next_retry_at?: Date | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;
     transactions: Transaction[];
     /** Total amount of the invoice */
-    totalAmount: number;
+    total_amount: number;
     /** Total amount paid towards the invoice, excludes refunds, processing fees, (includes bassemlabs fees) */
-    grossAmountPaid: number;
+    gross_amount_paid: number;
     status: InvoiceStatus;
-    billToName?: string | undefined;
-    refundTransactions: RefundTransaction[];
+    bill_to_name?: string | undefined;
+    refund_transactions: RefundTransaction[];
     /** Total amount refunded */
-    totalAmountRefunded: number;
+    total_amount_refunded: number;
     /** total_amount_paid - total_amount_refunded */
-    netAmountPaid: number;
+    net_amount_paid: number;
 }
 export interface InvoiceFilter {
-    perPage?: number | undefined;
+    per_page?: number | undefined;
     page?: number | undefined;
     title?: string | undefined;
     status?: InvoiceStatus | undefined;
     archived?: boolean | undefined;
     user?: ObjectId | undefined;
     family?: ObjectId | undefined;
-    schoolYear?: ObjectId | undefined;
+    school_year?: ObjectId | undefined;
 }
 export interface AutoPaymentAttempt {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    invoiceId: ObjectId | undefined;
-    attemptedAt: Date | undefined;
+    invoice_id: ObjectId | undefined;
+    attempted_at: Date | undefined;
     status: AutoPaymentStatus;
-    errorMessage?: string | undefined;
-    attemptNumber: number;
+    error_message?: string | undefined;
+    attempt_number: number;
 }
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;

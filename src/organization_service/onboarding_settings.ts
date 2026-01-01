@@ -12,13 +12,13 @@ import { AWSFile } from "../utils/aws_file";
 export const protobufPackage = "organization_service";
 
 export interface OnboardingSettings {
-  hasInterviewForNewcomers: boolean;
-  enableGroupApprovalSystem: boolean;
-  waitlistFee: number;
-  registrationFees: GradeFeeMapping[];
-  reregistrationFees: GradeFeeMapping[];
-  schoolHandbook: AWSFile[];
-  interviewFee: number;
+  has_interview_for_newcomers: boolean;
+  enable_group_approval_system: boolean;
+  waitlist_fee: number;
+  registration_fees: GradeFeeMapping[];
+  reregistration_fees: GradeFeeMapping[];
+  school_handbook: AWSFile[];
+  interview_fee: number;
 }
 
 export interface GradeFeeMapping {
@@ -41,38 +41,38 @@ export interface FeeItem {
 
 function createBaseOnboardingSettings(): OnboardingSettings {
   return {
-    hasInterviewForNewcomers: false,
-    enableGroupApprovalSystem: false,
-    waitlistFee: 0,
-    registrationFees: [],
-    reregistrationFees: [],
-    schoolHandbook: [],
-    interviewFee: 0,
+    has_interview_for_newcomers: false,
+    enable_group_approval_system: false,
+    waitlist_fee: 0,
+    registration_fees: [],
+    reregistration_fees: [],
+    school_handbook: [],
+    interview_fee: 0,
   };
 }
 
 export const OnboardingSettings: MessageFns<OnboardingSettings> = {
   encode(message: OnboardingSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.hasInterviewForNewcomers !== false) {
-      writer.uint32(8).bool(message.hasInterviewForNewcomers);
+    if (message.has_interview_for_newcomers !== false) {
+      writer.uint32(8).bool(message.has_interview_for_newcomers);
     }
-    if (message.enableGroupApprovalSystem !== false) {
-      writer.uint32(16).bool(message.enableGroupApprovalSystem);
+    if (message.enable_group_approval_system !== false) {
+      writer.uint32(16).bool(message.enable_group_approval_system);
     }
-    if (message.waitlistFee !== 0) {
-      writer.uint32(29).float(message.waitlistFee);
+    if (message.waitlist_fee !== 0) {
+      writer.uint32(29).float(message.waitlist_fee);
     }
-    for (const v of message.registrationFees) {
+    for (const v of message.registration_fees) {
       GradeFeeMapping.encode(v!, writer.uint32(34).fork()).join();
     }
-    for (const v of message.reregistrationFees) {
+    for (const v of message.reregistration_fees) {
       GradeFeeMapping.encode(v!, writer.uint32(42).fork()).join();
     }
-    for (const v of message.schoolHandbook) {
+    for (const v of message.school_handbook) {
       AWSFile.encode(v!, writer.uint32(50).fork()).join();
     }
-    if (message.interviewFee !== 0) {
-      writer.uint32(61).float(message.interviewFee);
+    if (message.interview_fee !== 0) {
+      writer.uint32(61).float(message.interview_fee);
     }
     return writer;
   },
@@ -89,49 +89,49 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
             break;
           }
 
-          message.hasInterviewForNewcomers = reader.bool();
+          message.has_interview_for_newcomers = reader.bool();
           continue;
         case 2:
           if (tag !== 16) {
             break;
           }
 
-          message.enableGroupApprovalSystem = reader.bool();
+          message.enable_group_approval_system = reader.bool();
           continue;
         case 3:
           if (tag !== 29) {
             break;
           }
 
-          message.waitlistFee = reader.float();
+          message.waitlist_fee = reader.float();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.registrationFees.push(GradeFeeMapping.decode(reader, reader.uint32()));
+          message.registration_fees.push(GradeFeeMapping.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.reregistrationFees.push(GradeFeeMapping.decode(reader, reader.uint32()));
+          message.reregistration_fees.push(GradeFeeMapping.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.schoolHandbook.push(AWSFile.decode(reader, reader.uint32()));
+          message.school_handbook.push(AWSFile.decode(reader, reader.uint32()));
           continue;
         case 7:
           if (tag !== 61) {
             break;
           }
 
-          message.interviewFee = reader.float();
+          message.interview_fee = reader.float();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -144,48 +144,48 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
 
   fromJSON(object: any): OnboardingSettings {
     return {
-      hasInterviewForNewcomers: isSet(object.hasInterviewForNewcomers)
+      has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
         ? globalThis.Boolean(object.hasInterviewForNewcomers)
         : false,
-      enableGroupApprovalSystem: isSet(object.enableGroupApprovalSystem)
+      enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
         ? globalThis.Boolean(object.enableGroupApprovalSystem)
         : false,
-      waitlistFee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
-      registrationFees: globalThis.Array.isArray(object?.registrationFees)
+      waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
+      registration_fees: globalThis.Array.isArray(object?.registrationFees)
         ? object.registrationFees.map((e: any) => GradeFeeMapping.fromJSON(e))
         : [],
-      reregistrationFees: globalThis.Array.isArray(object?.reregistrationFees)
+      reregistration_fees: globalThis.Array.isArray(object?.reregistrationFees)
         ? object.reregistrationFees.map((e: any) => GradeFeeMapping.fromJSON(e))
         : [],
-      schoolHandbook: globalThis.Array.isArray(object?.schoolHandbook)
+      school_handbook: globalThis.Array.isArray(object?.schoolHandbook)
         ? object.schoolHandbook.map((e: any) => AWSFile.fromJSON(e))
         : [],
-      interviewFee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+      interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
     };
   },
 
   toJSON(message: OnboardingSettings): unknown {
     const obj: any = {};
-    if (message.hasInterviewForNewcomers !== false) {
-      obj.hasInterviewForNewcomers = message.hasInterviewForNewcomers;
+    if (message.has_interview_for_newcomers !== false) {
+      obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
     }
-    if (message.enableGroupApprovalSystem !== false) {
-      obj.enableGroupApprovalSystem = message.enableGroupApprovalSystem;
+    if (message.enable_group_approval_system !== false) {
+      obj.enableGroupApprovalSystem = message.enable_group_approval_system;
     }
-    if (message.waitlistFee !== 0) {
-      obj.waitlistFee = message.waitlistFee;
+    if (message.waitlist_fee !== 0) {
+      obj.waitlistFee = message.waitlist_fee;
     }
-    if (message.registrationFees?.length) {
-      obj.registrationFees = message.registrationFees.map((e) => GradeFeeMapping.toJSON(e));
+    if (message.registration_fees?.length) {
+      obj.registrationFees = message.registration_fees.map((e) => GradeFeeMapping.toJSON(e));
     }
-    if (message.reregistrationFees?.length) {
-      obj.reregistrationFees = message.reregistrationFees.map((e) => GradeFeeMapping.toJSON(e));
+    if (message.reregistration_fees?.length) {
+      obj.reregistrationFees = message.reregistration_fees.map((e) => GradeFeeMapping.toJSON(e));
     }
-    if (message.schoolHandbook?.length) {
-      obj.schoolHandbook = message.schoolHandbook.map((e) => AWSFile.toJSON(e));
+    if (message.school_handbook?.length) {
+      obj.schoolHandbook = message.school_handbook.map((e) => AWSFile.toJSON(e));
     }
-    if (message.interviewFee !== 0) {
-      obj.interviewFee = message.interviewFee;
+    if (message.interview_fee !== 0) {
+      obj.interviewFee = message.interview_fee;
     }
     return obj;
   },
@@ -195,13 +195,13 @@ export const OnboardingSettings: MessageFns<OnboardingSettings> = {
   },
   fromPartial<I extends Exact<DeepPartial<OnboardingSettings>, I>>(object: I): OnboardingSettings {
     const message = createBaseOnboardingSettings();
-    message.hasInterviewForNewcomers = object.hasInterviewForNewcomers ?? false;
-    message.enableGroupApprovalSystem = object.enableGroupApprovalSystem ?? false;
-    message.waitlistFee = object.waitlistFee ?? 0;
-    message.registrationFees = object.registrationFees?.map((e) => GradeFeeMapping.fromPartial(e)) || [];
-    message.reregistrationFees = object.reregistrationFees?.map((e) => GradeFeeMapping.fromPartial(e)) || [];
-    message.schoolHandbook = object.schoolHandbook?.map((e) => AWSFile.fromPartial(e)) || [];
-    message.interviewFee = object.interviewFee ?? 0;
+    message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? false;
+    message.enable_group_approval_system = object.enable_group_approval_system ?? false;
+    message.waitlist_fee = object.waitlist_fee ?? 0;
+    message.registration_fees = object.registration_fees?.map((e) => GradeFeeMapping.fromPartial(e)) || [];
+    message.reregistration_fees = object.reregistration_fees?.map((e) => GradeFeeMapping.fromPartial(e)) || [];
+    message.school_handbook = object.school_handbook?.map((e) => AWSFile.fromPartial(e)) || [];
+    message.interview_fee = object.interview_fee ?? 0;
     return message;
   },
 };

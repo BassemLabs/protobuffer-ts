@@ -10,21 +10,21 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "utils";
 
 export interface AWSFile {
-  fileName: string;
-  preSignedUrl: string;
+  file_name: string;
+  pre_signed_url: string;
 }
 
 function createBaseAWSFile(): AWSFile {
-  return { fileName: "", preSignedUrl: "" };
+  return { file_name: "", pre_signed_url: "" };
 }
 
 export const AWSFile: MessageFns<AWSFile> = {
   encode(message: AWSFile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.fileName !== "") {
-      writer.uint32(10).string(message.fileName);
+    if (message.file_name !== "") {
+      writer.uint32(10).string(message.file_name);
     }
-    if (message.preSignedUrl !== "") {
-      writer.uint32(18).string(message.preSignedUrl);
+    if (message.pre_signed_url !== "") {
+      writer.uint32(18).string(message.pre_signed_url);
     }
     return writer;
   },
@@ -41,14 +41,14 @@ export const AWSFile: MessageFns<AWSFile> = {
             break;
           }
 
-          message.fileName = reader.string();
+          message.file_name = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.preSignedUrl = reader.string();
+          message.pre_signed_url = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -61,18 +61,18 @@ export const AWSFile: MessageFns<AWSFile> = {
 
   fromJSON(object: any): AWSFile {
     return {
-      fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-      preSignedUrl: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : "",
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+      pre_signed_url: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : "",
     };
   },
 
   toJSON(message: AWSFile): unknown {
     const obj: any = {};
-    if (message.fileName !== "") {
-      obj.fileName = message.fileName;
+    if (message.file_name !== "") {
+      obj.fileName = message.file_name;
     }
-    if (message.preSignedUrl !== "") {
-      obj.preSignedUrl = message.preSignedUrl;
+    if (message.pre_signed_url !== "") {
+      obj.preSignedUrl = message.pre_signed_url;
     }
     return obj;
   },
@@ -82,8 +82,8 @@ export const AWSFile: MessageFns<AWSFile> = {
   },
   fromPartial<I extends Exact<DeepPartial<AWSFile>, I>>(object: I): AWSFile {
     const message = createBaseAWSFile();
-    message.fileName = object.fileName ?? "";
-    message.preSignedUrl = object.preSignedUrl ?? "";
+    message.file_name = object.file_name ?? "";
+    message.pre_signed_url = object.pre_signed_url ?? "";
     return message;
   },
 };

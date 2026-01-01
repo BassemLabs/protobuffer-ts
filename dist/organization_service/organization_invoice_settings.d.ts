@@ -1,8 +1,8 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "organization_service";
 export interface InvoiceSettings {
-    disableTax: boolean;
-    hstNumber?: string | undefined;
+    disable_tax: boolean;
+    hst_number?: string | undefined;
 }
 export declare const InvoiceSettings: MessageFns<InvoiceSettings>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -168,40 +168,40 @@ export function profileSectionToNumber(object: ProfileSection): number {
 }
 
 export interface OrganizationProfileSettings {
-  studentProfileSections: ProfileSection[];
-  parentProfileSections: ProfileSection[];
-  teacherProfileSections: ProfileSection[];
-  studentPrimaryIdCustomField?: ObjectId | undefined;
+  student_profile_sections: ProfileSection[];
+  parent_profile_sections: ProfileSection[];
+  teacher_profile_sections: ProfileSection[];
+  student_primary_id_custom_field?: ObjectId | undefined;
 }
 
 function createBaseOrganizationProfileSettings(): OrganizationProfileSettings {
   return {
-    studentProfileSections: [],
-    parentProfileSections: [],
-    teacherProfileSections: [],
-    studentPrimaryIdCustomField: undefined,
+    student_profile_sections: [],
+    parent_profile_sections: [],
+    teacher_profile_sections: [],
+    student_primary_id_custom_field: undefined,
   };
 }
 
 export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings> = {
   encode(message: OrganizationProfileSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     writer.uint32(10).fork();
-    for (const v of message.studentProfileSections) {
+    for (const v of message.student_profile_sections) {
       writer.int32(profileSectionToNumber(v));
     }
     writer.join();
     writer.uint32(18).fork();
-    for (const v of message.parentProfileSections) {
+    for (const v of message.parent_profile_sections) {
       writer.int32(profileSectionToNumber(v));
     }
     writer.join();
     writer.uint32(26).fork();
-    for (const v of message.teacherProfileSections) {
+    for (const v of message.teacher_profile_sections) {
       writer.int32(profileSectionToNumber(v));
     }
     writer.join();
-    if (message.studentPrimaryIdCustomField !== undefined) {
-      ObjectId.encode(message.studentPrimaryIdCustomField, writer.uint32(34).fork()).join();
+    if (message.student_primary_id_custom_field !== undefined) {
+      ObjectId.encode(message.student_primary_id_custom_field, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -215,7 +215,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
       switch (tag >>> 3) {
         case 1:
           if (tag === 8) {
-            message.studentProfileSections.push(profileSectionFromJSON(reader.int32()));
+            message.student_profile_sections.push(profileSectionFromJSON(reader.int32()));
 
             continue;
           }
@@ -223,7 +223,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           if (tag === 10) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.studentProfileSections.push(profileSectionFromJSON(reader.int32()));
+              message.student_profile_sections.push(profileSectionFromJSON(reader.int32()));
             }
 
             continue;
@@ -232,7 +232,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           break;
         case 2:
           if (tag === 16) {
-            message.parentProfileSections.push(profileSectionFromJSON(reader.int32()));
+            message.parent_profile_sections.push(profileSectionFromJSON(reader.int32()));
 
             continue;
           }
@@ -240,7 +240,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           if (tag === 18) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.parentProfileSections.push(profileSectionFromJSON(reader.int32()));
+              message.parent_profile_sections.push(profileSectionFromJSON(reader.int32()));
             }
 
             continue;
@@ -249,7 +249,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           break;
         case 3:
           if (tag === 24) {
-            message.teacherProfileSections.push(profileSectionFromJSON(reader.int32()));
+            message.teacher_profile_sections.push(profileSectionFromJSON(reader.int32()));
 
             continue;
           }
@@ -257,7 +257,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
           if (tag === 26) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.teacherProfileSections.push(profileSectionFromJSON(reader.int32()));
+              message.teacher_profile_sections.push(profileSectionFromJSON(reader.int32()));
             }
 
             continue;
@@ -269,7 +269,7 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
             break;
           }
 
-          message.studentPrimaryIdCustomField = ObjectId.decode(reader, reader.uint32());
+          message.student_primary_id_custom_field = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -282,16 +282,16 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
 
   fromJSON(object: any): OrganizationProfileSettings {
     return {
-      studentProfileSections: globalThis.Array.isArray(object?.studentProfileSections)
+      student_profile_sections: globalThis.Array.isArray(object?.studentProfileSections)
         ? object.studentProfileSections.map((e: any) => profileSectionFromJSON(e))
         : [],
-      parentProfileSections: globalThis.Array.isArray(object?.parentProfileSections)
+      parent_profile_sections: globalThis.Array.isArray(object?.parentProfileSections)
         ? object.parentProfileSections.map((e: any) => profileSectionFromJSON(e))
         : [],
-      teacherProfileSections: globalThis.Array.isArray(object?.teacherProfileSections)
+      teacher_profile_sections: globalThis.Array.isArray(object?.teacherProfileSections)
         ? object.teacherProfileSections.map((e: any) => profileSectionFromJSON(e))
         : [],
-      studentPrimaryIdCustomField: isSet(object.studentPrimaryIdCustomField)
+      student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
         ? ObjectId.fromJSON(object.studentPrimaryIdCustomField)
         : undefined,
     };
@@ -299,17 +299,17 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
 
   toJSON(message: OrganizationProfileSettings): unknown {
     const obj: any = {};
-    if (message.studentProfileSections?.length) {
-      obj.studentProfileSections = message.studentProfileSections.map((e) => profileSectionToJSON(e));
+    if (message.student_profile_sections?.length) {
+      obj.studentProfileSections = message.student_profile_sections.map((e) => profileSectionToJSON(e));
     }
-    if (message.parentProfileSections?.length) {
-      obj.parentProfileSections = message.parentProfileSections.map((e) => profileSectionToJSON(e));
+    if (message.parent_profile_sections?.length) {
+      obj.parentProfileSections = message.parent_profile_sections.map((e) => profileSectionToJSON(e));
     }
-    if (message.teacherProfileSections?.length) {
-      obj.teacherProfileSections = message.teacherProfileSections.map((e) => profileSectionToJSON(e));
+    if (message.teacher_profile_sections?.length) {
+      obj.teacherProfileSections = message.teacher_profile_sections.map((e) => profileSectionToJSON(e));
     }
-    if (message.studentPrimaryIdCustomField !== undefined) {
-      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.studentPrimaryIdCustomField);
+    if (message.student_primary_id_custom_field !== undefined) {
+      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.student_primary_id_custom_field);
     }
     return obj;
   },
@@ -319,12 +319,12 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
   },
   fromPartial<I extends Exact<DeepPartial<OrganizationProfileSettings>, I>>(object: I): OrganizationProfileSettings {
     const message = createBaseOrganizationProfileSettings();
-    message.studentProfileSections = object.studentProfileSections?.map((e) => e) || [];
-    message.parentProfileSections = object.parentProfileSections?.map((e) => e) || [];
-    message.teacherProfileSections = object.teacherProfileSections?.map((e) => e) || [];
-    message.studentPrimaryIdCustomField =
-      (object.studentPrimaryIdCustomField !== undefined && object.studentPrimaryIdCustomField !== null)
-        ? ObjectId.fromPartial(object.studentPrimaryIdCustomField)
+    message.student_profile_sections = object.student_profile_sections?.map((e) => e) || [];
+    message.parent_profile_sections = object.parent_profile_sections?.map((e) => e) || [];
+    message.teacher_profile_sections = object.teacher_profile_sections?.map((e) => e) || [];
+    message.student_primary_id_custom_field =
+      (object.student_primary_id_custom_field !== undefined && object.student_primary_id_custom_field !== null)
+        ? ObjectId.fromPartial(object.student_primary_id_custom_field)
         : undefined;
     return message;
   },

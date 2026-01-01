@@ -24,10 +24,10 @@ export declare function profileSectionFromJSON(object: any): ProfileSection;
 export declare function profileSectionToJSON(object: ProfileSection): string;
 export declare function profileSectionToNumber(object: ProfileSection): number;
 export interface OrganizationProfileSettings {
-    studentProfileSections: ProfileSection[];
-    parentProfileSections: ProfileSection[];
-    teacherProfileSections: ProfileSection[];
-    studentPrimaryIdCustomField?: ObjectId | undefined;
+    student_profile_sections: ProfileSection[];
+    parent_profile_sections: ProfileSection[];
+    teacher_profile_sections: ProfileSection[];
+    student_primary_id_custom_field?: ObjectId | undefined;
 }
 export declare const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

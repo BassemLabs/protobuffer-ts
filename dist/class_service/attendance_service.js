@@ -171,15 +171,15 @@ exports.AttendanceResponse = {
     },
 };
 function createBaseClassRef() {
-    return { courseId: undefined, homeroomId: undefined };
+    return { course_id: undefined, homeroom_id: undefined };
 }
 exports.ClassRef = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
         }
-        if (message.homeroomId !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -194,13 +194,13 @@ exports.ClassRef = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.homeroomId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -212,17 +212,17 @@ exports.ClassRef = {
     },
     fromJSON(object) {
         return {
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.homeroomId !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroomId);
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         return obj;
     },
@@ -231,34 +231,34 @@ exports.ClassRef = {
     },
     fromPartial(object) {
         const message = createBaseClassRef();
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroomId)
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
         return message;
     },
 };
 function createBaseGetStudentEntriesRequest() {
-    return { context: undefined, classRef: undefined, studentId: undefined, startDate: "", endDate: "" };
+    return { context: undefined, class_ref: undefined, student_id: undefined, start_date: "", end_date: "" };
 }
 exports.GetStudentEntriesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.classRef !== undefined) {
-            exports.ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+        if (message.class_ref !== undefined) {
+            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
-        if (message.studentId !== undefined) {
-            object_id_1.ObjectId.encode(message.studentId, writer.uint32(26).fork()).join();
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(26).fork()).join();
         }
-        if (message.startDate !== "") {
-            writer.uint32(34).string(message.startDate);
+        if (message.start_date !== "") {
+            writer.uint32(34).string(message.start_date);
         }
-        if (message.endDate !== "") {
-            writer.uint32(42).string(message.endDate);
+        if (message.end_date !== "") {
+            writer.uint32(42).string(message.end_date);
         }
         return writer;
     },
@@ -279,25 +279,25 @@ exports.GetStudentEntriesRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.classRef = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.startDate = reader.string();
+                    message.start_date = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.endDate = reader.string();
+                    message.end_date = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -310,10 +310,10 @@ exports.GetStudentEntriesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            classRef: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
-            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-            endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -321,17 +321,17 @@ exports.GetStudentEntriesRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.classRef !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.classRef);
+        if (message.class_ref !== undefined) {
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
-        if (message.studentId !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.startDate !== "") {
-            obj.startDate = message.startDate;
+        if (message.start_date !== "") {
+            obj.startDate = message.start_date;
         }
-        if (message.endDate !== "") {
-            obj.endDate = message.endDate;
+        if (message.end_date !== "") {
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -343,36 +343,36 @@ exports.GetStudentEntriesRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.classRef = (object.classRef !== undefined && object.classRef !== null)
-            ? exports.ClassRef.fromPartial(object.classRef)
+        message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+            ? exports.ClassRef.fromPartial(object.class_ref)
             : undefined;
-        message.studentId = (object.studentId !== undefined && object.studentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentId)
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.startDate = object.startDate ?? "";
-        message.endDate = object.endDate ?? "";
+        message.start_date = object.start_date ?? "";
+        message.end_date = object.end_date ?? "";
         return message;
     },
 };
 function createBaseGetStudentsEntriesCountRequest() {
-    return { context: undefined, classRef: undefined, studentIds: [], startDate: "", endDate: "" };
+    return { context: undefined, class_ref: undefined, student_ids: [], start_date: "", end_date: "" };
 }
 exports.GetStudentsEntriesCountRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.classRef !== undefined) {
-            exports.ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+        if (message.class_ref !== undefined) {
+            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
-        for (const v of message.studentIds) {
+        for (const v of message.student_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
         }
-        if (message.startDate !== "") {
-            writer.uint32(34).string(message.startDate);
+        if (message.start_date !== "") {
+            writer.uint32(34).string(message.start_date);
         }
-        if (message.endDate !== "") {
-            writer.uint32(42).string(message.endDate);
+        if (message.end_date !== "") {
+            writer.uint32(42).string(message.end_date);
         }
         return writer;
     },
@@ -393,25 +393,25 @@ exports.GetStudentsEntriesCountRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.classRef = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.studentIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.startDate = reader.string();
+                    message.start_date = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.endDate = reader.string();
+                    message.end_date = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -424,12 +424,12 @@ exports.GetStudentsEntriesCountRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            classRef: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
-            studentIds: globalThis.Array.isArray(object?.studentIds)
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            student_ids: globalThis.Array.isArray(object?.studentIds)
                 ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-            endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -437,17 +437,17 @@ exports.GetStudentsEntriesCountRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.classRef !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.classRef);
+        if (message.class_ref !== undefined) {
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
-        if (message.studentIds?.length) {
-            obj.studentIds = message.studentIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.startDate !== "") {
-            obj.startDate = message.startDate;
+        if (message.start_date !== "") {
+            obj.startDate = message.start_date;
         }
-        if (message.endDate !== "") {
-            obj.endDate = message.endDate;
+        if (message.end_date !== "") {
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -459,25 +459,25 @@ exports.GetStudentsEntriesCountRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.classRef = (object.classRef !== undefined && object.classRef !== null)
-            ? exports.ClassRef.fromPartial(object.classRef)
+        message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+            ? exports.ClassRef.fromPartial(object.class_ref)
             : undefined;
-        message.studentIds = object.studentIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.startDate = object.startDate ?? "";
-        message.endDate = object.endDate ?? "";
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.start_date = object.start_date ?? "";
+        message.end_date = object.end_date ?? "";
         return message;
     },
 };
 function createBaseUpdateStatusRequest() {
-    return { context: undefined, attendanceEntryId: undefined, status: attendance_1.AttendanceStatus.None };
+    return { context: undefined, attendance_entry_id: undefined, status: attendance_1.AttendanceStatus.None };
 }
 exports.UpdateStatusRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntryId !== undefined) {
-            object_id_1.ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+        if (message.attendance_entry_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
         if (message.status !== attendance_1.AttendanceStatus.None) {
             writer.uint32(24).int32((0, attendance_1.attendanceStatusToNumber)(message.status));
@@ -501,7 +501,7 @@ exports.UpdateStatusRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntryId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.attendance_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -520,7 +520,7 @@ exports.UpdateStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendanceEntryId: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
             status: isSet(object.status) ? (0, attendance_1.attendanceStatusFromJSON)(object.status) : attendance_1.AttendanceStatus.None,
         };
     },
@@ -529,8 +529,8 @@ exports.UpdateStatusRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.attendanceEntryId !== undefined) {
-            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendanceEntryId);
+        if (message.attendance_entry_id !== undefined) {
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.status !== attendance_1.AttendanceStatus.None) {
             obj.status = (0, attendance_1.attendanceStatusToJSON)(message.status);
@@ -545,26 +545,26 @@ exports.UpdateStatusRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.attendanceEntryId)
+        message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
         message.status = object.status ?? attendance_1.AttendanceStatus.None;
         return message;
     },
 };
 function createBaseUpdateTimeRequest() {
-    return { context: undefined, attendanceEntryId: undefined, timeType: TimeType.SignIn, time: undefined };
+    return { context: undefined, attendance_entry_id: undefined, time_type: TimeType.SignIn, time: undefined };
 }
 exports.UpdateTimeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntryId !== undefined) {
-            object_id_1.ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+        if (message.attendance_entry_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.timeType !== TimeType.SignIn) {
-            writer.uint32(24).int32(timeTypeToNumber(message.timeType));
+        if (message.time_type !== TimeType.SignIn) {
+            writer.uint32(24).int32(timeTypeToNumber(message.time_type));
         }
         if (message.time !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.time), writer.uint32(34).fork()).join();
@@ -588,13 +588,13 @@ exports.UpdateTimeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntryId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.attendance_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.timeType = timeTypeFromJSON(reader.int32());
+                    message.time_type = timeTypeFromJSON(reader.int32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -613,8 +613,8 @@ exports.UpdateTimeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendanceEntryId: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-            timeType: isSet(object.timeType) ? timeTypeFromJSON(object.timeType) : TimeType.SignIn,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            time_type: isSet(object.timeType) ? timeTypeFromJSON(object.timeType) : TimeType.SignIn,
             time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
         };
     },
@@ -623,11 +623,11 @@ exports.UpdateTimeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.attendanceEntryId !== undefined) {
-            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendanceEntryId);
+        if (message.attendance_entry_id !== undefined) {
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
-        if (message.timeType !== TimeType.SignIn) {
-            obj.timeType = timeTypeToJSON(message.timeType);
+        if (message.time_type !== TimeType.SignIn) {
+            obj.timeType = timeTypeToJSON(message.time_type);
         }
         if (message.time !== undefined) {
             obj.time = message.time.toISOString();
@@ -642,24 +642,24 @@ exports.UpdateTimeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.attendanceEntryId)
+        message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
-        message.timeType = object.timeType ?? TimeType.SignIn;
+        message.time_type = object.time_type ?? TimeType.SignIn;
         message.time = object.time ?? undefined;
         return message;
     },
 };
 function createBaseUpdateReasonRequest() {
-    return { context: undefined, attendanceEntryId: undefined, reason: "" };
+    return { context: undefined, attendance_entry_id: undefined, reason: "" };
 }
 exports.UpdateReasonRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntryId !== undefined) {
-            object_id_1.ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+        if (message.attendance_entry_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
         if (message.reason !== "") {
             writer.uint32(26).string(message.reason);
@@ -683,7 +683,7 @@ exports.UpdateReasonRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntryId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.attendance_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -702,7 +702,7 @@ exports.UpdateReasonRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendanceEntryId: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
         };
     },
@@ -711,8 +711,8 @@ exports.UpdateReasonRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.attendanceEntryId !== undefined) {
-            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendanceEntryId);
+        if (message.attendance_entry_id !== undefined) {
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.reason !== "") {
             obj.reason = message.reason;
@@ -727,26 +727,26 @@ exports.UpdateReasonRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.attendanceEntryId)
+        message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
         message.reason = object.reason ?? "";
         return message;
     },
 };
 function createBaseUpdateLateDismissalDateRequest() {
-    return { context: undefined, attendanceEntryId: undefined, lateDismissalDate: undefined };
+    return { context: undefined, attendance_entry_id: undefined, late_dismissal_date: undefined };
 }
 exports.UpdateLateDismissalDateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntryId !== undefined) {
-            object_id_1.ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+        if (message.attendance_entry_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.lateDismissalDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.lateDismissalDate), writer.uint32(26).fork()).join();
+        if (message.late_dismissal_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.late_dismissal_date), writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -767,13 +767,13 @@ exports.UpdateLateDismissalDateRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntryId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.attendance_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.lateDismissalDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.late_dismissal_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -786,8 +786,8 @@ exports.UpdateLateDismissalDateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendanceEntryId: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-            lateDismissalDate: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
         };
     },
     toJSON(message) {
@@ -795,11 +795,11 @@ exports.UpdateLateDismissalDateRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.attendanceEntryId !== undefined) {
-            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendanceEntryId);
+        if (message.attendance_entry_id !== undefined) {
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
-        if (message.lateDismissalDate !== undefined) {
-            obj.lateDismissalDate = message.lateDismissalDate.toISOString();
+        if (message.late_dismissal_date !== undefined) {
+            obj.lateDismissalDate = message.late_dismissal_date.toISOString();
         }
         return obj;
     },
@@ -811,20 +811,20 @@ exports.UpdateLateDismissalDateRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.attendanceEntryId)
+        message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
-        message.lateDismissalDate = object.lateDismissalDate ?? undefined;
+        message.late_dismissal_date = object.late_dismissal_date ?? undefined;
         return message;
     },
 };
 function createBaseUpdateExcuseStudentRequest() {
     return {
         context: undefined,
-        attendanceEntryId: undefined,
+        attendance_entry_id: undefined,
         reason: "",
-        studentExcusedBy: undefined,
-        studentExcusedByUserType: user_type_1.UserType.NONE,
+        student_excused_by: undefined,
+        student_excused_by_user_type: user_type_1.UserType.NONE,
     };
 }
 exports.UpdateExcuseStudentRequest = {
@@ -832,17 +832,17 @@ exports.UpdateExcuseStudentRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntryId !== undefined) {
-            object_id_1.ObjectId.encode(message.attendanceEntryId, writer.uint32(18).fork()).join();
+        if (message.attendance_entry_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
         if (message.reason !== "") {
             writer.uint32(26).string(message.reason);
         }
-        if (message.studentExcusedBy !== undefined) {
-            object_id_1.ObjectId.encode(message.studentExcusedBy, writer.uint32(34).fork()).join();
+        if (message.student_excused_by !== undefined) {
+            object_id_1.ObjectId.encode(message.student_excused_by, writer.uint32(34).fork()).join();
         }
-        if (message.studentExcusedByUserType !== user_type_1.UserType.NONE) {
-            writer.uint32(40).int32((0, user_type_1.userTypeToNumber)(message.studentExcusedByUserType));
+        if (message.student_excused_by_user_type !== user_type_1.UserType.NONE) {
+            writer.uint32(40).int32((0, user_type_1.userTypeToNumber)(message.student_excused_by_user_type));
         }
         return writer;
     },
@@ -863,7 +863,7 @@ exports.UpdateExcuseStudentRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntryId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.attendance_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -875,13 +875,13 @@ exports.UpdateExcuseStudentRequest = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.studentExcusedBy = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_excused_by = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 5:
                     if (tag !== 40) {
                         break;
                     }
-                    message.studentExcusedByUserType = (0, user_type_1.userTypeFromJSON)(reader.int32());
+                    message.student_excused_by_user_type = (0, user_type_1.userTypeFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -894,10 +894,10 @@ exports.UpdateExcuseStudentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendanceEntryId: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
-            studentExcusedBy: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
-            studentExcusedByUserType: isSet(object.studentExcusedByUserType)
+            student_excused_by: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
+            student_excused_by_user_type: isSet(object.studentExcusedByUserType)
                 ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
                 : user_type_1.UserType.NONE,
         };
@@ -907,17 +907,17 @@ exports.UpdateExcuseStudentRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.attendanceEntryId !== undefined) {
-            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendanceEntryId);
+        if (message.attendance_entry_id !== undefined) {
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.reason !== "") {
             obj.reason = message.reason;
         }
-        if (message.studentExcusedBy !== undefined) {
-            obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.studentExcusedBy);
+        if (message.student_excused_by !== undefined) {
+            obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.student_excused_by);
         }
-        if (message.studentExcusedByUserType !== user_type_1.UserType.NONE) {
-            obj.studentExcusedByUserType = (0, user_type_1.userTypeToJSON)(message.studentExcusedByUserType);
+        if (message.student_excused_by_user_type !== user_type_1.UserType.NONE) {
+            obj.studentExcusedByUserType = (0, user_type_1.userTypeToJSON)(message.student_excused_by_user_type);
         }
         return obj;
     },
@@ -929,19 +929,19 @@ exports.UpdateExcuseStudentRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.attendanceEntryId = (object.attendanceEntryId !== undefined && object.attendanceEntryId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.attendanceEntryId)
+        message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
         message.reason = object.reason ?? "";
-        message.studentExcusedBy = (object.studentExcusedBy !== undefined && object.studentExcusedBy !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentExcusedBy)
+        message.student_excused_by = (object.student_excused_by !== undefined && object.student_excused_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_excused_by)
             : undefined;
-        message.studentExcusedByUserType = object.studentExcusedByUserType ?? user_type_1.UserType.NONE;
+        message.student_excused_by_user_type = object.student_excused_by_user_type ?? user_type_1.UserType.NONE;
         return message;
     },
 };
 function createBaseAttendanceCounts() {
-    return { none: 0, present: 0, late: 0, absent: 0, excusedAbsent: 0, nonExcusedAbsent: 0 };
+    return { none: 0, present: 0, late: 0, absent: 0, excused_absent: 0, non_excused_absent: 0 };
 }
 exports.AttendanceCounts = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -957,11 +957,11 @@ exports.AttendanceCounts = {
         if (message.absent !== 0) {
             writer.uint32(32).uint32(message.absent);
         }
-        if (message.excusedAbsent !== 0) {
-            writer.uint32(40).uint32(message.excusedAbsent);
+        if (message.excused_absent !== 0) {
+            writer.uint32(40).uint32(message.excused_absent);
         }
-        if (message.nonExcusedAbsent !== 0) {
-            writer.uint32(48).uint32(message.nonExcusedAbsent);
+        if (message.non_excused_absent !== 0) {
+            writer.uint32(48).uint32(message.non_excused_absent);
         }
         return writer;
     },
@@ -1000,13 +1000,13 @@ exports.AttendanceCounts = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.excusedAbsent = reader.uint32();
+                    message.excused_absent = reader.uint32();
                     continue;
                 case 6:
                     if (tag !== 48) {
                         break;
                     }
-                    message.nonExcusedAbsent = reader.uint32();
+                    message.non_excused_absent = reader.uint32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1022,8 +1022,8 @@ exports.AttendanceCounts = {
             present: isSet(object.present) ? globalThis.Number(object.present) : 0,
             late: isSet(object.late) ? globalThis.Number(object.late) : 0,
             absent: isSet(object.absent) ? globalThis.Number(object.absent) : 0,
-            excusedAbsent: isSet(object.excusedAbsent) ? globalThis.Number(object.excusedAbsent) : 0,
-            nonExcusedAbsent: isSet(object.nonExcusedAbsent) ? globalThis.Number(object.nonExcusedAbsent) : 0,
+            excused_absent: isSet(object.excusedAbsent) ? globalThis.Number(object.excusedAbsent) : 0,
+            non_excused_absent: isSet(object.nonExcusedAbsent) ? globalThis.Number(object.nonExcusedAbsent) : 0,
         };
     },
     toJSON(message) {
@@ -1040,11 +1040,11 @@ exports.AttendanceCounts = {
         if (message.absent !== 0) {
             obj.absent = Math.round(message.absent);
         }
-        if (message.excusedAbsent !== 0) {
-            obj.excusedAbsent = Math.round(message.excusedAbsent);
+        if (message.excused_absent !== 0) {
+            obj.excusedAbsent = Math.round(message.excused_absent);
         }
-        if (message.nonExcusedAbsent !== 0) {
-            obj.nonExcusedAbsent = Math.round(message.nonExcusedAbsent);
+        if (message.non_excused_absent !== 0) {
+            obj.nonExcusedAbsent = Math.round(message.non_excused_absent);
         }
         return obj;
     },
@@ -1057,8 +1057,8 @@ exports.AttendanceCounts = {
         message.present = object.present ?? 0;
         message.late = object.late ?? 0;
         message.absent = object.absent ?? 0;
-        message.excusedAbsent = object.excusedAbsent ?? 0;
-        message.nonExcusedAbsent = object.nonExcusedAbsent ?? 0;
+        message.excused_absent = object.excused_absent ?? 0;
+        message.non_excused_absent = object.non_excused_absent ?? 0;
         return message;
     },
 };
@@ -1133,11 +1133,11 @@ exports.StudentAttendanceCounts = {
     },
 };
 function createBaseStudentsAttendanceCountsResponse() {
-    return { studentCounts: [] };
+    return { student_counts: [] };
 }
 exports.StudentsAttendanceCountsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        for (const v of message.studentCounts) {
+        for (const v of message.student_counts) {
             exports.StudentAttendanceCounts.encode(v, writer.uint32(10).fork()).join();
         }
         return writer;
@@ -1153,7 +1153,7 @@ exports.StudentsAttendanceCountsResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.studentCounts.push(exports.StudentAttendanceCounts.decode(reader, reader.uint32()));
+                    message.student_counts.push(exports.StudentAttendanceCounts.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1165,15 +1165,15 @@ exports.StudentsAttendanceCountsResponse = {
     },
     fromJSON(object) {
         return {
-            studentCounts: globalThis.Array.isArray(object?.studentCounts)
+            student_counts: globalThis.Array.isArray(object?.studentCounts)
                 ? object.studentCounts.map((e) => exports.StudentAttendanceCounts.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.studentCounts?.length) {
-            obj.studentCounts = message.studentCounts.map((e) => exports.StudentAttendanceCounts.toJSON(e));
+        if (message.student_counts?.length) {
+            obj.studentCounts = message.student_counts.map((e) => exports.StudentAttendanceCounts.toJSON(e));
         }
         return obj;
     },
@@ -1182,12 +1182,12 @@ exports.StudentsAttendanceCountsResponse = {
     },
     fromPartial(object) {
         const message = createBaseStudentsAttendanceCountsResponse();
-        message.studentCounts = object.studentCounts?.map((e) => exports.StudentAttendanceCounts.fromPartial(e)) || [];
+        message.student_counts = object.student_counts?.map((e) => exports.StudentAttendanceCounts.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseGetCoursesAttendanceOverviewRequest() {
-    return { context: undefined, date: "", showAllClasses: false };
+    return { context: undefined, date: "", show_all_classes: false };
 }
 exports.GetCoursesAttendanceOverviewRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1197,8 +1197,8 @@ exports.GetCoursesAttendanceOverviewRequest = {
         if (message.date !== "") {
             writer.uint32(18).string(message.date);
         }
-        if (message.showAllClasses !== false) {
-            writer.uint32(24).bool(message.showAllClasses);
+        if (message.show_all_classes !== false) {
+            writer.uint32(24).bool(message.show_all_classes);
         }
         return writer;
     },
@@ -1225,7 +1225,7 @@ exports.GetCoursesAttendanceOverviewRequest = {
                     if (tag !== 24) {
                         break;
                     }
-                    message.showAllClasses = reader.bool();
+                    message.show_all_classes = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1239,7 +1239,7 @@ exports.GetCoursesAttendanceOverviewRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            showAllClasses: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+            show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
         };
     },
     toJSON(message) {
@@ -1250,8 +1250,8 @@ exports.GetCoursesAttendanceOverviewRequest = {
         if (message.date !== "") {
             obj.date = message.date;
         }
-        if (message.showAllClasses !== false) {
-            obj.showAllClasses = message.showAllClasses;
+        if (message.show_all_classes !== false) {
+            obj.showAllClasses = message.show_all_classes;
         }
         return obj;
     },
@@ -1264,12 +1264,12 @@ exports.GetCoursesAttendanceOverviewRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.date = object.date ?? "";
-        message.showAllClasses = object.showAllClasses ?? false;
+        message.show_all_classes = object.show_all_classes ?? false;
         return message;
     },
 };
 function createBaseGetCoursesAttendanceOverviewResponse() {
-    return { courses: [], teachers: [], entryStatus: [] };
+    return { courses: [], teachers: [], entry_status: [] };
 }
 exports.GetCoursesAttendanceOverviewResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1279,7 +1279,7 @@ exports.GetCoursesAttendanceOverviewResponse = {
         for (const v of message.teachers) {
             teacher_1.TeacherBasic.encode(v, writer.uint32(18).fork()).join();
         }
-        for (const v of message.entryStatus) {
+        for (const v of message.entry_status) {
             exports.CourseEntryStatus.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
@@ -1307,7 +1307,7 @@ exports.GetCoursesAttendanceOverviewResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.entryStatus.push(exports.CourseEntryStatus.decode(reader, reader.uint32()));
+                    message.entry_status.push(exports.CourseEntryStatus.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1323,7 +1323,7 @@ exports.GetCoursesAttendanceOverviewResponse = {
             teachers: globalThis.Array.isArray(object?.teachers)
                 ? object.teachers.map((e) => teacher_1.TeacherBasic.fromJSON(e))
                 : [],
-            entryStatus: globalThis.Array.isArray(object?.entryStatus)
+            entry_status: globalThis.Array.isArray(object?.entryStatus)
                 ? object.entryStatus.map((e) => exports.CourseEntryStatus.fromJSON(e))
                 : [],
         };
@@ -1336,8 +1336,8 @@ exports.GetCoursesAttendanceOverviewResponse = {
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => teacher_1.TeacherBasic.toJSON(e));
         }
-        if (message.entryStatus?.length) {
-            obj.entryStatus = message.entryStatus.map((e) => exports.CourseEntryStatus.toJSON(e));
+        if (message.entry_status?.length) {
+            obj.entryStatus = message.entry_status.map((e) => exports.CourseEntryStatus.toJSON(e));
         }
         return obj;
     },
@@ -1348,20 +1348,20 @@ exports.GetCoursesAttendanceOverviewResponse = {
         const message = createBaseGetCoursesAttendanceOverviewResponse();
         message.courses = object.courses?.map((e) => course_1.Course.fromPartial(e)) || [];
         message.teachers = object.teachers?.map((e) => teacher_1.TeacherBasic.fromPartial(e)) || [];
-        message.entryStatus = object.entryStatus?.map((e) => exports.CourseEntryStatus.fromPartial(e)) || [];
+        message.entry_status = object.entry_status?.map((e) => exports.CourseEntryStatus.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseCourseEntryStatus() {
-    return { courseId: undefined, isComplete: false };
+    return { course_id: undefined, is_complete: false };
 }
 exports.CourseEntryStatus = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(10).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
         }
-        if (message.isComplete !== false) {
-            writer.uint32(16).bool(message.isComplete);
+        if (message.is_complete !== false) {
+            writer.uint32(16).bool(message.is_complete);
         }
         return writer;
     },
@@ -1376,13 +1376,13 @@ exports.CourseEntryStatus = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.isComplete = reader.bool();
+                    message.is_complete = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1394,17 +1394,17 @@ exports.CourseEntryStatus = {
     },
     fromJSON(object) {
         return {
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            isComplete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.isComplete !== false) {
-            obj.isComplete = message.isComplete;
+        if (message.is_complete !== false) {
+            obj.isComplete = message.is_complete;
         }
         return obj;
     },
@@ -1413,15 +1413,15 @@ exports.CourseEntryStatus = {
     },
     fromPartial(object) {
         const message = createBaseCourseEntryStatus();
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.isComplete = object.isComplete ?? false;
+        message.is_complete = object.is_complete ?? false;
         return message;
     },
 };
 function createBaseGetHomeroomsAttendanceOverviewRequest() {
-    return { context: undefined, date: "", showAllClasses: false };
+    return { context: undefined, date: "", show_all_classes: false };
 }
 exports.GetHomeroomsAttendanceOverviewRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1431,8 +1431,8 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         if (message.date !== "") {
             writer.uint32(18).string(message.date);
         }
-        if (message.showAllClasses !== false) {
-            writer.uint32(24).bool(message.showAllClasses);
+        if (message.show_all_classes !== false) {
+            writer.uint32(24).bool(message.show_all_classes);
         }
         return writer;
     },
@@ -1459,7 +1459,7 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
                     if (tag !== 24) {
                         break;
                     }
-                    message.showAllClasses = reader.bool();
+                    message.show_all_classes = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1473,7 +1473,7 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            showAllClasses: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+            show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
         };
     },
     toJSON(message) {
@@ -1484,8 +1484,8 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         if (message.date !== "") {
             obj.date = message.date;
         }
-        if (message.showAllClasses !== false) {
-            obj.showAllClasses = message.showAllClasses;
+        if (message.show_all_classes !== false) {
+            obj.showAllClasses = message.show_all_classes;
         }
         return obj;
     },
@@ -1498,12 +1498,12 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.date = object.date ?? "";
-        message.showAllClasses = object.showAllClasses ?? false;
+        message.show_all_classes = object.show_all_classes ?? false;
         return message;
     },
 };
 function createBaseGetHomeroomsAttendanceOverviewResponse() {
-    return { homerooms: [], teachers: [], entryStatus: [] };
+    return { homerooms: [], teachers: [], entry_status: [] };
 }
 exports.GetHomeroomsAttendanceOverviewResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1513,7 +1513,7 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
         for (const v of message.teachers) {
             teacher_1.TeacherBasic.encode(v, writer.uint32(18).fork()).join();
         }
-        for (const v of message.entryStatus) {
+        for (const v of message.entry_status) {
             exports.HomeroomEntryStatus.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
@@ -1541,7 +1541,7 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.entryStatus.push(exports.HomeroomEntryStatus.decode(reader, reader.uint32()));
+                    message.entry_status.push(exports.HomeroomEntryStatus.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1559,7 +1559,7 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
             teachers: globalThis.Array.isArray(object?.teachers)
                 ? object.teachers.map((e) => teacher_1.TeacherBasic.fromJSON(e))
                 : [],
-            entryStatus: globalThis.Array.isArray(object?.entryStatus)
+            entry_status: globalThis.Array.isArray(object?.entryStatus)
                 ? object.entryStatus.map((e) => exports.HomeroomEntryStatus.fromJSON(e))
                 : [],
         };
@@ -1572,8 +1572,8 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => teacher_1.TeacherBasic.toJSON(e));
         }
-        if (message.entryStatus?.length) {
-            obj.entryStatus = message.entryStatus.map((e) => exports.HomeroomEntryStatus.toJSON(e));
+        if (message.entry_status?.length) {
+            obj.entryStatus = message.entry_status.map((e) => exports.HomeroomEntryStatus.toJSON(e));
         }
         return obj;
     },
@@ -1584,20 +1584,20 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
         const message = createBaseGetHomeroomsAttendanceOverviewResponse();
         message.homerooms = object.homerooms?.map((e) => homeroom_1.Homeroom.fromPartial(e)) || [];
         message.teachers = object.teachers?.map((e) => teacher_1.TeacherBasic.fromPartial(e)) || [];
-        message.entryStatus = object.entryStatus?.map((e) => exports.HomeroomEntryStatus.fromPartial(e)) || [];
+        message.entry_status = object.entry_status?.map((e) => exports.HomeroomEntryStatus.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseHomeroomEntryStatus() {
-    return { homeroomId: undefined, isComplete: false };
+    return { homeroom_id: undefined, is_complete: false };
 }
 exports.HomeroomEntryStatus = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.homeroomId !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroomId, writer.uint32(10).fork()).join();
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(10).fork()).join();
         }
-        if (message.isComplete !== false) {
-            writer.uint32(16).bool(message.isComplete);
+        if (message.is_complete !== false) {
+            writer.uint32(16).bool(message.is_complete);
         }
         return writer;
     },
@@ -1612,13 +1612,13 @@ exports.HomeroomEntryStatus = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.homeroomId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.isComplete = reader.bool();
+                    message.is_complete = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1630,17 +1630,17 @@ exports.HomeroomEntryStatus = {
     },
     fromJSON(object) {
         return {
-            homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            isComplete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.homeroomId !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroomId);
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
-        if (message.isComplete !== false) {
-            obj.isComplete = message.isComplete;
+        if (message.is_complete !== false) {
+            obj.isComplete = message.is_complete;
         }
         return obj;
     },
@@ -1649,29 +1649,29 @@ exports.HomeroomEntryStatus = {
     },
     fromPartial(object) {
         const message = createBaseHomeroomEntryStatus();
-        message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroomId)
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
-        message.isComplete = object.isComplete ?? false;
+        message.is_complete = object.is_complete ?? false;
         return message;
     },
 };
 function createBaseGetHomeroomAttendanceDetailsRequest() {
-    return { context: undefined, homeroomId: undefined, date: "", periodNumber: 0 };
+    return { context: undefined, homeroom_id: undefined, date: "", period_number: 0 };
 }
 exports.GetHomeroomAttendanceDetailsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.homeroomId !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
         }
         if (message.date !== "") {
             writer.uint32(26).string(message.date);
         }
-        if (message.periodNumber !== 0) {
-            writer.uint32(32).uint32(message.periodNumber);
+        if (message.period_number !== 0) {
+            writer.uint32(32).uint32(message.period_number);
         }
         return writer;
     },
@@ -1692,7 +1692,7 @@ exports.GetHomeroomAttendanceDetailsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.homeroomId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1704,7 +1704,7 @@ exports.GetHomeroomAttendanceDetailsRequest = {
                     if (tag !== 32) {
                         break;
                     }
-                    message.periodNumber = reader.uint32();
+                    message.period_number = reader.uint32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1717,9 +1717,9 @@ exports.GetHomeroomAttendanceDetailsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            periodNumber: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
         };
     },
     toJSON(message) {
@@ -1727,14 +1727,14 @@ exports.GetHomeroomAttendanceDetailsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.homeroomId !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroomId);
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
         }
-        if (message.periodNumber !== 0) {
-            obj.periodNumber = Math.round(message.periodNumber);
+        if (message.period_number !== 0) {
+            obj.periodNumber = Math.round(message.period_number);
         }
         return obj;
     },
@@ -1746,16 +1746,16 @@ exports.GetHomeroomAttendanceDetailsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroomId)
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
         message.date = object.date ?? "";
-        message.periodNumber = object.periodNumber ?? 0;
+        message.period_number = object.period_number ?? 0;
         return message;
     },
 };
 function createBaseGetHomeroomAttendanceDetailsResponse() {
-    return { homeroom: undefined, students: [], attendanceEntries: [] };
+    return { homeroom: undefined, students: [], attendance_entries: [] };
 }
 exports.GetHomeroomAttendanceDetailsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1765,7 +1765,7 @@ exports.GetHomeroomAttendanceDetailsResponse = {
         for (const v of message.students) {
             student_1.Student.encode(v, writer.uint32(18).fork()).join();
         }
-        for (const v of message.attendanceEntries) {
+        for (const v of message.attendance_entries) {
             attendance_1.Attendance.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
@@ -1793,7 +1793,7 @@ exports.GetHomeroomAttendanceDetailsResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.attendanceEntries.push(attendance_1.Attendance.decode(reader, reader.uint32()));
+                    message.attendance_entries.push(attendance_1.Attendance.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1807,7 +1807,7 @@ exports.GetHomeroomAttendanceDetailsResponse = {
         return {
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
             students: globalThis.Array.isArray(object?.students) ? object.students.map((e) => student_1.Student.fromJSON(e)) : [],
-            attendanceEntries: globalThis.Array.isArray(object?.attendanceEntries)
+            attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
                 ? object.attendanceEntries.map((e) => attendance_1.Attendance.fromJSON(e))
                 : [],
         };
@@ -1820,8 +1820,8 @@ exports.GetHomeroomAttendanceDetailsResponse = {
         if (message.students?.length) {
             obj.students = message.students.map((e) => student_1.Student.toJSON(e));
         }
-        if (message.attendanceEntries?.length) {
-            obj.attendanceEntries = message.attendanceEntries.map((e) => attendance_1.Attendance.toJSON(e));
+        if (message.attendance_entries?.length) {
+            obj.attendanceEntries = message.attendance_entries.map((e) => attendance_1.Attendance.toJSON(e));
         }
         return obj;
     },
@@ -1834,23 +1834,23 @@ exports.GetHomeroomAttendanceDetailsResponse = {
             ? homeroom_1.Homeroom.fromPartial(object.homeroom)
             : undefined;
         message.students = object.students?.map((e) => student_1.Student.fromPartial(e)) || [];
-        message.attendanceEntries = object.attendanceEntries?.map((e) => attendance_1.Attendance.fromPartial(e)) || [];
+        message.attendance_entries = object.attendance_entries?.map((e) => attendance_1.Attendance.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseGetSingleStudentHomeroomAttendanceEntryRequest() {
-    return { context: undefined, studentId: undefined, homeroomId: undefined, date: "" };
+    return { context: undefined, student_id: undefined, homeroom_id: undefined, date: "" };
 }
 exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.studentId !== undefined) {
-            object_id_1.ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.homeroomId !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroomId, writer.uint32(26).fork()).join();
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(26).fork()).join();
         }
         if (message.date !== "") {
             writer.uint32(34).string(message.date);
@@ -1874,13 +1874,13 @@ exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.homeroomId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -1899,8 +1899,8 @@ exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            homeroomId: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
         };
     },
@@ -1909,11 +1909,11 @@ exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.studentId !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.homeroomId !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroomId);
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
@@ -1928,26 +1928,26 @@ exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.studentId = (object.studentId !== undefined && object.studentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentId)
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroomId)
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
         message.date = object.date ?? "";
         return message;
     },
 };
 function createBaseGetSingleStudentHomeroomAttendanceEntryResponse() {
-    return { student: undefined, attendanceEntry: undefined, homeroom: undefined };
+    return { student: undefined, attendance_entry: undefined, homeroom: undefined };
 }
 exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.student !== undefined) {
             student_1.Student.encode(message.student, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntry !== undefined) {
-            attendance_1.Attendance.encode(message.attendanceEntry, writer.uint32(18).fork()).join();
+        if (message.attendance_entry !== undefined) {
+            attendance_1.Attendance.encode(message.attendance_entry, writer.uint32(18).fork()).join();
         }
         if (message.homeroom !== undefined) {
             homeroom_1.Homeroom.encode(message.homeroom, writer.uint32(26).fork()).join();
@@ -1971,7 +1971,7 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntry = attendance_1.Attendance.decode(reader, reader.uint32());
+                    message.attendance_entry = attendance_1.Attendance.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1990,7 +1990,7 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
     fromJSON(object) {
         return {
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
-            attendanceEntry: isSet(object.attendanceEntry) ? attendance_1.Attendance.fromJSON(object.attendanceEntry) : undefined,
+            attendance_entry: isSet(object.attendanceEntry) ? attendance_1.Attendance.fromJSON(object.attendanceEntry) : undefined,
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
         };
     },
@@ -1999,8 +1999,8 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
         if (message.student !== undefined) {
             obj.student = student_1.Student.toJSON(message.student);
         }
-        if (message.attendanceEntry !== undefined) {
-            obj.attendanceEntry = attendance_1.Attendance.toJSON(message.attendanceEntry);
+        if (message.attendance_entry !== undefined) {
+            obj.attendanceEntry = attendance_1.Attendance.toJSON(message.attendance_entry);
         }
         if (message.homeroom !== undefined) {
             obj.homeroom = homeroom_1.Homeroom.toJSON(message.homeroom);
@@ -2015,8 +2015,8 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
         message.student = (object.student !== undefined && object.student !== null)
             ? student_1.Student.fromPartial(object.student)
             : undefined;
-        message.attendanceEntry = (object.attendanceEntry !== undefined && object.attendanceEntry !== null)
-            ? attendance_1.Attendance.fromPartial(object.attendanceEntry)
+        message.attendance_entry = (object.attendance_entry !== undefined && object.attendance_entry !== null)
+            ? attendance_1.Attendance.fromPartial(object.attendance_entry)
             : undefined;
         message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
             ? homeroom_1.Homeroom.fromPartial(object.homeroom)
@@ -2025,21 +2025,21 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
     },
 };
 function createBaseGetAttendanceDateMapRequest() {
-    return { context: undefined, classRef: undefined, startDate: "", endDate: "" };
+    return { context: undefined, class_ref: undefined, start_date: "", end_date: "" };
 }
 exports.GetAttendanceDateMapRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.classRef !== undefined) {
-            exports.ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+        if (message.class_ref !== undefined) {
+            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
-        if (message.startDate !== "") {
-            writer.uint32(26).string(message.startDate);
+        if (message.start_date !== "") {
+            writer.uint32(26).string(message.start_date);
         }
-        if (message.endDate !== "") {
-            writer.uint32(34).string(message.endDate);
+        if (message.end_date !== "") {
+            writer.uint32(34).string(message.end_date);
         }
         return writer;
     },
@@ -2060,19 +2060,19 @@ exports.GetAttendanceDateMapRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.classRef = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.startDate = reader.string();
+                    message.start_date = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.endDate = reader.string();
+                    message.end_date = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2085,9 +2085,9 @@ exports.GetAttendanceDateMapRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            classRef: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
-            startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-            endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -2095,14 +2095,14 @@ exports.GetAttendanceDateMapRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.classRef !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.classRef);
+        if (message.class_ref !== undefined) {
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
-        if (message.startDate !== "") {
-            obj.startDate = message.startDate;
+        if (message.start_date !== "") {
+            obj.startDate = message.start_date;
         }
-        if (message.endDate !== "") {
-            obj.endDate = message.endDate;
+        if (message.end_date !== "") {
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -2114,11 +2114,11 @@ exports.GetAttendanceDateMapRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.classRef = (object.classRef !== undefined && object.classRef !== null)
-            ? exports.ClassRef.fromPartial(object.classRef)
+        message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+            ? exports.ClassRef.fromPartial(object.class_ref)
             : undefined;
-        message.startDate = object.startDate ?? "";
-        message.endDate = object.endDate ?? "";
+        message.start_date = object.start_date ?? "";
+        message.end_date = object.end_date ?? "";
         return message;
     },
 };
@@ -2177,15 +2177,15 @@ exports.GetAttendanceDateMapResponse = {
     },
 };
 function createBaseAttendanceDateMapEntry() {
-    return { date: "", completionStatus: AttendanceCompletionStatus.EMPTY };
+    return { date: "", completion_status: AttendanceCompletionStatus.EMPTY };
 }
 exports.AttendanceDateMapEntry = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.date !== "") {
             writer.uint32(10).string(message.date);
         }
-        if (message.completionStatus !== AttendanceCompletionStatus.EMPTY) {
-            writer.uint32(16).int32(attendanceCompletionStatusToNumber(message.completionStatus));
+        if (message.completion_status !== AttendanceCompletionStatus.EMPTY) {
+            writer.uint32(16).int32(attendanceCompletionStatusToNumber(message.completion_status));
         }
         return writer;
     },
@@ -2206,7 +2206,7 @@ exports.AttendanceDateMapEntry = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.completionStatus = attendanceCompletionStatusFromJSON(reader.int32());
+                    message.completion_status = attendanceCompletionStatusFromJSON(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2219,7 +2219,7 @@ exports.AttendanceDateMapEntry = {
     fromJSON(object) {
         return {
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            completionStatus: isSet(object.completionStatus)
+            completion_status: isSet(object.completionStatus)
                 ? attendanceCompletionStatusFromJSON(object.completionStatus)
                 : AttendanceCompletionStatus.EMPTY,
         };
@@ -2229,8 +2229,8 @@ exports.AttendanceDateMapEntry = {
         if (message.date !== "") {
             obj.date = message.date;
         }
-        if (message.completionStatus !== AttendanceCompletionStatus.EMPTY) {
-            obj.completionStatus = attendanceCompletionStatusToJSON(message.completionStatus);
+        if (message.completion_status !== AttendanceCompletionStatus.EMPTY) {
+            obj.completionStatus = attendanceCompletionStatusToJSON(message.completion_status);
         }
         return obj;
     },
@@ -2240,26 +2240,26 @@ exports.AttendanceDateMapEntry = {
     fromPartial(object) {
         const message = createBaseAttendanceDateMapEntry();
         message.date = object.date ?? "";
-        message.completionStatus = object.completionStatus ?? AttendanceCompletionStatus.EMPTY;
+        message.completion_status = object.completion_status ?? AttendanceCompletionStatus.EMPTY;
         return message;
     },
 };
 function createBaseGetAttendanceCsvDataRequest() {
-    return { context: undefined, classRef: undefined, startDate: "", endDate: "" };
+    return { context: undefined, class_ref: undefined, start_date: "", end_date: "" };
 }
 exports.GetAttendanceCsvDataRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.classRef !== undefined) {
-            exports.ClassRef.encode(message.classRef, writer.uint32(18).fork()).join();
+        if (message.class_ref !== undefined) {
+            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
-        if (message.startDate !== "") {
-            writer.uint32(26).string(message.startDate);
+        if (message.start_date !== "") {
+            writer.uint32(26).string(message.start_date);
         }
-        if (message.endDate !== "") {
-            writer.uint32(34).string(message.endDate);
+        if (message.end_date !== "") {
+            writer.uint32(34).string(message.end_date);
         }
         return writer;
     },
@@ -2280,19 +2280,19 @@ exports.GetAttendanceCsvDataRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.classRef = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.startDate = reader.string();
+                    message.start_date = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.endDate = reader.string();
+                    message.end_date = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2305,9 +2305,9 @@ exports.GetAttendanceCsvDataRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            classRef: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
-            startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
-            endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -2315,14 +2315,14 @@ exports.GetAttendanceCsvDataRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.classRef !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.classRef);
+        if (message.class_ref !== undefined) {
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
-        if (message.startDate !== "") {
-            obj.startDate = message.startDate;
+        if (message.start_date !== "") {
+            obj.startDate = message.start_date;
         }
-        if (message.endDate !== "") {
-            obj.endDate = message.endDate;
+        if (message.end_date !== "") {
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -2334,21 +2334,21 @@ exports.GetAttendanceCsvDataRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.classRef = (object.classRef !== undefined && object.classRef !== null)
-            ? exports.ClassRef.fromPartial(object.classRef)
+        message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+            ? exports.ClassRef.fromPartial(object.class_ref)
             : undefined;
-        message.startDate = object.startDate ?? "";
-        message.endDate = object.endDate ?? "";
+        message.start_date = object.start_date ?? "";
+        message.end_date = object.end_date ?? "";
         return message;
     },
 };
 function createBaseGetAttendanceCsvDataResponse() {
-    return { csvData: "", filename: "" };
+    return { csv_data: "", filename: "" };
 }
 exports.GetAttendanceCsvDataResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.csvData !== "") {
-            writer.uint32(10).string(message.csvData);
+        if (message.csv_data !== "") {
+            writer.uint32(10).string(message.csv_data);
         }
         if (message.filename !== "") {
             writer.uint32(18).string(message.filename);
@@ -2366,7 +2366,7 @@ exports.GetAttendanceCsvDataResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.csvData = reader.string();
+                    message.csv_data = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -2384,14 +2384,14 @@ exports.GetAttendanceCsvDataResponse = {
     },
     fromJSON(object) {
         return {
-            csvData: isSet(object.csvData) ? globalThis.String(object.csvData) : "",
+            csv_data: isSet(object.csvData) ? globalThis.String(object.csvData) : "",
             filename: isSet(object.filename) ? globalThis.String(object.filename) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.csvData !== "") {
-            obj.csvData = message.csvData;
+        if (message.csv_data !== "") {
+            obj.csvData = message.csv_data;
         }
         if (message.filename !== "") {
             obj.filename = message.filename;
@@ -2403,27 +2403,27 @@ exports.GetAttendanceCsvDataResponse = {
     },
     fromPartial(object) {
         const message = createBaseGetAttendanceCsvDataResponse();
-        message.csvData = object.csvData ?? "";
+        message.csv_data = object.csv_data ?? "";
         message.filename = object.filename ?? "";
         return message;
     },
 };
 function createBaseGetCourseAttendanceDetailsRequest() {
-    return { context: undefined, courseId: undefined, date: "", periodNumber: 0 };
+    return { context: undefined, course_id: undefined, date: "", period_number: 0 };
 }
 exports.GetCourseAttendanceDetailsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
         if (message.date !== "") {
             writer.uint32(26).string(message.date);
         }
-        if (message.periodNumber !== 0) {
-            writer.uint32(32).uint32(message.periodNumber);
+        if (message.period_number !== 0) {
+            writer.uint32(32).uint32(message.period_number);
         }
         return writer;
     },
@@ -2444,7 +2444,7 @@ exports.GetCourseAttendanceDetailsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -2456,7 +2456,7 @@ exports.GetCourseAttendanceDetailsRequest = {
                     if (tag !== 32) {
                         break;
                     }
-                    message.periodNumber = reader.uint32();
+                    message.period_number = reader.uint32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2469,9 +2469,9 @@ exports.GetCourseAttendanceDetailsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            periodNumber: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
         };
     },
     toJSON(message) {
@@ -2479,14 +2479,14 @@ exports.GetCourseAttendanceDetailsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
         }
-        if (message.periodNumber !== 0) {
-            obj.periodNumber = Math.round(message.periodNumber);
+        if (message.period_number !== 0) {
+            obj.periodNumber = Math.round(message.period_number);
         }
         return obj;
     },
@@ -2498,16 +2498,16 @@ exports.GetCourseAttendanceDetailsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
         message.date = object.date ?? "";
-        message.periodNumber = object.periodNumber ?? 0;
+        message.period_number = object.period_number ?? 0;
         return message;
     },
 };
 function createBaseGetCourseAttendanceDetailsResponse() {
-    return { course: undefined, students: [], attendanceEntries: [] };
+    return { course: undefined, students: [], attendance_entries: [] };
 }
 exports.GetCourseAttendanceDetailsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2517,7 +2517,7 @@ exports.GetCourseAttendanceDetailsResponse = {
         for (const v of message.students) {
             student_1.Student.encode(v, writer.uint32(18).fork()).join();
         }
-        for (const v of message.attendanceEntries) {
+        for (const v of message.attendance_entries) {
             attendance_1.Attendance.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
@@ -2545,7 +2545,7 @@ exports.GetCourseAttendanceDetailsResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.attendanceEntries.push(attendance_1.Attendance.decode(reader, reader.uint32()));
+                    message.attendance_entries.push(attendance_1.Attendance.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2559,7 +2559,7 @@ exports.GetCourseAttendanceDetailsResponse = {
         return {
             course: isSet(object.course) ? course_1.Course.fromJSON(object.course) : undefined,
             students: globalThis.Array.isArray(object?.students) ? object.students.map((e) => student_1.Student.fromJSON(e)) : [],
-            attendanceEntries: globalThis.Array.isArray(object?.attendanceEntries)
+            attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
                 ? object.attendanceEntries.map((e) => attendance_1.Attendance.fromJSON(e))
                 : [],
         };
@@ -2572,8 +2572,8 @@ exports.GetCourseAttendanceDetailsResponse = {
         if (message.students?.length) {
             obj.students = message.students.map((e) => student_1.Student.toJSON(e));
         }
-        if (message.attendanceEntries?.length) {
-            obj.attendanceEntries = message.attendanceEntries.map((e) => attendance_1.Attendance.toJSON(e));
+        if (message.attendance_entries?.length) {
+            obj.attendanceEntries = message.attendance_entries.map((e) => attendance_1.Attendance.toJSON(e));
         }
         return obj;
     },
@@ -2586,29 +2586,29 @@ exports.GetCourseAttendanceDetailsResponse = {
             ? course_1.Course.fromPartial(object.course)
             : undefined;
         message.students = object.students?.map((e) => student_1.Student.fromPartial(e)) || [];
-        message.attendanceEntries = object.attendanceEntries?.map((e) => attendance_1.Attendance.fromPartial(e)) || [];
+        message.attendance_entries = object.attendance_entries?.map((e) => attendance_1.Attendance.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseGetSingleStudentCourseAttendanceEntryRequest() {
-    return { context: undefined, studentId: undefined, courseId: undefined, date: "", periodNumber: 0 };
+    return { context: undefined, student_id: undefined, course_id: undefined, date: "", period_number: 0 };
 }
 exports.GetSingleStudentCourseAttendanceEntryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.studentId !== undefined) {
-            object_id_1.ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(26).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
         }
         if (message.date !== "") {
             writer.uint32(34).string(message.date);
         }
-        if (message.periodNumber !== 0) {
-            writer.uint32(40).uint32(message.periodNumber);
+        if (message.period_number !== 0) {
+            writer.uint32(40).uint32(message.period_number);
         }
         return writer;
     },
@@ -2629,13 +2629,13 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -2647,7 +2647,7 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.periodNumber = reader.uint32();
+                    message.period_number = reader.uint32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -2660,10 +2660,10 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            periodNumber: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
         };
     },
     toJSON(message) {
@@ -2671,17 +2671,17 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.studentId !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
         }
-        if (message.periodNumber !== 0) {
-            obj.periodNumber = Math.round(message.periodNumber);
+        if (message.period_number !== 0) {
+            obj.periodNumber = Math.round(message.period_number);
         }
         return obj;
     },
@@ -2693,27 +2693,27 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.studentId = (object.studentId !== undefined && object.studentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentId)
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
         message.date = object.date ?? "";
-        message.periodNumber = object.periodNumber ?? 0;
+        message.period_number = object.period_number ?? 0;
         return message;
     },
 };
 function createBaseGetSingleStudentCourseAttendanceEntryResponse() {
-    return { student: undefined, attendanceEntry: undefined, course: undefined };
+    return { student: undefined, attendance_entry: undefined, course: undefined };
 }
 exports.GetSingleStudentCourseAttendanceEntryResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.student !== undefined) {
             student_1.Student.encode(message.student, writer.uint32(10).fork()).join();
         }
-        if (message.attendanceEntry !== undefined) {
-            attendance_1.Attendance.encode(message.attendanceEntry, writer.uint32(18).fork()).join();
+        if (message.attendance_entry !== undefined) {
+            attendance_1.Attendance.encode(message.attendance_entry, writer.uint32(18).fork()).join();
         }
         if (message.course !== undefined) {
             course_1.Course.encode(message.course, writer.uint32(26).fork()).join();
@@ -2737,7 +2737,7 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.attendanceEntry = attendance_1.Attendance.decode(reader, reader.uint32());
+                    message.attendance_entry = attendance_1.Attendance.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -2756,7 +2756,7 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
     fromJSON(object) {
         return {
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
-            attendanceEntry: isSet(object.attendanceEntry) ? attendance_1.Attendance.fromJSON(object.attendanceEntry) : undefined,
+            attendance_entry: isSet(object.attendanceEntry) ? attendance_1.Attendance.fromJSON(object.attendanceEntry) : undefined,
             course: isSet(object.course) ? course_1.Course.fromJSON(object.course) : undefined,
         };
     },
@@ -2765,8 +2765,8 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
         if (message.student !== undefined) {
             obj.student = student_1.Student.toJSON(message.student);
         }
-        if (message.attendanceEntry !== undefined) {
-            obj.attendanceEntry = attendance_1.Attendance.toJSON(message.attendanceEntry);
+        if (message.attendance_entry !== undefined) {
+            obj.attendanceEntry = attendance_1.Attendance.toJSON(message.attendance_entry);
         }
         if (message.course !== undefined) {
             obj.course = course_1.Course.toJSON(message.course);
@@ -2781,8 +2781,8 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
         message.student = (object.student !== undefined && object.student !== null)
             ? student_1.Student.fromPartial(object.student)
             : undefined;
-        message.attendanceEntry = (object.attendanceEntry !== undefined && object.attendanceEntry !== null)
-            ? attendance_1.Attendance.fromPartial(object.attendanceEntry)
+        message.attendance_entry = (object.attendance_entry !== undefined && object.attendance_entry !== null)
+            ? attendance_1.Attendance.fromPartial(object.attendance_entry)
             : undefined;
         message.course = (object.course !== undefined && object.course !== null)
             ? course_1.Course.fromPartial(object.course)

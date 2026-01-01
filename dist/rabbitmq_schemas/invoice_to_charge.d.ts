@@ -2,8 +2,8 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "rabbitmq_schemas";
 export interface InvoiceToCharge {
-    invoiceId: ObjectId | undefined;
-    dateSent: Date | undefined;
+    invoice_id: ObjectId | undefined;
+    date_sent: Date | undefined;
 }
 export declare const InvoiceToCharge: MessageFns<InvoiceToCharge>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

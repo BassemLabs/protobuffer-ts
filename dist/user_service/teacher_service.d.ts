@@ -7,7 +7,7 @@ import { UserRole } from "./user_role";
 export declare const protobufPackage = "user_service";
 export interface GetTeacherRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 export interface GetTeacherByEmailRequest {
     context: RequestContext | undefined;
@@ -15,14 +15,14 @@ export interface GetTeacherByEmailRequest {
 }
 export interface GetTeachersListRequest {
     context: RequestContext | undefined;
-    perPage?: number | undefined;
+    per_page?: number | undefined;
     page?: number | undefined;
-    nameSearch?: string | undefined;
+    name_search?: string | undefined;
     status?: TeacherStatus | undefined;
 }
 export interface GetTeachersListResponse {
     teachers: TeacherBasic[];
-    teachersCount: number;
+    teachers_count: number;
 }
 export interface GetAllTeachersForStagingRequest {
     context: RequestContext | undefined;
@@ -32,84 +32,84 @@ export interface GetAllTeachersForStagingResponse {
 }
 export interface GetTeachersByIdsRequest {
     context: RequestContext | undefined;
-    teacherIds: ObjectId[];
+    teacher_ids: ObjectId[];
 }
 export interface GetTeachersByIdsResponse {
     teachers: TeacherBasic[];
 }
 export interface GetTeacherSignatureRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 export interface GetTeacherSignatureResponse {
-    signatureFileId?: ObjectId | undefined;
+    signature_file_id?: ObjectId | undefined;
 }
 export interface UpdateTeacherSignatureRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
-    signatureFileId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
+    signature_file_id: ObjectId | undefined;
 }
 export interface DeleteTeacherSignatureRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 export interface UpdateTeacherProfileRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
     profile: TeacherProfile | undefined;
 }
 export interface ChangeTeacherPasswordRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
     password: string;
-    changePasswordAtNextLogin: boolean;
+    change_password_at_next_login: boolean;
 }
 export interface CreateTeacherRequest {
     context: RequestContext | undefined;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     gender: string;
-    phoneNumber: PhoneNumber | undefined;
-    dateOfBirth: Date | undefined;
-    personalEmail: string;
+    phone_number: PhoneNumber | undefined;
+    date_of_birth: Date | undefined;
+    personal_email: string;
 }
 export interface WithdrawTeacherRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 export interface ReactivateTeacherRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 export interface AddTeacherRoleRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
     role: UserRole;
 }
 export interface RemoveTeacherRoleRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
     role: UserRole;
 }
 export interface UploadTeachersRequest {
     context: RequestContext | undefined;
     /** CSV file content as base64-encoded string */
-    csvFileBase64: string;
+    csv_file_base64: string;
 }
 export interface UploadTeachersResponse {
-    successCount: number;
-    failedCount: number;
+    success_count: number;
+    failed_count: number;
     /** Base64 encoded CSV with errors (if any) */
-    errorCsvBase64?: string | undefined;
+    error_csv_base64?: string | undefined;
 }
 export interface CheckCanRemoveOrgDomainRequest {
     context: RequestContext | undefined;
     domain: string;
 }
 export interface CheckCanRemoveOrgDomainResponse {
-    canRemove: boolean;
-    activeTeachersCount: number;
-    studentsCount: number;
+    can_remove: boolean;
+    active_teachers_count: number;
+    students_count: number;
 }
 export declare const GetTeacherRequest: MessageFns<GetTeacherRequest>;
 export declare const GetTeacherByEmailRequest: MessageFns<GetTeacherByEmailRequest>;

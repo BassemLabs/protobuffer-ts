@@ -3,27 +3,27 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export interface MarkCategory {
     id: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     percentage: number;
 }
 export interface DetailedMarkCategory {
     id: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     /** Original configured percentage */
     percentage: number;
     /** Adjusted percentage after redistribution of non evaluated categories of the course */
-    effectivePercentage: number;
+    effective_percentage: number;
 }
 export interface PersonalizedMarkCategory {
     id: ObjectId | undefined;
-    courseId: ObjectId | undefined;
-    studentId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
+    student_id: ObjectId | undefined;
     name: string;
     percentage: number;
     /** calculated based on the student's marked evaluations */
-    effectivePercentageForStudent: number;
+    effective_percentage_for_student: number;
 }
 export declare const MarkCategory: MessageFns<MarkCategory>;
 export declare const DetailedMarkCategory: MessageFns<DetailedMarkCategory>;

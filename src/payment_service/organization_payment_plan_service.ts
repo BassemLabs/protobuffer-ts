@@ -26,7 +26,7 @@ export interface GetAllPaymentPlansRequest {
 }
 
 export interface GetPaymentPlansResponse {
-  paymentPlans: OrganizationPaymentPlan[];
+  payment_plans: OrganizationPaymentPlan[];
 }
 
 export interface CreatePaymentPlanRequest {
@@ -34,11 +34,11 @@ export interface CreatePaymentPlanRequest {
   name: string;
   description: string;
   currency: Currency;
-  isPublic: boolean;
-  upfrontCost: number;
-  upfrontCostPaymentInterval: PaymentInterval;
-  perStudentCost: number;
-  paymentProcessingPercentage: number;
+  is_public: boolean;
+  upfront_cost: number;
+  upfront_cost_payment_interval: PaymentInterval;
+  per_student_cost: number;
+  payment_processing_percentage: number;
 }
 
 export interface GetOrganizationVisiblePlansRequest {
@@ -50,19 +50,19 @@ export interface GetAllPaymentPlanAccessRequest {
 }
 
 export interface GetAllPaymentPlanAccessResponse {
-  organizationPlanAccess: OrganizationPlanAccess[];
+  organization_plan_access: OrganizationPlanAccess[];
 }
 
 export interface MakePaymentPlanAccessibleForOrganizationRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  paymentPlanId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  payment_plan_id: ObjectId | undefined;
 }
 
 export interface AssignPaymentPlanToOrganizationRequest {
   context: RequestContext | undefined;
-  paymentPlanId: ObjectId | undefined;
-  deferPerStudentCostToParent: boolean;
+  payment_plan_id: ObjectId | undefined;
+  defer_per_student_cost_to_parent: boolean;
 }
 
 export interface GetOrganizationActiveOrgPaymentPlanInfoRequest {
@@ -74,12 +74,12 @@ export interface GetOrgsPaymentPlanInfoRequest {
 }
 
 export interface GetOrgsPaymentPlanInfoResponse {
-  orgPaymentPlanInfo: OrganizationPaymentPlanInformation[];
+  org_payment_plan_info: OrganizationPaymentPlanInformation[];
 }
 
 export interface GetOrgActivePaymentPlanWithInfoRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 function createBaseGetAllPaymentPlansRequest(): GetAllPaymentPlansRequest {
@@ -142,12 +142,12 @@ export const GetAllPaymentPlansRequest: MessageFns<GetAllPaymentPlansRequest> = 
 };
 
 function createBaseGetPaymentPlansResponse(): GetPaymentPlansResponse {
-  return { paymentPlans: [] };
+  return { payment_plans: [] };
 }
 
 export const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse> = {
   encode(message: GetPaymentPlansResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.paymentPlans) {
+    for (const v of message.payment_plans) {
       OrganizationPaymentPlan.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -165,7 +165,7 @@ export const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse> = {
             break;
           }
 
-          message.paymentPlans.push(OrganizationPaymentPlan.decode(reader, reader.uint32()));
+          message.payment_plans.push(OrganizationPaymentPlan.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -178,7 +178,7 @@ export const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse> = {
 
   fromJSON(object: any): GetPaymentPlansResponse {
     return {
-      paymentPlans: globalThis.Array.isArray(object?.paymentPlans)
+      payment_plans: globalThis.Array.isArray(object?.paymentPlans)
         ? object.paymentPlans.map((e: any) => OrganizationPaymentPlan.fromJSON(e))
         : [],
     };
@@ -186,8 +186,8 @@ export const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse> = {
 
   toJSON(message: GetPaymentPlansResponse): unknown {
     const obj: any = {};
-    if (message.paymentPlans?.length) {
-      obj.paymentPlans = message.paymentPlans.map((e) => OrganizationPaymentPlan.toJSON(e));
+    if (message.payment_plans?.length) {
+      obj.paymentPlans = message.payment_plans.map((e) => OrganizationPaymentPlan.toJSON(e));
     }
     return obj;
   },
@@ -197,7 +197,7 @@ export const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetPaymentPlansResponse>, I>>(object: I): GetPaymentPlansResponse {
     const message = createBaseGetPaymentPlansResponse();
-    message.paymentPlans = object.paymentPlans?.map((e) => OrganizationPaymentPlan.fromPartial(e)) || [];
+    message.payment_plans = object.payment_plans?.map((e) => OrganizationPaymentPlan.fromPartial(e)) || [];
     return message;
   },
 };
@@ -208,11 +208,11 @@ function createBaseCreatePaymentPlanRequest(): CreatePaymentPlanRequest {
     name: "",
     description: "",
     currency: Currency.USD,
-    isPublic: false,
-    upfrontCost: 0,
-    upfrontCostPaymentInterval: PaymentInterval.Monthly,
-    perStudentCost: 0,
-    paymentProcessingPercentage: 0,
+    is_public: false,
+    upfront_cost: 0,
+    upfront_cost_payment_interval: PaymentInterval.Monthly,
+    per_student_cost: 0,
+    payment_processing_percentage: 0,
   };
 }
 
@@ -230,20 +230,20 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
     if (message.currency !== Currency.USD) {
       writer.uint32(32).int32(currencyToNumber(message.currency));
     }
-    if (message.isPublic !== false) {
-      writer.uint32(40).bool(message.isPublic);
+    if (message.is_public !== false) {
+      writer.uint32(40).bool(message.is_public);
     }
-    if (message.upfrontCost !== 0) {
-      writer.uint32(49).double(message.upfrontCost);
+    if (message.upfront_cost !== 0) {
+      writer.uint32(49).double(message.upfront_cost);
     }
-    if (message.upfrontCostPaymentInterval !== PaymentInterval.Monthly) {
-      writer.uint32(56).int32(paymentIntervalToNumber(message.upfrontCostPaymentInterval));
+    if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
+      writer.uint32(56).int32(paymentIntervalToNumber(message.upfront_cost_payment_interval));
     }
-    if (message.perStudentCost !== 0) {
-      writer.uint32(65).double(message.perStudentCost);
+    if (message.per_student_cost !== 0) {
+      writer.uint32(65).double(message.per_student_cost);
     }
-    if (message.paymentProcessingPercentage !== 0) {
-      writer.uint32(73).double(message.paymentProcessingPercentage);
+    if (message.payment_processing_percentage !== 0) {
+      writer.uint32(73).double(message.payment_processing_percentage);
     }
     return writer;
   },
@@ -288,35 +288,35 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
             break;
           }
 
-          message.isPublic = reader.bool();
+          message.is_public = reader.bool();
           continue;
         case 6:
           if (tag !== 49) {
             break;
           }
 
-          message.upfrontCost = reader.double();
+          message.upfront_cost = reader.double();
           continue;
         case 7:
           if (tag !== 56) {
             break;
           }
 
-          message.upfrontCostPaymentInterval = paymentIntervalFromJSON(reader.int32());
+          message.upfront_cost_payment_interval = paymentIntervalFromJSON(reader.int32());
           continue;
         case 8:
           if (tag !== 65) {
             break;
           }
 
-          message.perStudentCost = reader.double();
+          message.per_student_cost = reader.double();
           continue;
         case 9:
           if (tag !== 73) {
             break;
           }
 
-          message.paymentProcessingPercentage = reader.double();
+          message.payment_processing_percentage = reader.double();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -333,13 +333,13 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
-      isPublic: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
-      upfrontCost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
-      upfrontCostPaymentInterval: isSet(object.upfrontCostPaymentInterval)
+      is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
+      upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+      upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
         ? paymentIntervalFromJSON(object.upfrontCostPaymentInterval)
         : PaymentInterval.Monthly,
-      perStudentCost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
-      paymentProcessingPercentage: isSet(object.paymentProcessingPercentage)
+      per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+      payment_processing_percentage: isSet(object.paymentProcessingPercentage)
         ? globalThis.Number(object.paymentProcessingPercentage)
         : 0,
     };
@@ -359,20 +359,20 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
     if (message.currency !== Currency.USD) {
       obj.currency = currencyToJSON(message.currency);
     }
-    if (message.isPublic !== false) {
-      obj.isPublic = message.isPublic;
+    if (message.is_public !== false) {
+      obj.isPublic = message.is_public;
     }
-    if (message.upfrontCost !== 0) {
-      obj.upfrontCost = message.upfrontCost;
+    if (message.upfront_cost !== 0) {
+      obj.upfrontCost = message.upfront_cost;
     }
-    if (message.upfrontCostPaymentInterval !== PaymentInterval.Monthly) {
-      obj.upfrontCostPaymentInterval = paymentIntervalToJSON(message.upfrontCostPaymentInterval);
+    if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
+      obj.upfrontCostPaymentInterval = paymentIntervalToJSON(message.upfront_cost_payment_interval);
     }
-    if (message.perStudentCost !== 0) {
-      obj.perStudentCost = message.perStudentCost;
+    if (message.per_student_cost !== 0) {
+      obj.perStudentCost = message.per_student_cost;
     }
-    if (message.paymentProcessingPercentage !== 0) {
-      obj.paymentProcessingPercentage = message.paymentProcessingPercentage;
+    if (message.payment_processing_percentage !== 0) {
+      obj.paymentProcessingPercentage = message.payment_processing_percentage;
     }
     return obj;
   },
@@ -388,11 +388,11 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.currency = object.currency ?? Currency.USD;
-    message.isPublic = object.isPublic ?? false;
-    message.upfrontCost = object.upfrontCost ?? 0;
-    message.upfrontCostPaymentInterval = object.upfrontCostPaymentInterval ?? PaymentInterval.Monthly;
-    message.perStudentCost = object.perStudentCost ?? 0;
-    message.paymentProcessingPercentage = object.paymentProcessingPercentage ?? 0;
+    message.is_public = object.is_public ?? false;
+    message.upfront_cost = object.upfront_cost ?? 0;
+    message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? PaymentInterval.Monthly;
+    message.per_student_cost = object.per_student_cost ?? 0;
+    message.payment_processing_percentage = object.payment_processing_percentage ?? 0;
     return message;
   },
 };
@@ -522,12 +522,12 @@ export const GetAllPaymentPlanAccessRequest: MessageFns<GetAllPaymentPlanAccessR
 };
 
 function createBaseGetAllPaymentPlanAccessResponse(): GetAllPaymentPlanAccessResponse {
-  return { organizationPlanAccess: [] };
+  return { organization_plan_access: [] };
 }
 
 export const GetAllPaymentPlanAccessResponse: MessageFns<GetAllPaymentPlanAccessResponse> = {
   encode(message: GetAllPaymentPlanAccessResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.organizationPlanAccess) {
+    for (const v of message.organization_plan_access) {
       OrganizationPlanAccess.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -545,7 +545,7 @@ export const GetAllPaymentPlanAccessResponse: MessageFns<GetAllPaymentPlanAccess
             break;
           }
 
-          message.organizationPlanAccess.push(OrganizationPlanAccess.decode(reader, reader.uint32()));
+          message.organization_plan_access.push(OrganizationPlanAccess.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -558,7 +558,7 @@ export const GetAllPaymentPlanAccessResponse: MessageFns<GetAllPaymentPlanAccess
 
   fromJSON(object: any): GetAllPaymentPlanAccessResponse {
     return {
-      organizationPlanAccess: globalThis.Array.isArray(object?.organizationPlanAccess)
+      organization_plan_access: globalThis.Array.isArray(object?.organizationPlanAccess)
         ? object.organizationPlanAccess.map((e: any) => OrganizationPlanAccess.fromJSON(e))
         : [],
     };
@@ -566,8 +566,8 @@ export const GetAllPaymentPlanAccessResponse: MessageFns<GetAllPaymentPlanAccess
 
   toJSON(message: GetAllPaymentPlanAccessResponse): unknown {
     const obj: any = {};
-    if (message.organizationPlanAccess?.length) {
-      obj.organizationPlanAccess = message.organizationPlanAccess.map((e) => OrganizationPlanAccess.toJSON(e));
+    if (message.organization_plan_access?.length) {
+      obj.organizationPlanAccess = message.organization_plan_access.map((e) => OrganizationPlanAccess.toJSON(e));
     }
     return obj;
   },
@@ -579,14 +579,14 @@ export const GetAllPaymentPlanAccessResponse: MessageFns<GetAllPaymentPlanAccess
     object: I,
   ): GetAllPaymentPlanAccessResponse {
     const message = createBaseGetAllPaymentPlanAccessResponse();
-    message.organizationPlanAccess = object.organizationPlanAccess?.map((e) => OrganizationPlanAccess.fromPartial(e)) ||
-      [];
+    message.organization_plan_access =
+      object.organization_plan_access?.map((e) => OrganizationPlanAccess.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseMakePaymentPlanAccessibleForOrganizationRequest(): MakePaymentPlanAccessibleForOrganizationRequest {
-  return { context: undefined, organizationId: undefined, paymentPlanId: undefined };
+  return { context: undefined, organization_id: undefined, payment_plan_id: undefined };
 }
 
 export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
@@ -599,11 +599,11 @@ export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.paymentPlanId !== undefined) {
-      ObjectId.encode(message.paymentPlanId, writer.uint32(26).fork()).join();
+    if (message.payment_plan_id !== undefined) {
+      ObjectId.encode(message.payment_plan_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -627,14 +627,14 @@ export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.paymentPlanId = ObjectId.decode(reader, reader.uint32());
+          message.payment_plan_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -648,8 +648,8 @@ export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
   fromJSON(object: any): MakePaymentPlanAccessibleForOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      paymentPlanId: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      payment_plan_id: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
     };
   },
 
@@ -658,11 +658,11 @@ export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.paymentPlanId !== undefined) {
-      obj.paymentPlanId = ObjectId.toJSON(message.paymentPlanId);
+    if (message.payment_plan_id !== undefined) {
+      obj.paymentPlanId = ObjectId.toJSON(message.payment_plan_id);
     }
     return obj;
   },
@@ -679,18 +679,18 @@ export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.paymentPlanId = (object.paymentPlanId !== undefined && object.paymentPlanId !== null)
-      ? ObjectId.fromPartial(object.paymentPlanId)
+    message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+      ? ObjectId.fromPartial(object.payment_plan_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseAssignPaymentPlanToOrganizationRequest(): AssignPaymentPlanToOrganizationRequest {
-  return { context: undefined, paymentPlanId: undefined, deferPerStudentCostToParent: false };
+  return { context: undefined, payment_plan_id: undefined, defer_per_student_cost_to_parent: false };
 }
 
 export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPlanToOrganizationRequest> = {
@@ -698,11 +698,11 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.paymentPlanId !== undefined) {
-      ObjectId.encode(message.paymentPlanId, writer.uint32(18).fork()).join();
+    if (message.payment_plan_id !== undefined) {
+      ObjectId.encode(message.payment_plan_id, writer.uint32(18).fork()).join();
     }
-    if (message.deferPerStudentCostToParent !== false) {
-      writer.uint32(24).bool(message.deferPerStudentCostToParent);
+    if (message.defer_per_student_cost_to_parent !== false) {
+      writer.uint32(24).bool(message.defer_per_student_cost_to_parent);
     }
     return writer;
   },
@@ -726,14 +726,14 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
             break;
           }
 
-          message.paymentPlanId = ObjectId.decode(reader, reader.uint32());
+          message.payment_plan_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.deferPerStudentCostToParent = reader.bool();
+          message.defer_per_student_cost_to_parent = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -747,8 +747,8 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
   fromJSON(object: any): AssignPaymentPlanToOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      paymentPlanId: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
-      deferPerStudentCostToParent: isSet(object.deferPerStudentCostToParent)
+      payment_plan_id: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
+      defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
         ? globalThis.Boolean(object.deferPerStudentCostToParent)
         : false,
     };
@@ -759,11 +759,11 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.paymentPlanId !== undefined) {
-      obj.paymentPlanId = ObjectId.toJSON(message.paymentPlanId);
+    if (message.payment_plan_id !== undefined) {
+      obj.paymentPlanId = ObjectId.toJSON(message.payment_plan_id);
     }
-    if (message.deferPerStudentCostToParent !== false) {
-      obj.deferPerStudentCostToParent = message.deferPerStudentCostToParent;
+    if (message.defer_per_student_cost_to_parent !== false) {
+      obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
     }
     return obj;
   },
@@ -780,10 +780,10 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.paymentPlanId = (object.paymentPlanId !== undefined && object.paymentPlanId !== null)
-      ? ObjectId.fromPartial(object.paymentPlanId)
+    message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+      ? ObjectId.fromPartial(object.payment_plan_id)
       : undefined;
-    message.deferPerStudentCostToParent = object.deferPerStudentCostToParent ?? false;
+    message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? false;
     return message;
   },
 };
@@ -918,12 +918,12 @@ export const GetOrgsPaymentPlanInfoRequest: MessageFns<GetOrgsPaymentPlanInfoReq
 };
 
 function createBaseGetOrgsPaymentPlanInfoResponse(): GetOrgsPaymentPlanInfoResponse {
-  return { orgPaymentPlanInfo: [] };
+  return { org_payment_plan_info: [] };
 }
 
 export const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoResponse> = {
   encode(message: GetOrgsPaymentPlanInfoResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.orgPaymentPlanInfo) {
+    for (const v of message.org_payment_plan_info) {
       OrganizationPaymentPlanInformation.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -941,7 +941,7 @@ export const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoRe
             break;
           }
 
-          message.orgPaymentPlanInfo.push(OrganizationPaymentPlanInformation.decode(reader, reader.uint32()));
+          message.org_payment_plan_info.push(OrganizationPaymentPlanInformation.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -954,7 +954,7 @@ export const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoRe
 
   fromJSON(object: any): GetOrgsPaymentPlanInfoResponse {
     return {
-      orgPaymentPlanInfo: globalThis.Array.isArray(object?.orgPaymentPlanInfo)
+      org_payment_plan_info: globalThis.Array.isArray(object?.orgPaymentPlanInfo)
         ? object.orgPaymentPlanInfo.map((e: any) => OrganizationPaymentPlanInformation.fromJSON(e))
         : [],
     };
@@ -962,8 +962,8 @@ export const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoRe
 
   toJSON(message: GetOrgsPaymentPlanInfoResponse): unknown {
     const obj: any = {};
-    if (message.orgPaymentPlanInfo?.length) {
-      obj.orgPaymentPlanInfo = message.orgPaymentPlanInfo.map((e) => OrganizationPaymentPlanInformation.toJSON(e));
+    if (message.org_payment_plan_info?.length) {
+      obj.orgPaymentPlanInfo = message.org_payment_plan_info.map((e) => OrganizationPaymentPlanInformation.toJSON(e));
     }
     return obj;
   },
@@ -975,14 +975,14 @@ export const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoRe
     object: I,
   ): GetOrgsPaymentPlanInfoResponse {
     const message = createBaseGetOrgsPaymentPlanInfoResponse();
-    message.orgPaymentPlanInfo =
-      object.orgPaymentPlanInfo?.map((e) => OrganizationPaymentPlanInformation.fromPartial(e)) || [];
+    message.org_payment_plan_info =
+      object.org_payment_plan_info?.map((e) => OrganizationPaymentPlanInformation.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetOrgActivePaymentPlanWithInfoRequest(): GetOrgActivePaymentPlanWithInfoRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaymentPlanWithInfoRequest> = {
@@ -990,8 +990,8 @@ export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaym
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1015,7 +1015,7 @@ export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaym
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1029,7 +1029,7 @@ export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaym
   fromJSON(object: any): GetOrgActivePaymentPlanWithInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -1038,8 +1038,8 @@ export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaym
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -1056,8 +1056,8 @@ export const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaym
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },

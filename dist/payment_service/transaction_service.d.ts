@@ -17,14 +17,14 @@ export interface GetTransactionsResponse {
 }
 export interface CreateManualTransactionRequest {
     context: RequestContext | undefined;
-    paymentType: PaymentType;
-    invoiceId: ObjectId | undefined;
+    payment_type: PaymentType;
+    invoice_id: ObjectId | undefined;
     amount: number;
 }
 export interface IssueRefundRequest {
     context: RequestContext | undefined;
-    transactionId: ObjectId | undefined;
-    paymentType: PaymentType;
+    transaction_id: ObjectId | undefined;
+    payment_type: PaymentType;
     amount: number;
     reason?: string | undefined;
 }

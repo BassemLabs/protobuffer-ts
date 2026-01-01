@@ -4,7 +4,7 @@ import { RequestContext } from "../utils/request_context";
 export declare const protobufPackage = "template_service.test_service";
 export interface GetByIDRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export declare const GetByIDRequest: MessageFns<GetByIDRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

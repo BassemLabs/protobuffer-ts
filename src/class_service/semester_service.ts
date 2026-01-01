@@ -17,12 +17,12 @@ export const protobufPackage = "class_service.semester_service";
 
 export interface GetSemesterRequest {
   context: RequestContext | undefined;
-  semesterId: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
 }
 
 export interface GetSemestersRequest {
   context: RequestContext | undefined;
-  semesterIds: ObjectId[];
+  semester_ids: ObjectId[];
 }
 
 export interface GetActiveSemestersRequest {
@@ -36,13 +36,13 @@ export interface GetActiveSemestersResponse {
 
 export interface GetActiveSemestersBySchoolYearRequest {
   context: RequestContext | undefined;
-  schoolYearId: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
 }
 
 export interface CoursesRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
-  semesterId: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
 }
 
 export interface CoursesResponse {
@@ -52,7 +52,7 @@ export interface CoursesResponse {
 export interface HomeroomsRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
-  semesterId: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
 }
 
 export interface HomeroomsResponse {
@@ -62,28 +62,28 @@ export interface HomeroomsResponse {
 export interface UpdateRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
-  semesterId: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
   name: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  reportLayout?: SemesterReportLayout | undefined;
-  campusId: ObjectId | undefined;
+  start_date: Date | undefined;
+  end_date: Date | undefined;
+  report_layout?: SemesterReportLayout | undefined;
+  campus_id: ObjectId | undefined;
 }
 
 export interface ArchiveRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
-  semesterId: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
 }
 
 export interface CreateRequest {
   /** Always include RequestContext as the first field */
   context: RequestContext | undefined;
   name: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  campusId: ObjectId | undefined;
-  schoolYearId: ObjectId | undefined;
+  start_date: Date | undefined;
+  end_date: Date | undefined;
+  campus_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
 }
 
 export interface SemesterResponse {
@@ -92,8 +92,8 @@ export interface SemesterResponse {
 
 export interface GetStudentSemestersRequest {
   context: RequestContext | undefined;
-  studentId: ObjectId | undefined;
-  includeArchived?: boolean | undefined;
+  student_id: ObjectId | undefined;
+  include_archived?: boolean | undefined;
 }
 
 export interface GetStudentSemestersResponse {
@@ -102,15 +102,15 @@ export interface GetStudentSemestersResponse {
 
 export interface ListSemestersRequest {
   context: RequestContext | undefined;
-  perPage?: number | undefined;
+  per_page?: number | undefined;
   page?: number | undefined;
-  nameSearch?: string | undefined;
-  schoolYear: ObjectId | undefined;
+  name_search?: string | undefined;
+  school_year: ObjectId | undefined;
   archived?: boolean | undefined;
 }
 
 function createBaseGetSemesterRequest(): GetSemesterRequest {
-  return { context: undefined, semesterId: undefined };
+  return { context: undefined, semester_id: undefined };
 }
 
 export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
@@ -118,8 +118,8 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(18).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -143,7 +143,7 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -157,7 +157,7 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
   fromJSON(object: any): GetSemesterRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
     };
   },
 
@@ -166,8 +166,8 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -180,15 +180,15 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetSemestersRequest(): GetSemestersRequest {
-  return { context: undefined, semesterIds: [] };
+  return { context: undefined, semester_ids: [] };
 }
 
 export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
@@ -196,7 +196,7 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    for (const v of message.semesterIds) {
+    for (const v of message.semester_ids) {
       ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
@@ -221,7 +221,7 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
             break;
           }
 
-          message.semesterIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.semester_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -235,7 +235,7 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
   fromJSON(object: any): GetSemestersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semesterIds: globalThis.Array.isArray(object?.semesterIds)
+      semester_ids: globalThis.Array.isArray(object?.semesterIds)
         ? object.semesterIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -246,8 +246,8 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.semesterIds?.length) {
-      obj.semesterIds = message.semesterIds.map((e) => ObjectId.toJSON(e));
+    if (message.semester_ids?.length) {
+      obj.semesterIds = message.semester_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -260,7 +260,7 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.semesterIds = object.semesterIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.semester_ids = object.semester_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -386,7 +386,7 @@ export const GetActiveSemestersResponse: MessageFns<GetActiveSemestersResponse> 
 };
 
 function createBaseGetActiveSemestersBySchoolYearRequest(): GetActiveSemestersBySchoolYearRequest {
-  return { context: undefined, schoolYearId: undefined };
+  return { context: undefined, school_year_id: undefined };
 }
 
 export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemestersBySchoolYearRequest> = {
@@ -394,8 +394,8 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.schoolYearId !== undefined) {
-      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -419,7 +419,7 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
             break;
           }
 
-          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -433,7 +433,7 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
   fromJSON(object: any): GetActiveSemestersBySchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -442,8 +442,8 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.schoolYearId !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -460,15 +460,15 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-      ? ObjectId.fromPartial(object.schoolYearId)
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseCoursesRequest(): CoursesRequest {
-  return { context: undefined, semesterId: undefined };
+  return { context: undefined, semester_id: undefined };
 }
 
 export const CoursesRequest: MessageFns<CoursesRequest> = {
@@ -476,8 +476,8 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(18).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -501,7 +501,7 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -515,7 +515,7 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
   fromJSON(object: any): CoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
     };
   },
 
@@ -524,8 +524,8 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -538,8 +538,8 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
     return message;
   },
@@ -605,7 +605,7 @@ export const CoursesResponse: MessageFns<CoursesResponse> = {
 };
 
 function createBaseHomeroomsRequest(): HomeroomsRequest {
-  return { context: undefined, semesterId: undefined };
+  return { context: undefined, semester_id: undefined };
 }
 
 export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
@@ -613,8 +613,8 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(18).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -638,7 +638,7 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -652,7 +652,7 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
   fromJSON(object: any): HomeroomsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
     };
   },
 
@@ -661,8 +661,8 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -675,8 +675,8 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
     return message;
   },
@@ -746,12 +746,12 @@ export const HomeroomsResponse: MessageFns<HomeroomsResponse> = {
 function createBaseUpdateRequest(): UpdateRequest {
   return {
     context: undefined,
-    semesterId: undefined,
+    semester_id: undefined,
     name: "",
-    startDate: undefined,
-    endDate: undefined,
-    reportLayout: undefined,
-    campusId: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    report_layout: undefined,
+    campus_id: undefined,
   };
 }
 
@@ -760,23 +760,23 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(18).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.startDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+    if (message.start_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.start_date), writer.uint32(34).fork()).join();
     }
-    if (message.endDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+    if (message.end_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
     }
-    if (message.reportLayout !== undefined) {
-      SemesterReportLayout.encode(message.reportLayout, writer.uint32(50).fork()).join();
+    if (message.report_layout !== undefined) {
+      SemesterReportLayout.encode(message.report_layout, writer.uint32(50).fork()).join();
     }
-    if (message.campusId !== undefined) {
-      ObjectId.encode(message.campusId, writer.uint32(58).fork()).join();
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -800,7 +800,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -814,28 +814,28 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.start_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.reportLayout = SemesterReportLayout.decode(reader, reader.uint32());
+          message.report_layout = SemesterReportLayout.decode(reader, reader.uint32());
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.campusId = ObjectId.decode(reader, reader.uint32());
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -849,12 +849,12 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      reportLayout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
-      campusId: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      report_layout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
     };
   },
 
@@ -863,23 +863,23 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.startDate !== undefined) {
-      obj.startDate = message.startDate.toISOString();
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date.toISOString();
     }
-    if (message.endDate !== undefined) {
-      obj.endDate = message.endDate.toISOString();
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date.toISOString();
     }
-    if (message.reportLayout !== undefined) {
-      obj.reportLayout = SemesterReportLayout.toJSON(message.reportLayout);
+    if (message.report_layout !== undefined) {
+      obj.reportLayout = SemesterReportLayout.toJSON(message.report_layout);
     }
-    if (message.campusId !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campusId);
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
     return obj;
   },
@@ -892,24 +892,24 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
     message.name = object.name ?? "";
-    message.startDate = object.startDate ?? undefined;
-    message.endDate = object.endDate ?? undefined;
-    message.reportLayout = (object.reportLayout !== undefined && object.reportLayout !== null)
-      ? SemesterReportLayout.fromPartial(object.reportLayout)
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.report_layout = (object.report_layout !== undefined && object.report_layout !== null)
+      ? SemesterReportLayout.fromPartial(object.report_layout)
       : undefined;
-    message.campusId = (object.campusId !== undefined && object.campusId !== null)
-      ? ObjectId.fromPartial(object.campusId)
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseArchiveRequest(): ArchiveRequest {
-  return { context: undefined, semesterId: undefined };
+  return { context: undefined, semester_id: undefined };
 }
 
 export const ArchiveRequest: MessageFns<ArchiveRequest> = {
@@ -917,8 +917,8 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(18).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -942,7 +942,7 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -956,7 +956,7 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
   fromJSON(object: any): ArchiveRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
     };
   },
 
@@ -965,8 +965,8 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -979,8 +979,8 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
     return message;
   },
@@ -990,10 +990,10 @@ function createBaseCreateRequest(): CreateRequest {
   return {
     context: undefined,
     name: "",
-    startDate: undefined,
-    endDate: undefined,
-    campusId: undefined,
-    schoolYearId: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    campus_id: undefined,
+    school_year_id: undefined,
   };
 }
 
@@ -1005,17 +1005,17 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.startDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(26).fork()).join();
+    if (message.start_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.start_date), writer.uint32(26).fork()).join();
     }
-    if (message.endDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(34).fork()).join();
+    if (message.end_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.end_date), writer.uint32(34).fork()).join();
     }
-    if (message.campusId !== undefined) {
-      ObjectId.encode(message.campusId, writer.uint32(42).fork()).join();
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(42).fork()).join();
     }
-    if (message.schoolYearId !== undefined) {
-      ObjectId.encode(message.schoolYearId, writer.uint32(50).fork()).join();
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -1046,28 +1046,28 @@ export const CreateRequest: MessageFns<CreateRequest> = {
             break;
           }
 
-          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.start_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.campusId = ObjectId.decode(reader, reader.uint32());
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1082,10 +1082,10 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      campusId: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
-      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -1097,17 +1097,17 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.startDate !== undefined) {
-      obj.startDate = message.startDate.toISOString();
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date.toISOString();
     }
-    if (message.endDate !== undefined) {
-      obj.endDate = message.endDate.toISOString();
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date.toISOString();
     }
-    if (message.campusId !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campusId);
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
-    if (message.schoolYearId !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -1121,13 +1121,13 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? "";
-    message.startDate = object.startDate ?? undefined;
-    message.endDate = object.endDate ?? undefined;
-    message.campusId = (object.campusId !== undefined && object.campusId !== null)
-      ? ObjectId.fromPartial(object.campusId)
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
       : undefined;
-    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-      ? ObjectId.fromPartial(object.schoolYearId)
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     return message;
   },
@@ -1193,7 +1193,7 @@ export const SemesterResponse: MessageFns<SemesterResponse> = {
 };
 
 function createBaseGetStudentSemestersRequest(): GetStudentSemestersRequest {
-  return { context: undefined, studentId: undefined, includeArchived: false };
+  return { context: undefined, student_id: undefined, include_archived: false };
 }
 
 export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> = {
@@ -1201,11 +1201,11 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      writer.uint32(24).bool(message.includeArchived);
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      writer.uint32(24).bool(message.include_archived);
     }
     return writer;
   },
@@ -1229,14 +1229,14 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.includeArchived = reader.bool();
+          message.include_archived = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1250,8 +1250,8 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
   fromJSON(object: any): GetStudentSemestersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
     };
   },
 
@@ -1260,11 +1260,11 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      obj.includeArchived = message.includeArchived;
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      obj.includeArchived = message.include_archived;
     }
     return obj;
   },
@@ -1277,10 +1277,10 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.includeArchived = object.includeArchived ?? false;
+    message.include_archived = object.include_archived ?? false;
     return message;
   },
 };
@@ -1347,7 +1347,7 @@ export const GetStudentSemestersResponse: MessageFns<GetStudentSemestersResponse
 };
 
 function createBaseListSemestersRequest(): ListSemestersRequest {
-  return { context: undefined, perPage: 0, page: 0, nameSearch: "", schoolYear: undefined, archived: false };
+  return { context: undefined, per_page: 0, page: 0, name_search: "", school_year: undefined, archived: false };
 }
 
 export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
@@ -1355,17 +1355,17 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.perPage !== undefined && message.perPage !== 0) {
-      writer.uint32(16).uint64(message.perPage);
+    if (message.per_page !== undefined && message.per_page !== 0) {
+      writer.uint32(16).uint64(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       writer.uint32(24).uint64(message.page);
     }
-    if (message.nameSearch !== undefined && message.nameSearch !== "") {
-      writer.uint32(34).string(message.nameSearch);
+    if (message.name_search !== undefined && message.name_search !== "") {
+      writer.uint32(34).string(message.name_search);
     }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(42).fork()).join();
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(42).fork()).join();
     }
     if (message.archived !== undefined && message.archived !== false) {
       writer.uint32(48).bool(message.archived);
@@ -1392,7 +1392,7 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
             break;
           }
 
-          message.perPage = longToNumber(reader.uint64());
+          message.per_page = longToNumber(reader.uint64());
           continue;
         case 3:
           if (tag !== 24) {
@@ -1406,14 +1406,14 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
             break;
           }
 
-          message.nameSearch = reader.string();
+          message.name_search = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
         case 6:
           if (tag !== 48) {
@@ -1434,10 +1434,10 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
   fromJSON(object: any): ListSemestersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
     };
   },
@@ -1447,17 +1447,17 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.perPage !== undefined && message.perPage !== 0) {
-      obj.perPage = Math.round(message.perPage);
+    if (message.per_page !== undefined && message.per_page !== 0) {
+      obj.perPage = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
-    if (message.nameSearch !== undefined && message.nameSearch !== "") {
-      obj.nameSearch = message.nameSearch;
+    if (message.name_search !== undefined && message.name_search !== "") {
+      obj.nameSearch = message.name_search;
     }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.archived !== undefined && message.archived !== false) {
       obj.archived = message.archived;
@@ -1473,11 +1473,11 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.perPage = object.perPage ?? 0;
+    message.per_page = object.per_page ?? 0;
     message.page = object.page ?? 0;
-    message.nameSearch = object.nameSearch ?? "";
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
+    message.name_search = object.name_search ?? "";
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.archived = object.archived ?? false;
     return message;

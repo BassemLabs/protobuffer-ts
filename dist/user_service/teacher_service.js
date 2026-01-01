@@ -16,15 +16,15 @@ const teacher_1 = require("./teacher");
 const user_role_1 = require("./user_role");
 exports.protobufPackage = "user_service";
 function createBaseGetTeacherRequest() {
-    return { context: undefined, teacherId: undefined };
+    return { context: undefined, teacher_id: undefined };
 }
 exports.GetTeacherRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -45,7 +45,7 @@ exports.GetTeacherRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -58,7 +58,7 @@ exports.GetTeacherRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -66,8 +66,8 @@ exports.GetTeacherRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -79,8 +79,8 @@ exports.GetTeacherRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         return message;
     },
@@ -154,21 +154,21 @@ exports.GetTeacherByEmailRequest = {
     },
 };
 function createBaseGetTeachersListRequest() {
-    return { context: undefined, perPage: 0, page: 0, nameSearch: "", status: teacher_1.TeacherStatus.ACTIVE };
+    return { context: undefined, per_page: 0, page: 0, name_search: "", status: teacher_1.TeacherStatus.ACTIVE };
 }
 exports.GetTeachersListRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.perPage !== undefined && message.perPage !== 0) {
-            writer.uint32(16).uint64(message.perPage);
+        if (message.per_page !== undefined && message.per_page !== 0) {
+            writer.uint32(16).uint64(message.per_page);
         }
         if (message.page !== undefined && message.page !== 0) {
             writer.uint32(24).uint64(message.page);
         }
-        if (message.nameSearch !== undefined && message.nameSearch !== "") {
-            writer.uint32(34).string(message.nameSearch);
+        if (message.name_search !== undefined && message.name_search !== "") {
+            writer.uint32(34).string(message.name_search);
         }
         if (message.status !== undefined && message.status !== teacher_1.TeacherStatus.ACTIVE) {
             writer.uint32(40).int32((0, teacher_1.teacherStatusToNumber)(message.status));
@@ -192,7 +192,7 @@ exports.GetTeachersListRequest = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.perPage = longToNumber(reader.uint64());
+                    message.per_page = longToNumber(reader.uint64());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -204,7 +204,7 @@ exports.GetTeachersListRequest = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.nameSearch = reader.string();
+                    message.name_search = reader.string();
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -223,9 +223,9 @@ exports.GetTeachersListRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
             status: isSet(object.status) ? (0, teacher_1.teacherStatusFromJSON)(object.status) : teacher_1.TeacherStatus.ACTIVE,
         };
     },
@@ -234,14 +234,14 @@ exports.GetTeachersListRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.perPage !== undefined && message.perPage !== 0) {
-            obj.perPage = Math.round(message.perPage);
+        if (message.per_page !== undefined && message.per_page !== 0) {
+            obj.perPage = Math.round(message.per_page);
         }
         if (message.page !== undefined && message.page !== 0) {
             obj.page = Math.round(message.page);
         }
-        if (message.nameSearch !== undefined && message.nameSearch !== "") {
-            obj.nameSearch = message.nameSearch;
+        if (message.name_search !== undefined && message.name_search !== "") {
+            obj.nameSearch = message.name_search;
         }
         if (message.status !== undefined && message.status !== teacher_1.TeacherStatus.ACTIVE) {
             obj.status = (0, teacher_1.teacherStatusToJSON)(message.status);
@@ -256,23 +256,23 @@ exports.GetTeachersListRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.perPage = object.perPage ?? 0;
+        message.per_page = object.per_page ?? 0;
         message.page = object.page ?? 0;
-        message.nameSearch = object.nameSearch ?? "";
+        message.name_search = object.name_search ?? "";
         message.status = object.status ?? teacher_1.TeacherStatus.ACTIVE;
         return message;
     },
 };
 function createBaseGetTeachersListResponse() {
-    return { teachers: [], teachersCount: 0 };
+    return { teachers: [], teachers_count: 0 };
 }
 exports.GetTeachersListResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.teachers) {
             teacher_1.TeacherBasic.encode(v, writer.uint32(10).fork()).join();
         }
-        if (message.teachersCount !== 0) {
-            writer.uint32(16).uint64(message.teachersCount);
+        if (message.teachers_count !== 0) {
+            writer.uint32(16).uint64(message.teachers_count);
         }
         return writer;
     },
@@ -293,7 +293,7 @@ exports.GetTeachersListResponse = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.teachersCount = longToNumber(reader.uint64());
+                    message.teachers_count = longToNumber(reader.uint64());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -308,7 +308,7 @@ exports.GetTeachersListResponse = {
             teachers: globalThis.Array.isArray(object?.teachers)
                 ? object.teachers.map((e) => teacher_1.TeacherBasic.fromJSON(e))
                 : [],
-            teachersCount: isSet(object.teachersCount) ? globalThis.Number(object.teachersCount) : 0,
+            teachers_count: isSet(object.teachersCount) ? globalThis.Number(object.teachersCount) : 0,
         };
     },
     toJSON(message) {
@@ -316,8 +316,8 @@ exports.GetTeachersListResponse = {
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => teacher_1.TeacherBasic.toJSON(e));
         }
-        if (message.teachersCount !== 0) {
-            obj.teachersCount = Math.round(message.teachersCount);
+        if (message.teachers_count !== 0) {
+            obj.teachersCount = Math.round(message.teachers_count);
         }
         return obj;
     },
@@ -327,7 +327,7 @@ exports.GetTeachersListResponse = {
     fromPartial(object) {
         const message = createBaseGetTeachersListResponse();
         message.teachers = object.teachers?.map((e) => teacher_1.TeacherBasic.fromPartial(e)) || [];
-        message.teachersCount = object.teachersCount ?? 0;
+        message.teachers_count = object.teachers_count ?? 0;
         return message;
     },
 };
@@ -436,14 +436,14 @@ exports.GetAllTeachersForStagingResponse = {
     },
 };
 function createBaseGetTeachersByIdsRequest() {
-    return { context: undefined, teacherIds: [] };
+    return { context: undefined, teacher_ids: [] };
 }
 exports.GetTeachersByIdsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        for (const v of message.teacherIds) {
+        for (const v of message.teacher_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
         }
         return writer;
@@ -465,7 +465,7 @@ exports.GetTeachersByIdsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.teacher_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -478,7 +478,7 @@ exports.GetTeachersByIdsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherIds: globalThis.Array.isArray(object?.teacherIds)
+            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
                 ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
@@ -488,8 +488,8 @@ exports.GetTeachersByIdsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherIds?.length) {
-            obj.teacherIds = message.teacherIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.teacher_ids?.length) {
+            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -501,7 +501,7 @@ exports.GetTeachersByIdsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherIds = object.teacherIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.teacher_ids = object.teacher_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -560,15 +560,15 @@ exports.GetTeachersByIdsResponse = {
     },
 };
 function createBaseGetTeacherSignatureRequest() {
-    return { context: undefined, teacherId: undefined };
+    return { context: undefined, teacher_id: undefined };
 }
 exports.GetTeacherSignatureRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -589,7 +589,7 @@ exports.GetTeacherSignatureRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -602,7 +602,7 @@ exports.GetTeacherSignatureRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -610,8 +610,8 @@ exports.GetTeacherSignatureRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -623,19 +623,19 @@ exports.GetTeacherSignatureRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         return message;
     },
 };
 function createBaseGetTeacherSignatureResponse() {
-    return { signatureFileId: undefined };
+    return { signature_file_id: undefined };
 }
 exports.GetTeacherSignatureResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.signatureFileId !== undefined) {
-            object_id_1.ObjectId.encode(message.signatureFileId, writer.uint32(10).fork()).join();
+        if (message.signature_file_id !== undefined) {
+            object_id_1.ObjectId.encode(message.signature_file_id, writer.uint32(10).fork()).join();
         }
         return writer;
     },
@@ -650,7 +650,7 @@ exports.GetTeacherSignatureResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.signatureFileId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.signature_file_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -661,12 +661,12 @@ exports.GetTeacherSignatureResponse = {
         return message;
     },
     fromJSON(object) {
-        return { signatureFileId: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined };
+        return { signature_file_id: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.signatureFileId !== undefined) {
-            obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signatureFileId);
+        if (message.signature_file_id !== undefined) {
+            obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signature_file_id);
         }
         return obj;
     },
@@ -675,25 +675,25 @@ exports.GetTeacherSignatureResponse = {
     },
     fromPartial(object) {
         const message = createBaseGetTeacherSignatureResponse();
-        message.signatureFileId = (object.signatureFileId !== undefined && object.signatureFileId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.signatureFileId)
+        message.signature_file_id = (object.signature_file_id !== undefined && object.signature_file_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.signature_file_id)
             : undefined;
         return message;
     },
 };
 function createBaseUpdateTeacherSignatureRequest() {
-    return { context: undefined, teacherId: undefined, signatureFileId: undefined };
+    return { context: undefined, teacher_id: undefined, signature_file_id: undefined };
 }
 exports.UpdateTeacherSignatureRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
-        if (message.signatureFileId !== undefined) {
-            object_id_1.ObjectId.encode(message.signatureFileId, writer.uint32(26).fork()).join();
+        if (message.signature_file_id !== undefined) {
+            object_id_1.ObjectId.encode(message.signature_file_id, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -714,13 +714,13 @@ exports.UpdateTeacherSignatureRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.signatureFileId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.signature_file_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -733,8 +733,8 @@ exports.UpdateTeacherSignatureRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
-            signatureFileId: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            signature_file_id: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
         };
     },
     toJSON(message) {
@@ -742,11 +742,11 @@ exports.UpdateTeacherSignatureRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
-        if (message.signatureFileId !== undefined) {
-            obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signatureFileId);
+        if (message.signature_file_id !== undefined) {
+            obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signature_file_id);
         }
         return obj;
     },
@@ -758,25 +758,25 @@ exports.UpdateTeacherSignatureRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
-        message.signatureFileId = (object.signatureFileId !== undefined && object.signatureFileId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.signatureFileId)
+        message.signature_file_id = (object.signature_file_id !== undefined && object.signature_file_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.signature_file_id)
             : undefined;
         return message;
     },
 };
 function createBaseDeleteTeacherSignatureRequest() {
-    return { context: undefined, teacherId: undefined };
+    return { context: undefined, teacher_id: undefined };
 }
 exports.DeleteTeacherSignatureRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -797,7 +797,7 @@ exports.DeleteTeacherSignatureRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -810,7 +810,7 @@ exports.DeleteTeacherSignatureRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -818,8 +818,8 @@ exports.DeleteTeacherSignatureRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -831,22 +831,22 @@ exports.DeleteTeacherSignatureRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         return message;
     },
 };
 function createBaseUpdateTeacherProfileRequest() {
-    return { context: undefined, teacherId: undefined, profile: undefined };
+    return { context: undefined, teacher_id: undefined, profile: undefined };
 }
 exports.UpdateTeacherProfileRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         if (message.profile !== undefined) {
             teacher_1.TeacherProfile.encode(message.profile, writer.uint32(26).fork()).join();
@@ -870,7 +870,7 @@ exports.UpdateTeacherProfileRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -889,7 +889,7 @@ exports.UpdateTeacherProfileRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
             profile: isSet(object.profile) ? teacher_1.TeacherProfile.fromJSON(object.profile) : undefined,
         };
     },
@@ -898,8 +898,8 @@ exports.UpdateTeacherProfileRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         if (message.profile !== undefined) {
             obj.profile = teacher_1.TeacherProfile.toJSON(message.profile);
@@ -914,8 +914,8 @@ exports.UpdateTeacherProfileRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         message.profile = (object.profile !== undefined && object.profile !== null)
             ? teacher_1.TeacherProfile.fromPartial(object.profile)
@@ -924,21 +924,21 @@ exports.UpdateTeacherProfileRequest = {
     },
 };
 function createBaseChangeTeacherPasswordRequest() {
-    return { context: undefined, teacherId: undefined, password: "", changePasswordAtNextLogin: false };
+    return { context: undefined, teacher_id: undefined, password: "", change_password_at_next_login: false };
 }
 exports.ChangeTeacherPasswordRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         if (message.password !== "") {
             writer.uint32(26).string(message.password);
         }
-        if (message.changePasswordAtNextLogin !== false) {
-            writer.uint32(32).bool(message.changePasswordAtNextLogin);
+        if (message.change_password_at_next_login !== false) {
+            writer.uint32(32).bool(message.change_password_at_next_login);
         }
         return writer;
     },
@@ -959,7 +959,7 @@ exports.ChangeTeacherPasswordRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -971,7 +971,7 @@ exports.ChangeTeacherPasswordRequest = {
                     if (tag !== 32) {
                         break;
                     }
-                    message.changePasswordAtNextLogin = reader.bool();
+                    message.change_password_at_next_login = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -984,9 +984,9 @@ exports.ChangeTeacherPasswordRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
             password: isSet(object.password) ? globalThis.String(object.password) : "",
-            changePasswordAtNextLogin: isSet(object.changePasswordAtNextLogin)
+            change_password_at_next_login: isSet(object.changePasswordAtNextLogin)
                 ? globalThis.Boolean(object.changePasswordAtNextLogin)
                 : false,
         };
@@ -996,14 +996,14 @@ exports.ChangeTeacherPasswordRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         if (message.password !== "") {
             obj.password = message.password;
         }
-        if (message.changePasswordAtNextLogin !== false) {
-            obj.changePasswordAtNextLogin = message.changePasswordAtNextLogin;
+        if (message.change_password_at_next_login !== false) {
+            obj.changePasswordAtNextLogin = message.change_password_at_next_login;
         }
         return obj;
     },
@@ -1015,23 +1015,23 @@ exports.ChangeTeacherPasswordRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         message.password = object.password ?? "";
-        message.changePasswordAtNextLogin = object.changePasswordAtNextLogin ?? false;
+        message.change_password_at_next_login = object.change_password_at_next_login ?? false;
         return message;
     },
 };
 function createBaseCreateTeacherRequest() {
     return {
         context: undefined,
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         gender: "",
-        phoneNumber: undefined,
-        dateOfBirth: undefined,
-        personalEmail: "",
+        phone_number: undefined,
+        date_of_birth: undefined,
+        personal_email: "",
     };
 }
 exports.CreateTeacherRequest = {
@@ -1039,23 +1039,23 @@ exports.CreateTeacherRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.firstName !== "") {
-            writer.uint32(18).string(message.firstName);
+        if (message.first_name !== "") {
+            writer.uint32(18).string(message.first_name);
         }
-        if (message.lastName !== "") {
-            writer.uint32(26).string(message.lastName);
+        if (message.last_name !== "") {
+            writer.uint32(26).string(message.last_name);
         }
         if (message.gender !== "") {
             writer.uint32(34).string(message.gender);
         }
-        if (message.phoneNumber !== undefined) {
-            phone_number_1.PhoneNumber.encode(message.phoneNumber, writer.uint32(42).fork()).join();
+        if (message.phone_number !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.phone_number, writer.uint32(42).fork()).join();
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(50).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(50).fork()).join();
         }
-        if (message.personalEmail !== "") {
-            writer.uint32(58).string(message.personalEmail);
+        if (message.personal_email !== "") {
+            writer.uint32(58).string(message.personal_email);
         }
         return writer;
     },
@@ -1076,13 +1076,13 @@ exports.CreateTeacherRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -1094,19 +1094,19 @@ exports.CreateTeacherRequest = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.phoneNumber = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    message.phone_number = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
                     continue;
                 case 6:
                     if (tag !== 50) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.personalEmail = reader.string();
+                    message.personal_email = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1119,12 +1119,12 @@ exports.CreateTeacherRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            phoneNumber: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
         };
     },
     toJSON(message) {
@@ -1132,23 +1132,23 @@ exports.CreateTeacherRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
         }
-        if (message.phoneNumber !== undefined) {
-            obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phoneNumber);
+        if (message.phone_number !== undefined) {
+            obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
-        if (message.personalEmail !== "") {
-            obj.personalEmail = message.personalEmail;
+        if (message.personal_email !== "") {
+            obj.personalEmail = message.personal_email;
         }
         return obj;
     },
@@ -1160,27 +1160,27 @@ exports.CreateTeacherRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
-        message.phoneNumber = (object.phoneNumber !== undefined && object.phoneNumber !== null)
-            ? phone_number_1.PhoneNumber.fromPartial(object.phoneNumber)
+        message.phone_number = (object.phone_number !== undefined && object.phone_number !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.phone_number)
             : undefined;
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
-        message.personalEmail = object.personalEmail ?? "";
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        message.personal_email = object.personal_email ?? "";
         return message;
     },
 };
 function createBaseWithdrawTeacherRequest() {
-    return { context: undefined, teacherId: undefined };
+    return { context: undefined, teacher_id: undefined };
 }
 exports.WithdrawTeacherRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -1201,7 +1201,7 @@ exports.WithdrawTeacherRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1214,7 +1214,7 @@ exports.WithdrawTeacherRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -1222,8 +1222,8 @@ exports.WithdrawTeacherRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -1235,22 +1235,22 @@ exports.WithdrawTeacherRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         return message;
     },
 };
 function createBaseReactivateTeacherRequest() {
-    return { context: undefined, teacherId: undefined };
+    return { context: undefined, teacher_id: undefined };
 }
 exports.ReactivateTeacherRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -1271,7 +1271,7 @@ exports.ReactivateTeacherRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1284,7 +1284,7 @@ exports.ReactivateTeacherRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -1292,8 +1292,8 @@ exports.ReactivateTeacherRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -1305,22 +1305,22 @@ exports.ReactivateTeacherRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         return message;
     },
 };
 function createBaseAddTeacherRoleRequest() {
-    return { context: undefined, teacherId: undefined, role: user_role_1.UserRole.DEVELOPER };
+    return { context: undefined, teacher_id: undefined, role: user_role_1.UserRole.DEVELOPER };
 }
 exports.AddTeacherRoleRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         if (message.role !== user_role_1.UserRole.DEVELOPER) {
             writer.uint32(24).int32((0, user_role_1.userRoleToNumber)(message.role));
@@ -1344,7 +1344,7 @@ exports.AddTeacherRoleRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -1363,7 +1363,7 @@ exports.AddTeacherRoleRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
             role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : user_role_1.UserRole.DEVELOPER,
         };
     },
@@ -1372,8 +1372,8 @@ exports.AddTeacherRoleRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         if (message.role !== user_role_1.UserRole.DEVELOPER) {
             obj.role = (0, user_role_1.userRoleToJSON)(message.role);
@@ -1388,23 +1388,23 @@ exports.AddTeacherRoleRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         message.role = object.role ?? user_role_1.UserRole.DEVELOPER;
         return message;
     },
 };
 function createBaseRemoveTeacherRoleRequest() {
-    return { context: undefined, teacherId: undefined, role: user_role_1.UserRole.DEVELOPER };
+    return { context: undefined, teacher_id: undefined, role: user_role_1.UserRole.DEVELOPER };
 }
 exports.RemoveTeacherRoleRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.teacherId !== undefined) {
-            object_id_1.ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         if (message.role !== user_role_1.UserRole.DEVELOPER) {
             writer.uint32(24).int32((0, user_role_1.userRoleToNumber)(message.role));
@@ -1428,7 +1428,7 @@ exports.RemoveTeacherRoleRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.teacherId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
@@ -1447,7 +1447,7 @@ exports.RemoveTeacherRoleRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacherId: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
             role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : user_role_1.UserRole.DEVELOPER,
         };
     },
@@ -1456,8 +1456,8 @@ exports.RemoveTeacherRoleRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.teacherId !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacherId);
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         if (message.role !== user_role_1.UserRole.DEVELOPER) {
             obj.role = (0, user_role_1.userRoleToJSON)(message.role);
@@ -1472,23 +1472,23 @@ exports.RemoveTeacherRoleRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacherId)
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         message.role = object.role ?? user_role_1.UserRole.DEVELOPER;
         return message;
     },
 };
 function createBaseUploadTeachersRequest() {
-    return { context: undefined, csvFileBase64: "" };
+    return { context: undefined, csv_file_base64: "" };
 }
 exports.UploadTeachersRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.csvFileBase64 !== "") {
-            writer.uint32(18).string(message.csvFileBase64);
+        if (message.csv_file_base64 !== "") {
+            writer.uint32(18).string(message.csv_file_base64);
         }
         return writer;
     },
@@ -1509,7 +1509,7 @@ exports.UploadTeachersRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.csvFileBase64 = reader.string();
+                    message.csv_file_base64 = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1522,7 +1522,7 @@ exports.UploadTeachersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            csvFileBase64: isSet(object.csvFileBase64) ? globalThis.String(object.csvFileBase64) : "",
+            csv_file_base64: isSet(object.csvFileBase64) ? globalThis.String(object.csvFileBase64) : "",
         };
     },
     toJSON(message) {
@@ -1530,8 +1530,8 @@ exports.UploadTeachersRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.csvFileBase64 !== "") {
-            obj.csvFileBase64 = message.csvFileBase64;
+        if (message.csv_file_base64 !== "") {
+            obj.csvFileBase64 = message.csv_file_base64;
         }
         return obj;
     },
@@ -1543,23 +1543,23 @@ exports.UploadTeachersRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.csvFileBase64 = object.csvFileBase64 ?? "";
+        message.csv_file_base64 = object.csv_file_base64 ?? "";
         return message;
     },
 };
 function createBaseUploadTeachersResponse() {
-    return { successCount: 0, failedCount: 0, errorCsvBase64: "" };
+    return { success_count: 0, failed_count: 0, error_csv_base64: "" };
 }
 exports.UploadTeachersResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.successCount !== 0) {
-            writer.uint32(8).uint64(message.successCount);
+        if (message.success_count !== 0) {
+            writer.uint32(8).uint64(message.success_count);
         }
-        if (message.failedCount !== 0) {
-            writer.uint32(16).uint64(message.failedCount);
+        if (message.failed_count !== 0) {
+            writer.uint32(16).uint64(message.failed_count);
         }
-        if (message.errorCsvBase64 !== undefined && message.errorCsvBase64 !== "") {
-            writer.uint32(26).string(message.errorCsvBase64);
+        if (message.error_csv_base64 !== undefined && message.error_csv_base64 !== "") {
+            writer.uint32(26).string(message.error_csv_base64);
         }
         return writer;
     },
@@ -1574,19 +1574,19 @@ exports.UploadTeachersResponse = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.successCount = longToNumber(reader.uint64());
+                    message.success_count = longToNumber(reader.uint64());
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.failedCount = longToNumber(reader.uint64());
+                    message.failed_count = longToNumber(reader.uint64());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.errorCsvBase64 = reader.string();
+                    message.error_csv_base64 = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1598,21 +1598,21 @@ exports.UploadTeachersResponse = {
     },
     fromJSON(object) {
         return {
-            successCount: isSet(object.successCount) ? globalThis.Number(object.successCount) : 0,
-            failedCount: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : 0,
-            errorCsvBase64: isSet(object.errorCsvBase64) ? globalThis.String(object.errorCsvBase64) : "",
+            success_count: isSet(object.successCount) ? globalThis.Number(object.successCount) : 0,
+            failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : 0,
+            error_csv_base64: isSet(object.errorCsvBase64) ? globalThis.String(object.errorCsvBase64) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.successCount !== 0) {
-            obj.successCount = Math.round(message.successCount);
+        if (message.success_count !== 0) {
+            obj.successCount = Math.round(message.success_count);
         }
-        if (message.failedCount !== 0) {
-            obj.failedCount = Math.round(message.failedCount);
+        if (message.failed_count !== 0) {
+            obj.failedCount = Math.round(message.failed_count);
         }
-        if (message.errorCsvBase64 !== undefined && message.errorCsvBase64 !== "") {
-            obj.errorCsvBase64 = message.errorCsvBase64;
+        if (message.error_csv_base64 !== undefined && message.error_csv_base64 !== "") {
+            obj.errorCsvBase64 = message.error_csv_base64;
         }
         return obj;
     },
@@ -1621,9 +1621,9 @@ exports.UploadTeachersResponse = {
     },
     fromPartial(object) {
         const message = createBaseUploadTeachersResponse();
-        message.successCount = object.successCount ?? 0;
-        message.failedCount = object.failedCount ?? 0;
-        message.errorCsvBase64 = object.errorCsvBase64 ?? "";
+        message.success_count = object.success_count ?? 0;
+        message.failed_count = object.failed_count ?? 0;
+        message.error_csv_base64 = object.error_csv_base64 ?? "";
         return message;
     },
 };
@@ -1696,18 +1696,18 @@ exports.CheckCanRemoveOrgDomainRequest = {
     },
 };
 function createBaseCheckCanRemoveOrgDomainResponse() {
-    return { canRemove: false, activeTeachersCount: 0, studentsCount: 0 };
+    return { can_remove: false, active_teachers_count: 0, students_count: 0 };
 }
 exports.CheckCanRemoveOrgDomainResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.canRemove !== false) {
-            writer.uint32(8).bool(message.canRemove);
+        if (message.can_remove !== false) {
+            writer.uint32(8).bool(message.can_remove);
         }
-        if (message.activeTeachersCount !== 0) {
-            writer.uint32(16).uint64(message.activeTeachersCount);
+        if (message.active_teachers_count !== 0) {
+            writer.uint32(16).uint64(message.active_teachers_count);
         }
-        if (message.studentsCount !== 0) {
-            writer.uint32(24).uint64(message.studentsCount);
+        if (message.students_count !== 0) {
+            writer.uint32(24).uint64(message.students_count);
         }
         return writer;
     },
@@ -1722,19 +1722,19 @@ exports.CheckCanRemoveOrgDomainResponse = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.canRemove = reader.bool();
+                    message.can_remove = reader.bool();
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.activeTeachersCount = longToNumber(reader.uint64());
+                    message.active_teachers_count = longToNumber(reader.uint64());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.studentsCount = longToNumber(reader.uint64());
+                    message.students_count = longToNumber(reader.uint64());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1746,21 +1746,21 @@ exports.CheckCanRemoveOrgDomainResponse = {
     },
     fromJSON(object) {
         return {
-            canRemove: isSet(object.canRemove) ? globalThis.Boolean(object.canRemove) : false,
-            activeTeachersCount: isSet(object.activeTeachersCount) ? globalThis.Number(object.activeTeachersCount) : 0,
-            studentsCount: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
+            can_remove: isSet(object.canRemove) ? globalThis.Boolean(object.canRemove) : false,
+            active_teachers_count: isSet(object.activeTeachersCount) ? globalThis.Number(object.activeTeachersCount) : 0,
+            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.canRemove !== false) {
-            obj.canRemove = message.canRemove;
+        if (message.can_remove !== false) {
+            obj.canRemove = message.can_remove;
         }
-        if (message.activeTeachersCount !== 0) {
-            obj.activeTeachersCount = Math.round(message.activeTeachersCount);
+        if (message.active_teachers_count !== 0) {
+            obj.activeTeachersCount = Math.round(message.active_teachers_count);
         }
-        if (message.studentsCount !== 0) {
-            obj.studentsCount = Math.round(message.studentsCount);
+        if (message.students_count !== 0) {
+            obj.studentsCount = Math.round(message.students_count);
         }
         return obj;
     },
@@ -1769,9 +1769,9 @@ exports.CheckCanRemoveOrgDomainResponse = {
     },
     fromPartial(object) {
         const message = createBaseCheckCanRemoveOrgDomainResponse();
-        message.canRemove = object.canRemove ?? false;
-        message.activeTeachersCount = object.activeTeachersCount ?? 0;
-        message.studentsCount = object.studentsCount ?? 0;
+        message.can_remove = object.can_remove ?? false;
+        message.active_teachers_count = object.active_teachers_count ?? 0;
+        message.students_count = object.students_count ?? 0;
         return message;
     },
 };

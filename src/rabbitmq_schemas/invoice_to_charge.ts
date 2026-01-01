@@ -12,21 +12,21 @@ import { ObjectId } from "../utils/object_id";
 export const protobufPackage = "rabbitmq_schemas";
 
 export interface InvoiceToCharge {
-  invoiceId: ObjectId | undefined;
-  dateSent: Date | undefined;
+  invoice_id: ObjectId | undefined;
+  date_sent: Date | undefined;
 }
 
 function createBaseInvoiceToCharge(): InvoiceToCharge {
-  return { invoiceId: undefined, dateSent: undefined };
+  return { invoice_id: undefined, date_sent: undefined };
 }
 
 export const InvoiceToCharge: MessageFns<InvoiceToCharge> = {
   encode(message: InvoiceToCharge, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.invoiceId !== undefined) {
-      ObjectId.encode(message.invoiceId, writer.uint32(10).fork()).join();
+    if (message.invoice_id !== undefined) {
+      ObjectId.encode(message.invoice_id, writer.uint32(10).fork()).join();
     }
-    if (message.dateSent !== undefined) {
-      Timestamp.encode(toTimestamp(message.dateSent), writer.uint32(18).fork()).join();
+    if (message.date_sent !== undefined) {
+      Timestamp.encode(toTimestamp(message.date_sent), writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -43,14 +43,14 @@ export const InvoiceToCharge: MessageFns<InvoiceToCharge> = {
             break;
           }
 
-          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          message.invoice_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.dateSent = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_sent = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -63,18 +63,18 @@ export const InvoiceToCharge: MessageFns<InvoiceToCharge> = {
 
   fromJSON(object: any): InvoiceToCharge {
     return {
-      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
-      dateSent: isSet(object.dateSent) ? fromJsonTimestamp(object.dateSent) : undefined,
+      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      date_sent: isSet(object.dateSent) ? fromJsonTimestamp(object.dateSent) : undefined,
     };
   },
 
   toJSON(message: InvoiceToCharge): unknown {
     const obj: any = {};
-    if (message.invoiceId !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    if (message.invoice_id !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
     }
-    if (message.dateSent !== undefined) {
-      obj.dateSent = message.dateSent.toISOString();
+    if (message.date_sent !== undefined) {
+      obj.dateSent = message.date_sent.toISOString();
     }
     return obj;
   },
@@ -84,10 +84,10 @@ export const InvoiceToCharge: MessageFns<InvoiceToCharge> = {
   },
   fromPartial<I extends Exact<DeepPartial<InvoiceToCharge>, I>>(object: I): InvoiceToCharge {
     const message = createBaseInvoiceToCharge();
-    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-      ? ObjectId.fromPartial(object.invoiceId)
+    message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+      ? ObjectId.fromPartial(object.invoice_id)
       : undefined;
-    message.dateSent = object.dateSent ?? undefined;
+    message.date_sent = object.date_sent ?? undefined;
     return message;
   },
 };

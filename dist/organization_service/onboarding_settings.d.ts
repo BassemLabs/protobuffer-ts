@@ -3,13 +3,13 @@ import { StudentGrade } from "../user_service/student";
 import { AWSFile } from "../utils/aws_file";
 export declare const protobufPackage = "organization_service";
 export interface OnboardingSettings {
-    hasInterviewForNewcomers: boolean;
-    enableGroupApprovalSystem: boolean;
-    waitlistFee: number;
-    registrationFees: GradeFeeMapping[];
-    reregistrationFees: GradeFeeMapping[];
-    schoolHandbook: AWSFile[];
-    interviewFee: number;
+    has_interview_for_newcomers: boolean;
+    enable_group_approval_system: boolean;
+    waitlist_fee: number;
+    registration_fees: GradeFeeMapping[];
+    reregistration_fees: GradeFeeMapping[];
+    school_handbook: AWSFile[];
+    interview_fee: number;
 }
 export interface GradeFeeMapping {
     grade: StudentGrade;

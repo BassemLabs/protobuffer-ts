@@ -6,84 +6,84 @@ import { LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
 export declare const protobufPackage = "class_service.course_service";
 export interface GetCourseRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface ListCoursesRequest {
     context: RequestContext | undefined;
-    perPage?: number | undefined;
+    per_page?: number | undefined;
     page?: number | undefined;
-    nameSearch?: string | undefined;
+    name_search?: string | undefined;
     semester?: ObjectId | undefined;
-    schoolYear?: ObjectId | undefined;
+    school_year?: ObjectId | undefined;
     archived?: boolean | undefined;
-    hideHomeroomCourses?: boolean | undefined;
-    teacherId?: ObjectId | undefined;
+    hide_homeroom_courses?: boolean | undefined;
+    teacher_id?: ObjectId | undefined;
 }
 export interface CourseResponse {
     course: Course[];
 }
 export interface LmsCourseWorkResponse {
-    lmsCourseWork: LmsCourseWork[];
+    lms_course_work: LmsCourseWork[];
 }
 export interface LmsStudentSubmissionResponse {
-    lmsStudentSubmission: LmsSubmission[];
+    lms_student_submission: LmsSubmission[];
 }
 /** Request to get student courses */
 export interface GetStudentCoursesRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    includeArchived?: boolean | undefined;
+    student_id: ObjectId | undefined;
+    include_archived?: boolean | undefined;
 }
 export interface GetStudentCoursesForSchoolYearRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    schoolYearId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
 }
 /** Request to archive a course */
 export interface ArchiveCourseRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface UnarchiveCourseRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 /** Request to update a course */
 export interface UpdateCourseRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
-    semesterId: ObjectId | undefined;
-    courseCode?: string | undefined;
+    semester_id: ObjectId | undefined;
+    course_code?: string | undefined;
 }
 /** Request to add teachers to a course */
 export interface AddTeachersRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
-    teacherIds: ObjectId[];
+    course_id: ObjectId | undefined;
+    teacher_ids: ObjectId[];
 }
 /** Request to remove teachers from a course */
 export interface RemoveTeachersRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
-    teacherIds: ObjectId[];
+    course_id: ObjectId | undefined;
+    teacher_ids: ObjectId[];
 }
 /** Request to add students to a course */
 export interface AddStudentsRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
-    studentIds: ObjectId[];
+    course_id: ObjectId | undefined;
+    student_ids: ObjectId[];
 }
 /** Request to remove students from a course */
 export interface RemoveStudentsRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
-    studentIds: ObjectId[];
+    course_id: ObjectId | undefined;
+    student_ids: ObjectId[];
 }
 /** Request to get attendance classes for a specific teacher */
 export interface AttendanceClassesRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 /** Request to get all attendance classes */
 export interface AllAttendanceClassesRequest {
@@ -92,51 +92,51 @@ export interface AllAttendanceClassesRequest {
 /** Request to get LMS course work for a course */
 export interface GetLmsCourseWorkRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 /** Request to get LMS student submissions for a course and student */
 export interface GetStudentLmsCourseWorkRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
-    studentId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
+    student_id: ObjectId | undefined;
 }
 /** Request for standalone_create */
 export interface StandaloneCreateRequest {
     context: RequestContext | undefined;
     name: string;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
     teachers: ObjectId[];
-    courseCode: string;
-    lmsProvider?: LmsProviderType | undefined;
+    course_code: string;
+    lms_provider?: LmsProviderType | undefined;
 }
 /** Request for standalone_clone */
 export interface StandaloneCloneRequest {
     context: RequestContext | undefined;
-    courseToClone: ObjectId | undefined;
+    course_to_clone: ObjectId | undefined;
     name: string;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
     teachers: ObjectId[];
-    courseCode: string;
-    gclassCreate: boolean;
+    course_code: string;
+    gclass_create: boolean;
 }
 /** Request for homeroom_create */
 export interface HomeroomCreateRequest {
     context: RequestContext | undefined;
     name: string;
-    courseCode: string;
+    course_code: string;
     teachers: ObjectId[];
-    homeroomId: ObjectId | undefined;
-    lmsProvider?: LmsProviderType | undefined;
+    homeroom_id: ObjectId | undefined;
+    lms_provider?: LmsProviderType | undefined;
 }
 /** Request for homeroom_clone */
 export interface HomeroomCloneRequest {
     context: RequestContext | undefined;
-    courseToClone: ObjectId | undefined;
-    homeroomToCloneTo: ObjectId | undefined;
+    course_to_clone: ObjectId | undefined;
+    homeroom_to_clone_to: ObjectId | undefined;
     name: string;
-    courseCode: string;
+    course_code: string;
     teachers: ObjectId[];
-    gclassCreate: boolean;
+    gclass_create: boolean;
 }
 export declare const GetCourseRequest: MessageFns<GetCourseRequest>;
 export declare const ListCoursesRequest: MessageFns<ListCoursesRequest>;

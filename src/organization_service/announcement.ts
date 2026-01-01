@@ -17,8 +17,8 @@ export interface Announcement {
   organization: ObjectId | undefined;
   title: string;
   body: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
+  start_date: Date | undefined;
+  end_date: Date | undefined;
   link?: string | undefined;
   audience: UserType[];
 }
@@ -29,8 +29,8 @@ function createBaseAnnouncement(): Announcement {
     organization: undefined,
     title: "",
     body: "",
-    startDate: undefined,
-    endDate: undefined,
+    start_date: undefined,
+    end_date: undefined,
     link: "",
     audience: [],
   };
@@ -50,11 +50,11 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.body !== "") {
       writer.uint32(34).string(message.body);
     }
-    if (message.startDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(42).fork()).join();
+    if (message.start_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.start_date), writer.uint32(42).fork()).join();
     }
-    if (message.endDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(50).fork()).join();
+    if (message.end_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.end_date), writer.uint32(50).fork()).join();
     }
     if (message.link !== undefined && message.link !== "") {
       writer.uint32(58).string(message.link);
@@ -107,14 +107,14 @@ export const Announcement: MessageFns<Announcement> = {
             break;
           }
 
-          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.start_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 7:
           if (tag !== 58) {
@@ -155,8 +155,8 @@ export const Announcement: MessageFns<Announcement> = {
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       body: isSet(object.body) ? globalThis.String(object.body) : "",
-      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       link: isSet(object.link) ? globalThis.String(object.link) : "",
       audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e: any) => userTypeFromJSON(e)) : [],
     };
@@ -176,11 +176,11 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.body !== "") {
       obj.body = message.body;
     }
-    if (message.startDate !== undefined) {
-      obj.startDate = message.startDate.toISOString();
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date.toISOString();
     }
-    if (message.endDate !== undefined) {
-      obj.endDate = message.endDate.toISOString();
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date.toISOString();
     }
     if (message.link !== undefined && message.link !== "") {
       obj.link = message.link;
@@ -202,8 +202,8 @@ export const Announcement: MessageFns<Announcement> = {
       : undefined;
     message.title = object.title ?? "";
     message.body = object.body ?? "";
-    message.startDate = object.startDate ?? undefined;
-    message.endDate = object.endDate ?? undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
     message.link = object.link ?? "";
     message.audience = object.audience?.map((e) => e) || [];
     return message;

@@ -13,22 +13,22 @@ export const protobufPackage = "user_service";
 
 /** Parent payment information structure */
 export interface ParentPaymentInformation {
-  enableAutoPay: boolean;
+  enable_auto_pay: boolean;
   /** Setup Intent ID - this is only set when an action is required */
-  setupIntentRequiresAction?: string | undefined;
-  setupIntentFailure?: string | undefined;
-  defaultPaymentMethodId?: string | undefined;
-  defaultPaymentMethodType?: string | undefined;
-  paymentMethodBrand?: string | undefined;
-  paymentMethodLast4?:
+  setup_intent_requires_action?: string | undefined;
+  setup_intent_failure?: string | undefined;
+  default_payment_method_id?: string | undefined;
+  default_payment_method_type?: string | undefined;
+  payment_method_brand?: string | undefined;
+  payment_method_last4?:
     | string
     | undefined;
   /** (for cards only) */
-  paymentMethodExpiry?:
+  payment_method_expiry?:
     | string
     | undefined;
   /** (for Banks only) */
-  paymentMethodMandateId?: string | undefined;
+  payment_method_mandate_id?: string | undefined;
 }
 
 /** Full parent model with all fields */
@@ -38,12 +38,12 @@ export interface Parent {
     | ObjectId
     | undefined;
   /** If this is null, it means that the parent never signed-in */
-  firebaseUserId?: string | undefined;
+  firebase_user_id?: string | undefined;
   name: string;
   email: string;
   phone?: PhoneNumber | undefined;
-  stripeCustomerId?: string | undefined;
-  paymentInformation: ParentPaymentInformation | undefined;
+  stripe_customer_id?: string | undefined;
+  payment_information: ParentPaymentInformation | undefined;
 }
 
 /** Parent profile data for updates */
@@ -55,46 +55,46 @@ export interface ParentProfile {
 
 function createBaseParentPaymentInformation(): ParentPaymentInformation {
   return {
-    enableAutoPay: false,
-    setupIntentRequiresAction: "",
-    setupIntentFailure: "",
-    defaultPaymentMethodId: "",
-    defaultPaymentMethodType: "",
-    paymentMethodBrand: "",
-    paymentMethodLast4: "",
-    paymentMethodExpiry: "",
-    paymentMethodMandateId: "",
+    enable_auto_pay: false,
+    setup_intent_requires_action: "",
+    setup_intent_failure: "",
+    default_payment_method_id: "",
+    default_payment_method_type: "",
+    payment_method_brand: "",
+    payment_method_last4: "",
+    payment_method_expiry: "",
+    payment_method_mandate_id: "",
   };
 }
 
 export const ParentPaymentInformation: MessageFns<ParentPaymentInformation> = {
   encode(message: ParentPaymentInformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.enableAutoPay !== false) {
-      writer.uint32(8).bool(message.enableAutoPay);
+    if (message.enable_auto_pay !== false) {
+      writer.uint32(8).bool(message.enable_auto_pay);
     }
-    if (message.setupIntentRequiresAction !== undefined && message.setupIntentRequiresAction !== "") {
-      writer.uint32(18).string(message.setupIntentRequiresAction);
+    if (message.setup_intent_requires_action !== undefined && message.setup_intent_requires_action !== "") {
+      writer.uint32(18).string(message.setup_intent_requires_action);
     }
-    if (message.setupIntentFailure !== undefined && message.setupIntentFailure !== "") {
-      writer.uint32(26).string(message.setupIntentFailure);
+    if (message.setup_intent_failure !== undefined && message.setup_intent_failure !== "") {
+      writer.uint32(26).string(message.setup_intent_failure);
     }
-    if (message.defaultPaymentMethodId !== undefined && message.defaultPaymentMethodId !== "") {
-      writer.uint32(34).string(message.defaultPaymentMethodId);
+    if (message.default_payment_method_id !== undefined && message.default_payment_method_id !== "") {
+      writer.uint32(34).string(message.default_payment_method_id);
     }
-    if (message.defaultPaymentMethodType !== undefined && message.defaultPaymentMethodType !== "") {
-      writer.uint32(42).string(message.defaultPaymentMethodType);
+    if (message.default_payment_method_type !== undefined && message.default_payment_method_type !== "") {
+      writer.uint32(42).string(message.default_payment_method_type);
     }
-    if (message.paymentMethodBrand !== undefined && message.paymentMethodBrand !== "") {
-      writer.uint32(50).string(message.paymentMethodBrand);
+    if (message.payment_method_brand !== undefined && message.payment_method_brand !== "") {
+      writer.uint32(50).string(message.payment_method_brand);
     }
-    if (message.paymentMethodLast4 !== undefined && message.paymentMethodLast4 !== "") {
-      writer.uint32(58).string(message.paymentMethodLast4);
+    if (message.payment_method_last4 !== undefined && message.payment_method_last4 !== "") {
+      writer.uint32(58).string(message.payment_method_last4);
     }
-    if (message.paymentMethodExpiry !== undefined && message.paymentMethodExpiry !== "") {
-      writer.uint32(66).string(message.paymentMethodExpiry);
+    if (message.payment_method_expiry !== undefined && message.payment_method_expiry !== "") {
+      writer.uint32(66).string(message.payment_method_expiry);
     }
-    if (message.paymentMethodMandateId !== undefined && message.paymentMethodMandateId !== "") {
-      writer.uint32(74).string(message.paymentMethodMandateId);
+    if (message.payment_method_mandate_id !== undefined && message.payment_method_mandate_id !== "") {
+      writer.uint32(74).string(message.payment_method_mandate_id);
     }
     return writer;
   },
@@ -111,63 +111,63 @@ export const ParentPaymentInformation: MessageFns<ParentPaymentInformation> = {
             break;
           }
 
-          message.enableAutoPay = reader.bool();
+          message.enable_auto_pay = reader.bool();
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.setupIntentRequiresAction = reader.string();
+          message.setup_intent_requires_action = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.setupIntentFailure = reader.string();
+          message.setup_intent_failure = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.defaultPaymentMethodId = reader.string();
+          message.default_payment_method_id = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.defaultPaymentMethodType = reader.string();
+          message.default_payment_method_type = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.paymentMethodBrand = reader.string();
+          message.payment_method_brand = reader.string();
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.paymentMethodLast4 = reader.string();
+          message.payment_method_last4 = reader.string();
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.paymentMethodExpiry = reader.string();
+          message.payment_method_expiry = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.paymentMethodMandateId = reader.string();
+          message.payment_method_mandate_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -180,21 +180,21 @@ export const ParentPaymentInformation: MessageFns<ParentPaymentInformation> = {
 
   fromJSON(object: any): ParentPaymentInformation {
     return {
-      enableAutoPay: isSet(object.enableAutoPay) ? globalThis.Boolean(object.enableAutoPay) : false,
-      setupIntentRequiresAction: isSet(object.setupIntentRequiresAction)
+      enable_auto_pay: isSet(object.enableAutoPay) ? globalThis.Boolean(object.enableAutoPay) : false,
+      setup_intent_requires_action: isSet(object.setupIntentRequiresAction)
         ? globalThis.String(object.setupIntentRequiresAction)
         : "",
-      setupIntentFailure: isSet(object.setupIntentFailure) ? globalThis.String(object.setupIntentFailure) : "",
-      defaultPaymentMethodId: isSet(object.defaultPaymentMethodId)
+      setup_intent_failure: isSet(object.setupIntentFailure) ? globalThis.String(object.setupIntentFailure) : "",
+      default_payment_method_id: isSet(object.defaultPaymentMethodId)
         ? globalThis.String(object.defaultPaymentMethodId)
         : "",
-      defaultPaymentMethodType: isSet(object.defaultPaymentMethodType)
+      default_payment_method_type: isSet(object.defaultPaymentMethodType)
         ? globalThis.String(object.defaultPaymentMethodType)
         : "",
-      paymentMethodBrand: isSet(object.paymentMethodBrand) ? globalThis.String(object.paymentMethodBrand) : "",
-      paymentMethodLast4: isSet(object.paymentMethodLast4) ? globalThis.String(object.paymentMethodLast4) : "",
-      paymentMethodExpiry: isSet(object.paymentMethodExpiry) ? globalThis.String(object.paymentMethodExpiry) : "",
-      paymentMethodMandateId: isSet(object.paymentMethodMandateId)
+      payment_method_brand: isSet(object.paymentMethodBrand) ? globalThis.String(object.paymentMethodBrand) : "",
+      payment_method_last4: isSet(object.paymentMethodLast4) ? globalThis.String(object.paymentMethodLast4) : "",
+      payment_method_expiry: isSet(object.paymentMethodExpiry) ? globalThis.String(object.paymentMethodExpiry) : "",
+      payment_method_mandate_id: isSet(object.paymentMethodMandateId)
         ? globalThis.String(object.paymentMethodMandateId)
         : "",
     };
@@ -202,32 +202,32 @@ export const ParentPaymentInformation: MessageFns<ParentPaymentInformation> = {
 
   toJSON(message: ParentPaymentInformation): unknown {
     const obj: any = {};
-    if (message.enableAutoPay !== false) {
-      obj.enableAutoPay = message.enableAutoPay;
+    if (message.enable_auto_pay !== false) {
+      obj.enableAutoPay = message.enable_auto_pay;
     }
-    if (message.setupIntentRequiresAction !== undefined && message.setupIntentRequiresAction !== "") {
-      obj.setupIntentRequiresAction = message.setupIntentRequiresAction;
+    if (message.setup_intent_requires_action !== undefined && message.setup_intent_requires_action !== "") {
+      obj.setupIntentRequiresAction = message.setup_intent_requires_action;
     }
-    if (message.setupIntentFailure !== undefined && message.setupIntentFailure !== "") {
-      obj.setupIntentFailure = message.setupIntentFailure;
+    if (message.setup_intent_failure !== undefined && message.setup_intent_failure !== "") {
+      obj.setupIntentFailure = message.setup_intent_failure;
     }
-    if (message.defaultPaymentMethodId !== undefined && message.defaultPaymentMethodId !== "") {
-      obj.defaultPaymentMethodId = message.defaultPaymentMethodId;
+    if (message.default_payment_method_id !== undefined && message.default_payment_method_id !== "") {
+      obj.defaultPaymentMethodId = message.default_payment_method_id;
     }
-    if (message.defaultPaymentMethodType !== undefined && message.defaultPaymentMethodType !== "") {
-      obj.defaultPaymentMethodType = message.defaultPaymentMethodType;
+    if (message.default_payment_method_type !== undefined && message.default_payment_method_type !== "") {
+      obj.defaultPaymentMethodType = message.default_payment_method_type;
     }
-    if (message.paymentMethodBrand !== undefined && message.paymentMethodBrand !== "") {
-      obj.paymentMethodBrand = message.paymentMethodBrand;
+    if (message.payment_method_brand !== undefined && message.payment_method_brand !== "") {
+      obj.paymentMethodBrand = message.payment_method_brand;
     }
-    if (message.paymentMethodLast4 !== undefined && message.paymentMethodLast4 !== "") {
-      obj.paymentMethodLast4 = message.paymentMethodLast4;
+    if (message.payment_method_last4 !== undefined && message.payment_method_last4 !== "") {
+      obj.paymentMethodLast4 = message.payment_method_last4;
     }
-    if (message.paymentMethodExpiry !== undefined && message.paymentMethodExpiry !== "") {
-      obj.paymentMethodExpiry = message.paymentMethodExpiry;
+    if (message.payment_method_expiry !== undefined && message.payment_method_expiry !== "") {
+      obj.paymentMethodExpiry = message.payment_method_expiry;
     }
-    if (message.paymentMethodMandateId !== undefined && message.paymentMethodMandateId !== "") {
-      obj.paymentMethodMandateId = message.paymentMethodMandateId;
+    if (message.payment_method_mandate_id !== undefined && message.payment_method_mandate_id !== "") {
+      obj.paymentMethodMandateId = message.payment_method_mandate_id;
     }
     return obj;
   },
@@ -237,15 +237,15 @@ export const ParentPaymentInformation: MessageFns<ParentPaymentInformation> = {
   },
   fromPartial<I extends Exact<DeepPartial<ParentPaymentInformation>, I>>(object: I): ParentPaymentInformation {
     const message = createBaseParentPaymentInformation();
-    message.enableAutoPay = object.enableAutoPay ?? false;
-    message.setupIntentRequiresAction = object.setupIntentRequiresAction ?? "";
-    message.setupIntentFailure = object.setupIntentFailure ?? "";
-    message.defaultPaymentMethodId = object.defaultPaymentMethodId ?? "";
-    message.defaultPaymentMethodType = object.defaultPaymentMethodType ?? "";
-    message.paymentMethodBrand = object.paymentMethodBrand ?? "";
-    message.paymentMethodLast4 = object.paymentMethodLast4 ?? "";
-    message.paymentMethodExpiry = object.paymentMethodExpiry ?? "";
-    message.paymentMethodMandateId = object.paymentMethodMandateId ?? "";
+    message.enable_auto_pay = object.enable_auto_pay ?? false;
+    message.setup_intent_requires_action = object.setup_intent_requires_action ?? "";
+    message.setup_intent_failure = object.setup_intent_failure ?? "";
+    message.default_payment_method_id = object.default_payment_method_id ?? "";
+    message.default_payment_method_type = object.default_payment_method_type ?? "";
+    message.payment_method_brand = object.payment_method_brand ?? "";
+    message.payment_method_last4 = object.payment_method_last4 ?? "";
+    message.payment_method_expiry = object.payment_method_expiry ?? "";
+    message.payment_method_mandate_id = object.payment_method_mandate_id ?? "";
     return message;
   },
 };
@@ -254,12 +254,12 @@ function createBaseParent(): Parent {
   return {
     id: undefined,
     organization: undefined,
-    firebaseUserId: "",
+    firebase_user_id: "",
     name: "",
     email: "",
     phone: undefined,
-    stripeCustomerId: "",
-    paymentInformation: undefined,
+    stripe_customer_id: "",
+    payment_information: undefined,
   };
 }
 
@@ -271,8 +271,8 @@ export const Parent: MessageFns<Parent> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.firebaseUserId !== undefined && message.firebaseUserId !== "") {
-      writer.uint32(26).string(message.firebaseUserId);
+    if (message.firebase_user_id !== undefined && message.firebase_user_id !== "") {
+      writer.uint32(26).string(message.firebase_user_id);
     }
     if (message.name !== "") {
       writer.uint32(34).string(message.name);
@@ -283,11 +283,11 @@ export const Parent: MessageFns<Parent> = {
     if (message.phone !== undefined) {
       PhoneNumber.encode(message.phone, writer.uint32(50).fork()).join();
     }
-    if (message.stripeCustomerId !== undefined && message.stripeCustomerId !== "") {
-      writer.uint32(58).string(message.stripeCustomerId);
+    if (message.stripe_customer_id !== undefined && message.stripe_customer_id !== "") {
+      writer.uint32(58).string(message.stripe_customer_id);
     }
-    if (message.paymentInformation !== undefined) {
-      ParentPaymentInformation.encode(message.paymentInformation, writer.uint32(66).fork()).join();
+    if (message.payment_information !== undefined) {
+      ParentPaymentInformation.encode(message.payment_information, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -318,7 +318,7 @@ export const Parent: MessageFns<Parent> = {
             break;
           }
 
-          message.firebaseUserId = reader.string();
+          message.firebase_user_id = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
@@ -346,14 +346,14 @@ export const Parent: MessageFns<Parent> = {
             break;
           }
 
-          message.stripeCustomerId = reader.string();
+          message.stripe_customer_id = reader.string();
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.paymentInformation = ParentPaymentInformation.decode(reader, reader.uint32());
+          message.payment_information = ParentPaymentInformation.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -368,12 +368,12 @@ export const Parent: MessageFns<Parent> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      firebaseUserId: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : "",
+      firebase_user_id: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? PhoneNumber.fromJSON(object.phone) : undefined,
-      stripeCustomerId: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
-      paymentInformation: isSet(object.paymentInformation)
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      payment_information: isSet(object.paymentInformation)
         ? ParentPaymentInformation.fromJSON(object.paymentInformation)
         : undefined,
     };
@@ -387,8 +387,8 @@ export const Parent: MessageFns<Parent> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.firebaseUserId !== undefined && message.firebaseUserId !== "") {
-      obj.firebaseUserId = message.firebaseUserId;
+    if (message.firebase_user_id !== undefined && message.firebase_user_id !== "") {
+      obj.firebaseUserId = message.firebase_user_id;
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -399,11 +399,11 @@ export const Parent: MessageFns<Parent> = {
     if (message.phone !== undefined) {
       obj.phone = PhoneNumber.toJSON(message.phone);
     }
-    if (message.stripeCustomerId !== undefined && message.stripeCustomerId !== "") {
-      obj.stripeCustomerId = message.stripeCustomerId;
+    if (message.stripe_customer_id !== undefined && message.stripe_customer_id !== "") {
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
-    if (message.paymentInformation !== undefined) {
-      obj.paymentInformation = ParentPaymentInformation.toJSON(message.paymentInformation);
+    if (message.payment_information !== undefined) {
+      obj.paymentInformation = ParentPaymentInformation.toJSON(message.payment_information);
     }
     return obj;
   },
@@ -417,15 +417,15 @@ export const Parent: MessageFns<Parent> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.firebaseUserId = object.firebaseUserId ?? "";
+    message.firebase_user_id = object.firebase_user_id ?? "";
     message.name = object.name ?? "";
     message.email = object.email ?? "";
     message.phone = (object.phone !== undefined && object.phone !== null)
       ? PhoneNumber.fromPartial(object.phone)
       : undefined;
-    message.stripeCustomerId = object.stripeCustomerId ?? "";
-    message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
-      ? ParentPaymentInformation.fromPartial(object.paymentInformation)
+    message.stripe_customer_id = object.stripe_customer_id ?? "";
+    message.payment_information = (object.payment_information !== undefined && object.payment_information !== null)
+      ? ParentPaymentInformation.fromPartial(object.payment_information)
       : undefined;
     return message;
   },

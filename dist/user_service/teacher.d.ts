@@ -16,36 +16,36 @@ export interface TeacherBasic {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     username: string;
-    emailDomain: string;
+    email_domain: string;
     email: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
 }
 /** Full teacher model with all fields */
 export interface Teacher {
     id: ObjectId | undefined;
     status: TeacherStatus;
     username: string;
-    emailDomain: string;
-    firstName: string;
-    lastName: string;
+    email_domain: string;
+    first_name: string;
+    last_name: string;
     gender: string;
     email: string;
-    personalEmail: string;
-    dateOfBirth: Date | undefined;
-    phoneNumber: PhoneNumber | undefined;
-    signatureFileId?: ObjectId | undefined;
+    personal_email: string;
+    date_of_birth: Date | undefined;
+    phone_number: PhoneNumber | undefined;
+    signature_file_id?: ObjectId | undefined;
     roles: UserRole[];
     organization: ObjectId | undefined;
 }
 export interface TeacherProfile {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     gender: string;
     email: string;
-    personalEmail: string;
-    dateOfBirth: Date | undefined;
-    phoneNumber: PhoneNumber | undefined;
+    personal_email: string;
+    date_of_birth: Date | undefined;
+    phone_number: PhoneNumber | undefined;
 }
 export declare const TeacherBasic: MessageFns<TeacherBasic>;
 export declare const Teacher: MessageFns<Teacher>;

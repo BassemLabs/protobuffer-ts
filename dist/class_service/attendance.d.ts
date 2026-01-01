@@ -20,14 +20,14 @@ export interface Attendance {
     homeroom?: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    periodNumber: number;
+    period_number: number;
     reason: string;
-    signInTime?: Date | undefined;
-    signOutTime?: Date | undefined;
+    sign_in_time?: Date | undefined;
+    sign_out_time?: Date | undefined;
     status: AttendanceStatus;
-    lateDismissalDate?: Date | undefined;
-    studentExcusedBy?: ObjectId | undefined;
-    studentExcusedByUserType?: UserType | undefined;
+    late_dismissal_date?: Date | undefined;
+    student_excused_by?: ObjectId | undefined;
+    student_excused_by_user_type?: UserType | undefined;
 }
 export declare const Attendance: MessageFns<Attendance>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

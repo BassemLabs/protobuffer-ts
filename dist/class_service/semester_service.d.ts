@@ -7,11 +7,11 @@ import { Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service.semester_service";
 export interface GetSemesterRequest {
     context: RequestContext | undefined;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
 }
 export interface GetSemestersRequest {
     context: RequestContext | undefined;
-    semesterIds: ObjectId[];
+    semester_ids: ObjectId[];
 }
 export interface GetActiveSemestersRequest {
     /** Always include RequestContext as the first field */
@@ -22,12 +22,12 @@ export interface GetActiveSemestersResponse {
 }
 export interface GetActiveSemestersBySchoolYearRequest {
     context: RequestContext | undefined;
-    schoolYearId: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
 }
 export interface CoursesRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
 }
 export interface CoursesResponse {
     courses: Course[];
@@ -35,7 +35,7 @@ export interface CoursesResponse {
 export interface HomeroomsRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
 }
 export interface HomeroomsResponse {
     homerooms: Homeroom[];
@@ -43,44 +43,44 @@ export interface HomeroomsResponse {
 export interface UpdateRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
     name: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    reportLayout?: SemesterReportLayout | undefined;
-    campusId: ObjectId | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+    report_layout?: SemesterReportLayout | undefined;
+    campus_id: ObjectId | undefined;
 }
 export interface ArchiveRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
-    semesterId: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
 }
 export interface CreateRequest {
     /** Always include RequestContext as the first field */
     context: RequestContext | undefined;
     name: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    campusId: ObjectId | undefined;
-    schoolYearId: ObjectId | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+    campus_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
 }
 export interface SemesterResponse {
     semester: Semester | undefined;
 }
 export interface GetStudentSemestersRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    includeArchived?: boolean | undefined;
+    student_id: ObjectId | undefined;
+    include_archived?: boolean | undefined;
 }
 export interface GetStudentSemestersResponse {
     semesters: Semester[];
 }
 export interface ListSemestersRequest {
     context: RequestContext | undefined;
-    perPage?: number | undefined;
+    per_page?: number | undefined;
     page?: number | undefined;
-    nameSearch?: string | undefined;
-    schoolYear: ObjectId | undefined;
+    name_search?: string | undefined;
+    school_year: ObjectId | undefined;
     archived?: boolean | undefined;
 }
 export declare const GetSemesterRequest: MessageFns<GetSemesterRequest>;

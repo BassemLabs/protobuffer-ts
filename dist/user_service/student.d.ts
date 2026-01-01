@@ -44,16 +44,16 @@ export interface Student {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     /** Student ID like "2024-1234" */
-    idNumber: string;
+    id_number: string;
     username: string;
-    emailDomain: string;
-    familyId: ObjectId | undefined;
-    firstName: string;
-    lastName: string;
+    email_domain: string;
+    family_id: ObjectId | undefined;
+    first_name: string;
+    last_name: string;
     gender: string;
-    hasWaitlistPriority?: boolean | undefined;
-    dateOfBirth: Date | undefined;
-    interviewDate?: Date | undefined;
+    has_waitlist_priority?: boolean | undefined;
+    date_of_birth: Date | undefined;
+    interview_date?: Date | undefined;
 }
 /**
  * Student item with school year context (used for student lists with filters)
@@ -71,31 +71,31 @@ export interface SchoolYearStudent {
     id: ObjectId | undefined;
     /** Status for the query's school year (or active school year if not specified) */
     status: StudentStatus;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     gender: string;
     /** Grade for the query's school year (or active school year if not specified). Absent if status is NOT_ASSIGNED. */
     grade?: StudentGrade | undefined;
-    familyId: ObjectId | undefined;
-    hasNonPaidInvoices?: boolean | undefined;
-    dateOfBirth: Date | undefined;
-    interviewDate?: Date | undefined;
+    family_id: ObjectId | undefined;
+    has_non_paid_invoices?: boolean | undefined;
+    date_of_birth: Date | undefined;
+    interview_date?: Date | undefined;
 }
 /** Student profile data for updates */
 export interface StudentProfile {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     gender: string;
-    dateOfBirth: Date | undefined;
-    interviewDate?: Date | undefined;
-    hasWaitlistPriority?: boolean | undefined;
+    date_of_birth: Date | undefined;
+    interview_date?: Date | undefined;
+    has_waitlist_priority?: boolean | undefined;
 }
 /** Student school year specific information (mapping table: student + school_year -> status + grade) */
 export interface StudentSchoolYearInformation {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    studentId: ObjectId | undefined;
-    schoolYearId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
     status: StudentStatus;
     grade: StudentGrade;
 }

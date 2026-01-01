@@ -13,12 +13,12 @@ exports.protobufPackage = "class_service";
 function createBaseReportLayout() {
     return {
         id: undefined,
-        organizationId: undefined,
-        courseId: undefined,
-        commentCharLimit: 0,
+        organization_id: undefined,
+        course_id: undefined,
+        comment_char_limit: 0,
         sections: [],
-        checkBoxes: [],
-        creditWeight: 0,
+        check_boxes: [],
+        credit_weight: 0,
     };
 }
 exports.ReportLayout = {
@@ -26,23 +26,23 @@ exports.ReportLayout = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.courseId !== undefined) {
-            object_id_1.ObjectId.encode(message.courseId, writer.uint32(26).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
         }
-        if (message.commentCharLimit !== undefined && message.commentCharLimit !== 0) {
-            writer.uint32(32).uint32(message.commentCharLimit);
+        if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
+            writer.uint32(32).uint32(message.comment_char_limit);
         }
         for (const v of message.sections) {
             exports.ReportLayoutSection.encode(v, writer.uint32(42).fork()).join();
         }
-        for (const v of message.checkBoxes) {
+        for (const v of message.check_boxes) {
             exports.ReportCheckBoxLayout.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.creditWeight !== 0) {
-            writer.uint32(61).float(message.creditWeight);
+        if (message.credit_weight !== 0) {
+            writer.uint32(61).float(message.credit_weight);
         }
         return writer;
     },
@@ -63,19 +63,19 @@ exports.ReportLayout = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.courseId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 32) {
                         break;
                     }
-                    message.commentCharLimit = reader.uint32();
+                    message.comment_char_limit = reader.uint32();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -87,13 +87,13 @@ exports.ReportLayout = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.checkBoxes.push(exports.ReportCheckBoxLayout.decode(reader, reader.uint32()));
+                    message.check_boxes.push(exports.ReportCheckBoxLayout.decode(reader, reader.uint32()));
                     continue;
                 case 7:
                     if (tag !== 61) {
                         break;
                     }
-                    message.creditWeight = reader.float();
+                    message.credit_weight = reader.float();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -106,16 +106,16 @@ exports.ReportLayout = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            courseId: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            commentCharLimit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
             sections: globalThis.Array.isArray(object?.sections)
                 ? object.sections.map((e) => exports.ReportLayoutSection.fromJSON(e))
                 : [],
-            checkBoxes: globalThis.Array.isArray(object?.checkBoxes)
+            check_boxes: globalThis.Array.isArray(object?.checkBoxes)
                 ? object.checkBoxes.map((e) => exports.ReportCheckBoxLayout.fromJSON(e))
                 : [],
-            creditWeight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
+            credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
         };
     },
     toJSON(message) {
@@ -123,23 +123,23 @@ exports.ReportLayout = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.courseId !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.courseId);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.commentCharLimit !== undefined && message.commentCharLimit !== 0) {
-            obj.commentCharLimit = Math.round(message.commentCharLimit);
+        if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
+            obj.commentCharLimit = Math.round(message.comment_char_limit);
         }
         if (message.sections?.length) {
             obj.sections = message.sections.map((e) => exports.ReportLayoutSection.toJSON(e));
         }
-        if (message.checkBoxes?.length) {
-            obj.checkBoxes = message.checkBoxes.map((e) => exports.ReportCheckBoxLayout.toJSON(e));
+        if (message.check_boxes?.length) {
+            obj.checkBoxes = message.check_boxes.map((e) => exports.ReportCheckBoxLayout.toJSON(e));
         }
-        if (message.creditWeight !== 0) {
-            obj.creditWeight = message.creditWeight;
+        if (message.credit_weight !== 0) {
+            obj.creditWeight = message.credit_weight;
         }
         return obj;
     },
@@ -149,16 +149,16 @@ exports.ReportLayout = {
     fromPartial(object) {
         const message = createBaseReportLayout();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.courseId = (object.courseId !== undefined && object.courseId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.courseId)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.commentCharLimit = object.commentCharLimit ?? 0;
+        message.comment_char_limit = object.comment_char_limit ?? 0;
         message.sections = object.sections?.map((e) => exports.ReportLayoutSection.fromPartial(e)) || [];
-        message.checkBoxes = object.checkBoxes?.map((e) => exports.ReportCheckBoxLayout.fromPartial(e)) || [];
-        message.creditWeight = object.creditWeight ?? 0;
+        message.check_boxes = object.check_boxes?.map((e) => exports.ReportCheckBoxLayout.fromPartial(e)) || [];
+        message.credit_weight = object.credit_weight ?? 0;
         return message;
     },
 };

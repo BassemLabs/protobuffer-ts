@@ -66,11 +66,11 @@ exports.GetAllPaymentPlansRequest = {
     },
 };
 function createBaseGetPaymentPlansResponse() {
-    return { paymentPlans: [] };
+    return { payment_plans: [] };
 }
 exports.GetPaymentPlansResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        for (const v of message.paymentPlans) {
+        for (const v of message.payment_plans) {
             organization_payment_plan_1.OrganizationPaymentPlan.encode(v, writer.uint32(10).fork()).join();
         }
         return writer;
@@ -86,7 +86,7 @@ exports.GetPaymentPlansResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.paymentPlans.push(organization_payment_plan_1.OrganizationPaymentPlan.decode(reader, reader.uint32()));
+                    message.payment_plans.push(organization_payment_plan_1.OrganizationPaymentPlan.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -98,15 +98,15 @@ exports.GetPaymentPlansResponse = {
     },
     fromJSON(object) {
         return {
-            paymentPlans: globalThis.Array.isArray(object?.paymentPlans)
+            payment_plans: globalThis.Array.isArray(object?.paymentPlans)
                 ? object.paymentPlans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.paymentPlans?.length) {
-            obj.paymentPlans = message.paymentPlans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.toJSON(e));
+        if (message.payment_plans?.length) {
+            obj.paymentPlans = message.payment_plans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.toJSON(e));
         }
         return obj;
     },
@@ -115,7 +115,7 @@ exports.GetPaymentPlansResponse = {
     },
     fromPartial(object) {
         const message = createBaseGetPaymentPlansResponse();
-        message.paymentPlans = object.paymentPlans?.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.fromPartial(e)) || [];
+        message.payment_plans = object.payment_plans?.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.fromPartial(e)) || [];
         return message;
     },
 };
@@ -125,11 +125,11 @@ function createBaseCreatePaymentPlanRequest() {
         name: "",
         description: "",
         currency: organization_1.Currency.USD,
-        isPublic: false,
-        upfrontCost: 0,
-        upfrontCostPaymentInterval: organization_payment_plan_1.PaymentInterval.Monthly,
-        perStudentCost: 0,
-        paymentProcessingPercentage: 0,
+        is_public: false,
+        upfront_cost: 0,
+        upfront_cost_payment_interval: organization_payment_plan_1.PaymentInterval.Monthly,
+        per_student_cost: 0,
+        payment_processing_percentage: 0,
     };
 }
 exports.CreatePaymentPlanRequest = {
@@ -146,20 +146,20 @@ exports.CreatePaymentPlanRequest = {
         if (message.currency !== organization_1.Currency.USD) {
             writer.uint32(32).int32((0, organization_1.currencyToNumber)(message.currency));
         }
-        if (message.isPublic !== false) {
-            writer.uint32(40).bool(message.isPublic);
+        if (message.is_public !== false) {
+            writer.uint32(40).bool(message.is_public);
         }
-        if (message.upfrontCost !== 0) {
-            writer.uint32(49).double(message.upfrontCost);
+        if (message.upfront_cost !== 0) {
+            writer.uint32(49).double(message.upfront_cost);
         }
-        if (message.upfrontCostPaymentInterval !== organization_payment_plan_1.PaymentInterval.Monthly) {
-            writer.uint32(56).int32((0, organization_payment_plan_1.paymentIntervalToNumber)(message.upfrontCostPaymentInterval));
+        if (message.upfront_cost_payment_interval !== organization_payment_plan_1.PaymentInterval.Monthly) {
+            writer.uint32(56).int32((0, organization_payment_plan_1.paymentIntervalToNumber)(message.upfront_cost_payment_interval));
         }
-        if (message.perStudentCost !== 0) {
-            writer.uint32(65).double(message.perStudentCost);
+        if (message.per_student_cost !== 0) {
+            writer.uint32(65).double(message.per_student_cost);
         }
-        if (message.paymentProcessingPercentage !== 0) {
-            writer.uint32(73).double(message.paymentProcessingPercentage);
+        if (message.payment_processing_percentage !== 0) {
+            writer.uint32(73).double(message.payment_processing_percentage);
         }
         return writer;
     },
@@ -198,31 +198,31 @@ exports.CreatePaymentPlanRequest = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.isPublic = reader.bool();
+                    message.is_public = reader.bool();
                     continue;
                 case 6:
                     if (tag !== 49) {
                         break;
                     }
-                    message.upfrontCost = reader.double();
+                    message.upfront_cost = reader.double();
                     continue;
                 case 7:
                     if (tag !== 56) {
                         break;
                     }
-                    message.upfrontCostPaymentInterval = (0, organization_payment_plan_1.paymentIntervalFromJSON)(reader.int32());
+                    message.upfront_cost_payment_interval = (0, organization_payment_plan_1.paymentIntervalFromJSON)(reader.int32());
                     continue;
                 case 8:
                     if (tag !== 65) {
                         break;
                     }
-                    message.perStudentCost = reader.double();
+                    message.per_student_cost = reader.double();
                     continue;
                 case 9:
                     if (tag !== 73) {
                         break;
                     }
-                    message.paymentProcessingPercentage = reader.double();
+                    message.payment_processing_percentage = reader.double();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -238,13 +238,13 @@ exports.CreatePaymentPlanRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
-            isPublic: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
-            upfrontCost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
-            upfrontCostPaymentInterval: isSet(object.upfrontCostPaymentInterval)
+            is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
+            upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+            upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
                 ? (0, organization_payment_plan_1.paymentIntervalFromJSON)(object.upfrontCostPaymentInterval)
                 : organization_payment_plan_1.PaymentInterval.Monthly,
-            perStudentCost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
-            paymentProcessingPercentage: isSet(object.paymentProcessingPercentage)
+            per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+            payment_processing_percentage: isSet(object.paymentProcessingPercentage)
                 ? globalThis.Number(object.paymentProcessingPercentage)
                 : 0,
         };
@@ -263,20 +263,20 @@ exports.CreatePaymentPlanRequest = {
         if (message.currency !== organization_1.Currency.USD) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
         }
-        if (message.isPublic !== false) {
-            obj.isPublic = message.isPublic;
+        if (message.is_public !== false) {
+            obj.isPublic = message.is_public;
         }
-        if (message.upfrontCost !== 0) {
-            obj.upfrontCost = message.upfrontCost;
+        if (message.upfront_cost !== 0) {
+            obj.upfrontCost = message.upfront_cost;
         }
-        if (message.upfrontCostPaymentInterval !== organization_payment_plan_1.PaymentInterval.Monthly) {
-            obj.upfrontCostPaymentInterval = (0, organization_payment_plan_1.paymentIntervalToJSON)(message.upfrontCostPaymentInterval);
+        if (message.upfront_cost_payment_interval !== organization_payment_plan_1.PaymentInterval.Monthly) {
+            obj.upfrontCostPaymentInterval = (0, organization_payment_plan_1.paymentIntervalToJSON)(message.upfront_cost_payment_interval);
         }
-        if (message.perStudentCost !== 0) {
-            obj.perStudentCost = message.perStudentCost;
+        if (message.per_student_cost !== 0) {
+            obj.perStudentCost = message.per_student_cost;
         }
-        if (message.paymentProcessingPercentage !== 0) {
-            obj.paymentProcessingPercentage = message.paymentProcessingPercentage;
+        if (message.payment_processing_percentage !== 0) {
+            obj.paymentProcessingPercentage = message.payment_processing_percentage;
         }
         return obj;
     },
@@ -291,11 +291,11 @@ exports.CreatePaymentPlanRequest = {
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         message.currency = object.currency ?? organization_1.Currency.USD;
-        message.isPublic = object.isPublic ?? false;
-        message.upfrontCost = object.upfrontCost ?? 0;
-        message.upfrontCostPaymentInterval = object.upfrontCostPaymentInterval ?? organization_payment_plan_1.PaymentInterval.Monthly;
-        message.perStudentCost = object.perStudentCost ?? 0;
-        message.paymentProcessingPercentage = object.paymentProcessingPercentage ?? 0;
+        message.is_public = object.is_public ?? false;
+        message.upfront_cost = object.upfront_cost ?? 0;
+        message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? organization_payment_plan_1.PaymentInterval.Monthly;
+        message.per_student_cost = object.per_student_cost ?? 0;
+        message.payment_processing_percentage = object.payment_processing_percentage ?? 0;
         return message;
     },
 };
@@ -404,11 +404,11 @@ exports.GetAllPaymentPlanAccessRequest = {
     },
 };
 function createBaseGetAllPaymentPlanAccessResponse() {
-    return { organizationPlanAccess: [] };
+    return { organization_plan_access: [] };
 }
 exports.GetAllPaymentPlanAccessResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        for (const v of message.organizationPlanAccess) {
+        for (const v of message.organization_plan_access) {
             organization_payment_plan_1.OrganizationPlanAccess.encode(v, writer.uint32(10).fork()).join();
         }
         return writer;
@@ -424,7 +424,7 @@ exports.GetAllPaymentPlanAccessResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.organizationPlanAccess.push(organization_payment_plan_1.OrganizationPlanAccess.decode(reader, reader.uint32()));
+                    message.organization_plan_access.push(organization_payment_plan_1.OrganizationPlanAccess.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -436,15 +436,15 @@ exports.GetAllPaymentPlanAccessResponse = {
     },
     fromJSON(object) {
         return {
-            organizationPlanAccess: globalThis.Array.isArray(object?.organizationPlanAccess)
+            organization_plan_access: globalThis.Array.isArray(object?.organizationPlanAccess)
                 ? object.organizationPlanAccess.map((e) => organization_payment_plan_1.OrganizationPlanAccess.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.organizationPlanAccess?.length) {
-            obj.organizationPlanAccess = message.organizationPlanAccess.map((e) => organization_payment_plan_1.OrganizationPlanAccess.toJSON(e));
+        if (message.organization_plan_access?.length) {
+            obj.organizationPlanAccess = message.organization_plan_access.map((e) => organization_payment_plan_1.OrganizationPlanAccess.toJSON(e));
         }
         return obj;
     },
@@ -453,24 +453,24 @@ exports.GetAllPaymentPlanAccessResponse = {
     },
     fromPartial(object) {
         const message = createBaseGetAllPaymentPlanAccessResponse();
-        message.organizationPlanAccess = object.organizationPlanAccess?.map((e) => organization_payment_plan_1.OrganizationPlanAccess.fromPartial(e)) ||
-            [];
+        message.organization_plan_access =
+            object.organization_plan_access?.map((e) => organization_payment_plan_1.OrganizationPlanAccess.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseMakePaymentPlanAccessibleForOrganizationRequest() {
-    return { context: undefined, organizationId: undefined, paymentPlanId: undefined };
+    return { context: undefined, organization_id: undefined, payment_plan_id: undefined };
 }
 exports.MakePaymentPlanAccessibleForOrganizationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.paymentPlanId !== undefined) {
-            object_id_1.ObjectId.encode(message.paymentPlanId, writer.uint32(26).fork()).join();
+        if (message.payment_plan_id !== undefined) {
+            object_id_1.ObjectId.encode(message.payment_plan_id, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -491,13 +491,13 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.paymentPlanId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.payment_plan_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -510,8 +510,8 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            paymentPlanId: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
         };
     },
     toJSON(message) {
@@ -519,11 +519,11 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.paymentPlanId !== undefined) {
-            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.paymentPlanId);
+        if (message.payment_plan_id !== undefined) {
+            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
         }
         return obj;
     },
@@ -535,28 +535,28 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.paymentPlanId = (object.paymentPlanId !== undefined && object.paymentPlanId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.paymentPlanId)
+        message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.payment_plan_id)
             : undefined;
         return message;
     },
 };
 function createBaseAssignPaymentPlanToOrganizationRequest() {
-    return { context: undefined, paymentPlanId: undefined, deferPerStudentCostToParent: false };
+    return { context: undefined, payment_plan_id: undefined, defer_per_student_cost_to_parent: false };
 }
 exports.AssignPaymentPlanToOrganizationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.paymentPlanId !== undefined) {
-            object_id_1.ObjectId.encode(message.paymentPlanId, writer.uint32(18).fork()).join();
+        if (message.payment_plan_id !== undefined) {
+            object_id_1.ObjectId.encode(message.payment_plan_id, writer.uint32(18).fork()).join();
         }
-        if (message.deferPerStudentCostToParent !== false) {
-            writer.uint32(24).bool(message.deferPerStudentCostToParent);
+        if (message.defer_per_student_cost_to_parent !== false) {
+            writer.uint32(24).bool(message.defer_per_student_cost_to_parent);
         }
         return writer;
     },
@@ -577,13 +577,13 @@ exports.AssignPaymentPlanToOrganizationRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.paymentPlanId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.payment_plan_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.deferPerStudentCostToParent = reader.bool();
+                    message.defer_per_student_cost_to_parent = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -596,8 +596,8 @@ exports.AssignPaymentPlanToOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            paymentPlanId: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
-            deferPerStudentCostToParent: isSet(object.deferPerStudentCostToParent)
+            payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
+            defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
                 ? globalThis.Boolean(object.deferPerStudentCostToParent)
                 : false,
         };
@@ -607,11 +607,11 @@ exports.AssignPaymentPlanToOrganizationRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.paymentPlanId !== undefined) {
-            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.paymentPlanId);
+        if (message.payment_plan_id !== undefined) {
+            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
         }
-        if (message.deferPerStudentCostToParent !== false) {
-            obj.deferPerStudentCostToParent = message.deferPerStudentCostToParent;
+        if (message.defer_per_student_cost_to_parent !== false) {
+            obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
         }
         return obj;
     },
@@ -623,10 +623,10 @@ exports.AssignPaymentPlanToOrganizationRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.paymentPlanId = (object.paymentPlanId !== undefined && object.paymentPlanId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.paymentPlanId)
+        message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.payment_plan_id)
             : undefined;
-        message.deferPerStudentCostToParent = object.deferPerStudentCostToParent ?? false;
+        message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? false;
         return message;
     },
 };
@@ -735,11 +735,11 @@ exports.GetOrgsPaymentPlanInfoRequest = {
     },
 };
 function createBaseGetOrgsPaymentPlanInfoResponse() {
-    return { orgPaymentPlanInfo: [] };
+    return { org_payment_plan_info: [] };
 }
 exports.GetOrgsPaymentPlanInfoResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        for (const v of message.orgPaymentPlanInfo) {
+        for (const v of message.org_payment_plan_info) {
             organization_payment_plan_1.OrganizationPaymentPlanInformation.encode(v, writer.uint32(10).fork()).join();
         }
         return writer;
@@ -755,7 +755,7 @@ exports.GetOrgsPaymentPlanInfoResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.orgPaymentPlanInfo.push(organization_payment_plan_1.OrganizationPaymentPlanInformation.decode(reader, reader.uint32()));
+                    message.org_payment_plan_info.push(organization_payment_plan_1.OrganizationPaymentPlanInformation.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -767,15 +767,15 @@ exports.GetOrgsPaymentPlanInfoResponse = {
     },
     fromJSON(object) {
         return {
-            orgPaymentPlanInfo: globalThis.Array.isArray(object?.orgPaymentPlanInfo)
+            org_payment_plan_info: globalThis.Array.isArray(object?.orgPaymentPlanInfo)
                 ? object.orgPaymentPlanInfo.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.orgPaymentPlanInfo?.length) {
-            obj.orgPaymentPlanInfo = message.orgPaymentPlanInfo.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.toJSON(e));
+        if (message.org_payment_plan_info?.length) {
+            obj.orgPaymentPlanInfo = message.org_payment_plan_info.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.toJSON(e));
         }
         return obj;
     },
@@ -784,21 +784,21 @@ exports.GetOrgsPaymentPlanInfoResponse = {
     },
     fromPartial(object) {
         const message = createBaseGetOrgsPaymentPlanInfoResponse();
-        message.orgPaymentPlanInfo =
-            object.orgPaymentPlanInfo?.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.fromPartial(e)) || [];
+        message.org_payment_plan_info =
+            object.org_payment_plan_info?.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseGetOrgActivePaymentPlanWithInfoRequest() {
-    return { context: undefined, organizationId: undefined };
+    return { context: undefined, organization_id: undefined };
 }
 exports.GetOrgActivePaymentPlanWithInfoRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -819,7 +819,7 @@ exports.GetOrgActivePaymentPlanWithInfoRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -832,7 +832,7 @@ exports.GetOrgActivePaymentPlanWithInfoRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
         };
     },
     toJSON(message) {
@@ -840,8 +840,8 @@ exports.GetOrgActivePaymentPlanWithInfoRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -853,8 +853,8 @@ exports.GetOrgActivePaymentPlanWithInfoRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         return message;
     },

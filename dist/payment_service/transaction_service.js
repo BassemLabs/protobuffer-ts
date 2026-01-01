@@ -217,18 +217,18 @@ exports.GetTransactionsResponse = {
     },
 };
 function createBaseCreateManualTransactionRequest() {
-    return { context: undefined, paymentType: transaction_1.PaymentType.Stripe, invoiceId: undefined, amount: 0 };
+    return { context: undefined, payment_type: transaction_1.PaymentType.Stripe, invoice_id: undefined, amount: 0 };
 }
 exports.CreateManualTransactionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
-            writer.uint32(16).int32((0, transaction_1.paymentTypeToNumber)(message.paymentType));
+        if (message.payment_type !== transaction_1.PaymentType.Stripe) {
+            writer.uint32(16).int32((0, transaction_1.paymentTypeToNumber)(message.payment_type));
         }
-        if (message.invoiceId !== undefined) {
-            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
         }
         if (message.amount !== 0) {
             writer.uint32(33).double(message.amount);
@@ -252,13 +252,13 @@ exports.CreateManualTransactionRequest = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.paymentType = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
+                    message.payment_type = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 33) {
@@ -277,8 +277,8 @@ exports.CreateManualTransactionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            paymentType: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
-            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
@@ -287,11 +287,11 @@ exports.CreateManualTransactionRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
-            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.paymentType);
+        if (message.payment_type !== transaction_1.PaymentType.Stripe) {
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
         }
-        if (message.invoiceId !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -306,27 +306,27 @@ exports.CreateManualTransactionRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.paymentType = object.paymentType ?? transaction_1.PaymentType.Stripe;
-        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+        message.payment_type = object.payment_type ?? transaction_1.PaymentType.Stripe;
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;
         message.amount = object.amount ?? 0;
         return message;
     },
 };
 function createBaseIssueRefundRequest() {
-    return { context: undefined, transactionId: undefined, paymentType: transaction_1.PaymentType.Stripe, amount: 0, reason: "" };
+    return { context: undefined, transaction_id: undefined, payment_type: transaction_1.PaymentType.Stripe, amount: 0, reason: "" };
 }
 exports.IssueRefundRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.transactionId !== undefined) {
-            object_id_1.ObjectId.encode(message.transactionId, writer.uint32(18).fork()).join();
+        if (message.transaction_id !== undefined) {
+            object_id_1.ObjectId.encode(message.transaction_id, writer.uint32(18).fork()).join();
         }
-        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
-            writer.uint32(24).int32((0, transaction_1.paymentTypeToNumber)(message.paymentType));
+        if (message.payment_type !== transaction_1.PaymentType.Stripe) {
+            writer.uint32(24).int32((0, transaction_1.paymentTypeToNumber)(message.payment_type));
         }
         if (message.amount !== 0) {
             writer.uint32(33).double(message.amount);
@@ -353,13 +353,13 @@ exports.IssueRefundRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.transactionId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.transaction_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.paymentType = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
+                    message.payment_type = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
                     continue;
                 case 4:
                     if (tag !== 33) {
@@ -384,8 +384,8 @@ exports.IssueRefundRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            transactionId: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
-            paymentType: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
+            transaction_id: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
+            payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
         };
@@ -395,11 +395,11 @@ exports.IssueRefundRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.transactionId !== undefined) {
-            obj.transactionId = object_id_1.ObjectId.toJSON(message.transactionId);
+        if (message.transaction_id !== undefined) {
+            obj.transactionId = object_id_1.ObjectId.toJSON(message.transaction_id);
         }
-        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
-            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.paymentType);
+        if (message.payment_type !== transaction_1.PaymentType.Stripe) {
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -417,10 +417,10 @@ exports.IssueRefundRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.transactionId)
+        message.transaction_id = (object.transaction_id !== undefined && object.transaction_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.transaction_id)
             : undefined;
-        message.paymentType = object.paymentType ?? transaction_1.PaymentType.Stripe;
+        message.payment_type = object.payment_type ?? transaction_1.PaymentType.Stripe;
         message.amount = object.amount ?? 0;
         message.reason = object.reason ?? "";
         return message;

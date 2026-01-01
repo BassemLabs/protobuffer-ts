@@ -32,7 +32,7 @@ export interface RemoveDiscountResponse {
 export interface ListStudentDiscountsRequest {
   context: RequestContext | undefined;
   student: ObjectId | undefined;
-  schoolYear: ObjectId | undefined;
+  school_year: ObjectId | undefined;
 }
 
 export interface ListStudentDiscountsResponse {
@@ -42,7 +42,7 @@ export interface ListStudentDiscountsResponse {
 export interface ListFamilyDiscountsRequest {
   context: RequestContext | undefined;
   family: ObjectId | undefined;
-  schoolYear: ObjectId | undefined;
+  school_year: ObjectId | undefined;
 }
 
 export interface ListFamilyDiscountsResponse {
@@ -52,7 +52,7 @@ export interface ListFamilyDiscountsResponse {
 /** Additional Fee Application messages */
 export interface ApplyAdditionalFeeRequest {
   context: RequestContext | undefined;
-  additionalFee: ObjectId | undefined;
+  additional_fee: ObjectId | undefined;
   student?: ObjectId | undefined;
   family?: ObjectId | undefined;
 }
@@ -69,7 +69,7 @@ export interface RemoveAdditionalFeeResponse {
 export interface ListStudentAdditionalFeesRequest {
   context: RequestContext | undefined;
   student: ObjectId | undefined;
-  schoolYear: ObjectId | undefined;
+  school_year: ObjectId | undefined;
 }
 
 export interface ListStudentAdditionalFeesResponse {
@@ -79,7 +79,7 @@ export interface ListStudentAdditionalFeesResponse {
 export interface ListFamilyAdditionalFeesRequest {
   context: RequestContext | undefined;
   family: ObjectId | undefined;
-  schoolYear: ObjectId | undefined;
+  school_year: ObjectId | undefined;
 }
 
 export interface ListFamilyAdditionalFeesResponse {
@@ -332,7 +332,7 @@ export const RemoveDiscountResponse: MessageFns<RemoveDiscountResponse> = {
 };
 
 function createBaseListStudentDiscountsRequest(): ListStudentDiscountsRequest {
-  return { context: undefined, student: undefined, schoolYear: undefined };
+  return { context: undefined, student: undefined, school_year: undefined };
 }
 
 export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest> = {
@@ -343,8 +343,8 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
     if (message.student !== undefined) {
       ObjectId.encode(message.student, writer.uint32(18).fork()).join();
     }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -375,7 +375,7 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -390,7 +390,7 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -402,8 +402,8 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);
     }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -419,8 +419,8 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
     message.student = (object.student !== undefined && object.student !== null)
       ? ObjectId.fromPartial(object.student)
       : undefined;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     return message;
   },
@@ -488,7 +488,7 @@ export const ListStudentDiscountsResponse: MessageFns<ListStudentDiscountsRespon
 };
 
 function createBaseListFamilyDiscountsRequest(): ListFamilyDiscountsRequest {
-  return { context: undefined, family: undefined, schoolYear: undefined };
+  return { context: undefined, family: undefined, school_year: undefined };
 }
 
 export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> = {
@@ -499,8 +499,8 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
     if (message.family !== undefined) {
       ObjectId.encode(message.family, writer.uint32(18).fork()).join();
     }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -531,7 +531,7 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -546,7 +546,7 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -558,8 +558,8 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
     if (message.family !== undefined) {
       obj.family = ObjectId.toJSON(message.family);
     }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -575,8 +575,8 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
     message.family = (object.family !== undefined && object.family !== null)
       ? ObjectId.fromPartial(object.family)
       : undefined;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     return message;
   },
@@ -644,7 +644,7 @@ export const ListFamilyDiscountsResponse: MessageFns<ListFamilyDiscountsResponse
 };
 
 function createBaseApplyAdditionalFeeRequest(): ApplyAdditionalFeeRequest {
-  return { context: undefined, additionalFee: undefined, student: undefined, family: undefined };
+  return { context: undefined, additional_fee: undefined, student: undefined, family: undefined };
 }
 
 export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = {
@@ -652,8 +652,8 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.additionalFee !== undefined) {
-      ObjectId.encode(message.additionalFee, writer.uint32(18).fork()).join();
+    if (message.additional_fee !== undefined) {
+      ObjectId.encode(message.additional_fee, writer.uint32(18).fork()).join();
     }
     if (message.student !== undefined) {
       ObjectId.encode(message.student, writer.uint32(26).fork()).join();
@@ -683,7 +683,7 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
             break;
           }
 
-          message.additionalFee = ObjectId.decode(reader, reader.uint32());
+          message.additional_fee = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -711,7 +711,7 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
   fromJSON(object: any): ApplyAdditionalFeeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      additionalFee: isSet(object.additionalFee) ? ObjectId.fromJSON(object.additionalFee) : undefined,
+      additional_fee: isSet(object.additionalFee) ? ObjectId.fromJSON(object.additionalFee) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
     };
@@ -722,8 +722,8 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.additionalFee !== undefined) {
-      obj.additionalFee = ObjectId.toJSON(message.additionalFee);
+    if (message.additional_fee !== undefined) {
+      obj.additionalFee = ObjectId.toJSON(message.additional_fee);
     }
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);
@@ -742,8 +742,8 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.additionalFee = (object.additionalFee !== undefined && object.additionalFee !== null)
-      ? ObjectId.fromPartial(object.additionalFee)
+    message.additional_fee = (object.additional_fee !== undefined && object.additional_fee !== null)
+      ? ObjectId.fromPartial(object.additional_fee)
       : undefined;
     message.student = (object.student !== undefined && object.student !== null)
       ? ObjectId.fromPartial(object.student)
@@ -889,7 +889,7 @@ export const RemoveAdditionalFeeResponse: MessageFns<RemoveAdditionalFeeResponse
 };
 
 function createBaseListStudentAdditionalFeesRequest(): ListStudentAdditionalFeesRequest {
-  return { context: undefined, student: undefined, schoolYear: undefined };
+  return { context: undefined, student: undefined, school_year: undefined };
 }
 
 export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalFeesRequest> = {
@@ -900,8 +900,8 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
     if (message.student !== undefined) {
       ObjectId.encode(message.student, writer.uint32(18).fork()).join();
     }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -932,7 +932,7 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -947,7 +947,7 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -959,8 +959,8 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);
     }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -980,8 +980,8 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
     message.student = (object.student !== undefined && object.student !== null)
       ? ObjectId.fromPartial(object.student)
       : undefined;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     return message;
   },
@@ -1053,7 +1053,7 @@ export const ListStudentAdditionalFeesResponse: MessageFns<ListStudentAdditional
 };
 
 function createBaseListFamilyAdditionalFeesRequest(): ListFamilyAdditionalFeesRequest {
-  return { context: undefined, family: undefined, schoolYear: undefined };
+  return { context: undefined, family: undefined, school_year: undefined };
 }
 
 export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFeesRequest> = {
@@ -1064,8 +1064,8 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
     if (message.family !== undefined) {
       ObjectId.encode(message.family, writer.uint32(18).fork()).join();
     }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -1096,7 +1096,7 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1111,7 +1111,7 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1123,8 +1123,8 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
     if (message.family !== undefined) {
       obj.family = ObjectId.toJSON(message.family);
     }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1142,8 +1142,8 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
     message.family = (object.family !== undefined && object.family !== null)
       ? ObjectId.fromPartial(object.family)
       : undefined;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     return message;
   },

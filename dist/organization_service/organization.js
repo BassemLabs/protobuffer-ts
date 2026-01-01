@@ -64,19 +64,19 @@ function createBaseOrganization() {
     return {
         id: undefined,
         name: "",
-        defaultDomain: "",
+        default_domain: "",
         domains: [],
-        organizationProfileSettings: undefined,
-        onboardingSettings: undefined,
-        activeSchoolYear: undefined,
-        comingSchoolYear: undefined,
-        openedReregistrationForComingSchoolYear: false,
-        countryCode: "",
-        paymentInformation: undefined,
-        invoiceSettings: undefined,
-        loginId: "",
-        mainAddress: "",
-        weekendDays: [],
+        organization_profile_settings: undefined,
+        onboarding_settings: undefined,
+        active_school_year: undefined,
+        coming_school_year: undefined,
+        opened_reregistration_for_coming_school_year: false,
+        country_code: "",
+        payment_information: undefined,
+        invoice_settings: undefined,
+        login_id: "",
+        main_address: "",
+        weekend_days: [],
         timezone: "",
     };
 }
@@ -88,44 +88,44 @@ exports.Organization = {
         if (message.name !== "") {
             writer.uint32(18).string(message.name);
         }
-        if (message.defaultDomain !== "") {
-            writer.uint32(26).string(message.defaultDomain);
+        if (message.default_domain !== "") {
+            writer.uint32(26).string(message.default_domain);
         }
         for (const v of message.domains) {
             writer.uint32(34).string(v);
         }
-        if (message.organizationProfileSettings !== undefined) {
-            organization_profile_settings_1.OrganizationProfileSettings.encode(message.organizationProfileSettings, writer.uint32(42).fork()).join();
+        if (message.organization_profile_settings !== undefined) {
+            organization_profile_settings_1.OrganizationProfileSettings.encode(message.organization_profile_settings, writer.uint32(42).fork()).join();
         }
-        if (message.onboardingSettings !== undefined) {
-            onboarding_settings_1.OnboardingSettings.encode(message.onboardingSettings, writer.uint32(50).fork()).join();
+        if (message.onboarding_settings !== undefined) {
+            onboarding_settings_1.OnboardingSettings.encode(message.onboarding_settings, writer.uint32(50).fork()).join();
         }
-        if (message.activeSchoolYear !== undefined) {
-            exports.SchoolYear.encode(message.activeSchoolYear, writer.uint32(58).fork()).join();
+        if (message.active_school_year !== undefined) {
+            exports.SchoolYear.encode(message.active_school_year, writer.uint32(58).fork()).join();
         }
-        if (message.comingSchoolYear !== undefined) {
-            exports.SchoolYear.encode(message.comingSchoolYear, writer.uint32(66).fork()).join();
+        if (message.coming_school_year !== undefined) {
+            exports.SchoolYear.encode(message.coming_school_year, writer.uint32(66).fork()).join();
         }
-        if (message.openedReregistrationForComingSchoolYear !== false) {
-            writer.uint32(72).bool(message.openedReregistrationForComingSchoolYear);
+        if (message.opened_reregistration_for_coming_school_year !== false) {
+            writer.uint32(72).bool(message.opened_reregistration_for_coming_school_year);
         }
-        if (message.countryCode !== undefined && message.countryCode !== "") {
-            writer.uint32(82).string(message.countryCode);
+        if (message.country_code !== undefined && message.country_code !== "") {
+            writer.uint32(82).string(message.country_code);
         }
-        if (message.paymentInformation !== undefined) {
-            exports.PaymentInformation.encode(message.paymentInformation, writer.uint32(90).fork()).join();
+        if (message.payment_information !== undefined) {
+            exports.PaymentInformation.encode(message.payment_information, writer.uint32(90).fork()).join();
         }
-        if (message.invoiceSettings !== undefined) {
-            organization_invoice_settings_1.InvoiceSettings.encode(message.invoiceSettings, writer.uint32(98).fork()).join();
+        if (message.invoice_settings !== undefined) {
+            organization_invoice_settings_1.InvoiceSettings.encode(message.invoice_settings, writer.uint32(98).fork()).join();
         }
-        if (message.loginId !== "") {
-            writer.uint32(106).string(message.loginId);
+        if (message.login_id !== "") {
+            writer.uint32(106).string(message.login_id);
         }
-        if (message.mainAddress !== "") {
-            writer.uint32(114).string(message.mainAddress);
+        if (message.main_address !== "") {
+            writer.uint32(114).string(message.main_address);
         }
         writer.uint32(122).fork();
-        for (const v of message.weekendDays) {
+        for (const v of message.weekend_days) {
             writer.int32((0, dayofweek_1.dayOfWeekToNumber)(v));
         }
         writer.join();
@@ -157,7 +157,7 @@ exports.Organization = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.defaultDomain = reader.string();
+                    message.default_domain = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -169,71 +169,71 @@ exports.Organization = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.organizationProfileSettings = organization_profile_settings_1.OrganizationProfileSettings.decode(reader, reader.uint32());
+                    message.organization_profile_settings = organization_profile_settings_1.OrganizationProfileSettings.decode(reader, reader.uint32());
                     continue;
                 case 6:
                     if (tag !== 50) {
                         break;
                     }
-                    message.onboardingSettings = onboarding_settings_1.OnboardingSettings.decode(reader, reader.uint32());
+                    message.onboarding_settings = onboarding_settings_1.OnboardingSettings.decode(reader, reader.uint32());
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.activeSchoolYear = exports.SchoolYear.decode(reader, reader.uint32());
+                    message.active_school_year = exports.SchoolYear.decode(reader, reader.uint32());
                     continue;
                 case 8:
                     if (tag !== 66) {
                         break;
                     }
-                    message.comingSchoolYear = exports.SchoolYear.decode(reader, reader.uint32());
+                    message.coming_school_year = exports.SchoolYear.decode(reader, reader.uint32());
                     continue;
                 case 9:
                     if (tag !== 72) {
                         break;
                     }
-                    message.openedReregistrationForComingSchoolYear = reader.bool();
+                    message.opened_reregistration_for_coming_school_year = reader.bool();
                     continue;
                 case 10:
                     if (tag !== 82) {
                         break;
                     }
-                    message.countryCode = reader.string();
+                    message.country_code = reader.string();
                     continue;
                 case 11:
                     if (tag !== 90) {
                         break;
                     }
-                    message.paymentInformation = exports.PaymentInformation.decode(reader, reader.uint32());
+                    message.payment_information = exports.PaymentInformation.decode(reader, reader.uint32());
                     continue;
                 case 12:
                     if (tag !== 98) {
                         break;
                     }
-                    message.invoiceSettings = organization_invoice_settings_1.InvoiceSettings.decode(reader, reader.uint32());
+                    message.invoice_settings = organization_invoice_settings_1.InvoiceSettings.decode(reader, reader.uint32());
                     continue;
                 case 13:
                     if (tag !== 106) {
                         break;
                     }
-                    message.loginId = reader.string();
+                    message.login_id = reader.string();
                     continue;
                 case 14:
                     if (tag !== 114) {
                         break;
                     }
-                    message.mainAddress = reader.string();
+                    message.main_address = reader.string();
                     continue;
                 case 15:
                     if (tag === 120) {
-                        message.weekendDays.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
+                        message.weekend_days.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 122) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.weekendDays.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
+                            message.weekend_days.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -256,27 +256,27 @@ exports.Organization = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            defaultDomain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
+            default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
             domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e) => globalThis.String(e)) : [],
-            organizationProfileSettings: isSet(object.organizationProfileSettings)
+            organization_profile_settings: isSet(object.organizationProfileSettings)
                 ? organization_profile_settings_1.OrganizationProfileSettings.fromJSON(object.organizationProfileSettings)
                 : undefined,
-            onboardingSettings: isSet(object.onboardingSettings)
+            onboarding_settings: isSet(object.onboardingSettings)
                 ? onboarding_settings_1.OnboardingSettings.fromJSON(object.onboardingSettings)
                 : undefined,
-            activeSchoolYear: isSet(object.activeSchoolYear) ? exports.SchoolYear.fromJSON(object.activeSchoolYear) : undefined,
-            comingSchoolYear: isSet(object.comingSchoolYear) ? exports.SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
-            openedReregistrationForComingSchoolYear: isSet(object.openedReregistrationForComingSchoolYear)
+            active_school_year: isSet(object.activeSchoolYear) ? exports.SchoolYear.fromJSON(object.activeSchoolYear) : undefined,
+            coming_school_year: isSet(object.comingSchoolYear) ? exports.SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
+            opened_reregistration_for_coming_school_year: isSet(object.openedReregistrationForComingSchoolYear)
                 ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
                 : false,
-            countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
-            paymentInformation: isSet(object.paymentInformation)
+            country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+            payment_information: isSet(object.paymentInformation)
                 ? exports.PaymentInformation.fromJSON(object.paymentInformation)
                 : undefined,
-            invoiceSettings: isSet(object.invoiceSettings) ? organization_invoice_settings_1.InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
-            loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
-            mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            weekendDays: globalThis.Array.isArray(object?.weekendDays)
+            invoice_settings: isSet(object.invoiceSettings) ? organization_invoice_settings_1.InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
+            login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+            weekend_days: globalThis.Array.isArray(object?.weekendDays)
                 ? object.weekendDays.map((e) => (0, dayofweek_1.dayOfWeekFromJSON)(e))
                 : [],
             timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
@@ -290,44 +290,44 @@ exports.Organization = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.defaultDomain !== "") {
-            obj.defaultDomain = message.defaultDomain;
+        if (message.default_domain !== "") {
+            obj.defaultDomain = message.default_domain;
         }
         if (message.domains?.length) {
             obj.domains = message.domains;
         }
-        if (message.organizationProfileSettings !== undefined) {
-            obj.organizationProfileSettings = organization_profile_settings_1.OrganizationProfileSettings.toJSON(message.organizationProfileSettings);
+        if (message.organization_profile_settings !== undefined) {
+            obj.organizationProfileSettings = organization_profile_settings_1.OrganizationProfileSettings.toJSON(message.organization_profile_settings);
         }
-        if (message.onboardingSettings !== undefined) {
-            obj.onboardingSettings = onboarding_settings_1.OnboardingSettings.toJSON(message.onboardingSettings);
+        if (message.onboarding_settings !== undefined) {
+            obj.onboardingSettings = onboarding_settings_1.OnboardingSettings.toJSON(message.onboarding_settings);
         }
-        if (message.activeSchoolYear !== undefined) {
-            obj.activeSchoolYear = exports.SchoolYear.toJSON(message.activeSchoolYear);
+        if (message.active_school_year !== undefined) {
+            obj.activeSchoolYear = exports.SchoolYear.toJSON(message.active_school_year);
         }
-        if (message.comingSchoolYear !== undefined) {
-            obj.comingSchoolYear = exports.SchoolYear.toJSON(message.comingSchoolYear);
+        if (message.coming_school_year !== undefined) {
+            obj.comingSchoolYear = exports.SchoolYear.toJSON(message.coming_school_year);
         }
-        if (message.openedReregistrationForComingSchoolYear !== false) {
-            obj.openedReregistrationForComingSchoolYear = message.openedReregistrationForComingSchoolYear;
+        if (message.opened_reregistration_for_coming_school_year !== false) {
+            obj.openedReregistrationForComingSchoolYear = message.opened_reregistration_for_coming_school_year;
         }
-        if (message.countryCode !== undefined && message.countryCode !== "") {
-            obj.countryCode = message.countryCode;
+        if (message.country_code !== undefined && message.country_code !== "") {
+            obj.countryCode = message.country_code;
         }
-        if (message.paymentInformation !== undefined) {
-            obj.paymentInformation = exports.PaymentInformation.toJSON(message.paymentInformation);
+        if (message.payment_information !== undefined) {
+            obj.paymentInformation = exports.PaymentInformation.toJSON(message.payment_information);
         }
-        if (message.invoiceSettings !== undefined) {
-            obj.invoiceSettings = organization_invoice_settings_1.InvoiceSettings.toJSON(message.invoiceSettings);
+        if (message.invoice_settings !== undefined) {
+            obj.invoiceSettings = organization_invoice_settings_1.InvoiceSettings.toJSON(message.invoice_settings);
         }
-        if (message.loginId !== "") {
-            obj.loginId = message.loginId;
+        if (message.login_id !== "") {
+            obj.loginId = message.login_id;
         }
-        if (message.mainAddress !== "") {
-            obj.mainAddress = message.mainAddress;
+        if (message.main_address !== "") {
+            obj.mainAddress = message.main_address;
         }
-        if (message.weekendDays?.length) {
-            obj.weekendDays = message.weekendDays.map((e) => (0, dayofweek_1.dayOfWeekToJSON)(e));
+        if (message.weekend_days?.length) {
+            obj.weekendDays = message.weekend_days.map((e) => (0, dayofweek_1.dayOfWeekToJSON)(e));
         }
         if (message.timezone !== "") {
             obj.timezone = message.timezone;
@@ -341,32 +341,32 @@ exports.Organization = {
         const message = createBaseOrganization();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? "";
-        message.defaultDomain = object.defaultDomain ?? "";
+        message.default_domain = object.default_domain ?? "";
         message.domains = object.domains?.map((e) => e) || [];
-        message.organizationProfileSettings =
-            (object.organizationProfileSettings !== undefined && object.organizationProfileSettings !== null)
-                ? organization_profile_settings_1.OrganizationProfileSettings.fromPartial(object.organizationProfileSettings)
+        message.organization_profile_settings =
+            (object.organization_profile_settings !== undefined && object.organization_profile_settings !== null)
+                ? organization_profile_settings_1.OrganizationProfileSettings.fromPartial(object.organization_profile_settings)
                 : undefined;
-        message.onboardingSettings = (object.onboardingSettings !== undefined && object.onboardingSettings !== null)
-            ? onboarding_settings_1.OnboardingSettings.fromPartial(object.onboardingSettings)
+        message.onboarding_settings = (object.onboarding_settings !== undefined && object.onboarding_settings !== null)
+            ? onboarding_settings_1.OnboardingSettings.fromPartial(object.onboarding_settings)
             : undefined;
-        message.activeSchoolYear = (object.activeSchoolYear !== undefined && object.activeSchoolYear !== null)
-            ? exports.SchoolYear.fromPartial(object.activeSchoolYear)
+        message.active_school_year = (object.active_school_year !== undefined && object.active_school_year !== null)
+            ? exports.SchoolYear.fromPartial(object.active_school_year)
             : undefined;
-        message.comingSchoolYear = (object.comingSchoolYear !== undefined && object.comingSchoolYear !== null)
-            ? exports.SchoolYear.fromPartial(object.comingSchoolYear)
+        message.coming_school_year = (object.coming_school_year !== undefined && object.coming_school_year !== null)
+            ? exports.SchoolYear.fromPartial(object.coming_school_year)
             : undefined;
-        message.openedReregistrationForComingSchoolYear = object.openedReregistrationForComingSchoolYear ?? false;
-        message.countryCode = object.countryCode ?? "";
-        message.paymentInformation = (object.paymentInformation !== undefined && object.paymentInformation !== null)
-            ? exports.PaymentInformation.fromPartial(object.paymentInformation)
+        message.opened_reregistration_for_coming_school_year = object.opened_reregistration_for_coming_school_year ?? false;
+        message.country_code = object.country_code ?? "";
+        message.payment_information = (object.payment_information !== undefined && object.payment_information !== null)
+            ? exports.PaymentInformation.fromPartial(object.payment_information)
             : undefined;
-        message.invoiceSettings = (object.invoiceSettings !== undefined && object.invoiceSettings !== null)
-            ? organization_invoice_settings_1.InvoiceSettings.fromPartial(object.invoiceSettings)
+        message.invoice_settings = (object.invoice_settings !== undefined && object.invoice_settings !== null)
+            ? organization_invoice_settings_1.InvoiceSettings.fromPartial(object.invoice_settings)
             : undefined;
-        message.loginId = object.loginId ?? "";
-        message.mainAddress = object.mainAddress ?? "";
-        message.weekendDays = object.weekendDays?.map((e) => e) || [];
+        message.login_id = object.login_id ?? "";
+        message.main_address = object.main_address ?? "";
+        message.weekend_days = object.weekend_days?.map((e) => e) || [];
         message.timezone = object.timezone ?? "";
         return message;
     },
@@ -374,11 +374,11 @@ exports.Organization = {
 function createBaseSchoolYear() {
     return {
         id: undefined,
-        organizationId: undefined,
+        organization_id: undefined,
         name: "",
-        startDate: undefined,
-        endDate: undefined,
-        isOpenForRegistration: false,
+        start_date: undefined,
+        end_date: undefined,
+        is_open_for_registration: false,
     };
 }
 exports.SchoolYear = {
@@ -386,20 +386,20 @@ exports.SchoolYear = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
         }
-        if (message.startDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+        if (message.start_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.start_date), writer.uint32(34).fork()).join();
         }
-        if (message.endDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+        if (message.end_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
         }
-        if (message.isOpenForRegistration !== undefined && message.isOpenForRegistration !== false) {
-            writer.uint32(48).bool(message.isOpenForRegistration);
+        if (message.is_open_for_registration !== undefined && message.is_open_for_registration !== false) {
+            writer.uint32(48).bool(message.is_open_for_registration);
         }
         return writer;
     },
@@ -420,7 +420,7 @@ exports.SchoolYear = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -432,19 +432,19 @@ exports.SchoolYear = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.start_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.end_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 48) {
                         break;
                     }
-                    message.isOpenForRegistration = reader.bool();
+                    message.is_open_for_registration = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -457,11 +457,11 @@ exports.SchoolYear = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-            isOpenForRegistration: isSet(object.isOpenForRegistration)
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            is_open_for_registration: isSet(object.isOpenForRegistration)
                 ? globalThis.Boolean(object.isOpenForRegistration)
                 : false,
         };
@@ -471,20 +471,20 @@ exports.SchoolYear = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.startDate !== undefined) {
-            obj.startDate = message.startDate.toISOString();
+        if (message.start_date !== undefined) {
+            obj.startDate = message.start_date.toISOString();
         }
-        if (message.endDate !== undefined) {
-            obj.endDate = message.endDate.toISOString();
+        if (message.end_date !== undefined) {
+            obj.endDate = message.end_date.toISOString();
         }
-        if (message.isOpenForRegistration !== undefined && message.isOpenForRegistration !== false) {
-            obj.isOpenForRegistration = message.isOpenForRegistration;
+        if (message.is_open_for_registration !== undefined && message.is_open_for_registration !== false) {
+            obj.isOpenForRegistration = message.is_open_for_registration;
         }
         return obj;
     },
@@ -494,49 +494,49 @@ exports.SchoolYear = {
     fromPartial(object) {
         const message = createBaseSchoolYear();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         message.name = object.name ?? "";
-        message.startDate = object.startDate ?? undefined;
-        message.endDate = object.endDate ?? undefined;
-        message.isOpenForRegistration = object.isOpenForRegistration ?? false;
+        message.start_date = object.start_date ?? undefined;
+        message.end_date = object.end_date ?? undefined;
+        message.is_open_for_registration = object.is_open_for_registration ?? false;
         return message;
     },
 };
 function createBasePaymentInformation() {
     return {
-        stripeAccountId: "",
-        accountCurrency: Currency.USD,
-        stripePayoutsEnabled: false,
-        stripeDetailsSubmitted: false,
-        stripeChargesEnabled: false,
-        autoPayDisabled: false,
-        autoPayRetryConfig: undefined,
+        stripe_account_id: "",
+        account_currency: Currency.USD,
+        stripe_payouts_enabled: false,
+        stripe_details_submitted: false,
+        stripe_charges_enabled: false,
+        auto_pay_disabled: false,
+        auto_pay_retry_config: undefined,
     };
 }
 exports.PaymentInformation = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.stripeAccountId !== undefined && message.stripeAccountId !== "") {
-            writer.uint32(10).string(message.stripeAccountId);
+        if (message.stripe_account_id !== undefined && message.stripe_account_id !== "") {
+            writer.uint32(10).string(message.stripe_account_id);
         }
-        if (message.accountCurrency !== undefined && message.accountCurrency !== Currency.USD) {
-            writer.uint32(16).int32(currencyToNumber(message.accountCurrency));
+        if (message.account_currency !== undefined && message.account_currency !== Currency.USD) {
+            writer.uint32(16).int32(currencyToNumber(message.account_currency));
         }
-        if (message.stripePayoutsEnabled !== false) {
-            writer.uint32(24).bool(message.stripePayoutsEnabled);
+        if (message.stripe_payouts_enabled !== false) {
+            writer.uint32(24).bool(message.stripe_payouts_enabled);
         }
-        if (message.stripeDetailsSubmitted !== false) {
-            writer.uint32(32).bool(message.stripeDetailsSubmitted);
+        if (message.stripe_details_submitted !== false) {
+            writer.uint32(32).bool(message.stripe_details_submitted);
         }
-        if (message.stripeChargesEnabled !== false) {
-            writer.uint32(40).bool(message.stripeChargesEnabled);
+        if (message.stripe_charges_enabled !== false) {
+            writer.uint32(40).bool(message.stripe_charges_enabled);
         }
-        if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
-            writer.uint32(48).bool(message.autoPayDisabled);
+        if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+            writer.uint32(48).bool(message.auto_pay_disabled);
         }
-        if (message.autoPayRetryConfig !== undefined) {
-            exports.AutoPayRetryConfig.encode(message.autoPayRetryConfig, writer.uint32(58).fork()).join();
+        if (message.auto_pay_retry_config !== undefined) {
+            exports.AutoPayRetryConfig.encode(message.auto_pay_retry_config, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -551,43 +551,43 @@ exports.PaymentInformation = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.stripeAccountId = reader.string();
+                    message.stripe_account_id = reader.string();
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.accountCurrency = currencyFromJSON(reader.int32());
+                    message.account_currency = currencyFromJSON(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.stripePayoutsEnabled = reader.bool();
+                    message.stripe_payouts_enabled = reader.bool();
                     continue;
                 case 4:
                     if (tag !== 32) {
                         break;
                     }
-                    message.stripeDetailsSubmitted = reader.bool();
+                    message.stripe_details_submitted = reader.bool();
                     continue;
                 case 5:
                     if (tag !== 40) {
                         break;
                     }
-                    message.stripeChargesEnabled = reader.bool();
+                    message.stripe_charges_enabled = reader.bool();
                     continue;
                 case 6:
                     if (tag !== 48) {
                         break;
                     }
-                    message.autoPayDisabled = reader.bool();
+                    message.auto_pay_disabled = reader.bool();
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.autoPayRetryConfig = exports.AutoPayRetryConfig.decode(reader, reader.uint32());
+                    message.auto_pay_retry_config = exports.AutoPayRetryConfig.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -599,45 +599,45 @@ exports.PaymentInformation = {
     },
     fromJSON(object) {
         return {
-            stripeAccountId: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "",
-            accountCurrency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : Currency.USD,
-            stripePayoutsEnabled: isSet(object.stripePayoutsEnabled)
+            stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "",
+            account_currency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : Currency.USD,
+            stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
                 ? globalThis.Boolean(object.stripePayoutsEnabled)
                 : false,
-            stripeDetailsSubmitted: isSet(object.stripeDetailsSubmitted)
+            stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
                 ? globalThis.Boolean(object.stripeDetailsSubmitted)
                 : false,
-            stripeChargesEnabled: isSet(object.stripeChargesEnabled)
+            stripe_charges_enabled: isSet(object.stripeChargesEnabled)
                 ? globalThis.Boolean(object.stripeChargesEnabled)
                 : false,
-            autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
-            autoPayRetryConfig: isSet(object.autoPayRetryConfig)
+            auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+            auto_pay_retry_config: isSet(object.autoPayRetryConfig)
                 ? exports.AutoPayRetryConfig.fromJSON(object.autoPayRetryConfig)
                 : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.stripeAccountId !== undefined && message.stripeAccountId !== "") {
-            obj.stripeAccountId = message.stripeAccountId;
+        if (message.stripe_account_id !== undefined && message.stripe_account_id !== "") {
+            obj.stripeAccountId = message.stripe_account_id;
         }
-        if (message.accountCurrency !== undefined && message.accountCurrency !== Currency.USD) {
-            obj.accountCurrency = currencyToJSON(message.accountCurrency);
+        if (message.account_currency !== undefined && message.account_currency !== Currency.USD) {
+            obj.accountCurrency = currencyToJSON(message.account_currency);
         }
-        if (message.stripePayoutsEnabled !== false) {
-            obj.stripePayoutsEnabled = message.stripePayoutsEnabled;
+        if (message.stripe_payouts_enabled !== false) {
+            obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
         }
-        if (message.stripeDetailsSubmitted !== false) {
-            obj.stripeDetailsSubmitted = message.stripeDetailsSubmitted;
+        if (message.stripe_details_submitted !== false) {
+            obj.stripeDetailsSubmitted = message.stripe_details_submitted;
         }
-        if (message.stripeChargesEnabled !== false) {
-            obj.stripeChargesEnabled = message.stripeChargesEnabled;
+        if (message.stripe_charges_enabled !== false) {
+            obj.stripeChargesEnabled = message.stripe_charges_enabled;
         }
-        if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
-            obj.autoPayDisabled = message.autoPayDisabled;
+        if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+            obj.autoPayDisabled = message.auto_pay_disabled;
         }
-        if (message.autoPayRetryConfig !== undefined) {
-            obj.autoPayRetryConfig = exports.AutoPayRetryConfig.toJSON(message.autoPayRetryConfig);
+        if (message.auto_pay_retry_config !== undefined) {
+            obj.autoPayRetryConfig = exports.AutoPayRetryConfig.toJSON(message.auto_pay_retry_config);
         }
         return obj;
     },
@@ -646,28 +646,29 @@ exports.PaymentInformation = {
     },
     fromPartial(object) {
         const message = createBasePaymentInformation();
-        message.stripeAccountId = object.stripeAccountId ?? "";
-        message.accountCurrency = object.accountCurrency ?? Currency.USD;
-        message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
-        message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
-        message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
-        message.autoPayDisabled = object.autoPayDisabled ?? false;
-        message.autoPayRetryConfig = (object.autoPayRetryConfig !== undefined && object.autoPayRetryConfig !== null)
-            ? exports.AutoPayRetryConfig.fromPartial(object.autoPayRetryConfig)
-            : undefined;
+        message.stripe_account_id = object.stripe_account_id ?? "";
+        message.account_currency = object.account_currency ?? Currency.USD;
+        message.stripe_payouts_enabled = object.stripe_payouts_enabled ?? false;
+        message.stripe_details_submitted = object.stripe_details_submitted ?? false;
+        message.stripe_charges_enabled = object.stripe_charges_enabled ?? false;
+        message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+        message.auto_pay_retry_config =
+            (object.auto_pay_retry_config !== undefined && object.auto_pay_retry_config !== null)
+                ? exports.AutoPayRetryConfig.fromPartial(object.auto_pay_retry_config)
+                : undefined;
         return message;
     },
 };
 function createBaseAutoPayRetryConfig() {
-    return { maxRetries: 0, retryIntervalHours: 0 };
+    return { max_retries: 0, retry_interval_hours: 0 };
 }
 exports.AutoPayRetryConfig = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.maxRetries !== 0) {
-            writer.uint32(8).int32(message.maxRetries);
+        if (message.max_retries !== 0) {
+            writer.uint32(8).int32(message.max_retries);
         }
-        if (message.retryIntervalHours !== 0) {
-            writer.uint32(16).int32(message.retryIntervalHours);
+        if (message.retry_interval_hours !== 0) {
+            writer.uint32(16).int32(message.retry_interval_hours);
         }
         return writer;
     },
@@ -682,13 +683,13 @@ exports.AutoPayRetryConfig = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.maxRetries = reader.int32();
+                    message.max_retries = reader.int32();
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.retryIntervalHours = reader.int32();
+                    message.retry_interval_hours = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -700,17 +701,17 @@ exports.AutoPayRetryConfig = {
     },
     fromJSON(object) {
         return {
-            maxRetries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
-            retryIntervalHours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+            max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
+            retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.maxRetries !== 0) {
-            obj.maxRetries = Math.round(message.maxRetries);
+        if (message.max_retries !== 0) {
+            obj.maxRetries = Math.round(message.max_retries);
         }
-        if (message.retryIntervalHours !== 0) {
-            obj.retryIntervalHours = Math.round(message.retryIntervalHours);
+        if (message.retry_interval_hours !== 0) {
+            obj.retryIntervalHours = Math.round(message.retry_interval_hours);
         }
         return obj;
     },
@@ -719,8 +720,8 @@ exports.AutoPayRetryConfig = {
     },
     fromPartial(object) {
         const message = createBaseAutoPayRetryConfig();
-        message.maxRetries = object.maxRetries ?? 0;
-        message.retryIntervalHours = object.retryIntervalHours ?? 0;
+        message.max_retries = object.max_retries ?? 0;
+        message.retry_interval_hours = object.retry_interval_hours ?? 0;
         return message;
     },
 };

@@ -216,17 +216,17 @@ function createBaseTransaction() {
     return {
         id: undefined,
         organization: undefined,
-        stripePaymentIntentId: "",
+        stripe_payment_intent_id: "",
         currency: organization_1.Currency.USD,
         status: TransactionStatus.Created,
-        paymentType: PaymentType.Stripe,
+        payment_type: PaymentType.Stripe,
         date: undefined,
         invoice: undefined,
         amount: 0,
-        declinedReason: "",
-        processingFeeAmount: 0,
-        bassemLabsFee: 0,
-        invoiceSurcharge: 0,
+        declined_reason: "",
+        processing_fee_amount: 0,
+        bassem_labs_fee: 0,
+        invoice_surcharge: 0,
     };
 }
 exports.Transaction = {
@@ -237,8 +237,8 @@ exports.Transaction = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.stripePaymentIntentId !== "") {
-            writer.uint32(26).string(message.stripePaymentIntentId);
+        if (message.stripe_payment_intent_id !== "") {
+            writer.uint32(26).string(message.stripe_payment_intent_id);
         }
         if (message.currency !== organization_1.Currency.USD) {
             writer.uint32(32).int32((0, organization_1.currencyToNumber)(message.currency));
@@ -246,8 +246,8 @@ exports.Transaction = {
         if (message.status !== TransactionStatus.Created) {
             writer.uint32(40).int32(transactionStatusToNumber(message.status));
         }
-        if (message.paymentType !== PaymentType.Stripe) {
-            writer.uint32(48).int32(paymentTypeToNumber(message.paymentType));
+        if (message.payment_type !== PaymentType.Stripe) {
+            writer.uint32(48).int32(paymentTypeToNumber(message.payment_type));
         }
         if (message.date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(58).fork()).join();
@@ -258,17 +258,17 @@ exports.Transaction = {
         if (message.amount !== 0) {
             writer.uint32(73).double(message.amount);
         }
-        if (message.declinedReason !== undefined && message.declinedReason !== "") {
-            writer.uint32(82).string(message.declinedReason);
+        if (message.declined_reason !== undefined && message.declined_reason !== "") {
+            writer.uint32(82).string(message.declined_reason);
         }
-        if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
-            writer.uint32(89).double(message.processingFeeAmount);
+        if (message.processing_fee_amount !== undefined && message.processing_fee_amount !== 0) {
+            writer.uint32(89).double(message.processing_fee_amount);
         }
-        if (message.bassemLabsFee !== undefined && message.bassemLabsFee !== 0) {
-            writer.uint32(97).double(message.bassemLabsFee);
+        if (message.bassem_labs_fee !== undefined && message.bassem_labs_fee !== 0) {
+            writer.uint32(97).double(message.bassem_labs_fee);
         }
-        if (message.invoiceSurcharge !== undefined && message.invoiceSurcharge !== 0) {
-            writer.uint32(105).double(message.invoiceSurcharge);
+        if (message.invoice_surcharge !== undefined && message.invoice_surcharge !== 0) {
+            writer.uint32(105).double(message.invoice_surcharge);
         }
         return writer;
     },
@@ -295,7 +295,7 @@ exports.Transaction = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.stripePaymentIntentId = reader.string();
+                    message.stripe_payment_intent_id = reader.string();
                     continue;
                 case 4:
                     if (tag !== 32) {
@@ -313,7 +313,7 @@ exports.Transaction = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.paymentType = paymentTypeFromJSON(reader.int32());
+                    message.payment_type = paymentTypeFromJSON(reader.int32());
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -337,25 +337,25 @@ exports.Transaction = {
                     if (tag !== 82) {
                         break;
                     }
-                    message.declinedReason = reader.string();
+                    message.declined_reason = reader.string();
                     continue;
                 case 11:
                     if (tag !== 89) {
                         break;
                     }
-                    message.processingFeeAmount = reader.double();
+                    message.processing_fee_amount = reader.double();
                     continue;
                 case 12:
                     if (tag !== 97) {
                         break;
                     }
-                    message.bassemLabsFee = reader.double();
+                    message.bassem_labs_fee = reader.double();
                     continue;
                 case 13:
                     if (tag !== 105) {
                         break;
                     }
-                    message.invoiceSurcharge = reader.double();
+                    message.invoice_surcharge = reader.double();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -369,17 +369,19 @@ exports.Transaction = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            stripePaymentIntentId: isSet(object.stripePaymentIntentId) ? globalThis.String(object.stripePaymentIntentId) : "",
+            stripe_payment_intent_id: isSet(object.stripePaymentIntentId)
+                ? globalThis.String(object.stripePaymentIntentId)
+                : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
             status: isSet(object.status) ? transactionStatusFromJSON(object.status) : TransactionStatus.Created,
-            paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+            payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
             date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
             invoice: isSet(object.invoice) ? object_id_1.ObjectId.fromJSON(object.invoice) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-            declinedReason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
-            processingFeeAmount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
-            bassemLabsFee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : 0,
-            invoiceSurcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : 0,
+            declined_reason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
+            processing_fee_amount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
+            bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : 0,
+            invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : 0,
         };
     },
     toJSON(message) {
@@ -390,8 +392,8 @@ exports.Transaction = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.stripePaymentIntentId !== "") {
-            obj.stripePaymentIntentId = message.stripePaymentIntentId;
+        if (message.stripe_payment_intent_id !== "") {
+            obj.stripePaymentIntentId = message.stripe_payment_intent_id;
         }
         if (message.currency !== organization_1.Currency.USD) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
@@ -399,8 +401,8 @@ exports.Transaction = {
         if (message.status !== TransactionStatus.Created) {
             obj.status = transactionStatusToJSON(message.status);
         }
-        if (message.paymentType !== PaymentType.Stripe) {
-            obj.paymentType = paymentTypeToJSON(message.paymentType);
+        if (message.payment_type !== PaymentType.Stripe) {
+            obj.paymentType = paymentTypeToJSON(message.payment_type);
         }
         if (message.date !== undefined) {
             obj.date = message.date.toISOString();
@@ -411,17 +413,17 @@ exports.Transaction = {
         if (message.amount !== 0) {
             obj.amount = message.amount;
         }
-        if (message.declinedReason !== undefined && message.declinedReason !== "") {
-            obj.declinedReason = message.declinedReason;
+        if (message.declined_reason !== undefined && message.declined_reason !== "") {
+            obj.declinedReason = message.declined_reason;
         }
-        if (message.processingFeeAmount !== undefined && message.processingFeeAmount !== 0) {
-            obj.processingFeeAmount = message.processingFeeAmount;
+        if (message.processing_fee_amount !== undefined && message.processing_fee_amount !== 0) {
+            obj.processingFeeAmount = message.processing_fee_amount;
         }
-        if (message.bassemLabsFee !== undefined && message.bassemLabsFee !== 0) {
-            obj.bassemLabsFee = message.bassemLabsFee;
+        if (message.bassem_labs_fee !== undefined && message.bassem_labs_fee !== 0) {
+            obj.bassemLabsFee = message.bassem_labs_fee;
         }
-        if (message.invoiceSurcharge !== undefined && message.invoiceSurcharge !== 0) {
-            obj.invoiceSurcharge = message.invoiceSurcharge;
+        if (message.invoice_surcharge !== undefined && message.invoice_surcharge !== 0) {
+            obj.invoiceSurcharge = message.invoice_surcharge;
         }
         return obj;
     },
@@ -434,19 +436,19 @@ exports.Transaction = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.stripePaymentIntentId = object.stripePaymentIntentId ?? "";
+        message.stripe_payment_intent_id = object.stripe_payment_intent_id ?? "";
         message.currency = object.currency ?? organization_1.Currency.USD;
         message.status = object.status ?? TransactionStatus.Created;
-        message.paymentType = object.paymentType ?? PaymentType.Stripe;
+        message.payment_type = object.payment_type ?? PaymentType.Stripe;
         message.date = object.date ?? undefined;
         message.invoice = (object.invoice !== undefined && object.invoice !== null)
             ? object_id_1.ObjectId.fromPartial(object.invoice)
             : undefined;
         message.amount = object.amount ?? 0;
-        message.declinedReason = object.declinedReason ?? "";
-        message.processingFeeAmount = object.processingFeeAmount ?? 0;
-        message.bassemLabsFee = object.bassemLabsFee ?? 0;
-        message.invoiceSurcharge = object.invoiceSurcharge ?? 0;
+        message.declined_reason = object.declined_reason ?? "";
+        message.processing_fee_amount = object.processing_fee_amount ?? 0;
+        message.bassem_labs_fee = object.bassem_labs_fee ?? 0;
+        message.invoice_surcharge = object.invoice_surcharge ?? 0;
         return message;
     },
 };
@@ -454,10 +456,10 @@ function createBaseRefundTransaction() {
     return {
         id: undefined,
         organization: undefined,
-        transactionId: undefined,
-        stripeRefundId: "",
+        transaction_id: undefined,
+        stripe_refund_id: "",
         status: RefundTransactionStatus.Pending,
-        paymentType: PaymentType.Stripe,
+        payment_type: PaymentType.Stripe,
         date: undefined,
         amount: 0,
         reason: "",
@@ -471,17 +473,17 @@ exports.RefundTransaction = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.transactionId !== undefined) {
-            object_id_1.ObjectId.encode(message.transactionId, writer.uint32(26).fork()).join();
+        if (message.transaction_id !== undefined) {
+            object_id_1.ObjectId.encode(message.transaction_id, writer.uint32(26).fork()).join();
         }
-        if (message.stripeRefundId !== undefined && message.stripeRefundId !== "") {
-            writer.uint32(34).string(message.stripeRefundId);
+        if (message.stripe_refund_id !== undefined && message.stripe_refund_id !== "") {
+            writer.uint32(34).string(message.stripe_refund_id);
         }
         if (message.status !== RefundTransactionStatus.Pending) {
             writer.uint32(40).int32(refundTransactionStatusToNumber(message.status));
         }
-        if (message.paymentType !== PaymentType.Stripe) {
-            writer.uint32(48).int32(paymentTypeToNumber(message.paymentType));
+        if (message.payment_type !== PaymentType.Stripe) {
+            writer.uint32(48).int32(paymentTypeToNumber(message.payment_type));
         }
         if (message.date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(58).fork()).join();
@@ -517,13 +519,13 @@ exports.RefundTransaction = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.transactionId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.transaction_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.stripeRefundId = reader.string();
+                    message.stripe_refund_id = reader.string();
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -535,7 +537,7 @@ exports.RefundTransaction = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.paymentType = paymentTypeFromJSON(reader.int32());
+                    message.payment_type = paymentTypeFromJSON(reader.int32());
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -567,10 +569,10 @@ exports.RefundTransaction = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            transactionId: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
-            stripeRefundId: isSet(object.stripeRefundId) ? globalThis.String(object.stripeRefundId) : "",
+            transaction_id: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
+            stripe_refund_id: isSet(object.stripeRefundId) ? globalThis.String(object.stripeRefundId) : "",
             status: isSet(object.status) ? refundTransactionStatusFromJSON(object.status) : RefundTransactionStatus.Pending,
-            paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+            payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
             date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
@@ -584,17 +586,17 @@ exports.RefundTransaction = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.transactionId !== undefined) {
-            obj.transactionId = object_id_1.ObjectId.toJSON(message.transactionId);
+        if (message.transaction_id !== undefined) {
+            obj.transactionId = object_id_1.ObjectId.toJSON(message.transaction_id);
         }
-        if (message.stripeRefundId !== undefined && message.stripeRefundId !== "") {
-            obj.stripeRefundId = message.stripeRefundId;
+        if (message.stripe_refund_id !== undefined && message.stripe_refund_id !== "") {
+            obj.stripeRefundId = message.stripe_refund_id;
         }
         if (message.status !== RefundTransactionStatus.Pending) {
             obj.status = refundTransactionStatusToJSON(message.status);
         }
-        if (message.paymentType !== PaymentType.Stripe) {
-            obj.paymentType = paymentTypeToJSON(message.paymentType);
+        if (message.payment_type !== PaymentType.Stripe) {
+            obj.paymentType = paymentTypeToJSON(message.payment_type);
         }
         if (message.date !== undefined) {
             obj.date = message.date.toISOString();
@@ -616,12 +618,12 @@ exports.RefundTransaction = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.transactionId)
+        message.transaction_id = (object.transaction_id !== undefined && object.transaction_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.transaction_id)
             : undefined;
-        message.stripeRefundId = object.stripeRefundId ?? "";
+        message.stripe_refund_id = object.stripe_refund_id ?? "";
         message.status = object.status ?? RefundTransactionStatus.Pending;
-        message.paymentType = object.paymentType ?? PaymentType.Stripe;
+        message.payment_type = object.payment_type ?? PaymentType.Stripe;
         message.date = object.date ?? undefined;
         message.amount = object.amount ?? 0;
         message.reason = object.reason ?? "";

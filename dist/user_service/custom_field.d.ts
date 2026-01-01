@@ -33,41 +33,41 @@ export declare function approvalStatusToNumber(object: ApprovalStatus): number;
 export interface CustomField {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    groupId: ObjectId | undefined;
+    group_id: ObjectId | undefined;
     name: string;
-    fieldType: CustomFieldType;
-    userType: UserType;
-    isRequired: boolean;
+    field_type: CustomFieldType;
+    user_type: UserType;
+    is_required: boolean;
     description: string;
-    regexPattern?: string | undefined;
+    regex_pattern?: string | undefined;
     options: string[];
-    isArchived: boolean;
+    is_archived: boolean;
 }
 /** Custom fields group */
 export interface CustomFieldsGroup {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    groupName: string;
-    userType: UserType;
-    profileSection: ProfileSection;
+    group_name: string;
+    user_type: UserType;
+    profile_section: ProfileSection;
     hints: string[];
-    groupAccessSettings: ObjectId | undefined;
-    entriesAccessSettings: ObjectId | undefined;
+    group_access_settings: ObjectId | undefined;
+    entries_access_settings: ObjectId | undefined;
     /** these fields are only for custom field groups for user type: Student */
-    visibleToParentsForStatuses: StudentStatus[];
-    visibleToTeachersForStatuses: StudentStatus[];
+    visible_to_parents_for_statuses: StudentStatus[];
+    visible_to_teachers_for_statuses: StudentStatus[];
 }
 /** Group approval status (approval workflow for custom field groups) */
 export interface GroupApprovalStatus {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    groupId: ObjectId | undefined;
-    userId: ObjectId | undefined;
+    group_id: ObjectId | undefined;
+    user_id: ObjectId | undefined;
     status: ApprovalStatus;
-    rejectionMessage?: string | undefined;
+    rejection_message?: string | undefined;
 }
 export interface StudentPrimaryIdField {
-    fieldName: string;
+    field_name: string;
     value: string;
 }
 /** Custom fields group with its associated custom fields */

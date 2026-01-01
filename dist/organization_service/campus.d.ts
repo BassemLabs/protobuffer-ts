@@ -10,8 +10,8 @@ export interface Campus {
     email: string;
     phone: string;
     logo?: AWSFile | undefined;
-    principalId: ObjectId | undefined;
-    supervisorId: ObjectId | undefined;
+    principal_id: ObjectId | undefined;
+    supervisor_id: ObjectId | undefined;
     archived: boolean;
 }
 export declare const Campus: MessageFns<Campus>;

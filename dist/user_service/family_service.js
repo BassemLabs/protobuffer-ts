@@ -15,15 +15,15 @@ const parent_1 = require("./parent");
 const student_1 = require("./student");
 exports.protobufPackage = "user_service";
 function createBaseGetFamilyRequest() {
-    return { context: undefined, familyId: undefined };
+    return { context: undefined, family_id: undefined };
 }
 exports.GetFamilyRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -44,7 +44,7 @@ exports.GetFamilyRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -57,7 +57,7 @@ exports.GetFamilyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -65,8 +65,8 @@ exports.GetFamilyRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -78,8 +78,8 @@ exports.GetFamilyRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         return message;
     },
@@ -189,14 +189,14 @@ exports.GetAllFamiliesResponse = {
     },
 };
 function createBaseGetFamiliesByIdsRequest() {
-    return { context: undefined, familyIds: [] };
+    return { context: undefined, family_ids: [] };
 }
 exports.GetFamiliesByIdsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        for (const v of message.familyIds) {
+        for (const v of message.family_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
         }
         return writer;
@@ -218,7 +218,7 @@ exports.GetFamiliesByIdsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyIds.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -231,7 +231,7 @@ exports.GetFamiliesByIdsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyIds: globalThis.Array.isArray(object?.familyIds)
+            family_ids: globalThis.Array.isArray(object?.familyIds)
                 ? object.familyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
@@ -241,8 +241,8 @@ exports.GetFamiliesByIdsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyIds?.length) {
-            obj.familyIds = message.familyIds.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.family_ids?.length) {
+            obj.familyIds = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -254,7 +254,7 @@ exports.GetFamiliesByIdsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyIds = object.familyIds?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.family_ids = object.family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -311,15 +311,15 @@ exports.GetFamiliesByIdsResponse = {
     },
 };
 function createBaseGetFamiliesByParentRequest() {
-    return { context: undefined, parentId: undefined };
+    return { context: undefined, parent_id: undefined };
 }
 exports.GetFamiliesByParentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.parentId !== undefined) {
-            object_id_1.ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+        if (message.parent_id !== undefined) {
+            object_id_1.ObjectId.encode(message.parent_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -340,7 +340,7 @@ exports.GetFamiliesByParentRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.parentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.parent_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -353,7 +353,7 @@ exports.GetFamiliesByParentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            parentId: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
+            parent_id: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
         };
     },
     toJSON(message) {
@@ -361,8 +361,8 @@ exports.GetFamiliesByParentRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.parentId !== undefined) {
-            obj.parentId = object_id_1.ObjectId.toJSON(message.parentId);
+        if (message.parent_id !== undefined) {
+            obj.parentId = object_id_1.ObjectId.toJSON(message.parent_id);
         }
         return obj;
     },
@@ -374,8 +374,8 @@ exports.GetFamiliesByParentRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.parentId = (object.parentId !== undefined && object.parentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.parentId)
+        message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.parent_id)
             : undefined;
         return message;
     },
@@ -433,15 +433,15 @@ exports.GetFamiliesByParentResponse = {
     },
 };
 function createBaseGetFamilyGuardiansRequest() {
-    return { context: undefined, familyId: undefined };
+    return { context: undefined, family_id: undefined };
 }
 exports.GetFamilyGuardiansRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -462,7 +462,7 @@ exports.GetFamilyGuardiansRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -475,7 +475,7 @@ exports.GetFamilyGuardiansRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -483,8 +483,8 @@ exports.GetFamilyGuardiansRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -496,8 +496,8 @@ exports.GetFamilyGuardiansRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         return message;
     },
@@ -557,15 +557,15 @@ exports.GetFamilyGuardiansResponse = {
     },
 };
 function createBaseGetContactGuardiansRequest() {
-    return { context: undefined, familyId: undefined };
+    return { context: undefined, family_id: undefined };
 }
 exports.GetContactGuardiansRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -586,7 +586,7 @@ exports.GetContactGuardiansRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -599,7 +599,7 @@ exports.GetContactGuardiansRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -607,8 +607,8 @@ exports.GetContactGuardiansRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -620,8 +620,8 @@ exports.GetContactGuardiansRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         return message;
     },
@@ -681,15 +681,15 @@ exports.GetContactGuardiansResponse = {
     },
 };
 function createBaseGetFamilyStudentsRequest() {
-    return { context: undefined, familyId: undefined };
+    return { context: undefined, family_id: undefined };
 }
 exports.GetFamilyStudentsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -710,7 +710,7 @@ exports.GetFamilyStudentsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -723,7 +723,7 @@ exports.GetFamilyStudentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -731,8 +731,8 @@ exports.GetFamilyStudentsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -744,8 +744,8 @@ exports.GetFamilyStudentsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         return message;
     },
@@ -803,18 +803,18 @@ exports.GetFamilyStudentsResponse = {
     },
 };
 function createBaseGetEnrolledStudentsForFamilyRequest() {
-    return { context: undefined, familyId: undefined, schoolYearId: undefined };
+    return { context: undefined, family_id: undefined, school_year_id: undefined };
 }
 exports.GetEnrolledStudentsForFamilyRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYearId !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYearId, writer.uint32(26).fork()).join();
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -835,13 +835,13 @@ exports.GetEnrolledStudentsForFamilyRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYearId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -854,8 +854,8 @@ exports.GetEnrolledStudentsForFamilyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            schoolYearId: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -863,11 +863,11 @@ exports.GetEnrolledStudentsForFamilyRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
-        if (message.schoolYearId !== undefined) {
-            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.schoolYearId);
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -879,11 +879,11 @@ exports.GetEnrolledStudentsForFamilyRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
-        message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYearId)
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
         return message;
     },
@@ -941,7 +941,7 @@ exports.GetEnrolledStudentsForFamilyResponse = {
     },
 };
 function createBaseGetFamiliesByStudentStatusRequest() {
-    return { context: undefined, studentStatuses: [], schoolYearId: undefined };
+    return { context: undefined, student_statuses: [], school_year_id: undefined };
 }
 exports.GetFamiliesByStudentStatusRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -949,12 +949,12 @@ exports.GetFamiliesByStudentStatusRequest = {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
         writer.uint32(18).fork();
-        for (const v of message.studentStatuses) {
+        for (const v of message.student_statuses) {
             writer.int32((0, student_1.studentStatusToNumber)(v));
         }
         writer.join();
-        if (message.schoolYearId !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYearId, writer.uint32(26).fork()).join();
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -973,13 +973,13 @@ exports.GetFamiliesByStudentStatusRequest = {
                     continue;
                 case 2:
                     if (tag === 16) {
-                        message.studentStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        message.student_statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 18) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.studentStatuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                            message.student_statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -988,7 +988,7 @@ exports.GetFamiliesByStudentStatusRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYearId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1001,10 +1001,10 @@ exports.GetFamiliesByStudentStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            studentStatuses: globalThis.Array.isArray(object?.studentStatuses)
+            student_statuses: globalThis.Array.isArray(object?.studentStatuses)
                 ? object.studentStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
-            schoolYearId: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -1012,11 +1012,11 @@ exports.GetFamiliesByStudentStatusRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.studentStatuses?.length) {
-            obj.studentStatuses = message.studentStatuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+        if (message.student_statuses?.length) {
+            obj.studentStatuses = message.student_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
-        if (message.schoolYearId !== undefined) {
-            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.schoolYearId);
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -1028,23 +1028,23 @@ exports.GetFamiliesByStudentStatusRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.studentStatuses = object.studentStatuses?.map((e) => e) || [];
-        message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYearId)
+        message.student_statuses = object.student_statuses?.map((e) => e) || [];
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
         return message;
     },
 };
 function createBaseFamilyWithStudentCount() {
-    return { family: undefined, studentCount: 0 };
+    return { family: undefined, student_count: 0 };
 }
 exports.FamilyWithStudentCount = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.family !== undefined) {
             family_1.Family.encode(message.family, writer.uint32(10).fork()).join();
         }
-        if (message.studentCount !== 0) {
-            writer.uint32(16).int32(message.studentCount);
+        if (message.student_count !== 0) {
+            writer.uint32(16).int32(message.student_count);
         }
         return writer;
     },
@@ -1065,7 +1065,7 @@ exports.FamilyWithStudentCount = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.studentCount = reader.int32();
+                    message.student_count = reader.int32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1078,7 +1078,7 @@ exports.FamilyWithStudentCount = {
     fromJSON(object) {
         return {
             family: isSet(object.family) ? family_1.Family.fromJSON(object.family) : undefined,
-            studentCount: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
+            student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
         };
     },
     toJSON(message) {
@@ -1086,8 +1086,8 @@ exports.FamilyWithStudentCount = {
         if (message.family !== undefined) {
             obj.family = family_1.Family.toJSON(message.family);
         }
-        if (message.studentCount !== 0) {
-            obj.studentCount = Math.round(message.studentCount);
+        if (message.student_count !== 0) {
+            obj.studentCount = Math.round(message.student_count);
         }
         return obj;
     },
@@ -1099,7 +1099,7 @@ exports.FamilyWithStudentCount = {
         message.family = (object.family !== undefined && object.family !== null)
             ? family_1.Family.fromPartial(object.family)
             : undefined;
-        message.studentCount = object.studentCount ?? 0;
+        message.student_count = object.student_count ?? 0;
         return message;
     },
 };
@@ -1260,10 +1260,10 @@ exports.CreateFamilyRequest = {
 function createBaseUpdateFamilyRequest() {
     return {
         context: undefined,
-        familyId: undefined,
+        family_id: undefined,
         name: "",
         guardians: [],
-        guardiansToNotContact: [],
+        guardians_to_not_contact: [],
         information: undefined,
     };
 }
@@ -1272,8 +1272,8 @@ exports.UpdateFamilyRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
@@ -1281,7 +1281,7 @@ exports.UpdateFamilyRequest = {
         for (const v of message.guardians) {
             object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
         }
-        for (const v of message.guardiansToNotContact) {
+        for (const v of message.guardians_to_not_contact) {
             object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
         }
         if (message.information !== undefined) {
@@ -1306,7 +1306,7 @@ exports.UpdateFamilyRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1324,7 +1324,7 @@ exports.UpdateFamilyRequest = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.guardiansToNotContact.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.guardians_to_not_contact.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -1343,12 +1343,12 @@ exports.UpdateFamilyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             guardians: globalThis.Array.isArray(object?.guardians)
                 ? object.guardians.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            guardiansToNotContact: globalThis.Array.isArray(object?.guardiansToNotContact)
+            guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
                 ? object.guardiansToNotContact.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             information: isSet(object.information) ? family_1.FamilyInformation.fromJSON(object.information) : undefined,
@@ -1359,8 +1359,8 @@ exports.UpdateFamilyRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -1368,8 +1368,8 @@ exports.UpdateFamilyRequest = {
         if (message.guardians?.length) {
             obj.guardians = message.guardians.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.guardiansToNotContact?.length) {
-            obj.guardiansToNotContact = message.guardiansToNotContact.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.guardians_to_not_contact?.length) {
+            obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.information !== undefined) {
             obj.information = family_1.FamilyInformation.toJSON(message.information);
@@ -1384,12 +1384,12 @@ exports.UpdateFamilyRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         message.name = object.name ?? "";
         message.guardians = object.guardians?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.guardiansToNotContact = object.guardiansToNotContact?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.information = (object.information !== undefined && object.information !== null)
             ? family_1.FamilyInformation.fromPartial(object.information)
             : undefined;
@@ -1397,15 +1397,15 @@ exports.UpdateFamilyRequest = {
     },
 };
 function createBaseUpdateFamilyNameRequest() {
-    return { context: undefined, familyId: undefined, name: "" };
+    return { context: undefined, family_id: undefined, name: "" };
 }
 exports.UpdateFamilyNameRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(26).string(message.name);
@@ -1429,7 +1429,7 @@ exports.UpdateFamilyNameRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1448,7 +1448,7 @@ exports.UpdateFamilyNameRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
         };
     },
@@ -1457,8 +1457,8 @@ exports.UpdateFamilyNameRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -1473,26 +1473,26 @@ exports.UpdateFamilyNameRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         message.name = object.name ?? "";
         return message;
     },
 };
 function createBaseUpdateFamilyAutoPayRequest() {
-    return { context: undefined, familyId: undefined, autoPayDisabled: false };
+    return { context: undefined, family_id: undefined, auto_pay_disabled: false };
 }
 exports.UpdateFamilyAutoPayRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(18).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
         }
-        if (message.autoPayDisabled !== false) {
-            writer.uint32(24).bool(message.autoPayDisabled);
+        if (message.auto_pay_disabled !== false) {
+            writer.uint32(24).bool(message.auto_pay_disabled);
         }
         return writer;
     },
@@ -1513,13 +1513,13 @@ exports.UpdateFamilyAutoPayRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.autoPayDisabled = reader.bool();
+                    message.auto_pay_disabled = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1532,8 +1532,8 @@ exports.UpdateFamilyAutoPayRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
         };
     },
     toJSON(message) {
@@ -1541,11 +1541,11 @@ exports.UpdateFamilyAutoPayRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
-        if (message.autoPayDisabled !== false) {
-            obj.autoPayDisabled = message.autoPayDisabled;
+        if (message.auto_pay_disabled !== false) {
+            obj.autoPayDisabled = message.auto_pay_disabled;
         }
         return obj;
     },
@@ -1557,10 +1557,10 @@ exports.UpdateFamilyAutoPayRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
-        message.autoPayDisabled = object.autoPayDisabled ?? false;
+        message.auto_pay_disabled = object.auto_pay_disabled ?? false;
         return message;
     },
 };

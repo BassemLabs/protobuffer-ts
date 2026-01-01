@@ -8,29 +8,29 @@ export declare const protobufPackage = "class_service.evaluation_service";
 /** Create Evaluation */
 export interface CreateEvaluationRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     total: number;
     weight: number;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    markCategory: ObjectId | undefined;
+    mark_category: ObjectId | undefined;
 }
 /** Update Evaluation */
 export interface UpdateEvaluationRequest {
     context: RequestContext | undefined;
-    evaluationId: ObjectId | undefined;
+    evaluation_id: ObjectId | undefined;
     name: string;
     total: number;
     weight: number;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    markCategory: ObjectId | undefined;
+    mark_category: ObjectId | undefined;
 }
 /** Delete Evaluation */
 export interface DeleteEvaluationRequest {
     context: RequestContext | undefined;
-    evaluationId: ObjectId | undefined;
+    evaluation_id: ObjectId | undefined;
 }
 export interface GetCourseDetailedEvaluationsResponse {
     evaluations: DetailedEvaluation[];
@@ -41,16 +41,16 @@ export interface GetCourseEvaluationsResponse {
 /** Publish/Unpublish Evaluation */
 export interface PublishEvaluationRequest {
     context: RequestContext | undefined;
-    evaluationId: ObjectId | undefined;
+    evaluation_id: ObjectId | undefined;
 }
 export interface UnpublishEvaluationRequest {
     context: RequestContext | undefined;
-    evaluationId: ObjectId | undefined;
+    evaluation_id: ObjectId | undefined;
 }
 /** Get Evaluation Entries */
 export interface GetEvaluationEntriesRequest {
     context: RequestContext | undefined;
-    evaluationId: ObjectId | undefined;
+    evaluation_id: ObjectId | undefined;
 }
 export interface GetEvaluationEntriesResponse {
     entries: EvaluationEntry[];
@@ -58,100 +58,100 @@ export interface GetEvaluationEntriesResponse {
 /** Get Student Course Evaluation Entries */
 export interface GetStudentCourseEvaluationEntriesRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 /** Update Evaluation Marks (Batch) */
 export interface StudentMarkUpdate {
-    studentId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
     mark: number;
 }
 export interface UpdateEvaluationMarksRequest {
     context: RequestContext | undefined;
-    evaluationId: ObjectId | undefined;
-    studentMarks: StudentMarkUpdate[];
+    evaluation_id: ObjectId | undefined;
+    student_marks: StudentMarkUpdate[];
 }
 /** Create Mark Category */
 export interface CreateMarkCategoryRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     percentage: number;
 }
 /** Update Mark Category */
 export interface UpdateMarkCategoryRequest {
     context: RequestContext | undefined;
-    markCategoryId: ObjectId | undefined;
+    mark_category_id: ObjectId | undefined;
     name: string;
     percentage: number;
 }
 /** Delete Mark Category */
 export interface DeleteMarkCategoryRequest {
     context: RequestContext | undefined;
-    markCategoryId: ObjectId | undefined;
+    mark_category_id: ObjectId | undefined;
 }
 /** Get Course Mark Categories */
 export interface GetCourseMarkCategoriesRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface DetailedMarkCategoriesAndEvaluationsResponse {
-    markCategories: DetailedMarkCategory[];
+    mark_categories: DetailedMarkCategory[];
     evaluations: DetailedEvaluation[];
 }
 export interface GetCourseDetailedMarkCategoriesAndEvaluationsRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 /** Student Course Performance for a course */
 export interface GetStudentsCoursePerformanceRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface GetStudentsCoursePerformanceResponse {
-    studentPerformanes: StudentCoursePerformance[];
+    student_performanes: StudentCoursePerformance[];
 }
 export interface GetStudentCoursePerformanceRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface StudentCoursePerformance {
     student: ObjectId | undefined;
-    finalMark?: number | undefined;
-    maximumPotentialMark: number;
+    final_mark?: number | undefined;
+    maximum_potential_mark: number;
     evaluations: PersonalizedEvaluation[];
-    markCategories: PersonalizedMarkCategory[];
-    studentEvaluationEntries: EvaluationEntry[];
+    mark_categories: PersonalizedMarkCategory[];
+    student_evaluation_entries: EvaluationEntry[];
 }
 /** Student Course Mark Overview */
 export interface GetStudentCoursesMarkOverviewRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    schoolYearId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
 }
 export interface GetStudentCoursesMarkOverviewResponse {
-    courseMarks: StudentCourseMarkOverview[];
+    course_marks: StudentCourseMarkOverview[];
 }
 export interface StudentCourseMarkOverview {
-    courseId: ObjectId | undefined;
-    courseName: string;
-    courseCode: string;
-    semesterId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
+    course_name: string;
+    course_code: string;
+    semester_id: ObjectId | undefined;
     /** the mark for published evaluations for this course through all categories */
-    studentMark?: number | undefined;
+    student_mark?: number | undefined;
     /** assuming that the student got the full mark for non-marked evaluations */
-    maximumPotentialMark: number;
+    maximum_potential_mark: number;
 }
 /** Export Markbook Excel */
 export interface ExportMarkbookExcelRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface ExportMarkbookExcelResponse {
     /** base64 encoded excel file */
-    excelData: string;
-    courseName: string;
+    excel_data: string;
+    course_name: string;
 }
 export declare const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest>;
 export declare const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest>;

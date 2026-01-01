@@ -22,8 +22,8 @@ export interface KMSKey {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     status: KMSKeyStatus;
-    keyType: KMSKeyType;
-    decryptedKeyMaterial: string;
+    key_type: KMSKeyType;
+    decrypted_key_material: string;
 }
 export declare const KMSKey: MessageFns<KMSKey>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

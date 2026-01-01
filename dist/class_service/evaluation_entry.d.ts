@@ -3,10 +3,10 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export interface EvaluationEntry {
     id: ObjectId | undefined;
-    evaluationId: ObjectId | undefined;
+    evaluation_id: ObjectId | undefined;
     student: ObjectId | undefined;
     mark: number;
-    lastPublishedAt?: Date | undefined;
+    last_published_at?: Date | undefined;
 }
 export declare const EvaluationEntry: MessageFns<EvaluationEntry>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

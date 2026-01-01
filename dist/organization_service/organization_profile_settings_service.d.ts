@@ -6,49 +6,49 @@ export declare const protobufPackage = "organization_service";
 /** Request to fetch profile settings of an organization by ID */
 export interface GetOrganizationProfileSettingsRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 /** Request to add a "parent" profile section */
 export interface AddParentProfileSectionRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    newProfileSection: ProfileSection;
+    organization_id: ObjectId | undefined;
+    new_profile_section: ProfileSection;
 }
 /** Request to remove a "parent" profile section */
 export interface RemoveParentProfileSectionRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    removeProfileSection: ProfileSection;
+    organization_id: ObjectId | undefined;
+    remove_profile_section: ProfileSection;
 }
 /** Request to add a "teacher" profile section */
 export interface AddTeacherProfileSectionRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    newProfileSection: ProfileSection;
+    organization_id: ObjectId | undefined;
+    new_profile_section: ProfileSection;
 }
 /** Request to remove a "teacher" profile section */
 export interface RemoveTeacherProfileSectionRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    removeProfileSection: ProfileSection;
+    organization_id: ObjectId | undefined;
+    remove_profile_section: ProfileSection;
 }
 /** Request to add a "student" profile section */
 export interface AddStudentProfileSectionRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    newProfileSection: ProfileSection;
+    organization_id: ObjectId | undefined;
+    new_profile_section: ProfileSection;
 }
 /** Request to remove a "student" profile section */
 export interface RemoveStudentProfileSectionRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    removeProfileSection: ProfileSection;
+    organization_id: ObjectId | undefined;
+    remove_profile_section: ProfileSection;
 }
 /** Request to set student_primary_id_custom_field */
 export interface SetStudentPrimaryIdCustomFieldRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    studentPrimaryIdCustomField: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    student_primary_id_custom_field: ObjectId | undefined;
 }
 export declare const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationProfileSettingsRequest>;
 export declare const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionRequest>;

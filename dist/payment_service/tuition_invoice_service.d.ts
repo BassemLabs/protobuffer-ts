@@ -14,35 +14,35 @@ export interface StudentObj {
 export interface GetFamilyTuitionInvoiceRequest {
     context: RequestContext | undefined;
     family: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
 }
 export interface GenerateTuitionInvoiceRequest {
     context: RequestContext | undefined;
     family: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
-    tuitionPlan: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+    tuition_plan: ObjectId | undefined;
 }
 export interface ModifyTuitionInvoiceRequest {
     context: RequestContext | undefined;
-    tuitionInvoice: ObjectId | undefined;
-    tuitionPlan: ObjectId | undefined;
+    tuition_invoice: ObjectId | undefined;
+    tuition_plan: ObjectId | undefined;
 }
 export interface ListFamiliesWithTuitionInvoicesRequest {
     context: RequestContext | undefined;
-    schoolYear: ObjectId | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
+    school_year: ObjectId | undefined;
+    start_date?: Date | undefined;
+    end_date?: Date | undefined;
 }
 export interface ListFamiliesWithTuitionInvoicesResponse {
-    familyWithTuitionInvoice: FamilyWithTuitionInvoice[];
+    family_with_tuition_invoice: FamilyWithTuitionInvoice[];
 }
 export interface FamilyWithTuitionInvoice {
     family: Family | undefined;
-    tuitionInvoice?: TuitionInvoice | undefined;
-    studentCount: number;
-    totalPaid: number;
+    tuition_invoice?: TuitionInvoice | undefined;
+    student_count: number;
+    total_paid: number;
     status: TuitionInvoiceStatus;
-    totalInvoicesAmount: number;
+    total_invoices_amount: number;
 }
 export declare const StudentObj: MessageFns<StudentObj>;
 export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;

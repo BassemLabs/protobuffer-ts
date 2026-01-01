@@ -10,9 +10,9 @@ export interface Homeroom {
     semester: Semester | undefined;
     name: string;
     grade?: StudentGrade | undefined;
-    teacherIds: ObjectId[];
-    studentIds: ObjectId[];
-    lmsCourse?: LmsCourse | undefined;
+    teacher_ids: ObjectId[];
+    student_ids: ObjectId[];
+    lms_course?: LmsCourse | undefined;
 }
 export interface ListHomeroom {
     id: ObjectId | undefined;
@@ -20,12 +20,12 @@ export interface ListHomeroom {
     name: string;
     grade?: string | undefined;
     semester: ListSemester | undefined;
-    teacherIds: ObjectId[];
-    studentIds: ObjectId[];
+    teacher_ids: ObjectId[];
+    student_ids: ObjectId[];
 }
 export interface HomeroomList {
     homerooms: ListHomeroom[];
-    homeroomsCount: number;
+    homerooms_count: number;
 }
 export declare const Homeroom: MessageFns<Homeroom>;
 export declare const ListHomeroom: MessageFns<ListHomeroom>;

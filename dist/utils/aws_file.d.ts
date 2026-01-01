@@ -1,8 +1,8 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "utils";
 export interface AWSFile {
-    fileName: string;
-    preSignedUrl: string;
+    file_name: string;
+    pre_signed_url: string;
 }
 export declare const AWSFile: MessageFns<AWSFile>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

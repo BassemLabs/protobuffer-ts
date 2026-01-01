@@ -5,44 +5,44 @@ import { GradeFeeMapping } from "./onboarding_settings";
 export declare const protobufPackage = "organization_service";
 export interface GetOnboardingSettingsRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface UpdateEnrollmentConfigurationRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    hasInterviewForNewcomers: boolean;
-    enableGroupApprovalSystem: boolean;
+    organization_id: ObjectId | undefined;
+    has_interview_for_newcomers: boolean;
+    enable_group_approval_system: boolean;
 }
 export interface AddSchoolHandbookFileRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    fileName: string;
-    awsS3FileLocation: string;
+    organization_id: ObjectId | undefined;
+    file_name: string;
+    aws_s3_file_location: string;
 }
 export interface RemoveSchoolHandbookFileRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    fileIndex: number;
+    organization_id: ObjectId | undefined;
+    file_index: number;
 }
 export interface UpdateWaitlistFeeRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    waitlistFee: number;
+    organization_id: ObjectId | undefined;
+    waitlist_fee: number;
 }
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    registrationFees: GradeFeeMapping[];
+    organization_id: ObjectId | undefined;
+    registration_fees: GradeFeeMapping[];
 }
 export interface UpdateReregistrationFeeRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    reregistrationFees: GradeFeeMapping[];
+    organization_id: ObjectId | undefined;
+    reregistration_fees: GradeFeeMapping[];
 }
 export interface UpdateInterviewFeeRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    interviewFee: number;
+    organization_id: ObjectId | undefined;
+    interview_fee: number;
 }
 export declare const GetOnboardingSettingsRequest: MessageFns<GetOnboardingSettingsRequest>;
 export declare const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentConfigurationRequest>;

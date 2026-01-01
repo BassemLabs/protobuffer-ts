@@ -8,20 +8,20 @@ export interface FamilyContact {
     email: string;
 }
 export interface FamilyInformation {
-    studentLiving: string;
-    languageSpoken: string;
-    preferredContact?: ObjectId | undefined;
-    emergencyContact: FamilyContact | undefined;
-    primaryPayer?: ObjectId | undefined;
+    student_living: string;
+    language_spoken: string;
+    preferred_contact?: ObjectId | undefined;
+    emergency_contact: FamilyContact | undefined;
+    primary_payer?: ObjectId | undefined;
     /** If true, autopay is disabled for this family (will override invoice auto pay setting) */
-    autoPayDisabled?: boolean | undefined;
+    auto_pay_disabled?: boolean | undefined;
 }
 export interface Family {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     name: string;
     guardians: ObjectId[];
-    guardiansToNotContact: ObjectId[];
+    guardians_to_not_contact: ObjectId[];
     information: FamilyInformation | undefined;
 }
 export declare const FamilyContact: MessageFns<FamilyContact>;

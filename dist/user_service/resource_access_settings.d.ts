@@ -44,12 +44,12 @@ export interface ResourceAccessSettings {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     name: string;
-    ownershipKind: OwnershipKind;
-    userType: UserType;
-    accessRules: AccessRule[];
+    ownership_kind: OwnershipKind;
+    user_type: UserType;
+    access_rules: AccessRule[];
 }
 export interface AccessRule {
-    permissionType: AccessPermissionType;
+    permission_type: AccessPermissionType;
     principal?: PrincipalType | undefined;
     wildcard?: WildcardAccess | undefined;
 }

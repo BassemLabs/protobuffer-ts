@@ -11,7 +11,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "organization_service";
 function createBaseOrganizationOwner() {
-    return { id: undefined, name: "", email: "", organization: undefined, mainAddress: "", phoneNumber: "" };
+    return { id: undefined, name: "", email: "", organization: undefined, main_address: "", phone_number: "" };
 }
 exports.OrganizationOwner = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -27,11 +27,11 @@ exports.OrganizationOwner = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(34).fork()).join();
         }
-        if (message.mainAddress !== undefined && message.mainAddress !== "") {
-            writer.uint32(42).string(message.mainAddress);
+        if (message.main_address !== undefined && message.main_address !== "") {
+            writer.uint32(42).string(message.main_address);
         }
-        if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-            writer.uint32(50).string(message.phoneNumber);
+        if (message.phone_number !== undefined && message.phone_number !== "") {
+            writer.uint32(50).string(message.phone_number);
         }
         return writer;
     },
@@ -70,13 +70,13 @@ exports.OrganizationOwner = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.mainAddress = reader.string();
+                    message.main_address = reader.string();
                     continue;
                 case 6:
                     if (tag !== 50) {
                         break;
                     }
-                    message.phoneNumber = reader.string();
+                    message.phone_number = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -92,8 +92,8 @@ exports.OrganizationOwner = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
         };
     },
     toJSON(message) {
@@ -110,11 +110,11 @@ exports.OrganizationOwner = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.mainAddress !== undefined && message.mainAddress !== "") {
-            obj.mainAddress = message.mainAddress;
+        if (message.main_address !== undefined && message.main_address !== "") {
+            obj.mainAddress = message.main_address;
         }
-        if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-            obj.phoneNumber = message.phoneNumber;
+        if (message.phone_number !== undefined && message.phone_number !== "") {
+            obj.phoneNumber = message.phone_number;
         }
         return obj;
     },
@@ -129,8 +129,8 @@ exports.OrganizationOwner = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.mainAddress = object.mainAddress ?? "";
-        message.phoneNumber = object.phoneNumber ?? "";
+        message.main_address = object.main_address ?? "";
+        message.phone_number = object.phone_number ?? "";
         return message;
     },
 };

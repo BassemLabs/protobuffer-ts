@@ -260,16 +260,16 @@ function createBaseStudent() {
     return {
         id: undefined,
         organization: undefined,
-        idNumber: "",
+        id_number: "",
         username: "",
-        emailDomain: "",
-        familyId: undefined,
-        firstName: "",
-        lastName: "",
+        email_domain: "",
+        family_id: undefined,
+        first_name: "",
+        last_name: "",
         gender: "",
-        hasWaitlistPriority: false,
-        dateOfBirth: undefined,
-        interviewDate: undefined,
+        has_waitlist_priority: false,
+        date_of_birth: undefined,
+        interview_date: undefined,
     };
 }
 exports.Student = {
@@ -280,35 +280,35 @@ exports.Student = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.idNumber !== "") {
-            writer.uint32(26).string(message.idNumber);
+        if (message.id_number !== "") {
+            writer.uint32(26).string(message.id_number);
         }
         if (message.username !== "") {
             writer.uint32(34).string(message.username);
         }
-        if (message.emailDomain !== "") {
-            writer.uint32(42).string(message.emailDomain);
+        if (message.email_domain !== "") {
+            writer.uint32(42).string(message.email_domain);
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(50).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(50).fork()).join();
         }
-        if (message.firstName !== "") {
-            writer.uint32(58).string(message.firstName);
+        if (message.first_name !== "") {
+            writer.uint32(58).string(message.first_name);
         }
-        if (message.lastName !== "") {
-            writer.uint32(66).string(message.lastName);
+        if (message.last_name !== "") {
+            writer.uint32(66).string(message.last_name);
         }
         if (message.gender !== "") {
             writer.uint32(74).string(message.gender);
         }
-        if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
-            writer.uint32(80).bool(message.hasWaitlistPriority);
+        if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+            writer.uint32(80).bool(message.has_waitlist_priority);
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(90).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(90).fork()).join();
         }
-        if (message.interviewDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(98).fork()).join();
+        if (message.interview_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(98).fork()).join();
         }
         return writer;
     },
@@ -335,7 +335,7 @@ exports.Student = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.idNumber = reader.string();
+                    message.id_number = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -347,25 +347,25 @@ exports.Student = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.emailDomain = reader.string();
+                    message.email_domain = reader.string();
                     continue;
                 case 6:
                     if (tag !== 50) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 8:
                     if (tag !== 66) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 9:
                     if (tag !== 74) {
@@ -377,19 +377,19 @@ exports.Student = {
                     if (tag !== 80) {
                         break;
                     }
-                    message.hasWaitlistPriority = reader.bool();
+                    message.has_waitlist_priority = reader.bool();
                     continue;
                 case 11:
                     if (tag !== 90) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 12:
                     if (tag !== 98) {
                         break;
                     }
-                    message.interviewDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.interview_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -403,16 +403,16 @@ exports.Student = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            idNumber: isSet(object.idNumber) ? globalThis.String(object.idNumber) : "",
+            id_number: isSet(object.idNumber) ? globalThis.String(object.idNumber) : "",
             username: isSet(object.username) ? globalThis.String(object.username) : "",
-            emailDomain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            hasWaitlistPriority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            interviewDate: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+            has_waitlist_priority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
         };
     },
     toJSON(message) {
@@ -423,35 +423,35 @@ exports.Student = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.idNumber !== "") {
-            obj.idNumber = message.idNumber;
+        if (message.id_number !== "") {
+            obj.idNumber = message.id_number;
         }
         if (message.username !== "") {
             obj.username = message.username;
         }
-        if (message.emailDomain !== "") {
-            obj.emailDomain = message.emailDomain;
+        if (message.email_domain !== "") {
+            obj.emailDomain = message.email_domain;
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
-        if (message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
         }
-        if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
-            obj.hasWaitlistPriority = message.hasWaitlistPriority;
+        if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+            obj.hasWaitlistPriority = message.has_waitlist_priority;
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
-        if (message.interviewDate !== undefined) {
-            obj.interviewDate = message.interviewDate.toISOString();
+        if (message.interview_date !== undefined) {
+            obj.interviewDate = message.interview_date.toISOString();
         }
         return obj;
     },
@@ -464,18 +464,18 @@ exports.Student = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.idNumber = object.idNumber ?? "";
+        message.id_number = object.id_number ?? "";
         message.username = object.username ?? "";
-        message.emailDomain = object.emailDomain ?? "";
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.email_domain = object.email_domain ?? "";
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
-        message.hasWaitlistPriority = object.hasWaitlistPriority ?? false;
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
-        message.interviewDate = object.interviewDate ?? undefined;
+        message.has_waitlist_priority = object.has_waitlist_priority ?? false;
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        message.interview_date = object.interview_date ?? undefined;
         return message;
     },
 };
@@ -483,14 +483,14 @@ function createBaseSchoolYearStudent() {
     return {
         id: undefined,
         status: StudentStatus.WAITLIST,
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         gender: "",
         grade: StudentGrade.PRE_K,
-        familyId: undefined,
-        hasNonPaidInvoices: false,
-        dateOfBirth: undefined,
-        interviewDate: undefined,
+        family_id: undefined,
+        has_non_paid_invoices: false,
+        date_of_birth: undefined,
+        interview_date: undefined,
     };
 }
 exports.SchoolYearStudent = {
@@ -501,11 +501,11 @@ exports.SchoolYearStudent = {
         if (message.status !== StudentStatus.WAITLIST) {
             writer.uint32(16).int32(studentStatusToNumber(message.status));
         }
-        if (message.firstName !== "") {
-            writer.uint32(26).string(message.firstName);
+        if (message.first_name !== "") {
+            writer.uint32(26).string(message.first_name);
         }
-        if (message.lastName !== "") {
-            writer.uint32(34).string(message.lastName);
+        if (message.last_name !== "") {
+            writer.uint32(34).string(message.last_name);
         }
         if (message.gender !== "") {
             writer.uint32(42).string(message.gender);
@@ -513,17 +513,17 @@ exports.SchoolYearStudent = {
         if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
             writer.uint32(48).int32(studentGradeToNumber(message.grade));
         }
-        if (message.familyId !== undefined) {
-            object_id_1.ObjectId.encode(message.familyId, writer.uint32(58).fork()).join();
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(58).fork()).join();
         }
-        if (message.hasNonPaidInvoices !== undefined && message.hasNonPaidInvoices !== false) {
-            writer.uint32(64).bool(message.hasNonPaidInvoices);
+        if (message.has_non_paid_invoices !== undefined && message.has_non_paid_invoices !== false) {
+            writer.uint32(64).bool(message.has_non_paid_invoices);
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(74).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(74).fork()).join();
         }
-        if (message.interviewDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(82).fork()).join();
+        if (message.interview_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(82).fork()).join();
         }
         return writer;
     },
@@ -550,13 +550,13 @@ exports.SchoolYearStudent = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -574,25 +574,25 @@ exports.SchoolYearStudent = {
                     if (tag !== 58) {
                         break;
                     }
-                    message.familyId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 8:
                     if (tag !== 64) {
                         break;
                     }
-                    message.hasNonPaidInvoices = reader.bool();
+                    message.has_non_paid_invoices = reader.bool();
                     continue;
                 case 9:
                     if (tag !== 74) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 10:
                     if (tag !== 82) {
                         break;
                     }
-                    message.interviewDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.interview_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -606,14 +606,14 @@ exports.SchoolYearStudent = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
             grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
-            familyId: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            hasNonPaidInvoices: isSet(object.hasNonPaidInvoices) ? globalThis.Boolean(object.hasNonPaidInvoices) : false,
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            interviewDate: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            has_non_paid_invoices: isSet(object.hasNonPaidInvoices) ? globalThis.Boolean(object.hasNonPaidInvoices) : false,
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
         };
     },
     toJSON(message) {
@@ -624,11 +624,11 @@ exports.SchoolYearStudent = {
         if (message.status !== StudentStatus.WAITLIST) {
             obj.status = studentStatusToJSON(message.status);
         }
-        if (message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
@@ -636,17 +636,17 @@ exports.SchoolYearStudent = {
         if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
             obj.grade = studentGradeToJSON(message.grade);
         }
-        if (message.familyId !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.familyId);
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
-        if (message.hasNonPaidInvoices !== undefined && message.hasNonPaidInvoices !== false) {
-            obj.hasNonPaidInvoices = message.hasNonPaidInvoices;
+        if (message.has_non_paid_invoices !== undefined && message.has_non_paid_invoices !== false) {
+            obj.hasNonPaidInvoices = message.has_non_paid_invoices;
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
-        if (message.interviewDate !== undefined) {
-            obj.interviewDate = message.interviewDate.toISOString();
+        if (message.interview_date !== undefined) {
+            obj.interviewDate = message.interview_date.toISOString();
         }
         return obj;
     },
@@ -657,48 +657,48 @@ exports.SchoolYearStudent = {
         const message = createBaseSchoolYearStudent();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.status = object.status ?? StudentStatus.WAITLIST;
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
         message.grade = object.grade ?? StudentGrade.PRE_K;
-        message.familyId = (object.familyId !== undefined && object.familyId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.familyId)
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
-        message.hasNonPaidInvoices = object.hasNonPaidInvoices ?? false;
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
-        message.interviewDate = object.interviewDate ?? undefined;
+        message.has_non_paid_invoices = object.has_non_paid_invoices ?? false;
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        message.interview_date = object.interview_date ?? undefined;
         return message;
     },
 };
 function createBaseStudentProfile() {
     return {
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         gender: "",
-        dateOfBirth: undefined,
-        interviewDate: undefined,
-        hasWaitlistPriority: false,
+        date_of_birth: undefined,
+        interview_date: undefined,
+        has_waitlist_priority: false,
     };
 }
 exports.StudentProfile = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.firstName !== "") {
-            writer.uint32(10).string(message.firstName);
+        if (message.first_name !== "") {
+            writer.uint32(10).string(message.first_name);
         }
-        if (message.lastName !== "") {
-            writer.uint32(18).string(message.lastName);
+        if (message.last_name !== "") {
+            writer.uint32(18).string(message.last_name);
         }
         if (message.gender !== "") {
             writer.uint32(26).string(message.gender);
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(34).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
         }
-        if (message.interviewDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.interviewDate), writer.uint32(42).fork()).join();
+        if (message.interview_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(42).fork()).join();
         }
-        if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
-            writer.uint32(48).bool(message.hasWaitlistPriority);
+        if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+            writer.uint32(48).bool(message.has_waitlist_priority);
         }
         return writer;
     },
@@ -713,13 +713,13 @@ exports.StudentProfile = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -731,19 +731,19 @@ exports.StudentProfile = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.interviewDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.interview_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 48) {
                         break;
                     }
-                    message.hasWaitlistPriority = reader.bool();
+                    message.has_waitlist_priority = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -755,33 +755,33 @@ exports.StudentProfile = {
     },
     fromJSON(object) {
         return {
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            interviewDate: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
-            hasWaitlistPriority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+            has_waitlist_priority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
-        if (message.interviewDate !== undefined) {
-            obj.interviewDate = message.interviewDate.toISOString();
+        if (message.interview_date !== undefined) {
+            obj.interviewDate = message.interview_date.toISOString();
         }
-        if (message.hasWaitlistPriority !== undefined && message.hasWaitlistPriority !== false) {
-            obj.hasWaitlistPriority = message.hasWaitlistPriority;
+        if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+            obj.hasWaitlistPriority = message.has_waitlist_priority;
         }
         return obj;
     },
@@ -790,12 +790,12 @@ exports.StudentProfile = {
     },
     fromPartial(object) {
         const message = createBaseStudentProfile();
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
-        message.interviewDate = object.interviewDate ?? undefined;
-        message.hasWaitlistPriority = object.hasWaitlistPriority ?? false;
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        message.interview_date = object.interview_date ?? undefined;
+        message.has_waitlist_priority = object.has_waitlist_priority ?? false;
         return message;
     },
 };
@@ -803,8 +803,8 @@ function createBaseStudentSchoolYearInformation() {
     return {
         id: undefined,
         organization: undefined,
-        studentId: undefined,
-        schoolYearId: undefined,
+        student_id: undefined,
+        school_year_id: undefined,
         status: StudentStatus.WAITLIST,
         grade: StudentGrade.PRE_K,
     };
@@ -817,11 +817,11 @@ exports.StudentSchoolYearInformation = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.studentId !== undefined) {
-            object_id_1.ObjectId.encode(message.studentId, writer.uint32(26).fork()).join();
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(26).fork()).join();
         }
-        if (message.schoolYearId !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYearId, writer.uint32(34).fork()).join();
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(34).fork()).join();
         }
         if (message.status !== StudentStatus.WAITLIST) {
             writer.uint32(40).int32(studentStatusToNumber(message.status));
@@ -854,13 +854,13 @@ exports.StudentSchoolYearInformation = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.schoolYearId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 5:
                     if (tag !== 40) {
@@ -886,8 +886,8 @@ exports.StudentSchoolYearInformation = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            schoolYearId: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
             status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
             grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
         };
@@ -900,11 +900,11 @@ exports.StudentSchoolYearInformation = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.studentId !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.schoolYearId !== undefined) {
-            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.schoolYearId);
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         if (message.status !== StudentStatus.WAITLIST) {
             obj.status = studentStatusToJSON(message.status);
@@ -923,11 +923,11 @@ exports.StudentSchoolYearInformation = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.studentId = (object.studentId !== undefined && object.studentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentId)
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYearId)
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
         message.status = object.status ?? StudentStatus.WAITLIST;
         message.grade = object.grade ?? StudentGrade.PRE_K;

@@ -10,12 +10,12 @@ exports.PhoneNumber = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "utils";
 function createBasePhoneNumber() {
-    return { countryCode: "", number: "", country: "" };
+    return { country_code: "", number: "", country: "" };
 }
 exports.PhoneNumber = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.countryCode !== "") {
-            writer.uint32(10).string(message.countryCode);
+        if (message.country_code !== "") {
+            writer.uint32(10).string(message.country_code);
         }
         if (message.number !== "") {
             writer.uint32(18).string(message.number);
@@ -36,7 +36,7 @@ exports.PhoneNumber = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.countryCode = reader.string();
+                    message.country_code = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -60,15 +60,15 @@ exports.PhoneNumber = {
     },
     fromJSON(object) {
         return {
-            countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+            country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
             number: isSet(object.number) ? globalThis.String(object.number) : "",
             country: isSet(object.country) ? globalThis.String(object.country) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.countryCode !== "") {
-            obj.countryCode = message.countryCode;
+        if (message.country_code !== "") {
+            obj.countryCode = message.country_code;
         }
         if (message.number !== "") {
             obj.number = message.number;
@@ -83,7 +83,7 @@ exports.PhoneNumber = {
     },
     fromPartial(object) {
         const message = createBasePhoneNumber();
-        message.countryCode = object.countryCode ?? "";
+        message.country_code = object.country_code ?? "";
         message.number = object.number ?? "";
         message.country = object.country ?? "";
         return message;

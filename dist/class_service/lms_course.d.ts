@@ -59,21 +59,21 @@ export interface LmsCourse {
     provider: LmsProviderType;
 }
 export interface LmsCourseWork {
-    lmsCourseWorkId: string;
+    lms_course_work_id: string;
     /** Provider course id */
-    lmsCourseId: string;
+    lms_course_id: string;
     title?: string | undefined;
     description?: string | undefined;
     link?: string | undefined;
     attachments: Attachment[];
-    creationTime?: Date | undefined;
-    dueDate?: Date | undefined;
+    creation_time?: Date | undefined;
+    due_date?: Date | undefined;
     /** Classroom: maxPoints, Canvas: points_possible */
-    maxPoints?: number | undefined;
-    workType?: LmsWorkType | undefined;
+    max_points?: number | undefined;
+    work_type?: LmsWorkType | undefined;
     provider: LmsProviderType;
     /** Store original LMS JSON */
-    rawJson?: string | undefined;
+    raw_json?: string | undefined;
 }
 export interface Attachment {
     url: string;
@@ -88,19 +88,19 @@ export interface LmsSubmission {
      *     "canvas_{assignmentId}_{studentId}"
      *   Store provider raw_json so you can re-hydrate provider-specific identifiers if needed.
      */
-    lmsSubmissionId: string;
-    lmsCourseWorkId: string;
-    lmsCourseId: string;
+    lms_submission_id: string;
+    lms_course_work_id: string;
+    lms_course_id: string;
     /** Local user id (in BassemLabs) */
-    studentId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
     /**
      * URL to view the submission in the LMS web UI.
      * - Google Classroom: maps to StudentSubmission.alternateLink.
      * - Canvas: maps to Submission.preview_url or html_url.
      */
-    submissionUrl: string;
+    submission_url: string;
     state: LmsSubmissionState;
-    submittedAt?: Date | undefined;
+    submitted_at?: Date | undefined;
     /**
      * - Google Classroom: inferred if submitted after dueDate.
      * - Canvas: late status provided.
@@ -112,18 +112,18 @@ export interface LmsSubmission {
     history: LmsHistory[];
     provider: LmsProviderType;
     /** Provider raw JSON (always keep for edge cases) */
-    rawJson?: string | undefined;
+    raw_json?: string | undefined;
 }
 export interface LmsHistory {
     /** Who made the change (provider user id) */
-    actorId: string;
+    actor_id: string;
     /** grade_change, state_change, comment, etc. */
     type: string;
-    oldValue?: string | undefined;
-    newValue?: string | undefined;
+    old_value?: string | undefined;
+    new_value?: string | undefined;
     timestamp?: Date | undefined;
     /** raw provider entry if present */
-    rawEntry?: string | undefined;
+    raw_entry?: string | undefined;
 }
 export declare const LmsCourse: MessageFns<LmsCourse>;
 export declare const LmsCourseWork: MessageFns<LmsCourseWork>;

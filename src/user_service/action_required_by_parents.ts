@@ -64,29 +64,29 @@ export function actionTypeToNumber(object: ActionType): number {
 }
 
 export interface ActionRequiredByParents {
-  actionType: ActionType;
+  action_type: ActionType;
   title: string;
-  invoiceId?: ObjectId | undefined;
-  groupId?: ObjectId | undefined;
+  invoice_id?: ObjectId | undefined;
+  group_id?: ObjectId | undefined;
 }
 
 function createBaseActionRequiredByParents(): ActionRequiredByParents {
-  return { actionType: ActionType.PAY_INVOICE, title: "", invoiceId: undefined, groupId: undefined };
+  return { action_type: ActionType.PAY_INVOICE, title: "", invoice_id: undefined, group_id: undefined };
 }
 
 export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
   encode(message: ActionRequiredByParents, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.actionType !== ActionType.PAY_INVOICE) {
-      writer.uint32(8).int32(actionTypeToNumber(message.actionType));
+    if (message.action_type !== ActionType.PAY_INVOICE) {
+      writer.uint32(8).int32(actionTypeToNumber(message.action_type));
     }
     if (message.title !== "") {
       writer.uint32(18).string(message.title);
     }
-    if (message.invoiceId !== undefined) {
-      ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+    if (message.invoice_id !== undefined) {
+      ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(34).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -103,7 +103,7 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
             break;
           }
 
-          message.actionType = actionTypeFromJSON(reader.int32());
+          message.action_type = actionTypeFromJSON(reader.int32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -117,14 +117,14 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
             break;
           }
 
-          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          message.invoice_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -137,26 +137,26 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
 
   fromJSON(object: any): ActionRequiredByParents {
     return {
-      actionType: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.PAY_INVOICE,
+      action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.PAY_INVOICE,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
-      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
     };
   },
 
   toJSON(message: ActionRequiredByParents): unknown {
     const obj: any = {};
-    if (message.actionType !== ActionType.PAY_INVOICE) {
-      obj.actionType = actionTypeToJSON(message.actionType);
+    if (message.action_type !== ActionType.PAY_INVOICE) {
+      obj.actionType = actionTypeToJSON(message.action_type);
     }
     if (message.title !== "") {
       obj.title = message.title;
     }
-    if (message.invoiceId !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    if (message.invoice_id !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
     return obj;
   },
@@ -166,13 +166,13 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActionRequiredByParents>, I>>(object: I): ActionRequiredByParents {
     const message = createBaseActionRequiredByParents();
-    message.actionType = object.actionType ?? ActionType.PAY_INVOICE;
+    message.action_type = object.action_type ?? ActionType.PAY_INVOICE;
     message.title = object.title ?? "";
-    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-      ? ObjectId.fromPartial(object.invoiceId)
+    message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+      ? ObjectId.fromPartial(object.invoice_id)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
     return message;
   },

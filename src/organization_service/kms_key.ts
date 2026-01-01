@@ -112,8 +112,8 @@ export interface KMSKey {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   status: KMSKeyStatus;
-  keyType: KMSKeyType;
-  decryptedKeyMaterial: string;
+  key_type: KMSKeyType;
+  decrypted_key_material: string;
 }
 
 function createBaseKMSKey(): KMSKey {
@@ -121,8 +121,8 @@ function createBaseKMSKey(): KMSKey {
     id: undefined,
     organization: undefined,
     status: KMSKeyStatus.Active,
-    keyType: KMSKeyType.GoogelAdminEmail,
-    decryptedKeyMaterial: "",
+    key_type: KMSKeyType.GoogelAdminEmail,
+    decrypted_key_material: "",
   };
 }
 
@@ -137,11 +137,11 @@ export const KMSKey: MessageFns<KMSKey> = {
     if (message.status !== KMSKeyStatus.Active) {
       writer.uint32(24).int32(kMSKeyStatusToNumber(message.status));
     }
-    if (message.keyType !== KMSKeyType.GoogelAdminEmail) {
-      writer.uint32(32).int32(kMSKeyTypeToNumber(message.keyType));
+    if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+      writer.uint32(32).int32(kMSKeyTypeToNumber(message.key_type));
     }
-    if (message.decryptedKeyMaterial !== "") {
-      writer.uint32(42).string(message.decryptedKeyMaterial);
+    if (message.decrypted_key_material !== "") {
+      writer.uint32(42).string(message.decrypted_key_material);
     }
     return writer;
   },
@@ -179,14 +179,14 @@ export const KMSKey: MessageFns<KMSKey> = {
             break;
           }
 
-          message.keyType = kMSKeyTypeFromJSON(reader.int32());
+          message.key_type = kMSKeyTypeFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.decryptedKeyMaterial = reader.string();
+          message.decrypted_key_material = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -202,8 +202,8 @@ export const KMSKey: MessageFns<KMSKey> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       status: isSet(object.status) ? kMSKeyStatusFromJSON(object.status) : KMSKeyStatus.Active,
-      keyType: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
-      decryptedKeyMaterial: isSet(object.decryptedKeyMaterial) ? globalThis.String(object.decryptedKeyMaterial) : "",
+      key_type: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
+      decrypted_key_material: isSet(object.decryptedKeyMaterial) ? globalThis.String(object.decryptedKeyMaterial) : "",
     };
   },
 
@@ -218,11 +218,11 @@ export const KMSKey: MessageFns<KMSKey> = {
     if (message.status !== KMSKeyStatus.Active) {
       obj.status = kMSKeyStatusToJSON(message.status);
     }
-    if (message.keyType !== KMSKeyType.GoogelAdminEmail) {
-      obj.keyType = kMSKeyTypeToJSON(message.keyType);
+    if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+      obj.keyType = kMSKeyTypeToJSON(message.key_type);
     }
-    if (message.decryptedKeyMaterial !== "") {
-      obj.decryptedKeyMaterial = message.decryptedKeyMaterial;
+    if (message.decrypted_key_material !== "") {
+      obj.decryptedKeyMaterial = message.decrypted_key_material;
     }
     return obj;
   },
@@ -237,8 +237,8 @@ export const KMSKey: MessageFns<KMSKey> = {
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.status = object.status ?? KMSKeyStatus.Active;
-    message.keyType = object.keyType ?? KMSKeyType.GoogelAdminEmail;
-    message.decryptedKeyMaterial = object.decryptedKeyMaterial ?? "";
+    message.key_type = object.key_type ?? KMSKeyType.GoogelAdminEmail;
+    message.decrypted_key_material = object.decrypted_key_material ?? "";
     return message;
   },
 };

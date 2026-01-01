@@ -24,42 +24,42 @@ export const protobufPackage = "class_service.homeroom_service";
 
 export interface GetHomeroomRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
+  homeroom_id: ObjectId | undefined;
 }
 
 export interface ListHomeroomsRequest {
   context: RequestContext | undefined;
-  perPage?: number | undefined;
+  per_page?: number | undefined;
   page?: number | undefined;
-  nameSearch?: string | undefined;
+  name_search?: string | undefined;
   semester?: ObjectId | undefined;
-  schoolYear?: ObjectId | undefined;
+  school_year?: ObjectId | undefined;
   archived?: boolean | undefined;
-  teacherId?: ObjectId | undefined;
+  teacher_id?: ObjectId | undefined;
 }
 
 export interface CreateHomeroomRequest {
   context: RequestContext | undefined;
   name: string;
-  semesterId: ObjectId | undefined;
-  teacherIds: ObjectId[];
+  semester_id: ObjectId | undefined;
+  teacher_ids: ObjectId[];
   grade: StudentGrade;
-  lmsProvider?: LmsProviderType | undefined;
+  lms_provider?: LmsProviderType | undefined;
 }
 
 export interface CloneHomeroomRequest {
   context: RequestContext | undefined;
-  homeroomToCloneId: ObjectId | undefined;
+  homeroom_to_clone_id: ObjectId | undefined;
   name: string;
-  semesterId: ObjectId | undefined;
-  teacherIds: ObjectId[];
+  semester_id: ObjectId | undefined;
+  teacher_ids: ObjectId[];
   grade: StudentGrade;
 }
 
 export interface GetHomeroomCoursesRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  includeArchived: boolean;
+  homeroom_id: ObjectId | undefined;
+  include_archived: boolean;
 }
 
 export interface GetHomeroomCoursesResponse {
@@ -68,8 +68,8 @@ export interface GetHomeroomCoursesResponse {
 
 export interface GetStudentHomeroomsRequest {
   context: RequestContext | undefined;
-  studentId: ObjectId | undefined;
-  includeArchived?: boolean | undefined;
+  student_id: ObjectId | undefined;
+  include_archived?: boolean | undefined;
 }
 
 export interface GetStudentHomeroomsResponse {
@@ -78,44 +78,44 @@ export interface GetStudentHomeroomsResponse {
 
 export interface ArchiveHomeroomRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
+  homeroom_id: ObjectId | undefined;
 }
 
 export interface UpdateHomeroomRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  semesterId: ObjectId | undefined;
+  homeroom_id: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
   name: string;
   grade: StudentGrade;
 }
 
 export interface AddTeachersRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  teacherIds: ObjectId[];
+  homeroom_id: ObjectId | undefined;
+  teacher_ids: ObjectId[];
 }
 
 export interface RemoveTeachersRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  teacherIds: ObjectId[];
+  homeroom_id: ObjectId | undefined;
+  teacher_ids: ObjectId[];
 }
 
 export interface AddStudentsRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  studentIds: ObjectId[];
+  homeroom_id: ObjectId | undefined;
+  student_ids: ObjectId[];
 }
 
 export interface RemoveStudentsRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  studentIds: ObjectId[];
+  homeroom_id: ObjectId | undefined;
+  student_ids: ObjectId[];
 }
 
 export interface GetAttendanceClassesRequest {
   context: RequestContext | undefined;
-  teacherId: ObjectId | undefined;
+  teacher_id: ObjectId | undefined;
 }
 
 export interface GetAttendanceClassesResponse {
@@ -132,25 +132,25 @@ export interface GetAllAttendanceClassesResponse {
 
 export interface GetLmsCourseWorkRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
+  homeroom_id: ObjectId | undefined;
 }
 
 export interface LmsCourseWorkResponse {
-  lmsCourseWork: LmsCourseWork[];
+  lms_course_work: LmsCourseWork[];
 }
 
 export interface GetStudentLmsCourseWorkRequest {
   context: RequestContext | undefined;
-  homeroomId: ObjectId | undefined;
-  studentId: ObjectId | undefined;
+  homeroom_id: ObjectId | undefined;
+  student_id: ObjectId | undefined;
 }
 
 export interface LmsStudentSubmissionResponse {
-  lmsStudentSubmission: LmsSubmission[];
+  lms_student_submission: LmsSubmission[];
 }
 
 function createBaseGetHomeroomRequest(): GetHomeroomRequest {
-  return { context: undefined, homeroomId: undefined };
+  return { context: undefined, homeroom_id: undefined };
 }
 
 export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
@@ -158,8 +158,8 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -183,7 +183,7 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -197,7 +197,7 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
   fromJSON(object: any): GetHomeroomRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
     };
   },
 
@@ -206,8 +206,8 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     return obj;
   },
@@ -220,8 +220,8 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     return message;
   },
@@ -230,13 +230,13 @@ export const GetHomeroomRequest: MessageFns<GetHomeroomRequest> = {
 function createBaseListHomeroomsRequest(): ListHomeroomsRequest {
   return {
     context: undefined,
-    perPage: 0,
+    per_page: 0,
     page: 0,
-    nameSearch: "",
+    name_search: "",
     semester: undefined,
-    schoolYear: undefined,
+    school_year: undefined,
     archived: false,
-    teacherId: undefined,
+    teacher_id: undefined,
   };
 }
 
@@ -245,26 +245,26 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.perPage !== undefined && message.perPage !== 0) {
-      writer.uint32(16).uint64(message.perPage);
+    if (message.per_page !== undefined && message.per_page !== 0) {
+      writer.uint32(16).uint64(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       writer.uint32(24).uint64(message.page);
     }
-    if (message.nameSearch !== undefined && message.nameSearch !== "") {
-      writer.uint32(34).string(message.nameSearch);
+    if (message.name_search !== undefined && message.name_search !== "") {
+      writer.uint32(34).string(message.name_search);
     }
     if (message.semester !== undefined) {
       ObjectId.encode(message.semester, writer.uint32(42).fork()).join();
     }
-    if (message.schoolYear !== undefined) {
-      ObjectId.encode(message.schoolYear, writer.uint32(50).fork()).join();
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(50).fork()).join();
     }
     if (message.archived !== undefined && message.archived !== false) {
       writer.uint32(56).bool(message.archived);
     }
-    if (message.teacherId !== undefined) {
-      ObjectId.encode(message.teacherId, writer.uint32(66).fork()).join();
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -288,7 +288,7 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
             break;
           }
 
-          message.perPage = longToNumber(reader.uint64());
+          message.per_page = longToNumber(reader.uint64());
           continue;
         case 3:
           if (tag !== 24) {
@@ -302,7 +302,7 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
             break;
           }
 
-          message.nameSearch = reader.string();
+          message.name_search = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
@@ -316,7 +316,7 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
             break;
           }
 
-          message.schoolYear = ObjectId.decode(reader, reader.uint32());
+          message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
         case 7:
           if (tag !== 56) {
@@ -330,7 +330,7 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
             break;
           }
 
-          message.teacherId = ObjectId.decode(reader, reader.uint32());
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -344,13 +344,13 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
   fromJSON(object: any): ListHomeroomsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      nameSearch: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+      name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
       semester: isSet(object.semester) ? ObjectId.fromJSON(object.semester) : undefined,
-      schoolYear: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-      teacherId: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -359,26 +359,26 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.perPage !== undefined && message.perPage !== 0) {
-      obj.perPage = Math.round(message.perPage);
+    if (message.per_page !== undefined && message.per_page !== 0) {
+      obj.perPage = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
-    if (message.nameSearch !== undefined && message.nameSearch !== "") {
-      obj.nameSearch = message.nameSearch;
+    if (message.name_search !== undefined && message.name_search !== "") {
+      obj.nameSearch = message.name_search;
     }
     if (message.semester !== undefined) {
       obj.semester = ObjectId.toJSON(message.semester);
     }
-    if (message.schoolYear !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.schoolYear);
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.archived !== undefined && message.archived !== false) {
       obj.archived = message.archived;
     }
-    if (message.teacherId !== undefined) {
-      obj.teacherId = ObjectId.toJSON(message.teacherId);
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -391,18 +391,18 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.perPage = object.perPage ?? 0;
+    message.per_page = object.per_page ?? 0;
     message.page = object.page ?? 0;
-    message.nameSearch = object.nameSearch ?? "";
+    message.name_search = object.name_search ?? "";
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? ObjectId.fromPartial(object.semester)
       : undefined;
-    message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-      ? ObjectId.fromPartial(object.schoolYear)
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.archived = object.archived ?? false;
-    message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-      ? ObjectId.fromPartial(object.teacherId)
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
     return message;
   },
@@ -412,10 +412,10 @@ function createBaseCreateHomeroomRequest(): CreateHomeroomRequest {
   return {
     context: undefined,
     name: "",
-    semesterId: undefined,
-    teacherIds: [],
+    semester_id: undefined,
+    teacher_ids: [],
     grade: StudentGrade.PRE_K,
-    lmsProvider: LmsProviderType.GOOGLE_CLASSROOM,
+    lms_provider: LmsProviderType.GOOGLE_CLASSROOM,
   };
 }
 
@@ -427,17 +427,17 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(26).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
     }
-    for (const v of message.teacherIds) {
+    for (const v of message.teacher_ids) {
       ObjectId.encode(v!, writer.uint32(34).fork()).join();
     }
     if (message.grade !== StudentGrade.PRE_K) {
       writer.uint32(40).int32(studentGradeToNumber(message.grade));
     }
-    if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
-      writer.uint32(48).int32(lmsProviderTypeToNumber(message.lmsProvider));
+    if (message.lms_provider !== undefined && message.lms_provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+      writer.uint32(48).int32(lmsProviderTypeToNumber(message.lms_provider));
     }
     return writer;
   },
@@ -468,14 +468,14 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.teacher_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 40) {
@@ -489,7 +489,7 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
             break;
           }
 
-          message.lmsProvider = lmsProviderTypeFromJSON(reader.int32());
+          message.lms_provider = lmsProviderTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -504,12 +504,12 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
-      teacherIds: globalThis.Array.isArray(object?.teacherIds)
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
-      lmsProvider: isSet(object.lmsProvider)
+      lms_provider: isSet(object.lmsProvider)
         ? lmsProviderTypeFromJSON(object.lmsProvider)
         : LmsProviderType.GOOGLE_CLASSROOM,
     };
@@ -523,17 +523,17 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
-    if (message.teacherIds?.length) {
-      obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
+    if (message.teacher_ids?.length) {
+      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
     }
-    if (message.lmsProvider !== undefined && message.lmsProvider !== LmsProviderType.GOOGLE_CLASSROOM) {
-      obj.lmsProvider = lmsProviderTypeToJSON(message.lmsProvider);
+    if (message.lms_provider !== undefined && message.lms_provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+      obj.lmsProvider = lmsProviderTypeToJSON(message.lms_provider);
     }
     return obj;
   },
@@ -547,12 +547,12 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? "";
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
-    message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.grade = object.grade ?? StudentGrade.PRE_K;
-    message.lmsProvider = object.lmsProvider ?? LmsProviderType.GOOGLE_CLASSROOM;
+    message.lms_provider = object.lms_provider ?? LmsProviderType.GOOGLE_CLASSROOM;
     return message;
   },
 };
@@ -560,10 +560,10 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
 function createBaseCloneHomeroomRequest(): CloneHomeroomRequest {
   return {
     context: undefined,
-    homeroomToCloneId: undefined,
+    homeroom_to_clone_id: undefined,
     name: "",
-    semesterId: undefined,
-    teacherIds: [],
+    semester_id: undefined,
+    teacher_ids: [],
     grade: StudentGrade.PRE_K,
   };
 }
@@ -573,16 +573,16 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomToCloneId !== undefined) {
-      ObjectId.encode(message.homeroomToCloneId, writer.uint32(18).fork()).join();
+    if (message.homeroom_to_clone_id !== undefined) {
+      ObjectId.encode(message.homeroom_to_clone_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(34).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
     }
-    for (const v of message.teacherIds) {
+    for (const v of message.teacher_ids) {
       ObjectId.encode(v!, writer.uint32(42).fork()).join();
     }
     if (message.grade !== StudentGrade.PRE_K) {
@@ -610,7 +610,7 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
             break;
           }
 
-          message.homeroomToCloneId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_to_clone_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -624,14 +624,14 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.teacher_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 48) {
@@ -652,10 +652,10 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
   fromJSON(object: any): CloneHomeroomRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomToCloneId: isSet(object.homeroomToCloneId) ? ObjectId.fromJSON(object.homeroomToCloneId) : undefined,
+      homeroom_to_clone_id: isSet(object.homeroomToCloneId) ? ObjectId.fromJSON(object.homeroomToCloneId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
-      teacherIds: globalThis.Array.isArray(object?.teacherIds)
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
@@ -667,17 +667,17 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomToCloneId !== undefined) {
-      obj.homeroomToCloneId = ObjectId.toJSON(message.homeroomToCloneId);
+    if (message.homeroom_to_clone_id !== undefined) {
+      obj.homeroomToCloneId = ObjectId.toJSON(message.homeroom_to_clone_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
-    if (message.teacherIds?.length) {
-      obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
+    if (message.teacher_ids?.length) {
+      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
@@ -693,21 +693,21 @@ export const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomToCloneId = (object.homeroomToCloneId !== undefined && object.homeroomToCloneId !== null)
-      ? ObjectId.fromPartial(object.homeroomToCloneId)
+    message.homeroom_to_clone_id = (object.homeroom_to_clone_id !== undefined && object.homeroom_to_clone_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_to_clone_id)
       : undefined;
     message.name = object.name ?? "";
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
-    message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.grade = object.grade ?? StudentGrade.PRE_K;
     return message;
   },
 };
 
 function createBaseGetHomeroomCoursesRequest(): GetHomeroomCoursesRequest {
-  return { context: undefined, homeroomId: undefined, includeArchived: false };
+  return { context: undefined, homeroom_id: undefined, include_archived: false };
 }
 
 export const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest> = {
@@ -715,11 +715,11 @@ export const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    if (message.includeArchived !== false) {
-      writer.uint32(24).bool(message.includeArchived);
+    if (message.include_archived !== false) {
+      writer.uint32(24).bool(message.include_archived);
     }
     return writer;
   },
@@ -743,14 +743,14 @@ export const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest> = 
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.includeArchived = reader.bool();
+          message.include_archived = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -764,8 +764,8 @@ export const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest> = 
   fromJSON(object: any): GetHomeroomCoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
     };
   },
 
@@ -774,11 +774,11 @@ export const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.includeArchived !== false) {
-      obj.includeArchived = message.includeArchived;
+    if (message.include_archived !== false) {
+      obj.includeArchived = message.include_archived;
     }
     return obj;
   },
@@ -791,10 +791,10 @@ export const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.includeArchived = object.includeArchived ?? false;
+    message.include_archived = object.include_archived ?? false;
     return message;
   },
 };
@@ -859,7 +859,7 @@ export const GetHomeroomCoursesResponse: MessageFns<GetHomeroomCoursesResponse> 
 };
 
 function createBaseGetStudentHomeroomsRequest(): GetStudentHomeroomsRequest {
-  return { context: undefined, studentId: undefined, includeArchived: false };
+  return { context: undefined, student_id: undefined, include_archived: false };
 }
 
 export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> = {
@@ -867,11 +867,11 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      writer.uint32(24).bool(message.includeArchived);
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      writer.uint32(24).bool(message.include_archived);
     }
     return writer;
   },
@@ -895,14 +895,14 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.includeArchived = reader.bool();
+          message.include_archived = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -916,8 +916,8 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
   fromJSON(object: any): GetStudentHomeroomsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
     };
   },
 
@@ -926,11 +926,11 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      obj.includeArchived = message.includeArchived;
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      obj.includeArchived = message.include_archived;
     }
     return obj;
   },
@@ -943,10 +943,10 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.includeArchived = object.includeArchived ?? false;
+    message.include_archived = object.include_archived ?? false;
     return message;
   },
 };
@@ -1013,7 +1013,7 @@ export const GetStudentHomeroomsResponse: MessageFns<GetStudentHomeroomsResponse
 };
 
 function createBaseArchiveHomeroomRequest(): ArchiveHomeroomRequest {
-  return { context: undefined, homeroomId: undefined };
+  return { context: undefined, homeroom_id: undefined };
 }
 
 export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
@@ -1021,8 +1021,8 @@ export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1046,7 +1046,7 @@ export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1060,7 +1060,7 @@ export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
   fromJSON(object: any): ArchiveHomeroomRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
     };
   },
 
@@ -1069,8 +1069,8 @@ export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     return obj;
   },
@@ -1083,15 +1083,15 @@ export const ArchiveHomeroomRequest: MessageFns<ArchiveHomeroomRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseUpdateHomeroomRequest(): UpdateHomeroomRequest {
-  return { context: undefined, homeroomId: undefined, semesterId: undefined, name: "", grade: StudentGrade.PRE_K };
+  return { context: undefined, homeroom_id: undefined, semester_id: undefined, name: "", grade: StudentGrade.PRE_K };
 }
 
 export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
@@ -1099,11 +1099,11 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    if (message.semesterId !== undefined) {
-      ObjectId.encode(message.semesterId, writer.uint32(26).fork()).join();
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(34).string(message.name);
@@ -1133,14 +1133,14 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.semesterId = ObjectId.decode(reader, reader.uint32());
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -1168,8 +1168,8 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
   fromJSON(object: any): UpdateHomeroomRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      semesterId: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
@@ -1180,11 +1180,11 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.semesterId !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semesterId);
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1203,11 +1203,11 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.semesterId = (object.semesterId !== undefined && object.semesterId !== null)
-      ? ObjectId.fromPartial(object.semesterId)
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
       : undefined;
     message.name = object.name ?? "";
     message.grade = object.grade ?? StudentGrade.PRE_K;
@@ -1216,7 +1216,7 @@ export const UpdateHomeroomRequest: MessageFns<UpdateHomeroomRequest> = {
 };
 
 function createBaseAddTeachersRequest(): AddTeachersRequest {
-  return { context: undefined, homeroomId: undefined, teacherIds: [] };
+  return { context: undefined, homeroom_id: undefined, teacher_ids: [] };
 }
 
 export const AddTeachersRequest: MessageFns<AddTeachersRequest> = {
@@ -1224,10 +1224,10 @@ export const AddTeachersRequest: MessageFns<AddTeachersRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    for (const v of message.teacherIds) {
+    for (const v of message.teacher_ids) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1252,14 +1252,14 @@ export const AddTeachersRequest: MessageFns<AddTeachersRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.teacher_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1273,8 +1273,8 @@ export const AddTeachersRequest: MessageFns<AddTeachersRequest> = {
   fromJSON(object: any): AddTeachersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      teacherIds: globalThis.Array.isArray(object?.teacherIds)
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -1285,11 +1285,11 @@ export const AddTeachersRequest: MessageFns<AddTeachersRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.teacherIds?.length) {
-      obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
+    if (message.teacher_ids?.length) {
+      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1302,16 +1302,16 @@ export const AddTeachersRequest: MessageFns<AddTeachersRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseRemoveTeachersRequest(): RemoveTeachersRequest {
-  return { context: undefined, homeroomId: undefined, teacherIds: [] };
+  return { context: undefined, homeroom_id: undefined, teacher_ids: [] };
 }
 
 export const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest> = {
@@ -1319,10 +1319,10 @@ export const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    for (const v of message.teacherIds) {
+    for (const v of message.teacher_ids) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1347,14 +1347,14 @@ export const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.teacherIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.teacher_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1368,8 +1368,8 @@ export const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest> = {
   fromJSON(object: any): RemoveTeachersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      teacherIds: globalThis.Array.isArray(object?.teacherIds)
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -1380,11 +1380,11 @@ export const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.teacherIds?.length) {
-      obj.teacherIds = message.teacherIds.map((e) => ObjectId.toJSON(e));
+    if (message.teacher_ids?.length) {
+      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1397,16 +1397,16 @@ export const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.teacherIds = object.teacherIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseAddStudentsRequest(): AddStudentsRequest {
-  return { context: undefined, homeroomId: undefined, studentIds: [] };
+  return { context: undefined, homeroom_id: undefined, student_ids: [] };
 }
 
 export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
@@ -1414,10 +1414,10 @@ export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    for (const v of message.studentIds) {
+    for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1442,14 +1442,14 @@ export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1463,8 +1463,8 @@ export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
   fromJSON(object: any): AddStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      studentIds: globalThis.Array.isArray(object?.studentIds)
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -1475,11 +1475,11 @@ export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.studentIds?.length) {
-      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1492,16 +1492,16 @@ export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseRemoveStudentsRequest(): RemoveStudentsRequest {
-  return { context: undefined, homeroomId: undefined, studentIds: [] };
+  return { context: undefined, homeroom_id: undefined, student_ids: [] };
 }
 
 export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
@@ -1509,10 +1509,10 @@ export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    for (const v of message.studentIds) {
+    for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1537,14 +1537,14 @@ export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1558,8 +1558,8 @@ export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
   fromJSON(object: any): RemoveStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      studentIds: globalThis.Array.isArray(object?.studentIds)
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -1570,11 +1570,11 @@ export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.studentIds?.length) {
-      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1587,16 +1587,16 @@ export const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetAttendanceClassesRequest(): GetAttendanceClassesRequest {
-  return { context: undefined, teacherId: undefined };
+  return { context: undefined, teacher_id: undefined };
 }
 
 export const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest> = {
@@ -1604,8 +1604,8 @@ export const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.teacherId !== undefined) {
-      ObjectId.encode(message.teacherId, writer.uint32(18).fork()).join();
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1629,7 +1629,7 @@ export const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest
             break;
           }
 
-          message.teacherId = ObjectId.decode(reader, reader.uint32());
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1643,7 +1643,7 @@ export const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest
   fromJSON(object: any): GetAttendanceClassesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacherId: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -1652,8 +1652,8 @@ export const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.teacherId !== undefined) {
-      obj.teacherId = ObjectId.toJSON(message.teacherId);
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -1666,8 +1666,8 @@ export const GetAttendanceClassesRequest: MessageFns<GetAttendanceClassesRequest
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.teacherId = (object.teacherId !== undefined && object.teacherId !== null)
-      ? ObjectId.fromPartial(object.teacherId)
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
     return message;
   },
@@ -1859,7 +1859,7 @@ export const GetAllAttendanceClassesResponse: MessageFns<GetAllAttendanceClasses
 };
 
 function createBaseGetLmsCourseWorkRequest(): GetLmsCourseWorkRequest {
-  return { context: undefined, homeroomId: undefined };
+  return { context: undefined, homeroom_id: undefined };
 }
 
 export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
@@ -1867,8 +1867,8 @@ export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1892,7 +1892,7 @@ export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1906,7 +1906,7 @@ export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
   fromJSON(object: any): GetLmsCourseWorkRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
     };
   },
 
@@ -1915,8 +1915,8 @@ export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     return obj;
   },
@@ -1929,20 +1929,20 @@ export const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseLmsCourseWorkResponse(): LmsCourseWorkResponse {
-  return { lmsCourseWork: [] };
+  return { lms_course_work: [] };
 }
 
 export const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse> = {
   encode(message: LmsCourseWorkResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.lmsCourseWork) {
+    for (const v of message.lms_course_work) {
       LmsCourseWork.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -1960,7 +1960,7 @@ export const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse> = {
             break;
           }
 
-          message.lmsCourseWork.push(LmsCourseWork.decode(reader, reader.uint32()));
+          message.lms_course_work.push(LmsCourseWork.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1973,7 +1973,7 @@ export const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse> = {
 
   fromJSON(object: any): LmsCourseWorkResponse {
     return {
-      lmsCourseWork: globalThis.Array.isArray(object?.lmsCourseWork)
+      lms_course_work: globalThis.Array.isArray(object?.lmsCourseWork)
         ? object.lmsCourseWork.map((e: any) => LmsCourseWork.fromJSON(e))
         : [],
     };
@@ -1981,8 +1981,8 @@ export const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse> = {
 
   toJSON(message: LmsCourseWorkResponse): unknown {
     const obj: any = {};
-    if (message.lmsCourseWork?.length) {
-      obj.lmsCourseWork = message.lmsCourseWork.map((e) => LmsCourseWork.toJSON(e));
+    if (message.lms_course_work?.length) {
+      obj.lmsCourseWork = message.lms_course_work.map((e) => LmsCourseWork.toJSON(e));
     }
     return obj;
   },
@@ -1992,13 +1992,13 @@ export const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<LmsCourseWorkResponse>, I>>(object: I): LmsCourseWorkResponse {
     const message = createBaseLmsCourseWorkResponse();
-    message.lmsCourseWork = object.lmsCourseWork?.map((e) => LmsCourseWork.fromPartial(e)) || [];
+    message.lms_course_work = object.lms_course_work?.map((e) => LmsCourseWork.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetStudentLmsCourseWorkRequest(): GetStudentLmsCourseWorkRequest {
-  return { context: undefined, homeroomId: undefined, studentId: undefined };
+  return { context: undefined, homeroom_id: undefined, student_id: undefined };
 }
 
 export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkRequest> = {
@@ -2006,11 +2006,11 @@ export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.homeroomId !== undefined) {
-      ObjectId.encode(message.homeroomId, writer.uint32(18).fork()).join();
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(26).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -2034,14 +2034,14 @@ export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkR
             break;
           }
 
-          message.homeroomId = ObjectId.decode(reader, reader.uint32());
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2055,8 +2055,8 @@ export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkR
   fromJSON(object: any): GetStudentLmsCourseWorkRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      homeroomId: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -2065,11 +2065,11 @@ export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.homeroomId !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroomId);
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -2084,23 +2084,23 @@ export const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.homeroomId = (object.homeroomId !== undefined && object.homeroomId !== null)
-      ? ObjectId.fromPartial(object.homeroomId)
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseLmsStudentSubmissionResponse(): LmsStudentSubmissionResponse {
-  return { lmsStudentSubmission: [] };
+  return { lms_student_submission: [] };
 }
 
 export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse> = {
   encode(message: LmsStudentSubmissionResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.lmsStudentSubmission) {
+    for (const v of message.lms_student_submission) {
       LmsSubmission.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -2118,7 +2118,7 @@ export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionRespon
             break;
           }
 
-          message.lmsStudentSubmission.push(LmsSubmission.decode(reader, reader.uint32()));
+          message.lms_student_submission.push(LmsSubmission.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2131,7 +2131,7 @@ export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionRespon
 
   fromJSON(object: any): LmsStudentSubmissionResponse {
     return {
-      lmsStudentSubmission: globalThis.Array.isArray(object?.lmsStudentSubmission)
+      lms_student_submission: globalThis.Array.isArray(object?.lmsStudentSubmission)
         ? object.lmsStudentSubmission.map((e: any) => LmsSubmission.fromJSON(e))
         : [],
     };
@@ -2139,8 +2139,8 @@ export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionRespon
 
   toJSON(message: LmsStudentSubmissionResponse): unknown {
     const obj: any = {};
-    if (message.lmsStudentSubmission?.length) {
-      obj.lmsStudentSubmission = message.lmsStudentSubmission.map((e) => LmsSubmission.toJSON(e));
+    if (message.lms_student_submission?.length) {
+      obj.lmsStudentSubmission = message.lms_student_submission.map((e) => LmsSubmission.toJSON(e));
     }
     return obj;
   },
@@ -2150,7 +2150,7 @@ export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionRespon
   },
   fromPartial<I extends Exact<DeepPartial<LmsStudentSubmissionResponse>, I>>(object: I): LmsStudentSubmissionResponse {
     const message = createBaseLmsStudentSubmissionResponse();
-    message.lmsStudentSubmission = object.lmsStudentSubmission?.map((e) => LmsSubmission.fromPartial(e)) || [];
+    message.lms_student_submission = object.lms_student_submission?.map((e) => LmsSubmission.fromPartial(e)) || [];
     return message;
   },
 };

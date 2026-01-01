@@ -127,7 +127,7 @@ exports.DiscountApplication = {
     },
 };
 function createBaseAdditionalFeeApplication() {
-    return { id: undefined, organization: undefined, additionalFee: undefined, student: undefined, family: undefined };
+    return { id: undefined, organization: undefined, additional_fee: undefined, student: undefined, family: undefined };
 }
 exports.AdditionalFeeApplication = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -137,8 +137,8 @@ exports.AdditionalFeeApplication = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.additionalFee !== undefined) {
-            object_id_1.ObjectId.encode(message.additionalFee, writer.uint32(26).fork()).join();
+        if (message.additional_fee !== undefined) {
+            object_id_1.ObjectId.encode(message.additional_fee, writer.uint32(26).fork()).join();
         }
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(34).fork()).join();
@@ -171,7 +171,7 @@ exports.AdditionalFeeApplication = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.additionalFee = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.additional_fee = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -197,7 +197,7 @@ exports.AdditionalFeeApplication = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            additionalFee: isSet(object.additionalFee) ? object_id_1.ObjectId.fromJSON(object.additionalFee) : undefined,
+            additional_fee: isSet(object.additionalFee) ? object_id_1.ObjectId.fromJSON(object.additionalFee) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
         };
@@ -210,8 +210,8 @@ exports.AdditionalFeeApplication = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.additionalFee !== undefined) {
-            obj.additionalFee = object_id_1.ObjectId.toJSON(message.additionalFee);
+        if (message.additional_fee !== undefined) {
+            obj.additionalFee = object_id_1.ObjectId.toJSON(message.additional_fee);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
@@ -230,8 +230,8 @@ exports.AdditionalFeeApplication = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.additionalFee = (object.additionalFee !== undefined && object.additionalFee !== null)
-            ? object_id_1.ObjectId.fromPartial(object.additionalFee)
+        message.additional_fee = (object.additional_fee !== undefined && object.additional_fee !== null)
+            ? object_id_1.ObjectId.fromPartial(object.additional_fee)
             : undefined;
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)

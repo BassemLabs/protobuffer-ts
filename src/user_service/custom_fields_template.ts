@@ -26,40 +26,40 @@ export const protobufPackage = "user_service";
 
 /** Template field definition (field within a template group) */
 export interface TemplateFieldDefinition {
-  fieldId: ObjectId | undefined;
-  fieldName: string;
-  fieldType: CustomFieldType;
-  fieldIsRequired: boolean;
-  fieldDescription: string;
-  fieldRegexPattern?: string | undefined;
-  fieldOptions: string[];
+  field_id: ObjectId | undefined;
+  field_name: string;
+  field_type: CustomFieldType;
+  field_is_required: boolean;
+  field_description: string;
+  field_regex_pattern?: string | undefined;
+  field_options: string[];
 }
 
 /** Template group definition (group within a template) */
 export interface TemplateGroupDefinition {
-  groupId: ObjectId | undefined;
-  groupName: string;
-  groupUserType: UserType;
-  groupProfileSection: ProfileSection;
-  groupHints: string[];
-  groupFieldDefinitions: TemplateFieldDefinition[];
-  groupVisibleToParentsForStatuses: StudentStatus[];
-  groupVisibleToTeachersForStatuses: StudentStatus[];
+  group_id: ObjectId | undefined;
+  group_name: string;
+  group_user_type: UserType;
+  group_profile_section: ProfileSection;
+  group_hints: string[];
+  group_field_definitions: TemplateFieldDefinition[];
+  group_visible_to_parents_for_statuses: StudentStatus[];
+  group_visible_to_teachers_for_statuses: StudentStatus[];
 }
 
 /** Custom fields template (global template not tied to organization) */
 export interface CustomFieldsTemplate {
-  templateId: ObjectId | undefined;
-  templateName: string;
-  templateDescription: string;
-  templateIsActive: boolean;
-  templateGroups: TemplateGroupDefinition[];
+  template_id: ObjectId | undefined;
+  template_name: string;
+  template_description: string;
+  template_is_active: boolean;
+  template_groups: TemplateGroupDefinition[];
 }
 
 /** Organization used templates (tracks which templates an organization uses) */
 export interface OrganizationUsedTemplates {
   id: ObjectId | undefined;
-  organizationId:
+  organization_id:
     | ObjectId
     | undefined;
   /** Template IDs */
@@ -68,37 +68,37 @@ export interface OrganizationUsedTemplates {
 
 function createBaseTemplateFieldDefinition(): TemplateFieldDefinition {
   return {
-    fieldId: undefined,
-    fieldName: "",
-    fieldType: CustomFieldType.STRING,
-    fieldIsRequired: false,
-    fieldDescription: "",
-    fieldRegexPattern: "",
-    fieldOptions: [],
+    field_id: undefined,
+    field_name: "",
+    field_type: CustomFieldType.STRING,
+    field_is_required: false,
+    field_description: "",
+    field_regex_pattern: "",
+    field_options: [],
   };
 }
 
 export const TemplateFieldDefinition: MessageFns<TemplateFieldDefinition> = {
   encode(message: TemplateFieldDefinition, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.fieldId !== undefined) {
-      ObjectId.encode(message.fieldId, writer.uint32(10).fork()).join();
+    if (message.field_id !== undefined) {
+      ObjectId.encode(message.field_id, writer.uint32(10).fork()).join();
     }
-    if (message.fieldName !== "") {
-      writer.uint32(18).string(message.fieldName);
+    if (message.field_name !== "") {
+      writer.uint32(18).string(message.field_name);
     }
-    if (message.fieldType !== CustomFieldType.STRING) {
-      writer.uint32(24).int32(customFieldTypeToNumber(message.fieldType));
+    if (message.field_type !== CustomFieldType.STRING) {
+      writer.uint32(24).int32(customFieldTypeToNumber(message.field_type));
     }
-    if (message.fieldIsRequired !== false) {
-      writer.uint32(32).bool(message.fieldIsRequired);
+    if (message.field_is_required !== false) {
+      writer.uint32(32).bool(message.field_is_required);
     }
-    if (message.fieldDescription !== "") {
-      writer.uint32(42).string(message.fieldDescription);
+    if (message.field_description !== "") {
+      writer.uint32(42).string(message.field_description);
     }
-    if (message.fieldRegexPattern !== undefined && message.fieldRegexPattern !== "") {
-      writer.uint32(50).string(message.fieldRegexPattern);
+    if (message.field_regex_pattern !== undefined && message.field_regex_pattern !== "") {
+      writer.uint32(50).string(message.field_regex_pattern);
     }
-    for (const v of message.fieldOptions) {
+    for (const v of message.field_options) {
       writer.uint32(58).string(v!);
     }
     return writer;
@@ -116,49 +116,49 @@ export const TemplateFieldDefinition: MessageFns<TemplateFieldDefinition> = {
             break;
           }
 
-          message.fieldId = ObjectId.decode(reader, reader.uint32());
+          message.field_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.fieldName = reader.string();
+          message.field_name = reader.string();
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.fieldType = customFieldTypeFromJSON(reader.int32());
+          message.field_type = customFieldTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.fieldIsRequired = reader.bool();
+          message.field_is_required = reader.bool();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.fieldDescription = reader.string();
+          message.field_description = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.fieldRegexPattern = reader.string();
+          message.field_regex_pattern = reader.string();
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.fieldOptions.push(reader.string());
+          message.field_options.push(reader.string());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -171,13 +171,13 @@ export const TemplateFieldDefinition: MessageFns<TemplateFieldDefinition> = {
 
   fromJSON(object: any): TemplateFieldDefinition {
     return {
-      fieldId: isSet(object.fieldId) ? ObjectId.fromJSON(object.fieldId) : undefined,
-      fieldName: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
-      fieldType: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
-      fieldIsRequired: isSet(object.fieldIsRequired) ? globalThis.Boolean(object.fieldIsRequired) : false,
-      fieldDescription: isSet(object.fieldDescription) ? globalThis.String(object.fieldDescription) : "",
-      fieldRegexPattern: isSet(object.fieldRegexPattern) ? globalThis.String(object.fieldRegexPattern) : "",
-      fieldOptions: globalThis.Array.isArray(object?.fieldOptions)
+      field_id: isSet(object.fieldId) ? ObjectId.fromJSON(object.fieldId) : undefined,
+      field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
+      field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
+      field_is_required: isSet(object.fieldIsRequired) ? globalThis.Boolean(object.fieldIsRequired) : false,
+      field_description: isSet(object.fieldDescription) ? globalThis.String(object.fieldDescription) : "",
+      field_regex_pattern: isSet(object.fieldRegexPattern) ? globalThis.String(object.fieldRegexPattern) : "",
+      field_options: globalThis.Array.isArray(object?.fieldOptions)
         ? object.fieldOptions.map((e: any) => globalThis.String(e))
         : [],
     };
@@ -185,26 +185,26 @@ export const TemplateFieldDefinition: MessageFns<TemplateFieldDefinition> = {
 
   toJSON(message: TemplateFieldDefinition): unknown {
     const obj: any = {};
-    if (message.fieldId !== undefined) {
-      obj.fieldId = ObjectId.toJSON(message.fieldId);
+    if (message.field_id !== undefined) {
+      obj.fieldId = ObjectId.toJSON(message.field_id);
     }
-    if (message.fieldName !== "") {
-      obj.fieldName = message.fieldName;
+    if (message.field_name !== "") {
+      obj.fieldName = message.field_name;
     }
-    if (message.fieldType !== CustomFieldType.STRING) {
-      obj.fieldType = customFieldTypeToJSON(message.fieldType);
+    if (message.field_type !== CustomFieldType.STRING) {
+      obj.fieldType = customFieldTypeToJSON(message.field_type);
     }
-    if (message.fieldIsRequired !== false) {
-      obj.fieldIsRequired = message.fieldIsRequired;
+    if (message.field_is_required !== false) {
+      obj.fieldIsRequired = message.field_is_required;
     }
-    if (message.fieldDescription !== "") {
-      obj.fieldDescription = message.fieldDescription;
+    if (message.field_description !== "") {
+      obj.fieldDescription = message.field_description;
     }
-    if (message.fieldRegexPattern !== undefined && message.fieldRegexPattern !== "") {
-      obj.fieldRegexPattern = message.fieldRegexPattern;
+    if (message.field_regex_pattern !== undefined && message.field_regex_pattern !== "") {
+      obj.fieldRegexPattern = message.field_regex_pattern;
     }
-    if (message.fieldOptions?.length) {
-      obj.fieldOptions = message.fieldOptions;
+    if (message.field_options?.length) {
+      obj.fieldOptions = message.field_options;
     }
     return obj;
   },
@@ -214,59 +214,59 @@ export const TemplateFieldDefinition: MessageFns<TemplateFieldDefinition> = {
   },
   fromPartial<I extends Exact<DeepPartial<TemplateFieldDefinition>, I>>(object: I): TemplateFieldDefinition {
     const message = createBaseTemplateFieldDefinition();
-    message.fieldId = (object.fieldId !== undefined && object.fieldId !== null)
-      ? ObjectId.fromPartial(object.fieldId)
+    message.field_id = (object.field_id !== undefined && object.field_id !== null)
+      ? ObjectId.fromPartial(object.field_id)
       : undefined;
-    message.fieldName = object.fieldName ?? "";
-    message.fieldType = object.fieldType ?? CustomFieldType.STRING;
-    message.fieldIsRequired = object.fieldIsRequired ?? false;
-    message.fieldDescription = object.fieldDescription ?? "";
-    message.fieldRegexPattern = object.fieldRegexPattern ?? "";
-    message.fieldOptions = object.fieldOptions?.map((e) => e) || [];
+    message.field_name = object.field_name ?? "";
+    message.field_type = object.field_type ?? CustomFieldType.STRING;
+    message.field_is_required = object.field_is_required ?? false;
+    message.field_description = object.field_description ?? "";
+    message.field_regex_pattern = object.field_regex_pattern ?? "";
+    message.field_options = object.field_options?.map((e) => e) || [];
     return message;
   },
 };
 
 function createBaseTemplateGroupDefinition(): TemplateGroupDefinition {
   return {
-    groupId: undefined,
-    groupName: "",
-    groupUserType: UserType.NONE,
-    groupProfileSection: ProfileSection.OVERVIEW,
-    groupHints: [],
-    groupFieldDefinitions: [],
-    groupVisibleToParentsForStatuses: [],
-    groupVisibleToTeachersForStatuses: [],
+    group_id: undefined,
+    group_name: "",
+    group_user_type: UserType.NONE,
+    group_profile_section: ProfileSection.OVERVIEW,
+    group_hints: [],
+    group_field_definitions: [],
+    group_visible_to_parents_for_statuses: [],
+    group_visible_to_teachers_for_statuses: [],
   };
 }
 
 export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
   encode(message: TemplateGroupDefinition, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(10).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(10).fork()).join();
     }
-    if (message.groupName !== "") {
-      writer.uint32(18).string(message.groupName);
+    if (message.group_name !== "") {
+      writer.uint32(18).string(message.group_name);
     }
-    if (message.groupUserType !== UserType.NONE) {
-      writer.uint32(24).int32(userTypeToNumber(message.groupUserType));
+    if (message.group_user_type !== UserType.NONE) {
+      writer.uint32(24).int32(userTypeToNumber(message.group_user_type));
     }
-    if (message.groupProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(32).int32(profileSectionToNumber(message.groupProfileSection));
+    if (message.group_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(32).int32(profileSectionToNumber(message.group_profile_section));
     }
-    for (const v of message.groupHints) {
+    for (const v of message.group_hints) {
       writer.uint32(42).string(v!);
     }
-    for (const v of message.groupFieldDefinitions) {
+    for (const v of message.group_field_definitions) {
       TemplateFieldDefinition.encode(v!, writer.uint32(50).fork()).join();
     }
     writer.uint32(58).fork();
-    for (const v of message.groupVisibleToParentsForStatuses) {
+    for (const v of message.group_visible_to_parents_for_statuses) {
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
     writer.uint32(66).fork();
-    for (const v of message.groupVisibleToTeachersForStatuses) {
+    for (const v of message.group_visible_to_teachers_for_statuses) {
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
@@ -285,46 +285,46 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.groupName = reader.string();
+          message.group_name = reader.string();
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.groupUserType = userTypeFromJSON(reader.int32());
+          message.group_user_type = userTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.groupProfileSection = profileSectionFromJSON(reader.int32());
+          message.group_profile_section = profileSectionFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.groupHints.push(reader.string());
+          message.group_hints.push(reader.string());
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.groupFieldDefinitions.push(TemplateFieldDefinition.decode(reader, reader.uint32()));
+          message.group_field_definitions.push(TemplateFieldDefinition.decode(reader, reader.uint32()));
           continue;
         case 7:
           if (tag === 56) {
-            message.groupVisibleToParentsForStatuses.push(studentStatusFromJSON(reader.int32()));
+            message.group_visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
 
             continue;
           }
@@ -332,7 +332,7 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
           if (tag === 58) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.groupVisibleToParentsForStatuses.push(studentStatusFromJSON(reader.int32()));
+              message.group_visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
             }
 
             continue;
@@ -341,7 +341,7 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
           break;
         case 8:
           if (tag === 64) {
-            message.groupVisibleToTeachersForStatuses.push(studentStatusFromJSON(reader.int32()));
+            message.group_visible_to_teachers_for_statuses.push(studentStatusFromJSON(reader.int32()));
 
             continue;
           }
@@ -349,7 +349,7 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
           if (tag === 66) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.groupVisibleToTeachersForStatuses.push(studentStatusFromJSON(reader.int32()));
+              message.group_visible_to_teachers_for_statuses.push(studentStatusFromJSON(reader.int32()));
             }
 
             continue;
@@ -367,22 +367,22 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
 
   fromJSON(object: any): TemplateGroupDefinition {
     return {
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-      groupUserType: isSet(object.groupUserType) ? userTypeFromJSON(object.groupUserType) : UserType.NONE,
-      groupProfileSection: isSet(object.groupProfileSection)
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+      group_user_type: isSet(object.groupUserType) ? userTypeFromJSON(object.groupUserType) : UserType.NONE,
+      group_profile_section: isSet(object.groupProfileSection)
         ? profileSectionFromJSON(object.groupProfileSection)
         : ProfileSection.OVERVIEW,
-      groupHints: globalThis.Array.isArray(object?.groupHints)
+      group_hints: globalThis.Array.isArray(object?.groupHints)
         ? object.groupHints.map((e: any) => globalThis.String(e))
         : [],
-      groupFieldDefinitions: globalThis.Array.isArray(object?.groupFieldDefinitions)
+      group_field_definitions: globalThis.Array.isArray(object?.groupFieldDefinitions)
         ? object.groupFieldDefinitions.map((e: any) => TemplateFieldDefinition.fromJSON(e))
         : [],
-      groupVisibleToParentsForStatuses: globalThis.Array.isArray(object?.groupVisibleToParentsForStatuses)
+      group_visible_to_parents_for_statuses: globalThis.Array.isArray(object?.groupVisibleToParentsForStatuses)
         ? object.groupVisibleToParentsForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      groupVisibleToTeachersForStatuses: globalThis.Array.isArray(object?.groupVisibleToTeachersForStatuses)
+      group_visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.groupVisibleToTeachersForStatuses)
         ? object.groupVisibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
     };
@@ -390,31 +390,31 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
 
   toJSON(message: TemplateGroupDefinition): unknown {
     const obj: any = {};
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.groupName !== "") {
-      obj.groupName = message.groupName;
+    if (message.group_name !== "") {
+      obj.groupName = message.group_name;
     }
-    if (message.groupUserType !== UserType.NONE) {
-      obj.groupUserType = userTypeToJSON(message.groupUserType);
+    if (message.group_user_type !== UserType.NONE) {
+      obj.groupUserType = userTypeToJSON(message.group_user_type);
     }
-    if (message.groupProfileSection !== ProfileSection.OVERVIEW) {
-      obj.groupProfileSection = profileSectionToJSON(message.groupProfileSection);
+    if (message.group_profile_section !== ProfileSection.OVERVIEW) {
+      obj.groupProfileSection = profileSectionToJSON(message.group_profile_section);
     }
-    if (message.groupHints?.length) {
-      obj.groupHints = message.groupHints;
+    if (message.group_hints?.length) {
+      obj.groupHints = message.group_hints;
     }
-    if (message.groupFieldDefinitions?.length) {
-      obj.groupFieldDefinitions = message.groupFieldDefinitions.map((e) => TemplateFieldDefinition.toJSON(e));
+    if (message.group_field_definitions?.length) {
+      obj.groupFieldDefinitions = message.group_field_definitions.map((e) => TemplateFieldDefinition.toJSON(e));
     }
-    if (message.groupVisibleToParentsForStatuses?.length) {
-      obj.groupVisibleToParentsForStatuses = message.groupVisibleToParentsForStatuses.map((e) =>
+    if (message.group_visible_to_parents_for_statuses?.length) {
+      obj.groupVisibleToParentsForStatuses = message.group_visible_to_parents_for_statuses.map((e) =>
         studentStatusToJSON(e)
       );
     }
-    if (message.groupVisibleToTeachersForStatuses?.length) {
-      obj.groupVisibleToTeachersForStatuses = message.groupVisibleToTeachersForStatuses.map((e) =>
+    if (message.group_visible_to_teachers_for_statuses?.length) {
+      obj.groupVisibleToTeachersForStatuses = message.group_visible_to_teachers_for_statuses.map((e) =>
         studentStatusToJSON(e)
       );
     }
@@ -426,46 +426,46 @@ export const TemplateGroupDefinition: MessageFns<TemplateGroupDefinition> = {
   },
   fromPartial<I extends Exact<DeepPartial<TemplateGroupDefinition>, I>>(object: I): TemplateGroupDefinition {
     const message = createBaseTemplateGroupDefinition();
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.groupName = object.groupName ?? "";
-    message.groupUserType = object.groupUserType ?? UserType.NONE;
-    message.groupProfileSection = object.groupProfileSection ?? ProfileSection.OVERVIEW;
-    message.groupHints = object.groupHints?.map((e) => e) || [];
-    message.groupFieldDefinitions = object.groupFieldDefinitions?.map((e) => TemplateFieldDefinition.fromPartial(e)) ||
-      [];
-    message.groupVisibleToParentsForStatuses = object.groupVisibleToParentsForStatuses?.map((e) => e) || [];
-    message.groupVisibleToTeachersForStatuses = object.groupVisibleToTeachersForStatuses?.map((e) => e) || [];
+    message.group_name = object.group_name ?? "";
+    message.group_user_type = object.group_user_type ?? UserType.NONE;
+    message.group_profile_section = object.group_profile_section ?? ProfileSection.OVERVIEW;
+    message.group_hints = object.group_hints?.map((e) => e) || [];
+    message.group_field_definitions =
+      object.group_field_definitions?.map((e) => TemplateFieldDefinition.fromPartial(e)) || [];
+    message.group_visible_to_parents_for_statuses = object.group_visible_to_parents_for_statuses?.map((e) => e) || [];
+    message.group_visible_to_teachers_for_statuses = object.group_visible_to_teachers_for_statuses?.map((e) => e) || [];
     return message;
   },
 };
 
 function createBaseCustomFieldsTemplate(): CustomFieldsTemplate {
   return {
-    templateId: undefined,
-    templateName: "",
-    templateDescription: "",
-    templateIsActive: false,
-    templateGroups: [],
+    template_id: undefined,
+    template_name: "",
+    template_description: "",
+    template_is_active: false,
+    template_groups: [],
   };
 }
 
 export const CustomFieldsTemplate: MessageFns<CustomFieldsTemplate> = {
   encode(message: CustomFieldsTemplate, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.templateId !== undefined) {
-      ObjectId.encode(message.templateId, writer.uint32(10).fork()).join();
+    if (message.template_id !== undefined) {
+      ObjectId.encode(message.template_id, writer.uint32(10).fork()).join();
     }
-    if (message.templateName !== "") {
-      writer.uint32(18).string(message.templateName);
+    if (message.template_name !== "") {
+      writer.uint32(18).string(message.template_name);
     }
-    if (message.templateDescription !== "") {
-      writer.uint32(26).string(message.templateDescription);
+    if (message.template_description !== "") {
+      writer.uint32(26).string(message.template_description);
     }
-    if (message.templateIsActive !== false) {
-      writer.uint32(32).bool(message.templateIsActive);
+    if (message.template_is_active !== false) {
+      writer.uint32(32).bool(message.template_is_active);
     }
-    for (const v of message.templateGroups) {
+    for (const v of message.template_groups) {
       TemplateGroupDefinition.encode(v!, writer.uint32(42).fork()).join();
     }
     return writer;
@@ -483,35 +483,35 @@ export const CustomFieldsTemplate: MessageFns<CustomFieldsTemplate> = {
             break;
           }
 
-          message.templateId = ObjectId.decode(reader, reader.uint32());
+          message.template_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.templateName = reader.string();
+          message.template_name = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.templateDescription = reader.string();
+          message.template_description = reader.string();
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.templateIsActive = reader.bool();
+          message.template_is_active = reader.bool();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.templateGroups.push(TemplateGroupDefinition.decode(reader, reader.uint32()));
+          message.template_groups.push(TemplateGroupDefinition.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -524,11 +524,11 @@ export const CustomFieldsTemplate: MessageFns<CustomFieldsTemplate> = {
 
   fromJSON(object: any): CustomFieldsTemplate {
     return {
-      templateId: isSet(object.templateId) ? ObjectId.fromJSON(object.templateId) : undefined,
-      templateName: isSet(object.templateName) ? globalThis.String(object.templateName) : "",
-      templateDescription: isSet(object.templateDescription) ? globalThis.String(object.templateDescription) : "",
-      templateIsActive: isSet(object.templateIsActive) ? globalThis.Boolean(object.templateIsActive) : false,
-      templateGroups: globalThis.Array.isArray(object?.templateGroups)
+      template_id: isSet(object.templateId) ? ObjectId.fromJSON(object.templateId) : undefined,
+      template_name: isSet(object.templateName) ? globalThis.String(object.templateName) : "",
+      template_description: isSet(object.templateDescription) ? globalThis.String(object.templateDescription) : "",
+      template_is_active: isSet(object.templateIsActive) ? globalThis.Boolean(object.templateIsActive) : false,
+      template_groups: globalThis.Array.isArray(object?.templateGroups)
         ? object.templateGroups.map((e: any) => TemplateGroupDefinition.fromJSON(e))
         : [],
     };
@@ -536,20 +536,20 @@ export const CustomFieldsTemplate: MessageFns<CustomFieldsTemplate> = {
 
   toJSON(message: CustomFieldsTemplate): unknown {
     const obj: any = {};
-    if (message.templateId !== undefined) {
-      obj.templateId = ObjectId.toJSON(message.templateId);
+    if (message.template_id !== undefined) {
+      obj.templateId = ObjectId.toJSON(message.template_id);
     }
-    if (message.templateName !== "") {
-      obj.templateName = message.templateName;
+    if (message.template_name !== "") {
+      obj.templateName = message.template_name;
     }
-    if (message.templateDescription !== "") {
-      obj.templateDescription = message.templateDescription;
+    if (message.template_description !== "") {
+      obj.templateDescription = message.template_description;
     }
-    if (message.templateIsActive !== false) {
-      obj.templateIsActive = message.templateIsActive;
+    if (message.template_is_active !== false) {
+      obj.templateIsActive = message.template_is_active;
     }
-    if (message.templateGroups?.length) {
-      obj.templateGroups = message.templateGroups.map((e) => TemplateGroupDefinition.toJSON(e));
+    if (message.template_groups?.length) {
+      obj.templateGroups = message.template_groups.map((e) => TemplateGroupDefinition.toJSON(e));
     }
     return obj;
   },
@@ -559,19 +559,19 @@ export const CustomFieldsTemplate: MessageFns<CustomFieldsTemplate> = {
   },
   fromPartial<I extends Exact<DeepPartial<CustomFieldsTemplate>, I>>(object: I): CustomFieldsTemplate {
     const message = createBaseCustomFieldsTemplate();
-    message.templateId = (object.templateId !== undefined && object.templateId !== null)
-      ? ObjectId.fromPartial(object.templateId)
+    message.template_id = (object.template_id !== undefined && object.template_id !== null)
+      ? ObjectId.fromPartial(object.template_id)
       : undefined;
-    message.templateName = object.templateName ?? "";
-    message.templateDescription = object.templateDescription ?? "";
-    message.templateIsActive = object.templateIsActive ?? false;
-    message.templateGroups = object.templateGroups?.map((e) => TemplateGroupDefinition.fromPartial(e)) || [];
+    message.template_name = object.template_name ?? "";
+    message.template_description = object.template_description ?? "";
+    message.template_is_active = object.template_is_active ?? false;
+    message.template_groups = object.template_groups?.map((e) => TemplateGroupDefinition.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseOrganizationUsedTemplates(): OrganizationUsedTemplates {
-  return { id: undefined, organizationId: undefined, templates: [] };
+  return { id: undefined, organization_id: undefined, templates: [] };
 }
 
 export const OrganizationUsedTemplates: MessageFns<OrganizationUsedTemplates> = {
@@ -579,8 +579,8 @@ export const OrganizationUsedTemplates: MessageFns<OrganizationUsedTemplates> = 
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     for (const v of message.templates) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
@@ -607,7 +607,7 @@ export const OrganizationUsedTemplates: MessageFns<OrganizationUsedTemplates> = 
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -628,7 +628,7 @@ export const OrganizationUsedTemplates: MessageFns<OrganizationUsedTemplates> = 
   fromJSON(object: any): OrganizationUsedTemplates {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       templates: globalThis.Array.isArray(object?.templates)
         ? object.templates.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -640,8 +640,8 @@ export const OrganizationUsedTemplates: MessageFns<OrganizationUsedTemplates> = 
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.templates?.length) {
       obj.templates = message.templates.map((e) => ObjectId.toJSON(e));
@@ -655,8 +655,8 @@ export const OrganizationUsedTemplates: MessageFns<OrganizationUsedTemplates> = 
   fromPartial<I extends Exact<DeepPartial<OrganizationUsedTemplates>, I>>(object: I): OrganizationUsedTemplates {
     const message = createBaseOrganizationUsedTemplates();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.templates = object.templates?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;

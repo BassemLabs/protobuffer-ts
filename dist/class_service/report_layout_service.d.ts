@@ -5,23 +5,23 @@ import { ReportLayout } from "./report_layout";
 export declare const protobufPackage = "class_service.report_layout_service";
 export interface GetByCourseRequest {
     context: RequestContext | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
 }
 export interface GetByCoursesRequest {
     context: RequestContext | undefined;
-    courseIds: ObjectId[];
+    course_ids: ObjectId[];
 }
 export interface GetByCoursesResponse {
     layouts: CourseReportLayout[];
 }
 export interface CourseReportLayout {
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     layout: ReportLayout | undefined;
 }
 export interface UpdateReportLayoutRequest {
     context: RequestContext | undefined;
-    reportCardLayoutId: ObjectId | undefined;
-    updatedReportCardLayout: ReportLayout | undefined;
+    report_card_layout_id: ObjectId | undefined;
+    updated_report_card_layout: ReportLayout | undefined;
 }
 export declare const GetByCourseRequest: MessageFns<GetByCourseRequest>;
 export declare const GetByCoursesRequest: MessageFns<GetByCoursesRequest>;

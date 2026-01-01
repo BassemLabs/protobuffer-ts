@@ -13,15 +13,15 @@ const request_context_1 = require("../utils/request_context");
 const onboarding_settings_1 = require("./onboarding_settings");
 exports.protobufPackage = "organization_service";
 function createBaseGetOnboardingSettingsRequest() {
-    return { context: undefined, organizationId: undefined };
+    return { context: undefined, organization_id: undefined };
 }
 exports.GetOnboardingSettingsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -42,7 +42,7 @@ exports.GetOnboardingSettingsRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -55,7 +55,7 @@ exports.GetOnboardingSettingsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
         };
     },
     toJSON(message) {
@@ -63,8 +63,8 @@ exports.GetOnboardingSettingsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -76,8 +76,8 @@ exports.GetOnboardingSettingsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         return message;
     },
@@ -85,9 +85,9 @@ exports.GetOnboardingSettingsRequest = {
 function createBaseUpdateEnrollmentConfigurationRequest() {
     return {
         context: undefined,
-        organizationId: undefined,
-        hasInterviewForNewcomers: false,
-        enableGroupApprovalSystem: false,
+        organization_id: undefined,
+        has_interview_for_newcomers: false,
+        enable_group_approval_system: false,
     };
 }
 exports.UpdateEnrollmentConfigurationRequest = {
@@ -95,14 +95,14 @@ exports.UpdateEnrollmentConfigurationRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.hasInterviewForNewcomers !== false) {
-            writer.uint32(24).bool(message.hasInterviewForNewcomers);
+        if (message.has_interview_for_newcomers !== false) {
+            writer.uint32(24).bool(message.has_interview_for_newcomers);
         }
-        if (message.enableGroupApprovalSystem !== false) {
-            writer.uint32(32).bool(message.enableGroupApprovalSystem);
+        if (message.enable_group_approval_system !== false) {
+            writer.uint32(32).bool(message.enable_group_approval_system);
         }
         return writer;
     },
@@ -123,19 +123,19 @@ exports.UpdateEnrollmentConfigurationRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.hasInterviewForNewcomers = reader.bool();
+                    message.has_interview_for_newcomers = reader.bool();
                     continue;
                 case 4:
                     if (tag !== 32) {
                         break;
                     }
-                    message.enableGroupApprovalSystem = reader.bool();
+                    message.enable_group_approval_system = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -148,11 +148,11 @@ exports.UpdateEnrollmentConfigurationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            hasInterviewForNewcomers: isSet(object.hasInterviewForNewcomers)
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
                 ? globalThis.Boolean(object.hasInterviewForNewcomers)
                 : false,
-            enableGroupApprovalSystem: isSet(object.enableGroupApprovalSystem)
+            enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
                 ? globalThis.Boolean(object.enableGroupApprovalSystem)
                 : false,
         };
@@ -162,14 +162,14 @@ exports.UpdateEnrollmentConfigurationRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.hasInterviewForNewcomers !== false) {
-            obj.hasInterviewForNewcomers = message.hasInterviewForNewcomers;
+        if (message.has_interview_for_newcomers !== false) {
+            obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
         }
-        if (message.enableGroupApprovalSystem !== false) {
-            obj.enableGroupApprovalSystem = message.enableGroupApprovalSystem;
+        if (message.enable_group_approval_system !== false) {
+            obj.enableGroupApprovalSystem = message.enable_group_approval_system;
         }
         return obj;
     },
@@ -181,30 +181,30 @@ exports.UpdateEnrollmentConfigurationRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.hasInterviewForNewcomers = object.hasInterviewForNewcomers ?? false;
-        message.enableGroupApprovalSystem = object.enableGroupApprovalSystem ?? false;
+        message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? false;
+        message.enable_group_approval_system = object.enable_group_approval_system ?? false;
         return message;
     },
 };
 function createBaseAddSchoolHandbookFileRequest() {
-    return { context: undefined, organizationId: undefined, fileName: "", awsS3FileLocation: "" };
+    return { context: undefined, organization_id: undefined, file_name: "", aws_s3_file_location: "" };
 }
 exports.AddSchoolHandbookFileRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.fileName !== "") {
-            writer.uint32(26).string(message.fileName);
+        if (message.file_name !== "") {
+            writer.uint32(26).string(message.file_name);
         }
-        if (message.awsS3FileLocation !== "") {
-            writer.uint32(34).string(message.awsS3FileLocation);
+        if (message.aws_s3_file_location !== "") {
+            writer.uint32(34).string(message.aws_s3_file_location);
         }
         return writer;
     },
@@ -225,19 +225,19 @@ exports.AddSchoolHandbookFileRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.fileName = reader.string();
+                    message.file_name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.awsS3FileLocation = reader.string();
+                    message.aws_s3_file_location = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -250,9 +250,9 @@ exports.AddSchoolHandbookFileRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-            awsS3FileLocation: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+            aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
         };
     },
     toJSON(message) {
@@ -260,14 +260,14 @@ exports.AddSchoolHandbookFileRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.fileName !== "") {
-            obj.fileName = message.fileName;
+        if (message.file_name !== "") {
+            obj.fileName = message.file_name;
         }
-        if (message.awsS3FileLocation !== "") {
-            obj.awsS3FileLocation = message.awsS3FileLocation;
+        if (message.aws_s3_file_location !== "") {
+            obj.awsS3FileLocation = message.aws_s3_file_location;
         }
         return obj;
     },
@@ -279,27 +279,27 @@ exports.AddSchoolHandbookFileRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.fileName = object.fileName ?? "";
-        message.awsS3FileLocation = object.awsS3FileLocation ?? "";
+        message.file_name = object.file_name ?? "";
+        message.aws_s3_file_location = object.aws_s3_file_location ?? "";
         return message;
     },
 };
 function createBaseRemoveSchoolHandbookFileRequest() {
-    return { context: undefined, organizationId: undefined, fileIndex: 0 };
+    return { context: undefined, organization_id: undefined, file_index: 0 };
 }
 exports.RemoveSchoolHandbookFileRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.fileIndex !== 0) {
-            writer.uint32(24).uint32(message.fileIndex);
+        if (message.file_index !== 0) {
+            writer.uint32(24).uint32(message.file_index);
         }
         return writer;
     },
@@ -320,13 +320,13 @@ exports.RemoveSchoolHandbookFileRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.fileIndex = reader.uint32();
+                    message.file_index = reader.uint32();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -339,8 +339,8 @@ exports.RemoveSchoolHandbookFileRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            fileIndex: isSet(object.fileIndex) ? globalThis.Number(object.fileIndex) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            file_index: isSet(object.fileIndex) ? globalThis.Number(object.fileIndex) : 0,
         };
     },
     toJSON(message) {
@@ -348,11 +348,11 @@ exports.RemoveSchoolHandbookFileRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.fileIndex !== 0) {
-            obj.fileIndex = Math.round(message.fileIndex);
+        if (message.file_index !== 0) {
+            obj.fileIndex = Math.round(message.file_index);
         }
         return obj;
     },
@@ -364,26 +364,26 @@ exports.RemoveSchoolHandbookFileRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.fileIndex = object.fileIndex ?? 0;
+        message.file_index = object.file_index ?? 0;
         return message;
     },
 };
 function createBaseUpdateWaitlistFeeRequest() {
-    return { context: undefined, organizationId: undefined, waitlistFee: 0 };
+    return { context: undefined, organization_id: undefined, waitlist_fee: 0 };
 }
 exports.UpdateWaitlistFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.waitlistFee !== 0) {
-            writer.uint32(29).float(message.waitlistFee);
+        if (message.waitlist_fee !== 0) {
+            writer.uint32(29).float(message.waitlist_fee);
         }
         return writer;
     },
@@ -404,13 +404,13 @@ exports.UpdateWaitlistFeeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 29) {
                         break;
                     }
-                    message.waitlistFee = reader.float();
+                    message.waitlist_fee = reader.float();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -423,8 +423,8 @@ exports.UpdateWaitlistFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            waitlistFee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
         };
     },
     toJSON(message) {
@@ -432,11 +432,11 @@ exports.UpdateWaitlistFeeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.waitlistFee !== 0) {
-            obj.waitlistFee = message.waitlistFee;
+        if (message.waitlist_fee !== 0) {
+            obj.waitlistFee = message.waitlist_fee;
         }
         return obj;
     },
@@ -448,25 +448,25 @@ exports.UpdateWaitlistFeeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.waitlistFee = object.waitlistFee ?? 0;
+        message.waitlist_fee = object.waitlist_fee ?? 0;
         return message;
     },
 };
 function createBaseUpdateRegistrationFeeRequest() {
-    return { context: undefined, organizationId: undefined, registrationFees: [] };
+    return { context: undefined, organization_id: undefined, registration_fees: [] };
 }
 exports.UpdateRegistrationFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        for (const v of message.registrationFees) {
+        for (const v of message.registration_fees) {
             onboarding_settings_1.GradeFeeMapping.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
@@ -488,13 +488,13 @@ exports.UpdateRegistrationFeeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.registrationFees.push(onboarding_settings_1.GradeFeeMapping.decode(reader, reader.uint32()));
+                    message.registration_fees.push(onboarding_settings_1.GradeFeeMapping.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -507,8 +507,8 @@ exports.UpdateRegistrationFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            registrationFees: globalThis.Array.isArray(object?.registrationFees)
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            registration_fees: globalThis.Array.isArray(object?.registrationFees)
                 ? object.registrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
                 : [],
         };
@@ -518,11 +518,11 @@ exports.UpdateRegistrationFeeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.registrationFees?.length) {
-            obj.registrationFees = message.registrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
+        if (message.registration_fees?.length) {
+            obj.registrationFees = message.registration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
         }
         return obj;
     },
@@ -534,25 +534,25 @@ exports.UpdateRegistrationFeeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.registrationFees = object.registrationFees?.map((e) => onboarding_settings_1.GradeFeeMapping.fromPartial(e)) || [];
+        message.registration_fees = object.registration_fees?.map((e) => onboarding_settings_1.GradeFeeMapping.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseUpdateReregistrationFeeRequest() {
-    return { context: undefined, organizationId: undefined, reregistrationFees: [] };
+    return { context: undefined, organization_id: undefined, reregistration_fees: [] };
 }
 exports.UpdateReregistrationFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        for (const v of message.reregistrationFees) {
+        for (const v of message.reregistration_fees) {
             onboarding_settings_1.GradeFeeMapping.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
@@ -574,13 +574,13 @@ exports.UpdateReregistrationFeeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.reregistrationFees.push(onboarding_settings_1.GradeFeeMapping.decode(reader, reader.uint32()));
+                    message.reregistration_fees.push(onboarding_settings_1.GradeFeeMapping.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -593,8 +593,8 @@ exports.UpdateReregistrationFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            reregistrationFees: globalThis.Array.isArray(object?.reregistrationFees)
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            reregistration_fees: globalThis.Array.isArray(object?.reregistrationFees)
                 ? object.reregistrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
                 : [],
         };
@@ -604,11 +604,11 @@ exports.UpdateReregistrationFeeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.reregistrationFees?.length) {
-            obj.reregistrationFees = message.reregistrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
+        if (message.reregistration_fees?.length) {
+            obj.reregistrationFees = message.reregistration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
         }
         return obj;
     },
@@ -620,26 +620,26 @@ exports.UpdateReregistrationFeeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.reregistrationFees = object.reregistrationFees?.map((e) => onboarding_settings_1.GradeFeeMapping.fromPartial(e)) || [];
+        message.reregistration_fees = object.reregistration_fees?.map((e) => onboarding_settings_1.GradeFeeMapping.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseUpdateInterviewFeeRequest() {
-    return { context: undefined, organizationId: undefined, interviewFee: 0 };
+    return { context: undefined, organization_id: undefined, interview_fee: 0 };
 }
 exports.UpdateInterviewFeeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.interviewFee !== 0) {
-            writer.uint32(29).float(message.interviewFee);
+        if (message.interview_fee !== 0) {
+            writer.uint32(29).float(message.interview_fee);
         }
         return writer;
     },
@@ -660,13 +660,13 @@ exports.UpdateInterviewFeeRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 29) {
                         break;
                     }
-                    message.interviewFee = reader.float();
+                    message.interview_fee = reader.float();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -679,8 +679,8 @@ exports.UpdateInterviewFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            interviewFee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
         };
     },
     toJSON(message) {
@@ -688,11 +688,11 @@ exports.UpdateInterviewFeeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.interviewFee !== 0) {
-            obj.interviewFee = message.interviewFee;
+        if (message.interview_fee !== 0) {
+            obj.interviewFee = message.interview_fee;
         }
         return obj;
     },
@@ -704,10 +704,10 @@ exports.UpdateInterviewFeeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.interviewFee = object.interviewFee ?? 0;
+        message.interview_fee = object.interview_fee ?? 0;
         return message;
     },
 };

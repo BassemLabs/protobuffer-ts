@@ -13,10 +13,10 @@ exports.protobufPackage = "user_service";
 function createBaseCustomFieldEntry() {
     return {
         id: undefined,
-        organizationId: undefined,
-        customFieldId: undefined,
-        groupId: undefined,
-        userId: undefined,
+        organization_id: undefined,
+        custom_field_id: undefined,
+        group_id: undefined,
+        user_id: undefined,
         value: "",
     };
 }
@@ -25,17 +25,17 @@ exports.CustomFieldEntry = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.organizationId !== undefined) {
-            object_id_1.ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.customFieldId !== undefined) {
-            object_id_1.ObjectId.encode(message.customFieldId, writer.uint32(26).fork()).join();
+        if (message.custom_field_id !== undefined) {
+            object_id_1.ObjectId.encode(message.custom_field_id, writer.uint32(26).fork()).join();
         }
-        if (message.groupId !== undefined) {
-            object_id_1.ObjectId.encode(message.groupId, writer.uint32(34).fork()).join();
+        if (message.group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.group_id, writer.uint32(34).fork()).join();
         }
-        if (message.userId !== undefined) {
-            object_id_1.ObjectId.encode(message.userId, writer.uint32(42).fork()).join();
+        if (message.user_id !== undefined) {
+            object_id_1.ObjectId.encode(message.user_id, writer.uint32(42).fork()).join();
         }
         if (message.value !== "") {
             writer.uint32(50).string(message.value);
@@ -59,25 +59,25 @@ exports.CustomFieldEntry = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organizationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.customFieldId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.custom_field_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.groupId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.userId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.user_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -96,10 +96,10 @@ exports.CustomFieldEntry = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organizationId: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            customFieldId: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
-            groupId: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            userId: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
+            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
             value: isSet(object.value) ? globalThis.String(object.value) : "",
         };
     },
@@ -108,17 +108,17 @@ exports.CustomFieldEntry = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.organizationId !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organizationId);
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.customFieldId !== undefined) {
-            obj.customFieldId = object_id_1.ObjectId.toJSON(message.customFieldId);
+        if (message.custom_field_id !== undefined) {
+            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
         }
-        if (message.groupId !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.groupId);
+        if (message.group_id !== undefined) {
+            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
         }
-        if (message.userId !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.userId);
+        if (message.user_id !== undefined) {
+            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.value !== "") {
             obj.value = message.value;
@@ -131,17 +131,17 @@ exports.CustomFieldEntry = {
     fromPartial(object) {
         const message = createBaseCustomFieldEntry();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organizationId)
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.customFieldId = (object.customFieldId !== undefined && object.customFieldId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.customFieldId)
+        message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.custom_field_id)
             : undefined;
-        message.groupId = (object.groupId !== undefined && object.groupId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.groupId)
+        message.group_id = (object.group_id !== undefined && object.group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.group_id)
             : undefined;
-        message.userId = (object.userId !== undefined && object.userId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.userId)
+        message.user_id = (object.user_id !== undefined && object.user_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.user_id)
             : undefined;
         message.value = object.value ?? "";
         return message;

@@ -12,15 +12,15 @@ const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseEvaluationEntry() {
-    return { id: undefined, evaluationId: undefined, student: undefined, mark: 0, lastPublishedAt: undefined };
+    return { id: undefined, evaluation_id: undefined, student: undefined, mark: 0, last_published_at: undefined };
 }
 exports.EvaluationEntry = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.evaluationId !== undefined) {
-            object_id_1.ObjectId.encode(message.evaluationId, writer.uint32(18).fork()).join();
+        if (message.evaluation_id !== undefined) {
+            object_id_1.ObjectId.encode(message.evaluation_id, writer.uint32(18).fork()).join();
         }
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(26).fork()).join();
@@ -28,8 +28,8 @@ exports.EvaluationEntry = {
         if (message.mark !== 0) {
             writer.uint32(33).double(message.mark);
         }
-        if (message.lastPublishedAt !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.lastPublishedAt), writer.uint32(42).fork()).join();
+        if (message.last_published_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.last_published_at), writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -50,7 +50,7 @@ exports.EvaluationEntry = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.evaluationId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.evaluation_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -68,7 +68,7 @@ exports.EvaluationEntry = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.lastPublishedAt = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.last_published_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -81,10 +81,10 @@ exports.EvaluationEntry = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            evaluationId: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
+            evaluation_id: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
-            lastPublishedAt: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
+            last_published_at: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
         };
     },
     toJSON(message) {
@@ -92,8 +92,8 @@ exports.EvaluationEntry = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.evaluationId !== undefined) {
-            obj.evaluationId = object_id_1.ObjectId.toJSON(message.evaluationId);
+        if (message.evaluation_id !== undefined) {
+            obj.evaluationId = object_id_1.ObjectId.toJSON(message.evaluation_id);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
@@ -101,8 +101,8 @@ exports.EvaluationEntry = {
         if (message.mark !== 0) {
             obj.mark = message.mark;
         }
-        if (message.lastPublishedAt !== undefined) {
-            obj.lastPublishedAt = message.lastPublishedAt.toISOString();
+        if (message.last_published_at !== undefined) {
+            obj.lastPublishedAt = message.last_published_at.toISOString();
         }
         return obj;
     },
@@ -112,14 +112,14 @@ exports.EvaluationEntry = {
     fromPartial(object) {
         const message = createBaseEvaluationEntry();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.evaluationId = (object.evaluationId !== undefined && object.evaluationId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.evaluationId)
+        message.evaluation_id = (object.evaluation_id !== undefined && object.evaluation_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.evaluation_id)
             : undefined;
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
         message.mark = object.mark ?? 0;
-        message.lastPublishedAt = object.lastPublishedAt ?? undefined;
+        message.last_published_at = object.last_published_at ?? undefined;
         return message;
     },
 };

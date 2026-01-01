@@ -3,12 +3,12 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export interface ReportLayout {
     id: ObjectId | undefined;
-    organizationId: ObjectId | undefined;
-    courseId: ObjectId | undefined;
-    commentCharLimit?: number | undefined;
+    organization_id: ObjectId | undefined;
+    course_id: ObjectId | undefined;
+    comment_char_limit?: number | undefined;
     sections: ReportLayoutSection[];
-    checkBoxes: ReportCheckBoxLayout[];
-    creditWeight: number;
+    check_boxes: ReportCheckBoxLayout[];
+    credit_weight: number;
 }
 export interface ReportLayoutSection {
     id: ObjectId | undefined;

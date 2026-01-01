@@ -8,18 +8,18 @@ export interface GetAllPaymentPlansRequest {
     context: RequestContext | undefined;
 }
 export interface GetPaymentPlansResponse {
-    paymentPlans: OrganizationPaymentPlan[];
+    payment_plans: OrganizationPaymentPlan[];
 }
 export interface CreatePaymentPlanRequest {
     context: RequestContext | undefined;
     name: string;
     description: string;
     currency: Currency;
-    isPublic: boolean;
-    upfrontCost: number;
-    upfrontCostPaymentInterval: PaymentInterval;
-    perStudentCost: number;
-    paymentProcessingPercentage: number;
+    is_public: boolean;
+    upfront_cost: number;
+    upfront_cost_payment_interval: PaymentInterval;
+    per_student_cost: number;
+    payment_processing_percentage: number;
 }
 export interface GetOrganizationVisiblePlansRequest {
     context: RequestContext | undefined;
@@ -28,17 +28,17 @@ export interface GetAllPaymentPlanAccessRequest {
     context: RequestContext | undefined;
 }
 export interface GetAllPaymentPlanAccessResponse {
-    organizationPlanAccess: OrganizationPlanAccess[];
+    organization_plan_access: OrganizationPlanAccess[];
 }
 export interface MakePaymentPlanAccessibleForOrganizationRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    paymentPlanId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    payment_plan_id: ObjectId | undefined;
 }
 export interface AssignPaymentPlanToOrganizationRequest {
     context: RequestContext | undefined;
-    paymentPlanId: ObjectId | undefined;
-    deferPerStudentCostToParent: boolean;
+    payment_plan_id: ObjectId | undefined;
+    defer_per_student_cost_to_parent: boolean;
 }
 export interface GetOrganizationActiveOrgPaymentPlanInfoRequest {
     context: RequestContext | undefined;
@@ -47,11 +47,11 @@ export interface GetOrgsPaymentPlanInfoRequest {
     context: RequestContext | undefined;
 }
 export interface GetOrgsPaymentPlanInfoResponse {
-    orgPaymentPlanInfo: OrganizationPaymentPlanInformation[];
+    org_payment_plan_info: OrganizationPaymentPlanInformation[];
 }
 export interface GetOrgActivePaymentPlanWithInfoRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export declare const GetAllPaymentPlansRequest: MessageFns<GetAllPaymentPlansRequest>;
 export declare const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse>;

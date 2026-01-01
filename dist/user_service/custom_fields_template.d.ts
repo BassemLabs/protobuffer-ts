@@ -7,37 +7,37 @@ import { StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
 /** Template field definition (field within a template group) */
 export interface TemplateFieldDefinition {
-    fieldId: ObjectId | undefined;
-    fieldName: string;
-    fieldType: CustomFieldType;
-    fieldIsRequired: boolean;
-    fieldDescription: string;
-    fieldRegexPattern?: string | undefined;
-    fieldOptions: string[];
+    field_id: ObjectId | undefined;
+    field_name: string;
+    field_type: CustomFieldType;
+    field_is_required: boolean;
+    field_description: string;
+    field_regex_pattern?: string | undefined;
+    field_options: string[];
 }
 /** Template group definition (group within a template) */
 export interface TemplateGroupDefinition {
-    groupId: ObjectId | undefined;
-    groupName: string;
-    groupUserType: UserType;
-    groupProfileSection: ProfileSection;
-    groupHints: string[];
-    groupFieldDefinitions: TemplateFieldDefinition[];
-    groupVisibleToParentsForStatuses: StudentStatus[];
-    groupVisibleToTeachersForStatuses: StudentStatus[];
+    group_id: ObjectId | undefined;
+    group_name: string;
+    group_user_type: UserType;
+    group_profile_section: ProfileSection;
+    group_hints: string[];
+    group_field_definitions: TemplateFieldDefinition[];
+    group_visible_to_parents_for_statuses: StudentStatus[];
+    group_visible_to_teachers_for_statuses: StudentStatus[];
 }
 /** Custom fields template (global template not tied to organization) */
 export interface CustomFieldsTemplate {
-    templateId: ObjectId | undefined;
-    templateName: string;
-    templateDescription: string;
-    templateIsActive: boolean;
-    templateGroups: TemplateGroupDefinition[];
+    template_id: ObjectId | undefined;
+    template_name: string;
+    template_description: string;
+    template_is_active: boolean;
+    template_groups: TemplateGroupDefinition[];
 }
 /** Organization used templates (tracks which templates an organization uses) */
 export interface OrganizationUsedTemplates {
     id: ObjectId | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
     /** Template IDs */
     templates: ObjectId[];
 }

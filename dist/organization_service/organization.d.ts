@@ -16,46 +16,46 @@ export declare function currencyToNumber(object: Currency): number;
 export interface Organization {
     id: ObjectId | undefined;
     name: string;
-    defaultDomain: string;
+    default_domain: string;
     domains: string[];
-    organizationProfileSettings: OrganizationProfileSettings | undefined;
-    onboardingSettings: OnboardingSettings | undefined;
-    activeSchoolYear: SchoolYear | undefined;
-    comingSchoolYear?: SchoolYear | undefined;
-    openedReregistrationForComingSchoolYear: boolean;
-    countryCode?: string | undefined;
-    paymentInformation: PaymentInformation | undefined;
-    invoiceSettings: InvoiceSettings | undefined;
-    loginId: string;
-    mainAddress: string;
-    weekendDays: DayOfWeek[];
+    organization_profile_settings: OrganizationProfileSettings | undefined;
+    onboarding_settings: OnboardingSettings | undefined;
+    active_school_year: SchoolYear | undefined;
+    coming_school_year?: SchoolYear | undefined;
+    opened_reregistration_for_coming_school_year: boolean;
+    country_code?: string | undefined;
+    payment_information: PaymentInformation | undefined;
+    invoice_settings: InvoiceSettings | undefined;
+    login_id: string;
+    main_address: string;
+    weekend_days: DayOfWeek[];
     timezone: string;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
     name: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    isOpenForRegistration?: boolean | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+    is_open_for_registration?: boolean | undefined;
 }
 export interface PaymentInformation {
-    stripeAccountId?: string | undefined;
-    accountCurrency?: Currency | undefined;
-    stripePayoutsEnabled: boolean;
-    stripeDetailsSubmitted: boolean;
-    stripeChargesEnabled: boolean;
+    stripe_account_id?: string | undefined;
+    account_currency?: Currency | undefined;
+    stripe_payouts_enabled: boolean;
+    stripe_details_submitted: boolean;
+    stripe_charges_enabled: boolean;
     /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
-    autoPayDisabled?: boolean | undefined;
+    auto_pay_disabled?: boolean | undefined;
     /** Auto payment retry configuratio */
-    autoPayRetryConfig: AutoPayRetryConfig | undefined;
+    auto_pay_retry_config: AutoPayRetryConfig | undefined;
 }
 /** Configuration for auto-payment retry behavior */
 export interface AutoPayRetryConfig {
     /** Maximum number of retry attempts (default: 3, max: 10) */
-    maxRetries: number;
+    max_retries: number;
     /** Retry interval in hours - retries every N hours until max_retries (default: 24) */
-    retryIntervalHours: number;
+    retry_interval_hours: number;
 }
 export declare const Organization: MessageFns<Organization>;
 export declare const SchoolYear: MessageFns<SchoolYear>;

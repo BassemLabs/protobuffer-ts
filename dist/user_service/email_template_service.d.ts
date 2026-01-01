@@ -6,7 +6,7 @@ import { EmailTemplate, EmailTemplateKey } from "./email_template";
 export declare const protobufPackage = "user_service";
 export interface GetByTemplateKeyRequest {
     context: RequestContext | undefined;
-    templateKey: EmailTemplateKey;
+    template_key: EmailTemplateKey;
 }
 export interface ListTemplatesRequest {
     context: RequestContext | undefined;
@@ -16,7 +16,7 @@ export interface ListTemplatesResponse {
 }
 export interface UpdateOrCreateRequest {
     context: RequestContext | undefined;
-    templateKey: EmailTemplateKey;
+    template_key: EmailTemplateKey;
     title: string;
     header: string;
     body: string;
@@ -24,14 +24,14 @@ export interface UpdateOrCreateRequest {
 }
 export interface CreateDefaultTemplatesForOrganizationRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface CreateDefaultTemplatesForOrganizationResponse {
     success: boolean;
 }
 export interface GetSupportedPlaceholdersRequest {
     context: RequestContext | undefined;
-    templateKey: EmailTemplateKey;
+    template_key: EmailTemplateKey;
 }
 export interface GetSupportedPlaceholdersResponse {
     placeholders: string[];
@@ -40,10 +40,10 @@ export interface GetAllStaticTemplateBodiesRequest {
     context: RequestContext | undefined;
 }
 export interface GetAllStaticTemplateBodiesResponse {
-    staticBodies: StaticTemplateBodyEntry[];
+    static_bodies: StaticTemplateBodyEntry[];
 }
 export interface StaticTemplateBodyEntry {
-    templateKey: EmailTemplateKey;
+    template_key: EmailTemplateKey;
     body: string;
 }
 export interface Replacement {
@@ -52,12 +52,12 @@ export interface Replacement {
 }
 export interface SendEmailByTemplateKeyRequest {
     context: RequestContext | undefined;
-    templateKey: EmailTemplateKey;
+    template_key: EmailTemplateKey;
     replacements: Replacement[];
-    recipientUserType: UserType;
-    recipientUserId: ObjectId | undefined;
-    recipientEmail: string;
-    dateToSend?: number | undefined;
+    recipient_user_type: UserType;
+    recipient_user_id: ObjectId | undefined;
+    recipient_email: string;
+    date_to_send?: number | undefined;
 }
 export interface SendEmailWithTemplateRequest {
     context: RequestContext | undefined;
@@ -66,14 +66,14 @@ export interface SendEmailWithTemplateRequest {
     body: string;
     footer: string;
     replacements: Replacement[];
-    recipientUserType: UserType;
-    recipientUserId: ObjectId | undefined;
-    recipientEmail: string;
-    dateToSend?: number | undefined;
+    recipient_user_type: UserType;
+    recipient_user_id: ObjectId | undefined;
+    recipient_email: string;
+    date_to_send?: number | undefined;
 }
 export interface SendEmailResponse {
     success: boolean;
-    errorMessage?: string | undefined;
+    error_message?: string | undefined;
 }
 export declare const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest>;
 export declare const ListTemplatesRequest: MessageFns<ListTemplatesRequest>;

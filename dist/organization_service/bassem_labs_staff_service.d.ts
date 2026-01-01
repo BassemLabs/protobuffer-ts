@@ -10,17 +10,17 @@ export interface CreateUserRequest {
     /** Username */
     username: string;
     /** First name */
-    firstName: string;
+    first_name: string;
     /** Last name */
-    lastName: string;
+    last_name: string;
     /** Gender */
     gender: string;
     /** Personal email */
-    personalEmail: string;
+    personal_email: string;
     /** Phone number */
-    phoneNumber: string;
+    phone_number: string;
     /** Date of birth */
-    dateOfBirth: Date | undefined;
+    date_of_birth: Date | undefined;
     /** User roles */
     roles: UserRole[];
 }
@@ -30,17 +30,17 @@ export interface UpdateProfileRequest {
     /** ID of the user to update */
     id: ObjectId | undefined;
     /** First name */
-    firstName?: string | undefined;
+    first_name?: string | undefined;
     /** Last name */
-    lastName?: string | undefined;
+    last_name?: string | undefined;
     /** Gender */
     gender?: string | undefined;
     /** Personal email */
-    personalEmail?: string | undefined;
+    personal_email?: string | undefined;
     /** Phone number */
-    phoneNumber?: string | undefined;
+    phone_number?: string | undefined;
     /** Date of birth */
-    dateOfBirth?: Date | undefined;
+    date_of_birth?: Date | undefined;
 }
 export interface UpdateStatusRequest {
     /** Context of the request */

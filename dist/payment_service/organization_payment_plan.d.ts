@@ -17,29 +17,29 @@ export interface OrganizationPaymentPlan {
     name: string;
     description: string;
     currency: Currency;
-    isPublic: boolean;
-    isActive: boolean;
-    upfrontCost: number;
-    upfrontCostPaymentInterval: PaymentInterval;
-    perStudentCost: number;
-    paymentProcessingPercentage: number;
+    is_public: boolean;
+    is_active: boolean;
+    upfront_cost: number;
+    upfront_cost_payment_interval: PaymentInterval;
+    per_student_cost: number;
+    payment_processing_percentage: number;
 }
 export interface OrganizationPlanAccess {
-    organizationId: ObjectId | undefined;
-    paymentPlanId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    payment_plan_id: ObjectId | undefined;
 }
 export interface OrganizationPaymentPlanInformation {
     id: ObjectId | undefined;
-    organizationId: ObjectId | undefined;
-    paymentPlan: ObjectId | undefined;
-    deferPerStudentCostToParent: boolean;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    trialDays: number;
+    organization_id: ObjectId | undefined;
+    payment_plan: ObjectId | undefined;
+    defer_per_student_cost_to_parent: boolean;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+    trial_days: number;
 }
 export interface OrganizationPaymentPlanWithInfo {
-    paymentPlan: OrganizationPaymentPlan | undefined;
-    paymentPlanInfo: OrganizationPaymentPlanInformation | undefined;
+    payment_plan: OrganizationPaymentPlan | undefined;
+    payment_plan_info: OrganizationPaymentPlanInformation | undefined;
 }
 export declare const OrganizationPaymentPlan: MessageFns<OrganizationPaymentPlan>;
 export declare const OrganizationPlanAccess: MessageFns<OrganizationPlanAccess>;

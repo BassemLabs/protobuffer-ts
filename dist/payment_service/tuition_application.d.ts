@@ -13,7 +13,7 @@ export interface DiscountApplication {
 export interface AdditionalFeeApplication {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    additionalFee: ObjectId | undefined;
+    additional_fee: ObjectId | undefined;
     student?: ObjectId | undefined;
     family?: ObjectId | undefined;
 }

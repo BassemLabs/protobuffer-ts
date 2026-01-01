@@ -8,7 +8,7 @@ export declare const protobufPackage = "organization_service";
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 /** Request to fetch an organization by domain */
 export interface GetOrganizationByDomainRequest {
@@ -17,7 +17,7 @@ export interface GetOrganizationByDomainRequest {
 }
 /** Request to unsafely fetch an organization by ID */
 export interface UnsafeGetOrganizationByOrganizationIdRequest {
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 /** Request to unsafely fetch an organization by domain */
 export interface UnsafeGetOrganizationByDomainRequest {
@@ -26,51 +26,51 @@ export interface UnsafeGetOrganizationByDomainRequest {
 /** Request to rename an organization */
 export interface RenameOrganizationRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    newName: string;
+    organization_id: ObjectId | undefined;
+    new_name: string;
 }
 /** Request to update the default domain of an organization */
 export interface UpdateDefaultDomainRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    newDefaultDomain: string;
+    organization_id: ObjectId | undefined;
+    new_default_domain: string;
 }
 /** Request to add a domain to an organization */
 export interface AddDomainRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    newDomain: string;
+    organization_id: ObjectId | undefined;
+    new_domain: string;
 }
 /** Request to remove a domain from an organization */
 export interface RemoveDomainRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    removeDomain: string;
+    organization_id: ObjectId | undefined;
+    remove_domain: string;
 }
 /** Request to update organization main settings */
 export interface UpdateOrganizationSettingsRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
     name: string;
     domains: string[];
-    defaultDomain: string;
-    countryCode: string;
+    default_domain: string;
+    country_code: string;
     currency: Currency;
-    loginId: string;
-    mainAddress: string;
-    weekendDays: DayOfWeek[];
+    login_id: string;
+    main_address: string;
+    weekend_days: DayOfWeek[];
     timezone: string;
 }
 export interface UpdateOrganizationAutoPayRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    autoPayDisabled: boolean;
+    organization_id: ObjectId | undefined;
+    auto_pay_disabled: boolean;
 }
 export interface UpdateAutoPayRetryConfigRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    maxRetries: number;
-    retryIntervalHours: number;
+    organization_id: ObjectId | undefined;
+    max_retries: number;
+    retry_interval_hours: number;
 }
 /** Request to fetch all organizations */
 export interface GetOrganizationsRequest {
@@ -82,86 +82,86 @@ export interface GetOrganizationsResponse {
 }
 export interface GetSchoolYearsRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface GetSchoolYearRequest {
     context: RequestContext | undefined;
-    schoolYearId: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
 }
 export interface GetSchoolYearsResponse {
-    schoolYears: SchoolYear[];
+    school_years: SchoolYear[];
 }
 export interface CreateSchoolYearRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
     name: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
 }
 export interface UpdateSchoolYearRegistrationStatusRequest {
     context: RequestContext | undefined;
-    schoolYearId: ObjectId | undefined;
-    newRegistrationStatus: boolean;
+    school_year_id: ObjectId | undefined;
+    new_registration_status: boolean;
 }
 export interface UpdateSchoolYearRequest {
     context: RequestContext | undefined;
-    schoolYearId: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
     name: string;
-    isOpenForRegistration: boolean;
+    is_open_for_registration: boolean;
 }
 export interface CreateSchoolYearResponse {
-    schoolYears: SchoolYear[];
+    school_years: SchoolYear[];
 }
 export interface StartSchoolYearRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface StartReregistrationRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface GetOrganizationByStripeRequest {
-    stripeAccountId: string;
+    stripe_account_id: string;
 }
 export interface UpdateStripeIdRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    stripeAcountId: string;
+    organization_id: ObjectId | undefined;
+    stripe_acount_id: string;
 }
 export interface UpdateOrganizationStripePaymentInfoRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    stripePayoutsEnabled: boolean;
-    stripeDetailsSubmitted: boolean;
-    stripeChargesEnabled: boolean;
+    organization_id: ObjectId | undefined;
+    stripe_payouts_enabled: boolean;
+    stripe_details_submitted: boolean;
+    stripe_charges_enabled: boolean;
 }
 export interface GetOrganizationByLoginIdRequest {
     context: RequestContext | undefined;
-    loginId: string;
+    login_id: string;
 }
 export interface GetOrganizationsByIdRequest {
     context: RequestContext | undefined;
-    organizationIds: ObjectId[];
+    organization_ids: ObjectId[];
 }
 export interface GetOrganizationOnboardingStepsStatusRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface GetAllOrganizationsOnboardingStepsStatusRequest {
     context: RequestContext | undefined;
 }
 export interface GetAllOrganizationsOnboardingStepsStatusResponse {
-    orgsOnboardingStepsStatus: OnboardingStepsStatus[];
+    orgs_onboarding_steps_status: OnboardingStepsStatus[];
 }
 export interface MarkOnboardingStepAsCompletedRequest {
     context: RequestContext | undefined;
-    stepName: OnboardingStepName;
+    step_name: OnboardingStepName;
 }
 export interface UpdateInvoiceSettingsRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    disableTax: boolean;
-    hstNumber?: string | undefined;
+    organization_id: ObjectId | undefined;
+    disable_tax: boolean;
+    hst_number?: string | undefined;
 }
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;

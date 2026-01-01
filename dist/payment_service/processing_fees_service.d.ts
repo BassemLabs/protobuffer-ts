@@ -14,11 +14,11 @@ export interface ListProcessingFeesResponse {
 }
 export interface CreateProcessingFeeRequest {
     context: RequestContext | undefined;
-    invoiceType: InvoiceType;
-    feeType: FeeType;
-    valueType: DiscountValueType;
+    invoice_type: InvoiceType;
+    fee_type: FeeType;
+    value_type: DiscountValueType;
     value: number;
-    capAmount?: number | undefined;
+    cap_amount?: number | undefined;
 }
 export interface GetProcessingFeeRequest {
     context: RequestContext | undefined;
@@ -27,11 +27,11 @@ export interface GetProcessingFeeRequest {
 export interface UpdateProcessingFeeRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    invoiceType: InvoiceType;
-    feeType: FeeType;
-    valueType: DiscountValueType;
+    invoice_type: InvoiceType;
+    fee_type: FeeType;
+    value_type: DiscountValueType;
     value: number;
-    capAmount?: number | undefined;
+    cap_amount?: number | undefined;
 }
 export interface ArchiveProcessingFeeRequest {
     context: RequestContext | undefined;
@@ -43,7 +43,7 @@ export interface UnarchiveProcessingFeeRequest {
 }
 export interface GetActiveProcessingFeesRequest {
     context: RequestContext | undefined;
-    invoiceType: InvoiceType;
+    invoice_type: InvoiceType;
 }
 /** organization level */
 export interface GetOrganizationProcessingFeeRequest {
@@ -51,8 +51,8 @@ export interface GetOrganizationProcessingFeeRequest {
 }
 export interface UpdateOrganizationProcessingFeeRequest {
     context: RequestContext | undefined;
-    tuitionInvoiceFeesEnabled: boolean;
-    nonTuitionInvoiceFeesEnabled: boolean;
+    tuition_invoice_fees_enabled: boolean;
+    non_tuition_invoice_fees_enabled: boolean;
 }
 export declare const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest>;
 export declare const ListProcessingFeesResponse: MessageFns<ListProcessingFeesResponse>;

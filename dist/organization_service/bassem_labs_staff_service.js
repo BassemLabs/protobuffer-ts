@@ -18,12 +18,12 @@ function createBaseCreateUserRequest() {
     return {
         context: undefined,
         username: "",
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         gender: "",
-        personalEmail: "",
-        phoneNumber: "",
-        dateOfBirth: undefined,
+        personal_email: "",
+        phone_number: "",
+        date_of_birth: undefined,
         roles: [],
     };
 }
@@ -35,23 +35,23 @@ exports.CreateUserRequest = {
         if (message.username !== "") {
             writer.uint32(18).string(message.username);
         }
-        if (message.firstName !== "") {
-            writer.uint32(26).string(message.firstName);
+        if (message.first_name !== "") {
+            writer.uint32(26).string(message.first_name);
         }
-        if (message.lastName !== "") {
-            writer.uint32(34).string(message.lastName);
+        if (message.last_name !== "") {
+            writer.uint32(34).string(message.last_name);
         }
         if (message.gender !== "") {
             writer.uint32(42).string(message.gender);
         }
-        if (message.personalEmail !== "") {
-            writer.uint32(50).string(message.personalEmail);
+        if (message.personal_email !== "") {
+            writer.uint32(50).string(message.personal_email);
         }
-        if (message.phoneNumber !== "") {
-            writer.uint32(58).string(message.phoneNumber);
+        if (message.phone_number !== "") {
+            writer.uint32(58).string(message.phone_number);
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(66).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(66).fork()).join();
         }
         writer.uint32(74).fork();
         for (const v of message.roles) {
@@ -83,13 +83,13 @@ exports.CreateUserRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -101,19 +101,19 @@ exports.CreateUserRequest = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.personalEmail = reader.string();
+                    message.personal_email = reader.string();
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.phoneNumber = reader.string();
+                    message.phone_number = reader.string();
                     continue;
                 case 8:
                     if (tag !== 66) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 9:
                     if (tag === 72) {
@@ -140,12 +140,12 @@ exports.CreateUserRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
-            phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
         };
     },
@@ -157,23 +157,23 @@ exports.CreateUserRequest = {
         if (message.username !== "") {
             obj.username = message.username;
         }
-        if (message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
         }
-        if (message.personalEmail !== "") {
-            obj.personalEmail = message.personalEmail;
+        if (message.personal_email !== "") {
+            obj.personalEmail = message.personal_email;
         }
-        if (message.phoneNumber !== "") {
-            obj.phoneNumber = message.phoneNumber;
+        if (message.phone_number !== "") {
+            obj.phoneNumber = message.phone_number;
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         if (message.roles?.length) {
             obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
@@ -189,12 +189,12 @@ exports.CreateUserRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.username = object.username ?? "";
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
-        message.personalEmail = object.personalEmail ?? "";
-        message.phoneNumber = object.phoneNumber ?? "";
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
+        message.personal_email = object.personal_email ?? "";
+        message.phone_number = object.phone_number ?? "";
+        message.date_of_birth = object.date_of_birth ?? undefined;
         message.roles = object.roles?.map((e) => e) || [];
         return message;
     },
@@ -203,12 +203,12 @@ function createBaseUpdateProfileRequest() {
     return {
         context: undefined,
         id: undefined,
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         gender: "",
-        personalEmail: "",
-        phoneNumber: "",
-        dateOfBirth: undefined,
+        personal_email: "",
+        phone_number: "",
+        date_of_birth: undefined,
     };
 }
 exports.UpdateProfileRequest = {
@@ -219,23 +219,23 @@ exports.UpdateProfileRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
-        if (message.firstName !== undefined && message.firstName !== "") {
-            writer.uint32(26).string(message.firstName);
+        if (message.first_name !== undefined && message.first_name !== "") {
+            writer.uint32(26).string(message.first_name);
         }
-        if (message.lastName !== undefined && message.lastName !== "") {
-            writer.uint32(34).string(message.lastName);
+        if (message.last_name !== undefined && message.last_name !== "") {
+            writer.uint32(34).string(message.last_name);
         }
         if (message.gender !== undefined && message.gender !== "") {
             writer.uint32(42).string(message.gender);
         }
-        if (message.personalEmail !== undefined && message.personalEmail !== "") {
-            writer.uint32(50).string(message.personalEmail);
+        if (message.personal_email !== undefined && message.personal_email !== "") {
+            writer.uint32(50).string(message.personal_email);
         }
-        if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-            writer.uint32(58).string(message.phoneNumber);
+        if (message.phone_number !== undefined && message.phone_number !== "") {
+            writer.uint32(58).string(message.phone_number);
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(66).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -262,13 +262,13 @@ exports.UpdateProfileRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -280,19 +280,19 @@ exports.UpdateProfileRequest = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.personalEmail = reader.string();
+                    message.personal_email = reader.string();
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.phoneNumber = reader.string();
+                    message.phone_number = reader.string();
                     continue;
                 case 8:
                     if (tag !== 66) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -306,12 +306,12 @@ exports.UpdateProfileRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
-            phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
         };
     },
     toJSON(message) {
@@ -322,23 +322,23 @@ exports.UpdateProfileRequest = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.firstName !== undefined && message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== undefined && message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== undefined && message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== undefined && message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== undefined && message.gender !== "") {
             obj.gender = message.gender;
         }
-        if (message.personalEmail !== undefined && message.personalEmail !== "") {
-            obj.personalEmail = message.personalEmail;
+        if (message.personal_email !== undefined && message.personal_email !== "") {
+            obj.personalEmail = message.personal_email;
         }
-        if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-            obj.phoneNumber = message.phoneNumber;
+        if (message.phone_number !== undefined && message.phone_number !== "") {
+            obj.phoneNumber = message.phone_number;
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         return obj;
     },
@@ -351,12 +351,12 @@ exports.UpdateProfileRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
-        message.personalEmail = object.personalEmail ?? "";
-        message.phoneNumber = object.phoneNumber ?? "";
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
+        message.personal_email = object.personal_email ?? "";
+        message.phone_number = object.phone_number ?? "";
+        message.date_of_birth = object.date_of_birth ?? undefined;
         return message;
     },
 };

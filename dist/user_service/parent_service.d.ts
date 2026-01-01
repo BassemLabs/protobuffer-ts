@@ -6,11 +6,11 @@ import { Student } from "./student";
 export declare const protobufPackage = "user_service";
 export interface GetParentRequest {
     context: RequestContext | undefined;
-    parentId: ObjectId | undefined;
+    parent_id: ObjectId | undefined;
 }
 export interface GetParentsByIdsRequest {
     context: RequestContext | undefined;
-    parentIds: ObjectId[];
+    parent_ids: ObjectId[];
 }
 export interface GetParentsByIdsResponse {
     parents: Parent[];
@@ -25,7 +25,7 @@ export interface GetParentsByEmailResponse {
 }
 export interface GetParentStudentsRequest {
     context: RequestContext | undefined;
-    parentId: ObjectId | undefined;
+    parent_id: ObjectId | undefined;
 }
 export interface GetParentStudentsResponse {
     /** All students under parent's care across all families */
@@ -36,66 +36,66 @@ export interface GetParentStudentsFromContextRequest {
 }
 export interface GetParentStudentIdsRequest {
     context: RequestContext | undefined;
-    parentId: ObjectId | undefined;
+    parent_id: ObjectId | undefined;
 }
 export interface GetParentStudentIdsResponse {
     /** All student IDs under parent's care across all families */
-    studentIds: ObjectId[];
+    student_ids: ObjectId[];
 }
 export interface GetContextActiveSchoolYearEnrolledStudentIdsRequest {
     context: RequestContext | undefined;
 }
 export interface GetContextActiveSchoolYearEnrolledStudentIdsResponse {
     /** Only enrolled students in active school year (filtered from context's parent_student_ids) */
-    studentIds: ObjectId[];
+    student_ids: ObjectId[];
 }
 export interface AddNewGuardianToFamilyRequest {
     context: RequestContext | undefined;
     name: string;
     email: string;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
 }
 export interface UpdateParentProfileRequest {
     context: RequestContext | undefined;
-    parentId: ObjectId | undefined;
+    parent_id: ObjectId | undefined;
     profile: ParentProfile | undefined;
 }
 export interface AuthenticateParentForOrgRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    firebaseUserId: string;
-    displayName: string;
+    organization_id: ObjectId | undefined;
+    firebase_user_id: string;
+    display_name: string;
     email: string;
 }
 export interface AuthenticateParentForOrgResponse {
     parent: Parent | undefined;
-    familyIds: ObjectId[];
-    studentIds: ObjectId[];
+    family_ids: ObjectId[];
+    student_ids: ObjectId[];
 }
 export interface UpdateParentPaymentMethodFromSetupIntentRequest {
     context: RequestContext | undefined;
-    stripeCustomerId: string;
-    defaultPaymentMethodId: string;
-    defaultPaymentMethodType?: string | undefined;
-    paymentMethodBrand?: string | undefined;
-    paymentMethodLast4?: string | undefined;
-    paymentMethodExpiry?: string | undefined;
-    paymentMethodMandateId?: string | undefined;
+    stripe_customer_id: string;
+    default_payment_method_id: string;
+    default_payment_method_type?: string | undefined;
+    payment_method_brand?: string | undefined;
+    payment_method_last4?: string | undefined;
+    payment_method_expiry?: string | undefined;
+    payment_method_mandate_id?: string | undefined;
 }
 export interface SetParentSetupIntentRequiresActionRequest {
     context: RequestContext | undefined;
-    stripeCustomerId: string;
-    setupIntentId: string;
+    stripe_customer_id: string;
+    setup_intent_id: string;
 }
 export interface SetParentSetupIntentFailureRequest {
     context: RequestContext | undefined;
-    stripeCustomerId: string;
-    failureReason: string;
+    stripe_customer_id: string;
+    failure_reason: string;
 }
 export interface SetParentStripeCustomerIdRequest {
     context: RequestContext | undefined;
-    parentId: ObjectId | undefined;
-    stripeCustomerId: string;
+    parent_id: ObjectId | undefined;
+    stripe_customer_id: string;
 }
 export interface GetAllParentsForStagingRequest {
     context: RequestContext | undefined;

@@ -7,7 +7,7 @@ import { Student, StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
 export interface GetFamilyRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
 }
 export interface GetAllFamiliesRequest {
     context: RequestContext | undefined;
@@ -17,21 +17,21 @@ export interface GetAllFamiliesResponse {
 }
 export interface GetFamiliesByIdsRequest {
     context: RequestContext | undefined;
-    familyIds: ObjectId[];
+    family_ids: ObjectId[];
 }
 export interface GetFamiliesByIdsResponse {
     families: Family[];
 }
 export interface GetFamiliesByParentRequest {
     context: RequestContext | undefined;
-    parentId: ObjectId | undefined;
+    parent_id: ObjectId | undefined;
 }
 export interface GetFamiliesByParentResponse {
     families: Family[];
 }
 export interface GetFamilyGuardiansRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
 }
 export interface GetFamilyGuardiansResponse {
     /** All guardians in the family */
@@ -39,7 +39,7 @@ export interface GetFamilyGuardiansResponse {
 }
 export interface GetContactGuardiansRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
 }
 export interface GetContactGuardiansResponse {
     /** Guardians excluding those in guardians_to_not_contact */
@@ -47,7 +47,7 @@ export interface GetContactGuardiansResponse {
 }
 export interface GetFamilyStudentsRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
 }
 export interface GetFamilyStudentsResponse {
     /** All students in the family */
@@ -55,8 +55,8 @@ export interface GetFamilyStudentsResponse {
 }
 export interface GetEnrolledStudentsForFamilyRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
-    schoolYearId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
 }
 export interface GetEnrolledStudentsForFamilyResponse {
     /** Enrolled students for the specified school year */
@@ -64,13 +64,13 @@ export interface GetEnrolledStudentsForFamilyResponse {
 }
 export interface GetFamiliesByStudentStatusRequest {
     context: RequestContext | undefined;
-    studentStatuses: StudentStatus[];
-    schoolYearId: ObjectId | undefined;
+    student_statuses: StudentStatus[];
+    school_year_id: ObjectId | undefined;
 }
 /** Family with student count (used in bulk queries) */
 export interface FamilyWithStudentCount {
     family: Family | undefined;
-    studentCount: number;
+    student_count: number;
 }
 export interface GetFamiliesByStudentStatusResponse {
     /** Families with their student counts */
@@ -85,21 +85,21 @@ export interface CreateFamilyRequest {
 }
 export interface UpdateFamilyRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
     name: string;
     guardians: ObjectId[];
-    guardiansToNotContact: ObjectId[];
+    guardians_to_not_contact: ObjectId[];
     information: FamilyInformation | undefined;
 }
 export interface UpdateFamilyNameRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
+    family_id: ObjectId | undefined;
     name: string;
 }
 export interface UpdateFamilyAutoPayRequest {
     context: RequestContext | undefined;
-    familyId: ObjectId | undefined;
-    autoPayDisabled: boolean;
+    family_id: ObjectId | undefined;
+    auto_pay_disabled: boolean;
 }
 export declare const GetFamilyRequest: MessageFns<GetFamilyRequest>;
 export declare const GetAllFamiliesRequest: MessageFns<GetAllFamiliesRequest>;

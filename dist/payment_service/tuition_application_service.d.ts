@@ -20,7 +20,7 @@ export interface RemoveDiscountResponse {
 export interface ListStudentDiscountsRequest {
     context: RequestContext | undefined;
     student: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
 }
 export interface ListStudentDiscountsResponse {
     applications: DiscountApplication[];
@@ -28,7 +28,7 @@ export interface ListStudentDiscountsResponse {
 export interface ListFamilyDiscountsRequest {
     context: RequestContext | undefined;
     family: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
 }
 export interface ListFamilyDiscountsResponse {
     applications: DiscountApplication[];
@@ -36,7 +36,7 @@ export interface ListFamilyDiscountsResponse {
 /** Additional Fee Application messages */
 export interface ApplyAdditionalFeeRequest {
     context: RequestContext | undefined;
-    additionalFee: ObjectId | undefined;
+    additional_fee: ObjectId | undefined;
     student?: ObjectId | undefined;
     family?: ObjectId | undefined;
 }
@@ -50,7 +50,7 @@ export interface RemoveAdditionalFeeResponse {
 export interface ListStudentAdditionalFeesRequest {
     context: RequestContext | undefined;
     student: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
 }
 export interface ListStudentAdditionalFeesResponse {
     applications: AdditionalFeeApplication[];
@@ -58,7 +58,7 @@ export interface ListStudentAdditionalFeesResponse {
 export interface ListFamilyAdditionalFeesRequest {
     context: RequestContext | undefined;
     family: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
 }
 export interface ListFamilyAdditionalFeesResponse {
     applications: AdditionalFeeApplication[];

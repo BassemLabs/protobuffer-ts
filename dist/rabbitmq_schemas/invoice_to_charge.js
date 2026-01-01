@@ -12,15 +12,15 @@ const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "rabbitmq_schemas";
 function createBaseInvoiceToCharge() {
-    return { invoiceId: undefined, dateSent: undefined };
+    return { invoice_id: undefined, date_sent: undefined };
 }
 exports.InvoiceToCharge = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.invoiceId !== undefined) {
-            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(10).fork()).join();
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(10).fork()).join();
         }
-        if (message.dateSent !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateSent), writer.uint32(18).fork()).join();
+        if (message.date_sent !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_sent), writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -35,13 +35,13 @@ exports.InvoiceToCharge = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.dateSent = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_sent = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -53,17 +53,17 @@ exports.InvoiceToCharge = {
     },
     fromJSON(object) {
         return {
-            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
-            dateSent: isSet(object.dateSent) ? fromJsonTimestamp(object.dateSent) : undefined,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            date_sent: isSet(object.dateSent) ? fromJsonTimestamp(object.dateSent) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.invoiceId !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
-        if (message.dateSent !== undefined) {
-            obj.dateSent = message.dateSent.toISOString();
+        if (message.date_sent !== undefined) {
+            obj.dateSent = message.date_sent.toISOString();
         }
         return obj;
     },
@@ -72,10 +72,10 @@ exports.InvoiceToCharge = {
     },
     fromPartial(object) {
         const message = createBaseInvoiceToCharge();
-        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;
-        message.dateSent = object.dateSent ?? undefined;
+        message.date_sent = object.date_sent ?? undefined;
         return message;
     },
 };

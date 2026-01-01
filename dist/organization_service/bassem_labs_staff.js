@@ -61,13 +61,13 @@ function createBaseBassemLabsStaff() {
         id: undefined,
         status: StaffStatus.ACTIVE,
         username: "",
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         gender: "",
         email: "",
-        personalEmail: "",
-        dateOfBirth: undefined,
-        phoneNumber: "",
+        personal_email: "",
+        date_of_birth: undefined,
+        phone_number: "",
     };
 }
 exports.BassemLabsStaff = {
@@ -81,11 +81,11 @@ exports.BassemLabsStaff = {
         if (message.username !== "") {
             writer.uint32(26).string(message.username);
         }
-        if (message.firstName !== "") {
-            writer.uint32(34).string(message.firstName);
+        if (message.first_name !== "") {
+            writer.uint32(34).string(message.first_name);
         }
-        if (message.lastName !== "") {
-            writer.uint32(42).string(message.lastName);
+        if (message.last_name !== "") {
+            writer.uint32(42).string(message.last_name);
         }
         if (message.gender !== "") {
             writer.uint32(50).string(message.gender);
@@ -93,14 +93,14 @@ exports.BassemLabsStaff = {
         if (message.email !== "") {
             writer.uint32(58).string(message.email);
         }
-        if (message.personalEmail !== "") {
-            writer.uint32(66).string(message.personalEmail);
+        if (message.personal_email !== "") {
+            writer.uint32(66).string(message.personal_email);
         }
-        if (message.dateOfBirth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dateOfBirth), writer.uint32(74).fork()).join();
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(74).fork()).join();
         }
-        if (message.phoneNumber !== "") {
-            writer.uint32(82).string(message.phoneNumber);
+        if (message.phone_number !== "") {
+            writer.uint32(82).string(message.phone_number);
         }
         return writer;
     },
@@ -133,13 +133,13 @@ exports.BassemLabsStaff = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.firstName = reader.string();
+                    message.first_name = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.lastName = reader.string();
+                    message.last_name = reader.string();
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -157,19 +157,19 @@ exports.BassemLabsStaff = {
                     if (tag !== 66) {
                         break;
                     }
-                    message.personalEmail = reader.string();
+                    message.personal_email = reader.string();
                     continue;
                 case 9:
                     if (tag !== 74) {
                         break;
                     }
-                    message.dateOfBirth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 10:
                     if (tag !== 82) {
                         break;
                     }
-                    message.phoneNumber = reader.string();
+                    message.phone_number = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -184,13 +184,13 @@ exports.BassemLabsStaff = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             status: isSet(object.status) ? staffStatusFromJSON(object.status) : StaffStatus.ACTIVE,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
-            firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
-            personalEmail: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
-            dateOfBirth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
         };
     },
     toJSON(message) {
@@ -204,11 +204,11 @@ exports.BassemLabsStaff = {
         if (message.username !== "") {
             obj.username = message.username;
         }
-        if (message.firstName !== "") {
-            obj.firstName = message.firstName;
+        if (message.first_name !== "") {
+            obj.firstName = message.first_name;
         }
-        if (message.lastName !== "") {
-            obj.lastName = message.lastName;
+        if (message.last_name !== "") {
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
@@ -216,14 +216,14 @@ exports.BassemLabsStaff = {
         if (message.email !== "") {
             obj.email = message.email;
         }
-        if (message.personalEmail !== "") {
-            obj.personalEmail = message.personalEmail;
+        if (message.personal_email !== "") {
+            obj.personalEmail = message.personal_email;
         }
-        if (message.dateOfBirth !== undefined) {
-            obj.dateOfBirth = message.dateOfBirth.toISOString();
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
-        if (message.phoneNumber !== "") {
-            obj.phoneNumber = message.phoneNumber;
+        if (message.phone_number !== "") {
+            obj.phoneNumber = message.phone_number;
         }
         return obj;
     },
@@ -235,13 +235,13 @@ exports.BassemLabsStaff = {
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.status = object.status ?? StaffStatus.ACTIVE;
         message.username = object.username ?? "";
-        message.firstName = object.firstName ?? "";
-        message.lastName = object.lastName ?? "";
+        message.first_name = object.first_name ?? "";
+        message.last_name = object.last_name ?? "";
         message.gender = object.gender ?? "";
         message.email = object.email ?? "";
-        message.personalEmail = object.personalEmail ?? "";
-        message.dateOfBirth = object.dateOfBirth ?? undefined;
-        message.phoneNumber = object.phoneNumber ?? "";
+        message.personal_email = object.personal_email ?? "";
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        message.phone_number = object.phone_number ?? "";
         return message;
     },
 };

@@ -24,7 +24,7 @@ export const protobufPackage = "organization_service";
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 /** Request to fetch an organization by domain */
@@ -35,7 +35,7 @@ export interface GetOrganizationByDomainRequest {
 
 /** Request to unsafely fetch an organization by ID */
 export interface UnsafeGetOrganizationByOrganizationIdRequest {
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 /** Request to unsafely fetch an organization by domain */
@@ -46,57 +46,57 @@ export interface UnsafeGetOrganizationByDomainRequest {
 /** Request to rename an organization */
 export interface RenameOrganizationRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  newName: string;
+  organization_id: ObjectId | undefined;
+  new_name: string;
 }
 
 /** Request to update the default domain of an organization */
 export interface UpdateDefaultDomainRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  newDefaultDomain: string;
+  organization_id: ObjectId | undefined;
+  new_default_domain: string;
 }
 
 /** Request to add a domain to an organization */
 export interface AddDomainRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  newDomain: string;
+  organization_id: ObjectId | undefined;
+  new_domain: string;
 }
 
 /** Request to remove a domain from an organization */
 export interface RemoveDomainRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  removeDomain: string;
+  organization_id: ObjectId | undefined;
+  remove_domain: string;
 }
 
 /** Request to update organization main settings */
 export interface UpdateOrganizationSettingsRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
   name: string;
   domains: string[];
-  defaultDomain: string;
-  countryCode: string;
+  default_domain: string;
+  country_code: string;
   currency: Currency;
-  loginId: string;
-  mainAddress: string;
-  weekendDays: DayOfWeek[];
+  login_id: string;
+  main_address: string;
+  weekend_days: DayOfWeek[];
   timezone: string;
 }
 
 export interface UpdateOrganizationAutoPayRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  autoPayDisabled: boolean;
+  organization_id: ObjectId | undefined;
+  auto_pay_disabled: boolean;
 }
 
 export interface UpdateAutoPayRetryConfigRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  maxRetries: number;
-  retryIntervalHours: number;
+  organization_id: ObjectId | undefined;
+  max_retries: number;
+  retry_interval_hours: number;
 }
 
 /** Request to fetch all organizations */
@@ -111,84 +111,84 @@ export interface GetOrganizationsResponse {
 
 export interface GetSchoolYearsRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 export interface GetSchoolYearRequest {
   context: RequestContext | undefined;
-  schoolYearId: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
 }
 
 export interface GetSchoolYearsResponse {
-  schoolYears: SchoolYear[];
+  school_years: SchoolYear[];
 }
 
 export interface CreateSchoolYearRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
   name: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
+  start_date: Date | undefined;
+  end_date: Date | undefined;
 }
 
 export interface UpdateSchoolYearRegistrationStatusRequest {
   context: RequestContext | undefined;
-  schoolYearId: ObjectId | undefined;
-  newRegistrationStatus: boolean;
+  school_year_id: ObjectId | undefined;
+  new_registration_status: boolean;
 }
 
 export interface UpdateSchoolYearRequest {
   context: RequestContext | undefined;
-  schoolYearId: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
   name: string;
-  isOpenForRegistration: boolean;
+  is_open_for_registration: boolean;
 }
 
 export interface CreateSchoolYearResponse {
-  schoolYears: SchoolYear[];
+  school_years: SchoolYear[];
 }
 
 export interface StartSchoolYearRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 export interface StartReregistrationRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 export interface GetOrganizationByStripeRequest {
-  stripeAccountId: string;
+  stripe_account_id: string;
 }
 
 export interface UpdateStripeIdRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  stripeAcountId: string;
+  organization_id: ObjectId | undefined;
+  stripe_acount_id: string;
 }
 
 export interface UpdateOrganizationStripePaymentInfoRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  stripePayoutsEnabled: boolean;
-  stripeDetailsSubmitted: boolean;
-  stripeChargesEnabled: boolean;
+  organization_id: ObjectId | undefined;
+  stripe_payouts_enabled: boolean;
+  stripe_details_submitted: boolean;
+  stripe_charges_enabled: boolean;
 }
 
 export interface GetOrganizationByLoginIdRequest {
   context: RequestContext | undefined;
-  loginId: string;
+  login_id: string;
 }
 
 export interface GetOrganizationsByIdRequest {
   context: RequestContext | undefined;
-  organizationIds: ObjectId[];
+  organization_ids: ObjectId[];
 }
 
 export interface GetOrganizationOnboardingStepsStatusRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 export interface GetAllOrganizationsOnboardingStepsStatusRequest {
@@ -196,23 +196,23 @@ export interface GetAllOrganizationsOnboardingStepsStatusRequest {
 }
 
 export interface GetAllOrganizationsOnboardingStepsStatusResponse {
-  orgsOnboardingStepsStatus: OnboardingStepsStatus[];
+  orgs_onboarding_steps_status: OnboardingStepsStatus[];
 }
 
 export interface MarkOnboardingStepAsCompletedRequest {
   context: RequestContext | undefined;
-  stepName: OnboardingStepName;
+  step_name: OnboardingStepName;
 }
 
 export interface UpdateInvoiceSettingsRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  disableTax: boolean;
-  hstNumber?: string | undefined;
+  organization_id: ObjectId | undefined;
+  disable_tax: boolean;
+  hst_number?: string | undefined;
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
@@ -220,8 +220,8 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -245,7 +245,7 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -259,7 +259,7 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
   fromJSON(object: any): GetOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -268,8 +268,8 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -282,8 +282,8 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
@@ -368,7 +368,7 @@ export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainR
 };
 
 function createBaseUnsafeGetOrganizationByOrganizationIdRequest(): UnsafeGetOrganizationByOrganizationIdRequest {
-  return { organizationId: undefined };
+  return { organization_id: undefined };
 }
 
 export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest> = {
@@ -376,8 +376,8 @@ export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetO
     message: UnsafeGetOrganizationByOrganizationIdRequest,
     writer: BinaryWriter = new BinaryWriter(),
   ): BinaryWriter {
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(10).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -394,7 +394,7 @@ export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetO
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -406,13 +406,13 @@ export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetO
   },
 
   fromJSON(object: any): UnsafeGetOrganizationByOrganizationIdRequest {
-    return { organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined };
+    return { organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined };
   },
 
   toJSON(message: UnsafeGetOrganizationByOrganizationIdRequest): unknown {
     const obj: any = {};
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -426,8 +426,8 @@ export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetO
     object: I,
   ): UnsafeGetOrganizationByOrganizationIdRequest {
     const message = createBaseUnsafeGetOrganizationByOrganizationIdRequest();
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
@@ -495,7 +495,7 @@ export const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizat
 };
 
 function createBaseRenameOrganizationRequest(): RenameOrganizationRequest {
-  return { context: undefined, organizationId: undefined, newName: "" };
+  return { context: undefined, organization_id: undefined, new_name: "" };
 }
 
 export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = {
@@ -503,11 +503,11 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.newName !== "") {
-      writer.uint32(26).string(message.newName);
+    if (message.new_name !== "") {
+      writer.uint32(26).string(message.new_name);
     }
     return writer;
   },
@@ -531,14 +531,14 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.newName = reader.string();
+          message.new_name = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -552,8 +552,8 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
   fromJSON(object: any): RenameOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newName: isSet(object.newName) ? globalThis.String(object.newName) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_name: isSet(object.newName) ? globalThis.String(object.newName) : "",
     };
   },
 
@@ -562,11 +562,11 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.newName !== "") {
-      obj.newName = message.newName;
+    if (message.new_name !== "") {
+      obj.newName = message.new_name;
     }
     return obj;
   },
@@ -579,16 +579,16 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.newName = object.newName ?? "";
+    message.new_name = object.new_name ?? "";
     return message;
   },
 };
 
 function createBaseUpdateDefaultDomainRequest(): UpdateDefaultDomainRequest {
-  return { context: undefined, organizationId: undefined, newDefaultDomain: "" };
+  return { context: undefined, organization_id: undefined, new_default_domain: "" };
 }
 
 export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> = {
@@ -596,11 +596,11 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.newDefaultDomain !== "") {
-      writer.uint32(26).string(message.newDefaultDomain);
+    if (message.new_default_domain !== "") {
+      writer.uint32(26).string(message.new_default_domain);
     }
     return writer;
   },
@@ -624,14 +624,14 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.newDefaultDomain = reader.string();
+          message.new_default_domain = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -645,8 +645,8 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
   fromJSON(object: any): UpdateDefaultDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newDefaultDomain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_default_domain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
     };
   },
 
@@ -655,11 +655,11 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.newDefaultDomain !== "") {
-      obj.newDefaultDomain = message.newDefaultDomain;
+    if (message.new_default_domain !== "") {
+      obj.newDefaultDomain = message.new_default_domain;
     }
     return obj;
   },
@@ -672,16 +672,16 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.newDefaultDomain = object.newDefaultDomain ?? "";
+    message.new_default_domain = object.new_default_domain ?? "";
     return message;
   },
 };
 
 function createBaseAddDomainRequest(): AddDomainRequest {
-  return { context: undefined, organizationId: undefined, newDomain: "" };
+  return { context: undefined, organization_id: undefined, new_domain: "" };
 }
 
 export const AddDomainRequest: MessageFns<AddDomainRequest> = {
@@ -689,11 +689,11 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.newDomain !== "") {
-      writer.uint32(26).string(message.newDomain);
+    if (message.new_domain !== "") {
+      writer.uint32(26).string(message.new_domain);
     }
     return writer;
   },
@@ -717,14 +717,14 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.newDomain = reader.string();
+          message.new_domain = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -738,8 +738,8 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
   fromJSON(object: any): AddDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newDomain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_domain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
     };
   },
 
@@ -748,11 +748,11 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.newDomain !== "") {
-      obj.newDomain = message.newDomain;
+    if (message.new_domain !== "") {
+      obj.newDomain = message.new_domain;
     }
     return obj;
   },
@@ -765,16 +765,16 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.newDomain = object.newDomain ?? "";
+    message.new_domain = object.new_domain ?? "";
     return message;
   },
 };
 
 function createBaseRemoveDomainRequest(): RemoveDomainRequest {
-  return { context: undefined, organizationId: undefined, removeDomain: "" };
+  return { context: undefined, organization_id: undefined, remove_domain: "" };
 }
 
 export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
@@ -782,11 +782,11 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.removeDomain !== "") {
-      writer.uint32(26).string(message.removeDomain);
+    if (message.remove_domain !== "") {
+      writer.uint32(26).string(message.remove_domain);
     }
     return writer;
   },
@@ -810,14 +810,14 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.removeDomain = reader.string();
+          message.remove_domain = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -831,8 +831,8 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
   fromJSON(object: any): RemoveDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      removeDomain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_domain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
     };
   },
 
@@ -841,11 +841,11 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.removeDomain !== "") {
-      obj.removeDomain = message.removeDomain;
+    if (message.remove_domain !== "") {
+      obj.removeDomain = message.remove_domain;
     }
     return obj;
   },
@@ -858,10 +858,10 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.removeDomain = object.removeDomain ?? "";
+    message.remove_domain = object.remove_domain ?? "";
     return message;
   },
 };
@@ -869,15 +869,15 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
 function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettingsRequest {
   return {
     context: undefined,
-    organizationId: undefined,
+    organization_id: undefined,
     name: "",
     domains: [],
-    defaultDomain: "",
-    countryCode: "",
+    default_domain: "",
+    country_code: "",
     currency: Currency.USD,
-    loginId: "",
-    mainAddress: "",
-    weekendDays: [],
+    login_id: "",
+    main_address: "",
+    weekend_days: [],
     timezone: "",
   };
 }
@@ -887,8 +887,8 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
@@ -896,23 +896,23 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     for (const v of message.domains) {
       writer.uint32(34).string(v!);
     }
-    if (message.defaultDomain !== "") {
-      writer.uint32(42).string(message.defaultDomain);
+    if (message.default_domain !== "") {
+      writer.uint32(42).string(message.default_domain);
     }
-    if (message.countryCode !== "") {
-      writer.uint32(50).string(message.countryCode);
+    if (message.country_code !== "") {
+      writer.uint32(50).string(message.country_code);
     }
     if (message.currency !== Currency.USD) {
       writer.uint32(56).int32(currencyToNumber(message.currency));
     }
-    if (message.loginId !== "") {
-      writer.uint32(66).string(message.loginId);
+    if (message.login_id !== "") {
+      writer.uint32(66).string(message.login_id);
     }
-    if (message.mainAddress !== "") {
-      writer.uint32(74).string(message.mainAddress);
+    if (message.main_address !== "") {
+      writer.uint32(74).string(message.main_address);
     }
     writer.uint32(82).fork();
-    for (const v of message.weekendDays) {
+    for (const v of message.weekend_days) {
       writer.int32(dayOfWeekToNumber(v));
     }
     writer.join();
@@ -941,7 +941,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -962,14 +962,14 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
             break;
           }
 
-          message.defaultDomain = reader.string();
+          message.default_domain = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.countryCode = reader.string();
+          message.country_code = reader.string();
           continue;
         case 7:
           if (tag !== 56) {
@@ -983,18 +983,18 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
             break;
           }
 
-          message.loginId = reader.string();
+          message.login_id = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.mainAddress = reader.string();
+          message.main_address = reader.string();
           continue;
         case 10:
           if (tag === 80) {
-            message.weekendDays.push(dayOfWeekFromJSON(reader.int32()));
+            message.weekend_days.push(dayOfWeekFromJSON(reader.int32()));
 
             continue;
           }
@@ -1002,7 +1002,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
           if (tag === 82) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.weekendDays.push(dayOfWeekFromJSON(reader.int32()));
+              message.weekend_days.push(dayOfWeekFromJSON(reader.int32()));
             }
 
             continue;
@@ -1028,15 +1028,15 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
   fromJSON(object: any): UpdateOrganizationSettingsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
-      defaultDomain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
-      countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
-      loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
-      mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-      weekendDays: globalThis.Array.isArray(object?.weekendDays)
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      weekend_days: globalThis.Array.isArray(object?.weekendDays)
         ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
         : [],
       timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
@@ -1048,8 +1048,8 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1057,23 +1057,23 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.domains?.length) {
       obj.domains = message.domains;
     }
-    if (message.defaultDomain !== "") {
-      obj.defaultDomain = message.defaultDomain;
+    if (message.default_domain !== "") {
+      obj.defaultDomain = message.default_domain;
     }
-    if (message.countryCode !== "") {
-      obj.countryCode = message.countryCode;
+    if (message.country_code !== "") {
+      obj.countryCode = message.country_code;
     }
     if (message.currency !== Currency.USD) {
       obj.currency = currencyToJSON(message.currency);
     }
-    if (message.loginId !== "") {
-      obj.loginId = message.loginId;
+    if (message.login_id !== "") {
+      obj.loginId = message.login_id;
     }
-    if (message.mainAddress !== "") {
-      obj.mainAddress = message.mainAddress;
+    if (message.main_address !== "") {
+      obj.mainAddress = message.main_address;
     }
-    if (message.weekendDays?.length) {
-      obj.weekendDays = message.weekendDays.map((e) => dayOfWeekToJSON(e));
+    if (message.weekend_days?.length) {
+      obj.weekendDays = message.weekend_days.map((e) => dayOfWeekToJSON(e));
     }
     if (message.timezone !== "") {
       obj.timezone = message.timezone;
@@ -1093,24 +1093,24 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.name = object.name ?? "";
     message.domains = object.domains?.map((e) => e) || [];
-    message.defaultDomain = object.defaultDomain ?? "";
-    message.countryCode = object.countryCode ?? "";
+    message.default_domain = object.default_domain ?? "";
+    message.country_code = object.country_code ?? "";
     message.currency = object.currency ?? Currency.USD;
-    message.loginId = object.loginId ?? "";
-    message.mainAddress = object.mainAddress ?? "";
-    message.weekendDays = object.weekendDays?.map((e) => e) || [];
+    message.login_id = object.login_id ?? "";
+    message.main_address = object.main_address ?? "";
+    message.weekend_days = object.weekend_days?.map((e) => e) || [];
     message.timezone = object.timezone ?? "";
     return message;
   },
 };
 
 function createBaseUpdateOrganizationAutoPayRequest(): UpdateOrganizationAutoPayRequest {
-  return { context: undefined, organizationId: undefined, autoPayDisabled: false };
+  return { context: undefined, organization_id: undefined, auto_pay_disabled: false };
 }
 
 export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest> = {
@@ -1118,11 +1118,11 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.autoPayDisabled !== false) {
-      writer.uint32(24).bool(message.autoPayDisabled);
+    if (message.auto_pay_disabled !== false) {
+      writer.uint32(24).bool(message.auto_pay_disabled);
     }
     return writer;
   },
@@ -1146,14 +1146,14 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.autoPayDisabled = reader.bool();
+          message.auto_pay_disabled = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1167,8 +1167,8 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
   fromJSON(object: any): UpdateOrganizationAutoPayRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
     };
   },
 
@@ -1177,11 +1177,11 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.autoPayDisabled !== false) {
-      obj.autoPayDisabled = message.autoPayDisabled;
+    if (message.auto_pay_disabled !== false) {
+      obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
   },
@@ -1198,16 +1198,16 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.autoPayDisabled = object.autoPayDisabled ?? false;
+    message.auto_pay_disabled = object.auto_pay_disabled ?? false;
     return message;
   },
 };
 
 function createBaseUpdateAutoPayRetryConfigRequest(): UpdateAutoPayRetryConfigRequest {
-  return { context: undefined, organizationId: undefined, maxRetries: 0, retryIntervalHours: 0 };
+  return { context: undefined, organization_id: undefined, max_retries: 0, retry_interval_hours: 0 };
 }
 
 export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfigRequest> = {
@@ -1215,14 +1215,14 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.maxRetries !== 0) {
-      writer.uint32(24).int32(message.maxRetries);
+    if (message.max_retries !== 0) {
+      writer.uint32(24).int32(message.max_retries);
     }
-    if (message.retryIntervalHours !== 0) {
-      writer.uint32(32).int32(message.retryIntervalHours);
+    if (message.retry_interval_hours !== 0) {
+      writer.uint32(32).int32(message.retry_interval_hours);
     }
     return writer;
   },
@@ -1246,21 +1246,21 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.maxRetries = reader.int32();
+          message.max_retries = reader.int32();
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.retryIntervalHours = reader.int32();
+          message.retry_interval_hours = reader.int32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1274,9 +1274,9 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
   fromJSON(object: any): UpdateAutoPayRetryConfigRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      maxRetries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
-      retryIntervalHours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
+      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
     };
   },
 
@@ -1285,14 +1285,14 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.maxRetries !== 0) {
-      obj.maxRetries = Math.round(message.maxRetries);
+    if (message.max_retries !== 0) {
+      obj.maxRetries = Math.round(message.max_retries);
     }
-    if (message.retryIntervalHours !== 0) {
-      obj.retryIntervalHours = Math.round(message.retryIntervalHours);
+    if (message.retry_interval_hours !== 0) {
+      obj.retryIntervalHours = Math.round(message.retry_interval_hours);
     }
     return obj;
   },
@@ -1307,11 +1307,11 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.maxRetries = object.maxRetries ?? 0;
-    message.retryIntervalHours = object.retryIntervalHours ?? 0;
+    message.max_retries = object.max_retries ?? 0;
+    message.retry_interval_hours = object.retry_interval_hours ?? 0;
     return message;
   },
 };
@@ -1437,7 +1437,7 @@ export const GetOrganizationsResponse: MessageFns<GetOrganizationsResponse> = {
 };
 
 function createBaseGetSchoolYearsRequest(): GetSchoolYearsRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
@@ -1445,8 +1445,8 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1470,7 +1470,7 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1484,7 +1484,7 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
   fromJSON(object: any): GetSchoolYearsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -1493,8 +1493,8 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -1507,15 +1507,15 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetSchoolYearRequest(): GetSchoolYearRequest {
-  return { context: undefined, schoolYearId: undefined };
+  return { context: undefined, school_year_id: undefined };
 }
 
 export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
@@ -1523,8 +1523,8 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.schoolYearId !== undefined) {
-      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1548,7 +1548,7 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
             break;
           }
 
-          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1562,7 +1562,7 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
   fromJSON(object: any): GetSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -1571,8 +1571,8 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.schoolYearId !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -1585,20 +1585,20 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-      ? ObjectId.fromPartial(object.schoolYearId)
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetSchoolYearsResponse(): GetSchoolYearsResponse {
-  return { schoolYears: [] };
+  return { school_years: [] };
 }
 
 export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
   encode(message: GetSchoolYearsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.schoolYears) {
+    for (const v of message.school_years) {
       SchoolYear.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -1616,7 +1616,7 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
             break;
           }
 
-          message.schoolYears.push(SchoolYear.decode(reader, reader.uint32()));
+          message.school_years.push(SchoolYear.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1629,7 +1629,7 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
 
   fromJSON(object: any): GetSchoolYearsResponse {
     return {
-      schoolYears: globalThis.Array.isArray(object?.schoolYears)
+      school_years: globalThis.Array.isArray(object?.schoolYears)
         ? object.schoolYears.map((e: any) => SchoolYear.fromJSON(e))
         : [],
     };
@@ -1637,8 +1637,8 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
 
   toJSON(message: GetSchoolYearsResponse): unknown {
     const obj: any = {};
-    if (message.schoolYears?.length) {
-      obj.schoolYears = message.schoolYears.map((e) => SchoolYear.toJSON(e));
+    if (message.school_years?.length) {
+      obj.schoolYears = message.school_years.map((e) => SchoolYear.toJSON(e));
     }
     return obj;
   },
@@ -1648,13 +1648,13 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetSchoolYearsResponse>, I>>(object: I): GetSchoolYearsResponse {
     const message = createBaseGetSchoolYearsResponse();
-    message.schoolYears = object.schoolYears?.map((e) => SchoolYear.fromPartial(e)) || [];
+    message.school_years = object.school_years?.map((e) => SchoolYear.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseCreateSchoolYearRequest(): CreateSchoolYearRequest {
-  return { context: undefined, organizationId: undefined, name: "", startDate: undefined, endDate: undefined };
+  return { context: undefined, organization_id: undefined, name: "", start_date: undefined, end_date: undefined };
 }
 
 export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
@@ -1662,17 +1662,17 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.startDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(34).fork()).join();
+    if (message.start_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.start_date), writer.uint32(34).fork()).join();
     }
-    if (message.endDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(42).fork()).join();
+    if (message.end_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -1696,7 +1696,7 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1710,14 +1710,14 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
             break;
           }
 
-          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.start_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1731,10 +1731,10 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
   fromJSON(object: any): CreateSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -1743,17 +1743,17 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.startDate !== undefined) {
-      obj.startDate = message.startDate.toISOString();
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date.toISOString();
     }
-    if (message.endDate !== undefined) {
-      obj.endDate = message.endDate.toISOString();
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date.toISOString();
     }
     return obj;
   },
@@ -1766,18 +1766,18 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.name = object.name ?? "";
-    message.startDate = object.startDate ?? undefined;
-    message.endDate = object.endDate ?? undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateSchoolYearRegistrationStatusRequest(): UpdateSchoolYearRegistrationStatusRequest {
-  return { context: undefined, schoolYearId: undefined, newRegistrationStatus: false };
+  return { context: undefined, school_year_id: undefined, new_registration_status: false };
 }
 
 export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolYearRegistrationStatusRequest> = {
@@ -1785,11 +1785,11 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.schoolYearId !== undefined) {
-      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
     }
-    if (message.newRegistrationStatus !== false) {
-      writer.uint32(24).bool(message.newRegistrationStatus);
+    if (message.new_registration_status !== false) {
+      writer.uint32(24).bool(message.new_registration_status);
     }
     return writer;
   },
@@ -1813,14 +1813,14 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
             break;
           }
 
-          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.newRegistrationStatus = reader.bool();
+          message.new_registration_status = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1834,8 +1834,8 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
   fromJSON(object: any): UpdateSchoolYearRegistrationStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
-      newRegistrationStatus: isSet(object.newRegistrationStatus)
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      new_registration_status: isSet(object.newRegistrationStatus)
         ? globalThis.Boolean(object.newRegistrationStatus)
         : false,
     };
@@ -1846,11 +1846,11 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.schoolYearId !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
-    if (message.newRegistrationStatus !== false) {
-      obj.newRegistrationStatus = message.newRegistrationStatus;
+    if (message.new_registration_status !== false) {
+      obj.newRegistrationStatus = message.new_registration_status;
     }
     return obj;
   },
@@ -1867,16 +1867,16 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-      ? ObjectId.fromPartial(object.schoolYearId)
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
-    message.newRegistrationStatus = object.newRegistrationStatus ?? false;
+    message.new_registration_status = object.new_registration_status ?? false;
     return message;
   },
 };
 
 function createBaseUpdateSchoolYearRequest(): UpdateSchoolYearRequest {
-  return { context: undefined, schoolYearId: undefined, name: "", isOpenForRegistration: false };
+  return { context: undefined, school_year_id: undefined, name: "", is_open_for_registration: false };
 }
 
 export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
@@ -1884,14 +1884,14 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.schoolYearId !== undefined) {
-      ObjectId.encode(message.schoolYearId, writer.uint32(18).fork()).join();
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.isOpenForRegistration !== false) {
-      writer.uint32(32).bool(message.isOpenForRegistration);
+    if (message.is_open_for_registration !== false) {
+      writer.uint32(32).bool(message.is_open_for_registration);
     }
     return writer;
   },
@@ -1915,7 +1915,7 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
             break;
           }
 
-          message.schoolYearId = ObjectId.decode(reader, reader.uint32());
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1929,7 +1929,7 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
             break;
           }
 
-          message.isOpenForRegistration = reader.bool();
+          message.is_open_for_registration = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1943,9 +1943,9 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
   fromJSON(object: any): UpdateSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      schoolYearId: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      isOpenForRegistration: isSet(object.isOpenForRegistration)
+      is_open_for_registration: isSet(object.isOpenForRegistration)
         ? globalThis.Boolean(object.isOpenForRegistration)
         : false,
     };
@@ -1956,14 +1956,14 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.schoolYearId !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.schoolYearId);
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.isOpenForRegistration !== false) {
-      obj.isOpenForRegistration = message.isOpenForRegistration;
+    if (message.is_open_for_registration !== false) {
+      obj.isOpenForRegistration = message.is_open_for_registration;
     }
     return obj;
   },
@@ -1976,22 +1976,22 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.schoolYearId = (object.schoolYearId !== undefined && object.schoolYearId !== null)
-      ? ObjectId.fromPartial(object.schoolYearId)
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     message.name = object.name ?? "";
-    message.isOpenForRegistration = object.isOpenForRegistration ?? false;
+    message.is_open_for_registration = object.is_open_for_registration ?? false;
     return message;
   },
 };
 
 function createBaseCreateSchoolYearResponse(): CreateSchoolYearResponse {
-  return { schoolYears: [] };
+  return { school_years: [] };
 }
 
 export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
   encode(message: CreateSchoolYearResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.schoolYears) {
+    for (const v of message.school_years) {
       SchoolYear.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -2009,7 +2009,7 @@ export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
             break;
           }
 
-          message.schoolYears.push(SchoolYear.decode(reader, reader.uint32()));
+          message.school_years.push(SchoolYear.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2022,7 +2022,7 @@ export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
 
   fromJSON(object: any): CreateSchoolYearResponse {
     return {
-      schoolYears: globalThis.Array.isArray(object?.schoolYears)
+      school_years: globalThis.Array.isArray(object?.schoolYears)
         ? object.schoolYears.map((e: any) => SchoolYear.fromJSON(e))
         : [],
     };
@@ -2030,8 +2030,8 @@ export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
 
   toJSON(message: CreateSchoolYearResponse): unknown {
     const obj: any = {};
-    if (message.schoolYears?.length) {
-      obj.schoolYears = message.schoolYears.map((e) => SchoolYear.toJSON(e));
+    if (message.school_years?.length) {
+      obj.schoolYears = message.school_years.map((e) => SchoolYear.toJSON(e));
     }
     return obj;
   },
@@ -2041,13 +2041,13 @@ export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<CreateSchoolYearResponse>, I>>(object: I): CreateSchoolYearResponse {
     const message = createBaseCreateSchoolYearResponse();
-    message.schoolYears = object.schoolYears?.map((e) => SchoolYear.fromPartial(e)) || [];
+    message.school_years = object.school_years?.map((e) => SchoolYear.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseStartSchoolYearRequest(): StartSchoolYearRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
@@ -2055,8 +2055,8 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -2080,7 +2080,7 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2094,7 +2094,7 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
   fromJSON(object: any): StartSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -2103,8 +2103,8 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -2117,15 +2117,15 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseStartReregistrationRequest(): StartReregistrationRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> = {
@@ -2133,8 +2133,8 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -2158,7 +2158,7 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2172,7 +2172,7 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
   fromJSON(object: any): StartReregistrationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -2181,8 +2181,8 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -2195,21 +2195,21 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetOrganizationByStripeRequest(): GetOrganizationByStripeRequest {
-  return { stripeAccountId: "" };
+  return { stripe_account_id: "" };
 }
 
 export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest> = {
   encode(message: GetOrganizationByStripeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.stripeAccountId !== "") {
-      writer.uint32(10).string(message.stripeAccountId);
+    if (message.stripe_account_id !== "") {
+      writer.uint32(10).string(message.stripe_account_id);
     }
     return writer;
   },
@@ -2226,7 +2226,7 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
             break;
           }
 
-          message.stripeAccountId = reader.string();
+          message.stripe_account_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2238,13 +2238,13 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
   },
 
   fromJSON(object: any): GetOrganizationByStripeRequest {
-    return { stripeAccountId: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "" };
+    return { stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "" };
   },
 
   toJSON(message: GetOrganizationByStripeRequest): unknown {
     const obj: any = {};
-    if (message.stripeAccountId !== "") {
-      obj.stripeAccountId = message.stripeAccountId;
+    if (message.stripe_account_id !== "") {
+      obj.stripeAccountId = message.stripe_account_id;
     }
     return obj;
   },
@@ -2256,13 +2256,13 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
     object: I,
   ): GetOrganizationByStripeRequest {
     const message = createBaseGetOrganizationByStripeRequest();
-    message.stripeAccountId = object.stripeAccountId ?? "";
+    message.stripe_account_id = object.stripe_account_id ?? "";
     return message;
   },
 };
 
 function createBaseUpdateStripeIdRequest(): UpdateStripeIdRequest {
-  return { context: undefined, organizationId: undefined, stripeAcountId: "" };
+  return { context: undefined, organization_id: undefined, stripe_acount_id: "" };
 }
 
 export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
@@ -2270,11 +2270,11 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.stripeAcountId !== "") {
-      writer.uint32(26).string(message.stripeAcountId);
+    if (message.stripe_acount_id !== "") {
+      writer.uint32(26).string(message.stripe_acount_id);
     }
     return writer;
   },
@@ -2298,14 +2298,14 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.stripeAcountId = reader.string();
+          message.stripe_acount_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2319,8 +2319,8 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
   fromJSON(object: any): UpdateStripeIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      stripeAcountId: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      stripe_acount_id: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : "",
     };
   },
 
@@ -2329,11 +2329,11 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.stripeAcountId !== "") {
-      obj.stripeAcountId = message.stripeAcountId;
+    if (message.stripe_acount_id !== "") {
+      obj.stripeAcountId = message.stripe_acount_id;
     }
     return obj;
   },
@@ -2346,10 +2346,10 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.stripeAcountId = object.stripeAcountId ?? "";
+    message.stripe_acount_id = object.stripe_acount_id ?? "";
     return message;
   },
 };
@@ -2357,10 +2357,10 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
 function createBaseUpdateOrganizationStripePaymentInfoRequest(): UpdateOrganizationStripePaymentInfoRequest {
   return {
     context: undefined,
-    organizationId: undefined,
-    stripePayoutsEnabled: false,
-    stripeDetailsSubmitted: false,
-    stripeChargesEnabled: false,
+    organization_id: undefined,
+    stripe_payouts_enabled: false,
+    stripe_details_submitted: false,
+    stripe_charges_enabled: false,
   };
 }
 
@@ -2369,17 +2369,17 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.stripePayoutsEnabled !== false) {
-      writer.uint32(24).bool(message.stripePayoutsEnabled);
+    if (message.stripe_payouts_enabled !== false) {
+      writer.uint32(24).bool(message.stripe_payouts_enabled);
     }
-    if (message.stripeDetailsSubmitted !== false) {
-      writer.uint32(32).bool(message.stripeDetailsSubmitted);
+    if (message.stripe_details_submitted !== false) {
+      writer.uint32(32).bool(message.stripe_details_submitted);
     }
-    if (message.stripeChargesEnabled !== false) {
-      writer.uint32(40).bool(message.stripeChargesEnabled);
+    if (message.stripe_charges_enabled !== false) {
+      writer.uint32(40).bool(message.stripe_charges_enabled);
     }
     return writer;
   },
@@ -2403,28 +2403,28 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.stripePayoutsEnabled = reader.bool();
+          message.stripe_payouts_enabled = reader.bool();
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.stripeDetailsSubmitted = reader.bool();
+          message.stripe_details_submitted = reader.bool();
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.stripeChargesEnabled = reader.bool();
+          message.stripe_charges_enabled = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2438,14 +2438,14 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
   fromJSON(object: any): UpdateOrganizationStripePaymentInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      stripePayoutsEnabled: isSet(object.stripePayoutsEnabled)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
         ? globalThis.Boolean(object.stripePayoutsEnabled)
         : false,
-      stripeDetailsSubmitted: isSet(object.stripeDetailsSubmitted)
+      stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
         ? globalThis.Boolean(object.stripeDetailsSubmitted)
         : false,
-      stripeChargesEnabled: isSet(object.stripeChargesEnabled)
+      stripe_charges_enabled: isSet(object.stripeChargesEnabled)
         ? globalThis.Boolean(object.stripeChargesEnabled)
         : false,
     };
@@ -2456,17 +2456,17 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.stripePayoutsEnabled !== false) {
-      obj.stripePayoutsEnabled = message.stripePayoutsEnabled;
+    if (message.stripe_payouts_enabled !== false) {
+      obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
     }
-    if (message.stripeDetailsSubmitted !== false) {
-      obj.stripeDetailsSubmitted = message.stripeDetailsSubmitted;
+    if (message.stripe_details_submitted !== false) {
+      obj.stripeDetailsSubmitted = message.stripe_details_submitted;
     }
-    if (message.stripeChargesEnabled !== false) {
-      obj.stripeChargesEnabled = message.stripeChargesEnabled;
+    if (message.stripe_charges_enabled !== false) {
+      obj.stripeChargesEnabled = message.stripe_charges_enabled;
     }
     return obj;
   },
@@ -2483,18 +2483,18 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.stripePayoutsEnabled = object.stripePayoutsEnabled ?? false;
-    message.stripeDetailsSubmitted = object.stripeDetailsSubmitted ?? false;
-    message.stripeChargesEnabled = object.stripeChargesEnabled ?? false;
+    message.stripe_payouts_enabled = object.stripe_payouts_enabled ?? false;
+    message.stripe_details_submitted = object.stripe_details_submitted ?? false;
+    message.stripe_charges_enabled = object.stripe_charges_enabled ?? false;
     return message;
   },
 };
 
 function createBaseGetOrganizationByLoginIdRequest(): GetOrganizationByLoginIdRequest {
-  return { context: undefined, loginId: "" };
+  return { context: undefined, login_id: "" };
 }
 
 export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest> = {
@@ -2502,8 +2502,8 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.loginId !== "") {
-      writer.uint32(18).string(message.loginId);
+    if (message.login_id !== "") {
+      writer.uint32(18).string(message.login_id);
     }
     return writer;
   },
@@ -2527,7 +2527,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
             break;
           }
 
-          message.loginId = reader.string();
+          message.login_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2541,7 +2541,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
   fromJSON(object: any): GetOrganizationByLoginIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      loginId: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
     };
   },
 
@@ -2550,8 +2550,8 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.loginId !== "") {
-      obj.loginId = message.loginId;
+    if (message.login_id !== "") {
+      obj.loginId = message.login_id;
     }
     return obj;
   },
@@ -2566,13 +2566,13 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.loginId = object.loginId ?? "";
+    message.login_id = object.login_id ?? "";
     return message;
   },
 };
 
 function createBaseGetOrganizationsByIdRequest(): GetOrganizationsByIdRequest {
-  return { context: undefined, organizationIds: [] };
+  return { context: undefined, organization_ids: [] };
 }
 
 export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest> = {
@@ -2580,7 +2580,7 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    for (const v of message.organizationIds) {
+    for (const v of message.organization_ids) {
       ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
@@ -2605,7 +2605,7 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
             break;
           }
 
-          message.organizationIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.organization_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2619,7 +2619,7 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
   fromJSON(object: any): GetOrganizationsByIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationIds: globalThis.Array.isArray(object?.organizationIds)
+      organization_ids: globalThis.Array.isArray(object?.organizationIds)
         ? object.organizationIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -2630,8 +2630,8 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationIds?.length) {
-      obj.organizationIds = message.organizationIds.map((e) => ObjectId.toJSON(e));
+    if (message.organization_ids?.length) {
+      obj.organizationIds = message.organization_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -2644,13 +2644,13 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationIds = object.organizationIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.organization_ids = object.organization_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetOrganizationOnboardingStepsStatusRequest(): GetOrganizationOnboardingStepsStatusRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganizationOnboardingStepsStatusRequest> = {
@@ -2661,8 +2661,8 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -2686,7 +2686,7 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2700,7 +2700,7 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
   fromJSON(object: any): GetOrganizationOnboardingStepsStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -2709,8 +2709,8 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -2727,8 +2727,8 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
@@ -2803,7 +2803,7 @@ export const GetAllOrganizationsOnboardingStepsStatusRequest: MessageFns<
 };
 
 function createBaseGetAllOrganizationsOnboardingStepsStatusResponse(): GetAllOrganizationsOnboardingStepsStatusResponse {
-  return { orgsOnboardingStepsStatus: [] };
+  return { orgs_onboarding_steps_status: [] };
 }
 
 export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
@@ -2813,7 +2813,7 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
     message: GetAllOrganizationsOnboardingStepsStatusResponse,
     writer: BinaryWriter = new BinaryWriter(),
   ): BinaryWriter {
-    for (const v of message.orgsOnboardingStepsStatus) {
+    for (const v of message.orgs_onboarding_steps_status) {
       OnboardingStepsStatus.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -2831,7 +2831,7 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
             break;
           }
 
-          message.orgsOnboardingStepsStatus.push(OnboardingStepsStatus.decode(reader, reader.uint32()));
+          message.orgs_onboarding_steps_status.push(OnboardingStepsStatus.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2844,7 +2844,7 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
 
   fromJSON(object: any): GetAllOrganizationsOnboardingStepsStatusResponse {
     return {
-      orgsOnboardingStepsStatus: globalThis.Array.isArray(object?.orgsOnboardingStepsStatus)
+      orgs_onboarding_steps_status: globalThis.Array.isArray(object?.orgsOnboardingStepsStatus)
         ? object.orgsOnboardingStepsStatus.map((e: any) => OnboardingStepsStatus.fromJSON(e))
         : [],
     };
@@ -2852,8 +2852,8 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
 
   toJSON(message: GetAllOrganizationsOnboardingStepsStatusResponse): unknown {
     const obj: any = {};
-    if (message.orgsOnboardingStepsStatus?.length) {
-      obj.orgsOnboardingStepsStatus = message.orgsOnboardingStepsStatus.map((e) => OnboardingStepsStatus.toJSON(e));
+    if (message.orgs_onboarding_steps_status?.length) {
+      obj.orgsOnboardingStepsStatus = message.orgs_onboarding_steps_status.map((e) => OnboardingStepsStatus.toJSON(e));
     }
     return obj;
   },
@@ -2867,14 +2867,14 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
     object: I,
   ): GetAllOrganizationsOnboardingStepsStatusResponse {
     const message = createBaseGetAllOrganizationsOnboardingStepsStatusResponse();
-    message.orgsOnboardingStepsStatus =
-      object.orgsOnboardingStepsStatus?.map((e) => OnboardingStepsStatus.fromPartial(e)) || [];
+    message.orgs_onboarding_steps_status =
+      object.orgs_onboarding_steps_status?.map((e) => OnboardingStepsStatus.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseMarkOnboardingStepAsCompletedRequest(): MarkOnboardingStepAsCompletedRequest {
-  return { context: undefined, stepName: OnboardingStepName.ORG_OWNER_PROFILE };
+  return { context: undefined, step_name: OnboardingStepName.ORG_OWNER_PROFILE };
 }
 
 export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStepAsCompletedRequest> = {
@@ -2882,8 +2882,8 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.stepName !== OnboardingStepName.ORG_OWNER_PROFILE) {
-      writer.uint32(16).int32(onboardingStepNameToNumber(message.stepName));
+    if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+      writer.uint32(16).int32(onboardingStepNameToNumber(message.step_name));
     }
     return writer;
   },
@@ -2907,7 +2907,7 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
             break;
           }
 
-          message.stepName = onboardingStepNameFromJSON(reader.int32());
+          message.step_name = onboardingStepNameFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2921,7 +2921,7 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
   fromJSON(object: any): MarkOnboardingStepAsCompletedRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stepName: isSet(object.stepName)
+      step_name: isSet(object.stepName)
         ? onboardingStepNameFromJSON(object.stepName)
         : OnboardingStepName.ORG_OWNER_PROFILE,
     };
@@ -2932,8 +2932,8 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.stepName !== OnboardingStepName.ORG_OWNER_PROFILE) {
-      obj.stepName = onboardingStepNameToJSON(message.stepName);
+    if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+      obj.stepName = onboardingStepNameToJSON(message.step_name);
     }
     return obj;
   },
@@ -2950,13 +2950,13 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.stepName = object.stepName ?? OnboardingStepName.ORG_OWNER_PROFILE;
+    message.step_name = object.step_name ?? OnboardingStepName.ORG_OWNER_PROFILE;
     return message;
   },
 };
 
 function createBaseUpdateInvoiceSettingsRequest(): UpdateInvoiceSettingsRequest {
-  return { context: undefined, organizationId: undefined, disableTax: false, hstNumber: "" };
+  return { context: undefined, organization_id: undefined, disable_tax: false, hst_number: "" };
 }
 
 export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest> = {
@@ -2964,14 +2964,14 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.disableTax !== false) {
-      writer.uint32(24).bool(message.disableTax);
+    if (message.disable_tax !== false) {
+      writer.uint32(24).bool(message.disable_tax);
     }
-    if (message.hstNumber !== undefined && message.hstNumber !== "") {
-      writer.uint32(34).string(message.hstNumber);
+    if (message.hst_number !== undefined && message.hst_number !== "") {
+      writer.uint32(34).string(message.hst_number);
     }
     return writer;
   },
@@ -2995,21 +2995,21 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.disableTax = reader.bool();
+          message.disable_tax = reader.bool();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.hstNumber = reader.string();
+          message.hst_number = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3023,9 +3023,9 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
   fromJSON(object: any): UpdateInvoiceSettingsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-      hstNumber: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
     };
   },
 
@@ -3034,14 +3034,14 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.disableTax !== false) {
-      obj.disableTax = message.disableTax;
+    if (message.disable_tax !== false) {
+      obj.disableTax = message.disable_tax;
     }
-    if (message.hstNumber !== undefined && message.hstNumber !== "") {
-      obj.hstNumber = message.hstNumber;
+    if (message.hst_number !== undefined && message.hst_number !== "") {
+      obj.hstNumber = message.hst_number;
     }
     return obj;
   },
@@ -3054,11 +3054,11 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.disableTax = object.disableTax ?? false;
-    message.hstNumber = object.hstNumber ?? "";
+    message.disable_tax = object.disable_tax ?? false;
+    message.hst_number = object.hst_number ?? "";
     return message;
   },
 };

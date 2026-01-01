@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "utils";
 export interface PhoneNumber {
-    countryCode: string;
+    country_code: string;
     number: string;
     country: string;
 }

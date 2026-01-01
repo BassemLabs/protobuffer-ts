@@ -19,8 +19,8 @@ export interface Campus {
   email: string;
   phone: string;
   logo?: AWSFile | undefined;
-  principalId: ObjectId | undefined;
-  supervisorId: ObjectId | undefined;
+  principal_id: ObjectId | undefined;
+  supervisor_id: ObjectId | undefined;
   archived: boolean;
 }
 
@@ -33,8 +33,8 @@ function createBaseCampus(): Campus {
     email: "",
     phone: "",
     logo: undefined,
-    principalId: undefined,
-    supervisorId: undefined,
+    principal_id: undefined,
+    supervisor_id: undefined,
     archived: false,
   };
 }
@@ -62,11 +62,11 @@ export const Campus: MessageFns<Campus> = {
     if (message.logo !== undefined) {
       AWSFile.encode(message.logo, writer.uint32(58).fork()).join();
     }
-    if (message.principalId !== undefined) {
-      ObjectId.encode(message.principalId, writer.uint32(66).fork()).join();
+    if (message.principal_id !== undefined) {
+      ObjectId.encode(message.principal_id, writer.uint32(66).fork()).join();
     }
-    if (message.supervisorId !== undefined) {
-      ObjectId.encode(message.supervisorId, writer.uint32(74).fork()).join();
+    if (message.supervisor_id !== undefined) {
+      ObjectId.encode(message.supervisor_id, writer.uint32(74).fork()).join();
     }
     if (message.archived !== false) {
       writer.uint32(80).bool(message.archived);
@@ -135,14 +135,14 @@ export const Campus: MessageFns<Campus> = {
             break;
           }
 
-          message.principalId = ObjectId.decode(reader, reader.uint32());
+          message.principal_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.supervisorId = ObjectId.decode(reader, reader.uint32());
+          message.supervisor_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 10:
           if (tag !== 80) {
@@ -169,8 +169,8 @@ export const Campus: MessageFns<Campus> = {
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
       logo: isSet(object.logo) ? AWSFile.fromJSON(object.logo) : undefined,
-      principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
-      supervisorId: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
+      principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
+      supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
     };
   },
@@ -198,11 +198,11 @@ export const Campus: MessageFns<Campus> = {
     if (message.logo !== undefined) {
       obj.logo = AWSFile.toJSON(message.logo);
     }
-    if (message.principalId !== undefined) {
-      obj.principalId = ObjectId.toJSON(message.principalId);
+    if (message.principal_id !== undefined) {
+      obj.principalId = ObjectId.toJSON(message.principal_id);
     }
-    if (message.supervisorId !== undefined) {
-      obj.supervisorId = ObjectId.toJSON(message.supervisorId);
+    if (message.supervisor_id !== undefined) {
+      obj.supervisorId = ObjectId.toJSON(message.supervisor_id);
     }
     if (message.archived !== false) {
       obj.archived = message.archived;
@@ -224,11 +224,11 @@ export const Campus: MessageFns<Campus> = {
     message.email = object.email ?? "";
     message.phone = object.phone ?? "";
     message.logo = (object.logo !== undefined && object.logo !== null) ? AWSFile.fromPartial(object.logo) : undefined;
-    message.principalId = (object.principalId !== undefined && object.principalId !== null)
-      ? ObjectId.fromPartial(object.principalId)
+    message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
+      ? ObjectId.fromPartial(object.principal_id)
       : undefined;
-    message.supervisorId = (object.supervisorId !== undefined && object.supervisorId !== null)
-      ? ObjectId.fromPartial(object.supervisorId)
+    message.supervisor_id = (object.supervisor_id !== undefined && object.supervisor_id !== null)
+      ? ObjectId.fromPartial(object.supervisor_id)
       : undefined;
     message.archived = object.archived ?? false;
     return message;

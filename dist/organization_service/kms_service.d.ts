@@ -5,21 +5,21 @@ import { KMSKey, KMSKeyType } from "./kms_key";
 export declare const protobufPackage = "organization_service";
 export interface GetKmsKeyRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    keyType: KMSKeyType;
+    organization_id: ObjectId | undefined;
+    key_type: KMSKeyType;
 }
 export interface GetOrganizationKmsKeysRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
 }
 export interface GetOrganizationKmsKeysResponse {
     keys: KMSKey[];
 }
 export interface UpdateKmsKeyRequest {
     context: RequestContext | undefined;
-    organizationId: ObjectId | undefined;
-    keyType: KMSKeyType;
-    secretMaterial: string;
+    organization_id: ObjectId | undefined;
+    key_type: KMSKeyType;
+    secret_material: string;
 }
 export declare const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest>;
 export declare const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysRequest>;

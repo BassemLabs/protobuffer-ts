@@ -95,33 +95,33 @@ exports.FamilyContact = {
 };
 function createBaseFamilyInformation() {
     return {
-        studentLiving: "",
-        languageSpoken: "",
-        preferredContact: undefined,
-        emergencyContact: undefined,
-        primaryPayer: undefined,
-        autoPayDisabled: false,
+        student_living: "",
+        language_spoken: "",
+        preferred_contact: undefined,
+        emergency_contact: undefined,
+        primary_payer: undefined,
+        auto_pay_disabled: false,
     };
 }
 exports.FamilyInformation = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.studentLiving !== "") {
-            writer.uint32(10).string(message.studentLiving);
+        if (message.student_living !== "") {
+            writer.uint32(10).string(message.student_living);
         }
-        if (message.languageSpoken !== "") {
-            writer.uint32(18).string(message.languageSpoken);
+        if (message.language_spoken !== "") {
+            writer.uint32(18).string(message.language_spoken);
         }
-        if (message.preferredContact !== undefined) {
-            object_id_1.ObjectId.encode(message.preferredContact, writer.uint32(26).fork()).join();
+        if (message.preferred_contact !== undefined) {
+            object_id_1.ObjectId.encode(message.preferred_contact, writer.uint32(26).fork()).join();
         }
-        if (message.emergencyContact !== undefined) {
-            exports.FamilyContact.encode(message.emergencyContact, writer.uint32(34).fork()).join();
+        if (message.emergency_contact !== undefined) {
+            exports.FamilyContact.encode(message.emergency_contact, writer.uint32(34).fork()).join();
         }
-        if (message.primaryPayer !== undefined) {
-            object_id_1.ObjectId.encode(message.primaryPayer, writer.uint32(42).fork()).join();
+        if (message.primary_payer !== undefined) {
+            object_id_1.ObjectId.encode(message.primary_payer, writer.uint32(42).fork()).join();
         }
-        if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
-            writer.uint32(48).bool(message.autoPayDisabled);
+        if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+            writer.uint32(48).bool(message.auto_pay_disabled);
         }
         return writer;
     },
@@ -136,37 +136,37 @@ exports.FamilyInformation = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.studentLiving = reader.string();
+                    message.student_living = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.languageSpoken = reader.string();
+                    message.language_spoken = reader.string();
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.preferredContact = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.preferred_contact = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.emergencyContact = exports.FamilyContact.decode(reader, reader.uint32());
+                    message.emergency_contact = exports.FamilyContact.decode(reader, reader.uint32());
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.primaryPayer = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.primary_payer = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 6:
                     if (tag !== 48) {
                         break;
                     }
-                    message.autoPayDisabled = reader.bool();
+                    message.auto_pay_disabled = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -178,33 +178,33 @@ exports.FamilyInformation = {
     },
     fromJSON(object) {
         return {
-            studentLiving: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : "",
-            languageSpoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : "",
-            preferredContact: isSet(object.preferredContact) ? object_id_1.ObjectId.fromJSON(object.preferredContact) : undefined,
-            emergencyContact: isSet(object.emergencyContact) ? exports.FamilyContact.fromJSON(object.emergencyContact) : undefined,
-            primaryPayer: isSet(object.primaryPayer) ? object_id_1.ObjectId.fromJSON(object.primaryPayer) : undefined,
-            autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+            student_living: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : "",
+            language_spoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : "",
+            preferred_contact: isSet(object.preferredContact) ? object_id_1.ObjectId.fromJSON(object.preferredContact) : undefined,
+            emergency_contact: isSet(object.emergencyContact) ? exports.FamilyContact.fromJSON(object.emergencyContact) : undefined,
+            primary_payer: isSet(object.primaryPayer) ? object_id_1.ObjectId.fromJSON(object.primaryPayer) : undefined,
+            auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.studentLiving !== "") {
-            obj.studentLiving = message.studentLiving;
+        if (message.student_living !== "") {
+            obj.studentLiving = message.student_living;
         }
-        if (message.languageSpoken !== "") {
-            obj.languageSpoken = message.languageSpoken;
+        if (message.language_spoken !== "") {
+            obj.languageSpoken = message.language_spoken;
         }
-        if (message.preferredContact !== undefined) {
-            obj.preferredContact = object_id_1.ObjectId.toJSON(message.preferredContact);
+        if (message.preferred_contact !== undefined) {
+            obj.preferredContact = object_id_1.ObjectId.toJSON(message.preferred_contact);
         }
-        if (message.emergencyContact !== undefined) {
-            obj.emergencyContact = exports.FamilyContact.toJSON(message.emergencyContact);
+        if (message.emergency_contact !== undefined) {
+            obj.emergencyContact = exports.FamilyContact.toJSON(message.emergency_contact);
         }
-        if (message.primaryPayer !== undefined) {
-            obj.primaryPayer = object_id_1.ObjectId.toJSON(message.primaryPayer);
+        if (message.primary_payer !== undefined) {
+            obj.primaryPayer = object_id_1.ObjectId.toJSON(message.primary_payer);
         }
-        if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
-            obj.autoPayDisabled = message.autoPayDisabled;
+        if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+            obj.autoPayDisabled = message.auto_pay_disabled;
         }
         return obj;
     },
@@ -213,18 +213,18 @@ exports.FamilyInformation = {
     },
     fromPartial(object) {
         const message = createBaseFamilyInformation();
-        message.studentLiving = object.studentLiving ?? "";
-        message.languageSpoken = object.languageSpoken ?? "";
-        message.preferredContact = (object.preferredContact !== undefined && object.preferredContact !== null)
-            ? object_id_1.ObjectId.fromPartial(object.preferredContact)
+        message.student_living = object.student_living ?? "";
+        message.language_spoken = object.language_spoken ?? "";
+        message.preferred_contact = (object.preferred_contact !== undefined && object.preferred_contact !== null)
+            ? object_id_1.ObjectId.fromPartial(object.preferred_contact)
             : undefined;
-        message.emergencyContact = (object.emergencyContact !== undefined && object.emergencyContact !== null)
-            ? exports.FamilyContact.fromPartial(object.emergencyContact)
+        message.emergency_contact = (object.emergency_contact !== undefined && object.emergency_contact !== null)
+            ? exports.FamilyContact.fromPartial(object.emergency_contact)
             : undefined;
-        message.primaryPayer = (object.primaryPayer !== undefined && object.primaryPayer !== null)
-            ? object_id_1.ObjectId.fromPartial(object.primaryPayer)
+        message.primary_payer = (object.primary_payer !== undefined && object.primary_payer !== null)
+            ? object_id_1.ObjectId.fromPartial(object.primary_payer)
             : undefined;
-        message.autoPayDisabled = object.autoPayDisabled ?? false;
+        message.auto_pay_disabled = object.auto_pay_disabled ?? false;
         return message;
     },
 };
@@ -234,7 +234,7 @@ function createBaseFamily() {
         organization: undefined,
         name: "",
         guardians: [],
-        guardiansToNotContact: [],
+        guardians_to_not_contact: [],
         information: undefined,
     };
 }
@@ -252,7 +252,7 @@ exports.Family = {
         for (const v of message.guardians) {
             object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
         }
-        for (const v of message.guardiansToNotContact) {
+        for (const v of message.guardians_to_not_contact) {
             object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
         }
         if (message.information !== undefined) {
@@ -295,7 +295,7 @@ exports.Family = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.guardiansToNotContact.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.guardians_to_not_contact.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -319,7 +319,7 @@ exports.Family = {
             guardians: globalThis.Array.isArray(object?.guardians)
                 ? object.guardians.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            guardiansToNotContact: globalThis.Array.isArray(object?.guardiansToNotContact)
+            guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
                 ? object.guardiansToNotContact.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             information: isSet(object.information) ? exports.FamilyInformation.fromJSON(object.information) : undefined,
@@ -339,8 +339,8 @@ exports.Family = {
         if (message.guardians?.length) {
             obj.guardians = message.guardians.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.guardiansToNotContact?.length) {
-            obj.guardiansToNotContact = message.guardiansToNotContact.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.guardians_to_not_contact?.length) {
+            obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.information !== undefined) {
             obj.information = exports.FamilyInformation.toJSON(message.information);
@@ -358,7 +358,7 @@ exports.Family = {
             : undefined;
         message.name = object.name ?? "";
         message.guardians = object.guardians?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.guardiansToNotContact = object.guardiansToNotContact?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.information = (object.information !== undefined && object.information !== null)
             ? exports.FamilyInformation.fromPartial(object.information)
             : undefined;

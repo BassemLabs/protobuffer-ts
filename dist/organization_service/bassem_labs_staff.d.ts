@@ -13,13 +13,13 @@ export interface BassemLabsStaff {
     id: ObjectId | undefined;
     status: StaffStatus;
     username: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     gender: string;
     email: string;
-    personalEmail: string;
-    dateOfBirth: Date | undefined;
-    phoneNumber: string;
+    personal_email: string;
+    date_of_birth: Date | undefined;
+    phone_number: string;
 }
 export declare const BassemLabsStaff: MessageFns<BassemLabsStaff>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

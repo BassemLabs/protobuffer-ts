@@ -40,69 +40,69 @@ export const protobufPackage = "user_service";
 
 export interface GetCustomFieldsByGroupRequest {
   context: RequestContext | undefined;
-  groupId:
+  group_id:
     | ObjectId
     | undefined;
   /** Default false */
-  includeArchived?: boolean | undefined;
+  include_archived?: boolean | undefined;
 }
 
 export interface GetCustomFieldsByGroupResponse {
-  customFields: CustomField[];
+  custom_fields: CustomField[];
 }
 
 export interface GetActiveCustomFieldsByGroupRequest {
   context: RequestContext | undefined;
-  groupId: ObjectId | undefined;
+  group_id: ObjectId | undefined;
 }
 
 export interface GetActiveCustomFieldsByGroupResponse {
-  customFields: CustomField[];
+  custom_fields: CustomField[];
 }
 
 export interface GetCustomFieldsByUserTypeRequest {
   context: RequestContext | undefined;
-  userType: UserType;
+  user_type: UserType;
   /** Default false */
-  includeArchived?: boolean | undefined;
+  include_archived?: boolean | undefined;
 }
 
 export interface GetCustomFieldsByUserTypeResponse {
-  customFields: CustomField[];
+  custom_fields: CustomField[];
 }
 
 export interface CreateCustomFieldRequest {
   context: RequestContext | undefined;
-  groupId: ObjectId | undefined;
+  group_id: ObjectId | undefined;
   name: string;
-  fieldType: CustomFieldType;
-  isRequired: boolean;
+  field_type: CustomFieldType;
+  is_required: boolean;
   description: string;
-  isArchived: boolean;
-  regexPattern?: string | undefined;
+  is_archived: boolean;
+  regex_pattern?: string | undefined;
   options: string[];
 }
 
 export interface UpdateCustomFieldRequest {
   context: RequestContext | undefined;
-  customFieldId: ObjectId | undefined;
+  custom_field_id: ObjectId | undefined;
   name: string;
-  fieldType: CustomFieldType;
+  field_type: CustomFieldType;
   description: string;
-  isRequired: boolean;
-  isArchived: boolean;
-  regexPattern?: string | undefined;
+  is_required: boolean;
+  is_archived: boolean;
+  regex_pattern?: string | undefined;
   options: string[];
 }
 
 export interface GetStudentPrimaryIdFieldRequest {
   context: RequestContext | undefined;
-  studentId: ObjectId | undefined;
+  student_id: ObjectId | undefined;
 }
 
 export interface GetStudentPrimaryIdFieldResponse {
   /** None if no primary ID field is set for the organization */
-  primaryIdField?: StudentPrimaryIdField | undefined;
+  primary_id_field?: StudentPrimaryIdField | undefined;
 }
 
 export interface GetAllCustomFieldEntriesByUserRequest {
@@ -110,7 +110,7 @@ export interface GetAllCustomFieldEntriesByUserRequest {
     | RequestContext
     | undefined;
   /** Student/Parent/Teacher ID */
-  userId: ObjectId | undefined;
+  user_id: ObjectId | undefined;
 }
 
 export interface GetAllCustomFieldEntriesByUserResponse {
@@ -122,11 +122,11 @@ export interface GetCustomFieldEntriesByUserAndGroupRequest {
     | RequestContext
     | undefined;
   /** Student/Parent/Teacher ID */
-  userId:
+  user_id:
     | ObjectId
     | undefined;
   /** Group ID to filter by */
-  groupId: ObjectId | undefined;
+  group_id: ObjectId | undefined;
 }
 
 export interface GetCustomFieldEntriesByUserAndGroupResponse {
@@ -135,8 +135,8 @@ export interface GetCustomFieldEntriesByUserAndGroupResponse {
 
 export interface GetGroupActiveEntriesForUserRequest {
   context: RequestContext | undefined;
-  userId: ObjectId | undefined;
-  groupId: ObjectId | undefined;
+  user_id: ObjectId | undefined;
+  group_id: ObjectId | undefined;
 }
 
 export interface GetGroupActiveEntriesForUserResponse {
@@ -145,13 +145,13 @@ export interface GetGroupActiveEntriesForUserResponse {
 
 export interface UpdateCustomFieldsForGroupRequest {
   context: RequestContext | undefined;
-  userId: ObjectId | undefined;
-  groupId: ObjectId | undefined;
+  user_id: ObjectId | undefined;
+  group_id: ObjectId | undefined;
   entries: CustomFieldEntryUpdate[];
 }
 
 export interface CustomFieldEntryUpdate {
-  customFieldId: ObjectId | undefined;
+  custom_field_id: ObjectId | undefined;
   value: string;
 }
 
@@ -161,19 +161,19 @@ export interface UpdateCustomFieldsForGroupResponse {
 
 export interface UploadDocumentToCustomFieldEntryRequest {
   context: RequestContext | undefined;
-  userId: ObjectId | undefined;
-  customFieldId: ObjectId | undefined;
-  documentName: string;
+  user_id: ObjectId | undefined;
+  custom_field_id: ObjectId | undefined;
+  document_name: string;
   /** Base64-encoded file content */
-  fileContent: string;
-  fileName: string;
+  file_content: string;
+  file_name: string;
 }
 
 export interface RemoveDocumentFromCustomFieldEntryRequest {
   context: RequestContext | undefined;
-  userId: ObjectId | undefined;
-  customFieldId: ObjectId | undefined;
-  documentIndex: number;
+  user_id: ObjectId | undefined;
+  custom_field_id: ObjectId | undefined;
+  document_index: number;
 }
 
 /** Unified response for all endpoints that return a list of CustomFieldsGroup */
@@ -183,28 +183,28 @@ export interface GetCustomFieldsGroupsResponse {
 
 export interface CreateCustomFieldsGroupRequest {
   context: RequestContext | undefined;
-  groupName: string;
-  userType: UserType;
-  profileSection: ProfileSection;
+  group_name: string;
+  user_type: UserType;
+  profile_section: ProfileSection;
   hints: string[];
-  groupAccessSettings: ObjectId | undefined;
-  entriesAccessSettings:
+  group_access_settings: ObjectId | undefined;
+  entries_access_settings:
     | ObjectId
     | undefined;
   /** these fields are only for custom field groups for user type: Student */
-  visibleToParentsForStatuses: StudentStatus[];
-  visibleToTeachersForStatuses: StudentStatus[];
+  visible_to_parents_for_statuses: StudentStatus[];
+  visible_to_teachers_for_statuses: StudentStatus[];
 }
 
 export interface UpdateCustomFieldsGroupRequest {
   context: RequestContext | undefined;
-  groupId: ObjectId | undefined;
-  groupName: string;
-  profileSection: ProfileSection;
+  group_id: ObjectId | undefined;
+  group_name: string;
+  profile_section: ProfileSection;
   hints: string[];
   /** these fields are only for custom field groups for user type: Student */
-  visibleToParentsForStatuses: StudentStatus[];
-  visibleToTeachersForStatuses: StudentStatus[];
+  visible_to_parents_for_statuses: StudentStatus[];
+  visible_to_teachers_for_statuses: StudentStatus[];
 }
 
 export interface GetAllCustomFieldsGroupsRequest {
@@ -213,18 +213,18 @@ export interface GetAllCustomFieldsGroupsRequest {
 
 export interface GetAccessibleCustomFieldsGroupsRequest {
   context: RequestContext | undefined;
-  userType: UserType;
+  user_type: UserType;
 }
 
 export interface GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest {
   context: RequestContext | undefined;
-  userType: UserType;
-  profileSection: ProfileSection;
+  user_type: UserType;
+  profile_section: ProfileSection;
 }
 
 export interface GetStudentGroupsWithFieldsRequest {
   context: RequestContext | undefined;
-  studentStatus: StudentStatus;
+  student_status: StudentStatus;
 }
 
 export interface GetParentGroupsWithFieldsRequest {
@@ -233,26 +233,26 @@ export interface GetParentGroupsWithFieldsRequest {
 
 /** Unified response for all endpoints that return a list of CustomFieldsGroupWithFields */
 export interface GetCustomFieldsGroupsWithFieldsResponse {
-  groupsWithFields: CustomFieldsGroupWithFields[];
+  groups_with_fields: CustomFieldsGroupWithFields[];
 }
 
 export interface GetGroupStatusRequest {
   context: RequestContext | undefined;
-  groupId: ObjectId | undefined;
-  userId: ObjectId | undefined;
+  group_id: ObjectId | undefined;
+  user_id: ObjectId | undefined;
 }
 
 export interface ApproveGroupRequest {
   context: RequestContext | undefined;
-  groupId: ObjectId | undefined;
-  userId: ObjectId | undefined;
+  group_id: ObjectId | undefined;
+  user_id: ObjectId | undefined;
 }
 
 export interface RejectGroupRequest {
   context: RequestContext | undefined;
-  groupId: ObjectId | undefined;
-  userId: ObjectId | undefined;
-  rejectionMessage: string;
+  group_id: ObjectId | undefined;
+  user_id: ObjectId | undefined;
+  rejection_message: string;
 }
 
 export interface GetResourceAccessSettingsRequest {
@@ -266,13 +266,13 @@ export interface GetResourceAccessSettingsResponse {
 export interface CreateResourceAccessSettingsRequest {
   context: RequestContext | undefined;
   name: string;
-  ownershipKind: OwnershipKind;
-  userType: UserType;
-  accessRules: AccessRule[];
+  ownership_kind: OwnershipKind;
+  user_type: UserType;
+  access_rules: AccessRule[];
 }
 
 function createBaseGetCustomFieldsByGroupRequest(): GetCustomFieldsByGroupRequest {
-  return { context: undefined, groupId: undefined, includeArchived: false };
+  return { context: undefined, group_id: undefined, include_archived: false };
 }
 
 export const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupRequest> = {
@@ -280,11 +280,11 @@ export const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupReq
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      writer.uint32(24).bool(message.includeArchived);
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      writer.uint32(24).bool(message.include_archived);
     }
     return writer;
   },
@@ -308,14 +308,14 @@ export const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupReq
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.includeArchived = reader.bool();
+          message.include_archived = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -329,8 +329,8 @@ export const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupReq
   fromJSON(object: any): GetCustomFieldsByGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
     };
   },
 
@@ -339,11 +339,11 @@ export const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupReq
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      obj.includeArchived = message.includeArchived;
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      obj.includeArchived = message.include_archived;
     }
     return obj;
   },
@@ -358,21 +358,21 @@ export const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupReq
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.includeArchived = object.includeArchived ?? false;
+    message.include_archived = object.include_archived ?? false;
     return message;
   },
 };
 
 function createBaseGetCustomFieldsByGroupResponse(): GetCustomFieldsByGroupResponse {
-  return { customFields: [] };
+  return { custom_fields: [] };
 }
 
 export const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupResponse> = {
   encode(message: GetCustomFieldsByGroupResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.customFields) {
+    for (const v of message.custom_fields) {
       CustomField.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -390,7 +390,7 @@ export const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupRe
             break;
           }
 
-          message.customFields.push(CustomField.decode(reader, reader.uint32()));
+          message.custom_fields.push(CustomField.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -403,7 +403,7 @@ export const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupRe
 
   fromJSON(object: any): GetCustomFieldsByGroupResponse {
     return {
-      customFields: globalThis.Array.isArray(object?.customFields)
+      custom_fields: globalThis.Array.isArray(object?.customFields)
         ? object.customFields.map((e: any) => CustomField.fromJSON(e))
         : [],
     };
@@ -411,8 +411,8 @@ export const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupRe
 
   toJSON(message: GetCustomFieldsByGroupResponse): unknown {
     const obj: any = {};
-    if (message.customFields?.length) {
-      obj.customFields = message.customFields.map((e) => CustomField.toJSON(e));
+    if (message.custom_fields?.length) {
+      obj.customFields = message.custom_fields.map((e) => CustomField.toJSON(e));
     }
     return obj;
   },
@@ -424,13 +424,13 @@ export const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupRe
     object: I,
   ): GetCustomFieldsByGroupResponse {
     const message = createBaseGetCustomFieldsByGroupResponse();
-    message.customFields = object.customFields?.map((e) => CustomField.fromPartial(e)) || [];
+    message.custom_fields = object.custom_fields?.map((e) => CustomField.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetActiveCustomFieldsByGroupRequest(): GetActiveCustomFieldsByGroupRequest {
-  return { context: undefined, groupId: undefined };
+  return { context: undefined, group_id: undefined };
 }
 
 export const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFieldsByGroupRequest> = {
@@ -438,8 +438,8 @@ export const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFiel
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -463,7 +463,7 @@ export const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFiel
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -477,7 +477,7 @@ export const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFiel
   fromJSON(object: any): GetActiveCustomFieldsByGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
     };
   },
 
@@ -486,8 +486,8 @@ export const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFiel
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
     return obj;
   },
@@ -504,20 +504,20 @@ export const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFiel
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetActiveCustomFieldsByGroupResponse(): GetActiveCustomFieldsByGroupResponse {
-  return { customFields: [] };
+  return { custom_fields: [] };
 }
 
 export const GetActiveCustomFieldsByGroupResponse: MessageFns<GetActiveCustomFieldsByGroupResponse> = {
   encode(message: GetActiveCustomFieldsByGroupResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.customFields) {
+    for (const v of message.custom_fields) {
       CustomField.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -535,7 +535,7 @@ export const GetActiveCustomFieldsByGroupResponse: MessageFns<GetActiveCustomFie
             break;
           }
 
-          message.customFields.push(CustomField.decode(reader, reader.uint32()));
+          message.custom_fields.push(CustomField.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -548,7 +548,7 @@ export const GetActiveCustomFieldsByGroupResponse: MessageFns<GetActiveCustomFie
 
   fromJSON(object: any): GetActiveCustomFieldsByGroupResponse {
     return {
-      customFields: globalThis.Array.isArray(object?.customFields)
+      custom_fields: globalThis.Array.isArray(object?.customFields)
         ? object.customFields.map((e: any) => CustomField.fromJSON(e))
         : [],
     };
@@ -556,8 +556,8 @@ export const GetActiveCustomFieldsByGroupResponse: MessageFns<GetActiveCustomFie
 
   toJSON(message: GetActiveCustomFieldsByGroupResponse): unknown {
     const obj: any = {};
-    if (message.customFields?.length) {
-      obj.customFields = message.customFields.map((e) => CustomField.toJSON(e));
+    if (message.custom_fields?.length) {
+      obj.customFields = message.custom_fields.map((e) => CustomField.toJSON(e));
     }
     return obj;
   },
@@ -571,13 +571,13 @@ export const GetActiveCustomFieldsByGroupResponse: MessageFns<GetActiveCustomFie
     object: I,
   ): GetActiveCustomFieldsByGroupResponse {
     const message = createBaseGetActiveCustomFieldsByGroupResponse();
-    message.customFields = object.customFields?.map((e) => CustomField.fromPartial(e)) || [];
+    message.custom_fields = object.custom_fields?.map((e) => CustomField.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGetCustomFieldsByUserTypeRequest(): GetCustomFieldsByUserTypeRequest {
-  return { context: undefined, userType: UserType.NONE, includeArchived: false };
+  return { context: undefined, user_type: UserType.NONE, include_archived: false };
 }
 
 export const GetCustomFieldsByUserTypeRequest: MessageFns<GetCustomFieldsByUserTypeRequest> = {
@@ -585,11 +585,11 @@ export const GetCustomFieldsByUserTypeRequest: MessageFns<GetCustomFieldsByUserT
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userType !== UserType.NONE) {
-      writer.uint32(16).int32(userTypeToNumber(message.userType));
+    if (message.user_type !== UserType.NONE) {
+      writer.uint32(16).int32(userTypeToNumber(message.user_type));
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      writer.uint32(24).bool(message.includeArchived);
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      writer.uint32(24).bool(message.include_archived);
     }
     return writer;
   },
@@ -613,14 +613,14 @@ export const GetCustomFieldsByUserTypeRequest: MessageFns<GetCustomFieldsByUserT
             break;
           }
 
-          message.userType = userTypeFromJSON(reader.int32());
+          message.user_type = userTypeFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.includeArchived = reader.bool();
+          message.include_archived = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -634,8 +634,8 @@ export const GetCustomFieldsByUserTypeRequest: MessageFns<GetCustomFieldsByUserT
   fromJSON(object: any): GetCustomFieldsByUserTypeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      includeArchived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
     };
   },
 
@@ -644,11 +644,11 @@ export const GetCustomFieldsByUserTypeRequest: MessageFns<GetCustomFieldsByUserT
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userType !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.userType);
+    if (message.user_type !== UserType.NONE) {
+      obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.includeArchived !== undefined && message.includeArchived !== false) {
-      obj.includeArchived = message.includeArchived;
+    if (message.include_archived !== undefined && message.include_archived !== false) {
+      obj.includeArchived = message.include_archived;
     }
     return obj;
   },
@@ -665,19 +665,19 @@ export const GetCustomFieldsByUserTypeRequest: MessageFns<GetCustomFieldsByUserT
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userType = object.userType ?? UserType.NONE;
-    message.includeArchived = object.includeArchived ?? false;
+    message.user_type = object.user_type ?? UserType.NONE;
+    message.include_archived = object.include_archived ?? false;
     return message;
   },
 };
 
 function createBaseGetCustomFieldsByUserTypeResponse(): GetCustomFieldsByUserTypeResponse {
-  return { customFields: [] };
+  return { custom_fields: [] };
 }
 
 export const GetCustomFieldsByUserTypeResponse: MessageFns<GetCustomFieldsByUserTypeResponse> = {
   encode(message: GetCustomFieldsByUserTypeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.customFields) {
+    for (const v of message.custom_fields) {
       CustomField.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -695,7 +695,7 @@ export const GetCustomFieldsByUserTypeResponse: MessageFns<GetCustomFieldsByUser
             break;
           }
 
-          message.customFields.push(CustomField.decode(reader, reader.uint32()));
+          message.custom_fields.push(CustomField.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -708,7 +708,7 @@ export const GetCustomFieldsByUserTypeResponse: MessageFns<GetCustomFieldsByUser
 
   fromJSON(object: any): GetCustomFieldsByUserTypeResponse {
     return {
-      customFields: globalThis.Array.isArray(object?.customFields)
+      custom_fields: globalThis.Array.isArray(object?.customFields)
         ? object.customFields.map((e: any) => CustomField.fromJSON(e))
         : [],
     };
@@ -716,8 +716,8 @@ export const GetCustomFieldsByUserTypeResponse: MessageFns<GetCustomFieldsByUser
 
   toJSON(message: GetCustomFieldsByUserTypeResponse): unknown {
     const obj: any = {};
-    if (message.customFields?.length) {
-      obj.customFields = message.customFields.map((e) => CustomField.toJSON(e));
+    if (message.custom_fields?.length) {
+      obj.customFields = message.custom_fields.map((e) => CustomField.toJSON(e));
     }
     return obj;
   },
@@ -731,7 +731,7 @@ export const GetCustomFieldsByUserTypeResponse: MessageFns<GetCustomFieldsByUser
     object: I,
   ): GetCustomFieldsByUserTypeResponse {
     const message = createBaseGetCustomFieldsByUserTypeResponse();
-    message.customFields = object.customFields?.map((e) => CustomField.fromPartial(e)) || [];
+    message.custom_fields = object.custom_fields?.map((e) => CustomField.fromPartial(e)) || [];
     return message;
   },
 };
@@ -739,13 +739,13 @@ export const GetCustomFieldsByUserTypeResponse: MessageFns<GetCustomFieldsByUser
 function createBaseCreateCustomFieldRequest(): CreateCustomFieldRequest {
   return {
     context: undefined,
-    groupId: undefined,
+    group_id: undefined,
     name: "",
-    fieldType: CustomFieldType.STRING,
-    isRequired: false,
+    field_type: CustomFieldType.STRING,
+    is_required: false,
     description: "",
-    isArchived: false,
-    regexPattern: "",
+    is_archived: false,
+    regex_pattern: "",
     options: [],
   };
 }
@@ -755,26 +755,26 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.fieldType !== CustomFieldType.STRING) {
-      writer.uint32(32).int32(customFieldTypeToNumber(message.fieldType));
+    if (message.field_type !== CustomFieldType.STRING) {
+      writer.uint32(32).int32(customFieldTypeToNumber(message.field_type));
     }
-    if (message.isRequired !== false) {
-      writer.uint32(48).bool(message.isRequired);
+    if (message.is_required !== false) {
+      writer.uint32(48).bool(message.is_required);
     }
     if (message.description !== "") {
       writer.uint32(58).string(message.description);
     }
-    if (message.isArchived !== false) {
-      writer.uint32(64).bool(message.isArchived);
+    if (message.is_archived !== false) {
+      writer.uint32(64).bool(message.is_archived);
     }
-    if (message.regexPattern !== undefined && message.regexPattern !== "") {
-      writer.uint32(74).string(message.regexPattern);
+    if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+      writer.uint32(74).string(message.regex_pattern);
     }
     for (const v of message.options) {
       writer.uint32(82).string(v!);
@@ -801,7 +801,7 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -815,14 +815,14 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
             break;
           }
 
-          message.fieldType = customFieldTypeFromJSON(reader.int32());
+          message.field_type = customFieldTypeFromJSON(reader.int32());
           continue;
         case 6:
           if (tag !== 48) {
             break;
           }
 
-          message.isRequired = reader.bool();
+          message.is_required = reader.bool();
           continue;
         case 7:
           if (tag !== 58) {
@@ -836,14 +836,14 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
             break;
           }
 
-          message.isArchived = reader.bool();
+          message.is_archived = reader.bool();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.regexPattern = reader.string();
+          message.regex_pattern = reader.string();
           continue;
         case 10:
           if (tag !== 82) {
@@ -864,13 +864,13 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
   fromJSON(object: any): CreateCustomFieldRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      fieldType: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
-      isRequired: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
+      field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
+      is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      isArchived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
-      regexPattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+      is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
+      regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
       options: globalThis.Array.isArray(object?.options) ? object.options.map((e: any) => globalThis.String(e)) : [],
     };
   },
@@ -880,26 +880,26 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.fieldType !== CustomFieldType.STRING) {
-      obj.fieldType = customFieldTypeToJSON(message.fieldType);
+    if (message.field_type !== CustomFieldType.STRING) {
+      obj.fieldType = customFieldTypeToJSON(message.field_type);
     }
-    if (message.isRequired !== false) {
-      obj.isRequired = message.isRequired;
+    if (message.is_required !== false) {
+      obj.isRequired = message.is_required;
     }
     if (message.description !== "") {
       obj.description = message.description;
     }
-    if (message.isArchived !== false) {
-      obj.isArchived = message.isArchived;
+    if (message.is_archived !== false) {
+      obj.isArchived = message.is_archived;
     }
-    if (message.regexPattern !== undefined && message.regexPattern !== "") {
-      obj.regexPattern = message.regexPattern;
+    if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+      obj.regexPattern = message.regex_pattern;
     }
     if (message.options?.length) {
       obj.options = message.options;
@@ -915,15 +915,15 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
     message.name = object.name ?? "";
-    message.fieldType = object.fieldType ?? CustomFieldType.STRING;
-    message.isRequired = object.isRequired ?? false;
+    message.field_type = object.field_type ?? CustomFieldType.STRING;
+    message.is_required = object.is_required ?? false;
     message.description = object.description ?? "";
-    message.isArchived = object.isArchived ?? false;
-    message.regexPattern = object.regexPattern ?? "";
+    message.is_archived = object.is_archived ?? false;
+    message.regex_pattern = object.regex_pattern ?? "";
     message.options = object.options?.map((e) => e) || [];
     return message;
   },
@@ -932,13 +932,13 @@ export const CreateCustomFieldRequest: MessageFns<CreateCustomFieldRequest> = {
 function createBaseUpdateCustomFieldRequest(): UpdateCustomFieldRequest {
   return {
     context: undefined,
-    customFieldId: undefined,
+    custom_field_id: undefined,
     name: "",
-    fieldType: CustomFieldType.STRING,
+    field_type: CustomFieldType.STRING,
     description: "",
-    isRequired: false,
-    isArchived: false,
-    regexPattern: "",
+    is_required: false,
+    is_archived: false,
+    regex_pattern: "",
     options: [],
   };
 }
@@ -948,26 +948,26 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.customFieldId !== undefined) {
-      ObjectId.encode(message.customFieldId, writer.uint32(18).fork()).join();
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(18).fork()).join();
     }
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.fieldType !== CustomFieldType.STRING) {
-      writer.uint32(32).int32(customFieldTypeToNumber(message.fieldType));
+    if (message.field_type !== CustomFieldType.STRING) {
+      writer.uint32(32).int32(customFieldTypeToNumber(message.field_type));
     }
     if (message.description !== "") {
       writer.uint32(42).string(message.description);
     }
-    if (message.isRequired !== false) {
-      writer.uint32(48).bool(message.isRequired);
+    if (message.is_required !== false) {
+      writer.uint32(48).bool(message.is_required);
     }
-    if (message.isArchived !== false) {
-      writer.uint32(56).bool(message.isArchived);
+    if (message.is_archived !== false) {
+      writer.uint32(56).bool(message.is_archived);
     }
-    if (message.regexPattern !== undefined && message.regexPattern !== "") {
-      writer.uint32(66).string(message.regexPattern);
+    if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+      writer.uint32(66).string(message.regex_pattern);
     }
     for (const v of message.options) {
       writer.uint32(74).string(v!);
@@ -994,7 +994,7 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
             break;
           }
 
-          message.customFieldId = ObjectId.decode(reader, reader.uint32());
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1008,7 +1008,7 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
             break;
           }
 
-          message.fieldType = customFieldTypeFromJSON(reader.int32());
+          message.field_type = customFieldTypeFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 42) {
@@ -1022,21 +1022,21 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
             break;
           }
 
-          message.isRequired = reader.bool();
+          message.is_required = reader.bool();
           continue;
         case 7:
           if (tag !== 56) {
             break;
           }
 
-          message.isArchived = reader.bool();
+          message.is_archived = reader.bool();
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.regexPattern = reader.string();
+          message.regex_pattern = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
@@ -1057,13 +1057,13 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
   fromJSON(object: any): UpdateCustomFieldRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      customFieldId: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      fieldType: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
+      field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      isRequired: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
-      isArchived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
-      regexPattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+      is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
+      is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
+      regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
       options: globalThis.Array.isArray(object?.options) ? object.options.map((e: any) => globalThis.String(e)) : [],
     };
   },
@@ -1073,26 +1073,26 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.customFieldId !== undefined) {
-      obj.customFieldId = ObjectId.toJSON(message.customFieldId);
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.fieldType !== CustomFieldType.STRING) {
-      obj.fieldType = customFieldTypeToJSON(message.fieldType);
+    if (message.field_type !== CustomFieldType.STRING) {
+      obj.fieldType = customFieldTypeToJSON(message.field_type);
     }
     if (message.description !== "") {
       obj.description = message.description;
     }
-    if (message.isRequired !== false) {
-      obj.isRequired = message.isRequired;
+    if (message.is_required !== false) {
+      obj.isRequired = message.is_required;
     }
-    if (message.isArchived !== false) {
-      obj.isArchived = message.isArchived;
+    if (message.is_archived !== false) {
+      obj.isArchived = message.is_archived;
     }
-    if (message.regexPattern !== undefined && message.regexPattern !== "") {
-      obj.regexPattern = message.regexPattern;
+    if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+      obj.regexPattern = message.regex_pattern;
     }
     if (message.options?.length) {
       obj.options = message.options;
@@ -1108,22 +1108,22 @@ export const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.customFieldId = (object.customFieldId !== undefined && object.customFieldId !== null)
-      ? ObjectId.fromPartial(object.customFieldId)
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
     message.name = object.name ?? "";
-    message.fieldType = object.fieldType ?? CustomFieldType.STRING;
+    message.field_type = object.field_type ?? CustomFieldType.STRING;
     message.description = object.description ?? "";
-    message.isRequired = object.isRequired ?? false;
-    message.isArchived = object.isArchived ?? false;
-    message.regexPattern = object.regexPattern ?? "";
+    message.is_required = object.is_required ?? false;
+    message.is_archived = object.is_archived ?? false;
+    message.regex_pattern = object.regex_pattern ?? "";
     message.options = object.options?.map((e) => e) || [];
     return message;
   },
 };
 
 function createBaseGetStudentPrimaryIdFieldRequest(): GetStudentPrimaryIdFieldRequest {
-  return { context: undefined, studentId: undefined };
+  return { context: undefined, student_id: undefined };
 }
 
 export const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFieldRequest> = {
@@ -1131,8 +1131,8 @@ export const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFiel
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.studentId !== undefined) {
-      ObjectId.encode(message.studentId, writer.uint32(18).fork()).join();
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1156,7 +1156,7 @@ export const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFiel
             break;
           }
 
-          message.studentId = ObjectId.decode(reader, reader.uint32());
+          message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1170,7 +1170,7 @@ export const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFiel
   fromJSON(object: any): GetStudentPrimaryIdFieldRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      studentId: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -1179,8 +1179,8 @@ export const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFiel
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.studentId !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.studentId);
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -1195,21 +1195,21 @@ export const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFiel
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.studentId = (object.studentId !== undefined && object.studentId !== null)
-      ? ObjectId.fromPartial(object.studentId)
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetStudentPrimaryIdFieldResponse(): GetStudentPrimaryIdFieldResponse {
-  return { primaryIdField: undefined };
+  return { primary_id_field: undefined };
 }
 
 export const GetStudentPrimaryIdFieldResponse: MessageFns<GetStudentPrimaryIdFieldResponse> = {
   encode(message: GetStudentPrimaryIdFieldResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.primaryIdField !== undefined) {
-      StudentPrimaryIdField.encode(message.primaryIdField, writer.uint32(10).fork()).join();
+    if (message.primary_id_field !== undefined) {
+      StudentPrimaryIdField.encode(message.primary_id_field, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -1226,7 +1226,7 @@ export const GetStudentPrimaryIdFieldResponse: MessageFns<GetStudentPrimaryIdFie
             break;
           }
 
-          message.primaryIdField = StudentPrimaryIdField.decode(reader, reader.uint32());
+          message.primary_id_field = StudentPrimaryIdField.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1239,14 +1239,16 @@ export const GetStudentPrimaryIdFieldResponse: MessageFns<GetStudentPrimaryIdFie
 
   fromJSON(object: any): GetStudentPrimaryIdFieldResponse {
     return {
-      primaryIdField: isSet(object.primaryIdField) ? StudentPrimaryIdField.fromJSON(object.primaryIdField) : undefined,
+      primary_id_field: isSet(object.primaryIdField)
+        ? StudentPrimaryIdField.fromJSON(object.primaryIdField)
+        : undefined,
     };
   },
 
   toJSON(message: GetStudentPrimaryIdFieldResponse): unknown {
     const obj: any = {};
-    if (message.primaryIdField !== undefined) {
-      obj.primaryIdField = StudentPrimaryIdField.toJSON(message.primaryIdField);
+    if (message.primary_id_field !== undefined) {
+      obj.primaryIdField = StudentPrimaryIdField.toJSON(message.primary_id_field);
     }
     return obj;
   },
@@ -1260,15 +1262,15 @@ export const GetStudentPrimaryIdFieldResponse: MessageFns<GetStudentPrimaryIdFie
     object: I,
   ): GetStudentPrimaryIdFieldResponse {
     const message = createBaseGetStudentPrimaryIdFieldResponse();
-    message.primaryIdField = (object.primaryIdField !== undefined && object.primaryIdField !== null)
-      ? StudentPrimaryIdField.fromPartial(object.primaryIdField)
+    message.primary_id_field = (object.primary_id_field !== undefined && object.primary_id_field !== null)
+      ? StudentPrimaryIdField.fromPartial(object.primary_id_field)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetAllCustomFieldEntriesByUserRequest(): GetAllCustomFieldEntriesByUserRequest {
-  return { context: undefined, userId: undefined };
+  return { context: undefined, user_id: undefined };
 }
 
 export const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomFieldEntriesByUserRequest> = {
@@ -1276,8 +1278,8 @@ export const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomField
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(18).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -1301,7 +1303,7 @@ export const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomField
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1315,7 +1317,7 @@ export const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomField
   fromJSON(object: any): GetAllCustomFieldEntriesByUserRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
     };
   },
 
@@ -1324,8 +1326,8 @@ export const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomField
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
     return obj;
   },
@@ -1342,8 +1344,8 @@ export const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomField
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
     return message;
   },
@@ -1415,7 +1417,7 @@ export const GetAllCustomFieldEntriesByUserResponse: MessageFns<GetAllCustomFiel
 };
 
 function createBaseGetCustomFieldEntriesByUserAndGroupRequest(): GetCustomFieldEntriesByUserAndGroupRequest {
-  return { context: undefined, userId: undefined, groupId: undefined };
+  return { context: undefined, user_id: undefined, group_id: undefined };
 }
 
 export const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFieldEntriesByUserAndGroupRequest> = {
@@ -1423,11 +1425,11 @@ export const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFie
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(18).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(26).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -1451,14 +1453,14 @@ export const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFie
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1472,8 +1474,8 @@ export const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFie
   fromJSON(object: any): GetCustomFieldEntriesByUserAndGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
     };
   },
 
@@ -1482,11 +1484,11 @@ export const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFie
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
     return obj;
   },
@@ -1503,11 +1505,11 @@ export const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFie
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
     return message;
   },
@@ -1582,7 +1584,7 @@ export const GetCustomFieldEntriesByUserAndGroupResponse: MessageFns<GetCustomFi
 };
 
 function createBaseGetGroupActiveEntriesForUserRequest(): GetGroupActiveEntriesForUserRequest {
-  return { context: undefined, userId: undefined, groupId: undefined };
+  return { context: undefined, user_id: undefined, group_id: undefined };
 }
 
 export const GetGroupActiveEntriesForUserRequest: MessageFns<GetGroupActiveEntriesForUserRequest> = {
@@ -1590,11 +1592,11 @@ export const GetGroupActiveEntriesForUserRequest: MessageFns<GetGroupActiveEntri
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(18).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(26).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -1618,14 +1620,14 @@ export const GetGroupActiveEntriesForUserRequest: MessageFns<GetGroupActiveEntri
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1639,8 +1641,8 @@ export const GetGroupActiveEntriesForUserRequest: MessageFns<GetGroupActiveEntri
   fromJSON(object: any): GetGroupActiveEntriesForUserRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
     };
   },
 
@@ -1649,11 +1651,11 @@ export const GetGroupActiveEntriesForUserRequest: MessageFns<GetGroupActiveEntri
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
     return obj;
   },
@@ -1670,11 +1672,11 @@ export const GetGroupActiveEntriesForUserRequest: MessageFns<GetGroupActiveEntri
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
     return message;
   },
@@ -1746,7 +1748,7 @@ export const GetGroupActiveEntriesForUserResponse: MessageFns<GetGroupActiveEntr
 };
 
 function createBaseUpdateCustomFieldsForGroupRequest(): UpdateCustomFieldsForGroupRequest {
-  return { context: undefined, userId: undefined, groupId: undefined, entries: [] };
+  return { context: undefined, user_id: undefined, group_id: undefined, entries: [] };
 }
 
 export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsForGroupRequest> = {
@@ -1754,11 +1756,11 @@ export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsFor
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(18).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(26).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(26).fork()).join();
     }
     for (const v of message.entries) {
       CustomFieldEntryUpdate.encode(v!, writer.uint32(34).fork()).join();
@@ -1785,14 +1787,14 @@ export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsFor
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -1813,8 +1815,8 @@ export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsFor
   fromJSON(object: any): UpdateCustomFieldsForGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
       entries: globalThis.Array.isArray(object?.entries)
         ? object.entries.map((e: any) => CustomFieldEntryUpdate.fromJSON(e))
         : [],
@@ -1826,11 +1828,11 @@ export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsFor
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
     if (message.entries?.length) {
       obj.entries = message.entries.map((e) => CustomFieldEntryUpdate.toJSON(e));
@@ -1850,11 +1852,11 @@ export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsFor
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
     message.entries = object.entries?.map((e) => CustomFieldEntryUpdate.fromPartial(e)) || [];
     return message;
@@ -1862,13 +1864,13 @@ export const UpdateCustomFieldsForGroupRequest: MessageFns<UpdateCustomFieldsFor
 };
 
 function createBaseCustomFieldEntryUpdate(): CustomFieldEntryUpdate {
-  return { customFieldId: undefined, value: "" };
+  return { custom_field_id: undefined, value: "" };
 }
 
 export const CustomFieldEntryUpdate: MessageFns<CustomFieldEntryUpdate> = {
   encode(message: CustomFieldEntryUpdate, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.customFieldId !== undefined) {
-      ObjectId.encode(message.customFieldId, writer.uint32(10).fork()).join();
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(10).fork()).join();
     }
     if (message.value !== "") {
       writer.uint32(18).string(message.value);
@@ -1888,7 +1890,7 @@ export const CustomFieldEntryUpdate: MessageFns<CustomFieldEntryUpdate> = {
             break;
           }
 
-          message.customFieldId = ObjectId.decode(reader, reader.uint32());
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -1908,15 +1910,15 @@ export const CustomFieldEntryUpdate: MessageFns<CustomFieldEntryUpdate> = {
 
   fromJSON(object: any): CustomFieldEntryUpdate {
     return {
-      customFieldId: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
       value: isSet(object.value) ? globalThis.String(object.value) : "",
     };
   },
 
   toJSON(message: CustomFieldEntryUpdate): unknown {
     const obj: any = {};
-    if (message.customFieldId !== undefined) {
-      obj.customFieldId = ObjectId.toJSON(message.customFieldId);
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
     }
     if (message.value !== "") {
       obj.value = message.value;
@@ -1929,8 +1931,8 @@ export const CustomFieldEntryUpdate: MessageFns<CustomFieldEntryUpdate> = {
   },
   fromPartial<I extends Exact<DeepPartial<CustomFieldEntryUpdate>, I>>(object: I): CustomFieldEntryUpdate {
     const message = createBaseCustomFieldEntryUpdate();
-    message.customFieldId = (object.customFieldId !== undefined && object.customFieldId !== null)
-      ? ObjectId.fromPartial(object.customFieldId)
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
     message.value = object.value ?? "";
     return message;
@@ -2005,11 +2007,11 @@ export const UpdateCustomFieldsForGroupResponse: MessageFns<UpdateCustomFieldsFo
 function createBaseUploadDocumentToCustomFieldEntryRequest(): UploadDocumentToCustomFieldEntryRequest {
   return {
     context: undefined,
-    userId: undefined,
-    customFieldId: undefined,
-    documentName: "",
-    fileContent: "",
-    fileName: "",
+    user_id: undefined,
+    custom_field_id: undefined,
+    document_name: "",
+    file_content: "",
+    file_name: "",
   };
 }
 
@@ -2018,20 +2020,20 @@ export const UploadDocumentToCustomFieldEntryRequest: MessageFns<UploadDocumentT
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(18).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
-    if (message.customFieldId !== undefined) {
-      ObjectId.encode(message.customFieldId, writer.uint32(26).fork()).join();
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(26).fork()).join();
     }
-    if (message.documentName !== "") {
-      writer.uint32(34).string(message.documentName);
+    if (message.document_name !== "") {
+      writer.uint32(34).string(message.document_name);
     }
-    if (message.fileContent !== "") {
-      writer.uint32(42).string(message.fileContent);
+    if (message.file_content !== "") {
+      writer.uint32(42).string(message.file_content);
     }
-    if (message.fileName !== "") {
-      writer.uint32(50).string(message.fileName);
+    if (message.file_name !== "") {
+      writer.uint32(50).string(message.file_name);
     }
     return writer;
   },
@@ -2055,35 +2057,35 @@ export const UploadDocumentToCustomFieldEntryRequest: MessageFns<UploadDocumentT
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.customFieldId = ObjectId.decode(reader, reader.uint32());
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.documentName = reader.string();
+          message.document_name = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.fileContent = reader.string();
+          message.file_content = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.fileName = reader.string();
+          message.file_name = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2097,11 +2099,11 @@ export const UploadDocumentToCustomFieldEntryRequest: MessageFns<UploadDocumentT
   fromJSON(object: any): UploadDocumentToCustomFieldEntryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      customFieldId: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
-      documentName: isSet(object.documentName) ? globalThis.String(object.documentName) : "",
-      fileContent: isSet(object.fileContent) ? globalThis.String(object.fileContent) : "",
-      fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+      document_name: isSet(object.documentName) ? globalThis.String(object.documentName) : "",
+      file_content: isSet(object.fileContent) ? globalThis.String(object.fileContent) : "",
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
     };
   },
 
@@ -2110,20 +2112,20 @@ export const UploadDocumentToCustomFieldEntryRequest: MessageFns<UploadDocumentT
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.customFieldId !== undefined) {
-      obj.customFieldId = ObjectId.toJSON(message.customFieldId);
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
     }
-    if (message.documentName !== "") {
-      obj.documentName = message.documentName;
+    if (message.document_name !== "") {
+      obj.documentName = message.document_name;
     }
-    if (message.fileContent !== "") {
-      obj.fileContent = message.fileContent;
+    if (message.file_content !== "") {
+      obj.fileContent = message.file_content;
     }
-    if (message.fileName !== "") {
-      obj.fileName = message.fileName;
+    if (message.file_name !== "") {
+      obj.fileName = message.file_name;
     }
     return obj;
   },
@@ -2140,21 +2142,21 @@ export const UploadDocumentToCustomFieldEntryRequest: MessageFns<UploadDocumentT
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.customFieldId = (object.customFieldId !== undefined && object.customFieldId !== null)
-      ? ObjectId.fromPartial(object.customFieldId)
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
-    message.documentName = object.documentName ?? "";
-    message.fileContent = object.fileContent ?? "";
-    message.fileName = object.fileName ?? "";
+    message.document_name = object.document_name ?? "";
+    message.file_content = object.file_content ?? "";
+    message.file_name = object.file_name ?? "";
     return message;
   },
 };
 
 function createBaseRemoveDocumentFromCustomFieldEntryRequest(): RemoveDocumentFromCustomFieldEntryRequest {
-  return { context: undefined, userId: undefined, customFieldId: undefined, documentIndex: 0 };
+  return { context: undefined, user_id: undefined, custom_field_id: undefined, document_index: 0 };
 }
 
 export const RemoveDocumentFromCustomFieldEntryRequest: MessageFns<RemoveDocumentFromCustomFieldEntryRequest> = {
@@ -2162,14 +2164,14 @@ export const RemoveDocumentFromCustomFieldEntryRequest: MessageFns<RemoveDocumen
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(18).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
-    if (message.customFieldId !== undefined) {
-      ObjectId.encode(message.customFieldId, writer.uint32(26).fork()).join();
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(26).fork()).join();
     }
-    if (message.documentIndex !== 0) {
-      writer.uint32(32).uint32(message.documentIndex);
+    if (message.document_index !== 0) {
+      writer.uint32(32).uint32(message.document_index);
     }
     return writer;
   },
@@ -2193,21 +2195,21 @@ export const RemoveDocumentFromCustomFieldEntryRequest: MessageFns<RemoveDocumen
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.customFieldId = ObjectId.decode(reader, reader.uint32());
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.documentIndex = reader.uint32();
+          message.document_index = reader.uint32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2221,9 +2223,9 @@ export const RemoveDocumentFromCustomFieldEntryRequest: MessageFns<RemoveDocumen
   fromJSON(object: any): RemoveDocumentFromCustomFieldEntryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      customFieldId: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
-      documentIndex: isSet(object.documentIndex) ? globalThis.Number(object.documentIndex) : 0,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+      document_index: isSet(object.documentIndex) ? globalThis.Number(object.documentIndex) : 0,
     };
   },
 
@@ -2232,14 +2234,14 @@ export const RemoveDocumentFromCustomFieldEntryRequest: MessageFns<RemoveDocumen
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.customFieldId !== undefined) {
-      obj.customFieldId = ObjectId.toJSON(message.customFieldId);
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
     }
-    if (message.documentIndex !== 0) {
-      obj.documentIndex = Math.round(message.documentIndex);
+    if (message.document_index !== 0) {
+      obj.documentIndex = Math.round(message.document_index);
     }
     return obj;
   },
@@ -2256,13 +2258,13 @@ export const RemoveDocumentFromCustomFieldEntryRequest: MessageFns<RemoveDocumen
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.customFieldId = (object.customFieldId !== undefined && object.customFieldId !== null)
-      ? ObjectId.fromPartial(object.customFieldId)
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
-    message.documentIndex = object.documentIndex ?? 0;
+    message.document_index = object.document_index ?? 0;
     return message;
   },
 };
@@ -2333,14 +2335,14 @@ export const GetCustomFieldsGroupsResponse: MessageFns<GetCustomFieldsGroupsResp
 function createBaseCreateCustomFieldsGroupRequest(): CreateCustomFieldsGroupRequest {
   return {
     context: undefined,
-    groupName: "",
-    userType: UserType.NONE,
-    profileSection: ProfileSection.OVERVIEW,
+    group_name: "",
+    user_type: UserType.NONE,
+    profile_section: ProfileSection.OVERVIEW,
     hints: [],
-    groupAccessSettings: undefined,
-    entriesAccessSettings: undefined,
-    visibleToParentsForStatuses: [],
-    visibleToTeachersForStatuses: [],
+    group_access_settings: undefined,
+    entries_access_settings: undefined,
+    visible_to_parents_for_statuses: [],
+    visible_to_teachers_for_statuses: [],
   };
 }
 
@@ -2349,31 +2351,31 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupName !== "") {
-      writer.uint32(18).string(message.groupName);
+    if (message.group_name !== "") {
+      writer.uint32(18).string(message.group_name);
     }
-    if (message.userType !== UserType.NONE) {
-      writer.uint32(24).int32(userTypeToNumber(message.userType));
+    if (message.user_type !== UserType.NONE) {
+      writer.uint32(24).int32(userTypeToNumber(message.user_type));
     }
-    if (message.profileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(32).int32(profileSectionToNumber(message.profileSection));
+    if (message.profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(32).int32(profileSectionToNumber(message.profile_section));
     }
     for (const v of message.hints) {
       writer.uint32(42).string(v!);
     }
-    if (message.groupAccessSettings !== undefined) {
-      ObjectId.encode(message.groupAccessSettings, writer.uint32(50).fork()).join();
+    if (message.group_access_settings !== undefined) {
+      ObjectId.encode(message.group_access_settings, writer.uint32(50).fork()).join();
     }
-    if (message.entriesAccessSettings !== undefined) {
-      ObjectId.encode(message.entriesAccessSettings, writer.uint32(58).fork()).join();
+    if (message.entries_access_settings !== undefined) {
+      ObjectId.encode(message.entries_access_settings, writer.uint32(58).fork()).join();
     }
     writer.uint32(66).fork();
-    for (const v of message.visibleToParentsForStatuses) {
+    for (const v of message.visible_to_parents_for_statuses) {
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
     writer.uint32(74).fork();
-    for (const v of message.visibleToTeachersForStatuses) {
+    for (const v of message.visible_to_teachers_for_statuses) {
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
@@ -2399,21 +2401,21 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
             break;
           }
 
-          message.groupName = reader.string();
+          message.group_name = reader.string();
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.userType = userTypeFromJSON(reader.int32());
+          message.user_type = userTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.profileSection = profileSectionFromJSON(reader.int32());
+          message.profile_section = profileSectionFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 42) {
@@ -2427,18 +2429,18 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
             break;
           }
 
-          message.groupAccessSettings = ObjectId.decode(reader, reader.uint32());
+          message.group_access_settings = ObjectId.decode(reader, reader.uint32());
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.entriesAccessSettings = ObjectId.decode(reader, reader.uint32());
+          message.entries_access_settings = ObjectId.decode(reader, reader.uint32());
           continue;
         case 8:
           if (tag === 64) {
-            message.visibleToParentsForStatuses.push(studentStatusFromJSON(reader.int32()));
+            message.visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
 
             continue;
           }
@@ -2446,7 +2448,7 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
           if (tag === 66) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.visibleToParentsForStatuses.push(studentStatusFromJSON(reader.int32()));
+              message.visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
             }
 
             continue;
@@ -2455,7 +2457,7 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
           break;
         case 9:
           if (tag === 72) {
-            message.visibleToTeachersForStatuses.push(studentStatusFromJSON(reader.int32()));
+            message.visible_to_teachers_for_statuses.push(studentStatusFromJSON(reader.int32()));
 
             continue;
           }
@@ -2463,7 +2465,7 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
           if (tag === 74) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.visibleToTeachersForStatuses.push(studentStatusFromJSON(reader.int32()));
+              message.visible_to_teachers_for_statuses.push(studentStatusFromJSON(reader.int32()));
             }
 
             continue;
@@ -2482,22 +2484,22 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
   fromJSON(object: any): CreateCustomFieldsGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      profileSection: isSet(object.profileSection)
+      group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      profile_section: isSet(object.profileSection)
         ? profileSectionFromJSON(object.profileSection)
         : ProfileSection.OVERVIEW,
       hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e: any) => globalThis.String(e)) : [],
-      groupAccessSettings: isSet(object.groupAccessSettings)
+      group_access_settings: isSet(object.groupAccessSettings)
         ? ObjectId.fromJSON(object.groupAccessSettings)
         : undefined,
-      entriesAccessSettings: isSet(object.entriesAccessSettings)
+      entries_access_settings: isSet(object.entriesAccessSettings)
         ? ObjectId.fromJSON(object.entriesAccessSettings)
         : undefined,
-      visibleToParentsForStatuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
+      visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
         ? object.visibleToParentsForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      visibleToTeachersForStatuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
+      visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
         ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
     };
@@ -2508,29 +2510,29 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupName !== "") {
-      obj.groupName = message.groupName;
+    if (message.group_name !== "") {
+      obj.groupName = message.group_name;
     }
-    if (message.userType !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.userType);
+    if (message.user_type !== UserType.NONE) {
+      obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.profileSection !== ProfileSection.OVERVIEW) {
-      obj.profileSection = profileSectionToJSON(message.profileSection);
+    if (message.profile_section !== ProfileSection.OVERVIEW) {
+      obj.profileSection = profileSectionToJSON(message.profile_section);
     }
     if (message.hints?.length) {
       obj.hints = message.hints;
     }
-    if (message.groupAccessSettings !== undefined) {
-      obj.groupAccessSettings = ObjectId.toJSON(message.groupAccessSettings);
+    if (message.group_access_settings !== undefined) {
+      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
     }
-    if (message.entriesAccessSettings !== undefined) {
-      obj.entriesAccessSettings = ObjectId.toJSON(message.entriesAccessSettings);
+    if (message.entries_access_settings !== undefined) {
+      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
     }
-    if (message.visibleToParentsForStatuses?.length) {
-      obj.visibleToParentsForStatuses = message.visibleToParentsForStatuses.map((e) => studentStatusToJSON(e));
+    if (message.visible_to_parents_for_statuses?.length) {
+      obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => studentStatusToJSON(e));
     }
-    if (message.visibleToTeachersForStatuses?.length) {
-      obj.visibleToTeachersForStatuses = message.visibleToTeachersForStatuses.map((e) => studentStatusToJSON(e));
+    if (message.visible_to_teachers_for_statuses?.length) {
+      obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => studentStatusToJSON(e));
     }
     return obj;
   },
@@ -2545,19 +2547,20 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupName = object.groupName ?? "";
-    message.userType = object.userType ?? UserType.NONE;
-    message.profileSection = object.profileSection ?? ProfileSection.OVERVIEW;
+    message.group_name = object.group_name ?? "";
+    message.user_type = object.user_type ?? UserType.NONE;
+    message.profile_section = object.profile_section ?? ProfileSection.OVERVIEW;
     message.hints = object.hints?.map((e) => e) || [];
-    message.groupAccessSettings = (object.groupAccessSettings !== undefined && object.groupAccessSettings !== null)
-      ? ObjectId.fromPartial(object.groupAccessSettings)
-      : undefined;
-    message.entriesAccessSettings =
-      (object.entriesAccessSettings !== undefined && object.entriesAccessSettings !== null)
-        ? ObjectId.fromPartial(object.entriesAccessSettings)
+    message.group_access_settings =
+      (object.group_access_settings !== undefined && object.group_access_settings !== null)
+        ? ObjectId.fromPartial(object.group_access_settings)
         : undefined;
-    message.visibleToParentsForStatuses = object.visibleToParentsForStatuses?.map((e) => e) || [];
-    message.visibleToTeachersForStatuses = object.visibleToTeachersForStatuses?.map((e) => e) || [];
+    message.entries_access_settings =
+      (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
+        ? ObjectId.fromPartial(object.entries_access_settings)
+        : undefined;
+    message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
+    message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
     return message;
   },
 };
@@ -2565,12 +2568,12 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
 function createBaseUpdateCustomFieldsGroupRequest(): UpdateCustomFieldsGroupRequest {
   return {
     context: undefined,
-    groupId: undefined,
-    groupName: "",
-    profileSection: ProfileSection.OVERVIEW,
+    group_id: undefined,
+    group_name: "",
+    profile_section: ProfileSection.OVERVIEW,
     hints: [],
-    visibleToParentsForStatuses: [],
-    visibleToTeachersForStatuses: [],
+    visible_to_parents_for_statuses: [],
+    visible_to_teachers_for_statuses: [],
   };
 }
 
@@ -2579,25 +2582,25 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
-    if (message.groupName !== "") {
-      writer.uint32(26).string(message.groupName);
+    if (message.group_name !== "") {
+      writer.uint32(26).string(message.group_name);
     }
-    if (message.profileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(32).int32(profileSectionToNumber(message.profileSection));
+    if (message.profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(32).int32(profileSectionToNumber(message.profile_section));
     }
     for (const v of message.hints) {
       writer.uint32(42).string(v!);
     }
     writer.uint32(50).fork();
-    for (const v of message.visibleToParentsForStatuses) {
+    for (const v of message.visible_to_parents_for_statuses) {
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
     writer.uint32(58).fork();
-    for (const v of message.visibleToTeachersForStatuses) {
+    for (const v of message.visible_to_teachers_for_statuses) {
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
@@ -2623,21 +2626,21 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.groupName = reader.string();
+          message.group_name = reader.string();
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.profileSection = profileSectionFromJSON(reader.int32());
+          message.profile_section = profileSectionFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 42) {
@@ -2648,7 +2651,7 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
           continue;
         case 6:
           if (tag === 48) {
-            message.visibleToParentsForStatuses.push(studentStatusFromJSON(reader.int32()));
+            message.visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
 
             continue;
           }
@@ -2656,7 +2659,7 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
           if (tag === 50) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.visibleToParentsForStatuses.push(studentStatusFromJSON(reader.int32()));
+              message.visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
             }
 
             continue;
@@ -2665,7 +2668,7 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
           break;
         case 7:
           if (tag === 56) {
-            message.visibleToTeachersForStatuses.push(studentStatusFromJSON(reader.int32()));
+            message.visible_to_teachers_for_statuses.push(studentStatusFromJSON(reader.int32()));
 
             continue;
           }
@@ -2673,7 +2676,7 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
           if (tag === 58) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.visibleToTeachersForStatuses.push(studentStatusFromJSON(reader.int32()));
+              message.visible_to_teachers_for_statuses.push(studentStatusFromJSON(reader.int32()));
             }
 
             continue;
@@ -2692,16 +2695,16 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
   fromJSON(object: any): UpdateCustomFieldsGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-      profileSection: isSet(object.profileSection)
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+      profile_section: isSet(object.profileSection)
         ? profileSectionFromJSON(object.profileSection)
         : ProfileSection.OVERVIEW,
       hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e: any) => globalThis.String(e)) : [],
-      visibleToParentsForStatuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
+      visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
         ? object.visibleToParentsForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      visibleToTeachersForStatuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
+      visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
         ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
     };
@@ -2712,23 +2715,23 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.groupName !== "") {
-      obj.groupName = message.groupName;
+    if (message.group_name !== "") {
+      obj.groupName = message.group_name;
     }
-    if (message.profileSection !== ProfileSection.OVERVIEW) {
-      obj.profileSection = profileSectionToJSON(message.profileSection);
+    if (message.profile_section !== ProfileSection.OVERVIEW) {
+      obj.profileSection = profileSectionToJSON(message.profile_section);
     }
     if (message.hints?.length) {
       obj.hints = message.hints;
     }
-    if (message.visibleToParentsForStatuses?.length) {
-      obj.visibleToParentsForStatuses = message.visibleToParentsForStatuses.map((e) => studentStatusToJSON(e));
+    if (message.visible_to_parents_for_statuses?.length) {
+      obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => studentStatusToJSON(e));
     }
-    if (message.visibleToTeachersForStatuses?.length) {
-      obj.visibleToTeachersForStatuses = message.visibleToTeachersForStatuses.map((e) => studentStatusToJSON(e));
+    if (message.visible_to_teachers_for_statuses?.length) {
+      obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => studentStatusToJSON(e));
     }
     return obj;
   },
@@ -2743,14 +2746,14 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.groupName = object.groupName ?? "";
-    message.profileSection = object.profileSection ?? ProfileSection.OVERVIEW;
+    message.group_name = object.group_name ?? "";
+    message.profile_section = object.profile_section ?? ProfileSection.OVERVIEW;
     message.hints = object.hints?.map((e) => e) || [];
-    message.visibleToParentsForStatuses = object.visibleToParentsForStatuses?.map((e) => e) || [];
-    message.visibleToTeachersForStatuses = object.visibleToTeachersForStatuses?.map((e) => e) || [];
+    message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
+    message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
     return message;
   },
 };
@@ -2817,7 +2820,7 @@ export const GetAllCustomFieldsGroupsRequest: MessageFns<GetAllCustomFieldsGroup
 };
 
 function createBaseGetAccessibleCustomFieldsGroupsRequest(): GetAccessibleCustomFieldsGroupsRequest {
-  return { context: undefined, userType: UserType.NONE };
+  return { context: undefined, user_type: UserType.NONE };
 }
 
 export const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCustomFieldsGroupsRequest> = {
@@ -2825,8 +2828,8 @@ export const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCus
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userType !== UserType.NONE) {
-      writer.uint32(16).int32(userTypeToNumber(message.userType));
+    if (message.user_type !== UserType.NONE) {
+      writer.uint32(16).int32(userTypeToNumber(message.user_type));
     }
     return writer;
   },
@@ -2850,7 +2853,7 @@ export const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCus
             break;
           }
 
-          message.userType = userTypeFromJSON(reader.int32());
+          message.user_type = userTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2864,7 +2867,7 @@ export const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCus
   fromJSON(object: any): GetAccessibleCustomFieldsGroupsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
     };
   },
 
@@ -2873,8 +2876,8 @@ export const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCus
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userType !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.userType);
+    if (message.user_type !== UserType.NONE) {
+      obj.userType = userTypeToJSON(message.user_type);
     }
     return obj;
   },
@@ -2891,13 +2894,13 @@ export const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCus
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userType = object.userType ?? UserType.NONE;
+    message.user_type = object.user_type ?? UserType.NONE;
     return message;
   },
 };
 
 function createBaseGetCustomFieldsGroupsByUserTypeAndProfileSectionRequest(): GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest {
-  return { context: undefined, userType: UserType.NONE, profileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, user_type: UserType.NONE, profile_section: ProfileSection.OVERVIEW };
 }
 
 export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns<
@@ -2910,11 +2913,11 @@ export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.userType !== UserType.NONE) {
-      writer.uint32(16).int32(userTypeToNumber(message.userType));
+    if (message.user_type !== UserType.NONE) {
+      writer.uint32(16).int32(userTypeToNumber(message.user_type));
     }
-    if (message.profileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.profileSection));
+    if (message.profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.profile_section));
     }
     return writer;
   },
@@ -2938,14 +2941,14 @@ export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns
             break;
           }
 
-          message.userType = userTypeFromJSON(reader.int32());
+          message.user_type = userTypeFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.profileSection = profileSectionFromJSON(reader.int32());
+          message.profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2959,8 +2962,8 @@ export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns
   fromJSON(object: any): GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      profileSection: isSet(object.profileSection)
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      profile_section: isSet(object.profileSection)
         ? profileSectionFromJSON(object.profileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -2971,11 +2974,11 @@ export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.userType !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.userType);
+    if (message.user_type !== UserType.NONE) {
+      obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.profileSection !== ProfileSection.OVERVIEW) {
-      obj.profileSection = profileSectionToJSON(message.profileSection);
+    if (message.profile_section !== ProfileSection.OVERVIEW) {
+      obj.profileSection = profileSectionToJSON(message.profile_section);
     }
     return obj;
   },
@@ -2992,14 +2995,14 @@ export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.userType = object.userType ?? UserType.NONE;
-    message.profileSection = object.profileSection ?? ProfileSection.OVERVIEW;
+    message.user_type = object.user_type ?? UserType.NONE;
+    message.profile_section = object.profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseGetStudentGroupsWithFieldsRequest(): GetStudentGroupsWithFieldsRequest {
-  return { context: undefined, studentStatus: StudentStatus.WAITLIST };
+  return { context: undefined, student_status: StudentStatus.WAITLIST };
 }
 
 export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithFieldsRequest> = {
@@ -3007,8 +3010,8 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.studentStatus !== StudentStatus.WAITLIST) {
-      writer.uint32(16).int32(studentStatusToNumber(message.studentStatus));
+    if (message.student_status !== StudentStatus.WAITLIST) {
+      writer.uint32(16).int32(studentStatusToNumber(message.student_status));
     }
     return writer;
   },
@@ -3032,7 +3035,7 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
             break;
           }
 
-          message.studentStatus = studentStatusFromJSON(reader.int32());
+          message.student_status = studentStatusFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3046,7 +3049,9 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
   fromJSON(object: any): GetStudentGroupsWithFieldsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      studentStatus: isSet(object.studentStatus) ? studentStatusFromJSON(object.studentStatus) : StudentStatus.WAITLIST,
+      student_status: isSet(object.studentStatus)
+        ? studentStatusFromJSON(object.studentStatus)
+        : StudentStatus.WAITLIST,
     };
   },
 
@@ -3055,8 +3060,8 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.studentStatus !== StudentStatus.WAITLIST) {
-      obj.studentStatus = studentStatusToJSON(message.studentStatus);
+    if (message.student_status !== StudentStatus.WAITLIST) {
+      obj.studentStatus = studentStatusToJSON(message.student_status);
     }
     return obj;
   },
@@ -3073,7 +3078,7 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.studentStatus = object.studentStatus ?? StudentStatus.WAITLIST;
+    message.student_status = object.student_status ?? StudentStatus.WAITLIST;
     return message;
   },
 };
@@ -3142,12 +3147,12 @@ export const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFie
 };
 
 function createBaseGetCustomFieldsGroupsWithFieldsResponse(): GetCustomFieldsGroupsWithFieldsResponse {
-  return { groupsWithFields: [] };
+  return { groups_with_fields: [] };
 }
 
 export const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFieldsGroupsWithFieldsResponse> = {
   encode(message: GetCustomFieldsGroupsWithFieldsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.groupsWithFields) {
+    for (const v of message.groups_with_fields) {
       CustomFieldsGroupWithFields.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -3165,7 +3170,7 @@ export const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFields
             break;
           }
 
-          message.groupsWithFields.push(CustomFieldsGroupWithFields.decode(reader, reader.uint32()));
+          message.groups_with_fields.push(CustomFieldsGroupWithFields.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3178,7 +3183,7 @@ export const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFields
 
   fromJSON(object: any): GetCustomFieldsGroupsWithFieldsResponse {
     return {
-      groupsWithFields: globalThis.Array.isArray(object?.groupsWithFields)
+      groups_with_fields: globalThis.Array.isArray(object?.groupsWithFields)
         ? object.groupsWithFields.map((e: any) => CustomFieldsGroupWithFields.fromJSON(e))
         : [],
     };
@@ -3186,8 +3191,8 @@ export const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFields
 
   toJSON(message: GetCustomFieldsGroupsWithFieldsResponse): unknown {
     const obj: any = {};
-    if (message.groupsWithFields?.length) {
-      obj.groupsWithFields = message.groupsWithFields.map((e) => CustomFieldsGroupWithFields.toJSON(e));
+    if (message.groups_with_fields?.length) {
+      obj.groupsWithFields = message.groups_with_fields.map((e) => CustomFieldsGroupWithFields.toJSON(e));
     }
     return obj;
   },
@@ -3201,13 +3206,14 @@ export const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFields
     object: I,
   ): GetCustomFieldsGroupsWithFieldsResponse {
     const message = createBaseGetCustomFieldsGroupsWithFieldsResponse();
-    message.groupsWithFields = object.groupsWithFields?.map((e) => CustomFieldsGroupWithFields.fromPartial(e)) || [];
+    message.groups_with_fields = object.groups_with_fields?.map((e) => CustomFieldsGroupWithFields.fromPartial(e)) ||
+      [];
     return message;
   },
 };
 
 function createBaseGetGroupStatusRequest(): GetGroupStatusRequest {
-  return { context: undefined, groupId: undefined, userId: undefined };
+  return { context: undefined, group_id: undefined, user_id: undefined };
 }
 
 export const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest> = {
@@ -3215,11 +3221,11 @@ export const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(26).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -3243,14 +3249,14 @@ export const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest> = {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3264,8 +3270,8 @@ export const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest> = {
   fromJSON(object: any): GetGroupStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
     };
   },
 
@@ -3274,11 +3280,11 @@ export const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
     return obj;
   },
@@ -3291,18 +3297,18 @@ export const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseApproveGroupRequest(): ApproveGroupRequest {
-  return { context: undefined, groupId: undefined, userId: undefined };
+  return { context: undefined, group_id: undefined, user_id: undefined };
 }
 
 export const ApproveGroupRequest: MessageFns<ApproveGroupRequest> = {
@@ -3310,11 +3316,11 @@ export const ApproveGroupRequest: MessageFns<ApproveGroupRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(26).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -3338,14 +3344,14 @@ export const ApproveGroupRequest: MessageFns<ApproveGroupRequest> = {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3359,8 +3365,8 @@ export const ApproveGroupRequest: MessageFns<ApproveGroupRequest> = {
   fromJSON(object: any): ApproveGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
     };
   },
 
@@ -3369,11 +3375,11 @@ export const ApproveGroupRequest: MessageFns<ApproveGroupRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
     return obj;
   },
@@ -3386,18 +3392,18 @@ export const ApproveGroupRequest: MessageFns<ApproveGroupRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseRejectGroupRequest(): RejectGroupRequest {
-  return { context: undefined, groupId: undefined, userId: undefined, rejectionMessage: "" };
+  return { context: undefined, group_id: undefined, user_id: undefined, rejection_message: "" };
 }
 
 export const RejectGroupRequest: MessageFns<RejectGroupRequest> = {
@@ -3405,14 +3411,14 @@ export const RejectGroupRequest: MessageFns<RejectGroupRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(18).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(26).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(26).fork()).join();
     }
-    if (message.rejectionMessage !== "") {
-      writer.uint32(34).string(message.rejectionMessage);
+    if (message.rejection_message !== "") {
+      writer.uint32(34).string(message.rejection_message);
     }
     return writer;
   },
@@ -3436,21 +3442,21 @@ export const RejectGroupRequest: MessageFns<RejectGroupRequest> = {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.rejectionMessage = reader.string();
+          message.rejection_message = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3464,9 +3470,9 @@ export const RejectGroupRequest: MessageFns<RejectGroupRequest> = {
   fromJSON(object: any): RejectGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      rejectionMessage: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
     };
   },
 
@@ -3475,14 +3481,14 @@ export const RejectGroupRequest: MessageFns<RejectGroupRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.rejectionMessage !== "") {
-      obj.rejectionMessage = message.rejectionMessage;
+    if (message.rejection_message !== "") {
+      obj.rejectionMessage = message.rejection_message;
     }
     return obj;
   },
@@ -3495,13 +3501,13 @@ export const RejectGroupRequest: MessageFns<RejectGroupRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.rejectionMessage = object.rejectionMessage ?? "";
+    message.rejection_message = object.rejection_message ?? "";
     return message;
   },
 };
@@ -3635,7 +3641,13 @@ export const GetResourceAccessSettingsResponse: MessageFns<GetResourceAccessSett
 };
 
 function createBaseCreateResourceAccessSettingsRequest(): CreateResourceAccessSettingsRequest {
-  return { context: undefined, name: "", ownershipKind: OwnershipKind.OWNED, userType: UserType.NONE, accessRules: [] };
+  return {
+    context: undefined,
+    name: "",
+    ownership_kind: OwnershipKind.OWNED,
+    user_type: UserType.NONE,
+    access_rules: [],
+  };
 }
 
 export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAccessSettingsRequest> = {
@@ -3646,13 +3658,13 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.ownershipKind !== OwnershipKind.OWNED) {
-      writer.uint32(24).int32(ownershipKindToNumber(message.ownershipKind));
+    if (message.ownership_kind !== OwnershipKind.OWNED) {
+      writer.uint32(24).int32(ownershipKindToNumber(message.ownership_kind));
     }
-    if (message.userType !== UserType.NONE) {
-      writer.uint32(32).int32(userTypeToNumber(message.userType));
+    if (message.user_type !== UserType.NONE) {
+      writer.uint32(32).int32(userTypeToNumber(message.user_type));
     }
-    for (const v of message.accessRules) {
+    for (const v of message.access_rules) {
       AccessRule.encode(v!, writer.uint32(42).fork()).join();
     }
     return writer;
@@ -3684,21 +3696,21 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
             break;
           }
 
-          message.ownershipKind = ownershipKindFromJSON(reader.int32());
+          message.ownership_kind = ownershipKindFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.userType = userTypeFromJSON(reader.int32());
+          message.user_type = userTypeFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.accessRules.push(AccessRule.decode(reader, reader.uint32()));
+          message.access_rules.push(AccessRule.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3713,9 +3725,9 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      ownershipKind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      accessRules: globalThis.Array.isArray(object?.accessRules)
+      ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      access_rules: globalThis.Array.isArray(object?.accessRules)
         ? object.accessRules.map((e: any) => AccessRule.fromJSON(e))
         : [],
     };
@@ -3729,14 +3741,14 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.ownershipKind !== OwnershipKind.OWNED) {
-      obj.ownershipKind = ownershipKindToJSON(message.ownershipKind);
+    if (message.ownership_kind !== OwnershipKind.OWNED) {
+      obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
     }
-    if (message.userType !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.userType);
+    if (message.user_type !== UserType.NONE) {
+      obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.accessRules?.length) {
-      obj.accessRules = message.accessRules.map((e) => AccessRule.toJSON(e));
+    if (message.access_rules?.length) {
+      obj.accessRules = message.access_rules.map((e) => AccessRule.toJSON(e));
     }
     return obj;
   },
@@ -3754,9 +3766,9 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? "";
-    message.ownershipKind = object.ownershipKind ?? OwnershipKind.OWNED;
-    message.userType = object.userType ?? UserType.NONE;
-    message.accessRules = object.accessRules?.map((e) => AccessRule.fromPartial(e)) || [];
+    message.ownership_kind = object.ownership_kind ?? OwnershipKind.OWNED;
+    message.user_type = object.user_type ?? UserType.NONE;
+    message.access_rules = object.access_rules?.map((e) => AccessRule.fromPartial(e)) || [];
     return message;
   },
 };

@@ -18,15 +18,15 @@ export interface FamilyContact {
 }
 
 export interface FamilyInformation {
-  studentLiving: string;
-  languageSpoken: string;
-  preferredContact?: ObjectId | undefined;
-  emergencyContact: FamilyContact | undefined;
-  primaryPayer?:
+  student_living: string;
+  language_spoken: string;
+  preferred_contact?: ObjectId | undefined;
+  emergency_contact: FamilyContact | undefined;
+  primary_payer?:
     | ObjectId
     | undefined;
   /** If true, autopay is disabled for this family (will override invoice auto pay setting) */
-  autoPayDisabled?: boolean | undefined;
+  auto_pay_disabled?: boolean | undefined;
 }
 
 export interface Family {
@@ -34,7 +34,7 @@ export interface Family {
   organization: ObjectId | undefined;
   name: string;
   guardians: ObjectId[];
-  guardiansToNotContact: ObjectId[];
+  guardians_to_not_contact: ObjectId[];
   information: FamilyInformation | undefined;
 }
 
@@ -131,34 +131,34 @@ export const FamilyContact: MessageFns<FamilyContact> = {
 
 function createBaseFamilyInformation(): FamilyInformation {
   return {
-    studentLiving: "",
-    languageSpoken: "",
-    preferredContact: undefined,
-    emergencyContact: undefined,
-    primaryPayer: undefined,
-    autoPayDisabled: false,
+    student_living: "",
+    language_spoken: "",
+    preferred_contact: undefined,
+    emergency_contact: undefined,
+    primary_payer: undefined,
+    auto_pay_disabled: false,
   };
 }
 
 export const FamilyInformation: MessageFns<FamilyInformation> = {
   encode(message: FamilyInformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.studentLiving !== "") {
-      writer.uint32(10).string(message.studentLiving);
+    if (message.student_living !== "") {
+      writer.uint32(10).string(message.student_living);
     }
-    if (message.languageSpoken !== "") {
-      writer.uint32(18).string(message.languageSpoken);
+    if (message.language_spoken !== "") {
+      writer.uint32(18).string(message.language_spoken);
     }
-    if (message.preferredContact !== undefined) {
-      ObjectId.encode(message.preferredContact, writer.uint32(26).fork()).join();
+    if (message.preferred_contact !== undefined) {
+      ObjectId.encode(message.preferred_contact, writer.uint32(26).fork()).join();
     }
-    if (message.emergencyContact !== undefined) {
-      FamilyContact.encode(message.emergencyContact, writer.uint32(34).fork()).join();
+    if (message.emergency_contact !== undefined) {
+      FamilyContact.encode(message.emergency_contact, writer.uint32(34).fork()).join();
     }
-    if (message.primaryPayer !== undefined) {
-      ObjectId.encode(message.primaryPayer, writer.uint32(42).fork()).join();
+    if (message.primary_payer !== undefined) {
+      ObjectId.encode(message.primary_payer, writer.uint32(42).fork()).join();
     }
-    if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
-      writer.uint32(48).bool(message.autoPayDisabled);
+    if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+      writer.uint32(48).bool(message.auto_pay_disabled);
     }
     return writer;
   },
@@ -175,42 +175,42 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
             break;
           }
 
-          message.studentLiving = reader.string();
+          message.student_living = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.languageSpoken = reader.string();
+          message.language_spoken = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.preferredContact = ObjectId.decode(reader, reader.uint32());
+          message.preferred_contact = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.emergencyContact = FamilyContact.decode(reader, reader.uint32());
+          message.emergency_contact = FamilyContact.decode(reader, reader.uint32());
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.primaryPayer = ObjectId.decode(reader, reader.uint32());
+          message.primary_payer = ObjectId.decode(reader, reader.uint32());
           continue;
         case 6:
           if (tag !== 48) {
             break;
           }
 
-          message.autoPayDisabled = reader.bool();
+          message.auto_pay_disabled = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -223,34 +223,34 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
 
   fromJSON(object: any): FamilyInformation {
     return {
-      studentLiving: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : "",
-      languageSpoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : "",
-      preferredContact: isSet(object.preferredContact) ? ObjectId.fromJSON(object.preferredContact) : undefined,
-      emergencyContact: isSet(object.emergencyContact) ? FamilyContact.fromJSON(object.emergencyContact) : undefined,
-      primaryPayer: isSet(object.primaryPayer) ? ObjectId.fromJSON(object.primaryPayer) : undefined,
-      autoPayDisabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      student_living: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : "",
+      language_spoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : "",
+      preferred_contact: isSet(object.preferredContact) ? ObjectId.fromJSON(object.preferredContact) : undefined,
+      emergency_contact: isSet(object.emergencyContact) ? FamilyContact.fromJSON(object.emergencyContact) : undefined,
+      primary_payer: isSet(object.primaryPayer) ? ObjectId.fromJSON(object.primaryPayer) : undefined,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
     };
   },
 
   toJSON(message: FamilyInformation): unknown {
     const obj: any = {};
-    if (message.studentLiving !== "") {
-      obj.studentLiving = message.studentLiving;
+    if (message.student_living !== "") {
+      obj.studentLiving = message.student_living;
     }
-    if (message.languageSpoken !== "") {
-      obj.languageSpoken = message.languageSpoken;
+    if (message.language_spoken !== "") {
+      obj.languageSpoken = message.language_spoken;
     }
-    if (message.preferredContact !== undefined) {
-      obj.preferredContact = ObjectId.toJSON(message.preferredContact);
+    if (message.preferred_contact !== undefined) {
+      obj.preferredContact = ObjectId.toJSON(message.preferred_contact);
     }
-    if (message.emergencyContact !== undefined) {
-      obj.emergencyContact = FamilyContact.toJSON(message.emergencyContact);
+    if (message.emergency_contact !== undefined) {
+      obj.emergencyContact = FamilyContact.toJSON(message.emergency_contact);
     }
-    if (message.primaryPayer !== undefined) {
-      obj.primaryPayer = ObjectId.toJSON(message.primaryPayer);
+    if (message.primary_payer !== undefined) {
+      obj.primaryPayer = ObjectId.toJSON(message.primary_payer);
     }
-    if (message.autoPayDisabled !== undefined && message.autoPayDisabled !== false) {
-      obj.autoPayDisabled = message.autoPayDisabled;
+    if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+      obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
   },
@@ -260,18 +260,18 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
   },
   fromPartial<I extends Exact<DeepPartial<FamilyInformation>, I>>(object: I): FamilyInformation {
     const message = createBaseFamilyInformation();
-    message.studentLiving = object.studentLiving ?? "";
-    message.languageSpoken = object.languageSpoken ?? "";
-    message.preferredContact = (object.preferredContact !== undefined && object.preferredContact !== null)
-      ? ObjectId.fromPartial(object.preferredContact)
+    message.student_living = object.student_living ?? "";
+    message.language_spoken = object.language_spoken ?? "";
+    message.preferred_contact = (object.preferred_contact !== undefined && object.preferred_contact !== null)
+      ? ObjectId.fromPartial(object.preferred_contact)
       : undefined;
-    message.emergencyContact = (object.emergencyContact !== undefined && object.emergencyContact !== null)
-      ? FamilyContact.fromPartial(object.emergencyContact)
+    message.emergency_contact = (object.emergency_contact !== undefined && object.emergency_contact !== null)
+      ? FamilyContact.fromPartial(object.emergency_contact)
       : undefined;
-    message.primaryPayer = (object.primaryPayer !== undefined && object.primaryPayer !== null)
-      ? ObjectId.fromPartial(object.primaryPayer)
+    message.primary_payer = (object.primary_payer !== undefined && object.primary_payer !== null)
+      ? ObjectId.fromPartial(object.primary_payer)
       : undefined;
-    message.autoPayDisabled = object.autoPayDisabled ?? false;
+    message.auto_pay_disabled = object.auto_pay_disabled ?? false;
     return message;
   },
 };
@@ -282,7 +282,7 @@ function createBaseFamily(): Family {
     organization: undefined,
     name: "",
     guardians: [],
-    guardiansToNotContact: [],
+    guardians_to_not_contact: [],
     information: undefined,
   };
 }
@@ -301,7 +301,7 @@ export const Family: MessageFns<Family> = {
     for (const v of message.guardians) {
       ObjectId.encode(v!, writer.uint32(34).fork()).join();
     }
-    for (const v of message.guardiansToNotContact) {
+    for (const v of message.guardians_to_not_contact) {
       ObjectId.encode(v!, writer.uint32(42).fork()).join();
     }
     if (message.information !== undefined) {
@@ -350,7 +350,7 @@ export const Family: MessageFns<Family> = {
             break;
           }
 
-          message.guardiansToNotContact.push(ObjectId.decode(reader, reader.uint32()));
+          message.guardians_to_not_contact.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 6:
           if (tag !== 50) {
@@ -376,7 +376,7 @@ export const Family: MessageFns<Family> = {
       guardians: globalThis.Array.isArray(object?.guardians)
         ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      guardiansToNotContact: globalThis.Array.isArray(object?.guardiansToNotContact)
+      guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
         ? object.guardiansToNotContact.map((e: any) => ObjectId.fromJSON(e))
         : [],
       information: isSet(object.information) ? FamilyInformation.fromJSON(object.information) : undefined,
@@ -397,8 +397,8 @@ export const Family: MessageFns<Family> = {
     if (message.guardians?.length) {
       obj.guardians = message.guardians.map((e) => ObjectId.toJSON(e));
     }
-    if (message.guardiansToNotContact?.length) {
-      obj.guardiansToNotContact = message.guardiansToNotContact.map((e) => ObjectId.toJSON(e));
+    if (message.guardians_to_not_contact?.length) {
+      obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => ObjectId.toJSON(e));
     }
     if (message.information !== undefined) {
       obj.information = FamilyInformation.toJSON(message.information);
@@ -417,7 +417,7 @@ export const Family: MessageFns<Family> = {
       : undefined;
     message.name = object.name ?? "";
     message.guardians = object.guardians?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.guardiansToNotContact = object.guardiansToNotContact?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => ObjectId.fromPartial(e)) || [];
     message.information = (object.information !== undefined && object.information !== null)
       ? FamilyInformation.fromPartial(object.information)
       : undefined;

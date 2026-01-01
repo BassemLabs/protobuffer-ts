@@ -38,34 +38,34 @@ export declare function refundTransactionStatusToNumber(object: RefundTransactio
 export interface Transaction {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    stripePaymentIntentId: string;
+    stripe_payment_intent_id: string;
     currency: Currency;
     status: TransactionStatus;
-    paymentType: PaymentType;
+    payment_type: PaymentType;
     date: Date | undefined;
     invoice: ObjectId | undefined;
     amount: number;
-    declinedReason?: string | undefined;
-    processingFeeAmount?: number | undefined;
+    declined_reason?: string | undefined;
+    processing_fee_amount?: number | undefined;
     /** this is for the fixed tuition cost */
-    bassemLabsFee?: number | undefined;
+    bassem_labs_fee?: number | undefined;
     /** this is for the percentage */
-    invoiceSurcharge?: number | undefined;
+    invoice_surcharge?: number | undefined;
 }
 export interface RefundTransaction {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     /** The Transaction this Refund is linked to */
-    transactionId: ObjectId | undefined;
+    transaction_id: ObjectId | undefined;
     /**
      * Optional: If this is a stripe refund, this will include the stripe refund id
      *    Note: For a RefundTransaction to be a stripe refund, the main transaction must be a stripe transaction
      */
-    stripeRefundId?: string | undefined;
+    stripe_refund_id?: string | undefined;
     /** Status of the refund */
     status: RefundTransactionStatus;
     /** Payment type of the refund, is it stripe or manual payments? */
-    paymentType: PaymentType;
+    payment_type: PaymentType;
     date: Date | undefined;
     /** Amount of the refund */
     amount: number;

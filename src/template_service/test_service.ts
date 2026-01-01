@@ -13,11 +13,11 @@ export const protobufPackage = "template_service.test_service";
 
 export interface GetByIDRequest {
   context: RequestContext | undefined;
-  courseId: ObjectId | undefined;
+  course_id: ObjectId | undefined;
 }
 
 function createBaseGetByIDRequest(): GetByIDRequest {
-  return { context: undefined, courseId: undefined };
+  return { context: undefined, course_id: undefined };
 }
 
 export const GetByIDRequest: MessageFns<GetByIDRequest> = {
@@ -25,8 +25,8 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.courseId !== undefined) {
-      ObjectId.encode(message.courseId, writer.uint32(18).fork()).join();
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -50,7 +50,7 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
             break;
           }
 
-          message.courseId = ObjectId.decode(reader, reader.uint32());
+          message.course_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -64,7 +64,7 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
   fromJSON(object: any): GetByIDRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      courseId: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
     };
   },
 
@@ -73,8 +73,8 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.courseId !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.courseId);
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -87,8 +87,8 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.courseId = (object.courseId !== undefined && object.courseId !== null)
-      ? ObjectId.fromPartial(object.courseId)
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
     return message;
   },

@@ -20,60 +20,60 @@ export const protobufPackage = "organization_service";
 /** Request to fetch profile settings of an organization by ID */
 export interface GetOrganizationProfileSettingsRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 /** Request to add a "parent" profile section */
 export interface AddParentProfileSectionRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  newProfileSection: ProfileSection;
+  organization_id: ObjectId | undefined;
+  new_profile_section: ProfileSection;
 }
 
 /** Request to remove a "parent" profile section */
 export interface RemoveParentProfileSectionRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  removeProfileSection: ProfileSection;
+  organization_id: ObjectId | undefined;
+  remove_profile_section: ProfileSection;
 }
 
 /** Request to add a "teacher" profile section */
 export interface AddTeacherProfileSectionRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  newProfileSection: ProfileSection;
+  organization_id: ObjectId | undefined;
+  new_profile_section: ProfileSection;
 }
 
 /** Request to remove a "teacher" profile section */
 export interface RemoveTeacherProfileSectionRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  removeProfileSection: ProfileSection;
+  organization_id: ObjectId | undefined;
+  remove_profile_section: ProfileSection;
 }
 
 /** Request to add a "student" profile section */
 export interface AddStudentProfileSectionRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  newProfileSection: ProfileSection;
+  organization_id: ObjectId | undefined;
+  new_profile_section: ProfileSection;
 }
 
 /** Request to remove a "student" profile section */
 export interface RemoveStudentProfileSectionRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  removeProfileSection: ProfileSection;
+  organization_id: ObjectId | undefined;
+  remove_profile_section: ProfileSection;
 }
 
 /** Request to set student_primary_id_custom_field */
 export interface SetStudentPrimaryIdCustomFieldRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  studentPrimaryIdCustomField: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  student_primary_id_custom_field: ObjectId | undefined;
 }
 
 function createBaseGetOrganizationProfileSettingsRequest(): GetOrganizationProfileSettingsRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationProfileSettingsRequest> = {
@@ -81,8 +81,8 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -106,7 +106,7 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -120,7 +120,7 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
   fromJSON(object: any): GetOrganizationProfileSettingsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -129,8 +129,8 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -147,15 +147,15 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseAddParentProfileSectionRequest(): AddParentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, newProfileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, organization_id: undefined, new_profile_section: ProfileSection.OVERVIEW };
 }
 
 export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionRequest> = {
@@ -163,11 +163,11 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.newProfileSection));
+    if (message.new_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.new_profile_section));
     }
     return writer;
   },
@@ -191,14 +191,14 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.newProfileSection = profileSectionFromJSON(reader.int32());
+          message.new_profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -212,8 +212,8 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
   fromJSON(object: any): AddParentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newProfileSection: isSet(object.newProfileSection)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_profile_section: isSet(object.newProfileSection)
         ? profileSectionFromJSON(object.newProfileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -224,11 +224,11 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
-      obj.newProfileSection = profileSectionToJSON(message.newProfileSection);
+    if (message.new_profile_section !== ProfileSection.OVERVIEW) {
+      obj.newProfileSection = profileSectionToJSON(message.new_profile_section);
     }
     return obj;
   },
@@ -243,16 +243,16 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.newProfileSection = object.newProfileSection ?? ProfileSection.OVERVIEW;
+    message.new_profile_section = object.new_profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseRemoveParentProfileSectionRequest(): RemoveParentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, removeProfileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, organization_id: undefined, remove_profile_section: ProfileSection.OVERVIEW };
 }
 
 export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSectionRequest> = {
@@ -260,11 +260,11 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.removeProfileSection));
+    if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.remove_profile_section));
     }
     return writer;
   },
@@ -288,14 +288,14 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.removeProfileSection = profileSectionFromJSON(reader.int32());
+          message.remove_profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -309,8 +309,8 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
   fromJSON(object: any): RemoveParentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      removeProfileSection: isSet(object.removeProfileSection)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_profile_section: isSet(object.removeProfileSection)
         ? profileSectionFromJSON(object.removeProfileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -321,11 +321,11 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
-      obj.removeProfileSection = profileSectionToJSON(message.removeProfileSection);
+    if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
+      obj.removeProfileSection = profileSectionToJSON(message.remove_profile_section);
     }
     return obj;
   },
@@ -342,16 +342,16 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.removeProfileSection = object.removeProfileSection ?? ProfileSection.OVERVIEW;
+    message.remove_profile_section = object.remove_profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseAddTeacherProfileSectionRequest(): AddTeacherProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, newProfileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, organization_id: undefined, new_profile_section: ProfileSection.OVERVIEW };
 }
 
 export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectionRequest> = {
@@ -359,11 +359,11 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.newProfileSection));
+    if (message.new_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.new_profile_section));
     }
     return writer;
   },
@@ -387,14 +387,14 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.newProfileSection = profileSectionFromJSON(reader.int32());
+          message.new_profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -408,8 +408,8 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
   fromJSON(object: any): AddTeacherProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newProfileSection: isSet(object.newProfileSection)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_profile_section: isSet(object.newProfileSection)
         ? profileSectionFromJSON(object.newProfileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -420,11 +420,11 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
-      obj.newProfileSection = profileSectionToJSON(message.newProfileSection);
+    if (message.new_profile_section !== ProfileSection.OVERVIEW) {
+      obj.newProfileSection = profileSectionToJSON(message.new_profile_section);
     }
     return obj;
   },
@@ -439,16 +439,16 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.newProfileSection = object.newProfileSection ?? ProfileSection.OVERVIEW;
+    message.new_profile_section = object.new_profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseRemoveTeacherProfileSectionRequest(): RemoveTeacherProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, removeProfileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, organization_id: undefined, remove_profile_section: ProfileSection.OVERVIEW };
 }
 
 export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfileSectionRequest> = {
@@ -456,11 +456,11 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.removeProfileSection));
+    if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.remove_profile_section));
     }
     return writer;
   },
@@ -484,14 +484,14 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.removeProfileSection = profileSectionFromJSON(reader.int32());
+          message.remove_profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -505,8 +505,8 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
   fromJSON(object: any): RemoveTeacherProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      removeProfileSection: isSet(object.removeProfileSection)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_profile_section: isSet(object.removeProfileSection)
         ? profileSectionFromJSON(object.removeProfileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -517,11 +517,11 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
-      obj.removeProfileSection = profileSectionToJSON(message.removeProfileSection);
+    if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
+      obj.removeProfileSection = profileSectionToJSON(message.remove_profile_section);
     }
     return obj;
   },
@@ -538,16 +538,16 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.removeProfileSection = object.removeProfileSection ?? ProfileSection.OVERVIEW;
+    message.remove_profile_section = object.remove_profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseAddStudentProfileSectionRequest(): AddStudentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, newProfileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, organization_id: undefined, new_profile_section: ProfileSection.OVERVIEW };
 }
 
 export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectionRequest> = {
@@ -555,11 +555,11 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.newProfileSection));
+    if (message.new_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.new_profile_section));
     }
     return writer;
   },
@@ -583,14 +583,14 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.newProfileSection = profileSectionFromJSON(reader.int32());
+          message.new_profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -604,8 +604,8 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
   fromJSON(object: any): AddStudentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      newProfileSection: isSet(object.newProfileSection)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_profile_section: isSet(object.newProfileSection)
         ? profileSectionFromJSON(object.newProfileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -616,11 +616,11 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.newProfileSection !== ProfileSection.OVERVIEW) {
-      obj.newProfileSection = profileSectionToJSON(message.newProfileSection);
+    if (message.new_profile_section !== ProfileSection.OVERVIEW) {
+      obj.newProfileSection = profileSectionToJSON(message.new_profile_section);
     }
     return obj;
   },
@@ -635,16 +635,16 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.newProfileSection = object.newProfileSection ?? ProfileSection.OVERVIEW;
+    message.new_profile_section = object.new_profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseRemoveStudentProfileSectionRequest(): RemoveStudentProfileSectionRequest {
-  return { context: undefined, organizationId: undefined, removeProfileSection: ProfileSection.OVERVIEW };
+  return { context: undefined, organization_id: undefined, remove_profile_section: ProfileSection.OVERVIEW };
 }
 
 export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfileSectionRequest> = {
@@ -652,11 +652,11 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
-      writer.uint32(24).int32(profileSectionToNumber(message.removeProfileSection));
+    if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
+      writer.uint32(24).int32(profileSectionToNumber(message.remove_profile_section));
     }
     return writer;
   },
@@ -680,14 +680,14 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.removeProfileSection = profileSectionFromJSON(reader.int32());
+          message.remove_profile_section = profileSectionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -701,8 +701,8 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
   fromJSON(object: any): RemoveStudentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      removeProfileSection: isSet(object.removeProfileSection)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_profile_section: isSet(object.removeProfileSection)
         ? profileSectionFromJSON(object.removeProfileSection)
         : ProfileSection.OVERVIEW,
     };
@@ -713,11 +713,11 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.removeProfileSection !== ProfileSection.OVERVIEW) {
-      obj.removeProfileSection = profileSectionToJSON(message.removeProfileSection);
+    if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
+      obj.removeProfileSection = profileSectionToJSON(message.remove_profile_section);
     }
     return obj;
   },
@@ -734,16 +734,16 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.removeProfileSection = object.removeProfileSection ?? ProfileSection.OVERVIEW;
+    message.remove_profile_section = object.remove_profile_section ?? ProfileSection.OVERVIEW;
     return message;
   },
 };
 
 function createBaseSetStudentPrimaryIdCustomFieldRequest(): SetStudentPrimaryIdCustomFieldRequest {
-  return { context: undefined, organizationId: undefined, studentPrimaryIdCustomField: undefined };
+  return { context: undefined, organization_id: undefined, student_primary_id_custom_field: undefined };
 }
 
 export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimaryIdCustomFieldRequest> = {
@@ -751,11 +751,11 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.studentPrimaryIdCustomField !== undefined) {
-      ObjectId.encode(message.studentPrimaryIdCustomField, writer.uint32(26).fork()).join();
+    if (message.student_primary_id_custom_field !== undefined) {
+      ObjectId.encode(message.student_primary_id_custom_field, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -779,14 +779,14 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentPrimaryIdCustomField = ObjectId.decode(reader, reader.uint32());
+          message.student_primary_id_custom_field = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -800,8 +800,8 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
   fromJSON(object: any): SetStudentPrimaryIdCustomFieldRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      studentPrimaryIdCustomField: isSet(object.studentPrimaryIdCustomField)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
         ? ObjectId.fromJSON(object.studentPrimaryIdCustomField)
         : undefined,
     };
@@ -812,11 +812,11 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.studentPrimaryIdCustomField !== undefined) {
-      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.studentPrimaryIdCustomField);
+    if (message.student_primary_id_custom_field !== undefined) {
+      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.student_primary_id_custom_field);
     }
     return obj;
   },
@@ -833,12 +833,12 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.studentPrimaryIdCustomField =
-      (object.studentPrimaryIdCustomField !== undefined && object.studentPrimaryIdCustomField !== null)
-        ? ObjectId.fromPartial(object.studentPrimaryIdCustomField)
+    message.student_primary_id_custom_field =
+      (object.student_primary_id_custom_field !== undefined && object.student_primary_id_custom_field !== null)
+        ? ObjectId.fromPartial(object.student_primary_id_custom_field)
         : undefined;
     return message;
   },

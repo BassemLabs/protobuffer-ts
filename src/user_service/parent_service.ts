@@ -15,12 +15,12 @@ export const protobufPackage = "user_service";
 
 export interface GetParentRequest {
   context: RequestContext | undefined;
-  parentId: ObjectId | undefined;
+  parent_id: ObjectId | undefined;
 }
 
 export interface GetParentsByIdsRequest {
   context: RequestContext | undefined;
-  parentIds: ObjectId[];
+  parent_ids: ObjectId[];
 }
 
 export interface GetParentsByIdsResponse {
@@ -39,7 +39,7 @@ export interface GetParentsByEmailResponse {
 
 export interface GetParentStudentsRequest {
   context: RequestContext | undefined;
-  parentId: ObjectId | undefined;
+  parent_id: ObjectId | undefined;
 }
 
 export interface GetParentStudentsResponse {
@@ -53,12 +53,12 @@ export interface GetParentStudentsFromContextRequest {
 
 export interface GetParentStudentIdsRequest {
   context: RequestContext | undefined;
-  parentId: ObjectId | undefined;
+  parent_id: ObjectId | undefined;
 }
 
 export interface GetParentStudentIdsResponse {
   /** All student IDs under parent's care across all families */
-  studentIds: ObjectId[];
+  student_ids: ObjectId[];
 }
 
 export interface GetContextActiveSchoolYearEnrolledStudentIdsRequest {
@@ -67,63 +67,63 @@ export interface GetContextActiveSchoolYearEnrolledStudentIdsRequest {
 
 export interface GetContextActiveSchoolYearEnrolledStudentIdsResponse {
   /** Only enrolled students in active school year (filtered from context's parent_student_ids) */
-  studentIds: ObjectId[];
+  student_ids: ObjectId[];
 }
 
 export interface AddNewGuardianToFamilyRequest {
   context: RequestContext | undefined;
   name: string;
   email: string;
-  familyId: ObjectId | undefined;
+  family_id: ObjectId | undefined;
 }
 
 export interface UpdateParentProfileRequest {
   context: RequestContext | undefined;
-  parentId: ObjectId | undefined;
+  parent_id: ObjectId | undefined;
   profile: ParentProfile | undefined;
 }
 
 export interface AuthenticateParentForOrgRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  firebaseUserId: string;
-  displayName: string;
+  organization_id: ObjectId | undefined;
+  firebase_user_id: string;
+  display_name: string;
   email: string;
 }
 
 export interface AuthenticateParentForOrgResponse {
   parent: Parent | undefined;
-  familyIds: ObjectId[];
-  studentIds: ObjectId[];
+  family_ids: ObjectId[];
+  student_ids: ObjectId[];
 }
 
 export interface UpdateParentPaymentMethodFromSetupIntentRequest {
   context: RequestContext | undefined;
-  stripeCustomerId: string;
-  defaultPaymentMethodId: string;
-  defaultPaymentMethodType?: string | undefined;
-  paymentMethodBrand?: string | undefined;
-  paymentMethodLast4?: string | undefined;
-  paymentMethodExpiry?: string | undefined;
-  paymentMethodMandateId?: string | undefined;
+  stripe_customer_id: string;
+  default_payment_method_id: string;
+  default_payment_method_type?: string | undefined;
+  payment_method_brand?: string | undefined;
+  payment_method_last4?: string | undefined;
+  payment_method_expiry?: string | undefined;
+  payment_method_mandate_id?: string | undefined;
 }
 
 export interface SetParentSetupIntentRequiresActionRequest {
   context: RequestContext | undefined;
-  stripeCustomerId: string;
-  setupIntentId: string;
+  stripe_customer_id: string;
+  setup_intent_id: string;
 }
 
 export interface SetParentSetupIntentFailureRequest {
   context: RequestContext | undefined;
-  stripeCustomerId: string;
-  failureReason: string;
+  stripe_customer_id: string;
+  failure_reason: string;
 }
 
 export interface SetParentStripeCustomerIdRequest {
   context: RequestContext | undefined;
-  parentId: ObjectId | undefined;
-  stripeCustomerId: string;
+  parent_id: ObjectId | undefined;
+  stripe_customer_id: string;
 }
 
 export interface GetAllParentsForStagingRequest {
@@ -135,7 +135,7 @@ export interface GetAllParentsForStagingResponse {
 }
 
 function createBaseGetParentRequest(): GetParentRequest {
-  return { context: undefined, parentId: undefined };
+  return { context: undefined, parent_id: undefined };
 }
 
 export const GetParentRequest: MessageFns<GetParentRequest> = {
@@ -143,8 +143,8 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.parentId !== undefined) {
-      ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+    if (message.parent_id !== undefined) {
+      ObjectId.encode(message.parent_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -168,7 +168,7 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
             break;
           }
 
-          message.parentId = ObjectId.decode(reader, reader.uint32());
+          message.parent_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -182,7 +182,7 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
   fromJSON(object: any): GetParentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parentId: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
     };
   },
 
@@ -191,8 +191,8 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.parentId !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parentId);
+    if (message.parent_id !== undefined) {
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -205,15 +205,15 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.parentId = (object.parentId !== undefined && object.parentId !== null)
-      ? ObjectId.fromPartial(object.parentId)
+    message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+      ? ObjectId.fromPartial(object.parent_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetParentsByIdsRequest(): GetParentsByIdsRequest {
-  return { context: undefined, parentIds: [] };
+  return { context: undefined, parent_ids: [] };
 }
 
 export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
@@ -221,7 +221,7 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    for (const v of message.parentIds) {
+    for (const v of message.parent_ids) {
       ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
@@ -246,7 +246,7 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
             break;
           }
 
-          message.parentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.parent_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -260,7 +260,7 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
   fromJSON(object: any): GetParentsByIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parentIds: globalThis.Array.isArray(object?.parentIds)
+      parent_ids: globalThis.Array.isArray(object?.parentIds)
         ? object.parentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -271,8 +271,8 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.parentIds?.length) {
-      obj.parentIds = message.parentIds.map((e) => ObjectId.toJSON(e));
+    if (message.parent_ids?.length) {
+      obj.parentIds = message.parent_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -285,7 +285,7 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.parentIds = object.parentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.parent_ids = object.parent_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -485,7 +485,7 @@ export const GetParentsByEmailResponse: MessageFns<GetParentsByEmailResponse> = 
 };
 
 function createBaseGetParentStudentsRequest(): GetParentStudentsRequest {
-  return { context: undefined, parentId: undefined };
+  return { context: undefined, parent_id: undefined };
 }
 
 export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
@@ -493,8 +493,8 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.parentId !== undefined) {
-      ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+    if (message.parent_id !== undefined) {
+      ObjectId.encode(message.parent_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -518,7 +518,7 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
             break;
           }
 
-          message.parentId = ObjectId.decode(reader, reader.uint32());
+          message.parent_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -532,7 +532,7 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
   fromJSON(object: any): GetParentStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parentId: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
     };
   },
 
@@ -541,8 +541,8 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.parentId !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parentId);
+    if (message.parent_id !== undefined) {
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -555,8 +555,8 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.parentId = (object.parentId !== undefined && object.parentId !== null)
-      ? ObjectId.fromPartial(object.parentId)
+    message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+      ? ObjectId.fromPartial(object.parent_id)
       : undefined;
     return message;
   },
@@ -685,7 +685,7 @@ export const GetParentStudentsFromContextRequest: MessageFns<GetParentStudentsFr
 };
 
 function createBaseGetParentStudentIdsRequest(): GetParentStudentIdsRequest {
-  return { context: undefined, parentId: undefined };
+  return { context: undefined, parent_id: undefined };
 }
 
 export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> = {
@@ -693,8 +693,8 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.parentId !== undefined) {
-      ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+    if (message.parent_id !== undefined) {
+      ObjectId.encode(message.parent_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -718,7 +718,7 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
             break;
           }
 
-          message.parentId = ObjectId.decode(reader, reader.uint32());
+          message.parent_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -732,7 +732,7 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
   fromJSON(object: any): GetParentStudentIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parentId: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
     };
   },
 
@@ -741,8 +741,8 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.parentId !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parentId);
+    if (message.parent_id !== undefined) {
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -755,20 +755,20 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.parentId = (object.parentId !== undefined && object.parentId !== null)
-      ? ObjectId.fromPartial(object.parentId)
+    message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+      ? ObjectId.fromPartial(object.parent_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetParentStudentIdsResponse(): GetParentStudentIdsResponse {
-  return { studentIds: [] };
+  return { student_ids: [] };
 }
 
 export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse> = {
   encode(message: GetParentStudentIdsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.studentIds) {
+    for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -786,7 +786,7 @@ export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse
             break;
           }
 
-          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -799,7 +799,7 @@ export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse
 
   fromJSON(object: any): GetParentStudentIdsResponse {
     return {
-      studentIds: globalThis.Array.isArray(object?.studentIds)
+      student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -807,8 +807,8 @@ export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse
 
   toJSON(message: GetParentStudentIdsResponse): unknown {
     const obj: any = {};
-    if (message.studentIds?.length) {
-      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -818,7 +818,7 @@ export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse
   },
   fromPartial<I extends Exact<DeepPartial<GetParentStudentIdsResponse>, I>>(object: I): GetParentStudentIdsResponse {
     const message = createBaseGetParentStudentIdsResponse();
-    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -892,7 +892,7 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsRequest: MessageFns<
 };
 
 function createBaseGetContextActiveSchoolYearEnrolledStudentIdsResponse(): GetContextActiveSchoolYearEnrolledStudentIdsResponse {
-  return { studentIds: [] };
+  return { student_ids: [] };
 }
 
 export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
@@ -902,7 +902,7 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
     message: GetContextActiveSchoolYearEnrolledStudentIdsResponse,
     writer: BinaryWriter = new BinaryWriter(),
   ): BinaryWriter {
-    for (const v of message.studentIds) {
+    for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -920,7 +920,7 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
             break;
           }
 
-          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -933,7 +933,7 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
 
   fromJSON(object: any): GetContextActiveSchoolYearEnrolledStudentIdsResponse {
     return {
-      studentIds: globalThis.Array.isArray(object?.studentIds)
+      student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -941,8 +941,8 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
 
   toJSON(message: GetContextActiveSchoolYearEnrolledStudentIdsResponse): unknown {
     const obj: any = {};
-    if (message.studentIds?.length) {
-      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -956,13 +956,13 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
     object: I,
   ): GetContextActiveSchoolYearEnrolledStudentIdsResponse {
     const message = createBaseGetContextActiveSchoolYearEnrolledStudentIdsResponse();
-    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseAddNewGuardianToFamilyRequest(): AddNewGuardianToFamilyRequest {
-  return { context: undefined, name: "", email: "", familyId: undefined };
+  return { context: undefined, name: "", email: "", family_id: undefined };
 }
 
 export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyRequest> = {
@@ -976,8 +976,8 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
     if (message.email !== "") {
       writer.uint32(26).string(message.email);
     }
-    if (message.familyId !== undefined) {
-      ObjectId.encode(message.familyId, writer.uint32(34).fork()).join();
+    if (message.family_id !== undefined) {
+      ObjectId.encode(message.family_id, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -1015,7 +1015,7 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
             break;
           }
 
-          message.familyId = ObjectId.decode(reader, reader.uint32());
+          message.family_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1031,7 +1031,7 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
-      familyId: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
     };
   },
 
@@ -1046,8 +1046,8 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
     if (message.email !== "") {
       obj.email = message.email;
     }
-    if (message.familyId !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.familyId);
+    if (message.family_id !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -1064,15 +1064,15 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
       : undefined;
     message.name = object.name ?? "";
     message.email = object.email ?? "";
-    message.familyId = (object.familyId !== undefined && object.familyId !== null)
-      ? ObjectId.fromPartial(object.familyId)
+    message.family_id = (object.family_id !== undefined && object.family_id !== null)
+      ? ObjectId.fromPartial(object.family_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseUpdateParentProfileRequest(): UpdateParentProfileRequest {
-  return { context: undefined, parentId: undefined, profile: undefined };
+  return { context: undefined, parent_id: undefined, profile: undefined };
 }
 
 export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> = {
@@ -1080,8 +1080,8 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.parentId !== undefined) {
-      ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+    if (message.parent_id !== undefined) {
+      ObjectId.encode(message.parent_id, writer.uint32(18).fork()).join();
     }
     if (message.profile !== undefined) {
       ParentProfile.encode(message.profile, writer.uint32(26).fork()).join();
@@ -1108,7 +1108,7 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
             break;
           }
 
-          message.parentId = ObjectId.decode(reader, reader.uint32());
+          message.parent_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -1129,7 +1129,7 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
   fromJSON(object: any): UpdateParentProfileRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parentId: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
       profile: isSet(object.profile) ? ParentProfile.fromJSON(object.profile) : undefined,
     };
   },
@@ -1139,8 +1139,8 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.parentId !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parentId);
+    if (message.parent_id !== undefined) {
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     if (message.profile !== undefined) {
       obj.profile = ParentProfile.toJSON(message.profile);
@@ -1156,8 +1156,8 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.parentId = (object.parentId !== undefined && object.parentId !== null)
-      ? ObjectId.fromPartial(object.parentId)
+    message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+      ? ObjectId.fromPartial(object.parent_id)
       : undefined;
     message.profile = (object.profile !== undefined && object.profile !== null)
       ? ParentProfile.fromPartial(object.profile)
@@ -1167,7 +1167,7 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
 };
 
 function createBaseAuthenticateParentForOrgRequest(): AuthenticateParentForOrgRequest {
-  return { context: undefined, organizationId: undefined, firebaseUserId: "", displayName: "", email: "" };
+  return { context: undefined, organization_id: undefined, firebase_user_id: "", display_name: "", email: "" };
 }
 
 export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOrgRequest> = {
@@ -1175,14 +1175,14 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.firebaseUserId !== "") {
-      writer.uint32(26).string(message.firebaseUserId);
+    if (message.firebase_user_id !== "") {
+      writer.uint32(26).string(message.firebase_user_id);
     }
-    if (message.displayName !== "") {
-      writer.uint32(34).string(message.displayName);
+    if (message.display_name !== "") {
+      writer.uint32(34).string(message.display_name);
     }
     if (message.email !== "") {
       writer.uint32(42).string(message.email);
@@ -1209,21 +1209,21 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.firebaseUserId = reader.string();
+          message.firebase_user_id = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.displayName = reader.string();
+          message.display_name = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
@@ -1244,9 +1244,9 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
   fromJSON(object: any): AuthenticateParentForOrgRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      firebaseUserId: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : "",
-      displayName: isSet(object.displayName) ? globalThis.String(object.displayName) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      firebase_user_id: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : "",
+      display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
     };
   },
@@ -1256,14 +1256,14 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.firebaseUserId !== "") {
-      obj.firebaseUserId = message.firebaseUserId;
+    if (message.firebase_user_id !== "") {
+      obj.firebaseUserId = message.firebase_user_id;
     }
-    if (message.displayName !== "") {
-      obj.displayName = message.displayName;
+    if (message.display_name !== "") {
+      obj.displayName = message.display_name;
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -1281,18 +1281,18 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.firebaseUserId = object.firebaseUserId ?? "";
-    message.displayName = object.displayName ?? "";
+    message.firebase_user_id = object.firebase_user_id ?? "";
+    message.display_name = object.display_name ?? "";
     message.email = object.email ?? "";
     return message;
   },
 };
 
 function createBaseAuthenticateParentForOrgResponse(): AuthenticateParentForOrgResponse {
-  return { parent: undefined, familyIds: [], studentIds: [] };
+  return { parent: undefined, family_ids: [], student_ids: [] };
 }
 
 export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForOrgResponse> = {
@@ -1300,10 +1300,10 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
     if (message.parent !== undefined) {
       Parent.encode(message.parent, writer.uint32(10).fork()).join();
     }
-    for (const v of message.familyIds) {
+    for (const v of message.family_ids) {
       ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
-    for (const v of message.studentIds) {
+    for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -1328,14 +1328,14 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
             break;
           }
 
-          message.familyIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.family_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.studentIds.push(ObjectId.decode(reader, reader.uint32()));
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1349,10 +1349,10 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
   fromJSON(object: any): AuthenticateParentForOrgResponse {
     return {
       parent: isSet(object.parent) ? Parent.fromJSON(object.parent) : undefined,
-      familyIds: globalThis.Array.isArray(object?.familyIds)
+      family_ids: globalThis.Array.isArray(object?.familyIds)
         ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      studentIds: globalThis.Array.isArray(object?.studentIds)
+      student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
@@ -1363,11 +1363,11 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
     if (message.parent !== undefined) {
       obj.parent = Parent.toJSON(message.parent);
     }
-    if (message.familyIds?.length) {
-      obj.familyIds = message.familyIds.map((e) => ObjectId.toJSON(e));
+    if (message.family_ids?.length) {
+      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
     }
-    if (message.studentIds?.length) {
-      obj.studentIds = message.studentIds.map((e) => ObjectId.toJSON(e));
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1384,8 +1384,8 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
     message.parent = (object.parent !== undefined && object.parent !== null)
       ? Parent.fromPartial(object.parent)
       : undefined;
-    message.familyIds = object.familyIds?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.studentIds = object.studentIds?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.family_ids = object.family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1393,13 +1393,13 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
 function createBaseUpdateParentPaymentMethodFromSetupIntentRequest(): UpdateParentPaymentMethodFromSetupIntentRequest {
   return {
     context: undefined,
-    stripeCustomerId: "",
-    defaultPaymentMethodId: "",
-    defaultPaymentMethodType: "",
-    paymentMethodBrand: "",
-    paymentMethodLast4: "",
-    paymentMethodExpiry: "",
-    paymentMethodMandateId: "",
+    stripe_customer_id: "",
+    default_payment_method_id: "",
+    default_payment_method_type: "",
+    payment_method_brand: "",
+    payment_method_last4: "",
+    payment_method_expiry: "",
+    payment_method_mandate_id: "",
   };
 }
 
@@ -1413,26 +1413,26 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.stripeCustomerId !== "") {
-      writer.uint32(18).string(message.stripeCustomerId);
+    if (message.stripe_customer_id !== "") {
+      writer.uint32(18).string(message.stripe_customer_id);
     }
-    if (message.defaultPaymentMethodId !== "") {
-      writer.uint32(26).string(message.defaultPaymentMethodId);
+    if (message.default_payment_method_id !== "") {
+      writer.uint32(26).string(message.default_payment_method_id);
     }
-    if (message.defaultPaymentMethodType !== undefined && message.defaultPaymentMethodType !== "") {
-      writer.uint32(34).string(message.defaultPaymentMethodType);
+    if (message.default_payment_method_type !== undefined && message.default_payment_method_type !== "") {
+      writer.uint32(34).string(message.default_payment_method_type);
     }
-    if (message.paymentMethodBrand !== undefined && message.paymentMethodBrand !== "") {
-      writer.uint32(42).string(message.paymentMethodBrand);
+    if (message.payment_method_brand !== undefined && message.payment_method_brand !== "") {
+      writer.uint32(42).string(message.payment_method_brand);
     }
-    if (message.paymentMethodLast4 !== undefined && message.paymentMethodLast4 !== "") {
-      writer.uint32(50).string(message.paymentMethodLast4);
+    if (message.payment_method_last4 !== undefined && message.payment_method_last4 !== "") {
+      writer.uint32(50).string(message.payment_method_last4);
     }
-    if (message.paymentMethodExpiry !== undefined && message.paymentMethodExpiry !== "") {
-      writer.uint32(58).string(message.paymentMethodExpiry);
+    if (message.payment_method_expiry !== undefined && message.payment_method_expiry !== "") {
+      writer.uint32(58).string(message.payment_method_expiry);
     }
-    if (message.paymentMethodMandateId !== undefined && message.paymentMethodMandateId !== "") {
-      writer.uint32(66).string(message.paymentMethodMandateId);
+    if (message.payment_method_mandate_id !== undefined && message.payment_method_mandate_id !== "") {
+      writer.uint32(66).string(message.payment_method_mandate_id);
     }
     return writer;
   },
@@ -1456,49 +1456,49 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
             break;
           }
 
-          message.stripeCustomerId = reader.string();
+          message.stripe_customer_id = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.defaultPaymentMethodId = reader.string();
+          message.default_payment_method_id = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.defaultPaymentMethodType = reader.string();
+          message.default_payment_method_type = reader.string();
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.paymentMethodBrand = reader.string();
+          message.payment_method_brand = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.paymentMethodLast4 = reader.string();
+          message.payment_method_last4 = reader.string();
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.paymentMethodExpiry = reader.string();
+          message.payment_method_expiry = reader.string();
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.paymentMethodMandateId = reader.string();
+          message.payment_method_mandate_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1512,17 +1512,17 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
   fromJSON(object: any): UpdateParentPaymentMethodFromSetupIntentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stripeCustomerId: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
-      defaultPaymentMethodId: isSet(object.defaultPaymentMethodId)
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      default_payment_method_id: isSet(object.defaultPaymentMethodId)
         ? globalThis.String(object.defaultPaymentMethodId)
         : "",
-      defaultPaymentMethodType: isSet(object.defaultPaymentMethodType)
+      default_payment_method_type: isSet(object.defaultPaymentMethodType)
         ? globalThis.String(object.defaultPaymentMethodType)
         : "",
-      paymentMethodBrand: isSet(object.paymentMethodBrand) ? globalThis.String(object.paymentMethodBrand) : "",
-      paymentMethodLast4: isSet(object.paymentMethodLast4) ? globalThis.String(object.paymentMethodLast4) : "",
-      paymentMethodExpiry: isSet(object.paymentMethodExpiry) ? globalThis.String(object.paymentMethodExpiry) : "",
-      paymentMethodMandateId: isSet(object.paymentMethodMandateId)
+      payment_method_brand: isSet(object.paymentMethodBrand) ? globalThis.String(object.paymentMethodBrand) : "",
+      payment_method_last4: isSet(object.paymentMethodLast4) ? globalThis.String(object.paymentMethodLast4) : "",
+      payment_method_expiry: isSet(object.paymentMethodExpiry) ? globalThis.String(object.paymentMethodExpiry) : "",
+      payment_method_mandate_id: isSet(object.paymentMethodMandateId)
         ? globalThis.String(object.paymentMethodMandateId)
         : "",
     };
@@ -1533,26 +1533,26 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.stripeCustomerId !== "") {
-      obj.stripeCustomerId = message.stripeCustomerId;
+    if (message.stripe_customer_id !== "") {
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
-    if (message.defaultPaymentMethodId !== "") {
-      obj.defaultPaymentMethodId = message.defaultPaymentMethodId;
+    if (message.default_payment_method_id !== "") {
+      obj.defaultPaymentMethodId = message.default_payment_method_id;
     }
-    if (message.defaultPaymentMethodType !== undefined && message.defaultPaymentMethodType !== "") {
-      obj.defaultPaymentMethodType = message.defaultPaymentMethodType;
+    if (message.default_payment_method_type !== undefined && message.default_payment_method_type !== "") {
+      obj.defaultPaymentMethodType = message.default_payment_method_type;
     }
-    if (message.paymentMethodBrand !== undefined && message.paymentMethodBrand !== "") {
-      obj.paymentMethodBrand = message.paymentMethodBrand;
+    if (message.payment_method_brand !== undefined && message.payment_method_brand !== "") {
+      obj.paymentMethodBrand = message.payment_method_brand;
     }
-    if (message.paymentMethodLast4 !== undefined && message.paymentMethodLast4 !== "") {
-      obj.paymentMethodLast4 = message.paymentMethodLast4;
+    if (message.payment_method_last4 !== undefined && message.payment_method_last4 !== "") {
+      obj.paymentMethodLast4 = message.payment_method_last4;
     }
-    if (message.paymentMethodExpiry !== undefined && message.paymentMethodExpiry !== "") {
-      obj.paymentMethodExpiry = message.paymentMethodExpiry;
+    if (message.payment_method_expiry !== undefined && message.payment_method_expiry !== "") {
+      obj.paymentMethodExpiry = message.payment_method_expiry;
     }
-    if (message.paymentMethodMandateId !== undefined && message.paymentMethodMandateId !== "") {
-      obj.paymentMethodMandateId = message.paymentMethodMandateId;
+    if (message.payment_method_mandate_id !== undefined && message.payment_method_mandate_id !== "") {
+      obj.paymentMethodMandateId = message.payment_method_mandate_id;
     }
     return obj;
   },
@@ -1569,19 +1569,19 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.stripeCustomerId = object.stripeCustomerId ?? "";
-    message.defaultPaymentMethodId = object.defaultPaymentMethodId ?? "";
-    message.defaultPaymentMethodType = object.defaultPaymentMethodType ?? "";
-    message.paymentMethodBrand = object.paymentMethodBrand ?? "";
-    message.paymentMethodLast4 = object.paymentMethodLast4 ?? "";
-    message.paymentMethodExpiry = object.paymentMethodExpiry ?? "";
-    message.paymentMethodMandateId = object.paymentMethodMandateId ?? "";
+    message.stripe_customer_id = object.stripe_customer_id ?? "";
+    message.default_payment_method_id = object.default_payment_method_id ?? "";
+    message.default_payment_method_type = object.default_payment_method_type ?? "";
+    message.payment_method_brand = object.payment_method_brand ?? "";
+    message.payment_method_last4 = object.payment_method_last4 ?? "";
+    message.payment_method_expiry = object.payment_method_expiry ?? "";
+    message.payment_method_mandate_id = object.payment_method_mandate_id ?? "";
     return message;
   },
 };
 
 function createBaseSetParentSetupIntentRequiresActionRequest(): SetParentSetupIntentRequiresActionRequest {
-  return { context: undefined, stripeCustomerId: "", setupIntentId: "" };
+  return { context: undefined, stripe_customer_id: "", setup_intent_id: "" };
 }
 
 export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetupIntentRequiresActionRequest> = {
@@ -1589,11 +1589,11 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.stripeCustomerId !== "") {
-      writer.uint32(18).string(message.stripeCustomerId);
+    if (message.stripe_customer_id !== "") {
+      writer.uint32(18).string(message.stripe_customer_id);
     }
-    if (message.setupIntentId !== "") {
-      writer.uint32(26).string(message.setupIntentId);
+    if (message.setup_intent_id !== "") {
+      writer.uint32(26).string(message.setup_intent_id);
     }
     return writer;
   },
@@ -1617,14 +1617,14 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
             break;
           }
 
-          message.stripeCustomerId = reader.string();
+          message.stripe_customer_id = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.setupIntentId = reader.string();
+          message.setup_intent_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1638,8 +1638,8 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
   fromJSON(object: any): SetParentSetupIntentRequiresActionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stripeCustomerId: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
-      setupIntentId: isSet(object.setupIntentId) ? globalThis.String(object.setupIntentId) : "",
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      setup_intent_id: isSet(object.setupIntentId) ? globalThis.String(object.setupIntentId) : "",
     };
   },
 
@@ -1648,11 +1648,11 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.stripeCustomerId !== "") {
-      obj.stripeCustomerId = message.stripeCustomerId;
+    if (message.stripe_customer_id !== "") {
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
-    if (message.setupIntentId !== "") {
-      obj.setupIntentId = message.setupIntentId;
+    if (message.setup_intent_id !== "") {
+      obj.setupIntentId = message.setup_intent_id;
     }
     return obj;
   },
@@ -1669,14 +1669,14 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.stripeCustomerId = object.stripeCustomerId ?? "";
-    message.setupIntentId = object.setupIntentId ?? "";
+    message.stripe_customer_id = object.stripe_customer_id ?? "";
+    message.setup_intent_id = object.setup_intent_id ?? "";
     return message;
   },
 };
 
 function createBaseSetParentSetupIntentFailureRequest(): SetParentSetupIntentFailureRequest {
-  return { context: undefined, stripeCustomerId: "", failureReason: "" };
+  return { context: undefined, stripe_customer_id: "", failure_reason: "" };
 }
 
 export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntentFailureRequest> = {
@@ -1684,11 +1684,11 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.stripeCustomerId !== "") {
-      writer.uint32(18).string(message.stripeCustomerId);
+    if (message.stripe_customer_id !== "") {
+      writer.uint32(18).string(message.stripe_customer_id);
     }
-    if (message.failureReason !== "") {
-      writer.uint32(26).string(message.failureReason);
+    if (message.failure_reason !== "") {
+      writer.uint32(26).string(message.failure_reason);
     }
     return writer;
   },
@@ -1712,14 +1712,14 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
             break;
           }
 
-          message.stripeCustomerId = reader.string();
+          message.stripe_customer_id = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.failureReason = reader.string();
+          message.failure_reason = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1733,8 +1733,8 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
   fromJSON(object: any): SetParentSetupIntentFailureRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stripeCustomerId: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
-      failureReason: isSet(object.failureReason) ? globalThis.String(object.failureReason) : "",
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      failure_reason: isSet(object.failureReason) ? globalThis.String(object.failureReason) : "",
     };
   },
 
@@ -1743,11 +1743,11 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.stripeCustomerId !== "") {
-      obj.stripeCustomerId = message.stripeCustomerId;
+    if (message.stripe_customer_id !== "") {
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
-    if (message.failureReason !== "") {
-      obj.failureReason = message.failureReason;
+    if (message.failure_reason !== "") {
+      obj.failureReason = message.failure_reason;
     }
     return obj;
   },
@@ -1764,14 +1764,14 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.stripeCustomerId = object.stripeCustomerId ?? "";
-    message.failureReason = object.failureReason ?? "";
+    message.stripe_customer_id = object.stripe_customer_id ?? "";
+    message.failure_reason = object.failure_reason ?? "";
     return message;
   },
 };
 
 function createBaseSetParentStripeCustomerIdRequest(): SetParentStripeCustomerIdRequest {
-  return { context: undefined, parentId: undefined, stripeCustomerId: "" };
+  return { context: undefined, parent_id: undefined, stripe_customer_id: "" };
 }
 
 export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustomerIdRequest> = {
@@ -1779,11 +1779,11 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.parentId !== undefined) {
-      ObjectId.encode(message.parentId, writer.uint32(18).fork()).join();
+    if (message.parent_id !== undefined) {
+      ObjectId.encode(message.parent_id, writer.uint32(18).fork()).join();
     }
-    if (message.stripeCustomerId !== "") {
-      writer.uint32(26).string(message.stripeCustomerId);
+    if (message.stripe_customer_id !== "") {
+      writer.uint32(26).string(message.stripe_customer_id);
     }
     return writer;
   },
@@ -1807,14 +1807,14 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
             break;
           }
 
-          message.parentId = ObjectId.decode(reader, reader.uint32());
+          message.parent_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.stripeCustomerId = reader.string();
+          message.stripe_customer_id = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1828,8 +1828,8 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
   fromJSON(object: any): SetParentStripeCustomerIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parentId: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
-      stripeCustomerId: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
     };
   },
 
@@ -1838,11 +1838,11 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.parentId !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parentId);
+    if (message.parent_id !== undefined) {
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
-    if (message.stripeCustomerId !== "") {
-      obj.stripeCustomerId = message.stripeCustomerId;
+    if (message.stripe_customer_id !== "") {
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
     return obj;
   },
@@ -1859,10 +1859,10 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.parentId = (object.parentId !== undefined && object.parentId !== null)
-      ? ObjectId.fromPartial(object.parentId)
+    message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+      ? ObjectId.fromPartial(object.parent_id)
       : undefined;
-    message.stripeCustomerId = object.stripeCustomerId ?? "";
+    message.stripe_customer_id = object.stripe_customer_id ?? "";
     return message;
   },
 };

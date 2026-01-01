@@ -18,8 +18,8 @@ function createBaseAnnouncement() {
         organization: undefined,
         title: "",
         body: "",
-        startDate: undefined,
-        endDate: undefined,
+        start_date: undefined,
+        end_date: undefined,
         link: "",
         audience: [],
     };
@@ -38,11 +38,11 @@ exports.Announcement = {
         if (message.body !== "") {
             writer.uint32(34).string(message.body);
         }
-        if (message.startDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(42).fork()).join();
+        if (message.start_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.start_date), writer.uint32(42).fork()).join();
         }
-        if (message.endDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(50).fork()).join();
+        if (message.end_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(50).fork()).join();
         }
         if (message.link !== undefined && message.link !== "") {
             writer.uint32(58).string(message.link);
@@ -89,13 +89,13 @@ exports.Announcement = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.start_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 6:
                     if (tag !== 50) {
                         break;
                     }
-                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.end_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -130,8 +130,8 @@ exports.Announcement = {
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             body: isSet(object.body) ? globalThis.String(object.body) : "",
-            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             link: isSet(object.link) ? globalThis.String(object.link) : "",
             audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e) => (0, user_type_1.userTypeFromJSON)(e)) : [],
         };
@@ -150,11 +150,11 @@ exports.Announcement = {
         if (message.body !== "") {
             obj.body = message.body;
         }
-        if (message.startDate !== undefined) {
-            obj.startDate = message.startDate.toISOString();
+        if (message.start_date !== undefined) {
+            obj.startDate = message.start_date.toISOString();
         }
-        if (message.endDate !== undefined) {
-            obj.endDate = message.endDate.toISOString();
+        if (message.end_date !== undefined) {
+            obj.endDate = message.end_date.toISOString();
         }
         if (message.link !== undefined && message.link !== "") {
             obj.link = message.link;
@@ -175,8 +175,8 @@ exports.Announcement = {
             : undefined;
         message.title = object.title ?? "";
         message.body = object.body ?? "";
-        message.startDate = object.startDate ?? undefined;
-        message.endDate = object.endDate ?? undefined;
+        message.start_date = object.start_date ?? undefined;
+        message.end_date = object.end_date ?? undefined;
         message.link = object.link ?? "";
         message.audience = object.audience?.map((e) => e) || [];
         return message;

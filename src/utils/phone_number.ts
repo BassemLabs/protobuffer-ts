@@ -10,19 +10,19 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "utils";
 
 export interface PhoneNumber {
-  countryCode: string;
+  country_code: string;
   number: string;
   country: string;
 }
 
 function createBasePhoneNumber(): PhoneNumber {
-  return { countryCode: "", number: "", country: "" };
+  return { country_code: "", number: "", country: "" };
 }
 
 export const PhoneNumber: MessageFns<PhoneNumber> = {
   encode(message: PhoneNumber, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.countryCode !== "") {
-      writer.uint32(10).string(message.countryCode);
+    if (message.country_code !== "") {
+      writer.uint32(10).string(message.country_code);
     }
     if (message.number !== "") {
       writer.uint32(18).string(message.number);
@@ -45,7 +45,7 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
             break;
           }
 
-          message.countryCode = reader.string();
+          message.country_code = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
@@ -72,7 +72,7 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
 
   fromJSON(object: any): PhoneNumber {
     return {
-      countryCode: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
       number: isSet(object.number) ? globalThis.String(object.number) : "",
       country: isSet(object.country) ? globalThis.String(object.country) : "",
     };
@@ -80,8 +80,8 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
 
   toJSON(message: PhoneNumber): unknown {
     const obj: any = {};
-    if (message.countryCode !== "") {
-      obj.countryCode = message.countryCode;
+    if (message.country_code !== "") {
+      obj.countryCode = message.country_code;
     }
     if (message.number !== "") {
       obj.number = message.number;
@@ -97,7 +97,7 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
   },
   fromPartial<I extends Exact<DeepPartial<PhoneNumber>, I>>(object: I): PhoneNumber {
     const message = createBasePhoneNumber();
-    message.countryCode = object.countryCode ?? "";
+    message.country_code = object.country_code ?? "";
     message.number = object.number ?? "";
     message.country = object.country ?? "";
     return message;

@@ -14,25 +14,25 @@ export interface Semester {
     id: ObjectId | undefined;
     name: string;
     archived: boolean;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    reportLayout?: SemesterReportLayout | undefined;
-    campusId: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+    report_layout?: SemesterReportLayout | undefined;
+    campus_id: ObjectId | undefined;
+    school_year: ObjectId | undefined;
 }
 export interface SemesterReportLayout {
-    commentCharLimit: number;
-    includeProgressReportCards: boolean;
-    showCreditsEarnedEntry: boolean;
-    learningSkills: SemesterLearningSkill[];
-    reportDates: ReportDates[];
-    hideLearningSkillsFromHomerooms: boolean;
-    hideLearningSkillsFromCourses: boolean;
+    comment_char_limit: number;
+    include_progress_report_cards: boolean;
+    show_credits_earned_entry: boolean;
+    learning_skills: SemesterLearningSkill[];
+    report_dates: ReportDates[];
+    hide_learning_skills_from_homerooms: boolean;
+    hide_learning_skills_from_courses: boolean;
 }
 export interface ReportDates {
-    reportType: ReportType;
-    dueDate?: Date | undefined;
-    distributionDate?: Date | undefined;
+    report_type: ReportType;
+    due_date?: Date | undefined;
+    distribution_date?: Date | undefined;
 }
 export interface SemesterLearningSkill {
     id: ObjectId | undefined;
@@ -43,12 +43,12 @@ export interface ListSemester {
     id: ObjectId | undefined;
     archived: boolean;
     name: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
 }
 export interface SemesterList {
     semesters: ListSemester[];
-    semestersCount: number;
+    semesters_count: number;
 }
 export declare const Semester: MessageFns<Semester>;
 export declare const SemesterReportLayout: MessageFns<SemesterReportLayout>;

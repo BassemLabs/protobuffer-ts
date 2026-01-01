@@ -12,20 +12,20 @@ export const protobufPackage = "user_service";
 
 export interface CustomFieldEntry {
   id: ObjectId | undefined;
-  organizationId: ObjectId | undefined;
-  customFieldId: ObjectId | undefined;
-  groupId: ObjectId | undefined;
-  userId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  custom_field_id: ObjectId | undefined;
+  group_id: ObjectId | undefined;
+  user_id: ObjectId | undefined;
   value: string;
 }
 
 function createBaseCustomFieldEntry(): CustomFieldEntry {
   return {
     id: undefined,
-    organizationId: undefined,
-    customFieldId: undefined,
-    groupId: undefined,
-    userId: undefined,
+    organization_id: undefined,
+    custom_field_id: undefined,
+    group_id: undefined,
+    user_id: undefined,
     value: "",
   };
 }
@@ -35,17 +35,17 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.customFieldId !== undefined) {
-      ObjectId.encode(message.customFieldId, writer.uint32(26).fork()).join();
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(26).fork()).join();
     }
-    if (message.groupId !== undefined) {
-      ObjectId.encode(message.groupId, writer.uint32(34).fork()).join();
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(34).fork()).join();
     }
-    if (message.userId !== undefined) {
-      ObjectId.encode(message.userId, writer.uint32(42).fork()).join();
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(42).fork()).join();
     }
     if (message.value !== "") {
       writer.uint32(50).string(message.value);
@@ -72,28 +72,28 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.customFieldId = ObjectId.decode(reader, reader.uint32());
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.groupId = ObjectId.decode(reader, reader.uint32());
+          message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 5:
           if (tag !== 42) {
             break;
           }
 
-          message.userId = ObjectId.decode(reader, reader.uint32());
+          message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 6:
           if (tag !== 50) {
@@ -114,10 +114,10 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
   fromJSON(object: any): CustomFieldEntry {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      customFieldId: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
-      groupId: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      userId: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
       value: isSet(object.value) ? globalThis.String(object.value) : "",
     };
   },
@@ -127,17 +127,17 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.customFieldId !== undefined) {
-      obj.customFieldId = ObjectId.toJSON(message.customFieldId);
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
     }
-    if (message.groupId !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.groupId);
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.userId !== undefined) {
-      obj.userId = ObjectId.toJSON(message.userId);
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
     }
     if (message.value !== "") {
       obj.value = message.value;
@@ -151,17 +151,17 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
   fromPartial<I extends Exact<DeepPartial<CustomFieldEntry>, I>>(object: I): CustomFieldEntry {
     const message = createBaseCustomFieldEntry();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.customFieldId = (object.customFieldId !== undefined && object.customFieldId !== null)
-      ? ObjectId.fromPartial(object.customFieldId)
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
-    message.groupId = (object.groupId !== undefined && object.groupId !== null)
-      ? ObjectId.fromPartial(object.groupId)
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.userId = (object.userId !== undefined && object.userId !== null)
-      ? ObjectId.fromPartial(object.userId)
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
       : undefined;
     message.value = object.value ?? "";
     return message;

@@ -64,21 +64,21 @@ function actionTypeToNumber(object) {
     }
 }
 function createBaseActionRequiredByParents() {
-    return { actionType: ActionType.PAY_INVOICE, title: "", invoiceId: undefined, groupId: undefined };
+    return { action_type: ActionType.PAY_INVOICE, title: "", invoice_id: undefined, group_id: undefined };
 }
 exports.ActionRequiredByParents = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.actionType !== ActionType.PAY_INVOICE) {
-            writer.uint32(8).int32(actionTypeToNumber(message.actionType));
+        if (message.action_type !== ActionType.PAY_INVOICE) {
+            writer.uint32(8).int32(actionTypeToNumber(message.action_type));
         }
         if (message.title !== "") {
             writer.uint32(18).string(message.title);
         }
-        if (message.invoiceId !== undefined) {
-            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
         }
-        if (message.groupId !== undefined) {
-            object_id_1.ObjectId.encode(message.groupId, writer.uint32(34).fork()).join();
+        if (message.group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.group_id, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -93,7 +93,7 @@ exports.ActionRequiredByParents = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.actionType = actionTypeFromJSON(reader.int32());
+                    message.action_type = actionTypeFromJSON(reader.int32());
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -105,13 +105,13 @@ exports.ActionRequiredByParents = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.groupId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -123,25 +123,25 @@ exports.ActionRequiredByParents = {
     },
     fromJSON(object) {
         return {
-            actionType: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.PAY_INVOICE,
+            action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.PAY_INVOICE,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
-            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
-            groupId: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.actionType !== ActionType.PAY_INVOICE) {
-            obj.actionType = actionTypeToJSON(message.actionType);
+        if (message.action_type !== ActionType.PAY_INVOICE) {
+            obj.actionType = actionTypeToJSON(message.action_type);
         }
         if (message.title !== "") {
             obj.title = message.title;
         }
-        if (message.invoiceId !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
-        if (message.groupId !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.groupId);
+        if (message.group_id !== undefined) {
+            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
         }
         return obj;
     },
@@ -150,13 +150,13 @@ exports.ActionRequiredByParents = {
     },
     fromPartial(object) {
         const message = createBaseActionRequiredByParents();
-        message.actionType = object.actionType ?? ActionType.PAY_INVOICE;
+        message.action_type = object.action_type ?? ActionType.PAY_INVOICE;
         message.title = object.title ?? "";
-        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;
-        message.groupId = (object.groupId !== undefined && object.groupId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.groupId)
+        message.group_id = (object.group_id !== undefined && object.group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.group_id)
             : undefined;
         return message;
     },

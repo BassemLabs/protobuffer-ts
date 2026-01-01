@@ -10,21 +10,21 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "organization_service";
 
 export interface InvoiceSettings {
-  disableTax: boolean;
-  hstNumber?: string | undefined;
+  disable_tax: boolean;
+  hst_number?: string | undefined;
 }
 
 function createBaseInvoiceSettings(): InvoiceSettings {
-  return { disableTax: false, hstNumber: "" };
+  return { disable_tax: false, hst_number: "" };
 }
 
 export const InvoiceSettings: MessageFns<InvoiceSettings> = {
   encode(message: InvoiceSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.disableTax !== false) {
-      writer.uint32(8).bool(message.disableTax);
+    if (message.disable_tax !== false) {
+      writer.uint32(8).bool(message.disable_tax);
     }
-    if (message.hstNumber !== undefined && message.hstNumber !== "") {
-      writer.uint32(18).string(message.hstNumber);
+    if (message.hst_number !== undefined && message.hst_number !== "") {
+      writer.uint32(18).string(message.hst_number);
     }
     return writer;
   },
@@ -41,14 +41,14 @@ export const InvoiceSettings: MessageFns<InvoiceSettings> = {
             break;
           }
 
-          message.disableTax = reader.bool();
+          message.disable_tax = reader.bool();
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.hstNumber = reader.string();
+          message.hst_number = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -61,18 +61,18 @@ export const InvoiceSettings: MessageFns<InvoiceSettings> = {
 
   fromJSON(object: any): InvoiceSettings {
     return {
-      disableTax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-      hstNumber: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
     };
   },
 
   toJSON(message: InvoiceSettings): unknown {
     const obj: any = {};
-    if (message.disableTax !== false) {
-      obj.disableTax = message.disableTax;
+    if (message.disable_tax !== false) {
+      obj.disableTax = message.disable_tax;
     }
-    if (message.hstNumber !== undefined && message.hstNumber !== "") {
-      obj.hstNumber = message.hstNumber;
+    if (message.hst_number !== undefined && message.hst_number !== "") {
+      obj.hstNumber = message.hst_number;
     }
     return obj;
   },
@@ -82,8 +82,8 @@ export const InvoiceSettings: MessageFns<InvoiceSettings> = {
   },
   fromPartial<I extends Exact<DeepPartial<InvoiceSettings>, I>>(object: I): InvoiceSettings {
     const message = createBaseInvoiceSettings();
-    message.disableTax = object.disableTax ?? false;
-    message.hstNumber = object.hstNumber ?? "";
+    message.disable_tax = object.disable_tax ?? false;
+    message.hst_number = object.hst_number ?? "";
     return message;
   },
 };

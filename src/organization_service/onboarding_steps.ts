@@ -237,25 +237,25 @@ export function onboardingStepNameToNumber(object: OnboardingStepName): number {
 }
 
 export interface OnboardingStepData {
-  stepName: OnboardingStepName;
+  step_name: OnboardingStepName;
   status: OnboardingStepStatus;
 }
 
 export interface OnboardingStepsStatus {
   id: ObjectId | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
   steps: OnboardingStepData[];
-  allStepsDone: boolean;
+  all_steps_done: boolean;
 }
 
 function createBaseOnboardingStepData(): OnboardingStepData {
-  return { stepName: OnboardingStepName.ORG_OWNER_PROFILE, status: OnboardingStepStatus.ONGOING };
+  return { step_name: OnboardingStepName.ORG_OWNER_PROFILE, status: OnboardingStepStatus.ONGOING };
 }
 
 export const OnboardingStepData: MessageFns<OnboardingStepData> = {
   encode(message: OnboardingStepData, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.stepName !== OnboardingStepName.ORG_OWNER_PROFILE) {
-      writer.uint32(8).int32(onboardingStepNameToNumber(message.stepName));
+    if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+      writer.uint32(8).int32(onboardingStepNameToNumber(message.step_name));
     }
     if (message.status !== OnboardingStepStatus.ONGOING) {
       writer.uint32(16).int32(onboardingStepStatusToNumber(message.status));
@@ -275,7 +275,7 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
             break;
           }
 
-          message.stepName = onboardingStepNameFromJSON(reader.int32());
+          message.step_name = onboardingStepNameFromJSON(reader.int32());
           continue;
         case 2:
           if (tag !== 16) {
@@ -295,7 +295,7 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
 
   fromJSON(object: any): OnboardingStepData {
     return {
-      stepName: isSet(object.stepName)
+      step_name: isSet(object.stepName)
         ? onboardingStepNameFromJSON(object.stepName)
         : OnboardingStepName.ORG_OWNER_PROFILE,
       status: isSet(object.status) ? onboardingStepStatusFromJSON(object.status) : OnboardingStepStatus.ONGOING,
@@ -304,8 +304,8 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
 
   toJSON(message: OnboardingStepData): unknown {
     const obj: any = {};
-    if (message.stepName !== OnboardingStepName.ORG_OWNER_PROFILE) {
-      obj.stepName = onboardingStepNameToJSON(message.stepName);
+    if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+      obj.stepName = onboardingStepNameToJSON(message.step_name);
     }
     if (message.status !== OnboardingStepStatus.ONGOING) {
       obj.status = onboardingStepStatusToJSON(message.status);
@@ -318,14 +318,14 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
   },
   fromPartial<I extends Exact<DeepPartial<OnboardingStepData>, I>>(object: I): OnboardingStepData {
     const message = createBaseOnboardingStepData();
-    message.stepName = object.stepName ?? OnboardingStepName.ORG_OWNER_PROFILE;
+    message.step_name = object.step_name ?? OnboardingStepName.ORG_OWNER_PROFILE;
     message.status = object.status ?? OnboardingStepStatus.ONGOING;
     return message;
   },
 };
 
 function createBaseOnboardingStepsStatus(): OnboardingStepsStatus {
-  return { id: undefined, organizationId: undefined, steps: [], allStepsDone: false };
+  return { id: undefined, organization_id: undefined, steps: [], all_steps_done: false };
 }
 
 export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
@@ -333,14 +333,14 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     for (const v of message.steps) {
       OnboardingStepData.encode(v!, writer.uint32(26).fork()).join();
     }
-    if (message.allStepsDone !== false) {
-      writer.uint32(32).bool(message.allStepsDone);
+    if (message.all_steps_done !== false) {
+      writer.uint32(32).bool(message.all_steps_done);
     }
     return writer;
   },
@@ -364,7 +364,7 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
@@ -378,7 +378,7 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
             break;
           }
 
-          message.allStepsDone = reader.bool();
+          message.all_steps_done = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -392,11 +392,11 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
   fromJSON(object: any): OnboardingStepsStatus {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       steps: globalThis.Array.isArray(object?.steps)
         ? object.steps.map((e: any) => OnboardingStepData.fromJSON(e))
         : [],
-      allStepsDone: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
+      all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
     };
   },
 
@@ -405,14 +405,14 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.steps?.length) {
       obj.steps = message.steps.map((e) => OnboardingStepData.toJSON(e));
     }
-    if (message.allStepsDone !== false) {
-      obj.allStepsDone = message.allStepsDone;
+    if (message.all_steps_done !== false) {
+      obj.allStepsDone = message.all_steps_done;
     }
     return obj;
   },
@@ -423,11 +423,11 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
   fromPartial<I extends Exact<DeepPartial<OnboardingStepsStatus>, I>>(object: I): OnboardingStepsStatus {
     const message = createBaseOnboardingStepsStatus();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.steps = object.steps?.map((e) => OnboardingStepData.fromPartial(e)) || [];
-    message.allStepsDone = object.allStepsDone ?? false;
+    message.all_steps_done = object.all_steps_done ?? false;
     return message;
   },
 };

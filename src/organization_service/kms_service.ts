@@ -14,13 +14,13 @@ export const protobufPackage = "organization_service";
 
 export interface GetKmsKeyRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  keyType: KMSKeyType;
+  organization_id: ObjectId | undefined;
+  key_type: KMSKeyType;
 }
 
 export interface GetOrganizationKmsKeysRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 export interface GetOrganizationKmsKeysResponse {
@@ -29,13 +29,13 @@ export interface GetOrganizationKmsKeysResponse {
 
 export interface UpdateKmsKeyRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
-  keyType: KMSKeyType;
-  secretMaterial: string;
+  organization_id: ObjectId | undefined;
+  key_type: KMSKeyType;
+  secret_material: string;
 }
 
 function createBaseGetKmsKeyRequest(): GetKmsKeyRequest {
-  return { context: undefined, organizationId: undefined, keyType: KMSKeyType.GoogelAdminEmail };
+  return { context: undefined, organization_id: undefined, key_type: KMSKeyType.GoogelAdminEmail };
 }
 
 export const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest> = {
@@ -43,11 +43,11 @@ export const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.keyType !== KMSKeyType.GoogelAdminEmail) {
-      writer.uint32(24).int32(kMSKeyTypeToNumber(message.keyType));
+    if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+      writer.uint32(24).int32(kMSKeyTypeToNumber(message.key_type));
     }
     return writer;
   },
@@ -71,14 +71,14 @@ export const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.keyType = kMSKeyTypeFromJSON(reader.int32());
+          message.key_type = kMSKeyTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -92,8 +92,8 @@ export const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest> = {
   fromJSON(object: any): GetKmsKeyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      keyType: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      key_type: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
     };
   },
 
@@ -102,11 +102,11 @@ export const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.keyType !== KMSKeyType.GoogelAdminEmail) {
-      obj.keyType = kMSKeyTypeToJSON(message.keyType);
+    if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+      obj.keyType = kMSKeyTypeToJSON(message.key_type);
     }
     return obj;
   },
@@ -119,16 +119,16 @@ export const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.keyType = object.keyType ?? KMSKeyType.GoogelAdminEmail;
+    message.key_type = object.key_type ?? KMSKeyType.GoogelAdminEmail;
     return message;
   },
 };
 
 function createBaseGetOrganizationKmsKeysRequest(): GetOrganizationKmsKeysRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysRequest> = {
@@ -136,8 +136,8 @@ export const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysReq
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -161,7 +161,7 @@ export const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysReq
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -175,7 +175,7 @@ export const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysReq
   fromJSON(object: any): GetOrganizationKmsKeysRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -184,8 +184,8 @@ export const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysReq
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -200,8 +200,8 @@ export const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysReq
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
@@ -267,7 +267,7 @@ export const GetOrganizationKmsKeysResponse: MessageFns<GetOrganizationKmsKeysRe
 };
 
 function createBaseUpdateKmsKeyRequest(): UpdateKmsKeyRequest {
-  return { context: undefined, organizationId: undefined, keyType: KMSKeyType.GoogelAdminEmail, secretMaterial: "" };
+  return { context: undefined, organization_id: undefined, key_type: KMSKeyType.GoogelAdminEmail, secret_material: "" };
 }
 
 export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
@@ -275,14 +275,14 @@ export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.keyType !== KMSKeyType.GoogelAdminEmail) {
-      writer.uint32(24).int32(kMSKeyTypeToNumber(message.keyType));
+    if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+      writer.uint32(24).int32(kMSKeyTypeToNumber(message.key_type));
     }
-    if (message.secretMaterial !== "") {
-      writer.uint32(34).string(message.secretMaterial);
+    if (message.secret_material !== "") {
+      writer.uint32(34).string(message.secret_material);
     }
     return writer;
   },
@@ -306,21 +306,21 @@ export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.keyType = kMSKeyTypeFromJSON(reader.int32());
+          message.key_type = kMSKeyTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.secretMaterial = reader.string();
+          message.secret_material = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -334,9 +334,9 @@ export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
   fromJSON(object: any): UpdateKmsKeyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      keyType: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
-      secretMaterial: isSet(object.secretMaterial) ? globalThis.String(object.secretMaterial) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      key_type: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
+      secret_material: isSet(object.secretMaterial) ? globalThis.String(object.secretMaterial) : "",
     };
   },
 
@@ -345,14 +345,14 @@ export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.keyType !== KMSKeyType.GoogelAdminEmail) {
-      obj.keyType = kMSKeyTypeToJSON(message.keyType);
+    if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+      obj.keyType = kMSKeyTypeToJSON(message.key_type);
     }
-    if (message.secretMaterial !== "") {
-      obj.secretMaterial = message.secretMaterial;
+    if (message.secret_material !== "") {
+      obj.secretMaterial = message.secret_material;
     }
     return obj;
   },
@@ -365,11 +365,11 @@ export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.keyType = object.keyType ?? KMSKeyType.GoogelAdminEmail;
-    message.secretMaterial = object.secretMaterial ?? "";
+    message.key_type = object.key_type ?? KMSKeyType.GoogelAdminEmail;
+    message.secret_material = object.secret_material ?? "";
     return message;
   },
 };

@@ -324,27 +324,27 @@ exports.LmsCourse = {
 };
 function createBaseLmsCourseWork() {
     return {
-        lmsCourseWorkId: "",
-        lmsCourseId: "",
+        lms_course_work_id: "",
+        lms_course_id: "",
         title: "",
         description: "",
         link: "",
         attachments: [],
-        creationTime: undefined,
-        dueDate: undefined,
-        maxPoints: 0,
-        workType: LmsWorkType.ASSIGNMENT,
+        creation_time: undefined,
+        due_date: undefined,
+        max_points: 0,
+        work_type: LmsWorkType.ASSIGNMENT,
         provider: LmsProviderType.GOOGLE_CLASSROOM,
-        rawJson: "",
+        raw_json: "",
     };
 }
 exports.LmsCourseWork = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.lmsCourseWorkId !== "") {
-            writer.uint32(10).string(message.lmsCourseWorkId);
+        if (message.lms_course_work_id !== "") {
+            writer.uint32(10).string(message.lms_course_work_id);
         }
-        if (message.lmsCourseId !== "") {
-            writer.uint32(18).string(message.lmsCourseId);
+        if (message.lms_course_id !== "") {
+            writer.uint32(18).string(message.lms_course_id);
         }
         if (message.title !== undefined && message.title !== "") {
             writer.uint32(26).string(message.title);
@@ -358,23 +358,23 @@ exports.LmsCourseWork = {
         for (const v of message.attachments) {
             exports.Attachment.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.creationTime !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.creationTime), writer.uint32(58).fork()).join();
+        if (message.creation_time !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.creation_time), writer.uint32(58).fork()).join();
         }
-        if (message.dueDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(66).fork()).join();
+        if (message.due_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(66).fork()).join();
         }
-        if (message.maxPoints !== undefined && message.maxPoints !== 0) {
-            writer.uint32(73).double(message.maxPoints);
+        if (message.max_points !== undefined && message.max_points !== 0) {
+            writer.uint32(73).double(message.max_points);
         }
-        if (message.workType !== undefined && message.workType !== LmsWorkType.ASSIGNMENT) {
-            writer.uint32(80).int32(lmsWorkTypeToNumber(message.workType));
+        if (message.work_type !== undefined && message.work_type !== LmsWorkType.ASSIGNMENT) {
+            writer.uint32(80).int32(lmsWorkTypeToNumber(message.work_type));
         }
         if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
             writer.uint32(88).int32(lmsProviderTypeToNumber(message.provider));
         }
-        if (message.rawJson !== undefined && message.rawJson !== "") {
-            writer.uint32(98).string(message.rawJson);
+        if (message.raw_json !== undefined && message.raw_json !== "") {
+            writer.uint32(98).string(message.raw_json);
         }
         return writer;
     },
@@ -389,13 +389,13 @@ exports.LmsCourseWork = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.lmsCourseWorkId = reader.string();
+                    message.lms_course_work_id = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.lmsCourseId = reader.string();
+                    message.lms_course_id = reader.string();
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -425,25 +425,25 @@ exports.LmsCourseWork = {
                     if (tag !== 58) {
                         break;
                     }
-                    message.creationTime = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.creation_time = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 8:
                     if (tag !== 66) {
                         break;
                     }
-                    message.dueDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.due_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 9:
                     if (tag !== 73) {
                         break;
                     }
-                    message.maxPoints = reader.double();
+                    message.max_points = reader.double();
                     continue;
                 case 10:
                     if (tag !== 80) {
                         break;
                     }
-                    message.workType = lmsWorkTypeFromJSON(reader.int32());
+                    message.work_type = lmsWorkTypeFromJSON(reader.int32());
                     continue;
                 case 11:
                     if (tag !== 88) {
@@ -455,7 +455,7 @@ exports.LmsCourseWork = {
                     if (tag !== 98) {
                         break;
                     }
-                    message.rawJson = reader.string();
+                    message.raw_json = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -467,29 +467,29 @@ exports.LmsCourseWork = {
     },
     fromJSON(object) {
         return {
-            lmsCourseWorkId: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : "",
-            lmsCourseId: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : "",
+            lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : "",
+            lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : "",
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             link: isSet(object.link) ? globalThis.String(object.link) : "",
             attachments: globalThis.Array.isArray(object?.attachments)
                 ? object.attachments.map((e) => exports.Attachment.fromJSON(e))
                 : [],
-            creationTime: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
-            dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-            maxPoints: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
-            workType: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : LmsWorkType.ASSIGNMENT,
+            creation_time: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
+            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            max_points: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
+            work_type: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : LmsWorkType.ASSIGNMENT,
             provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
-            rawJson: isSet(object.rawJson) ? globalThis.String(object.rawJson) : "",
+            raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.lmsCourseWorkId !== "") {
-            obj.lmsCourseWorkId = message.lmsCourseWorkId;
+        if (message.lms_course_work_id !== "") {
+            obj.lmsCourseWorkId = message.lms_course_work_id;
         }
-        if (message.lmsCourseId !== "") {
-            obj.lmsCourseId = message.lmsCourseId;
+        if (message.lms_course_id !== "") {
+            obj.lmsCourseId = message.lms_course_id;
         }
         if (message.title !== undefined && message.title !== "") {
             obj.title = message.title;
@@ -503,23 +503,23 @@ exports.LmsCourseWork = {
         if (message.attachments?.length) {
             obj.attachments = message.attachments.map((e) => exports.Attachment.toJSON(e));
         }
-        if (message.creationTime !== undefined) {
-            obj.creationTime = message.creationTime.toISOString();
+        if (message.creation_time !== undefined) {
+            obj.creationTime = message.creation_time.toISOString();
         }
-        if (message.dueDate !== undefined) {
-            obj.dueDate = message.dueDate.toISOString();
+        if (message.due_date !== undefined) {
+            obj.dueDate = message.due_date.toISOString();
         }
-        if (message.maxPoints !== undefined && message.maxPoints !== 0) {
-            obj.maxPoints = message.maxPoints;
+        if (message.max_points !== undefined && message.max_points !== 0) {
+            obj.maxPoints = message.max_points;
         }
-        if (message.workType !== undefined && message.workType !== LmsWorkType.ASSIGNMENT) {
-            obj.workType = lmsWorkTypeToJSON(message.workType);
+        if (message.work_type !== undefined && message.work_type !== LmsWorkType.ASSIGNMENT) {
+            obj.workType = lmsWorkTypeToJSON(message.work_type);
         }
         if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
             obj.provider = lmsProviderTypeToJSON(message.provider);
         }
-        if (message.rawJson !== undefined && message.rawJson !== "") {
-            obj.rawJson = message.rawJson;
+        if (message.raw_json !== undefined && message.raw_json !== "") {
+            obj.rawJson = message.raw_json;
         }
         return obj;
     },
@@ -528,18 +528,18 @@ exports.LmsCourseWork = {
     },
     fromPartial(object) {
         const message = createBaseLmsCourseWork();
-        message.lmsCourseWorkId = object.lmsCourseWorkId ?? "";
-        message.lmsCourseId = object.lmsCourseId ?? "";
+        message.lms_course_work_id = object.lms_course_work_id ?? "";
+        message.lms_course_id = object.lms_course_id ?? "";
         message.title = object.title ?? "";
         message.description = object.description ?? "";
         message.link = object.link ?? "";
         message.attachments = object.attachments?.map((e) => exports.Attachment.fromPartial(e)) || [];
-        message.creationTime = object.creationTime ?? undefined;
-        message.dueDate = object.dueDate ?? undefined;
-        message.maxPoints = object.maxPoints ?? 0;
-        message.workType = object.workType ?? LmsWorkType.ASSIGNMENT;
+        message.creation_time = object.creation_time ?? undefined;
+        message.due_date = object.due_date ?? undefined;
+        message.max_points = object.max_points ?? 0;
+        message.work_type = object.work_type ?? LmsWorkType.ASSIGNMENT;
         message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
-        message.rawJson = object.rawJson ?? "";
+        message.raw_json = object.raw_json ?? "";
         return message;
     },
 };
@@ -595,42 +595,42 @@ exports.Attachment = {
 };
 function createBaseLmsSubmission() {
     return {
-        lmsSubmissionId: "",
-        lmsCourseWorkId: "",
-        lmsCourseId: "",
-        studentId: undefined,
-        submissionUrl: "",
+        lms_submission_id: "",
+        lms_course_work_id: "",
+        lms_course_id: "",
+        student_id: undefined,
+        submission_url: "",
         state: LmsSubmissionState.UNSUBMITTED,
-        submittedAt: undefined,
+        submitted_at: undefined,
         late: false,
         grade: 0,
         history: [],
         provider: LmsProviderType.GOOGLE_CLASSROOM,
-        rawJson: "",
+        raw_json: "",
     };
 }
 exports.LmsSubmission = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.lmsSubmissionId !== "") {
-            writer.uint32(10).string(message.lmsSubmissionId);
+        if (message.lms_submission_id !== "") {
+            writer.uint32(10).string(message.lms_submission_id);
         }
-        if (message.lmsCourseWorkId !== "") {
-            writer.uint32(18).string(message.lmsCourseWorkId);
+        if (message.lms_course_work_id !== "") {
+            writer.uint32(18).string(message.lms_course_work_id);
         }
-        if (message.lmsCourseId !== "") {
-            writer.uint32(26).string(message.lmsCourseId);
+        if (message.lms_course_id !== "") {
+            writer.uint32(26).string(message.lms_course_id);
         }
-        if (message.studentId !== undefined) {
-            object_id_1.ObjectId.encode(message.studentId, writer.uint32(34).fork()).join();
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(34).fork()).join();
         }
-        if (message.submissionUrl !== "") {
-            writer.uint32(42).string(message.submissionUrl);
+        if (message.submission_url !== "") {
+            writer.uint32(42).string(message.submission_url);
         }
         if (message.state !== LmsSubmissionState.UNSUBMITTED) {
             writer.uint32(48).int32(lmsSubmissionStateToNumber(message.state));
         }
-        if (message.submittedAt !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.submittedAt), writer.uint32(58).fork()).join();
+        if (message.submitted_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.submitted_at), writer.uint32(58).fork()).join();
         }
         if (message.late !== undefined && message.late !== false) {
             writer.uint32(64).bool(message.late);
@@ -644,8 +644,8 @@ exports.LmsSubmission = {
         if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
             writer.uint32(88).int32(lmsProviderTypeToNumber(message.provider));
         }
-        if (message.rawJson !== undefined && message.rawJson !== "") {
-            writer.uint32(98).string(message.rawJson);
+        if (message.raw_json !== undefined && message.raw_json !== "") {
+            writer.uint32(98).string(message.raw_json);
         }
         return writer;
     },
@@ -660,31 +660,31 @@ exports.LmsSubmission = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.lmsSubmissionId = reader.string();
+                    message.lms_submission_id = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
                         break;
                     }
-                    message.lmsCourseWorkId = reader.string();
+                    message.lms_course_work_id = reader.string();
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.lmsCourseId = reader.string();
+                    message.lms_course_id = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.studentId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 5:
                     if (tag !== 42) {
                         break;
                     }
-                    message.submissionUrl = reader.string();
+                    message.submission_url = reader.string();
                     continue;
                 case 6:
                     if (tag !== 48) {
@@ -696,7 +696,7 @@ exports.LmsSubmission = {
                     if (tag !== 58) {
                         break;
                     }
-                    message.submittedAt = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.submitted_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 8:
                     if (tag !== 64) {
@@ -726,7 +726,7 @@ exports.LmsSubmission = {
                     if (tag !== 98) {
                         break;
                     }
-                    message.rawJson = reader.string();
+                    message.raw_json = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -738,42 +738,42 @@ exports.LmsSubmission = {
     },
     fromJSON(object) {
         return {
-            lmsSubmissionId: isSet(object.lmsSubmissionId) ? globalThis.String(object.lmsSubmissionId) : "",
-            lmsCourseWorkId: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : "",
-            lmsCourseId: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : "",
-            studentId: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            submissionUrl: isSet(object.submissionUrl) ? globalThis.String(object.submissionUrl) : "",
+            lms_submission_id: isSet(object.lmsSubmissionId) ? globalThis.String(object.lmsSubmissionId) : "",
+            lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : "",
+            lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : "",
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            submission_url: isSet(object.submissionUrl) ? globalThis.String(object.submissionUrl) : "",
             state: isSet(object.state) ? lmsSubmissionStateFromJSON(object.state) : LmsSubmissionState.UNSUBMITTED,
-            submittedAt: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
+            submitted_at: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
             late: isSet(object.late) ? globalThis.Boolean(object.late) : false,
             grade: isSet(object.grade) ? globalThis.Number(object.grade) : 0,
             history: globalThis.Array.isArray(object?.history) ? object.history.map((e) => exports.LmsHistory.fromJSON(e)) : [],
             provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
-            rawJson: isSet(object.rawJson) ? globalThis.String(object.rawJson) : "",
+            raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.lmsSubmissionId !== "") {
-            obj.lmsSubmissionId = message.lmsSubmissionId;
+        if (message.lms_submission_id !== "") {
+            obj.lmsSubmissionId = message.lms_submission_id;
         }
-        if (message.lmsCourseWorkId !== "") {
-            obj.lmsCourseWorkId = message.lmsCourseWorkId;
+        if (message.lms_course_work_id !== "") {
+            obj.lmsCourseWorkId = message.lms_course_work_id;
         }
-        if (message.lmsCourseId !== "") {
-            obj.lmsCourseId = message.lmsCourseId;
+        if (message.lms_course_id !== "") {
+            obj.lmsCourseId = message.lms_course_id;
         }
-        if (message.studentId !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.studentId);
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.submissionUrl !== "") {
-            obj.submissionUrl = message.submissionUrl;
+        if (message.submission_url !== "") {
+            obj.submissionUrl = message.submission_url;
         }
         if (message.state !== LmsSubmissionState.UNSUBMITTED) {
             obj.state = lmsSubmissionStateToJSON(message.state);
         }
-        if (message.submittedAt !== undefined) {
-            obj.submittedAt = message.submittedAt.toISOString();
+        if (message.submitted_at !== undefined) {
+            obj.submittedAt = message.submitted_at.toISOString();
         }
         if (message.late !== undefined && message.late !== false) {
             obj.late = message.late;
@@ -787,8 +787,8 @@ exports.LmsSubmission = {
         if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
             obj.provider = lmsProviderTypeToJSON(message.provider);
         }
-        if (message.rawJson !== undefined && message.rawJson !== "") {
-            obj.rawJson = message.rawJson;
+        if (message.raw_json !== undefined && message.raw_json !== "") {
+            obj.rawJson = message.raw_json;
         }
         return obj;
     },
@@ -797,45 +797,45 @@ exports.LmsSubmission = {
     },
     fromPartial(object) {
         const message = createBaseLmsSubmission();
-        message.lmsSubmissionId = object.lmsSubmissionId ?? "";
-        message.lmsCourseWorkId = object.lmsCourseWorkId ?? "";
-        message.lmsCourseId = object.lmsCourseId ?? "";
-        message.studentId = (object.studentId !== undefined && object.studentId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.studentId)
+        message.lms_submission_id = object.lms_submission_id ?? "";
+        message.lms_course_work_id = object.lms_course_work_id ?? "";
+        message.lms_course_id = object.lms_course_id ?? "";
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.submissionUrl = object.submissionUrl ?? "";
+        message.submission_url = object.submission_url ?? "";
         message.state = object.state ?? LmsSubmissionState.UNSUBMITTED;
-        message.submittedAt = object.submittedAt ?? undefined;
+        message.submitted_at = object.submitted_at ?? undefined;
         message.late = object.late ?? false;
         message.grade = object.grade ?? 0;
         message.history = object.history?.map((e) => exports.LmsHistory.fromPartial(e)) || [];
         message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
-        message.rawJson = object.rawJson ?? "";
+        message.raw_json = object.raw_json ?? "";
         return message;
     },
 };
 function createBaseLmsHistory() {
-    return { actorId: "", type: "", oldValue: "", newValue: "", timestamp: undefined, rawEntry: "" };
+    return { actor_id: "", type: "", old_value: "", new_value: "", timestamp: undefined, raw_entry: "" };
 }
 exports.LmsHistory = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.actorId !== "") {
-            writer.uint32(10).string(message.actorId);
+        if (message.actor_id !== "") {
+            writer.uint32(10).string(message.actor_id);
         }
         if (message.type !== "") {
             writer.uint32(18).string(message.type);
         }
-        if (message.oldValue !== undefined && message.oldValue !== "") {
-            writer.uint32(26).string(message.oldValue);
+        if (message.old_value !== undefined && message.old_value !== "") {
+            writer.uint32(26).string(message.old_value);
         }
-        if (message.newValue !== undefined && message.newValue !== "") {
-            writer.uint32(34).string(message.newValue);
+        if (message.new_value !== undefined && message.new_value !== "") {
+            writer.uint32(34).string(message.new_value);
         }
         if (message.timestamp !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(42).fork()).join();
         }
-        if (message.rawEntry !== undefined && message.rawEntry !== "") {
-            writer.uint32(50).string(message.rawEntry);
+        if (message.raw_entry !== undefined && message.raw_entry !== "") {
+            writer.uint32(50).string(message.raw_entry);
         }
         return writer;
     },
@@ -850,7 +850,7 @@ exports.LmsHistory = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.actorId = reader.string();
+                    message.actor_id = reader.string();
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -862,13 +862,13 @@ exports.LmsHistory = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.oldValue = reader.string();
+                    message.old_value = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.newValue = reader.string();
+                    message.new_value = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -880,7 +880,7 @@ exports.LmsHistory = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.rawEntry = reader.string();
+                    message.raw_entry = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -892,33 +892,33 @@ exports.LmsHistory = {
     },
     fromJSON(object) {
         return {
-            actorId: isSet(object.actorId) ? globalThis.String(object.actorId) : "",
+            actor_id: isSet(object.actorId) ? globalThis.String(object.actorId) : "",
             type: isSet(object.type) ? globalThis.String(object.type) : "",
-            oldValue: isSet(object.oldValue) ? globalThis.String(object.oldValue) : "",
-            newValue: isSet(object.newValue) ? globalThis.String(object.newValue) : "",
+            old_value: isSet(object.oldValue) ? globalThis.String(object.oldValue) : "",
+            new_value: isSet(object.newValue) ? globalThis.String(object.newValue) : "",
             timestamp: isSet(object.timestamp) ? fromJsonTimestamp(object.timestamp) : undefined,
-            rawEntry: isSet(object.rawEntry) ? globalThis.String(object.rawEntry) : "",
+            raw_entry: isSet(object.rawEntry) ? globalThis.String(object.rawEntry) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.actorId !== "") {
-            obj.actorId = message.actorId;
+        if (message.actor_id !== "") {
+            obj.actorId = message.actor_id;
         }
         if (message.type !== "") {
             obj.type = message.type;
         }
-        if (message.oldValue !== undefined && message.oldValue !== "") {
-            obj.oldValue = message.oldValue;
+        if (message.old_value !== undefined && message.old_value !== "") {
+            obj.oldValue = message.old_value;
         }
-        if (message.newValue !== undefined && message.newValue !== "") {
-            obj.newValue = message.newValue;
+        if (message.new_value !== undefined && message.new_value !== "") {
+            obj.newValue = message.new_value;
         }
         if (message.timestamp !== undefined) {
             obj.timestamp = message.timestamp.toISOString();
         }
-        if (message.rawEntry !== undefined && message.rawEntry !== "") {
-            obj.rawEntry = message.rawEntry;
+        if (message.raw_entry !== undefined && message.raw_entry !== "") {
+            obj.rawEntry = message.raw_entry;
         }
         return obj;
     },
@@ -927,12 +927,12 @@ exports.LmsHistory = {
     },
     fromPartial(object) {
         const message = createBaseLmsHistory();
-        message.actorId = object.actorId ?? "";
+        message.actor_id = object.actor_id ?? "";
         message.type = object.type ?? "";
-        message.oldValue = object.oldValue ?? "";
-        message.newValue = object.newValue ?? "";
+        message.old_value = object.old_value ?? "";
+        message.new_value = object.new_value ?? "";
         message.timestamp = object.timestamp ?? undefined;
-        message.rawEntry = object.rawEntry ?? "";
+        message.raw_entry = object.raw_entry ?? "";
         return message;
     },
 };

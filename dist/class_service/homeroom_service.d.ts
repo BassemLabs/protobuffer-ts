@@ -8,84 +8,84 @@ import { LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
 export declare const protobufPackage = "class_service.homeroom_service";
 export interface GetHomeroomRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
 }
 export interface ListHomeroomsRequest {
     context: RequestContext | undefined;
-    perPage?: number | undefined;
+    per_page?: number | undefined;
     page?: number | undefined;
-    nameSearch?: string | undefined;
+    name_search?: string | undefined;
     semester?: ObjectId | undefined;
-    schoolYear?: ObjectId | undefined;
+    school_year?: ObjectId | undefined;
     archived?: boolean | undefined;
-    teacherId?: ObjectId | undefined;
+    teacher_id?: ObjectId | undefined;
 }
 export interface CreateHomeroomRequest {
     context: RequestContext | undefined;
     name: string;
-    semesterId: ObjectId | undefined;
-    teacherIds: ObjectId[];
+    semester_id: ObjectId | undefined;
+    teacher_ids: ObjectId[];
     grade: StudentGrade;
-    lmsProvider?: LmsProviderType | undefined;
+    lms_provider?: LmsProviderType | undefined;
 }
 export interface CloneHomeroomRequest {
     context: RequestContext | undefined;
-    homeroomToCloneId: ObjectId | undefined;
+    homeroom_to_clone_id: ObjectId | undefined;
     name: string;
-    semesterId: ObjectId | undefined;
-    teacherIds: ObjectId[];
+    semester_id: ObjectId | undefined;
+    teacher_ids: ObjectId[];
     grade: StudentGrade;
 }
 export interface GetHomeroomCoursesRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    includeArchived: boolean;
+    homeroom_id: ObjectId | undefined;
+    include_archived: boolean;
 }
 export interface GetHomeroomCoursesResponse {
     courses: Course[];
 }
 export interface GetStudentHomeroomsRequest {
     context: RequestContext | undefined;
-    studentId: ObjectId | undefined;
-    includeArchived?: boolean | undefined;
+    student_id: ObjectId | undefined;
+    include_archived?: boolean | undefined;
 }
 export interface GetStudentHomeroomsResponse {
     homerooms: Homeroom[];
 }
 export interface ArchiveHomeroomRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
 }
 export interface UpdateHomeroomRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    semesterId: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
     name: string;
     grade: StudentGrade;
 }
 export interface AddTeachersRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    teacherIds: ObjectId[];
+    homeroom_id: ObjectId | undefined;
+    teacher_ids: ObjectId[];
 }
 export interface RemoveTeachersRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    teacherIds: ObjectId[];
+    homeroom_id: ObjectId | undefined;
+    teacher_ids: ObjectId[];
 }
 export interface AddStudentsRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    studentIds: ObjectId[];
+    homeroom_id: ObjectId | undefined;
+    student_ids: ObjectId[];
 }
 export interface RemoveStudentsRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    studentIds: ObjectId[];
+    homeroom_id: ObjectId | undefined;
+    student_ids: ObjectId[];
 }
 export interface GetAttendanceClassesRequest {
     context: RequestContext | undefined;
-    teacherId: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
 }
 export interface GetAttendanceClassesResponse {
     homerooms: Homeroom[];
@@ -98,18 +98,18 @@ export interface GetAllAttendanceClassesResponse {
 }
 export interface GetLmsCourseWorkRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
 }
 export interface LmsCourseWorkResponse {
-    lmsCourseWork: LmsCourseWork[];
+    lms_course_work: LmsCourseWork[];
 }
 export interface GetStudentLmsCourseWorkRequest {
     context: RequestContext | undefined;
-    homeroomId: ObjectId | undefined;
-    studentId: ObjectId | undefined;
+    homeroom_id: ObjectId | undefined;
+    student_id: ObjectId | undefined;
 }
 export interface LmsStudentSubmissionResponse {
-    lmsStudentSubmission: LmsSubmission[];
+    lms_student_submission: LmsSubmission[];
 }
 export declare const GetHomeroomRequest: MessageFns<GetHomeroomRequest>;
 export declare const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest>;

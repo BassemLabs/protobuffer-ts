@@ -24,14 +24,14 @@ export declare function tuitionInvoiceStatusToJSON(object: TuitionInvoiceStatus)
 export declare function tuitionInvoiceStatusToNumber(object: TuitionInvoiceStatus): number;
 export interface TuitionPlanSnapshot {
     name: string;
-    scheduleType: PaymentScheduleType;
-    dayOfMonth?: number | undefined;
+    schedule_type: PaymentScheduleType;
+    day_of_month?: number | undefined;
     installments: PaymentInstallment[];
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
 }
 export interface TuitionInvoiceLineItem {
-    lineType: LineType;
+    line_type: LineType;
     scope: Scope;
     /** present when scope = STUDENT_SCOPE */
     student?: ObjectId | undefined;
@@ -42,13 +42,13 @@ export interface TuitionInvoiceLineItem {
 export interface TuitionInvoice {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    schoolYear: ObjectId | undefined;
+    school_year: ObjectId | undefined;
     family: ObjectId | undefined;
-    tuitionPlan: TuitionPlanSnapshot | undefined;
-    lineItems: TuitionInvoiceLineItem[];
-    totalGross: number;
-    totalDiscounts: number;
-    totalNet: number;
+    tuition_plan: TuitionPlanSnapshot | undefined;
+    line_items: TuitionInvoiceLineItem[];
+    total_gross: number;
+    total_discounts: number;
+    total_net: number;
 }
 export declare const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot>;
 export declare const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem>;

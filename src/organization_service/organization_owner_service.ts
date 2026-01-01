@@ -24,7 +24,7 @@ export interface GetOwnerByEmailRequest {
 
 export interface GetOwnerRequest {
   context: RequestContext | undefined;
-  ownerId: ObjectId | undefined;
+  owner_id: ObjectId | undefined;
 }
 
 export interface GetOrganizationOwnerRequest {
@@ -34,8 +34,8 @@ export interface GetOrganizationOwnerRequest {
 export interface UpdateOwnerProfileRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
-  mainAddress?: string | undefined;
-  phoneNumber?: string | undefined;
+  main_address?: string | undefined;
+  phone_number?: string | undefined;
 }
 
 function createBaseCreateOwnerRequest(): CreateOwnerRequest {
@@ -206,7 +206,7 @@ export const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest> = {
 };
 
 function createBaseGetOwnerRequest(): GetOwnerRequest {
-  return { context: undefined, ownerId: undefined };
+  return { context: undefined, owner_id: undefined };
 }
 
 export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
@@ -214,8 +214,8 @@ export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.ownerId !== undefined) {
-      ObjectId.encode(message.ownerId, writer.uint32(18).fork()).join();
+    if (message.owner_id !== undefined) {
+      ObjectId.encode(message.owner_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -239,7 +239,7 @@ export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
             break;
           }
 
-          message.ownerId = ObjectId.decode(reader, reader.uint32());
+          message.owner_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -253,7 +253,7 @@ export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
   fromJSON(object: any): GetOwnerRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      ownerId: isSet(object.ownerId) ? ObjectId.fromJSON(object.ownerId) : undefined,
+      owner_id: isSet(object.ownerId) ? ObjectId.fromJSON(object.ownerId) : undefined,
     };
   },
 
@@ -262,8 +262,8 @@ export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.ownerId !== undefined) {
-      obj.ownerId = ObjectId.toJSON(message.ownerId);
+    if (message.owner_id !== undefined) {
+      obj.ownerId = ObjectId.toJSON(message.owner_id);
     }
     return obj;
   },
@@ -276,8 +276,8 @@ export const GetOwnerRequest: MessageFns<GetOwnerRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.ownerId = (object.ownerId !== undefined && object.ownerId !== null)
-      ? ObjectId.fromPartial(object.ownerId)
+    message.owner_id = (object.owner_id !== undefined && object.owner_id !== null)
+      ? ObjectId.fromPartial(object.owner_id)
       : undefined;
     return message;
   },
@@ -343,7 +343,7 @@ export const GetOrganizationOwnerRequest: MessageFns<GetOrganizationOwnerRequest
 };
 
 function createBaseUpdateOwnerProfileRequest(): UpdateOwnerProfileRequest {
-  return { context: undefined, name: "", mainAddress: "", phoneNumber: "" };
+  return { context: undefined, name: "", main_address: "", phone_number: "" };
 }
 
 export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = {
@@ -354,11 +354,11 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
     if (message.name !== undefined && message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.mainAddress !== undefined && message.mainAddress !== "") {
-      writer.uint32(26).string(message.mainAddress);
+    if (message.main_address !== undefined && message.main_address !== "") {
+      writer.uint32(26).string(message.main_address);
     }
-    if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-      writer.uint32(34).string(message.phoneNumber);
+    if (message.phone_number !== undefined && message.phone_number !== "") {
+      writer.uint32(34).string(message.phone_number);
     }
     return writer;
   },
@@ -389,14 +389,14 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
             break;
           }
 
-          message.mainAddress = reader.string();
+          message.main_address = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.phoneNumber = reader.string();
+          message.phone_number = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -411,8 +411,8 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-      phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
     };
   },
 
@@ -424,11 +424,11 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
     if (message.name !== undefined && message.name !== "") {
       obj.name = message.name;
     }
-    if (message.mainAddress !== undefined && message.mainAddress !== "") {
-      obj.mainAddress = message.mainAddress;
+    if (message.main_address !== undefined && message.main_address !== "") {
+      obj.mainAddress = message.main_address;
     }
-    if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-      obj.phoneNumber = message.phoneNumber;
+    if (message.phone_number !== undefined && message.phone_number !== "") {
+      obj.phoneNumber = message.phone_number;
     }
     return obj;
   },
@@ -442,8 +442,8 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? "";
-    message.mainAddress = object.mainAddress ?? "";
-    message.phoneNumber = object.phoneNumber ?? "";
+    message.main_address = object.main_address ?? "";
+    message.phone_number = object.phone_number ?? "";
     return message;
   },
 };

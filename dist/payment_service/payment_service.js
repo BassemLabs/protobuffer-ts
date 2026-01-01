@@ -13,15 +13,15 @@ const request_context_1 = require("../utils/request_context");
 const transaction_1 = require("./transaction");
 exports.protobufPackage = "payment_service";
 function createBaseHandleWebhookRequest() {
-    return { payload: "", stripeSignature: "" };
+    return { payload: "", stripe_signature: "" };
 }
 exports.HandleWebhookRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.payload !== "") {
             writer.uint32(10).string(message.payload);
         }
-        if (message.stripeSignature !== "") {
-            writer.uint32(18).string(message.stripeSignature);
+        if (message.stripe_signature !== "") {
+            writer.uint32(18).string(message.stripe_signature);
         }
         return writer;
     },
@@ -42,7 +42,7 @@ exports.HandleWebhookRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.stripeSignature = reader.string();
+                    message.stripe_signature = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -55,7 +55,7 @@ exports.HandleWebhookRequest = {
     fromJSON(object) {
         return {
             payload: isSet(object.payload) ? globalThis.String(object.payload) : "",
-            stripeSignature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : "",
+            stripe_signature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : "",
         };
     },
     toJSON(message) {
@@ -63,8 +63,8 @@ exports.HandleWebhookRequest = {
         if (message.payload !== "") {
             obj.payload = message.payload;
         }
-        if (message.stripeSignature !== "") {
-            obj.stripeSignature = message.stripeSignature;
+        if (message.stripe_signature !== "") {
+            obj.stripeSignature = message.stripe_signature;
         }
         return obj;
     },
@@ -74,7 +74,7 @@ exports.HandleWebhookRequest = {
     fromPartial(object) {
         const message = createBaseHandleWebhookRequest();
         message.payload = object.payload ?? "";
-        message.stripeSignature = object.stripeSignature ?? "";
+        message.stripe_signature = object.stripe_signature ?? "";
         return message;
     },
 };
@@ -181,12 +181,12 @@ exports.GetSetupAutoIntentRequest = {
     },
 };
 function createBaseGetSetupAutoIntentResponse() {
-    return { setupAutoIntentSecret: "" };
+    return { setup_auto_intent_secret: "" };
 }
 exports.GetSetupAutoIntentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.setupAutoIntentSecret !== "") {
-            writer.uint32(10).string(message.setupAutoIntentSecret);
+        if (message.setup_auto_intent_secret !== "") {
+            writer.uint32(10).string(message.setup_auto_intent_secret);
         }
         return writer;
     },
@@ -201,7 +201,7 @@ exports.GetSetupAutoIntentResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.setupAutoIntentSecret = reader.string();
+                    message.setup_auto_intent_secret = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -213,13 +213,15 @@ exports.GetSetupAutoIntentResponse = {
     },
     fromJSON(object) {
         return {
-            setupAutoIntentSecret: isSet(object.setupAutoIntentSecret) ? globalThis.String(object.setupAutoIntentSecret) : "",
+            setup_auto_intent_secret: isSet(object.setupAutoIntentSecret)
+                ? globalThis.String(object.setupAutoIntentSecret)
+                : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.setupAutoIntentSecret !== "") {
-            obj.setupAutoIntentSecret = message.setupAutoIntentSecret;
+        if (message.setup_auto_intent_secret !== "") {
+            obj.setupAutoIntentSecret = message.setup_auto_intent_secret;
         }
         return obj;
     },
@@ -228,7 +230,7 @@ exports.GetSetupAutoIntentResponse = {
     },
     fromPartial(object) {
         const message = createBaseGetSetupAutoIntentResponse();
-        message.setupAutoIntentSecret = object.setupAutoIntentSecret ?? "";
+        message.setup_auto_intent_secret = object.setup_auto_intent_secret ?? "";
         return message;
     },
 };
@@ -365,18 +367,18 @@ exports.VerifyMicroDepositsResponse = {
     },
 };
 function createBaseCreatePaymentIntentRequest() {
-    return { context: undefined, paymentType: transaction_1.PaymentType.Stripe, invoiceId: undefined, amount: 0 };
+    return { context: undefined, payment_type: transaction_1.PaymentType.Stripe, invoice_id: undefined, amount: 0 };
 }
 exports.CreatePaymentIntentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
-            writer.uint32(16).int32((0, transaction_1.paymentTypeToNumber)(message.paymentType));
+        if (message.payment_type !== transaction_1.PaymentType.Stripe) {
+            writer.uint32(16).int32((0, transaction_1.paymentTypeToNumber)(message.payment_type));
         }
-        if (message.invoiceId !== undefined) {
-            object_id_1.ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
         }
         if (message.amount !== 0) {
             writer.uint32(33).double(message.amount);
@@ -400,13 +402,13 @@ exports.CreatePaymentIntentRequest = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.paymentType = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
+                    message.payment_type = (0, transaction_1.paymentTypeFromJSON)(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 26) {
                         break;
                     }
-                    message.invoiceId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 33) {
@@ -425,8 +427,8 @@ exports.CreatePaymentIntentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            paymentType: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
-            invoiceId: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
@@ -435,11 +437,11 @@ exports.CreatePaymentIntentRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.paymentType !== transaction_1.PaymentType.Stripe) {
-            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.paymentType);
+        if (message.payment_type !== transaction_1.PaymentType.Stripe) {
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
         }
-        if (message.invoiceId !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoiceId);
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -454,21 +456,21 @@ exports.CreatePaymentIntentRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.paymentType = object.paymentType ?? transaction_1.PaymentType.Stripe;
-        message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.invoiceId)
+        message.payment_type = object.payment_type ?? transaction_1.PaymentType.Stripe;
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;
         message.amount = object.amount ?? 0;
         return message;
     },
 };
 function createBaseCreatePaymentIntentResponse() {
-    return { clientSecret: "" };
+    return { client_secret: "" };
 }
 exports.CreatePaymentIntentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.clientSecret !== "") {
-            writer.uint32(10).string(message.clientSecret);
+        if (message.client_secret !== "") {
+            writer.uint32(10).string(message.client_secret);
         }
         return writer;
     },
@@ -483,7 +485,7 @@ exports.CreatePaymentIntentResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.clientSecret = reader.string();
+                    message.client_secret = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -494,12 +496,12 @@ exports.CreatePaymentIntentResponse = {
         return message;
     },
     fromJSON(object) {
-        return { clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : "" };
+        return { client_secret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : "" };
     },
     toJSON(message) {
         const obj = {};
-        if (message.clientSecret !== "") {
-            obj.clientSecret = message.clientSecret;
+        if (message.client_secret !== "") {
+            obj.clientSecret = message.client_secret;
         }
         return obj;
     },
@@ -508,20 +510,20 @@ exports.CreatePaymentIntentResponse = {
     },
     fromPartial(object) {
         const message = createBaseCreatePaymentIntentResponse();
-        message.clientSecret = object.clientSecret ?? "";
+        message.client_secret = object.client_secret ?? "";
         return message;
     },
 };
 function createBaseOnboardOrganizationStripeAccountRequest() {
-    return { context: undefined, frontendUrl: "" };
+    return { context: undefined, frontend_url: "" };
 }
 exports.OnboardOrganizationStripeAccountRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.frontendUrl !== "") {
-            writer.uint32(18).string(message.frontendUrl);
+        if (message.frontend_url !== "") {
+            writer.uint32(18).string(message.frontend_url);
         }
         return writer;
     },
@@ -542,7 +544,7 @@ exports.OnboardOrganizationStripeAccountRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.frontendUrl = reader.string();
+                    message.frontend_url = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -555,7 +557,7 @@ exports.OnboardOrganizationStripeAccountRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            frontendUrl: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : "",
+            frontend_url: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : "",
         };
     },
     toJSON(message) {
@@ -563,8 +565,8 @@ exports.OnboardOrganizationStripeAccountRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.frontendUrl !== "") {
-            obj.frontendUrl = message.frontendUrl;
+        if (message.frontend_url !== "") {
+            obj.frontendUrl = message.frontend_url;
         }
         return obj;
     },
@@ -576,17 +578,17 @@ exports.OnboardOrganizationStripeAccountRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.frontendUrl = object.frontendUrl ?? "";
+        message.frontend_url = object.frontend_url ?? "";
         return message;
     },
 };
 function createBaseOnboardOrganizationStripeAccountResponse() {
-    return { accountLinkUrl: "" };
+    return { account_link_url: "" };
 }
 exports.OnboardOrganizationStripeAccountResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.accountLinkUrl !== "") {
-            writer.uint32(10).string(message.accountLinkUrl);
+        if (message.account_link_url !== "") {
+            writer.uint32(10).string(message.account_link_url);
         }
         return writer;
     },
@@ -601,7 +603,7 @@ exports.OnboardOrganizationStripeAccountResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.accountLinkUrl = reader.string();
+                    message.account_link_url = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -612,12 +614,12 @@ exports.OnboardOrganizationStripeAccountResponse = {
         return message;
     },
     fromJSON(object) {
-        return { accountLinkUrl: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : "" };
+        return { account_link_url: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : "" };
     },
     toJSON(message) {
         const obj = {};
-        if (message.accountLinkUrl !== "") {
-            obj.accountLinkUrl = message.accountLinkUrl;
+        if (message.account_link_url !== "") {
+            obj.accountLinkUrl = message.account_link_url;
         }
         return obj;
     },
@@ -626,7 +628,7 @@ exports.OnboardOrganizationStripeAccountResponse = {
     },
     fromPartial(object) {
         const message = createBaseOnboardOrganizationStripeAccountResponse();
-        message.accountLinkUrl = object.accountLinkUrl ?? "";
+        message.account_link_url = object.account_link_url ?? "";
         return message;
     },
 };

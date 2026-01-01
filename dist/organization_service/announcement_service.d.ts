@@ -18,8 +18,8 @@ export interface CreateAnnouncementRequest {
     context: RequestContext | undefined;
     title: string;
     body: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
     link?: string | undefined;
     audience: UserType[];
 }
@@ -28,8 +28,8 @@ export interface UpdateAnnouncementRequest {
     id: ObjectId | undefined;
     title: string;
     body: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
     link?: string | undefined;
     audience: UserType[];
 }

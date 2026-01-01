@@ -190,25 +190,25 @@ export function emailTemplateKeyToNumber(object: EmailTemplateKey): number {
 
 export interface EmailTemplate {
   id: ObjectId | undefined;
-  organizationId: ObjectId | undefined;
-  templateKey: EmailTemplateKey;
+  organization_id: ObjectId | undefined;
+  template_key: EmailTemplateKey;
   title: string;
   header: string;
   body: string;
   footer: string;
-  receiverUserType: UserType;
+  receiver_user_type: UserType;
 }
 
 function createBaseEmailTemplate(): EmailTemplate {
   return {
     id: undefined,
-    organizationId: undefined,
-    templateKey: EmailTemplateKey.REJECTION_EMAIL,
+    organization_id: undefined,
+    template_key: EmailTemplateKey.REJECTION_EMAIL,
     title: "",
     header: "",
     body: "",
     footer: "",
-    receiverUserType: UserType.NONE,
+    receiver_user_type: UserType.NONE,
   };
 }
 
@@ -217,11 +217,11 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.templateKey !== EmailTemplateKey.REJECTION_EMAIL) {
-      writer.uint32(24).int32(emailTemplateKeyToNumber(message.templateKey));
+    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+      writer.uint32(24).int32(emailTemplateKeyToNumber(message.template_key));
     }
     if (message.title !== "") {
       writer.uint32(34).string(message.title);
@@ -235,8 +235,8 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     if (message.footer !== "") {
       writer.uint32(58).string(message.footer);
     }
-    if (message.receiverUserType !== UserType.NONE) {
-      writer.uint32(64).int32(userTypeToNumber(message.receiverUserType));
+    if (message.receiver_user_type !== UserType.NONE) {
+      writer.uint32(64).int32(userTypeToNumber(message.receiver_user_type));
     }
     return writer;
   },
@@ -260,14 +260,14 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.templateKey = emailTemplateKeyFromJSON(reader.int32());
+          message.template_key = emailTemplateKeyFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -302,7 +302,7 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
             break;
           }
 
-          message.receiverUserType = userTypeFromJSON(reader.int32());
+          message.receiver_user_type = userTypeFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -316,15 +316,15 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
   fromJSON(object: any): EmailTemplate {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      templateKey: isSet(object.templateKey)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      template_key: isSet(object.templateKey)
         ? emailTemplateKeyFromJSON(object.templateKey)
         : EmailTemplateKey.REJECTION_EMAIL,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       header: isSet(object.header) ? globalThis.String(object.header) : "",
       body: isSet(object.body) ? globalThis.String(object.body) : "",
       footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
-      receiverUserType: isSet(object.receiverUserType) ? userTypeFromJSON(object.receiverUserType) : UserType.NONE,
+      receiver_user_type: isSet(object.receiverUserType) ? userTypeFromJSON(object.receiverUserType) : UserType.NONE,
     };
   },
 
@@ -333,11 +333,11 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.templateKey !== EmailTemplateKey.REJECTION_EMAIL) {
-      obj.templateKey = emailTemplateKeyToJSON(message.templateKey);
+    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+      obj.templateKey = emailTemplateKeyToJSON(message.template_key);
     }
     if (message.title !== "") {
       obj.title = message.title;
@@ -351,8 +351,8 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
     if (message.footer !== "") {
       obj.footer = message.footer;
     }
-    if (message.receiverUserType !== UserType.NONE) {
-      obj.receiverUserType = userTypeToJSON(message.receiverUserType);
+    if (message.receiver_user_type !== UserType.NONE) {
+      obj.receiverUserType = userTypeToJSON(message.receiver_user_type);
     }
     return obj;
   },
@@ -363,15 +363,15 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
   fromPartial<I extends Exact<DeepPartial<EmailTemplate>, I>>(object: I): EmailTemplate {
     const message = createBaseEmailTemplate();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.templateKey = object.templateKey ?? EmailTemplateKey.REJECTION_EMAIL;
+    message.template_key = object.template_key ?? EmailTemplateKey.REJECTION_EMAIL;
     message.title = object.title ?? "";
     message.header = object.header ?? "";
     message.body = object.body ?? "";
     message.footer = object.footer ?? "";
-    message.receiverUserType = object.receiverUserType ?? UserType.NONE;
+    message.receiver_user_type = object.receiver_user_type ?? UserType.NONE;
     return message;
   },
 };

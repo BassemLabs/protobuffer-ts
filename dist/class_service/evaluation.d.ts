@@ -3,41 +3,41 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export interface Evaluation {
     id: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     total: number;
     weight: number;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    markCategory: ObjectId | undefined;
-    visibleToParentsAndStudents: boolean;
+    mark_category: ObjectId | undefined;
+    visible_to_parents_and_students: boolean;
 }
 export interface DetailedEvaluation {
     id: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     total: number;
     weight: number;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    markCategory: ObjectId | undefined;
-    visibleToParentsAndStudents: boolean;
+    mark_category: ObjectId | undefined;
+    visible_to_parents_and_students: boolean;
     /** Percentage contribution of this evaluation to the final course mark (0-100) */
-    evaluationContributionToFinalMark: number;
+    evaluation_contribution_to_final_mark: number;
 }
 export interface PersonalizedEvaluation {
     id: ObjectId | undefined;
-    studentId: ObjectId | undefined;
-    courseId: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    course_id: ObjectId | undefined;
     name: string;
     total: number;
     weight: number;
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
-    markCategory: ObjectId | undefined;
-    visibleToParentsAndStudents: boolean;
+    mark_category: ObjectId | undefined;
+    visible_to_parents_and_students: boolean;
     /** calculated based on the student's marked evaluations */
-    evaluationContributionToStudentFinalMark: number;
+    evaluation_contribution_to_student_final_mark: number;
 }
 export declare const Evaluation: MessageFns<Evaluation>;
 export declare const DetailedEvaluation: MessageFns<DetailedEvaluation>;

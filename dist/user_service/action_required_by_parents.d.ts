@@ -11,10 +11,10 @@ export declare function actionTypeFromJSON(object: any): ActionType;
 export declare function actionTypeToJSON(object: ActionType): string;
 export declare function actionTypeToNumber(object: ActionType): number;
 export interface ActionRequiredByParents {
-    actionType: ActionType;
+    action_type: ActionType;
     title: string;
-    invoiceId?: ObjectId | undefined;
-    groupId?: ObjectId | undefined;
+    invoice_id?: ObjectId | undefined;
+    group_id?: ObjectId | undefined;
 }
 export declare const ActionRequiredByParents: MessageFns<ActionRequiredByParents>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

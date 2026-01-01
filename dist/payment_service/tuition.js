@@ -250,7 +250,7 @@ function discountStackModeToNumber(object) {
     }
 }
 function createBaseTuitionRate() {
-    return { id: undefined, organization: undefined, schoolYear: undefined, grade: student_1.StudentGrade.PRE_K, amount: 0 };
+    return { id: undefined, organization: undefined, school_year: undefined, grade: student_1.StudentGrade.PRE_K, amount: 0 };
 }
 exports.TuitionRate = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -260,8 +260,8 @@ exports.TuitionRate = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         if (message.grade !== student_1.StudentGrade.PRE_K) {
             writer.uint32(32).int32((0, student_1.studentGradeToNumber)(message.grade));
@@ -294,7 +294,7 @@ exports.TuitionRate = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 32) {
@@ -320,7 +320,7 @@ exports.TuitionRate = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
@@ -333,8 +333,8 @@ exports.TuitionRate = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.grade !== student_1.StudentGrade.PRE_K) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
@@ -353,8 +353,8 @@ exports.TuitionRate = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
         message.amount = object.amount ?? 0;
@@ -365,11 +365,11 @@ function createBaseAdditionalFee() {
     return {
         id: undefined,
         organization: undefined,
-        schoolYear: undefined,
+        school_year: undefined,
         name: "",
         description: "",
         amount: 0,
-        isOptional: false,
+        is_optional: false,
         scope: Scope.STUDENT_SCOPE,
     };
 }
@@ -381,8 +381,8 @@ exports.AdditionalFee = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(34).string(message.name);
@@ -393,8 +393,8 @@ exports.AdditionalFee = {
         if (message.amount !== 0) {
             writer.uint32(49).double(message.amount);
         }
-        if (message.isOptional !== false) {
-            writer.uint32(56).bool(message.isOptional);
+        if (message.is_optional !== false) {
+            writer.uint32(56).bool(message.is_optional);
         }
         if (message.scope !== Scope.STUDENT_SCOPE) {
             writer.uint32(64).int32(scopeToNumber(message.scope));
@@ -424,7 +424,7 @@ exports.AdditionalFee = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -448,7 +448,7 @@ exports.AdditionalFee = {
                     if (tag !== 56) {
                         break;
                     }
-                    message.isOptional = reader.bool();
+                    message.is_optional = reader.bool();
                     continue;
                 case 8:
                     if (tag !== 64) {
@@ -468,11 +468,11 @@ exports.AdditionalFee = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-            isOptional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
+            is_optional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
             scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
         };
     },
@@ -484,8 +484,8 @@ exports.AdditionalFee = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -496,8 +496,8 @@ exports.AdditionalFee = {
         if (message.amount !== 0) {
             obj.amount = message.amount;
         }
-        if (message.isOptional !== false) {
-            obj.isOptional = message.isOptional;
+        if (message.is_optional !== false) {
+            obj.isOptional = message.is_optional;
         }
         if (message.scope !== Scope.STUDENT_SCOPE) {
             obj.scope = scopeToJSON(message.scope);
@@ -513,13 +513,13 @@ exports.AdditionalFee = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         message.amount = object.amount ?? 0;
-        message.isOptional = object.isOptional ?? false;
+        message.is_optional = object.is_optional ?? false;
         message.scope = object.scope ?? Scope.STUDENT_SCOPE;
         return message;
     },
@@ -528,14 +528,14 @@ function createBaseTuitionDiscount() {
     return {
         id: undefined,
         organization: undefined,
-        schoolYear: undefined,
+        school_year: undefined,
         name: "",
-        discountType: DiscountType.STANDARD,
+        discount_type: DiscountType.STANDARD,
         scope: Scope.STUDENT_SCOPE,
-        valueType: DiscountValueType.AMOUNT,
+        value_type: DiscountValueType.AMOUNT,
         value: 0,
         description: "",
-        stackMode: DiscountStackMode.ADDITIVE,
+        stack_mode: DiscountStackMode.ADDITIVE,
     };
 }
 exports.TuitionDiscount = {
@@ -546,20 +546,20 @@ exports.TuitionDiscount = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(34).string(message.name);
         }
-        if (message.discountType !== DiscountType.STANDARD) {
-            writer.uint32(40).int32(discountTypeToNumber(message.discountType));
+        if (message.discount_type !== DiscountType.STANDARD) {
+            writer.uint32(40).int32(discountTypeToNumber(message.discount_type));
         }
         if (message.scope !== Scope.STUDENT_SCOPE) {
             writer.uint32(48).int32(scopeToNumber(message.scope));
         }
-        if (message.valueType !== DiscountValueType.AMOUNT) {
-            writer.uint32(56).int32(discountValueTypeToNumber(message.valueType));
+        if (message.value_type !== DiscountValueType.AMOUNT) {
+            writer.uint32(56).int32(discountValueTypeToNumber(message.value_type));
         }
         if (message.value !== 0) {
             writer.uint32(65).double(message.value);
@@ -567,8 +567,8 @@ exports.TuitionDiscount = {
         if (message.description !== "") {
             writer.uint32(74).string(message.description);
         }
-        if (message.stackMode !== DiscountStackMode.ADDITIVE) {
-            writer.uint32(80).int32(discountStackModeToNumber(message.stackMode));
+        if (message.stack_mode !== DiscountStackMode.ADDITIVE) {
+            writer.uint32(80).int32(discountStackModeToNumber(message.stack_mode));
         }
         return writer;
     },
@@ -595,7 +595,7 @@ exports.TuitionDiscount = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -607,7 +607,7 @@ exports.TuitionDiscount = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.discountType = discountTypeFromJSON(reader.int32());
+                    message.discount_type = discountTypeFromJSON(reader.int32());
                     continue;
                 case 6:
                     if (tag !== 48) {
@@ -619,7 +619,7 @@ exports.TuitionDiscount = {
                     if (tag !== 56) {
                         break;
                     }
-                    message.valueType = discountValueTypeFromJSON(reader.int32());
+                    message.value_type = discountValueTypeFromJSON(reader.int32());
                     continue;
                 case 8:
                     if (tag !== 65) {
@@ -637,7 +637,7 @@ exports.TuitionDiscount = {
                     if (tag !== 80) {
                         break;
                     }
-                    message.stackMode = discountStackModeFromJSON(reader.int32());
+                    message.stack_mode = discountStackModeFromJSON(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -651,14 +651,14 @@ exports.TuitionDiscount = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            discountType: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
+            discount_type: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
             scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
-            valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
+            value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            stackMode: isSet(object.stackMode) ? discountStackModeFromJSON(object.stackMode) : DiscountStackMode.ADDITIVE,
+            stack_mode: isSet(object.stackMode) ? discountStackModeFromJSON(object.stackMode) : DiscountStackMode.ADDITIVE,
         };
     },
     toJSON(message) {
@@ -669,20 +669,20 @@ exports.TuitionDiscount = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.discountType !== DiscountType.STANDARD) {
-            obj.discountType = discountTypeToJSON(message.discountType);
+        if (message.discount_type !== DiscountType.STANDARD) {
+            obj.discountType = discountTypeToJSON(message.discount_type);
         }
         if (message.scope !== Scope.STUDENT_SCOPE) {
             obj.scope = scopeToJSON(message.scope);
         }
-        if (message.valueType !== DiscountValueType.AMOUNT) {
-            obj.valueType = discountValueTypeToJSON(message.valueType);
+        if (message.value_type !== DiscountValueType.AMOUNT) {
+            obj.valueType = discountValueTypeToJSON(message.value_type);
         }
         if (message.value !== 0) {
             obj.value = message.value;
@@ -690,8 +690,8 @@ exports.TuitionDiscount = {
         if (message.description !== "") {
             obj.description = message.description;
         }
-        if (message.stackMode !== DiscountStackMode.ADDITIVE) {
-            obj.stackMode = discountStackModeToJSON(message.stackMode);
+        if (message.stack_mode !== DiscountStackMode.ADDITIVE) {
+            obj.stackMode = discountStackModeToJSON(message.stack_mode);
         }
         return obj;
     },
@@ -704,16 +704,16 @@ exports.TuitionDiscount = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.name = object.name ?? "";
-        message.discountType = object.discountType ?? DiscountType.STANDARD;
+        message.discount_type = object.discount_type ?? DiscountType.STANDARD;
         message.scope = object.scope ?? Scope.STUDENT_SCOPE;
-        message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
+        message.value_type = object.value_type ?? DiscountValueType.AMOUNT;
         message.value = object.value ?? 0;
         message.description = object.description ?? "";
-        message.stackMode = object.stackMode ?? DiscountStackMode.ADDITIVE;
+        message.stack_mode = object.stack_mode ?? DiscountStackMode.ADDITIVE;
         return message;
     },
 };
@@ -721,15 +721,15 @@ function createBaseTuitionPlan() {
     return {
         id: undefined,
         organization: undefined,
-        schoolYear: undefined,
+        school_year: undefined,
         name: "",
         description: "",
-        scheduleType: PaymentScheduleType.ONE_TIME,
-        dayOfMonth: 0,
+        schedule_type: PaymentScheduleType.ONE_TIME,
+        day_of_month: 0,
         installments: [],
         archived: false,
-        startDate: undefined,
-        endDate: undefined,
+        start_date: undefined,
+        end_date: undefined,
     };
 }
 exports.TuitionPlan = {
@@ -740,8 +740,8 @@ exports.TuitionPlan = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.schoolYear !== undefined) {
-            object_id_1.ObjectId.encode(message.schoolYear, writer.uint32(26).fork()).join();
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         if (message.name !== "") {
             writer.uint32(34).string(message.name);
@@ -749,11 +749,11 @@ exports.TuitionPlan = {
         if (message.description !== "") {
             writer.uint32(42).string(message.description);
         }
-        if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
-            writer.uint32(48).int32(paymentScheduleTypeToNumber(message.scheduleType));
+        if (message.schedule_type !== PaymentScheduleType.ONE_TIME) {
+            writer.uint32(48).int32(paymentScheduleTypeToNumber(message.schedule_type));
         }
-        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
-            writer.uint32(56).int32(message.dayOfMonth);
+        if (message.day_of_month !== undefined && message.day_of_month !== 0) {
+            writer.uint32(56).int32(message.day_of_month);
         }
         for (const v of message.installments) {
             exports.PaymentInstallment.encode(v, writer.uint32(66).fork()).join();
@@ -761,11 +761,11 @@ exports.TuitionPlan = {
         if (message.archived !== false) {
             writer.uint32(72).bool(message.archived);
         }
-        if (message.startDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.startDate), writer.uint32(82).fork()).join();
+        if (message.start_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.start_date), writer.uint32(82).fork()).join();
         }
-        if (message.endDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.endDate), writer.uint32(90).fork()).join();
+        if (message.end_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(90).fork()).join();
         }
         return writer;
     },
@@ -792,7 +792,7 @@ exports.TuitionPlan = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.schoolYear = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -810,13 +810,13 @@ exports.TuitionPlan = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.scheduleType = paymentScheduleTypeFromJSON(reader.int32());
+                    message.schedule_type = paymentScheduleTypeFromJSON(reader.int32());
                     continue;
                 case 7:
                     if (tag !== 56) {
                         break;
                     }
-                    message.dayOfMonth = reader.int32();
+                    message.day_of_month = reader.int32();
                     continue;
                 case 8:
                     if (tag !== 66) {
@@ -834,13 +834,13 @@ exports.TuitionPlan = {
                     if (tag !== 82) {
                         break;
                     }
-                    message.startDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.start_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 11:
                     if (tag !== 90) {
                         break;
                     }
-                    message.endDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.end_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -854,19 +854,19 @@ exports.TuitionPlan = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            schoolYear: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            scheduleType: isSet(object.scheduleType)
+            schedule_type: isSet(object.scheduleType)
                 ? paymentScheduleTypeFromJSON(object.scheduleType)
                 : PaymentScheduleType.ONE_TIME,
-            dayOfMonth: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
+            day_of_month: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => exports.PaymentInstallment.fromJSON(e))
                 : [],
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-            startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -877,8 +877,8 @@ exports.TuitionPlan = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.schoolYear !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.schoolYear);
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -886,11 +886,11 @@ exports.TuitionPlan = {
         if (message.description !== "") {
             obj.description = message.description;
         }
-        if (message.scheduleType !== PaymentScheduleType.ONE_TIME) {
-            obj.scheduleType = paymentScheduleTypeToJSON(message.scheduleType);
+        if (message.schedule_type !== PaymentScheduleType.ONE_TIME) {
+            obj.scheduleType = paymentScheduleTypeToJSON(message.schedule_type);
         }
-        if (message.dayOfMonth !== undefined && message.dayOfMonth !== 0) {
-            obj.dayOfMonth = Math.round(message.dayOfMonth);
+        if (message.day_of_month !== undefined && message.day_of_month !== 0) {
+            obj.dayOfMonth = Math.round(message.day_of_month);
         }
         if (message.installments?.length) {
             obj.installments = message.installments.map((e) => exports.PaymentInstallment.toJSON(e));
@@ -898,11 +898,11 @@ exports.TuitionPlan = {
         if (message.archived !== false) {
             obj.archived = message.archived;
         }
-        if (message.startDate !== undefined) {
-            obj.startDate = message.startDate.toISOString();
+        if (message.start_date !== undefined) {
+            obj.startDate = message.start_date.toISOString();
         }
-        if (message.endDate !== undefined) {
-            obj.endDate = message.endDate.toISOString();
+        if (message.end_date !== undefined) {
+            obj.endDate = message.end_date.toISOString();
         }
         return obj;
     },
@@ -915,27 +915,27 @@ exports.TuitionPlan = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.schoolYear = (object.schoolYear !== undefined && object.schoolYear !== null)
-            ? object_id_1.ObjectId.fromPartial(object.schoolYear)
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.name = object.name ?? "";
         message.description = object.description ?? "";
-        message.scheduleType = object.scheduleType ?? PaymentScheduleType.ONE_TIME;
-        message.dayOfMonth = object.dayOfMonth ?? 0;
+        message.schedule_type = object.schedule_type ?? PaymentScheduleType.ONE_TIME;
+        message.day_of_month = object.day_of_month ?? 0;
         message.installments = object.installments?.map((e) => exports.PaymentInstallment.fromPartial(e)) || [];
         message.archived = object.archived ?? false;
-        message.startDate = object.startDate ?? undefined;
-        message.endDate = object.endDate ?? undefined;
+        message.start_date = object.start_date ?? undefined;
+        message.end_date = object.end_date ?? undefined;
         return message;
     },
 };
 function createBasePaymentInstallment() {
-    return { dueDate: undefined };
+    return { due_date: undefined };
 }
 exports.PaymentInstallment = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.dueDate !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.dueDate), writer.uint32(10).fork()).join();
+        if (message.due_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(10).fork()).join();
         }
         return writer;
     },
@@ -950,7 +950,7 @@ exports.PaymentInstallment = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.dueDate = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.due_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -961,12 +961,12 @@ exports.PaymentInstallment = {
         return message;
     },
     fromJSON(object) {
-        return { dueDate: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined };
+        return { due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.dueDate !== undefined) {
-            obj.dueDate = message.dueDate.toISOString();
+        if (message.due_date !== undefined) {
+            obj.dueDate = message.due_date.toISOString();
         }
         return obj;
     },
@@ -975,7 +975,7 @@ exports.PaymentInstallment = {
     },
     fromPartial(object) {
         const message = createBasePaymentInstallment();
-        message.dueDate = object.dueDate ?? undefined;
+        message.due_date = object.due_date ?? undefined;
         return message;
     },
 };

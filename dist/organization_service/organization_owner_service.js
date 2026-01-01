@@ -162,15 +162,15 @@ exports.GetOwnerByEmailRequest = {
     },
 };
 function createBaseGetOwnerRequest() {
-    return { context: undefined, ownerId: undefined };
+    return { context: undefined, owner_id: undefined };
 }
 exports.GetOwnerRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.ownerId !== undefined) {
-            object_id_1.ObjectId.encode(message.ownerId, writer.uint32(18).fork()).join();
+        if (message.owner_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_id, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -191,7 +191,7 @@ exports.GetOwnerRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.ownerId = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.owner_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -204,7 +204,7 @@ exports.GetOwnerRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            ownerId: isSet(object.ownerId) ? object_id_1.ObjectId.fromJSON(object.ownerId) : undefined,
+            owner_id: isSet(object.ownerId) ? object_id_1.ObjectId.fromJSON(object.ownerId) : undefined,
         };
     },
     toJSON(message) {
@@ -212,8 +212,8 @@ exports.GetOwnerRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.ownerId !== undefined) {
-            obj.ownerId = object_id_1.ObjectId.toJSON(message.ownerId);
+        if (message.owner_id !== undefined) {
+            obj.ownerId = object_id_1.ObjectId.toJSON(message.owner_id);
         }
         return obj;
     },
@@ -225,8 +225,8 @@ exports.GetOwnerRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.ownerId = (object.ownerId !== undefined && object.ownerId !== null)
-            ? object_id_1.ObjectId.fromPartial(object.ownerId)
+        message.owner_id = (object.owner_id !== undefined && object.owner_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_id)
             : undefined;
         return message;
     },
@@ -284,7 +284,7 @@ exports.GetOrganizationOwnerRequest = {
     },
 };
 function createBaseUpdateOwnerProfileRequest() {
-    return { context: undefined, name: "", mainAddress: "", phoneNumber: "" };
+    return { context: undefined, name: "", main_address: "", phone_number: "" };
 }
 exports.UpdateOwnerProfileRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -294,11 +294,11 @@ exports.UpdateOwnerProfileRequest = {
         if (message.name !== undefined && message.name !== "") {
             writer.uint32(18).string(message.name);
         }
-        if (message.mainAddress !== undefined && message.mainAddress !== "") {
-            writer.uint32(26).string(message.mainAddress);
+        if (message.main_address !== undefined && message.main_address !== "") {
+            writer.uint32(26).string(message.main_address);
         }
-        if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-            writer.uint32(34).string(message.phoneNumber);
+        if (message.phone_number !== undefined && message.phone_number !== "") {
+            writer.uint32(34).string(message.phone_number);
         }
         return writer;
     },
@@ -325,13 +325,13 @@ exports.UpdateOwnerProfileRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.mainAddress = reader.string();
+                    message.main_address = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
-                    message.phoneNumber = reader.string();
+                    message.phone_number = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -345,8 +345,8 @@ exports.UpdateOwnerProfileRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            mainAddress: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            phoneNumber: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
         };
     },
     toJSON(message) {
@@ -357,11 +357,11 @@ exports.UpdateOwnerProfileRequest = {
         if (message.name !== undefined && message.name !== "") {
             obj.name = message.name;
         }
-        if (message.mainAddress !== undefined && message.mainAddress !== "") {
-            obj.mainAddress = message.mainAddress;
+        if (message.main_address !== undefined && message.main_address !== "") {
+            obj.mainAddress = message.main_address;
         }
-        if (message.phoneNumber !== undefined && message.phoneNumber !== "") {
-            obj.phoneNumber = message.phoneNumber;
+        if (message.phone_number !== undefined && message.phone_number !== "") {
+            obj.phoneNumber = message.phone_number;
         }
         return obj;
     },
@@ -374,8 +374,8 @@ exports.UpdateOwnerProfileRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.name = object.name ?? "";
-        message.mainAddress = object.mainAddress ?? "";
-        message.phoneNumber = object.phoneNumber ?? "";
+        message.main_address = object.main_address ?? "";
+        message.phone_number = object.phone_number ?? "";
         return message;
     },
 };

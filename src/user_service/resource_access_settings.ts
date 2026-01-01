@@ -236,13 +236,13 @@ export interface ResourceAccessSettings {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   name: string;
-  ownershipKind: OwnershipKind;
-  userType: UserType;
-  accessRules: AccessRule[];
+  ownership_kind: OwnershipKind;
+  user_type: UserType;
+  access_rules: AccessRule[];
 }
 
 export interface AccessRule {
-  permissionType: AccessPermissionType;
+  permission_type: AccessPermissionType;
   principal?: PrincipalType | undefined;
   wildcard?: WildcardAccess | undefined;
 }
@@ -258,9 +258,9 @@ function createBaseResourceAccessSettings(): ResourceAccessSettings {
     id: undefined,
     organization: undefined,
     name: "",
-    ownershipKind: OwnershipKind.OWNED,
-    userType: UserType.NONE,
-    accessRules: [],
+    ownership_kind: OwnershipKind.OWNED,
+    user_type: UserType.NONE,
+    access_rules: [],
   };
 }
 
@@ -275,13 +275,13 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.ownershipKind !== OwnershipKind.OWNED) {
-      writer.uint32(32).int32(ownershipKindToNumber(message.ownershipKind));
+    if (message.ownership_kind !== OwnershipKind.OWNED) {
+      writer.uint32(32).int32(ownershipKindToNumber(message.ownership_kind));
     }
-    if (message.userType !== UserType.NONE) {
-      writer.uint32(40).int32(userTypeToNumber(message.userType));
+    if (message.user_type !== UserType.NONE) {
+      writer.uint32(40).int32(userTypeToNumber(message.user_type));
     }
-    for (const v of message.accessRules) {
+    for (const v of message.access_rules) {
       AccessRule.encode(v!, writer.uint32(50).fork()).join();
     }
     return writer;
@@ -320,21 +320,21 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
             break;
           }
 
-          message.ownershipKind = ownershipKindFromJSON(reader.int32());
+          message.ownership_kind = ownershipKindFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.userType = userTypeFromJSON(reader.int32());
+          message.user_type = userTypeFromJSON(reader.int32());
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.accessRules.push(AccessRule.decode(reader, reader.uint32()));
+          message.access_rules.push(AccessRule.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -350,9 +350,9 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      ownershipKind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
-      userType: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      accessRules: globalThis.Array.isArray(object?.accessRules)
+      ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      access_rules: globalThis.Array.isArray(object?.accessRules)
         ? object.accessRules.map((e: any) => AccessRule.fromJSON(e))
         : [],
     };
@@ -369,14 +369,14 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.ownershipKind !== OwnershipKind.OWNED) {
-      obj.ownershipKind = ownershipKindToJSON(message.ownershipKind);
+    if (message.ownership_kind !== OwnershipKind.OWNED) {
+      obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
     }
-    if (message.userType !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.userType);
+    if (message.user_type !== UserType.NONE) {
+      obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.accessRules?.length) {
-      obj.accessRules = message.accessRules.map((e) => AccessRule.toJSON(e));
+    if (message.access_rules?.length) {
+      obj.accessRules = message.access_rules.map((e) => AccessRule.toJSON(e));
     }
     return obj;
   },
@@ -391,21 +391,21 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.name = object.name ?? "";
-    message.ownershipKind = object.ownershipKind ?? OwnershipKind.OWNED;
-    message.userType = object.userType ?? UserType.NONE;
-    message.accessRules = object.accessRules?.map((e) => AccessRule.fromPartial(e)) || [];
+    message.ownership_kind = object.ownership_kind ?? OwnershipKind.OWNED;
+    message.user_type = object.user_type ?? UserType.NONE;
+    message.access_rules = object.access_rules?.map((e) => AccessRule.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseAccessRule(): AccessRule {
-  return { permissionType: AccessPermissionType.ALLOW_READ, principal: PrincipalType.USER, wildcard: undefined };
+  return { permission_type: AccessPermissionType.ALLOW_READ, principal: PrincipalType.USER, wildcard: undefined };
 }
 
 export const AccessRule: MessageFns<AccessRule> = {
   encode(message: AccessRule, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.permissionType !== AccessPermissionType.ALLOW_READ) {
-      writer.uint32(8).int32(accessPermissionTypeToNumber(message.permissionType));
+    if (message.permission_type !== AccessPermissionType.ALLOW_READ) {
+      writer.uint32(8).int32(accessPermissionTypeToNumber(message.permission_type));
     }
     if (message.principal !== undefined && message.principal !== PrincipalType.USER) {
       writer.uint32(16).int32(principalTypeToNumber(message.principal));
@@ -428,7 +428,7 @@ export const AccessRule: MessageFns<AccessRule> = {
             break;
           }
 
-          message.permissionType = accessPermissionTypeFromJSON(reader.int32());
+          message.permission_type = accessPermissionTypeFromJSON(reader.int32());
           continue;
         case 2:
           if (tag !== 16) {
@@ -455,7 +455,7 @@ export const AccessRule: MessageFns<AccessRule> = {
 
   fromJSON(object: any): AccessRule {
     return {
-      permissionType: isSet(object.permissionType)
+      permission_type: isSet(object.permissionType)
         ? accessPermissionTypeFromJSON(object.permissionType)
         : AccessPermissionType.ALLOW_READ,
       principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : PrincipalType.USER,
@@ -465,8 +465,8 @@ export const AccessRule: MessageFns<AccessRule> = {
 
   toJSON(message: AccessRule): unknown {
     const obj: any = {};
-    if (message.permissionType !== AccessPermissionType.ALLOW_READ) {
-      obj.permissionType = accessPermissionTypeToJSON(message.permissionType);
+    if (message.permission_type !== AccessPermissionType.ALLOW_READ) {
+      obj.permissionType = accessPermissionTypeToJSON(message.permission_type);
     }
     if (message.principal !== undefined && message.principal !== PrincipalType.USER) {
       obj.principal = principalTypeToJSON(message.principal);
@@ -482,7 +482,7 @@ export const AccessRule: MessageFns<AccessRule> = {
   },
   fromPartial<I extends Exact<DeepPartial<AccessRule>, I>>(object: I): AccessRule {
     const message = createBaseAccessRule();
-    message.permissionType = object.permissionType ?? AccessPermissionType.ALLOW_READ;
+    message.permission_type = object.permission_type ?? AccessPermissionType.ALLOW_READ;
     message.principal = object.principal ?? PrincipalType.USER;
     message.wildcard = (object.wildcard !== undefined && object.wildcard !== null)
       ? WildcardAccess.fromPartial(object.wildcard)

@@ -6,8 +6,8 @@ export interface OrganizationOwner {
     name: string;
     email: string;
     organization: ObjectId | undefined;
-    mainAddress?: string | undefined;
-    phoneNumber?: string | undefined;
+    main_address?: string | undefined;
+    phone_number?: string | undefined;
 }
 export declare const OrganizationOwner: MessageFns<OrganizationOwner>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

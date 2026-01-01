@@ -21,42 +21,42 @@ export interface GetActiveCustomFieldsTemplatesResponse {
 }
 export interface CreateCustomFieldsTemplateRequest {
     context: RequestContext | undefined;
-    templateName: string;
-    templateDescription: string;
-    isActive: boolean;
+    template_name: string;
+    template_description: string;
+    is_active: boolean;
 }
 export interface AddGroupToTemplateRequest {
     context: RequestContext | undefined;
-    templateId: ObjectId | undefined;
-    groupName: string;
-    userType: UserType;
-    profileSection: ProfileSection;
+    template_id: ObjectId | undefined;
+    group_name: string;
+    user_type: UserType;
+    profile_section: ProfileSection;
     hints: string[];
-    visibleToParentsForStatuses: StudentStatus[];
-    visibleToTeachersForStatuses: StudentStatus[];
+    visible_to_parents_for_statuses: StudentStatus[];
+    visible_to_teachers_for_statuses: StudentStatus[];
 }
 export interface AddFieldToTemplateGroupRequest {
     context: RequestContext | undefined;
-    templateId: ObjectId | undefined;
-    groupId: ObjectId | undefined;
-    fieldName: string;
-    fieldType: CustomFieldType;
-    isRequired: boolean;
+    template_id: ObjectId | undefined;
+    group_id: ObjectId | undefined;
+    field_name: string;
+    field_type: CustomFieldType;
+    is_required: boolean;
     description: string;
-    regexPattern?: string | undefined;
+    regex_pattern?: string | undefined;
     options: string[];
 }
 /** Group access settings entry (mapping group_id to access settings) */
 export interface GroupAccessSettingsEntry {
-    groupId: ObjectId | undefined;
-    groupAccessSettings: ObjectId | undefined;
-    entriesAccessSettings: ObjectId | undefined;
+    group_id: ObjectId | undefined;
+    group_access_settings: ObjectId | undefined;
+    entries_access_settings: ObjectId | undefined;
 }
 export interface InstantiateTemplateRequest {
     context: RequestContext | undefined;
-    templateId: ObjectId | undefined;
+    template_id: ObjectId | undefined;
     /** Access settings for each group in the template */
-    groupAccessSettings: GroupAccessSettingsEntry[];
+    group_access_settings: GroupAccessSettingsEntry[];
 }
 export interface GetOrganizationUsedTemplatesRequest {
     context: RequestContext | undefined;

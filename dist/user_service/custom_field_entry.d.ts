@@ -3,10 +3,10 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "user_service";
 export interface CustomFieldEntry {
     id: ObjectId | undefined;
-    organizationId: ObjectId | undefined;
-    customFieldId: ObjectId | undefined;
-    groupId: ObjectId | undefined;
-    userId: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    custom_field_id: ObjectId | undefined;
+    group_id: ObjectId | undefined;
+    user_id: ObjectId | undefined;
     value: string;
 }
 export declare const CustomFieldEntry: MessageFns<CustomFieldEntry>;

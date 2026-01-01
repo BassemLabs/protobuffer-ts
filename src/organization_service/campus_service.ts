@@ -18,8 +18,8 @@ export interface CreateCampusRequest {
   address: string;
   email: string;
   phone: string;
-  principalId: ObjectId | undefined;
-  supervisorId: ObjectId | undefined;
+  principal_id: ObjectId | undefined;
+  supervisor_id: ObjectId | undefined;
 }
 
 export interface UpdateCampusRequest {
@@ -29,25 +29,25 @@ export interface UpdateCampusRequest {
   address: string;
   email: string;
   phone: string;
-  principalId: ObjectId | undefined;
-  supervisorId: ObjectId | undefined;
+  principal_id: ObjectId | undefined;
+  supervisor_id: ObjectId | undefined;
 }
 
 export interface UpdateLogoRequest {
   context: RequestContext | undefined;
-  campusId: ObjectId | undefined;
-  fileName: string;
-  awsS3FileLocation: string;
+  campus_id: ObjectId | undefined;
+  file_name: string;
+  aws_s3_file_location: string;
 }
 
 export interface GetCampusRequest {
   context: RequestContext | undefined;
-  campusId: ObjectId | undefined;
+  campus_id: ObjectId | undefined;
 }
 
 export interface GetOrganizationCampusesRequest {
   context: RequestContext | undefined;
-  organizationId: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
 }
 
 export interface GetOrganizationCampusesResponse {
@@ -61,8 +61,8 @@ function createBaseCreateCampusRequest(): CreateCampusRequest {
     address: "",
     email: "",
     phone: "",
-    principalId: undefined,
-    supervisorId: undefined,
+    principal_id: undefined,
+    supervisor_id: undefined,
   };
 }
 
@@ -83,11 +83,11 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     if (message.phone !== "") {
       writer.uint32(42).string(message.phone);
     }
-    if (message.principalId !== undefined) {
-      ObjectId.encode(message.principalId, writer.uint32(50).fork()).join();
+    if (message.principal_id !== undefined) {
+      ObjectId.encode(message.principal_id, writer.uint32(50).fork()).join();
     }
-    if (message.supervisorId !== undefined) {
-      ObjectId.encode(message.supervisorId, writer.uint32(58).fork()).join();
+    if (message.supervisor_id !== undefined) {
+      ObjectId.encode(message.supervisor_id, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -139,14 +139,14 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
             break;
           }
 
-          message.principalId = ObjectId.decode(reader, reader.uint32());
+          message.principal_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.supervisorId = ObjectId.decode(reader, reader.uint32());
+          message.supervisor_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -164,8 +164,8 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
       address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
-      principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
-      supervisorId: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
+      principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
+      supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
     };
   },
 
@@ -186,11 +186,11 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     if (message.phone !== "") {
       obj.phone = message.phone;
     }
-    if (message.principalId !== undefined) {
-      obj.principalId = ObjectId.toJSON(message.principalId);
+    if (message.principal_id !== undefined) {
+      obj.principalId = ObjectId.toJSON(message.principal_id);
     }
-    if (message.supervisorId !== undefined) {
-      obj.supervisorId = ObjectId.toJSON(message.supervisorId);
+    if (message.supervisor_id !== undefined) {
+      obj.supervisorId = ObjectId.toJSON(message.supervisor_id);
     }
     return obj;
   },
@@ -207,11 +207,11 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     message.address = object.address ?? "";
     message.email = object.email ?? "";
     message.phone = object.phone ?? "";
-    message.principalId = (object.principalId !== undefined && object.principalId !== null)
-      ? ObjectId.fromPartial(object.principalId)
+    message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
+      ? ObjectId.fromPartial(object.principal_id)
       : undefined;
-    message.supervisorId = (object.supervisorId !== undefined && object.supervisorId !== null)
-      ? ObjectId.fromPartial(object.supervisorId)
+    message.supervisor_id = (object.supervisor_id !== undefined && object.supervisor_id !== null)
+      ? ObjectId.fromPartial(object.supervisor_id)
       : undefined;
     return message;
   },
@@ -225,8 +225,8 @@ function createBaseUpdateCampusRequest(): UpdateCampusRequest {
     address: "",
     email: "",
     phone: "",
-    principalId: undefined,
-    supervisorId: undefined,
+    principal_id: undefined,
+    supervisor_id: undefined,
   };
 }
 
@@ -250,11 +250,11 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     if (message.phone !== "") {
       writer.uint32(50).string(message.phone);
     }
-    if (message.principalId !== undefined) {
-      ObjectId.encode(message.principalId, writer.uint32(58).fork()).join();
+    if (message.principal_id !== undefined) {
+      ObjectId.encode(message.principal_id, writer.uint32(58).fork()).join();
     }
-    if (message.supervisorId !== undefined) {
-      ObjectId.encode(message.supervisorId, writer.uint32(66).fork()).join();
+    if (message.supervisor_id !== undefined) {
+      ObjectId.encode(message.supervisor_id, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -313,14 +313,14 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
             break;
           }
 
-          message.principalId = ObjectId.decode(reader, reader.uint32());
+          message.principal_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.supervisorId = ObjectId.decode(reader, reader.uint32());
+          message.supervisor_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -339,8 +339,8 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
       address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
-      principalId: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
-      supervisorId: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
+      principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
+      supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
     };
   },
 
@@ -364,11 +364,11 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     if (message.phone !== "") {
       obj.phone = message.phone;
     }
-    if (message.principalId !== undefined) {
-      obj.principalId = ObjectId.toJSON(message.principalId);
+    if (message.principal_id !== undefined) {
+      obj.principalId = ObjectId.toJSON(message.principal_id);
     }
-    if (message.supervisorId !== undefined) {
-      obj.supervisorId = ObjectId.toJSON(message.supervisorId);
+    if (message.supervisor_id !== undefined) {
+      obj.supervisorId = ObjectId.toJSON(message.supervisor_id);
     }
     return obj;
   },
@@ -386,18 +386,18 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     message.address = object.address ?? "";
     message.email = object.email ?? "";
     message.phone = object.phone ?? "";
-    message.principalId = (object.principalId !== undefined && object.principalId !== null)
-      ? ObjectId.fromPartial(object.principalId)
+    message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
+      ? ObjectId.fromPartial(object.principal_id)
       : undefined;
-    message.supervisorId = (object.supervisorId !== undefined && object.supervisorId !== null)
-      ? ObjectId.fromPartial(object.supervisorId)
+    message.supervisor_id = (object.supervisor_id !== undefined && object.supervisor_id !== null)
+      ? ObjectId.fromPartial(object.supervisor_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseUpdateLogoRequest(): UpdateLogoRequest {
-  return { context: undefined, campusId: undefined, fileName: "", awsS3FileLocation: "" };
+  return { context: undefined, campus_id: undefined, file_name: "", aws_s3_file_location: "" };
 }
 
 export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
@@ -405,14 +405,14 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.campusId !== undefined) {
-      ObjectId.encode(message.campusId, writer.uint32(18).fork()).join();
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(18).fork()).join();
     }
-    if (message.fileName !== "") {
-      writer.uint32(26).string(message.fileName);
+    if (message.file_name !== "") {
+      writer.uint32(26).string(message.file_name);
     }
-    if (message.awsS3FileLocation !== "") {
-      writer.uint32(34).string(message.awsS3FileLocation);
+    if (message.aws_s3_file_location !== "") {
+      writer.uint32(34).string(message.aws_s3_file_location);
     }
     return writer;
   },
@@ -436,21 +436,21 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
             break;
           }
 
-          message.campusId = ObjectId.decode(reader, reader.uint32());
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.fileName = reader.string();
+          message.file_name = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.awsS3FileLocation = reader.string();
+          message.aws_s3_file_location = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -464,9 +464,9 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
   fromJSON(object: any): UpdateLogoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      campusId: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
-      fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-      awsS3FileLocation: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
     };
   },
 
@@ -475,14 +475,14 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.campusId !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campusId);
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
-    if (message.fileName !== "") {
-      obj.fileName = message.fileName;
+    if (message.file_name !== "") {
+      obj.fileName = message.file_name;
     }
-    if (message.awsS3FileLocation !== "") {
-      obj.awsS3FileLocation = message.awsS3FileLocation;
+    if (message.aws_s3_file_location !== "") {
+      obj.awsS3FileLocation = message.aws_s3_file_location;
     }
     return obj;
   },
@@ -495,17 +495,17 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.campusId = (object.campusId !== undefined && object.campusId !== null)
-      ? ObjectId.fromPartial(object.campusId)
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
       : undefined;
-    message.fileName = object.fileName ?? "";
-    message.awsS3FileLocation = object.awsS3FileLocation ?? "";
+    message.file_name = object.file_name ?? "";
+    message.aws_s3_file_location = object.aws_s3_file_location ?? "";
     return message;
   },
 };
 
 function createBaseGetCampusRequest(): GetCampusRequest {
-  return { context: undefined, campusId: undefined };
+  return { context: undefined, campus_id: undefined };
 }
 
 export const GetCampusRequest: MessageFns<GetCampusRequest> = {
@@ -513,8 +513,8 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.campusId !== undefined) {
-      ObjectId.encode(message.campusId, writer.uint32(18).fork()).join();
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -538,7 +538,7 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
             break;
           }
 
-          message.campusId = ObjectId.decode(reader, reader.uint32());
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -552,7 +552,7 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
   fromJSON(object: any): GetCampusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      campusId: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
     };
   },
 
@@ -561,8 +561,8 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.campusId !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campusId);
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
     return obj;
   },
@@ -575,15 +575,15 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.campusId = (object.campusId !== undefined && object.campusId !== null)
-      ? ObjectId.fromPartial(object.campusId)
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
       : undefined;
     return message;
   },
 };
 
 function createBaseGetOrganizationCampusesRequest(): GetOrganizationCampusesRequest {
-  return { context: undefined, organizationId: undefined };
+  return { context: undefined, organization_id: undefined };
 }
 
 export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesRequest> = {
@@ -591,8 +591,8 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.organizationId !== undefined) {
-      ObjectId.encode(message.organizationId, writer.uint32(18).fork()).join();
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -616,7 +616,7 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
             break;
           }
 
-          message.organizationId = ObjectId.decode(reader, reader.uint32());
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -630,7 +630,7 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
   fromJSON(object: any): GetOrganizationCampusesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organizationId: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -639,8 +639,8 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.organizationId !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organizationId);
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -655,8 +655,8 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.organizationId = (object.organizationId !== undefined && object.organizationId !== null)
-      ? ObjectId.fromPartial(object.organizationId)
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },

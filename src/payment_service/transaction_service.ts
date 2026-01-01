@@ -29,15 +29,15 @@ export interface GetTransactionsResponse {
 
 export interface CreateManualTransactionRequest {
   context: RequestContext | undefined;
-  paymentType: PaymentType;
-  invoiceId: ObjectId | undefined;
+  payment_type: PaymentType;
+  invoice_id: ObjectId | undefined;
   amount: number;
 }
 
 export interface IssueRefundRequest {
   context: RequestContext | undefined;
-  transactionId: ObjectId | undefined;
-  paymentType: PaymentType;
+  transaction_id: ObjectId | undefined;
+  payment_type: PaymentType;
   amount: number;
   reason?: string | undefined;
 }
@@ -271,7 +271,7 @@ export const GetTransactionsResponse: MessageFns<GetTransactionsResponse> = {
 };
 
 function createBaseCreateManualTransactionRequest(): CreateManualTransactionRequest {
-  return { context: undefined, paymentType: PaymentType.Stripe, invoiceId: undefined, amount: 0 };
+  return { context: undefined, payment_type: PaymentType.Stripe, invoice_id: undefined, amount: 0 };
 }
 
 export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionRequest> = {
@@ -279,11 +279,11 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.paymentType !== PaymentType.Stripe) {
-      writer.uint32(16).int32(paymentTypeToNumber(message.paymentType));
+    if (message.payment_type !== PaymentType.Stripe) {
+      writer.uint32(16).int32(paymentTypeToNumber(message.payment_type));
     }
-    if (message.invoiceId !== undefined) {
-      ObjectId.encode(message.invoiceId, writer.uint32(26).fork()).join();
+    if (message.invoice_id !== undefined) {
+      ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
     }
     if (message.amount !== 0) {
       writer.uint32(33).double(message.amount);
@@ -310,14 +310,14 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
             break;
           }
 
-          message.paymentType = paymentTypeFromJSON(reader.int32());
+          message.payment_type = paymentTypeFromJSON(reader.int32());
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.invoiceId = ObjectId.decode(reader, reader.uint32());
+          message.invoice_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 33) {
@@ -338,8 +338,8 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
   fromJSON(object: any): CreateManualTransactionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
-      invoiceId: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
     };
   },
@@ -349,11 +349,11 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.paymentType !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.paymentType);
+    if (message.payment_type !== PaymentType.Stripe) {
+      obj.paymentType = paymentTypeToJSON(message.payment_type);
     }
-    if (message.invoiceId !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoiceId);
+    if (message.invoice_id !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
     }
     if (message.amount !== 0) {
       obj.amount = message.amount;
@@ -371,9 +371,9 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.paymentType = object.paymentType ?? PaymentType.Stripe;
-    message.invoiceId = (object.invoiceId !== undefined && object.invoiceId !== null)
-      ? ObjectId.fromPartial(object.invoiceId)
+    message.payment_type = object.payment_type ?? PaymentType.Stripe;
+    message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+      ? ObjectId.fromPartial(object.invoice_id)
       : undefined;
     message.amount = object.amount ?? 0;
     return message;
@@ -381,7 +381,7 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
 };
 
 function createBaseIssueRefundRequest(): IssueRefundRequest {
-  return { context: undefined, transactionId: undefined, paymentType: PaymentType.Stripe, amount: 0, reason: "" };
+  return { context: undefined, transaction_id: undefined, payment_type: PaymentType.Stripe, amount: 0, reason: "" };
 }
 
 export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
@@ -389,11 +389,11 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.transactionId !== undefined) {
-      ObjectId.encode(message.transactionId, writer.uint32(18).fork()).join();
+    if (message.transaction_id !== undefined) {
+      ObjectId.encode(message.transaction_id, writer.uint32(18).fork()).join();
     }
-    if (message.paymentType !== PaymentType.Stripe) {
-      writer.uint32(24).int32(paymentTypeToNumber(message.paymentType));
+    if (message.payment_type !== PaymentType.Stripe) {
+      writer.uint32(24).int32(paymentTypeToNumber(message.payment_type));
     }
     if (message.amount !== 0) {
       writer.uint32(33).double(message.amount);
@@ -423,14 +423,14 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
             break;
           }
 
-          message.transactionId = ObjectId.decode(reader, reader.uint32());
+          message.transaction_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.paymentType = paymentTypeFromJSON(reader.int32());
+          message.payment_type = paymentTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 33) {
@@ -458,8 +458,8 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
   fromJSON(object: any): IssueRefundRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      transactionId: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
-      paymentType: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      transaction_id: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
+      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
       reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
     };
@@ -470,11 +470,11 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.transactionId !== undefined) {
-      obj.transactionId = ObjectId.toJSON(message.transactionId);
+    if (message.transaction_id !== undefined) {
+      obj.transactionId = ObjectId.toJSON(message.transaction_id);
     }
-    if (message.paymentType !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.paymentType);
+    if (message.payment_type !== PaymentType.Stripe) {
+      obj.paymentType = paymentTypeToJSON(message.payment_type);
     }
     if (message.amount !== 0) {
       obj.amount = message.amount;
@@ -493,10 +493,10 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
-      ? ObjectId.fromPartial(object.transactionId)
+    message.transaction_id = (object.transaction_id !== undefined && object.transaction_id !== null)
+      ? ObjectId.fromPartial(object.transaction_id)
       : undefined;
-    message.paymentType = object.paymentType ?? PaymentType.Stripe;
+    message.payment_type = object.payment_type ?? PaymentType.Stripe;
     message.amount = object.amount ?? 0;
     message.reason = object.reason ?? "";
     return message;

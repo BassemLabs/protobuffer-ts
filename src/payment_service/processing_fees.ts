@@ -110,11 +110,11 @@ export function invoiceTypeToNumber(object: InvoiceType): number {
 export interface ProcessingFee {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  invoiceType: InvoiceType;
-  feeType: FeeType;
-  valueType: DiscountValueType;
+  invoice_type: InvoiceType;
+  fee_type: FeeType;
+  value_type: DiscountValueType;
   value: number;
-  capAmount?: number | undefined;
+  cap_amount?: number | undefined;
   archived: boolean;
 }
 
@@ -122,19 +122,19 @@ export interface ProcessingFee {
 export interface OrganizationProcessingFee {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  tuitionInvoiceFeesEnabled: boolean;
-  nonTuitionInvoiceFeesEnabled: boolean;
+  tuition_invoice_fees_enabled: boolean;
+  non_tuition_invoice_fees_enabled: boolean;
 }
 
 function createBaseProcessingFee(): ProcessingFee {
   return {
     id: undefined,
     organization: undefined,
-    invoiceType: InvoiceType.TUITION,
-    feeType: FeeType.CARD_FEE,
-    valueType: DiscountValueType.AMOUNT,
+    invoice_type: InvoiceType.TUITION,
+    fee_type: FeeType.CARD_FEE,
+    value_type: DiscountValueType.AMOUNT,
     value: 0,
-    capAmount: 0,
+    cap_amount: 0,
     archived: false,
   };
 }
@@ -147,20 +147,20 @@ export const ProcessingFee: MessageFns<ProcessingFee> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.invoiceType !== InvoiceType.TUITION) {
-      writer.uint32(24).int32(invoiceTypeToNumber(message.invoiceType));
+    if (message.invoice_type !== InvoiceType.TUITION) {
+      writer.uint32(24).int32(invoiceTypeToNumber(message.invoice_type));
     }
-    if (message.feeType !== FeeType.CARD_FEE) {
-      writer.uint32(32).int32(feeTypeToNumber(message.feeType));
+    if (message.fee_type !== FeeType.CARD_FEE) {
+      writer.uint32(32).int32(feeTypeToNumber(message.fee_type));
     }
-    if (message.valueType !== DiscountValueType.AMOUNT) {
-      writer.uint32(40).int32(discountValueTypeToNumber(message.valueType));
+    if (message.value_type !== DiscountValueType.AMOUNT) {
+      writer.uint32(40).int32(discountValueTypeToNumber(message.value_type));
     }
     if (message.value !== 0) {
       writer.uint32(49).double(message.value);
     }
-    if (message.capAmount !== undefined && message.capAmount !== 0) {
-      writer.uint32(57).double(message.capAmount);
+    if (message.cap_amount !== undefined && message.cap_amount !== 0) {
+      writer.uint32(57).double(message.cap_amount);
     }
     if (message.archived !== false) {
       writer.uint32(64).bool(message.archived);
@@ -194,21 +194,21 @@ export const ProcessingFee: MessageFns<ProcessingFee> = {
             break;
           }
 
-          message.invoiceType = invoiceTypeFromJSON(reader.int32());
+          message.invoice_type = invoiceTypeFromJSON(reader.int32());
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.feeType = feeTypeFromJSON(reader.int32());
+          message.fee_type = feeTypeFromJSON(reader.int32());
           continue;
         case 5:
           if (tag !== 40) {
             break;
           }
 
-          message.valueType = discountValueTypeFromJSON(reader.int32());
+          message.value_type = discountValueTypeFromJSON(reader.int32());
           continue;
         case 6:
           if (tag !== 49) {
@@ -222,7 +222,7 @@ export const ProcessingFee: MessageFns<ProcessingFee> = {
             break;
           }
 
-          message.capAmount = reader.double();
+          message.cap_amount = reader.double();
           continue;
         case 8:
           if (tag !== 64) {
@@ -244,11 +244,11 @@ export const ProcessingFee: MessageFns<ProcessingFee> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      invoiceType: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : InvoiceType.TUITION,
-      feeType: isSet(object.feeType) ? feeTypeFromJSON(object.feeType) : FeeType.CARD_FEE,
-      valueType: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
+      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : InvoiceType.TUITION,
+      fee_type: isSet(object.feeType) ? feeTypeFromJSON(object.feeType) : FeeType.CARD_FEE,
+      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-      capAmount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : 0,
+      cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : 0,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
     };
   },
@@ -261,20 +261,20 @@ export const ProcessingFee: MessageFns<ProcessingFee> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.invoiceType !== InvoiceType.TUITION) {
-      obj.invoiceType = invoiceTypeToJSON(message.invoiceType);
+    if (message.invoice_type !== InvoiceType.TUITION) {
+      obj.invoiceType = invoiceTypeToJSON(message.invoice_type);
     }
-    if (message.feeType !== FeeType.CARD_FEE) {
-      obj.feeType = feeTypeToJSON(message.feeType);
+    if (message.fee_type !== FeeType.CARD_FEE) {
+      obj.feeType = feeTypeToJSON(message.fee_type);
     }
-    if (message.valueType !== DiscountValueType.AMOUNT) {
-      obj.valueType = discountValueTypeToJSON(message.valueType);
+    if (message.value_type !== DiscountValueType.AMOUNT) {
+      obj.valueType = discountValueTypeToJSON(message.value_type);
     }
     if (message.value !== 0) {
       obj.value = message.value;
     }
-    if (message.capAmount !== undefined && message.capAmount !== 0) {
-      obj.capAmount = message.capAmount;
+    if (message.cap_amount !== undefined && message.cap_amount !== 0) {
+      obj.capAmount = message.cap_amount;
     }
     if (message.archived !== false) {
       obj.archived = message.archived;
@@ -291,11 +291,11 @@ export const ProcessingFee: MessageFns<ProcessingFee> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.invoiceType = object.invoiceType ?? InvoiceType.TUITION;
-    message.feeType = object.feeType ?? FeeType.CARD_FEE;
-    message.valueType = object.valueType ?? DiscountValueType.AMOUNT;
+    message.invoice_type = object.invoice_type ?? InvoiceType.TUITION;
+    message.fee_type = object.fee_type ?? FeeType.CARD_FEE;
+    message.value_type = object.value_type ?? DiscountValueType.AMOUNT;
     message.value = object.value ?? 0;
-    message.capAmount = object.capAmount ?? 0;
+    message.cap_amount = object.cap_amount ?? 0;
     message.archived = object.archived ?? false;
     return message;
   },
@@ -305,8 +305,8 @@ function createBaseOrganizationProcessingFee(): OrganizationProcessingFee {
   return {
     id: undefined,
     organization: undefined,
-    tuitionInvoiceFeesEnabled: false,
-    nonTuitionInvoiceFeesEnabled: false,
+    tuition_invoice_fees_enabled: false,
+    non_tuition_invoice_fees_enabled: false,
   };
 }
 
@@ -318,11 +318,11 @@ export const OrganizationProcessingFee: MessageFns<OrganizationProcessingFee> = 
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.tuitionInvoiceFeesEnabled !== false) {
-      writer.uint32(24).bool(message.tuitionInvoiceFeesEnabled);
+    if (message.tuition_invoice_fees_enabled !== false) {
+      writer.uint32(24).bool(message.tuition_invoice_fees_enabled);
     }
-    if (message.nonTuitionInvoiceFeesEnabled !== false) {
-      writer.uint32(32).bool(message.nonTuitionInvoiceFeesEnabled);
+    if (message.non_tuition_invoice_fees_enabled !== false) {
+      writer.uint32(32).bool(message.non_tuition_invoice_fees_enabled);
     }
     return writer;
   },
@@ -353,14 +353,14 @@ export const OrganizationProcessingFee: MessageFns<OrganizationProcessingFee> = 
             break;
           }
 
-          message.tuitionInvoiceFeesEnabled = reader.bool();
+          message.tuition_invoice_fees_enabled = reader.bool();
           continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.nonTuitionInvoiceFeesEnabled = reader.bool();
+          message.non_tuition_invoice_fees_enabled = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -375,10 +375,10 @@ export const OrganizationProcessingFee: MessageFns<OrganizationProcessingFee> = 
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      tuitionInvoiceFeesEnabled: isSet(object.tuitionInvoiceFeesEnabled)
+      tuition_invoice_fees_enabled: isSet(object.tuitionInvoiceFeesEnabled)
         ? globalThis.Boolean(object.tuitionInvoiceFeesEnabled)
         : false,
-      nonTuitionInvoiceFeesEnabled: isSet(object.nonTuitionInvoiceFeesEnabled)
+      non_tuition_invoice_fees_enabled: isSet(object.nonTuitionInvoiceFeesEnabled)
         ? globalThis.Boolean(object.nonTuitionInvoiceFeesEnabled)
         : false,
     };
@@ -392,11 +392,11 @@ export const OrganizationProcessingFee: MessageFns<OrganizationProcessingFee> = 
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.tuitionInvoiceFeesEnabled !== false) {
-      obj.tuitionInvoiceFeesEnabled = message.tuitionInvoiceFeesEnabled;
+    if (message.tuition_invoice_fees_enabled !== false) {
+      obj.tuitionInvoiceFeesEnabled = message.tuition_invoice_fees_enabled;
     }
-    if (message.nonTuitionInvoiceFeesEnabled !== false) {
-      obj.nonTuitionInvoiceFeesEnabled = message.nonTuitionInvoiceFeesEnabled;
+    if (message.non_tuition_invoice_fees_enabled !== false) {
+      obj.nonTuitionInvoiceFeesEnabled = message.non_tuition_invoice_fees_enabled;
     }
     return obj;
   },
@@ -410,8 +410,8 @@ export const OrganizationProcessingFee: MessageFns<OrganizationProcessingFee> = 
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.tuitionInvoiceFeesEnabled = object.tuitionInvoiceFeesEnabled ?? false;
-    message.nonTuitionInvoiceFeesEnabled = object.nonTuitionInvoiceFeesEnabled ?? false;
+    message.tuition_invoice_fees_enabled = object.tuition_invoice_fees_enabled ?? false;
+    message.non_tuition_invoice_fees_enabled = object.non_tuition_invoice_fees_enabled ?? false;
     return message;
   },
 };
