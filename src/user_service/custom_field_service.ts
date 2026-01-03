@@ -271,10 +271,6 @@ export interface CreateResourceAccessSettingsRequest {
   access_rules: AccessRule[];
 }
 
-export interface temp_message {
-  id: ObjectId | undefined;
-}
-
 function createBaseGetCustomFieldsByGroupRequest(): GetCustomFieldsByGroupRequest {
   return { context: undefined, group_id: undefined, include_archived: false };
 }
@@ -3773,63 +3769,6 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     message.ownership_kind = object.ownership_kind ?? OwnershipKind.OWNED;
     message.user_type = object.user_type ?? UserType.NONE;
     message.access_rules = object.access_rules?.map((e) => AccessRule.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBasetemp_message(): temp_message {
-  return { id: undefined };
-}
-
-export const temp_message: MessageFns<temp_message> = {
-  encode(message: temp_message, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): temp_message {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasetemp_message();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.id = ObjectId.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): temp_message {
-    return { id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined };
-  },
-
-  toJSON(message: temp_message): unknown {
-    const obj: any = {};
-    if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<temp_message>, I>>(base?: I): temp_message {
-    return temp_message.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<temp_message>, I>>(object: I): temp_message {
-    const message = createBasetemp_message();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     return message;
   },
 };

@@ -195,9 +195,6 @@ export interface CreateResourceAccessSettingsRequest {
     user_type: UserType;
     access_rules: AccessRule[];
 }
-export interface temp_message {
-    id: ObjectId | undefined;
-}
 export declare const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupRequest>;
 export declare const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupResponse>;
 export declare const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFieldsByGroupRequest>;
@@ -234,7 +231,6 @@ export declare const RejectGroupRequest: MessageFns<RejectGroupRequest>;
 export declare const GetResourceAccessSettingsRequest: MessageFns<GetResourceAccessSettingsRequest>;
 export declare const GetResourceAccessSettingsResponse: MessageFns<GetResourceAccessSettingsResponse>;
 export declare const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAccessSettingsRequest>;
-export declare const temp_message: MessageFns<temp_message>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
