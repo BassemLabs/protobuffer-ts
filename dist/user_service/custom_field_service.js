@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/custom_field_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
+exports.temp_message = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
@@ -3070,6 +3070,56 @@ exports.CreateResourceAccessSettingsRequest = {
         message.ownership_kind = object.ownership_kind ?? resource_access_settings_1.OwnershipKind.OWNED;
         message.user_type = object.user_type ?? user_type_1.UserType.NONE;
         message.access_rules = object.access_rules?.map((e) => resource_access_settings_1.AccessRule.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBasetemp_message() {
+    return { id: undefined };
+}
+exports.temp_message = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasetemp_message();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.temp_message.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasetemp_message();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         return message;
     },
 };
