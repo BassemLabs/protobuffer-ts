@@ -136,16 +136,16 @@ export const ReportLayout: MessageFns<ReportLayout> = {
   fromJSON(object: any): ReportLayout {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
-      comment_char_limit: isSet(object.comment_char_limit) ? globalThis.Number(object.comment_char_limit) : 0,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
       sections: globalThis.Array.isArray(object?.sections)
         ? object.sections.map((e: any) => ReportLayoutSection.fromJSON(e))
         : [],
-      check_boxes: globalThis.Array.isArray(object?.check_boxes)
-        ? object.check_boxes.map((e: any) => ReportCheckBoxLayout.fromJSON(e))
+      check_boxes: globalThis.Array.isArray(object?.checkBoxes)
+        ? object.checkBoxes.map((e: any) => ReportCheckBoxLayout.fromJSON(e))
         : [],
-      credit_weight: isSet(object.credit_weight) ? globalThis.Number(object.credit_weight) : 0,
+      credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
     };
   },
 
@@ -155,22 +155,22 @@ export const ReportLayout: MessageFns<ReportLayout> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
-      obj.comment_char_limit = Math.round(message.comment_char_limit);
+      obj.commentCharLimit = Math.round(message.comment_char_limit);
     }
     if (message.sections?.length) {
       obj.sections = message.sections.map((e) => ReportLayoutSection.toJSON(e));
     }
     if (message.check_boxes?.length) {
-      obj.check_boxes = message.check_boxes.map((e) => ReportCheckBoxLayout.toJSON(e));
+      obj.checkBoxes = message.check_boxes.map((e) => ReportCheckBoxLayout.toJSON(e));
     }
     if (message.credit_weight !== 0) {
-      obj.credit_weight = message.credit_weight;
+      obj.creditWeight = message.credit_weight;
     }
     return obj;
   },

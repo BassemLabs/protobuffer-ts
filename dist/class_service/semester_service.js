@@ -58,7 +58,7 @@ exports.GetSemesterRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
         };
     },
     toJSON(message) {
@@ -67,7 +67,7 @@ exports.GetSemesterRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.semester_id !== undefined) {
-            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         return obj;
     },
@@ -128,8 +128,8 @@ exports.GetSemestersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            semester_ids: globalThis.Array.isArray(object?.semester_ids)
-                ? object.semester_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
+            semester_ids: globalThis.Array.isArray(object?.semesterIds)
+                ? object.semesterIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -139,7 +139,7 @@ exports.GetSemestersRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.semester_ids?.length) {
-            obj.semester_ids = message.semester_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.semesterIds = message.semester_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -304,7 +304,7 @@ exports.GetActiveSemestersBySchoolYearRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -313,7 +313,7 @@ exports.GetActiveSemestersBySchoolYearRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.school_year_id !== undefined) {
-            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -374,7 +374,7 @@ exports.CoursesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
         };
     },
     toJSON(message) {
@@ -383,7 +383,7 @@ exports.CoursesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.semester_id !== undefined) {
-            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         return obj;
     },
@@ -496,7 +496,7 @@ exports.HomeroomsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
         };
     },
     toJSON(message) {
@@ -505,7 +505,7 @@ exports.HomeroomsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.semester_id !== undefined) {
-            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         return obj;
     },
@@ -673,12 +673,12 @@ exports.UpdateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
-            report_layout: isSet(object.report_layout) ? semester_1.SemesterReportLayout.fromJSON(object.report_layout) : undefined,
-            campus_id: isSet(object.campus_id) ? object_id_1.ObjectId.fromJSON(object.campus_id) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            report_layout: isSet(object.reportLayout) ? semester_1.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
         };
     },
     toJSON(message) {
@@ -687,22 +687,22 @@ exports.UpdateRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.semester_id !== undefined) {
-            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
         if (message.start_date !== undefined) {
-            obj.start_date = message.start_date.toISOString();
+            obj.startDate = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.end_date = message.end_date.toISOString();
+            obj.endDate = message.end_date.toISOString();
         }
         if (message.report_layout !== undefined) {
-            obj.report_layout = semester_1.SemesterReportLayout.toJSON(message.report_layout);
+            obj.reportLayout = semester_1.SemesterReportLayout.toJSON(message.report_layout);
         }
         if (message.campus_id !== undefined) {
-            obj.campus_id = object_id_1.ObjectId.toJSON(message.campus_id);
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
         return obj;
     },
@@ -772,7 +772,7 @@ exports.ArchiveRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
         };
     },
     toJSON(message) {
@@ -781,7 +781,7 @@ exports.ArchiveRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.semester_id !== undefined) {
-            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         return obj;
     },
@@ -886,10 +886,10 @@ exports.CreateRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
-            campus_id: isSet(object.campus_id) ? object_id_1.ObjectId.fromJSON(object.campus_id) : undefined,
-            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -901,16 +901,16 @@ exports.CreateRequest = {
             obj.name = message.name;
         }
         if (message.start_date !== undefined) {
-            obj.start_date = message.start_date.toISOString();
+            obj.startDate = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.end_date = message.end_date.toISOString();
+            obj.endDate = message.end_date.toISOString();
         }
         if (message.campus_id !== undefined) {
-            obj.campus_id = object_id_1.ObjectId.toJSON(message.campus_id);
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
         if (message.school_year_id !== undefined) {
-            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -1038,8 +1038,8 @@ exports.GetStudentSemestersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
-            include_archived: isSet(object.include_archived) ? globalThis.Boolean(object.include_archived) : false,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
         };
     },
     toJSON(message) {
@@ -1048,10 +1048,10 @@ exports.GetStudentSemestersRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.include_archived !== undefined && message.include_archived !== false) {
-            obj.include_archived = message.include_archived;
+            obj.includeArchived = message.include_archived;
         }
         return obj;
     },
@@ -1203,10 +1203,10 @@ exports.ListSemestersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            name_search: isSet(object.name_search) ? globalThis.String(object.name_search) : "",
-            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
+            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
         };
     },
@@ -1216,16 +1216,16 @@ exports.ListSemestersRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.per_page !== undefined && message.per_page !== 0) {
-            obj.per_page = Math.round(message.per_page);
+            obj.perPage = Math.round(message.per_page);
         }
         if (message.page !== undefined && message.page !== 0) {
             obj.page = Math.round(message.page);
         }
         if (message.name_search !== undefined && message.name_search !== "") {
-            obj.name_search = message.name_search;
+            obj.nameSearch = message.name_search;
         }
         if (message.school_year !== undefined) {
-            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.archived !== undefined && message.archived !== false) {
             obj.archived = message.archived;

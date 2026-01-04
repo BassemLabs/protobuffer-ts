@@ -55,7 +55,7 @@ exports.GetOnboardingSettingsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
         };
     },
     toJSON(message) {
@@ -64,7 +64,7 @@ exports.GetOnboardingSettingsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -148,12 +148,12 @@ exports.UpdateEnrollmentConfigurationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            has_interview_for_newcomers: isSet(object.has_interview_for_newcomers)
-                ? globalThis.Boolean(object.has_interview_for_newcomers)
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
+                ? globalThis.Boolean(object.hasInterviewForNewcomers)
                 : false,
-            enable_group_approval_system: isSet(object.enable_group_approval_system)
-                ? globalThis.Boolean(object.enable_group_approval_system)
+            enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
+                ? globalThis.Boolean(object.enableGroupApprovalSystem)
                 : false,
         };
     },
@@ -163,13 +163,13 @@ exports.UpdateEnrollmentConfigurationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.has_interview_for_newcomers !== false) {
-            obj.has_interview_for_newcomers = message.has_interview_for_newcomers;
+            obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
         }
         if (message.enable_group_approval_system !== false) {
-            obj.enable_group_approval_system = message.enable_group_approval_system;
+            obj.enableGroupApprovalSystem = message.enable_group_approval_system;
         }
         return obj;
     },
@@ -250,9 +250,9 @@ exports.AddSchoolHandbookFileRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            file_name: isSet(object.file_name) ? globalThis.String(object.file_name) : "",
-            aws_s3_file_location: isSet(object.aws_s3_file_location) ? globalThis.String(object.aws_s3_file_location) : "",
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+            aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
         };
     },
     toJSON(message) {
@@ -261,13 +261,13 @@ exports.AddSchoolHandbookFileRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.file_name !== "") {
-            obj.file_name = message.file_name;
+            obj.fileName = message.file_name;
         }
         if (message.aws_s3_file_location !== "") {
-            obj.aws_s3_file_location = message.aws_s3_file_location;
+            obj.awsS3FileLocation = message.aws_s3_file_location;
         }
         return obj;
     },
@@ -339,8 +339,8 @@ exports.RemoveSchoolHandbookFileRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            file_index: isSet(object.file_index) ? globalThis.Number(object.file_index) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            file_index: isSet(object.fileIndex) ? globalThis.Number(object.fileIndex) : 0,
         };
     },
     toJSON(message) {
@@ -349,10 +349,10 @@ exports.RemoveSchoolHandbookFileRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.file_index !== 0) {
-            obj.file_index = Math.round(message.file_index);
+            obj.fileIndex = Math.round(message.file_index);
         }
         return obj;
     },
@@ -423,8 +423,8 @@ exports.UpdateWaitlistFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            waitlist_fee: isSet(object.waitlist_fee) ? globalThis.Number(object.waitlist_fee) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
         };
     },
     toJSON(message) {
@@ -433,10 +433,10 @@ exports.UpdateWaitlistFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.waitlist_fee !== 0) {
-            obj.waitlist_fee = message.waitlist_fee;
+            obj.waitlistFee = message.waitlist_fee;
         }
         return obj;
     },
@@ -507,9 +507,9 @@ exports.UpdateRegistrationFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            registration_fees: globalThis.Array.isArray(object?.registration_fees)
-                ? object.registration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            registration_fees: globalThis.Array.isArray(object?.registrationFees)
+                ? object.registrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
                 : [],
         };
     },
@@ -519,10 +519,10 @@ exports.UpdateRegistrationFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.registration_fees?.length) {
-            obj.registration_fees = message.registration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
+            obj.registrationFees = message.registration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
         }
         return obj;
     },
@@ -593,9 +593,9 @@ exports.UpdateReregistrationFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            reregistration_fees: globalThis.Array.isArray(object?.reregistration_fees)
-                ? object.reregistration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            reregistration_fees: globalThis.Array.isArray(object?.reregistrationFees)
+                ? object.reregistrationFees.map((e) => onboarding_settings_1.GradeFeeMapping.fromJSON(e))
                 : [],
         };
     },
@@ -605,10 +605,10 @@ exports.UpdateReregistrationFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.reregistration_fees?.length) {
-            obj.reregistration_fees = message.reregistration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
+            obj.reregistrationFees = message.reregistration_fees.map((e) => onboarding_settings_1.GradeFeeMapping.toJSON(e));
         }
         return obj;
     },
@@ -679,8 +679,8 @@ exports.UpdateInterviewFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            interview_fee: isSet(object.interview_fee) ? globalThis.Number(object.interview_fee) : 0,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
         };
     },
     toJSON(message) {
@@ -689,10 +689,10 @@ exports.UpdateInterviewFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.interview_fee !== 0) {
-            obj.interview_fee = message.interview_fee;
+            obj.interviewFee = message.interview_fee;
         }
         return obj;
     },

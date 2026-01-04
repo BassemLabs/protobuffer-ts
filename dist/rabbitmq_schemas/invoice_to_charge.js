@@ -53,17 +53,17 @@ exports.InvoiceToCharge = {
     },
     fromJSON(object) {
         return {
-            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
-            date_sent: isSet(object.date_sent) ? fromJsonTimestamp(object.date_sent) : undefined,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            date_sent: isSet(object.dateSent) ? fromJsonTimestamp(object.dateSent) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.invoice_id !== undefined) {
-            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.date_sent !== undefined) {
-            obj.date_sent = message.date_sent.toISOString();
+            obj.dateSent = message.date_sent.toISOString();
         }
         return obj;
     },

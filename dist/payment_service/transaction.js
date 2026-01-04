@@ -369,19 +369,19 @@ exports.Transaction = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            stripe_payment_intent_id: isSet(object.stripe_payment_intent_id)
-                ? globalThis.String(object.stripe_payment_intent_id)
+            stripe_payment_intent_id: isSet(object.stripePaymentIntentId)
+                ? globalThis.String(object.stripePaymentIntentId)
                 : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
             status: isSet(object.status) ? transactionStatusFromJSON(object.status) : TransactionStatus.Created,
-            payment_type: isSet(object.payment_type) ? paymentTypeFromJSON(object.payment_type) : PaymentType.Stripe,
+            payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
             date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
             invoice: isSet(object.invoice) ? object_id_1.ObjectId.fromJSON(object.invoice) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-            declined_reason: isSet(object.declined_reason) ? globalThis.String(object.declined_reason) : "",
-            processing_fee_amount: isSet(object.processing_fee_amount) ? globalThis.Number(object.processing_fee_amount) : 0,
-            bassem_labs_fee: isSet(object.bassem_labs_fee) ? globalThis.Number(object.bassem_labs_fee) : 0,
-            invoice_surcharge: isSet(object.invoice_surcharge) ? globalThis.Number(object.invoice_surcharge) : 0,
+            declined_reason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
+            processing_fee_amount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
+            bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : 0,
+            invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : 0,
         };
     },
     toJSON(message) {
@@ -393,7 +393,7 @@ exports.Transaction = {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
         if (message.stripe_payment_intent_id !== "") {
-            obj.stripe_payment_intent_id = message.stripe_payment_intent_id;
+            obj.stripePaymentIntentId = message.stripe_payment_intent_id;
         }
         if (message.currency !== organization_1.Currency.USD) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
@@ -402,7 +402,7 @@ exports.Transaction = {
             obj.status = transactionStatusToJSON(message.status);
         }
         if (message.payment_type !== PaymentType.Stripe) {
-            obj.payment_type = paymentTypeToJSON(message.payment_type);
+            obj.paymentType = paymentTypeToJSON(message.payment_type);
         }
         if (message.date !== undefined) {
             obj.date = message.date.toISOString();
@@ -414,16 +414,16 @@ exports.Transaction = {
             obj.amount = message.amount;
         }
         if (message.declined_reason !== undefined && message.declined_reason !== "") {
-            obj.declined_reason = message.declined_reason;
+            obj.declinedReason = message.declined_reason;
         }
         if (message.processing_fee_amount !== undefined && message.processing_fee_amount !== 0) {
-            obj.processing_fee_amount = message.processing_fee_amount;
+            obj.processingFeeAmount = message.processing_fee_amount;
         }
         if (message.bassem_labs_fee !== undefined && message.bassem_labs_fee !== 0) {
-            obj.bassem_labs_fee = message.bassem_labs_fee;
+            obj.bassemLabsFee = message.bassem_labs_fee;
         }
         if (message.invoice_surcharge !== undefined && message.invoice_surcharge !== 0) {
-            obj.invoice_surcharge = message.invoice_surcharge;
+            obj.invoiceSurcharge = message.invoice_surcharge;
         }
         return obj;
     },
@@ -569,10 +569,10 @@ exports.RefundTransaction = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            transaction_id: isSet(object.transaction_id) ? object_id_1.ObjectId.fromJSON(object.transaction_id) : undefined,
-            stripe_refund_id: isSet(object.stripe_refund_id) ? globalThis.String(object.stripe_refund_id) : "",
+            transaction_id: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
+            stripe_refund_id: isSet(object.stripeRefundId) ? globalThis.String(object.stripeRefundId) : "",
             status: isSet(object.status) ? refundTransactionStatusFromJSON(object.status) : RefundTransactionStatus.Pending,
-            payment_type: isSet(object.payment_type) ? paymentTypeFromJSON(object.payment_type) : PaymentType.Stripe,
+            payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
             date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
@@ -587,16 +587,16 @@ exports.RefundTransaction = {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
         if (message.transaction_id !== undefined) {
-            obj.transaction_id = object_id_1.ObjectId.toJSON(message.transaction_id);
+            obj.transactionId = object_id_1.ObjectId.toJSON(message.transaction_id);
         }
         if (message.stripe_refund_id !== undefined && message.stripe_refund_id !== "") {
-            obj.stripe_refund_id = message.stripe_refund_id;
+            obj.stripeRefundId = message.stripe_refund_id;
         }
         if (message.status !== RefundTransactionStatus.Pending) {
             obj.status = refundTransactionStatusToJSON(message.status);
         }
         if (message.payment_type !== PaymentType.Stripe) {
-            obj.payment_type = paymentTypeToJSON(message.payment_type);
+            obj.paymentType = paymentTypeToJSON(message.payment_type);
         }
         if (message.date !== undefined) {
             obj.date = message.date.toISOString();

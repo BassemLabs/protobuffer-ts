@@ -140,12 +140,12 @@ exports.CreateUserRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
-            first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-            last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            personal_email: isSet(object.personal_email) ? globalThis.String(object.personal_email) : "",
-            phone_number: isSet(object.phone_number) ? globalThis.String(object.phone_number) : "",
-            date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
         };
     },
@@ -158,22 +158,22 @@ exports.CreateUserRequest = {
             obj.username = message.username;
         }
         if (message.first_name !== "") {
-            obj.first_name = message.first_name;
+            obj.firstName = message.first_name;
         }
         if (message.last_name !== "") {
-            obj.last_name = message.last_name;
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
         }
         if (message.personal_email !== "") {
-            obj.personal_email = message.personal_email;
+            obj.personalEmail = message.personal_email;
         }
         if (message.phone_number !== "") {
-            obj.phone_number = message.phone_number;
+            obj.phoneNumber = message.phone_number;
         }
         if (message.date_of_birth !== undefined) {
-            obj.date_of_birth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         if (message.roles?.length) {
             obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
@@ -306,12 +306,12 @@ exports.UpdateProfileRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-            last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            personal_email: isSet(object.personal_email) ? globalThis.String(object.personal_email) : "",
-            phone_number: isSet(object.phone_number) ? globalThis.String(object.phone_number) : "",
-            date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
         };
     },
     toJSON(message) {
@@ -323,22 +323,22 @@ exports.UpdateProfileRequest = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.first_name !== undefined && message.first_name !== "") {
-            obj.first_name = message.first_name;
+            obj.firstName = message.first_name;
         }
         if (message.last_name !== undefined && message.last_name !== "") {
-            obj.last_name = message.last_name;
+            obj.lastName = message.last_name;
         }
         if (message.gender !== undefined && message.gender !== "") {
             obj.gender = message.gender;
         }
         if (message.personal_email !== undefined && message.personal_email !== "") {
-            obj.personal_email = message.personal_email;
+            obj.personalEmail = message.personal_email;
         }
         if (message.phone_number !== undefined && message.phone_number !== "") {
-            obj.phone_number = message.phone_number;
+            obj.phoneNumber = message.phone_number;
         }
         if (message.date_of_birth !== undefined) {
-            obj.date_of_birth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         return obj;
     },

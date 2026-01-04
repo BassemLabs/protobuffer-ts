@@ -267,7 +267,7 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
   fromJSON(object: any): GetTuitionRateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
   },
@@ -278,7 +278,7 @@ export const GetTuitionRateRequest: MessageFns<GetTuitionRateRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
@@ -350,7 +350,7 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
   fromJSON(object: any): ListTuitionRatesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -360,7 +360,7 @@ export const ListTuitionRatesRequest: MessageFns<ListTuitionRatesRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -571,9 +571,9 @@ export const UpsertTuitionRatesRequest: MessageFns<UpsertTuitionRatesRequest> = 
   fromJSON(object: any): UpsertTuitionRatesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
-      grade_amounts: globalThis.Array.isArray(object?.grade_amounts)
-        ? object.grade_amounts.map((e: any) => GradeAmount.fromJSON(e))
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      grade_amounts: globalThis.Array.isArray(object?.gradeAmounts)
+        ? object.gradeAmounts.map((e: any) => GradeAmount.fromJSON(e))
         : [],
     };
   },
@@ -584,10 +584,10 @@ export const UpsertTuitionRatesRequest: MessageFns<UpsertTuitionRatesRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.grade_amounts?.length) {
-      obj.grade_amounts = message.grade_amounts.map((e) => GradeAmount.toJSON(e));
+      obj.gradeAmounts = message.grade_amounts.map((e) => GradeAmount.toJSON(e));
     }
     return obj;
   },
@@ -732,7 +732,7 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
   fromJSON(object: any): ListAdditionalFeesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -742,7 +742,7 @@ export const ListAdditionalFeesRequest: MessageFns<ListAdditionalFeesRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -927,11 +927,11 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
   fromJSON(object: any): CreateAdditionalFeeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-      is_optional: isSet(object.is_optional) ? globalThis.Boolean(object.is_optional) : false,
+      is_optional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
       scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
     };
   },
@@ -942,7 +942,7 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -954,7 +954,7 @@ export const CreateAdditionalFeeRequest: MessageFns<CreateAdditionalFeeRequest> 
       obj.amount = message.amount;
     }
     if (message.is_optional !== false) {
-      obj.is_optional = message.is_optional;
+      obj.isOptional = message.is_optional;
     }
     if (message.scope !== Scope.STUDENT_SCOPE) {
       obj.scope = scopeToJSON(message.scope);
@@ -1092,7 +1092,7 @@ export const UpdateAdditionalFeeRequest: MessageFns<UpdateAdditionalFeeRequest> 
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-      is_optional: isSet(object.is_optional) ? globalThis.Boolean(object.is_optional) : false,
+      is_optional: isSet(object.isOptional) ? globalThis.Boolean(object.isOptional) : false,
       scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
     };
   },
@@ -1115,7 +1115,7 @@ export const UpdateAdditionalFeeRequest: MessageFns<UpdateAdditionalFeeRequest> 
       obj.amount = message.amount;
     }
     if (message.is_optional !== false) {
-      obj.is_optional = message.is_optional;
+      obj.isOptional = message.is_optional;
     }
     if (message.scope !== Scope.STUDENT_SCOPE) {
       obj.scope = scopeToJSON(message.scope);
@@ -1398,7 +1398,7 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
   fromJSON(object: any): ListTuitionDiscountsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1408,7 +1408,7 @@ export const ListTuitionDiscountsRequest: MessageFns<ListTuitionDiscountsRequest
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1617,14 +1617,14 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
   fromJSON(object: any): CreateTuitionDiscountRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      discount_type: isSet(object.discount_type) ? discountTypeFromJSON(object.discount_type) : DiscountType.STANDARD,
+      discount_type: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
       scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
-      value_type: isSet(object.value_type) ? discountValueTypeFromJSON(object.value_type) : DiscountValueType.AMOUNT,
+      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      stack_mode: isSet(object.stack_mode) ? discountStackModeFromJSON(object.stack_mode) : DiscountStackMode.ADDITIVE,
+      stack_mode: isSet(object.stackMode) ? discountStackModeFromJSON(object.stackMode) : DiscountStackMode.ADDITIVE,
     };
   },
 
@@ -1634,19 +1634,19 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.discount_type !== DiscountType.STANDARD) {
-      obj.discount_type = discountTypeToJSON(message.discount_type);
+      obj.discountType = discountTypeToJSON(message.discount_type);
     }
     if (message.scope !== Scope.STUDENT_SCOPE) {
       obj.scope = scopeToJSON(message.scope);
     }
     if (message.value_type !== DiscountValueType.AMOUNT) {
-      obj.value_type = discountValueTypeToJSON(message.value_type);
+      obj.valueType = discountValueTypeToJSON(message.value_type);
     }
     if (message.value !== 0) {
       obj.value = message.value;
@@ -1655,7 +1655,7 @@ export const CreateTuitionDiscountRequest: MessageFns<CreateTuitionDiscountReque
       obj.description = message.description;
     }
     if (message.stack_mode !== DiscountStackMode.ADDITIVE) {
-      obj.stack_mode = discountStackModeToJSON(message.stack_mode);
+      obj.stackMode = discountStackModeToJSON(message.stack_mode);
     }
     return obj;
   },
@@ -1812,12 +1812,12 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      discount_type: isSet(object.discount_type) ? discountTypeFromJSON(object.discount_type) : DiscountType.STANDARD,
+      discount_type: isSet(object.discountType) ? discountTypeFromJSON(object.discountType) : DiscountType.STANDARD,
       scope: isSet(object.scope) ? scopeFromJSON(object.scope) : Scope.STUDENT_SCOPE,
-      value_type: isSet(object.value_type) ? discountValueTypeFromJSON(object.value_type) : DiscountValueType.AMOUNT,
+      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      stack_mode: isSet(object.stack_mode) ? discountStackModeFromJSON(object.stack_mode) : DiscountStackMode.ADDITIVE,
+      stack_mode: isSet(object.stackMode) ? discountStackModeFromJSON(object.stackMode) : DiscountStackMode.ADDITIVE,
     };
   },
 
@@ -1833,13 +1833,13 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
       obj.name = message.name;
     }
     if (message.discount_type !== DiscountType.STANDARD) {
-      obj.discount_type = discountTypeToJSON(message.discount_type);
+      obj.discountType = discountTypeToJSON(message.discount_type);
     }
     if (message.scope !== Scope.STUDENT_SCOPE) {
       obj.scope = scopeToJSON(message.scope);
     }
     if (message.value_type !== DiscountValueType.AMOUNT) {
-      obj.value_type = discountValueTypeToJSON(message.value_type);
+      obj.valueType = discountValueTypeToJSON(message.value_type);
     }
     if (message.value !== 0) {
       obj.value = message.value;
@@ -1848,7 +1848,7 @@ export const UpdateTuitionDiscountRequest: MessageFns<UpdateTuitionDiscountReque
       obj.description = message.description;
     }
     if (message.stack_mode !== DiscountStackMode.ADDITIVE) {
-      obj.stack_mode = discountStackModeToJSON(message.stack_mode);
+      obj.stackMode = discountStackModeToJSON(message.stack_mode);
     }
     return obj;
   },
@@ -2142,7 +2142,7 @@ export const ListTuitionPlansRequest: MessageFns<ListTuitionPlansRequest> = {
   fromJSON(object: any): ListTuitionPlansRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
     };
   },
@@ -2153,7 +2153,7 @@ export const ListTuitionPlansRequest: MessageFns<ListTuitionPlansRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.archived !== undefined && message.archived !== false) {
       obj.archived = message.archived;
@@ -2364,18 +2364,18 @@ export const CreateTuitionPlanRequest: MessageFns<CreateTuitionPlanRequest> = {
   fromJSON(object: any): CreateTuitionPlanRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      schedule_type: isSet(object.schedule_type)
-        ? paymentScheduleTypeFromJSON(object.schedule_type)
+      schedule_type: isSet(object.scheduleType)
+        ? paymentScheduleTypeFromJSON(object.scheduleType)
         : PaymentScheduleType.ONE_TIME,
-      day_of_month: isSet(object.day_of_month) ? globalThis.Number(object.day_of_month) : 0,
+      day_of_month: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
       installments: globalThis.Array.isArray(object?.installments)
         ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
         : [],
-      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -2385,7 +2385,7 @@ export const CreateTuitionPlanRequest: MessageFns<CreateTuitionPlanRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -2394,19 +2394,19 @@ export const CreateTuitionPlanRequest: MessageFns<CreateTuitionPlanRequest> = {
       obj.description = message.description;
     }
     if (message.schedule_type !== PaymentScheduleType.ONE_TIME) {
-      obj.schedule_type = paymentScheduleTypeToJSON(message.schedule_type);
+      obj.scheduleType = paymentScheduleTypeToJSON(message.schedule_type);
     }
     if (message.day_of_month !== undefined && message.day_of_month !== 0) {
-      obj.day_of_month = Math.round(message.day_of_month);
+      obj.dayOfMonth = Math.round(message.day_of_month);
     }
     if (message.installments?.length) {
       obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
     }
     if (message.start_date !== undefined) {
-      obj.start_date = message.start_date.toISOString();
+      obj.startDate = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.end_date = message.end_date.toISOString();
+      obj.endDate = message.end_date.toISOString();
     }
     return obj;
   },
@@ -2564,15 +2564,15 @@ export const UpdateTuitionPlanRequest: MessageFns<UpdateTuitionPlanRequest> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      schedule_type: isSet(object.schedule_type)
-        ? paymentScheduleTypeFromJSON(object.schedule_type)
+      schedule_type: isSet(object.scheduleType)
+        ? paymentScheduleTypeFromJSON(object.scheduleType)
         : PaymentScheduleType.ONE_TIME,
-      day_of_month: isSet(object.day_of_month) ? globalThis.Number(object.day_of_month) : 0,
+      day_of_month: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
       installments: globalThis.Array.isArray(object?.installments)
         ? object.installments.map((e: any) => PaymentInstallment.fromJSON(e))
         : [],
-      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -2591,19 +2591,19 @@ export const UpdateTuitionPlanRequest: MessageFns<UpdateTuitionPlanRequest> = {
       obj.description = message.description;
     }
     if (message.schedule_type !== PaymentScheduleType.ONE_TIME) {
-      obj.schedule_type = paymentScheduleTypeToJSON(message.schedule_type);
+      obj.scheduleType = paymentScheduleTypeToJSON(message.schedule_type);
     }
     if (message.day_of_month !== undefined && message.day_of_month !== 0) {
-      obj.day_of_month = Math.round(message.day_of_month);
+      obj.dayOfMonth = Math.round(message.day_of_month);
     }
     if (message.installments?.length) {
       obj.installments = message.installments.map((e) => PaymentInstallment.toJSON(e));
     }
     if (message.start_date !== undefined) {
-      obj.start_date = message.start_date.toISOString();
+      obj.startDate = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.end_date = message.end_date.toISOString();
+      obj.endDate = message.end_date.toISOString();
     }
     return obj;
   },

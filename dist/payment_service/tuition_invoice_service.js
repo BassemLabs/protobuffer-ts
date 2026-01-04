@@ -148,7 +148,7 @@ exports.GetFamilyTuitionInvoiceRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -160,7 +160,7 @@ exports.GetFamilyTuitionInvoiceRequest = {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.school_year !== undefined) {
-            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -243,8 +243,8 @@ exports.GenerateTuitionInvoiceRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
-            tuition_plan: isSet(object.tuition_plan) ? object_id_1.ObjectId.fromJSON(object.tuition_plan) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            tuition_plan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
         };
     },
     toJSON(message) {
@@ -256,10 +256,10 @@ exports.GenerateTuitionInvoiceRequest = {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.school_year !== undefined) {
-            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.tuition_plan !== undefined) {
-            obj.tuition_plan = object_id_1.ObjectId.toJSON(message.tuition_plan);
+            obj.tuitionPlan = object_id_1.ObjectId.toJSON(message.tuition_plan);
         }
         return obj;
     },
@@ -335,8 +335,8 @@ exports.ModifyTuitionInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            tuition_invoice: isSet(object.tuition_invoice) ? object_id_1.ObjectId.fromJSON(object.tuition_invoice) : undefined,
-            tuition_plan: isSet(object.tuition_plan) ? object_id_1.ObjectId.fromJSON(object.tuition_plan) : undefined,
+            tuition_invoice: isSet(object.tuitionInvoice) ? object_id_1.ObjectId.fromJSON(object.tuitionInvoice) : undefined,
+            tuition_plan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
         };
     },
     toJSON(message) {
@@ -345,10 +345,10 @@ exports.ModifyTuitionInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.tuition_invoice !== undefined) {
-            obj.tuition_invoice = object_id_1.ObjectId.toJSON(message.tuition_invoice);
+            obj.tuitionInvoice = object_id_1.ObjectId.toJSON(message.tuition_invoice);
         }
         if (message.tuition_plan !== undefined) {
-            obj.tuition_plan = object_id_1.ObjectId.toJSON(message.tuition_plan);
+            obj.tuitionPlan = object_id_1.ObjectId.toJSON(message.tuition_plan);
         }
         return obj;
     },
@@ -430,9 +430,9 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
-            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
         };
     },
     toJSON(message) {
@@ -441,13 +441,13 @@ exports.ListFamiliesWithTuitionInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.school_year !== undefined) {
-            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.start_date !== undefined) {
-            obj.start_date = message.start_date.toISOString();
+            obj.startDate = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.end_date = message.end_date.toISOString();
+            obj.endDate = message.end_date.toISOString();
         }
         return obj;
     },
@@ -500,15 +500,15 @@ exports.ListFamiliesWithTuitionInvoicesResponse = {
     },
     fromJSON(object) {
         return {
-            family_with_tuition_invoice: globalThis.Array.isArray(object?.family_with_tuition_invoice)
-                ? object.family_with_tuition_invoice.map((e) => exports.FamilyWithTuitionInvoice.fromJSON(e))
+            family_with_tuition_invoice: globalThis.Array.isArray(object?.familyWithTuitionInvoice)
+                ? object.familyWithTuitionInvoice.map((e) => exports.FamilyWithTuitionInvoice.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.family_with_tuition_invoice?.length) {
-            obj.family_with_tuition_invoice = message.family_with_tuition_invoice.map((e) => exports.FamilyWithTuitionInvoice.toJSON(e));
+            obj.familyWithTuitionInvoice = message.family_with_tuition_invoice.map((e) => exports.FamilyWithTuitionInvoice.toJSON(e));
         }
         return obj;
     },
@@ -608,11 +608,11 @@ exports.FamilyWithTuitionInvoice = {
     fromJSON(object) {
         return {
             family: isSet(object.family) ? family_1.Family.fromJSON(object.family) : undefined,
-            tuition_invoice: isSet(object.tuition_invoice) ? tuition_invoice_1.TuitionInvoice.fromJSON(object.tuition_invoice) : undefined,
-            student_count: isSet(object.student_count) ? globalThis.Number(object.student_count) : 0,
-            total_paid: isSet(object.total_paid) ? globalThis.Number(object.total_paid) : 0,
+            tuition_invoice: isSet(object.tuitionInvoice) ? tuition_invoice_1.TuitionInvoice.fromJSON(object.tuitionInvoice) : undefined,
+            student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
+            total_paid: isSet(object.totalPaid) ? globalThis.Number(object.totalPaid) : 0,
             status: isSet(object.status) ? (0, tuition_invoice_1.tuitionInvoiceStatusFromJSON)(object.status) : tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED,
-            total_invoices_amount: isSet(object.total_invoices_amount) ? globalThis.Number(object.total_invoices_amount) : 0,
+            total_invoices_amount: isSet(object.totalInvoicesAmount) ? globalThis.Number(object.totalInvoicesAmount) : 0,
         };
     },
     toJSON(message) {
@@ -621,19 +621,19 @@ exports.FamilyWithTuitionInvoice = {
             obj.family = family_1.Family.toJSON(message.family);
         }
         if (message.tuition_invoice !== undefined) {
-            obj.tuition_invoice = tuition_invoice_1.TuitionInvoice.toJSON(message.tuition_invoice);
+            obj.tuitionInvoice = tuition_invoice_1.TuitionInvoice.toJSON(message.tuition_invoice);
         }
         if (message.student_count !== 0) {
-            obj.student_count = Math.round(message.student_count);
+            obj.studentCount = Math.round(message.student_count);
         }
         if (message.total_paid !== 0) {
-            obj.total_paid = message.total_paid;
+            obj.totalPaid = message.total_paid;
         }
         if (message.status !== tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED) {
             obj.status = (0, tuition_invoice_1.tuitionInvoiceStatusToJSON)(message.status);
         }
         if (message.total_invoices_amount !== 0) {
-            obj.total_invoices_amount = message.total_invoices_amount;
+            obj.totalInvoicesAmount = message.total_invoices_amount;
         }
         return obj;
     },

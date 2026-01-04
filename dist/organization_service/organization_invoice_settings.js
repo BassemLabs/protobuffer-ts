@@ -51,17 +51,17 @@ exports.InvoiceSettings = {
     },
     fromJSON(object) {
         return {
-            disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
-            hst_number: isSet(object.hst_number) ? globalThis.String(object.hst_number) : "",
+            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+            hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.disable_tax !== false) {
-            obj.disable_tax = message.disable_tax;
+            obj.disableTax = message.disable_tax;
         }
         if (message.hst_number !== undefined && message.hst_number !== "") {
-            obj.hst_number = message.hst_number;
+            obj.hstNumber = message.hst_number;
         }
         return obj;
     },

@@ -54,7 +54,7 @@ exports.GetByIDRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
         };
     },
     toJSON(message) {
@@ -63,7 +63,7 @@ exports.GetByIDRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         return obj;
     },

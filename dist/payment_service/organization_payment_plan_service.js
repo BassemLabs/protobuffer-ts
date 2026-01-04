@@ -98,15 +98,15 @@ exports.GetPaymentPlansResponse = {
     },
     fromJSON(object) {
         return {
-            payment_plans: globalThis.Array.isArray(object?.payment_plans)
-                ? object.payment_plans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.fromJSON(e))
+            payment_plans: globalThis.Array.isArray(object?.paymentPlans)
+                ? object.paymentPlans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.payment_plans?.length) {
-            obj.payment_plans = message.payment_plans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.toJSON(e));
+            obj.paymentPlans = message.payment_plans.map((e) => organization_payment_plan_1.OrganizationPaymentPlan.toJSON(e));
         }
         return obj;
     },
@@ -238,14 +238,14 @@ exports.CreatePaymentPlanRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
-            is_public: isSet(object.is_public) ? globalThis.Boolean(object.is_public) : false,
-            upfront_cost: isSet(object.upfront_cost) ? globalThis.Number(object.upfront_cost) : 0,
-            upfront_cost_payment_interval: isSet(object.upfront_cost_payment_interval)
-                ? (0, organization_payment_plan_1.paymentIntervalFromJSON)(object.upfront_cost_payment_interval)
+            is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
+            upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+            upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
+                ? (0, organization_payment_plan_1.paymentIntervalFromJSON)(object.upfrontCostPaymentInterval)
                 : organization_payment_plan_1.PaymentInterval.Monthly,
-            per_student_cost: isSet(object.per_student_cost) ? globalThis.Number(object.per_student_cost) : 0,
-            payment_processing_percentage: isSet(object.payment_processing_percentage)
-                ? globalThis.Number(object.payment_processing_percentage)
+            per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+            payment_processing_percentage: isSet(object.paymentProcessingPercentage)
+                ? globalThis.Number(object.paymentProcessingPercentage)
                 : 0,
         };
     },
@@ -264,19 +264,19 @@ exports.CreatePaymentPlanRequest = {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
         }
         if (message.is_public !== false) {
-            obj.is_public = message.is_public;
+            obj.isPublic = message.is_public;
         }
         if (message.upfront_cost !== 0) {
-            obj.upfront_cost = message.upfront_cost;
+            obj.upfrontCost = message.upfront_cost;
         }
         if (message.upfront_cost_payment_interval !== organization_payment_plan_1.PaymentInterval.Monthly) {
-            obj.upfront_cost_payment_interval = (0, organization_payment_plan_1.paymentIntervalToJSON)(message.upfront_cost_payment_interval);
+            obj.upfrontCostPaymentInterval = (0, organization_payment_plan_1.paymentIntervalToJSON)(message.upfront_cost_payment_interval);
         }
         if (message.per_student_cost !== 0) {
-            obj.per_student_cost = message.per_student_cost;
+            obj.perStudentCost = message.per_student_cost;
         }
         if (message.payment_processing_percentage !== 0) {
-            obj.payment_processing_percentage = message.payment_processing_percentage;
+            obj.paymentProcessingPercentage = message.payment_processing_percentage;
         }
         return obj;
     },
@@ -436,15 +436,15 @@ exports.GetAllPaymentPlanAccessResponse = {
     },
     fromJSON(object) {
         return {
-            organization_plan_access: globalThis.Array.isArray(object?.organization_plan_access)
-                ? object.organization_plan_access.map((e) => organization_payment_plan_1.OrganizationPlanAccess.fromJSON(e))
+            organization_plan_access: globalThis.Array.isArray(object?.organizationPlanAccess)
+                ? object.organizationPlanAccess.map((e) => organization_payment_plan_1.OrganizationPlanAccess.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.organization_plan_access?.length) {
-            obj.organization_plan_access = message.organization_plan_access.map((e) => organization_payment_plan_1.OrganizationPlanAccess.toJSON(e));
+            obj.organizationPlanAccess = message.organization_plan_access.map((e) => organization_payment_plan_1.OrganizationPlanAccess.toJSON(e));
         }
         return obj;
     },
@@ -510,8 +510,8 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            payment_plan_id: isSet(object.payment_plan_id) ? object_id_1.ObjectId.fromJSON(object.payment_plan_id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
         };
     },
     toJSON(message) {
@@ -520,10 +520,10 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.payment_plan_id !== undefined) {
-            obj.payment_plan_id = object_id_1.ObjectId.toJSON(message.payment_plan_id);
+            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
         }
         return obj;
     },
@@ -596,9 +596,9 @@ exports.AssignPaymentPlanToOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            payment_plan_id: isSet(object.payment_plan_id) ? object_id_1.ObjectId.fromJSON(object.payment_plan_id) : undefined,
-            defer_per_student_cost_to_parent: isSet(object.defer_per_student_cost_to_parent)
-                ? globalThis.Boolean(object.defer_per_student_cost_to_parent)
+            payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
+            defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
+                ? globalThis.Boolean(object.deferPerStudentCostToParent)
                 : false,
         };
     },
@@ -608,10 +608,10 @@ exports.AssignPaymentPlanToOrganizationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.payment_plan_id !== undefined) {
-            obj.payment_plan_id = object_id_1.ObjectId.toJSON(message.payment_plan_id);
+            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
         }
         if (message.defer_per_student_cost_to_parent !== false) {
-            obj.defer_per_student_cost_to_parent = message.defer_per_student_cost_to_parent;
+            obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
         }
         return obj;
     },
@@ -767,15 +767,15 @@ exports.GetOrgsPaymentPlanInfoResponse = {
     },
     fromJSON(object) {
         return {
-            org_payment_plan_info: globalThis.Array.isArray(object?.org_payment_plan_info)
-                ? object.org_payment_plan_info.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.fromJSON(e))
+            org_payment_plan_info: globalThis.Array.isArray(object?.orgPaymentPlanInfo)
+                ? object.orgPaymentPlanInfo.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.org_payment_plan_info?.length) {
-            obj.org_payment_plan_info = message.org_payment_plan_info.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.toJSON(e));
+            obj.orgPaymentPlanInfo = message.org_payment_plan_info.map((e) => organization_payment_plan_1.OrganizationPaymentPlanInformation.toJSON(e));
         }
         return obj;
     },
@@ -832,7 +832,7 @@ exports.GetOrgActivePaymentPlanWithInfoRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
         };
     },
     toJSON(message) {
@@ -841,7 +841,7 @@ exports.GetOrgActivePaymentPlanWithInfoRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },

@@ -390,7 +390,7 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -403,7 +403,7 @@ export const ListStudentDiscountsRequest: MessageFns<ListStudentDiscountsRequest
       obj.student = ObjectId.toJSON(message.student);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -546,7 +546,7 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -559,7 +559,7 @@ export const ListFamilyDiscountsRequest: MessageFns<ListFamilyDiscountsRequest> 
       obj.family = ObjectId.toJSON(message.family);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -711,7 +711,7 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
   fromJSON(object: any): ApplyAdditionalFeeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      additional_fee: isSet(object.additional_fee) ? ObjectId.fromJSON(object.additional_fee) : undefined,
+      additional_fee: isSet(object.additionalFee) ? ObjectId.fromJSON(object.additionalFee) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
     };
@@ -723,7 +723,7 @@ export const ApplyAdditionalFeeRequest: MessageFns<ApplyAdditionalFeeRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.additional_fee !== undefined) {
-      obj.additional_fee = ObjectId.toJSON(message.additional_fee);
+      obj.additionalFee = ObjectId.toJSON(message.additional_fee);
     }
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);
@@ -947,7 +947,7 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -960,7 +960,7 @@ export const ListStudentAdditionalFeesRequest: MessageFns<ListStudentAdditionalF
       obj.student = ObjectId.toJSON(message.student);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1111,7 +1111,7 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1124,7 +1124,7 @@ export const ListFamilyAdditionalFeesRequest: MessageFns<ListFamilyAdditionalFee
       obj.family = ObjectId.toJSON(message.family);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },

@@ -182,7 +182,7 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
   fromJSON(object: any): GetParentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
     };
   },
 
@@ -192,7 +192,7 @@ export const GetParentRequest: MessageFns<GetParentRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parent_id = ObjectId.toJSON(message.parent_id);
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -260,8 +260,8 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
   fromJSON(object: any): GetParentsByIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_ids: globalThis.Array.isArray(object?.parent_ids)
-        ? object.parent_ids.map((e: any) => ObjectId.fromJSON(e))
+      parent_ids: globalThis.Array.isArray(object?.parentIds)
+        ? object.parentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -272,7 +272,7 @@ export const GetParentsByIdsRequest: MessageFns<GetParentsByIdsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_ids?.length) {
-      obj.parent_ids = message.parent_ids.map((e) => ObjectId.toJSON(e));
+      obj.parentIds = message.parent_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -532,7 +532,7 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
   fromJSON(object: any): GetParentStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
     };
   },
 
@@ -542,7 +542,7 @@ export const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parent_id = ObjectId.toJSON(message.parent_id);
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -732,7 +732,7 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
   fromJSON(object: any): GetParentStudentIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
     };
   },
 
@@ -742,7 +742,7 @@ export const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parent_id = ObjectId.toJSON(message.parent_id);
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -799,8 +799,8 @@ export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse
 
   fromJSON(object: any): GetParentStudentIdsResponse {
     return {
-      student_ids: globalThis.Array.isArray(object?.student_ids)
-        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -808,7 +808,7 @@ export const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse
   toJSON(message: GetParentStudentIdsResponse): unknown {
     const obj: any = {};
     if (message.student_ids?.length) {
-      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -933,8 +933,8 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
 
   fromJSON(object: any): GetContextActiveSchoolYearEnrolledStudentIdsResponse {
     return {
-      student_ids: globalThis.Array.isArray(object?.student_ids)
-        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -942,7 +942,7 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
   toJSON(message: GetContextActiveSchoolYearEnrolledStudentIdsResponse): unknown {
     const obj: any = {};
     if (message.student_ids?.length) {
-      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1031,7 +1031,7 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
-      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
     };
   },
 
@@ -1047,7 +1047,7 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
       obj.email = message.email;
     }
     if (message.family_id !== undefined) {
-      obj.family_id = ObjectId.toJSON(message.family_id);
+      obj.familyId = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -1129,7 +1129,7 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
   fromJSON(object: any): UpdateParentProfileRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
       profile: isSet(object.profile) ? ParentProfile.fromJSON(object.profile) : undefined,
     };
   },
@@ -1140,7 +1140,7 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parent_id = ObjectId.toJSON(message.parent_id);
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     if (message.profile !== undefined) {
       obj.profile = ParentProfile.toJSON(message.profile);
@@ -1244,9 +1244,9 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
   fromJSON(object: any): AuthenticateParentForOrgRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      firebase_user_id: isSet(object.firebase_user_id) ? globalThis.String(object.firebase_user_id) : "",
-      display_name: isSet(object.display_name) ? globalThis.String(object.display_name) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      firebase_user_id: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : "",
+      display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
     };
   },
@@ -1257,13 +1257,13 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.firebase_user_id !== "") {
-      obj.firebase_user_id = message.firebase_user_id;
+      obj.firebaseUserId = message.firebase_user_id;
     }
     if (message.display_name !== "") {
-      obj.display_name = message.display_name;
+      obj.displayName = message.display_name;
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -1349,11 +1349,11 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
   fromJSON(object: any): AuthenticateParentForOrgResponse {
     return {
       parent: isSet(object.parent) ? Parent.fromJSON(object.parent) : undefined,
-      family_ids: globalThis.Array.isArray(object?.family_ids)
-        ? object.family_ids.map((e: any) => ObjectId.fromJSON(e))
+      family_ids: globalThis.Array.isArray(object?.familyIds)
+        ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      student_ids: globalThis.Array.isArray(object?.student_ids)
-        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -1364,10 +1364,10 @@ export const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForO
       obj.parent = Parent.toJSON(message.parent);
     }
     if (message.family_ids?.length) {
-      obj.family_ids = message.family_ids.map((e) => ObjectId.toJSON(e));
+      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.student_ids?.length) {
-      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1512,18 +1512,18 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
   fromJSON(object: any): UpdateParentPaymentMethodFromSetupIntentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stripe_customer_id: isSet(object.stripe_customer_id) ? globalThis.String(object.stripe_customer_id) : "",
-      default_payment_method_id: isSet(object.default_payment_method_id)
-        ? globalThis.String(object.default_payment_method_id)
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      default_payment_method_id: isSet(object.defaultPaymentMethodId)
+        ? globalThis.String(object.defaultPaymentMethodId)
         : "",
-      default_payment_method_type: isSet(object.default_payment_method_type)
-        ? globalThis.String(object.default_payment_method_type)
+      default_payment_method_type: isSet(object.defaultPaymentMethodType)
+        ? globalThis.String(object.defaultPaymentMethodType)
         : "",
-      payment_method_brand: isSet(object.payment_method_brand) ? globalThis.String(object.payment_method_brand) : "",
-      payment_method_last4: isSet(object.payment_method_last4) ? globalThis.String(object.payment_method_last4) : "",
-      payment_method_expiry: isSet(object.payment_method_expiry) ? globalThis.String(object.payment_method_expiry) : "",
-      payment_method_mandate_id: isSet(object.payment_method_mandate_id)
-        ? globalThis.String(object.payment_method_mandate_id)
+      payment_method_brand: isSet(object.paymentMethodBrand) ? globalThis.String(object.paymentMethodBrand) : "",
+      payment_method_last4: isSet(object.paymentMethodLast4) ? globalThis.String(object.paymentMethodLast4) : "",
+      payment_method_expiry: isSet(object.paymentMethodExpiry) ? globalThis.String(object.paymentMethodExpiry) : "",
+      payment_method_mandate_id: isSet(object.paymentMethodMandateId)
+        ? globalThis.String(object.paymentMethodMandateId)
         : "",
     };
   },
@@ -1534,25 +1534,25 @@ export const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.stripe_customer_id !== "") {
-      obj.stripe_customer_id = message.stripe_customer_id;
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
     if (message.default_payment_method_id !== "") {
-      obj.default_payment_method_id = message.default_payment_method_id;
+      obj.defaultPaymentMethodId = message.default_payment_method_id;
     }
     if (message.default_payment_method_type !== undefined && message.default_payment_method_type !== "") {
-      obj.default_payment_method_type = message.default_payment_method_type;
+      obj.defaultPaymentMethodType = message.default_payment_method_type;
     }
     if (message.payment_method_brand !== undefined && message.payment_method_brand !== "") {
-      obj.payment_method_brand = message.payment_method_brand;
+      obj.paymentMethodBrand = message.payment_method_brand;
     }
     if (message.payment_method_last4 !== undefined && message.payment_method_last4 !== "") {
-      obj.payment_method_last4 = message.payment_method_last4;
+      obj.paymentMethodLast4 = message.payment_method_last4;
     }
     if (message.payment_method_expiry !== undefined && message.payment_method_expiry !== "") {
-      obj.payment_method_expiry = message.payment_method_expiry;
+      obj.paymentMethodExpiry = message.payment_method_expiry;
     }
     if (message.payment_method_mandate_id !== undefined && message.payment_method_mandate_id !== "") {
-      obj.payment_method_mandate_id = message.payment_method_mandate_id;
+      obj.paymentMethodMandateId = message.payment_method_mandate_id;
     }
     return obj;
   },
@@ -1638,8 +1638,8 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
   fromJSON(object: any): SetParentSetupIntentRequiresActionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stripe_customer_id: isSet(object.stripe_customer_id) ? globalThis.String(object.stripe_customer_id) : "",
-      setup_intent_id: isSet(object.setup_intent_id) ? globalThis.String(object.setup_intent_id) : "",
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      setup_intent_id: isSet(object.setupIntentId) ? globalThis.String(object.setupIntentId) : "",
     };
   },
 
@@ -1649,10 +1649,10 @@ export const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetu
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.stripe_customer_id !== "") {
-      obj.stripe_customer_id = message.stripe_customer_id;
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
     if (message.setup_intent_id !== "") {
-      obj.setup_intent_id = message.setup_intent_id;
+      obj.setupIntentId = message.setup_intent_id;
     }
     return obj;
   },
@@ -1733,8 +1733,8 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
   fromJSON(object: any): SetParentSetupIntentFailureRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      stripe_customer_id: isSet(object.stripe_customer_id) ? globalThis.String(object.stripe_customer_id) : "",
-      failure_reason: isSet(object.failure_reason) ? globalThis.String(object.failure_reason) : "",
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
+      failure_reason: isSet(object.failureReason) ? globalThis.String(object.failureReason) : "",
     };
   },
 
@@ -1744,10 +1744,10 @@ export const SetParentSetupIntentFailureRequest: MessageFns<SetParentSetupIntent
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.stripe_customer_id !== "") {
-      obj.stripe_customer_id = message.stripe_customer_id;
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
     if (message.failure_reason !== "") {
-      obj.failure_reason = message.failure_reason;
+      obj.failureReason = message.failure_reason;
     }
     return obj;
   },
@@ -1828,8 +1828,8 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
   fromJSON(object: any): SetParentStripeCustomerIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
-      stripe_customer_id: isSet(object.stripe_customer_id) ? globalThis.String(object.stripe_customer_id) : "",
+      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      stripe_customer_id: isSet(object.stripeCustomerId) ? globalThis.String(object.stripeCustomerId) : "",
     };
   },
 
@@ -1839,10 +1839,10 @@ export const SetParentStripeCustomerIdRequest: MessageFns<SetParentStripeCustome
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parent_id = ObjectId.toJSON(message.parent_id);
+      obj.parentId = ObjectId.toJSON(message.parent_id);
     }
     if (message.stripe_customer_id !== "") {
-      obj.stripe_customer_id = message.stripe_customer_id;
+      obj.stripeCustomerId = message.stripe_customer_id;
     }
     return obj;
   },

@@ -164,8 +164,8 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
       address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
-      principal_id: isSet(object.principal_id) ? ObjectId.fromJSON(object.principal_id) : undefined,
-      supervisor_id: isSet(object.supervisor_id) ? ObjectId.fromJSON(object.supervisor_id) : undefined,
+      principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
+      supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
     };
   },
 
@@ -187,10 +187,10 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
       obj.phone = message.phone;
     }
     if (message.principal_id !== undefined) {
-      obj.principal_id = ObjectId.toJSON(message.principal_id);
+      obj.principalId = ObjectId.toJSON(message.principal_id);
     }
     if (message.supervisor_id !== undefined) {
-      obj.supervisor_id = ObjectId.toJSON(message.supervisor_id);
+      obj.supervisorId = ObjectId.toJSON(message.supervisor_id);
     }
     return obj;
   },
@@ -339,8 +339,8 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
       address: isSet(object.address) ? globalThis.String(object.address) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
-      principal_id: isSet(object.principal_id) ? ObjectId.fromJSON(object.principal_id) : undefined,
-      supervisor_id: isSet(object.supervisor_id) ? ObjectId.fromJSON(object.supervisor_id) : undefined,
+      principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
+      supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
     };
   },
 
@@ -365,10 +365,10 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
       obj.phone = message.phone;
     }
     if (message.principal_id !== undefined) {
-      obj.principal_id = ObjectId.toJSON(message.principal_id);
+      obj.principalId = ObjectId.toJSON(message.principal_id);
     }
     if (message.supervisor_id !== undefined) {
-      obj.supervisor_id = ObjectId.toJSON(message.supervisor_id);
+      obj.supervisorId = ObjectId.toJSON(message.supervisor_id);
     }
     return obj;
   },
@@ -464,9 +464,9 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
   fromJSON(object: any): UpdateLogoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      campus_id: isSet(object.campus_id) ? ObjectId.fromJSON(object.campus_id) : undefined,
-      file_name: isSet(object.file_name) ? globalThis.String(object.file_name) : "",
-      aws_s3_file_location: isSet(object.aws_s3_file_location) ? globalThis.String(object.aws_s3_file_location) : "",
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
     };
   },
 
@@ -476,13 +476,13 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.campus_id !== undefined) {
-      obj.campus_id = ObjectId.toJSON(message.campus_id);
+      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
     if (message.file_name !== "") {
-      obj.file_name = message.file_name;
+      obj.fileName = message.file_name;
     }
     if (message.aws_s3_file_location !== "") {
-      obj.aws_s3_file_location = message.aws_s3_file_location;
+      obj.awsS3FileLocation = message.aws_s3_file_location;
     }
     return obj;
   },
@@ -552,7 +552,7 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
   fromJSON(object: any): GetCampusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      campus_id: isSet(object.campus_id) ? ObjectId.fromJSON(object.campus_id) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
     };
   },
 
@@ -562,7 +562,7 @@ export const GetCampusRequest: MessageFns<GetCampusRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.campus_id !== undefined) {
-      obj.campus_id = ObjectId.toJSON(message.campus_id);
+      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
     return obj;
   },
@@ -630,7 +630,7 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
   fromJSON(object: any): GetOrganizationCampusesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -640,7 +640,7 @@ export const GetOrganizationCampusesRequest: MessageFns<GetOrganizationCampusesR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },

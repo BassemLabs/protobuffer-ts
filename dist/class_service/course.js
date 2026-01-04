@@ -144,15 +144,15 @@ exports.Course = {
             semester: isSet(object.semester) ? semester_1.Semester.fromJSON(object.semester) : undefined,
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            course_code: isSet(object.course_code) ? globalThis.String(object.course_code) : "",
-            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
-                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
+            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
+                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            student_ids: globalThis.Array.isArray(object?.student_ids)
-                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            lms_course: isSet(object.lms_course) ? lms_course_1.LmsCourse.fromJSON(object.lms_course) : undefined,
-            report_layout: isSet(object.report_layout) ? report_layout_1.ReportLayout.fromJSON(object.report_layout) : undefined,
+            lms_course: isSet(object.lmsCourse) ? lms_course_1.LmsCourse.fromJSON(object.lmsCourse) : undefined,
+            report_layout: isSet(object.reportLayout) ? report_layout_1.ReportLayout.fromJSON(object.reportLayout) : undefined,
         };
     },
     toJSON(message) {
@@ -173,19 +173,19 @@ exports.Course = {
             obj.name = message.name;
         }
         if (message.course_code !== "") {
-            obj.course_code = message.course_code;
+            obj.courseCode = message.course_code;
         }
         if (message.teacher_ids?.length) {
-            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.student_ids?.length) {
-            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.lms_course !== undefined) {
-            obj.lms_course = lms_course_1.LmsCourse.toJSON(message.lms_course);
+            obj.lmsCourse = lms_course_1.LmsCourse.toJSON(message.lms_course);
         }
         if (message.report_layout !== undefined) {
-            obj.report_layout = report_layout_1.ReportLayout.toJSON(message.report_layout);
+            obj.reportLayout = report_layout_1.ReportLayout.toJSON(message.report_layout);
         }
         return obj;
     },
@@ -314,7 +314,7 @@ exports.ListCourse = {
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             semester: isSet(object.semester) ? semester_1.ListSemester.fromJSON(object.semester) : undefined,
-            course_code: isSet(object.course_code) ? globalThis.String(object.course_code) : "",
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             homeroom: isSet(object.homeroom) ? homeroom_1.ListHomeroom.fromJSON(object.homeroom) : undefined,
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
         };
@@ -334,7 +334,7 @@ exports.ListCourse = {
             obj.semester = semester_1.ListSemester.toJSON(message.semester);
         }
         if (message.course_code !== "") {
-            obj.course_code = message.course_code;
+            obj.courseCode = message.course_code;
         }
         if (message.homeroom !== undefined) {
             obj.homeroom = homeroom_1.ListHomeroom.toJSON(message.homeroom);
@@ -406,7 +406,7 @@ exports.CourseList = {
     fromJSON(object) {
         return {
             courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => exports.ListCourse.fromJSON(e)) : [],
-            courses_count: isSet(object.courses_count) ? globalThis.Number(object.courses_count) : 0,
+            courses_count: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : 0,
         };
     },
     toJSON(message) {
@@ -415,7 +415,7 @@ exports.CourseList = {
             obj.courses = message.courses.map((e) => exports.ListCourse.toJSON(e));
         }
         if (message.courses_count !== 0) {
-            obj.courses_count = Math.round(message.courses_count);
+            obj.coursesCount = Math.round(message.courses_count);
         }
         return obj;
     },

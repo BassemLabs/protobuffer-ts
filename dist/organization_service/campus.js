@@ -143,8 +143,8 @@ exports.Campus = {
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
             logo: isSet(object.logo) ? aws_file_1.AWSFile.fromJSON(object.logo) : undefined,
-            principal_id: isSet(object.principal_id) ? object_id_1.ObjectId.fromJSON(object.principal_id) : undefined,
-            supervisor_id: isSet(object.supervisor_id) ? object_id_1.ObjectId.fromJSON(object.supervisor_id) : undefined,
+            principal_id: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
+            supervisor_id: isSet(object.supervisorId) ? object_id_1.ObjectId.fromJSON(object.supervisorId) : undefined,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
         };
     },
@@ -172,10 +172,10 @@ exports.Campus = {
             obj.logo = aws_file_1.AWSFile.toJSON(message.logo);
         }
         if (message.principal_id !== undefined) {
-            obj.principal_id = object_id_1.ObjectId.toJSON(message.principal_id);
+            obj.principalId = object_id_1.ObjectId.toJSON(message.principal_id);
         }
         if (message.supervisor_id !== undefined) {
-            obj.supervisor_id = object_id_1.ObjectId.toJSON(message.supervisor_id);
+            obj.supervisorId = object_id_1.ObjectId.toJSON(message.supervisor_id);
         }
         if (message.archived !== false) {
             obj.archived = message.archived;

@@ -223,34 +223,34 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
 
   fromJSON(object: any): FamilyInformation {
     return {
-      student_living: isSet(object.student_living) ? globalThis.String(object.student_living) : "",
-      language_spoken: isSet(object.language_spoken) ? globalThis.String(object.language_spoken) : "",
-      preferred_contact: isSet(object.preferred_contact) ? ObjectId.fromJSON(object.preferred_contact) : undefined,
-      emergency_contact: isSet(object.emergency_contact) ? FamilyContact.fromJSON(object.emergency_contact) : undefined,
-      primary_payer: isSet(object.primary_payer) ? ObjectId.fromJSON(object.primary_payer) : undefined,
-      auto_pay_disabled: isSet(object.auto_pay_disabled) ? globalThis.Boolean(object.auto_pay_disabled) : false,
+      student_living: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : "",
+      language_spoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : "",
+      preferred_contact: isSet(object.preferredContact) ? ObjectId.fromJSON(object.preferredContact) : undefined,
+      emergency_contact: isSet(object.emergencyContact) ? FamilyContact.fromJSON(object.emergencyContact) : undefined,
+      primary_payer: isSet(object.primaryPayer) ? ObjectId.fromJSON(object.primaryPayer) : undefined,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
     };
   },
 
   toJSON(message: FamilyInformation): unknown {
     const obj: any = {};
     if (message.student_living !== "") {
-      obj.student_living = message.student_living;
+      obj.studentLiving = message.student_living;
     }
     if (message.language_spoken !== "") {
-      obj.language_spoken = message.language_spoken;
+      obj.languageSpoken = message.language_spoken;
     }
     if (message.preferred_contact !== undefined) {
-      obj.preferred_contact = ObjectId.toJSON(message.preferred_contact);
+      obj.preferredContact = ObjectId.toJSON(message.preferred_contact);
     }
     if (message.emergency_contact !== undefined) {
-      obj.emergency_contact = FamilyContact.toJSON(message.emergency_contact);
+      obj.emergencyContact = FamilyContact.toJSON(message.emergency_contact);
     }
     if (message.primary_payer !== undefined) {
-      obj.primary_payer = ObjectId.toJSON(message.primary_payer);
+      obj.primaryPayer = ObjectId.toJSON(message.primary_payer);
     }
     if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
-      obj.auto_pay_disabled = message.auto_pay_disabled;
+      obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
   },
@@ -376,8 +376,8 @@ export const Family: MessageFns<Family> = {
       guardians: globalThis.Array.isArray(object?.guardians)
         ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      guardians_to_not_contact: globalThis.Array.isArray(object?.guardians_to_not_contact)
-        ? object.guardians_to_not_contact.map((e: any) => ObjectId.fromJSON(e))
+      guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
+        ? object.guardiansToNotContact.map((e: any) => ObjectId.fromJSON(e))
         : [],
       information: isSet(object.information) ? FamilyInformation.fromJSON(object.information) : undefined,
     };
@@ -398,7 +398,7 @@ export const Family: MessageFns<Family> = {
       obj.guardians = message.guardians.map((e) => ObjectId.toJSON(e));
     }
     if (message.guardians_to_not_contact?.length) {
-      obj.guardians_to_not_contact = message.guardians_to_not_contact.map((e) => ObjectId.toJSON(e));
+      obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => ObjectId.toJSON(e));
     }
     if (message.information !== undefined) {
       obj.information = FamilyInformation.toJSON(message.information);

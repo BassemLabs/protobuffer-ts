@@ -202,7 +202,7 @@ export const GetTeacherRequest: MessageFns<GetTeacherRequest> = {
   fromJSON(object: any): GetTeacherRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -212,7 +212,7 @@ export const GetTeacherRequest: MessageFns<GetTeacherRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -386,9 +386,9 @@ export const GetTeachersListRequest: MessageFns<GetTeachersListRequest> = {
   fromJSON(object: any): GetTeachersListRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      name_search: isSet(object.name_search) ? globalThis.String(object.name_search) : "",
+      name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
       status: isSet(object.status) ? teacherStatusFromJSON(object.status) : TeacherStatus.ACTIVE,
     };
   },
@@ -399,13 +399,13 @@ export const GetTeachersListRequest: MessageFns<GetTeachersListRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.per_page !== undefined && message.per_page !== 0) {
-      obj.per_page = Math.round(message.per_page);
+      obj.perPage = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
     if (message.name_search !== undefined && message.name_search !== "") {
-      obj.name_search = message.name_search;
+      obj.nameSearch = message.name_search;
     }
     if (message.status !== undefined && message.status !== TeacherStatus.ACTIVE) {
       obj.status = teacherStatusToJSON(message.status);
@@ -479,7 +479,7 @@ export const GetTeachersListResponse: MessageFns<GetTeachersListResponse> = {
       teachers: globalThis.Array.isArray(object?.teachers)
         ? object.teachers.map((e: any) => TeacherBasic.fromJSON(e))
         : [],
-      teachers_count: isSet(object.teachers_count) ? globalThis.Number(object.teachers_count) : 0,
+      teachers_count: isSet(object.teachersCount) ? globalThis.Number(object.teachersCount) : 0,
     };
   },
 
@@ -489,7 +489,7 @@ export const GetTeachersListResponse: MessageFns<GetTeachersListResponse> = {
       obj.teachers = message.teachers.map((e) => TeacherBasic.toJSON(e));
     }
     if (message.teachers_count !== 0) {
-      obj.teachers_count = Math.round(message.teachers_count);
+      obj.teachersCount = Math.round(message.teachers_count);
     }
     return obj;
   },
@@ -677,8 +677,8 @@ export const GetTeachersByIdsRequest: MessageFns<GetTeachersByIdsRequest> = {
   fromJSON(object: any): GetTeachersByIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
-        ? object.teacher_ids.map((e: any) => ObjectId.fromJSON(e))
+      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
+        ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -689,7 +689,7 @@ export const GetTeachersByIdsRequest: MessageFns<GetTeachersByIdsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_ids?.length) {
-      obj.teacher_ids = message.teacher_ids.map((e) => ObjectId.toJSON(e));
+      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -816,7 +816,7 @@ export const GetTeacherSignatureRequest: MessageFns<GetTeacherSignatureRequest> 
   fromJSON(object: any): GetTeacherSignatureRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -826,7 +826,7 @@ export const GetTeacherSignatureRequest: MessageFns<GetTeacherSignatureRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -882,15 +882,13 @@ export const GetTeacherSignatureResponse: MessageFns<GetTeacherSignatureResponse
   },
 
   fromJSON(object: any): GetTeacherSignatureResponse {
-    return {
-      signature_file_id: isSet(object.signature_file_id) ? ObjectId.fromJSON(object.signature_file_id) : undefined,
-    };
+    return { signature_file_id: isSet(object.signatureFileId) ? ObjectId.fromJSON(object.signatureFileId) : undefined };
   },
 
   toJSON(message: GetTeacherSignatureResponse): unknown {
     const obj: any = {};
     if (message.signature_file_id !== undefined) {
-      obj.signature_file_id = ObjectId.toJSON(message.signature_file_id);
+      obj.signatureFileId = ObjectId.toJSON(message.signature_file_id);
     }
     return obj;
   },
@@ -965,8 +963,8 @@ export const UpdateTeacherSignatureRequest: MessageFns<UpdateTeacherSignatureReq
   fromJSON(object: any): UpdateTeacherSignatureRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
-      signature_file_id: isSet(object.signature_file_id) ? ObjectId.fromJSON(object.signature_file_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      signature_file_id: isSet(object.signatureFileId) ? ObjectId.fromJSON(object.signatureFileId) : undefined,
     };
   },
 
@@ -976,10 +974,10 @@ export const UpdateTeacherSignatureRequest: MessageFns<UpdateTeacherSignatureReq
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     if (message.signature_file_id !== undefined) {
-      obj.signature_file_id = ObjectId.toJSON(message.signature_file_id);
+      obj.signatureFileId = ObjectId.toJSON(message.signature_file_id);
     }
     return obj;
   },
@@ -1052,7 +1050,7 @@ export const DeleteTeacherSignatureRequest: MessageFns<DeleteTeacherSignatureReq
   fromJSON(object: any): DeleteTeacherSignatureRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -1062,7 +1060,7 @@ export const DeleteTeacherSignatureRequest: MessageFns<DeleteTeacherSignatureReq
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -1142,7 +1140,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
   fromJSON(object: any): UpdateTeacherProfileRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
       profile: isSet(object.profile) ? TeacherProfile.fromJSON(object.profile) : undefined,
     };
   },
@@ -1153,7 +1151,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     if (message.profile !== undefined) {
       obj.profile = TeacherProfile.toJSON(message.profile);
@@ -1247,10 +1245,10 @@ export const ChangeTeacherPasswordRequest: MessageFns<ChangeTeacherPasswordReque
   fromJSON(object: any): ChangeTeacherPasswordRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
       password: isSet(object.password) ? globalThis.String(object.password) : "",
-      change_password_at_next_login: isSet(object.change_password_at_next_login)
-        ? globalThis.Boolean(object.change_password_at_next_login)
+      change_password_at_next_login: isSet(object.changePasswordAtNextLogin)
+        ? globalThis.Boolean(object.changePasswordAtNextLogin)
         : false,
     };
   },
@@ -1261,13 +1259,13 @@ export const ChangeTeacherPasswordRequest: MessageFns<ChangeTeacherPasswordReque
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     if (message.password !== "") {
       obj.password = message.password;
     }
     if (message.change_password_at_next_login !== false) {
-      obj.change_password_at_next_login = message.change_password_at_next_login;
+      obj.changePasswordAtNextLogin = message.change_password_at_next_login;
     }
     return obj;
   },
@@ -1395,12 +1393,12 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
   fromJSON(object: any): CreateTeacherRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-      last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-      phone_number: isSet(object.phone_number) ? PhoneNumber.fromJSON(object.phone_number) : undefined,
-      date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
-      personal_email: isSet(object.personal_email) ? globalThis.String(object.personal_email) : "",
+      phone_number: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
     };
   },
 
@@ -1410,22 +1408,22 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.first_name !== "") {
-      obj.first_name = message.first_name;
+      obj.firstName = message.first_name;
     }
     if (message.last_name !== "") {
-      obj.last_name = message.last_name;
+      obj.lastName = message.last_name;
     }
     if (message.gender !== "") {
       obj.gender = message.gender;
     }
     if (message.phone_number !== undefined) {
-      obj.phone_number = PhoneNumber.toJSON(message.phone_number);
+      obj.phoneNumber = PhoneNumber.toJSON(message.phone_number);
     }
     if (message.date_of_birth !== undefined) {
-      obj.date_of_birth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth.toISOString();
     }
     if (message.personal_email !== "") {
-      obj.personal_email = message.personal_email;
+      obj.personalEmail = message.personal_email;
     }
     return obj;
   },
@@ -1498,7 +1496,7 @@ export const WithdrawTeacherRequest: MessageFns<WithdrawTeacherRequest> = {
   fromJSON(object: any): WithdrawTeacherRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -1508,7 +1506,7 @@ export const WithdrawTeacherRequest: MessageFns<WithdrawTeacherRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -1576,7 +1574,7 @@ export const ReactivateTeacherRequest: MessageFns<ReactivateTeacherRequest> = {
   fromJSON(object: any): ReactivateTeacherRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -1586,7 +1584,7 @@ export const ReactivateTeacherRequest: MessageFns<ReactivateTeacherRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -1664,7 +1662,7 @@ export const AddTeacherRoleRequest: MessageFns<AddTeacherRoleRequest> = {
   fromJSON(object: any): AddTeacherRoleRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
       role: isSet(object.role) ? userRoleFromJSON(object.role) : UserRole.DEVELOPER,
     };
   },
@@ -1675,7 +1673,7 @@ export const AddTeacherRoleRequest: MessageFns<AddTeacherRoleRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     if (message.role !== UserRole.DEVELOPER) {
       obj.role = userRoleToJSON(message.role);
@@ -1757,7 +1755,7 @@ export const RemoveTeacherRoleRequest: MessageFns<RemoveTeacherRoleRequest> = {
   fromJSON(object: any): RemoveTeacherRoleRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      teacher_id: isSet(object.teacher_id) ? ObjectId.fromJSON(object.teacher_id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
       role: isSet(object.role) ? userRoleFromJSON(object.role) : UserRole.DEVELOPER,
     };
   },
@@ -1768,7 +1766,7 @@ export const RemoveTeacherRoleRequest: MessageFns<RemoveTeacherRoleRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.teacher_id !== undefined) {
-      obj.teacher_id = ObjectId.toJSON(message.teacher_id);
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     if (message.role !== UserRole.DEVELOPER) {
       obj.role = userRoleToJSON(message.role);
@@ -1840,7 +1838,7 @@ export const UploadTeachersRequest: MessageFns<UploadTeachersRequest> = {
   fromJSON(object: any): UploadTeachersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      csv_file_base64: isSet(object.csv_file_base64) ? globalThis.String(object.csv_file_base64) : "",
+      csv_file_base64: isSet(object.csvFileBase64) ? globalThis.String(object.csvFileBase64) : "",
     };
   },
 
@@ -1850,7 +1848,7 @@ export const UploadTeachersRequest: MessageFns<UploadTeachersRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.csv_file_base64 !== "") {
-      obj.csv_file_base64 = message.csv_file_base64;
+      obj.csvFileBase64 = message.csv_file_base64;
     }
     return obj;
   },
@@ -1925,22 +1923,22 @@ export const UploadTeachersResponse: MessageFns<UploadTeachersResponse> = {
 
   fromJSON(object: any): UploadTeachersResponse {
     return {
-      success_count: isSet(object.success_count) ? globalThis.Number(object.success_count) : 0,
-      failed_count: isSet(object.failed_count) ? globalThis.Number(object.failed_count) : 0,
-      error_csv_base64: isSet(object.error_csv_base64) ? globalThis.String(object.error_csv_base64) : "",
+      success_count: isSet(object.successCount) ? globalThis.Number(object.successCount) : 0,
+      failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : 0,
+      error_csv_base64: isSet(object.errorCsvBase64) ? globalThis.String(object.errorCsvBase64) : "",
     };
   },
 
   toJSON(message: UploadTeachersResponse): unknown {
     const obj: any = {};
     if (message.success_count !== 0) {
-      obj.success_count = Math.round(message.success_count);
+      obj.successCount = Math.round(message.success_count);
     }
     if (message.failed_count !== 0) {
-      obj.failed_count = Math.round(message.failed_count);
+      obj.failedCount = Math.round(message.failed_count);
     }
     if (message.error_csv_base64 !== undefined && message.error_csv_base64 !== "") {
-      obj.error_csv_base64 = message.error_csv_base64;
+      obj.errorCsvBase64 = message.error_csv_base64;
     }
     return obj;
   },
@@ -2092,22 +2090,22 @@ export const CheckCanRemoveOrgDomainResponse: MessageFns<CheckCanRemoveOrgDomain
 
   fromJSON(object: any): CheckCanRemoveOrgDomainResponse {
     return {
-      can_remove: isSet(object.can_remove) ? globalThis.Boolean(object.can_remove) : false,
-      active_teachers_count: isSet(object.active_teachers_count) ? globalThis.Number(object.active_teachers_count) : 0,
-      students_count: isSet(object.students_count) ? globalThis.Number(object.students_count) : 0,
+      can_remove: isSet(object.canRemove) ? globalThis.Boolean(object.canRemove) : false,
+      active_teachers_count: isSet(object.activeTeachersCount) ? globalThis.Number(object.activeTeachersCount) : 0,
+      students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
     };
   },
 
   toJSON(message: CheckCanRemoveOrgDomainResponse): unknown {
     const obj: any = {};
     if (message.can_remove !== false) {
-      obj.can_remove = message.can_remove;
+      obj.canRemove = message.can_remove;
     }
     if (message.active_teachers_count !== 0) {
-      obj.active_teachers_count = Math.round(message.active_teachers_count);
+      obj.activeTeachersCount = Math.round(message.active_teachers_count);
     }
     if (message.students_count !== 0) {
-      obj.students_count = Math.round(message.students_count);
+      obj.studentsCount = Math.round(message.students_count);
     }
     return obj;
   },

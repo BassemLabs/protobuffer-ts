@@ -55,7 +55,7 @@ exports.HandleWebhookRequest = {
     fromJSON(object) {
         return {
             payload: isSet(object.payload) ? globalThis.String(object.payload) : "",
-            stripe_signature: isSet(object.stripe_signature) ? globalThis.String(object.stripe_signature) : "",
+            stripe_signature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : "",
         };
     },
     toJSON(message) {
@@ -64,7 +64,7 @@ exports.HandleWebhookRequest = {
             obj.payload = message.payload;
         }
         if (message.stripe_signature !== "") {
-            obj.stripe_signature = message.stripe_signature;
+            obj.stripeSignature = message.stripe_signature;
         }
         return obj;
     },
@@ -213,15 +213,15 @@ exports.GetSetupAutoIntentResponse = {
     },
     fromJSON(object) {
         return {
-            setup_auto_intent_secret: isSet(object.setup_auto_intent_secret)
-                ? globalThis.String(object.setup_auto_intent_secret)
+            setup_auto_intent_secret: isSet(object.setupAutoIntentSecret)
+                ? globalThis.String(object.setupAutoIntentSecret)
                 : "",
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.setup_auto_intent_secret !== "") {
-            obj.setup_auto_intent_secret = message.setup_auto_intent_secret;
+            obj.setupAutoIntentSecret = message.setup_auto_intent_secret;
         }
         return obj;
     },
@@ -427,8 +427,8 @@ exports.CreatePaymentIntentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            payment_type: isSet(object.payment_type) ? (0, transaction_1.paymentTypeFromJSON)(object.payment_type) : transaction_1.PaymentType.Stripe,
-            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
+            payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
@@ -438,10 +438,10 @@ exports.CreatePaymentIntentRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.payment_type !== transaction_1.PaymentType.Stripe) {
-            obj.payment_type = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -496,12 +496,12 @@ exports.CreatePaymentIntentResponse = {
         return message;
     },
     fromJSON(object) {
-        return { client_secret: isSet(object.client_secret) ? globalThis.String(object.client_secret) : "" };
+        return { client_secret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : "" };
     },
     toJSON(message) {
         const obj = {};
         if (message.client_secret !== "") {
-            obj.client_secret = message.client_secret;
+            obj.clientSecret = message.client_secret;
         }
         return obj;
     },
@@ -557,7 +557,7 @@ exports.OnboardOrganizationStripeAccountRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            frontend_url: isSet(object.frontend_url) ? globalThis.String(object.frontend_url) : "",
+            frontend_url: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : "",
         };
     },
     toJSON(message) {
@@ -566,7 +566,7 @@ exports.OnboardOrganizationStripeAccountRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.frontend_url !== "") {
-            obj.frontend_url = message.frontend_url;
+            obj.frontendUrl = message.frontend_url;
         }
         return obj;
     },
@@ -614,12 +614,12 @@ exports.OnboardOrganizationStripeAccountResponse = {
         return message;
     },
     fromJSON(object) {
-        return { account_link_url: isSet(object.account_link_url) ? globalThis.String(object.account_link_url) : "" };
+        return { account_link_url: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : "" };
     },
     toJSON(message) {
         const obj = {};
         if (message.account_link_url !== "") {
-            obj.account_link_url = message.account_link_url;
+            obj.accountLinkUrl = message.account_link_url;
         }
         return obj;
     },

@@ -156,10 +156,10 @@ exports.TeacherBasic = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
-            email_domain: isSet(object.email_domain) ? globalThis.String(object.email_domain) : "",
+            email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
-            first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-            last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
         };
     },
     toJSON(message) {
@@ -174,16 +174,16 @@ exports.TeacherBasic = {
             obj.username = message.username;
         }
         if (message.email_domain !== "") {
-            obj.email_domain = message.email_domain;
+            obj.emailDomain = message.email_domain;
         }
         if (message.email !== "") {
             obj.email = message.email;
         }
         if (message.first_name !== "") {
-            obj.first_name = message.first_name;
+            obj.firstName = message.first_name;
         }
         if (message.last_name !== "") {
-            obj.last_name = message.last_name;
+            obj.lastName = message.last_name;
         }
         return obj;
     },
@@ -381,15 +381,15 @@ exports.Teacher = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             status: isSet(object.status) ? teacherStatusFromJSON(object.status) : TeacherStatus.ACTIVE,
             username: isSet(object.username) ? globalThis.String(object.username) : "",
-            email_domain: isSet(object.email_domain) ? globalThis.String(object.email_domain) : "",
-            first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-            last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+            email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
-            personal_email: isSet(object.personal_email) ? globalThis.String(object.personal_email) : "",
-            date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
-            phone_number: isSet(object.phone_number) ? phone_number_1.PhoneNumber.fromJSON(object.phone_number) : undefined,
-            signature_file_id: isSet(object.signature_file_id) ? object_id_1.ObjectId.fromJSON(object.signature_file_id) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
+            signature_file_id: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
         };
@@ -406,13 +406,13 @@ exports.Teacher = {
             obj.username = message.username;
         }
         if (message.email_domain !== "") {
-            obj.email_domain = message.email_domain;
+            obj.emailDomain = message.email_domain;
         }
         if (message.first_name !== "") {
-            obj.first_name = message.first_name;
+            obj.firstName = message.first_name;
         }
         if (message.last_name !== "") {
-            obj.last_name = message.last_name;
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
@@ -421,16 +421,16 @@ exports.Teacher = {
             obj.email = message.email;
         }
         if (message.personal_email !== "") {
-            obj.personal_email = message.personal_email;
+            obj.personalEmail = message.personal_email;
         }
         if (message.date_of_birth !== undefined) {
-            obj.date_of_birth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         if (message.phone_number !== undefined) {
-            obj.phone_number = phone_number_1.PhoneNumber.toJSON(message.phone_number);
+            obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
         }
         if (message.signature_file_id !== undefined) {
-            obj.signature_file_id = object_id_1.ObjectId.toJSON(message.signature_file_id);
+            obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signature_file_id);
         }
         if (message.roles?.length) {
             obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
@@ -563,22 +563,22 @@ exports.TeacherProfile = {
     },
     fromJSON(object) {
         return {
-            first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-            last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
-            personal_email: isSet(object.personal_email) ? globalThis.String(object.personal_email) : "",
-            date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
-            phone_number: isSet(object.phone_number) ? phone_number_1.PhoneNumber.fromJSON(object.phone_number) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.first_name !== "") {
-            obj.first_name = message.first_name;
+            obj.firstName = message.first_name;
         }
         if (message.last_name !== "") {
-            obj.last_name = message.last_name;
+            obj.lastName = message.last_name;
         }
         if (message.gender !== "") {
             obj.gender = message.gender;
@@ -587,13 +587,13 @@ exports.TeacherProfile = {
             obj.email = message.email;
         }
         if (message.personal_email !== "") {
-            obj.personal_email = message.personal_email;
+            obj.personalEmail = message.personal_email;
         }
         if (message.date_of_birth !== undefined) {
-            obj.date_of_birth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         if (message.phone_number !== undefined) {
-            obj.phone_number = phone_number_1.PhoneNumber.toJSON(message.phone_number);
+            obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
         }
         return obj;
     },

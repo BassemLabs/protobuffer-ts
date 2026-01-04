@@ -248,15 +248,15 @@ export const OrganizationPaymentPlan: MessageFns<OrganizationPaymentPlan> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
-      is_public: isSet(object.is_public) ? globalThis.Boolean(object.is_public) : false,
-      is_active: isSet(object.is_active) ? globalThis.Boolean(object.is_active) : false,
-      upfront_cost: isSet(object.upfront_cost) ? globalThis.Number(object.upfront_cost) : 0,
-      upfront_cost_payment_interval: isSet(object.upfront_cost_payment_interval)
-        ? paymentIntervalFromJSON(object.upfront_cost_payment_interval)
+      is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
+      is_active: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+      upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+      upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
+        ? paymentIntervalFromJSON(object.upfrontCostPaymentInterval)
         : PaymentInterval.Monthly,
-      per_student_cost: isSet(object.per_student_cost) ? globalThis.Number(object.per_student_cost) : 0,
-      payment_processing_percentage: isSet(object.payment_processing_percentage)
-        ? globalThis.Number(object.payment_processing_percentage)
+      per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+      payment_processing_percentage: isSet(object.paymentProcessingPercentage)
+        ? globalThis.Number(object.paymentProcessingPercentage)
         : 0,
     };
   },
@@ -276,22 +276,22 @@ export const OrganizationPaymentPlan: MessageFns<OrganizationPaymentPlan> = {
       obj.currency = currencyToJSON(message.currency);
     }
     if (message.is_public !== false) {
-      obj.is_public = message.is_public;
+      obj.isPublic = message.is_public;
     }
     if (message.is_active !== false) {
-      obj.is_active = message.is_active;
+      obj.isActive = message.is_active;
     }
     if (message.upfront_cost !== 0) {
-      obj.upfront_cost = message.upfront_cost;
+      obj.upfrontCost = message.upfront_cost;
     }
     if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
-      obj.upfront_cost_payment_interval = paymentIntervalToJSON(message.upfront_cost_payment_interval);
+      obj.upfrontCostPaymentInterval = paymentIntervalToJSON(message.upfront_cost_payment_interval);
     }
     if (message.per_student_cost !== 0) {
-      obj.per_student_cost = message.per_student_cost;
+      obj.perStudentCost = message.per_student_cost;
     }
     if (message.payment_processing_percentage !== 0) {
-      obj.payment_processing_percentage = message.payment_processing_percentage;
+      obj.paymentProcessingPercentage = message.payment_processing_percentage;
     }
     return obj;
   },
@@ -362,18 +362,18 @@ export const OrganizationPlanAccess: MessageFns<OrganizationPlanAccess> = {
 
   fromJSON(object: any): OrganizationPlanAccess {
     return {
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      payment_plan_id: isSet(object.payment_plan_id) ? ObjectId.fromJSON(object.payment_plan_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      payment_plan_id: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
     };
   },
 
   toJSON(message: OrganizationPlanAccess): unknown {
     const obj: any = {};
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.payment_plan_id !== undefined) {
-      obj.payment_plan_id = ObjectId.toJSON(message.payment_plan_id);
+      obj.paymentPlanId = ObjectId.toJSON(message.payment_plan_id);
     }
     return obj;
   },
@@ -499,14 +499,14 @@ export const OrganizationPaymentPlanInformation: MessageFns<OrganizationPaymentP
   fromJSON(object: any): OrganizationPaymentPlanInformation {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      payment_plan: isSet(object.payment_plan) ? ObjectId.fromJSON(object.payment_plan) : undefined,
-      defer_per_student_cost_to_parent: isSet(object.defer_per_student_cost_to_parent)
-        ? globalThis.Boolean(object.defer_per_student_cost_to_parent)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      payment_plan: isSet(object.paymentPlan) ? ObjectId.fromJSON(object.paymentPlan) : undefined,
+      defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
+        ? globalThis.Boolean(object.deferPerStudentCostToParent)
         : false,
-      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
-      trial_days: isSet(object.trial_days) ? globalThis.Number(object.trial_days) : 0,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      trial_days: isSet(object.trialDays) ? globalThis.Number(object.trialDays) : 0,
     };
   },
 
@@ -516,22 +516,22 @@ export const OrganizationPaymentPlanInformation: MessageFns<OrganizationPaymentP
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.payment_plan !== undefined) {
-      obj.payment_plan = ObjectId.toJSON(message.payment_plan);
+      obj.paymentPlan = ObjectId.toJSON(message.payment_plan);
     }
     if (message.defer_per_student_cost_to_parent !== false) {
-      obj.defer_per_student_cost_to_parent = message.defer_per_student_cost_to_parent;
+      obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
     }
     if (message.start_date !== undefined) {
-      obj.start_date = message.start_date.toISOString();
+      obj.startDate = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.end_date = message.end_date.toISOString();
+      obj.endDate = message.end_date.toISOString();
     }
     if (message.trial_days !== 0) {
-      obj.trial_days = Math.round(message.trial_days);
+      obj.trialDays = Math.round(message.trial_days);
     }
     return obj;
   },
@@ -607,9 +607,9 @@ export const OrganizationPaymentPlanWithInfo: MessageFns<OrganizationPaymentPlan
 
   fromJSON(object: any): OrganizationPaymentPlanWithInfo {
     return {
-      payment_plan: isSet(object.payment_plan) ? OrganizationPaymentPlan.fromJSON(object.payment_plan) : undefined,
-      payment_plan_info: isSet(object.payment_plan_info)
-        ? OrganizationPaymentPlanInformation.fromJSON(object.payment_plan_info)
+      payment_plan: isSet(object.paymentPlan) ? OrganizationPaymentPlan.fromJSON(object.paymentPlan) : undefined,
+      payment_plan_info: isSet(object.paymentPlanInfo)
+        ? OrganizationPaymentPlanInformation.fromJSON(object.paymentPlanInfo)
         : undefined,
     };
   },
@@ -617,10 +617,10 @@ export const OrganizationPaymentPlanWithInfo: MessageFns<OrganizationPaymentPlan
   toJSON(message: OrganizationPaymentPlanWithInfo): unknown {
     const obj: any = {};
     if (message.payment_plan !== undefined) {
-      obj.payment_plan = OrganizationPaymentPlan.toJSON(message.payment_plan);
+      obj.paymentPlan = OrganizationPaymentPlan.toJSON(message.payment_plan);
     }
     if (message.payment_plan_info !== undefined) {
-      obj.payment_plan_info = OrganizationPaymentPlanInformation.toJSON(message.payment_plan_info);
+      obj.paymentPlanInfo = OrganizationPaymentPlanInformation.toJSON(message.payment_plan_info);
     }
     return obj;
   },

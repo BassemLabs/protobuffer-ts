@@ -72,7 +72,7 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
 
   fromJSON(object: any): PhoneNumber {
     return {
-      country_code: isSet(object.country_code) ? globalThis.String(object.country_code) : "",
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
       number: isSet(object.number) ? globalThis.String(object.number) : "",
       country: isSet(object.country) ? globalThis.String(object.country) : "",
     };
@@ -81,7 +81,7 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
   toJSON(message: PhoneNumber): unknown {
     const obj: any = {};
     if (message.country_code !== "") {
-      obj.country_code = message.country_code;
+      obj.countryCode = message.country_code;
     }
     if (message.number !== "") {
       obj.number = message.number;

@@ -116,14 +116,14 @@ exports.Evaluation = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             total: isSet(object.total) ? globalThis.Number(object.total) : 0,
             weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            mark_category: isSet(object.mark_category) ? object_id_1.ObjectId.fromJSON(object.mark_category) : undefined,
-            visible_to_parents_and_students: isSet(object.visible_to_parents_and_students)
-                ? globalThis.Boolean(object.visible_to_parents_and_students)
+            mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
+            visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
+                ? globalThis.Boolean(object.visibleToParentsAndStudents)
                 : false,
         };
     },
@@ -133,7 +133,7 @@ exports.Evaluation = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -148,10 +148,10 @@ exports.Evaluation = {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
-            obj.mark_category = object_id_1.ObjectId.toJSON(message.mark_category);
+            obj.markCategory = object_id_1.ObjectId.toJSON(message.mark_category);
         }
         if (message.visible_to_parents_and_students !== false) {
-            obj.visible_to_parents_and_students = message.visible_to_parents_and_students;
+            obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
         }
         return obj;
     },
@@ -291,17 +291,17 @@ exports.DetailedEvaluation = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             total: isSet(object.total) ? globalThis.Number(object.total) : 0,
             weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            mark_category: isSet(object.mark_category) ? object_id_1.ObjectId.fromJSON(object.mark_category) : undefined,
-            visible_to_parents_and_students: isSet(object.visible_to_parents_and_students)
-                ? globalThis.Boolean(object.visible_to_parents_and_students)
+            mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
+            visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
+                ? globalThis.Boolean(object.visibleToParentsAndStudents)
                 : false,
-            evaluation_contribution_to_final_mark: isSet(object.evaluation_contribution_to_final_mark)
-                ? globalThis.Number(object.evaluation_contribution_to_final_mark)
+            evaluation_contribution_to_final_mark: isSet(object.evaluationContributionToFinalMark)
+                ? globalThis.Number(object.evaluationContributionToFinalMark)
                 : 0,
         };
     },
@@ -311,7 +311,7 @@ exports.DetailedEvaluation = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -326,13 +326,13 @@ exports.DetailedEvaluation = {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
-            obj.mark_category = object_id_1.ObjectId.toJSON(message.mark_category);
+            obj.markCategory = object_id_1.ObjectId.toJSON(message.mark_category);
         }
         if (message.visible_to_parents_and_students !== false) {
-            obj.visible_to_parents_and_students = message.visible_to_parents_and_students;
+            obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
         }
         if (message.evaluation_contribution_to_final_mark !== 0) {
-            obj.evaluation_contribution_to_final_mark = message.evaluation_contribution_to_final_mark;
+            obj.evaluationContributionToFinalMark = message.evaluation_contribution_to_final_mark;
         }
         return obj;
     },
@@ -483,18 +483,18 @@ exports.PersonalizedEvaluation = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             total: isSet(object.total) ? globalThis.Number(object.total) : 0,
             weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            mark_category: isSet(object.mark_category) ? object_id_1.ObjectId.fromJSON(object.mark_category) : undefined,
-            visible_to_parents_and_students: isSet(object.visible_to_parents_and_students)
-                ? globalThis.Boolean(object.visible_to_parents_and_students)
+            mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
+            visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
+                ? globalThis.Boolean(object.visibleToParentsAndStudents)
                 : false,
-            evaluation_contribution_to_student_final_mark: isSet(object.evaluation_contribution_to_student_final_mark)
-                ? globalThis.Number(object.evaluation_contribution_to_student_final_mark)
+            evaluation_contribution_to_student_final_mark: isSet(object.evaluationContributionToStudentFinalMark)
+                ? globalThis.Number(object.evaluationContributionToStudentFinalMark)
                 : 0,
         };
     },
@@ -504,10 +504,10 @@ exports.PersonalizedEvaluation = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.student_id !== undefined) {
-            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -522,13 +522,13 @@ exports.PersonalizedEvaluation = {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
-            obj.mark_category = object_id_1.ObjectId.toJSON(message.mark_category);
+            obj.markCategory = object_id_1.ObjectId.toJSON(message.mark_category);
         }
         if (message.visible_to_parents_and_students !== false) {
-            obj.visible_to_parents_and_students = message.visible_to_parents_and_students;
+            obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
         }
         if (message.evaluation_contribution_to_student_final_mark !== 0) {
-            obj.evaluation_contribution_to_student_final_mark = message.evaluation_contribution_to_student_final_mark;
+            obj.evaluationContributionToStudentFinalMark = message.evaluation_contribution_to_student_final_mark;
         }
         return obj;
     },

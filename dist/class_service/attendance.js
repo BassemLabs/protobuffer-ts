@@ -244,17 +244,15 @@ exports.Attendance = {
             course: isSet(object.course) ? object_id_1.ObjectId.fromJSON(object.course) : undefined,
             homeroom: isSet(object.homeroom) ? object_id_1.ObjectId.fromJSON(object.homeroom) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            period_number: isSet(object.period_number) ? globalThis.Number(object.period_number) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
-            sign_in_time: isSet(object.sign_in_time) ? fromJsonTimestamp(object.sign_in_time) : undefined,
-            sign_out_time: isSet(object.sign_out_time) ? fromJsonTimestamp(object.sign_out_time) : undefined,
+            sign_in_time: isSet(object.signInTime) ? fromJsonTimestamp(object.signInTime) : undefined,
+            sign_out_time: isSet(object.signOutTime) ? fromJsonTimestamp(object.signOutTime) : undefined,
             status: isSet(object.status) ? attendanceStatusFromJSON(object.status) : AttendanceStatus.None,
-            late_dismissal_date: isSet(object.late_dismissal_date)
-                ? fromJsonTimestamp(object.late_dismissal_date)
-                : undefined,
-            student_excused_by: isSet(object.student_excused_by) ? object_id_1.ObjectId.fromJSON(object.student_excused_by) : undefined,
-            student_excused_by_user_type: isSet(object.student_excused_by_user_type)
-                ? (0, user_type_1.userTypeFromJSON)(object.student_excused_by_user_type)
+            late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
+            student_excused_by: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
+            student_excused_by_user_type: isSet(object.studentExcusedByUserType)
+                ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
                 : user_type_1.UserType.NONE,
         };
     },
@@ -279,28 +277,28 @@ exports.Attendance = {
             obj.date = message.date;
         }
         if (message.period_number !== 0) {
-            obj.period_number = Math.round(message.period_number);
+            obj.periodNumber = Math.round(message.period_number);
         }
         if (message.reason !== "") {
             obj.reason = message.reason;
         }
         if (message.sign_in_time !== undefined) {
-            obj.sign_in_time = message.sign_in_time.toISOString();
+            obj.signInTime = message.sign_in_time.toISOString();
         }
         if (message.sign_out_time !== undefined) {
-            obj.sign_out_time = message.sign_out_time.toISOString();
+            obj.signOutTime = message.sign_out_time.toISOString();
         }
         if (message.status !== AttendanceStatus.None) {
             obj.status = attendanceStatusToJSON(message.status);
         }
         if (message.late_dismissal_date !== undefined) {
-            obj.late_dismissal_date = message.late_dismissal_date.toISOString();
+            obj.lateDismissalDate = message.late_dismissal_date.toISOString();
         }
         if (message.student_excused_by !== undefined) {
-            obj.student_excused_by = object_id_1.ObjectId.toJSON(message.student_excused_by);
+            obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.student_excused_by);
         }
         if (message.student_excused_by_user_type !== undefined && message.student_excused_by_user_type !== user_type_1.UserType.NONE) {
-            obj.student_excused_by_user_type = (0, user_type_1.userTypeToJSON)(message.student_excused_by_user_type);
+            obj.studentExcusedByUserType = (0, user_type_1.userTypeToJSON)(message.student_excused_by_user_type);
         }
         return obj;
     },

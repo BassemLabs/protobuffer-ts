@@ -57,7 +57,7 @@ exports.GetFamilyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -66,7 +66,7 @@ exports.GetFamilyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -231,8 +231,8 @@ exports.GetFamiliesByIdsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_ids: globalThis.Array.isArray(object?.family_ids)
-                ? object.family_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
+            family_ids: globalThis.Array.isArray(object?.familyIds)
+                ? object.familyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -242,7 +242,7 @@ exports.GetFamiliesByIdsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_ids?.length) {
-            obj.family_ids = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.familyIds = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -353,7 +353,7 @@ exports.GetFamiliesByParentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            parent_id: isSet(object.parent_id) ? object_id_1.ObjectId.fromJSON(object.parent_id) : undefined,
+            parent_id: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
         };
     },
     toJSON(message) {
@@ -362,7 +362,7 @@ exports.GetFamiliesByParentRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.parent_id !== undefined) {
-            obj.parent_id = object_id_1.ObjectId.toJSON(message.parent_id);
+            obj.parentId = object_id_1.ObjectId.toJSON(message.parent_id);
         }
         return obj;
     },
@@ -475,7 +475,7 @@ exports.GetFamilyGuardiansRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -484,7 +484,7 @@ exports.GetFamilyGuardiansRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -599,7 +599,7 @@ exports.GetContactGuardiansRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -608,7 +608,7 @@ exports.GetContactGuardiansRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -723,7 +723,7 @@ exports.GetFamilyStudentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
         };
     },
     toJSON(message) {
@@ -732,7 +732,7 @@ exports.GetFamilyStudentsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -854,8 +854,8 @@ exports.GetEnrolledStudentsForFamilyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
-            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -864,10 +864,10 @@ exports.GetEnrolledStudentsForFamilyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.school_year_id !== undefined) {
-            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -1001,10 +1001,10 @@ exports.GetFamiliesByStudentStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_statuses: globalThis.Array.isArray(object?.student_statuses)
-                ? object.student_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            student_statuses: globalThis.Array.isArray(object?.studentStatuses)
+                ? object.studentStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
-            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -1013,10 +1013,10 @@ exports.GetFamiliesByStudentStatusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_statuses?.length) {
-            obj.student_statuses = message.student_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.studentStatuses = message.student_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         if (message.school_year_id !== undefined) {
-            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -1078,7 +1078,7 @@ exports.FamilyWithStudentCount = {
     fromJSON(object) {
         return {
             family: isSet(object.family) ? family_1.Family.fromJSON(object.family) : undefined,
-            student_count: isSet(object.student_count) ? globalThis.Number(object.student_count) : 0,
+            student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
         };
     },
     toJSON(message) {
@@ -1087,7 +1087,7 @@ exports.FamilyWithStudentCount = {
             obj.family = family_1.Family.toJSON(message.family);
         }
         if (message.student_count !== 0) {
-            obj.student_count = Math.round(message.student_count);
+            obj.studentCount = Math.round(message.student_count);
         }
         return obj;
     },
@@ -1343,13 +1343,13 @@ exports.UpdateFamilyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             guardians: globalThis.Array.isArray(object?.guardians)
                 ? object.guardians.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            guardians_to_not_contact: globalThis.Array.isArray(object?.guardians_to_not_contact)
-                ? object.guardians_to_not_contact.map((e) => object_id_1.ObjectId.fromJSON(e))
+            guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
+                ? object.guardiansToNotContact.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             information: isSet(object.information) ? family_1.FamilyInformation.fromJSON(object.information) : undefined,
         };
@@ -1360,7 +1360,7 @@ exports.UpdateFamilyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -1369,7 +1369,7 @@ exports.UpdateFamilyRequest = {
             obj.guardians = message.guardians.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.guardians_to_not_contact?.length) {
-            obj.guardians_to_not_contact = message.guardians_to_not_contact.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.information !== undefined) {
             obj.information = family_1.FamilyInformation.toJSON(message.information);
@@ -1448,7 +1448,7 @@ exports.UpdateFamilyNameRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
         };
     },
@@ -1458,7 +1458,7 @@ exports.UpdateFamilyNameRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -1532,8 +1532,8 @@ exports.UpdateFamilyAutoPayRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
-            auto_pay_disabled: isSet(object.auto_pay_disabled) ? globalThis.Boolean(object.auto_pay_disabled) : false,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
         };
     },
     toJSON(message) {
@@ -1542,10 +1542,10 @@ exports.UpdateFamilyAutoPayRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.auto_pay_disabled !== false) {
-            obj.auto_pay_disabled = message.auto_pay_disabled;
+            obj.autoPayDisabled = message.auto_pay_disabled;
         }
         return obj;
     },

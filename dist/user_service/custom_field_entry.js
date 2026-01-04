@@ -96,10 +96,10 @@ exports.CustomFieldEntry = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
-            custom_field_id: isSet(object.custom_field_id) ? object_id_1.ObjectId.fromJSON(object.custom_field_id) : undefined,
-            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
-            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
+            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
             value: isSet(object.value) ? globalThis.String(object.value) : "",
         };
     },
@@ -109,16 +109,16 @@ exports.CustomFieldEntry = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.custom_field_id !== undefined) {
-            obj.custom_field_id = object_id_1.ObjectId.toJSON(message.custom_field_id);
+            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
         }
         if (message.group_id !== undefined) {
-            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.user_id !== undefined) {
-            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.value !== "") {
             obj.value = message.value;

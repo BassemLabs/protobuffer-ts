@@ -71,7 +71,7 @@ exports.MarkCategory = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
         };
@@ -82,7 +82,7 @@ exports.MarkCategory = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -176,10 +176,10 @@ exports.DetailedMarkCategory = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
-            effective_percentage: isSet(object.effective_percentage) ? globalThis.Number(object.effective_percentage) : 0,
+            effective_percentage: isSet(object.effectivePercentage) ? globalThis.Number(object.effectivePercentage) : 0,
         };
     },
     toJSON(message) {
@@ -188,7 +188,7 @@ exports.DetailedMarkCategory = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -197,7 +197,7 @@ exports.DetailedMarkCategory = {
             obj.percentage = Math.round(message.percentage);
         }
         if (message.effective_percentage !== 0) {
-            obj.effective_percentage = message.effective_percentage;
+            obj.effectivePercentage = message.effective_percentage;
         }
         return obj;
     },
@@ -302,12 +302,12 @@ exports.PersonalizedMarkCategory = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
-            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
-            effective_percentage_for_student: isSet(object.effective_percentage_for_student)
-                ? globalThis.Number(object.effective_percentage_for_student)
+            effective_percentage_for_student: isSet(object.effectivePercentageForStudent)
+                ? globalThis.Number(object.effectivePercentageForStudent)
                 : 0,
         };
     },
@@ -317,10 +317,10 @@ exports.PersonalizedMarkCategory = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.student_id !== undefined) {
-            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -329,7 +329,7 @@ exports.PersonalizedMarkCategory = {
             obj.percentage = Math.round(message.percentage);
         }
         if (message.effective_percentage_for_student !== 0) {
-            obj.effective_percentage_for_student = message.effective_percentage_for_student;
+            obj.effectivePercentageForStudent = message.effective_percentage_for_student;
         }
         return obj;
     },

@@ -420,7 +420,7 @@ export const GetStudentRequest: MessageFns<GetStudentRequest> = {
   fromJSON(object: any): GetStudentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -430,7 +430,7 @@ export const GetStudentRequest: MessageFns<GetStudentRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -498,7 +498,7 @@ export const GetStudentWithSchoolYearInfoRequest: MessageFns<GetStudentWithSchoo
   fromJSON(object: any): GetStudentWithSchoolYearInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -508,7 +508,7 @@ export const GetStudentWithSchoolYearInfoRequest: MessageFns<GetStudentWithSchoo
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -580,8 +580,8 @@ export const GetStudentWithSchoolYearInfoResponse: MessageFns<GetStudentWithScho
   fromJSON(object: any): GetStudentWithSchoolYearInfoResponse {
     return {
       student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
-      school_year_info: isSet(object.school_year_info)
-        ? StudentSchoolYearInformation.fromJSON(object.school_year_info)
+      school_year_info: isSet(object.schoolYearInfo)
+        ? StudentSchoolYearInformation.fromJSON(object.schoolYearInfo)
         : undefined,
     };
   },
@@ -592,7 +592,7 @@ export const GetStudentWithSchoolYearInfoResponse: MessageFns<GetStudentWithScho
       obj.student = Student.toJSON(message.student);
     }
     if (message.school_year_info !== undefined) {
-      obj.school_year_info = StudentSchoolYearInformation.toJSON(message.school_year_info);
+      obj.schoolYearInfo = StudentSchoolYearInformation.toJSON(message.school_year_info);
     }
     return obj;
   },
@@ -733,13 +733,13 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
   fromJSON(object: any): CreateStudentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-      last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
-      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
-      date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
-      admission_year: isSet(object.admission_year) ? ObjectId.fromJSON(object.admission_year) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      admission_year: isSet(object.admissionYear) ? ObjectId.fromJSON(object.admissionYear) : undefined,
     };
   },
 
@@ -749,10 +749,10 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.first_name !== "") {
-      obj.first_name = message.first_name;
+      obj.firstName = message.first_name;
     }
     if (message.last_name !== "") {
-      obj.last_name = message.last_name;
+      obj.lastName = message.last_name;
     }
     if (message.gender !== "") {
       obj.gender = message.gender;
@@ -761,13 +761,13 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
       obj.grade = studentGradeToJSON(message.grade);
     }
     if (message.family_id !== undefined) {
-      obj.family_id = ObjectId.toJSON(message.family_id);
+      obj.familyId = ObjectId.toJSON(message.family_id);
     }
     if (message.date_of_birth !== undefined) {
-      obj.date_of_birth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth.toISOString();
     }
     if (message.admission_year !== undefined) {
-      obj.admission_year = ObjectId.toJSON(message.admission_year);
+      obj.admissionYear = ObjectId.toJSON(message.admission_year);
     }
     return obj;
   },
@@ -853,7 +853,7 @@ export const UpdateStudentProfileRequest: MessageFns<UpdateStudentProfileRequest
   fromJSON(object: any): UpdateStudentProfileRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       profile: isSet(object.profile) ? StudentProfile.fromJSON(object.profile) : undefined,
     };
   },
@@ -864,7 +864,7 @@ export const UpdateStudentProfileRequest: MessageFns<UpdateStudentProfileRequest
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.profile !== undefined) {
       obj.profile = StudentProfile.toJSON(message.profile);
@@ -958,8 +958,8 @@ export const UpdateStudentGradeRequest: MessageFns<UpdateStudentGradeRequest> = 
   fromJSON(object: any): UpdateStudentGradeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
   },
@@ -970,10 +970,10 @@ export const UpdateStudentGradeRequest: MessageFns<UpdateStudentGradeRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year_id !== undefined) {
-      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     if (message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
@@ -1068,8 +1068,8 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
   fromJSON(object: any): MoveAdmissionYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       message: isSet(object.message) ? globalThis.String(object.message) : "",
     };
   },
@@ -1080,10 +1080,10 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.message !== "") {
       obj.message = message.message;
@@ -1178,9 +1178,9 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
   fromJSON(object: any): EnrollStudentWithMessageRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      enrollment_message: isSet(object.enrollment_message) ? globalThis.String(object.enrollment_message) : "",
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : "",
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1190,13 +1190,13 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.enrollment_message !== "") {
-      obj.enrollment_message = message.enrollment_message;
+      obj.enrollmentMessage = message.enrollment_message;
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1290,9 +1290,9 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
   fromJSON(object: any): WithdrawStudentWithMessageRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      withdraw_message: isSet(object.withdraw_message) ? globalThis.String(object.withdraw_message) : "",
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      withdraw_message: isSet(object.withdrawMessage) ? globalThis.String(object.withdrawMessage) : "",
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1302,13 +1302,13 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.withdraw_message !== "") {
-      obj.withdraw_message = message.withdraw_message;
+      obj.withdrawMessage = message.withdraw_message;
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1404,10 +1404,10 @@ export const ChangeStudentPasswordRequest: MessageFns<ChangeStudentPasswordReque
   fromJSON(object: any): ChangeStudentPasswordRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       password: isSet(object.password) ? globalThis.String(object.password) : "",
-      change_password_at_next_login: isSet(object.change_password_at_next_login)
-        ? globalThis.Boolean(object.change_password_at_next_login)
+      change_password_at_next_login: isSet(object.changePasswordAtNextLogin)
+        ? globalThis.Boolean(object.changePasswordAtNextLogin)
         : false,
     };
   },
@@ -1418,13 +1418,13 @@ export const ChangeStudentPasswordRequest: MessageFns<ChangeStudentPasswordReque
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.password !== "") {
       obj.password = message.password;
     }
     if (message.change_password_at_next_login !== false) {
-      obj.change_password_at_next_login = message.change_password_at_next_login;
+      obj.changePasswordAtNextLogin = message.change_password_at_next_login;
     }
     return obj;
   },
@@ -1557,9 +1557,9 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
   fromJSON(object: any): RejectStudentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      rejection_message: isSet(object.rejection_message) ? globalThis.String(object.rejection_message) : "",
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1569,13 +1569,13 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.rejection_message !== "") {
-      obj.rejection_message = message.rejection_message;
+      obj.rejectionMessage = message.rejection_message;
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1667,9 +1667,9 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
   fromJSON(object: any): ApproveStudentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      approval_message: isSet(object.approval_message) ? globalThis.String(object.approval_message) : "",
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      approval_message: isSet(object.approvalMessage) ? globalThis.String(object.approvalMessage) : "",
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1679,13 +1679,13 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.approval_message !== "") {
-      obj.approval_message = message.approval_message;
+      obj.approvalMessage = message.approval_message;
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1793,10 +1793,10 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
   fromJSON(object: any): ToInterviewRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      interview_message: isSet(object.interview_message) ? globalThis.String(object.interview_message) : "",
-      interview_date: isSet(object.interview_date) ? fromJsonTimestamp(object.interview_date) : undefined,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      interview_message: isSet(object.interviewMessage) ? globalThis.String(object.interviewMessage) : "",
+      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -1806,16 +1806,16 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.interview_message !== "") {
-      obj.interview_message = message.interview_message;
+      obj.interviewMessage = message.interview_message;
     }
     if (message.interview_date !== undefined) {
-      obj.interview_date = message.interview_date.toISOString();
+      obj.interviewDate = message.interview_date.toISOString();
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1898,7 +1898,7 @@ export const RequireFieldsChangesFromParentsRequest: MessageFns<RequireFieldsCha
   fromJSON(object: any): RequireFieldsChangesFromParentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       message: isSet(object.message) ? globalThis.String(object.message) : "",
     };
   },
@@ -1909,7 +1909,7 @@ export const RequireFieldsChangesFromParentsRequest: MessageFns<RequireFieldsCha
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.message !== "") {
       obj.message = message.message;
@@ -2005,11 +2005,11 @@ export const UploadStudentsRequest: MessageFns<UploadStudentsRequest> = {
   fromJSON(object: any): UploadStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      csv_file_base64: isSet(object.csv_file_base64) ? globalThis.String(object.csv_file_base64) : "",
-      student_status: isSet(object.student_status)
-        ? studentStatusFromJSON(object.student_status)
+      csv_file_base64: isSet(object.csvFileBase64) ? globalThis.String(object.csvFileBase64) : "",
+      student_status: isSet(object.studentStatus)
+        ? studentStatusFromJSON(object.studentStatus)
         : StudentStatus.WAITLIST,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -2019,13 +2019,13 @@ export const UploadStudentsRequest: MessageFns<UploadStudentsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.csv_file_base64 !== "") {
-      obj.csv_file_base64 = message.csv_file_base64;
+      obj.csvFileBase64 = message.csv_file_base64;
     }
     if (message.student_status !== StudentStatus.WAITLIST) {
-      obj.student_status = studentStatusToJSON(message.student_status);
+      obj.studentStatus = studentStatusToJSON(message.student_status);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -2104,22 +2104,22 @@ export const UploadStudentsResponse: MessageFns<UploadStudentsResponse> = {
 
   fromJSON(object: any): UploadStudentsResponse {
     return {
-      success_count: isSet(object.success_count) ? globalThis.Number(object.success_count) : 0,
-      failed_count: isSet(object.failed_count) ? globalThis.Number(object.failed_count) : 0,
-      error_csv_base64: isSet(object.error_csv_base64) ? globalThis.String(object.error_csv_base64) : "",
+      success_count: isSet(object.successCount) ? globalThis.Number(object.successCount) : 0,
+      failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : 0,
+      error_csv_base64: isSet(object.errorCsvBase64) ? globalThis.String(object.errorCsvBase64) : "",
     };
   },
 
   toJSON(message: UploadStudentsResponse): unknown {
     const obj: any = {};
     if (message.success_count !== 0) {
-      obj.success_count = Math.round(message.success_count);
+      obj.successCount = Math.round(message.success_count);
     }
     if (message.failed_count !== 0) {
-      obj.failed_count = Math.round(message.failed_count);
+      obj.failedCount = Math.round(message.failed_count);
     }
     if (message.error_csv_base64 !== undefined && message.error_csv_base64 !== "") {
-      obj.error_csv_base64 = message.error_csv_base64;
+      obj.errorCsvBase64 = message.error_csv_base64;
     }
     return obj;
   },
@@ -2194,8 +2194,8 @@ export const GetStudentSchoolYearInfoRequest: MessageFns<GetStudentSchoolYearInf
   fromJSON(object: any): GetStudentSchoolYearInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
-      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -2205,10 +2205,10 @@ export const GetStudentSchoolYearInfoRequest: MessageFns<GetStudentSchoolYearInf
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year_id !== undefined) {
-      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -2281,7 +2281,7 @@ export const GetStudentAllSchoolYearsInfoRequest: MessageFns<GetStudentAllSchool
   fromJSON(object: any): GetStudentAllSchoolYearsInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -2291,7 +2291,7 @@ export const GetStudentAllSchoolYearsInfoRequest: MessageFns<GetStudentAllSchool
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -2352,8 +2352,8 @@ export const GetStudentAllSchoolYearsInfoResponse: MessageFns<GetStudentAllSchoo
 
   fromJSON(object: any): GetStudentAllSchoolYearsInfoResponse {
     return {
-      school_years_info: globalThis.Array.isArray(object?.school_years_info)
-        ? object.school_years_info.map((e: any) => StudentSchoolYearInformation.fromJSON(e))
+      school_years_info: globalThis.Array.isArray(object?.schoolYearsInfo)
+        ? object.schoolYearsInfo.map((e: any) => StudentSchoolYearInformation.fromJSON(e))
         : [],
     };
   },
@@ -2361,7 +2361,7 @@ export const GetStudentAllSchoolYearsInfoResponse: MessageFns<GetStudentAllSchoo
   toJSON(message: GetStudentAllSchoolYearsInfoResponse): unknown {
     const obj: any = {};
     if (message.school_years_info?.length) {
-      obj.school_years_info = message.school_years_info.map((e) => StudentSchoolYearInformation.toJSON(e));
+      obj.schoolYearsInfo = message.school_years_info.map((e) => StudentSchoolYearInformation.toJSON(e));
     }
     return obj;
   },
@@ -2428,7 +2428,7 @@ export const GetLatestStudentSchoolYearInfoRequest: MessageFns<GetLatestStudentS
   fromJSON(object: any): GetLatestStudentSchoolYearInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -2438,7 +2438,7 @@ export const GetLatestStudentSchoolYearInfoRequest: MessageFns<GetLatestStudentS
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -2530,7 +2530,7 @@ export const ResolveTeacherOrStudentRequest: MessageFns<ResolveTeacherOrStudentR
   fromJSON(object: any): ResolveTeacherOrStudentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
     };
@@ -2542,7 +2542,7 @@ export const ResolveTeacherOrStudentRequest: MessageFns<ResolveTeacherOrStudentR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.email !== "") {
       obj.email = message.email;
@@ -2629,7 +2629,7 @@ export const ResolveTeacherOrStudentResponse: MessageFns<ResolveTeacherOrStudent
 
   fromJSON(object: any): ResolveTeacherOrStudentResponse {
     return {
-      user_type: isSet(object.user_type) ? userTypeFromJSON(object.user_type) : UserType.NONE,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
       teacher: isSet(object.teacher) ? Teacher.fromJSON(object.teacher) : undefined,
       student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
     };
@@ -2638,7 +2638,7 @@ export const ResolveTeacherOrStudentResponse: MessageFns<ResolveTeacherOrStudent
   toJSON(message: ResolveTeacherOrStudentResponse): unknown {
     const obj: any = {};
     if (message.user_type !== UserType.NONE) {
-      obj.user_type = userTypeToJSON(message.user_type);
+      obj.userType = userTypeToJSON(message.user_type);
     }
     if (message.teacher !== undefined) {
       obj.teacher = Teacher.toJSON(message.teacher);
@@ -2725,7 +2725,7 @@ export const AuthenticateStudentForOrgRequest: MessageFns<AuthenticateStudentFor
   fromJSON(object: any): AuthenticateStudentForOrgRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
     };
   },
@@ -2736,7 +2736,7 @@ export const AuthenticateStudentForOrgRequest: MessageFns<AuthenticateStudentFor
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.username !== "") {
       obj.username = message.username;
@@ -2812,7 +2812,7 @@ export const AuthenticateStudentForOrgResponse: MessageFns<AuthenticateStudentFo
   fromJSON(object: any): AuthenticateStudentForOrgResponse {
     return {
       student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
-      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
     };
   },
 
@@ -2822,7 +2822,7 @@ export const AuthenticateStudentForOrgResponse: MessageFns<AuthenticateStudentFo
       obj.student = Student.toJSON(message.student);
     }
     if (message.family_id !== undefined) {
-      obj.family_id = ObjectId.toJSON(message.family_id);
+      obj.familyId = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -3125,7 +3125,7 @@ export const CreateDefaultResourceAccessSettingsForOrgRequest: MessageFns<
   fromJSON(object: any): CreateDefaultResourceAccessSettingsForOrgRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -3135,7 +3135,7 @@ export const CreateDefaultResourceAccessSettingsForOrgRequest: MessageFns<
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -3328,13 +3328,13 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
   fromJSON(object: any): GetStudentsListWithFiltersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      name_search: isSet(object.name_search) ? globalThis.String(object.name_search) : "",
+      name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -3344,13 +3344,13 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.per_page !== undefined && message.per_page !== 0) {
-      obj.per_page = Math.round(message.per_page);
+      obj.perPage = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
     if (message.name_search !== undefined && message.name_search !== "") {
-      obj.name_search = message.name_search;
+      obj.nameSearch = message.name_search;
     }
     if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
@@ -3362,7 +3362,7 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       obj.status = studentStatusToJSON(message.status);
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -3442,7 +3442,7 @@ export const GetStudentsListWithFiltersResponse: MessageFns<GetStudentsListWithF
       students: globalThis.Array.isArray(object?.students)
         ? object.students.map((e: any) => SchoolYearStudent.fromJSON(e))
         : [],
-      students_count: isSet(object.students_count) ? globalThis.Number(object.students_count) : 0,
+      students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
     };
   },
 
@@ -3452,7 +3452,7 @@ export const GetStudentsListWithFiltersResponse: MessageFns<GetStudentsListWithF
       obj.students = message.students.map((e) => SchoolYearStudent.toJSON(e));
     }
     if (message.students_count !== 0) {
-      obj.students_count = Math.round(message.students_count);
+      obj.studentsCount = Math.round(message.students_count);
     }
     return obj;
   },
@@ -3560,11 +3560,11 @@ export const GetCourseOrHomeroomStudentsRequest: MessageFns<GetCourseOrHomeroomS
   fromJSON(object: any): GetCourseOrHomeroomStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      name_search: isSet(object.name_search) ? globalThis.String(object.name_search) : "",
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
-      homeroom_id: isSet(object.homeroom_id) ? ObjectId.fromJSON(object.homeroom_id) : undefined,
+      name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
     };
   },
 
@@ -3574,19 +3574,19 @@ export const GetCourseOrHomeroomStudentsRequest: MessageFns<GetCourseOrHomeroomS
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.per_page !== undefined && message.per_page !== 0) {
-      obj.per_page = Math.round(message.per_page);
+      obj.perPage = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
     if (message.name_search !== undefined && message.name_search !== "") {
-      obj.name_search = message.name_search;
+      obj.nameSearch = message.name_search;
     }
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.homeroom_id !== undefined) {
-      obj.homeroom_id = ObjectId.toJSON(message.homeroom_id);
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
     }
     return obj;
   },
@@ -3664,7 +3664,7 @@ export const GetCourseOrHomeroomStudentsResponse: MessageFns<GetCourseOrHomeroom
   fromJSON(object: any): GetCourseOrHomeroomStudentsResponse {
     return {
       students: globalThis.Array.isArray(object?.students) ? object.students.map((e: any) => Student.fromJSON(e)) : [],
-      students_count: isSet(object.students_count) ? globalThis.Number(object.students_count) : 0,
+      students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
     };
   },
 
@@ -3674,7 +3674,7 @@ export const GetCourseOrHomeroomStudentsResponse: MessageFns<GetCourseOrHomeroom
       obj.students = message.students.map((e) => Student.toJSON(e));
     }
     if (message.students_count !== 0) {
-      obj.students_count = Math.round(message.students_count);
+      obj.studentsCount = Math.round(message.students_count);
     }
     return obj;
   },
@@ -3752,10 +3752,10 @@ export const GetStudentsByIdsWithSchoolYearRequest: MessageFns<GetStudentsByIdsW
   fromJSON(object: any): GetStudentsByIdsWithSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_ids: globalThis.Array.isArray(object?.student_ids)
-        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -3765,10 +3765,10 @@ export const GetStudentsByIdsWithSchoolYearRequest: MessageFns<GetStudentsByIdsW
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_ids?.length) {
-      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.school_year_id !== undefined) {
-      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -3906,8 +3906,8 @@ export const GetStudentsByIdsRequest: MessageFns<GetStudentsByIdsRequest> = {
   fromJSON(object: any): GetStudentsByIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_ids: globalThis.Array.isArray(object?.student_ids)
-        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -3918,7 +3918,7 @@ export const GetStudentsByIdsRequest: MessageFns<GetStudentsByIdsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_ids?.length) {
-      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -4043,7 +4043,7 @@ export const GetRequiredActionsByParentsRequest: MessageFns<GetRequiredActionsBy
   fromJSON(object: any): GetRequiredActionsByParentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -4053,7 +4053,7 @@ export const GetRequiredActionsByParentsRequest: MessageFns<GetRequiredActionsBy
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -4215,7 +4215,7 @@ export const GetStudentsStatusCountsRequest: MessageFns<GetStudentsStatusCountsR
       statuses: globalThis.Array.isArray(object?.statuses)
         ? object.statuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -4228,7 +4228,7 @@ export const GetStudentsStatusCountsRequest: MessageFns<GetStudentsStatusCountsR
       obj.statuses = message.statuses.map((e) => studentStatusToJSON(e));
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -4288,8 +4288,8 @@ export const GetStudentsStatusCountsResponse: MessageFns<GetStudentsStatusCounts
 
   fromJSON(object: any): GetStudentsStatusCountsResponse {
     return {
-      status_counts: globalThis.Array.isArray(object?.status_counts)
-        ? object.status_counts.map((e: any) => StudentStatusCount.fromJSON(e))
+      status_counts: globalThis.Array.isArray(object?.statusCounts)
+        ? object.statusCounts.map((e: any) => StudentStatusCount.fromJSON(e))
         : [],
     };
   },
@@ -4297,7 +4297,7 @@ export const GetStudentsStatusCountsResponse: MessageFns<GetStudentsStatusCounts
   toJSON(message: GetStudentsStatusCountsResponse): unknown {
     const obj: any = {};
     if (message.status_counts?.length) {
-      obj.status_counts = message.status_counts.map((e) => StudentStatusCount.toJSON(e));
+      obj.statusCounts = message.status_counts.map((e) => StudentStatusCount.toJSON(e));
     }
     return obj;
   },
@@ -4572,26 +4572,26 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
   fromJSON(object: any): GetFilteredStudentsListRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      no_nonpaid_registration: isSet(object.no_nonpaid_registration)
-        ? globalThis.Boolean(object.no_nonpaid_registration)
+      no_nonpaid_registration: isSet(object.noNonpaidRegistration)
+        ? globalThis.Boolean(object.noNonpaidRegistration)
         : false,
-      no_nonpaid_reregistration: isSet(object.no_nonpaid_reregistration)
-        ? globalThis.Boolean(object.no_nonpaid_reregistration)
+      no_nonpaid_reregistration: isSet(object.noNonpaidReregistration)
+        ? globalThis.Boolean(object.noNonpaidReregistration)
         : false,
-      sort_enrolled_family_first: isSet(object.sort_enrolled_family_first)
-        ? globalThis.Boolean(object.sort_enrolled_family_first)
+      sort_enrolled_family_first: isSet(object.sortEnrolledFamilyFirst)
+        ? globalThis.Boolean(object.sortEnrolledFamilyFirst)
         : false,
-      filled_profile_sections: globalThis.Array.isArray(object?.filled_profile_sections)
-        ? object.filled_profile_sections.map((e: any) => profileSectionFromJSON(e))
+      filled_profile_sections: globalThis.Array.isArray(object?.filledProfileSections)
+        ? object.filledProfileSections.map((e: any) => profileSectionFromJSON(e))
         : [],
-      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
-      has_priority_first: isSet(object.has_priority_first) ? globalThis.Boolean(object.has_priority_first) : false,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      has_priority_first: isSet(object.hasPriorityFirst) ? globalThis.Boolean(object.hasPriorityFirst) : false,
     };
   },
 
@@ -4601,7 +4601,7 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.per_page !== undefined && message.per_page !== 0) {
-      obj.per_page = Math.round(message.per_page);
+      obj.perPage = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
@@ -4619,22 +4619,22 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       obj.name = message.name;
     }
     if (message.no_nonpaid_registration !== undefined && message.no_nonpaid_registration !== false) {
-      obj.no_nonpaid_registration = message.no_nonpaid_registration;
+      obj.noNonpaidRegistration = message.no_nonpaid_registration;
     }
     if (message.no_nonpaid_reregistration !== undefined && message.no_nonpaid_reregistration !== false) {
-      obj.no_nonpaid_reregistration = message.no_nonpaid_reregistration;
+      obj.noNonpaidReregistration = message.no_nonpaid_reregistration;
     }
     if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
-      obj.sort_enrolled_family_first = message.sort_enrolled_family_first;
+      obj.sortEnrolledFamilyFirst = message.sort_enrolled_family_first;
     }
     if (message.filled_profile_sections?.length) {
-      obj.filled_profile_sections = message.filled_profile_sections.map((e) => profileSectionToJSON(e));
+      obj.filledProfileSections = message.filled_profile_sections.map((e) => profileSectionToJSON(e));
     }
     if (message.school_year !== undefined) {
-      obj.school_year = ObjectId.toJSON(message.school_year);
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
-      obj.has_priority_first = message.has_priority_first;
+      obj.hasPriorityFirst = message.has_priority_first;
     }
     return obj;
   },
@@ -4717,7 +4717,7 @@ export const GetFilteredStudentsListResponse: MessageFns<GetFilteredStudentsList
       students: globalThis.Array.isArray(object?.students)
         ? object.students.map((e: any) => SchoolYearStudent.fromJSON(e))
         : [],
-      students_count: isSet(object.students_count) ? globalThis.Number(object.students_count) : 0,
+      students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
     };
   },
 
@@ -4727,7 +4727,7 @@ export const GetFilteredStudentsListResponse: MessageFns<GetFilteredStudentsList
       obj.students = message.students.map((e) => SchoolYearStudent.toJSON(e));
     }
     if (message.students_count !== 0) {
-      obj.students_count = Math.round(message.students_count);
+      obj.studentsCount = Math.round(message.students_count);
     }
     return obj;
   },
@@ -4793,7 +4793,7 @@ export const GetStudentSchoolYearsRequest: MessageFns<GetStudentSchoolYearsReque
   fromJSON(object: any): GetStudentSchoolYearsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -4803,7 +4803,7 @@ export const GetStudentSchoolYearsRequest: MessageFns<GetStudentSchoolYearsReque
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -4860,8 +4860,8 @@ export const GetStudentSchoolYearsResponse: MessageFns<GetStudentSchoolYearsResp
 
   fromJSON(object: any): GetStudentSchoolYearsResponse {
     return {
-      school_years: globalThis.Array.isArray(object?.school_years)
-        ? object.school_years.map((e: any) => StudentSchoolYear.fromJSON(e))
+      school_years: globalThis.Array.isArray(object?.schoolYears)
+        ? object.schoolYears.map((e: any) => StudentSchoolYear.fromJSON(e))
         : [],
     };
   },
@@ -4869,7 +4869,7 @@ export const GetStudentSchoolYearsResponse: MessageFns<GetStudentSchoolYearsResp
   toJSON(message: GetStudentSchoolYearsResponse): unknown {
     const obj: any = {};
     if (message.school_years?.length) {
-      obj.school_years = message.school_years.map((e) => StudentSchoolYear.toJSON(e));
+      obj.schoolYears = message.school_years.map((e) => StudentSchoolYear.toJSON(e));
     }
     return obj;
   },
@@ -4943,7 +4943,7 @@ export const StudentSchoolYear: MessageFns<StudentSchoolYear> = {
 
   fromJSON(object: any): StudentSchoolYear {
     return {
-      school_year: isSet(object.school_year) ? SchoolYear.fromJSON(object.school_year) : undefined,
+      school_year: isSet(object.schoolYear) ? SchoolYear.fromJSON(object.schoolYear) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
     };
@@ -4952,7 +4952,7 @@ export const StudentSchoolYear: MessageFns<StudentSchoolYear> = {
   toJSON(message: StudentSchoolYear): unknown {
     const obj: any = {};
     if (message.school_year !== undefined) {
-      obj.school_year = SchoolYear.toJSON(message.school_year);
+      obj.schoolYear = SchoolYear.toJSON(message.school_year);
     }
     if (message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
@@ -5025,7 +5025,7 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
   fromJSON(object: any): GetOnboardingCardInformationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
@@ -5035,7 +5035,7 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -5153,19 +5153,19 @@ export const GetOnboardingCardInformationResponse: MessageFns<GetOnboardingCardI
 
   fromJSON(object: any): GetOnboardingCardInformationResponse {
     return {
-      custom_field_entries: globalThis.Array.isArray(object?.custom_field_entries)
-        ? object.custom_field_entries.map((e: any) => CustomFieldEntry.fromJSON(e))
+      custom_field_entries: globalThis.Array.isArray(object?.customFieldEntries)
+        ? object.customFieldEntries.map((e: any) => CustomFieldEntry.fromJSON(e))
         : [],
-      group_approval_statuses: globalThis.Array.isArray(object?.group_approval_statuses)
-        ? object.group_approval_statuses.map((e: any) => GroupApprovalStatus.fromJSON(e))
+      group_approval_statuses: globalThis.Array.isArray(object?.groupApprovalStatuses)
+        ? object.groupApprovalStatuses.map((e: any) => GroupApprovalStatus.fromJSON(e))
         : [],
       invoices: globalThis.Array.isArray(object?.invoices)
         ? object.invoices.map((e: any) => InvoiceResponse.fromJSON(e))
         : [],
       family: isSet(object.family) ? Family.fromJSON(object.family) : undefined,
       parents: globalThis.Array.isArray(object?.parents) ? object.parents.map((e: any) => Parent.fromJSON(e)) : [],
-      parents_custom_field_entries: globalThis.Array.isArray(object?.parents_custom_field_entries)
-        ? object.parents_custom_field_entries.map((e: any) => CustomFieldEntry.fromJSON(e))
+      parents_custom_field_entries: globalThis.Array.isArray(object?.parentsCustomFieldEntries)
+        ? object.parentsCustomFieldEntries.map((e: any) => CustomFieldEntry.fromJSON(e))
         : [],
     };
   },
@@ -5173,10 +5173,10 @@ export const GetOnboardingCardInformationResponse: MessageFns<GetOnboardingCardI
   toJSON(message: GetOnboardingCardInformationResponse): unknown {
     const obj: any = {};
     if (message.custom_field_entries?.length) {
-      obj.custom_field_entries = message.custom_field_entries.map((e) => CustomFieldEntry.toJSON(e));
+      obj.customFieldEntries = message.custom_field_entries.map((e) => CustomFieldEntry.toJSON(e));
     }
     if (message.group_approval_statuses?.length) {
-      obj.group_approval_statuses = message.group_approval_statuses.map((e) => GroupApprovalStatus.toJSON(e));
+      obj.groupApprovalStatuses = message.group_approval_statuses.map((e) => GroupApprovalStatus.toJSON(e));
     }
     if (message.invoices?.length) {
       obj.invoices = message.invoices.map((e) => InvoiceResponse.toJSON(e));
@@ -5188,7 +5188,7 @@ export const GetOnboardingCardInformationResponse: MessageFns<GetOnboardingCardI
       obj.parents = message.parents.map((e) => Parent.toJSON(e));
     }
     if (message.parents_custom_field_entries?.length) {
-      obj.parents_custom_field_entries = message.parents_custom_field_entries.map((e) => CustomFieldEntry.toJSON(e));
+      obj.parentsCustomFieldEntries = message.parents_custom_field_entries.map((e) => CustomFieldEntry.toJSON(e));
     }
     return obj;
   },
@@ -5264,8 +5264,8 @@ export const GetStudentUploadHeaderRequest: MessageFns<GetStudentUploadHeaderReq
   fromJSON(object: any): GetStudentUploadHeaderRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_status: isSet(object.student_status)
-        ? studentStatusFromJSON(object.student_status)
+      student_status: isSet(object.studentStatus)
+        ? studentStatusFromJSON(object.studentStatus)
         : StudentStatus.WAITLIST,
     };
   },
@@ -5276,7 +5276,7 @@ export const GetStudentUploadHeaderRequest: MessageFns<GetStudentUploadHeaderReq
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_status !== StudentStatus.WAITLIST) {
-      obj.student_status = studentStatusToJSON(message.student_status);
+      obj.studentStatus = studentStatusToJSON(message.student_status);
     }
     return obj;
   },

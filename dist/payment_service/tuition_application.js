@@ -197,7 +197,7 @@ exports.AdditionalFeeApplication = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            additional_fee: isSet(object.additional_fee) ? object_id_1.ObjectId.fromJSON(object.additional_fee) : undefined,
+            additional_fee: isSet(object.additionalFee) ? object_id_1.ObjectId.fromJSON(object.additionalFee) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
         };
@@ -211,7 +211,7 @@ exports.AdditionalFeeApplication = {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
         if (message.additional_fee !== undefined) {
-            obj.additional_fee = object_id_1.ObjectId.toJSON(message.additional_fee);
+            obj.additionalFee = object_id_1.ObjectId.toJSON(message.additional_fee);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);

@@ -210,13 +210,13 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       status: isSet(object.status) ? staffStatusFromJSON(object.status) : StaffStatus.ACTIVE,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
-      first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
-      last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
-      personal_email: isSet(object.personal_email) ? globalThis.String(object.personal_email) : "",
-      date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
-      phone_number: isSet(object.phone_number) ? globalThis.String(object.phone_number) : "",
+      personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
     };
   },
 
@@ -232,10 +232,10 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
       obj.username = message.username;
     }
     if (message.first_name !== "") {
-      obj.first_name = message.first_name;
+      obj.firstName = message.first_name;
     }
     if (message.last_name !== "") {
-      obj.last_name = message.last_name;
+      obj.lastName = message.last_name;
     }
     if (message.gender !== "") {
       obj.gender = message.gender;
@@ -244,13 +244,13 @@ export const BassemLabsStaff: MessageFns<BassemLabsStaff> = {
       obj.email = message.email;
     }
     if (message.personal_email !== "") {
-      obj.personal_email = message.personal_email;
+      obj.personalEmail = message.personal_email;
     }
     if (message.date_of_birth !== undefined) {
-      obj.date_of_birth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth.toISOString();
     }
     if (message.phone_number !== "") {
-      obj.phone_number = message.phone_number;
+      obj.phoneNumber = message.phone_number;
     }
     return obj;
   },

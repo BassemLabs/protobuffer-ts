@@ -259,33 +259,33 @@ exports.OrganizationProfileSettings = {
     },
     fromJSON(object) {
         return {
-            student_profile_sections: globalThis.Array.isArray(object?.student_profile_sections)
-                ? object.student_profile_sections.map((e) => profileSectionFromJSON(e))
+            student_profile_sections: globalThis.Array.isArray(object?.studentProfileSections)
+                ? object.studentProfileSections.map((e) => profileSectionFromJSON(e))
                 : [],
-            parent_profile_sections: globalThis.Array.isArray(object?.parent_profile_sections)
-                ? object.parent_profile_sections.map((e) => profileSectionFromJSON(e))
+            parent_profile_sections: globalThis.Array.isArray(object?.parentProfileSections)
+                ? object.parentProfileSections.map((e) => profileSectionFromJSON(e))
                 : [],
-            teacher_profile_sections: globalThis.Array.isArray(object?.teacher_profile_sections)
-                ? object.teacher_profile_sections.map((e) => profileSectionFromJSON(e))
+            teacher_profile_sections: globalThis.Array.isArray(object?.teacherProfileSections)
+                ? object.teacherProfileSections.map((e) => profileSectionFromJSON(e))
                 : [],
-            student_primary_id_custom_field: isSet(object.student_primary_id_custom_field)
-                ? object_id_1.ObjectId.fromJSON(object.student_primary_id_custom_field)
+            student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
+                ? object_id_1.ObjectId.fromJSON(object.studentPrimaryIdCustomField)
                 : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.student_profile_sections?.length) {
-            obj.student_profile_sections = message.student_profile_sections.map((e) => profileSectionToJSON(e));
+            obj.studentProfileSections = message.student_profile_sections.map((e) => profileSectionToJSON(e));
         }
         if (message.parent_profile_sections?.length) {
-            obj.parent_profile_sections = message.parent_profile_sections.map((e) => profileSectionToJSON(e));
+            obj.parentProfileSections = message.parent_profile_sections.map((e) => profileSectionToJSON(e));
         }
         if (message.teacher_profile_sections?.length) {
-            obj.teacher_profile_sections = message.teacher_profile_sections.map((e) => profileSectionToJSON(e));
+            obj.teacherProfileSections = message.teacher_profile_sections.map((e) => profileSectionToJSON(e));
         }
         if (message.student_primary_id_custom_field !== undefined) {
-            obj.student_primary_id_custom_field = object_id_1.ObjectId.toJSON(message.student_primary_id_custom_field);
+            obj.studentPrimaryIdCustomField = object_id_1.ObjectId.toJSON(message.student_primary_id_custom_field);
         }
         return obj;
     },

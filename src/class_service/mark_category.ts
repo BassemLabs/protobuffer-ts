@@ -105,7 +105,7 @@ export const MarkCategory: MessageFns<MarkCategory> = {
   fromJSON(object: any): MarkCategory {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
     };
@@ -117,7 +117,7 @@ export const MarkCategory: MessageFns<MarkCategory> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -221,10 +221,10 @@ export const DetailedMarkCategory: MessageFns<DetailedMarkCategory> = {
   fromJSON(object: any): DetailedMarkCategory {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
-      effective_percentage: isSet(object.effective_percentage) ? globalThis.Number(object.effective_percentage) : 0,
+      effective_percentage: isSet(object.effectivePercentage) ? globalThis.Number(object.effectivePercentage) : 0,
     };
   },
 
@@ -234,7 +234,7 @@ export const DetailedMarkCategory: MessageFns<DetailedMarkCategory> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -243,7 +243,7 @@ export const DetailedMarkCategory: MessageFns<DetailedMarkCategory> = {
       obj.percentage = Math.round(message.percentage);
     }
     if (message.effective_percentage !== 0) {
-      obj.effective_percentage = message.effective_percentage;
+      obj.effectivePercentage = message.effective_percentage;
     }
     return obj;
   },
@@ -359,12 +359,12 @@ export const PersonalizedMarkCategory: MessageFns<PersonalizedMarkCategory> = {
   fromJSON(object: any): PersonalizedMarkCategory {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
-      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
-      effective_percentage_for_student: isSet(object.effective_percentage_for_student)
-        ? globalThis.Number(object.effective_percentage_for_student)
+      effective_percentage_for_student: isSet(object.effectivePercentageForStudent)
+        ? globalThis.Number(object.effectivePercentageForStudent)
         : 0,
     };
   },
@@ -375,10 +375,10 @@ export const PersonalizedMarkCategory: MessageFns<PersonalizedMarkCategory> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.student_id !== undefined) {
-      obj.student_id = ObjectId.toJSON(message.student_id);
+      obj.studentId = ObjectId.toJSON(message.student_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -387,7 +387,7 @@ export const PersonalizedMarkCategory: MessageFns<PersonalizedMarkCategory> = {
       obj.percentage = Math.round(message.percentage);
     }
     if (message.effective_percentage_for_student !== 0) {
-      obj.effective_percentage_for_student = message.effective_percentage_for_student;
+      obj.effectivePercentageForStudent = message.effective_percentage_for_student;
     }
     return obj;
   },

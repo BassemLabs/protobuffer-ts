@@ -320,10 +320,10 @@ exports.ResourceAccessSettings = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            ownership_kind: isSet(object.ownership_kind) ? ownershipKindFromJSON(object.ownership_kind) : OwnershipKind.OWNED,
-            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
-            access_rules: globalThis.Array.isArray(object?.access_rules)
-                ? object.access_rules.map((e) => exports.AccessRule.fromJSON(e))
+            ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
+            access_rules: globalThis.Array.isArray(object?.accessRules)
+                ? object.accessRules.map((e) => exports.AccessRule.fromJSON(e))
                 : [],
         };
     },
@@ -339,13 +339,13 @@ exports.ResourceAccessSettings = {
             obj.name = message.name;
         }
         if (message.ownership_kind !== OwnershipKind.OWNED) {
-            obj.ownership_kind = ownershipKindToJSON(message.ownership_kind);
+            obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.access_rules?.length) {
-            obj.access_rules = message.access_rules.map((e) => exports.AccessRule.toJSON(e));
+            obj.accessRules = message.access_rules.map((e) => exports.AccessRule.toJSON(e));
         }
         return obj;
     },
@@ -416,8 +416,8 @@ exports.AccessRule = {
     },
     fromJSON(object) {
         return {
-            permission_type: isSet(object.permission_type)
-                ? accessPermissionTypeFromJSON(object.permission_type)
+            permission_type: isSet(object.permissionType)
+                ? accessPermissionTypeFromJSON(object.permissionType)
                 : AccessPermissionType.ALLOW_READ,
             principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : PrincipalType.USER,
             wildcard: isSet(object.wildcard) ? exports.WildcardAccess.fromJSON(object.wildcard) : undefined,
@@ -426,7 +426,7 @@ exports.AccessRule = {
     toJSON(message) {
         const obj = {};
         if (message.permission_type !== AccessPermissionType.ALLOW_READ) {
-            obj.permission_type = accessPermissionTypeToJSON(message.permission_type);
+            obj.permissionType = accessPermissionTypeToJSON(message.permission_type);
         }
         if (message.principal !== undefined && message.principal !== PrincipalType.USER) {
             obj.principal = principalTypeToJSON(message.principal);

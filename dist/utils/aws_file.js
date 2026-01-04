@@ -51,17 +51,17 @@ exports.AWSFile = {
     },
     fromJSON(object) {
         return {
-            file_name: isSet(object.file_name) ? globalThis.String(object.file_name) : "",
-            pre_signed_url: isSet(object.pre_signed_url) ? globalThis.String(object.pre_signed_url) : "",
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+            pre_signed_url: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : "",
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.file_name !== "") {
-            obj.file_name = message.file_name;
+            obj.fileName = message.file_name;
         }
         if (message.pre_signed_url !== "") {
-            obj.pre_signed_url = message.pre_signed_url;
+            obj.preSignedUrl = message.pre_signed_url;
         }
         return obj;
     },

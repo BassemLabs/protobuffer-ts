@@ -212,17 +212,17 @@ exports.ClassRef = {
     },
     fromJSON(object) {
         return {
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
-            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         return obj;
     },
@@ -310,10 +310,10 @@ exports.GetStudentEntriesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.class_ref) ? exports.ClassRef.fromJSON(object.class_ref) : undefined,
-            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
-            start_date: isSet(object.start_date) ? globalThis.String(object.start_date) : "",
-            end_date: isSet(object.end_date) ? globalThis.String(object.end_date) : "",
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -322,16 +322,16 @@ exports.GetStudentEntriesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.class_ref = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
         if (message.student_id !== undefined) {
-            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.start_date !== "") {
-            obj.start_date = message.start_date;
+            obj.startDate = message.start_date;
         }
         if (message.end_date !== "") {
-            obj.end_date = message.end_date;
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -424,12 +424,12 @@ exports.GetStudentsEntriesCountRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.class_ref) ? exports.ClassRef.fromJSON(object.class_ref) : undefined,
-            student_ids: globalThis.Array.isArray(object?.student_ids)
-                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            start_date: isSet(object.start_date) ? globalThis.String(object.start_date) : "",
-            end_date: isSet(object.end_date) ? globalThis.String(object.end_date) : "",
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -438,16 +438,16 @@ exports.GetStudentsEntriesCountRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.class_ref = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
         if (message.student_ids?.length) {
-            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.start_date !== "") {
-            obj.start_date = message.start_date;
+            obj.startDate = message.start_date;
         }
         if (message.end_date !== "") {
-            obj.end_date = message.end_date;
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -520,9 +520,7 @@ exports.UpdateStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendance_entry_id: isSet(object.attendance_entry_id)
-                ? object_id_1.ObjectId.fromJSON(object.attendance_entry_id)
-                : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
             status: isSet(object.status) ? (0, attendance_1.attendanceStatusFromJSON)(object.status) : attendance_1.AttendanceStatus.None,
         };
     },
@@ -532,7 +530,7 @@ exports.UpdateStatusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.attendance_entry_id !== undefined) {
-            obj.attendance_entry_id = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.status !== attendance_1.AttendanceStatus.None) {
             obj.status = (0, attendance_1.attendanceStatusToJSON)(message.status);
@@ -615,10 +613,8 @@ exports.UpdateTimeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendance_entry_id: isSet(object.attendance_entry_id)
-                ? object_id_1.ObjectId.fromJSON(object.attendance_entry_id)
-                : undefined,
-            time_type: isSet(object.time_type) ? timeTypeFromJSON(object.time_type) : TimeType.SignIn,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            time_type: isSet(object.timeType) ? timeTypeFromJSON(object.timeType) : TimeType.SignIn,
             time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
         };
     },
@@ -628,10 +624,10 @@ exports.UpdateTimeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.attendance_entry_id !== undefined) {
-            obj.attendance_entry_id = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.time_type !== TimeType.SignIn) {
-            obj.time_type = timeTypeToJSON(message.time_type);
+            obj.timeType = timeTypeToJSON(message.time_type);
         }
         if (message.time !== undefined) {
             obj.time = message.time.toISOString();
@@ -706,9 +702,7 @@ exports.UpdateReasonRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendance_entry_id: isSet(object.attendance_entry_id)
-                ? object_id_1.ObjectId.fromJSON(object.attendance_entry_id)
-                : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
         };
     },
@@ -718,7 +712,7 @@ exports.UpdateReasonRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.attendance_entry_id !== undefined) {
-            obj.attendance_entry_id = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.reason !== "") {
             obj.reason = message.reason;
@@ -792,12 +786,8 @@ exports.UpdateLateDismissalDateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendance_entry_id: isSet(object.attendance_entry_id)
-                ? object_id_1.ObjectId.fromJSON(object.attendance_entry_id)
-                : undefined,
-            late_dismissal_date: isSet(object.late_dismissal_date)
-                ? fromJsonTimestamp(object.late_dismissal_date)
-                : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
+            late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
         };
     },
     toJSON(message) {
@@ -806,10 +796,10 @@ exports.UpdateLateDismissalDateRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.attendance_entry_id !== undefined) {
-            obj.attendance_entry_id = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.late_dismissal_date !== undefined) {
-            obj.late_dismissal_date = message.late_dismissal_date.toISOString();
+            obj.lateDismissalDate = message.late_dismissal_date.toISOString();
         }
         return obj;
     },
@@ -904,13 +894,11 @@ exports.UpdateExcuseStudentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendance_entry_id: isSet(object.attendance_entry_id)
-                ? object_id_1.ObjectId.fromJSON(object.attendance_entry_id)
-                : undefined,
+            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
-            student_excused_by: isSet(object.student_excused_by) ? object_id_1.ObjectId.fromJSON(object.student_excused_by) : undefined,
-            student_excused_by_user_type: isSet(object.student_excused_by_user_type)
-                ? (0, user_type_1.userTypeFromJSON)(object.student_excused_by_user_type)
+            student_excused_by: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
+            student_excused_by_user_type: isSet(object.studentExcusedByUserType)
+                ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
                 : user_type_1.UserType.NONE,
         };
     },
@@ -920,16 +908,16 @@ exports.UpdateExcuseStudentRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.attendance_entry_id !== undefined) {
-            obj.attendance_entry_id = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
+            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
         if (message.reason !== "") {
             obj.reason = message.reason;
         }
         if (message.student_excused_by !== undefined) {
-            obj.student_excused_by = object_id_1.ObjectId.toJSON(message.student_excused_by);
+            obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.student_excused_by);
         }
         if (message.student_excused_by_user_type !== user_type_1.UserType.NONE) {
-            obj.student_excused_by_user_type = (0, user_type_1.userTypeToJSON)(message.student_excused_by_user_type);
+            obj.studentExcusedByUserType = (0, user_type_1.userTypeToJSON)(message.student_excused_by_user_type);
         }
         return obj;
     },
@@ -1034,8 +1022,8 @@ exports.AttendanceCounts = {
             present: isSet(object.present) ? globalThis.Number(object.present) : 0,
             late: isSet(object.late) ? globalThis.Number(object.late) : 0,
             absent: isSet(object.absent) ? globalThis.Number(object.absent) : 0,
-            excused_absent: isSet(object.excused_absent) ? globalThis.Number(object.excused_absent) : 0,
-            non_excused_absent: isSet(object.non_excused_absent) ? globalThis.Number(object.non_excused_absent) : 0,
+            excused_absent: isSet(object.excusedAbsent) ? globalThis.Number(object.excusedAbsent) : 0,
+            non_excused_absent: isSet(object.nonExcusedAbsent) ? globalThis.Number(object.nonExcusedAbsent) : 0,
         };
     },
     toJSON(message) {
@@ -1053,10 +1041,10 @@ exports.AttendanceCounts = {
             obj.absent = Math.round(message.absent);
         }
         if (message.excused_absent !== 0) {
-            obj.excused_absent = Math.round(message.excused_absent);
+            obj.excusedAbsent = Math.round(message.excused_absent);
         }
         if (message.non_excused_absent !== 0) {
-            obj.non_excused_absent = Math.round(message.non_excused_absent);
+            obj.nonExcusedAbsent = Math.round(message.non_excused_absent);
         }
         return obj;
     },
@@ -1177,15 +1165,15 @@ exports.StudentsAttendanceCountsResponse = {
     },
     fromJSON(object) {
         return {
-            student_counts: globalThis.Array.isArray(object?.student_counts)
-                ? object.student_counts.map((e) => exports.StudentAttendanceCounts.fromJSON(e))
+            student_counts: globalThis.Array.isArray(object?.studentCounts)
+                ? object.studentCounts.map((e) => exports.StudentAttendanceCounts.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.student_counts?.length) {
-            obj.student_counts = message.student_counts.map((e) => exports.StudentAttendanceCounts.toJSON(e));
+            obj.studentCounts = message.student_counts.map((e) => exports.StudentAttendanceCounts.toJSON(e));
         }
         return obj;
     },
@@ -1251,7 +1239,7 @@ exports.GetCoursesAttendanceOverviewRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            show_all_classes: isSet(object.show_all_classes) ? globalThis.Boolean(object.show_all_classes) : false,
+            show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
         };
     },
     toJSON(message) {
@@ -1263,7 +1251,7 @@ exports.GetCoursesAttendanceOverviewRequest = {
             obj.date = message.date;
         }
         if (message.show_all_classes !== false) {
-            obj.show_all_classes = message.show_all_classes;
+            obj.showAllClasses = message.show_all_classes;
         }
         return obj;
     },
@@ -1335,8 +1323,8 @@ exports.GetCoursesAttendanceOverviewResponse = {
             teachers: globalThis.Array.isArray(object?.teachers)
                 ? object.teachers.map((e) => teacher_1.TeacherBasic.fromJSON(e))
                 : [],
-            entry_status: globalThis.Array.isArray(object?.entry_status)
-                ? object.entry_status.map((e) => exports.CourseEntryStatus.fromJSON(e))
+            entry_status: globalThis.Array.isArray(object?.entryStatus)
+                ? object.entryStatus.map((e) => exports.CourseEntryStatus.fromJSON(e))
                 : [],
         };
     },
@@ -1349,7 +1337,7 @@ exports.GetCoursesAttendanceOverviewResponse = {
             obj.teachers = message.teachers.map((e) => teacher_1.TeacherBasic.toJSON(e));
         }
         if (message.entry_status?.length) {
-            obj.entry_status = message.entry_status.map((e) => exports.CourseEntryStatus.toJSON(e));
+            obj.entryStatus = message.entry_status.map((e) => exports.CourseEntryStatus.toJSON(e));
         }
         return obj;
     },
@@ -1406,17 +1394,17 @@ exports.CourseEntryStatus = {
     },
     fromJSON(object) {
         return {
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
-            is_complete: isSet(object.is_complete) ? globalThis.Boolean(object.is_complete) : false,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.is_complete !== false) {
-            obj.is_complete = message.is_complete;
+            obj.isComplete = message.is_complete;
         }
         return obj;
     },
@@ -1485,7 +1473,7 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            show_all_classes: isSet(object.show_all_classes) ? globalThis.Boolean(object.show_all_classes) : false,
+            show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
         };
     },
     toJSON(message) {
@@ -1497,7 +1485,7 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
             obj.date = message.date;
         }
         if (message.show_all_classes !== false) {
-            obj.show_all_classes = message.show_all_classes;
+            obj.showAllClasses = message.show_all_classes;
         }
         return obj;
     },
@@ -1571,8 +1559,8 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
             teachers: globalThis.Array.isArray(object?.teachers)
                 ? object.teachers.map((e) => teacher_1.TeacherBasic.fromJSON(e))
                 : [],
-            entry_status: globalThis.Array.isArray(object?.entry_status)
-                ? object.entry_status.map((e) => exports.HomeroomEntryStatus.fromJSON(e))
+            entry_status: globalThis.Array.isArray(object?.entryStatus)
+                ? object.entryStatus.map((e) => exports.HomeroomEntryStatus.fromJSON(e))
                 : [],
         };
     },
@@ -1585,7 +1573,7 @@ exports.GetHomeroomsAttendanceOverviewResponse = {
             obj.teachers = message.teachers.map((e) => teacher_1.TeacherBasic.toJSON(e));
         }
         if (message.entry_status?.length) {
-            obj.entry_status = message.entry_status.map((e) => exports.HomeroomEntryStatus.toJSON(e));
+            obj.entryStatus = message.entry_status.map((e) => exports.HomeroomEntryStatus.toJSON(e));
         }
         return obj;
     },
@@ -1642,17 +1630,17 @@ exports.HomeroomEntryStatus = {
     },
     fromJSON(object) {
         return {
-            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
-            is_complete: isSet(object.is_complete) ? globalThis.Boolean(object.is_complete) : false,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.homeroom_id !== undefined) {
-            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.is_complete !== false) {
-            obj.is_complete = message.is_complete;
+            obj.isComplete = message.is_complete;
         }
         return obj;
     },
@@ -1729,9 +1717,9 @@ exports.GetHomeroomAttendanceDetailsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            period_number: isSet(object.period_number) ? globalThis.Number(object.period_number) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
         };
     },
     toJSON(message) {
@@ -1740,13 +1728,13 @@ exports.GetHomeroomAttendanceDetailsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
         }
         if (message.period_number !== 0) {
-            obj.period_number = Math.round(message.period_number);
+            obj.periodNumber = Math.round(message.period_number);
         }
         return obj;
     },
@@ -1819,8 +1807,8 @@ exports.GetHomeroomAttendanceDetailsResponse = {
         return {
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
             students: globalThis.Array.isArray(object?.students) ? object.students.map((e) => student_1.Student.fromJSON(e)) : [],
-            attendance_entries: globalThis.Array.isArray(object?.attendance_entries)
-                ? object.attendance_entries.map((e) => attendance_1.Attendance.fromJSON(e))
+            attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
+                ? object.attendanceEntries.map((e) => attendance_1.Attendance.fromJSON(e))
                 : [],
         };
     },
@@ -1833,7 +1821,7 @@ exports.GetHomeroomAttendanceDetailsResponse = {
             obj.students = message.students.map((e) => student_1.Student.toJSON(e));
         }
         if (message.attendance_entries?.length) {
-            obj.attendance_entries = message.attendance_entries.map((e) => attendance_1.Attendance.toJSON(e));
+            obj.attendanceEntries = message.attendance_entries.map((e) => attendance_1.Attendance.toJSON(e));
         }
         return obj;
     },
@@ -1911,8 +1899,8 @@ exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
-            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
         };
     },
@@ -1922,10 +1910,10 @@ exports.GetSingleStudentHomeroomAttendanceEntryRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
@@ -2002,7 +1990,7 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
     fromJSON(object) {
         return {
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
-            attendance_entry: isSet(object.attendance_entry) ? attendance_1.Attendance.fromJSON(object.attendance_entry) : undefined,
+            attendance_entry: isSet(object.attendanceEntry) ? attendance_1.Attendance.fromJSON(object.attendanceEntry) : undefined,
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
         };
     },
@@ -2012,7 +2000,7 @@ exports.GetSingleStudentHomeroomAttendanceEntryResponse = {
             obj.student = student_1.Student.toJSON(message.student);
         }
         if (message.attendance_entry !== undefined) {
-            obj.attendance_entry = attendance_1.Attendance.toJSON(message.attendance_entry);
+            obj.attendanceEntry = attendance_1.Attendance.toJSON(message.attendance_entry);
         }
         if (message.homeroom !== undefined) {
             obj.homeroom = homeroom_1.Homeroom.toJSON(message.homeroom);
@@ -2097,9 +2085,9 @@ exports.GetAttendanceDateMapRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.class_ref) ? exports.ClassRef.fromJSON(object.class_ref) : undefined,
-            start_date: isSet(object.start_date) ? globalThis.String(object.start_date) : "",
-            end_date: isSet(object.end_date) ? globalThis.String(object.end_date) : "",
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -2108,13 +2096,13 @@ exports.GetAttendanceDateMapRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.class_ref = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
         if (message.start_date !== "") {
-            obj.start_date = message.start_date;
+            obj.startDate = message.start_date;
         }
         if (message.end_date !== "") {
-            obj.end_date = message.end_date;
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -2231,8 +2219,8 @@ exports.AttendanceDateMapEntry = {
     fromJSON(object) {
         return {
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            completion_status: isSet(object.completion_status)
-                ? attendanceCompletionStatusFromJSON(object.completion_status)
+            completion_status: isSet(object.completionStatus)
+                ? attendanceCompletionStatusFromJSON(object.completionStatus)
                 : AttendanceCompletionStatus.EMPTY,
         };
     },
@@ -2242,7 +2230,7 @@ exports.AttendanceDateMapEntry = {
             obj.date = message.date;
         }
         if (message.completion_status !== AttendanceCompletionStatus.EMPTY) {
-            obj.completion_status = attendanceCompletionStatusToJSON(message.completion_status);
+            obj.completionStatus = attendanceCompletionStatusToJSON(message.completion_status);
         }
         return obj;
     },
@@ -2317,9 +2305,9 @@ exports.GetAttendanceCsvDataRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.class_ref) ? exports.ClassRef.fromJSON(object.class_ref) : undefined,
-            start_date: isSet(object.start_date) ? globalThis.String(object.start_date) : "",
-            end_date: isSet(object.end_date) ? globalThis.String(object.end_date) : "",
+            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
         };
     },
     toJSON(message) {
@@ -2328,13 +2316,13 @@ exports.GetAttendanceCsvDataRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.class_ref = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
         }
         if (message.start_date !== "") {
-            obj.start_date = message.start_date;
+            obj.startDate = message.start_date;
         }
         if (message.end_date !== "") {
-            obj.end_date = message.end_date;
+            obj.endDate = message.end_date;
         }
         return obj;
     },
@@ -2396,14 +2384,14 @@ exports.GetAttendanceCsvDataResponse = {
     },
     fromJSON(object) {
         return {
-            csv_data: isSet(object.csv_data) ? globalThis.String(object.csv_data) : "",
+            csv_data: isSet(object.csvData) ? globalThis.String(object.csvData) : "",
             filename: isSet(object.filename) ? globalThis.String(object.filename) : "",
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.csv_data !== "") {
-            obj.csv_data = message.csv_data;
+            obj.csvData = message.csv_data;
         }
         if (message.filename !== "") {
             obj.filename = message.filename;
@@ -2481,9 +2469,9 @@ exports.GetCourseAttendanceDetailsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            period_number: isSet(object.period_number) ? globalThis.Number(object.period_number) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
         };
     },
     toJSON(message) {
@@ -2492,13 +2480,13 @@ exports.GetCourseAttendanceDetailsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
         }
         if (message.period_number !== 0) {
-            obj.period_number = Math.round(message.period_number);
+            obj.periodNumber = Math.round(message.period_number);
         }
         return obj;
     },
@@ -2571,8 +2559,8 @@ exports.GetCourseAttendanceDetailsResponse = {
         return {
             course: isSet(object.course) ? course_1.Course.fromJSON(object.course) : undefined,
             students: globalThis.Array.isArray(object?.students) ? object.students.map((e) => student_1.Student.fromJSON(e)) : [],
-            attendance_entries: globalThis.Array.isArray(object?.attendance_entries)
-                ? object.attendance_entries.map((e) => attendance_1.Attendance.fromJSON(e))
+            attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
+                ? object.attendanceEntries.map((e) => attendance_1.Attendance.fromJSON(e))
                 : [],
         };
     },
@@ -2585,7 +2573,7 @@ exports.GetCourseAttendanceDetailsResponse = {
             obj.students = message.students.map((e) => student_1.Student.toJSON(e));
         }
         if (message.attendance_entries?.length) {
-            obj.attendance_entries = message.attendance_entries.map((e) => attendance_1.Attendance.toJSON(e));
+            obj.attendanceEntries = message.attendance_entries.map((e) => attendance_1.Attendance.toJSON(e));
         }
         return obj;
     },
@@ -2672,10 +2660,10 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
-            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
-            period_number: isSet(object.period_number) ? globalThis.Number(object.period_number) : 0,
+            period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : 0,
         };
     },
     toJSON(message) {
@@ -2684,16 +2672,16 @@ exports.GetSingleStudentCourseAttendanceEntryRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.course_id !== undefined) {
-            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.date !== "") {
             obj.date = message.date;
         }
         if (message.period_number !== 0) {
-            obj.period_number = Math.round(message.period_number);
+            obj.periodNumber = Math.round(message.period_number);
         }
         return obj;
     },
@@ -2768,7 +2756,7 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
     fromJSON(object) {
         return {
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
-            attendance_entry: isSet(object.attendance_entry) ? attendance_1.Attendance.fromJSON(object.attendance_entry) : undefined,
+            attendance_entry: isSet(object.attendanceEntry) ? attendance_1.Attendance.fromJSON(object.attendanceEntry) : undefined,
             course: isSet(object.course) ? course_1.Course.fromJSON(object.course) : undefined,
         };
     },
@@ -2778,7 +2766,7 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
             obj.student = student_1.Student.toJSON(message.student);
         }
         if (message.attendance_entry !== undefined) {
-            obj.attendance_entry = attendance_1.Attendance.toJSON(message.attendance_entry);
+            obj.attendanceEntry = attendance_1.Attendance.toJSON(message.attendance_entry);
         }
         if (message.course !== undefined) {
             obj.course = course_1.Course.toJSON(message.course);

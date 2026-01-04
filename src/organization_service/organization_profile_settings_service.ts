@@ -120,7 +120,7 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
   fromJSON(object: any): GetOrganizationProfileSettingsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -130,7 +130,7 @@ export const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationPr
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -212,9 +212,9 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
   fromJSON(object: any): AddParentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      new_profile_section: isSet(object.new_profile_section)
-        ? profileSectionFromJSON(object.new_profile_section)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_profile_section: isSet(object.newProfileSection)
+        ? profileSectionFromJSON(object.newProfileSection)
         : ProfileSection.OVERVIEW,
     };
   },
@@ -225,10 +225,10 @@ export const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.new_profile_section !== ProfileSection.OVERVIEW) {
-      obj.new_profile_section = profileSectionToJSON(message.new_profile_section);
+      obj.newProfileSection = profileSectionToJSON(message.new_profile_section);
     }
     return obj;
   },
@@ -309,9 +309,9 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
   fromJSON(object: any): RemoveParentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      remove_profile_section: isSet(object.remove_profile_section)
-        ? profileSectionFromJSON(object.remove_profile_section)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_profile_section: isSet(object.removeProfileSection)
+        ? profileSectionFromJSON(object.removeProfileSection)
         : ProfileSection.OVERVIEW,
     };
   },
@@ -322,10 +322,10 @@ export const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSe
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
-      obj.remove_profile_section = profileSectionToJSON(message.remove_profile_section);
+      obj.removeProfileSection = profileSectionToJSON(message.remove_profile_section);
     }
     return obj;
   },
@@ -408,9 +408,9 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
   fromJSON(object: any): AddTeacherProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      new_profile_section: isSet(object.new_profile_section)
-        ? profileSectionFromJSON(object.new_profile_section)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_profile_section: isSet(object.newProfileSection)
+        ? profileSectionFromJSON(object.newProfileSection)
         : ProfileSection.OVERVIEW,
     };
   },
@@ -421,10 +421,10 @@ export const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfileSectio
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.new_profile_section !== ProfileSection.OVERVIEW) {
-      obj.new_profile_section = profileSectionToJSON(message.new_profile_section);
+      obj.newProfileSection = profileSectionToJSON(message.new_profile_section);
     }
     return obj;
   },
@@ -505,9 +505,9 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
   fromJSON(object: any): RemoveTeacherProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      remove_profile_section: isSet(object.remove_profile_section)
-        ? profileSectionFromJSON(object.remove_profile_section)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_profile_section: isSet(object.removeProfileSection)
+        ? profileSectionFromJSON(object.removeProfileSection)
         : ProfileSection.OVERVIEW,
     };
   },
@@ -518,10 +518,10 @@ export const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfile
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
-      obj.remove_profile_section = profileSectionToJSON(message.remove_profile_section);
+      obj.removeProfileSection = profileSectionToJSON(message.remove_profile_section);
     }
     return obj;
   },
@@ -604,9 +604,9 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
   fromJSON(object: any): AddStudentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      new_profile_section: isSet(object.new_profile_section)
-        ? profileSectionFromJSON(object.new_profile_section)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_profile_section: isSet(object.newProfileSection)
+        ? profileSectionFromJSON(object.newProfileSection)
         : ProfileSection.OVERVIEW,
     };
   },
@@ -617,10 +617,10 @@ export const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectio
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.new_profile_section !== ProfileSection.OVERVIEW) {
-      obj.new_profile_section = profileSectionToJSON(message.new_profile_section);
+      obj.newProfileSection = profileSectionToJSON(message.new_profile_section);
     }
     return obj;
   },
@@ -701,9 +701,9 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
   fromJSON(object: any): RemoveStudentProfileSectionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      remove_profile_section: isSet(object.remove_profile_section)
-        ? profileSectionFromJSON(object.remove_profile_section)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_profile_section: isSet(object.removeProfileSection)
+        ? profileSectionFromJSON(object.removeProfileSection)
         : ProfileSection.OVERVIEW,
     };
   },
@@ -714,10 +714,10 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.remove_profile_section !== ProfileSection.OVERVIEW) {
-      obj.remove_profile_section = profileSectionToJSON(message.remove_profile_section);
+      obj.removeProfileSection = profileSectionToJSON(message.remove_profile_section);
     }
     return obj;
   },
@@ -800,9 +800,9 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
   fromJSON(object: any): SetStudentPrimaryIdCustomFieldRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      student_primary_id_custom_field: isSet(object.student_primary_id_custom_field)
-        ? ObjectId.fromJSON(object.student_primary_id_custom_field)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
+        ? ObjectId.fromJSON(object.studentPrimaryIdCustomField)
         : undefined,
     };
   },
@@ -813,10 +813,10 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.student_primary_id_custom_field !== undefined) {
-      obj.student_primary_id_custom_field = ObjectId.toJSON(message.student_primary_id_custom_field);
+      obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.student_primary_id_custom_field);
     }
     return obj;
   },

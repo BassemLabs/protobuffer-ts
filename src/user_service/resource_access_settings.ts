@@ -350,10 +350,10 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      ownership_kind: isSet(object.ownership_kind) ? ownershipKindFromJSON(object.ownership_kind) : OwnershipKind.OWNED,
-      user_type: isSet(object.user_type) ? userTypeFromJSON(object.user_type) : UserType.NONE,
-      access_rules: globalThis.Array.isArray(object?.access_rules)
-        ? object.access_rules.map((e: any) => AccessRule.fromJSON(e))
+      ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      access_rules: globalThis.Array.isArray(object?.accessRules)
+        ? object.accessRules.map((e: any) => AccessRule.fromJSON(e))
         : [],
     };
   },
@@ -370,13 +370,13 @@ export const ResourceAccessSettings: MessageFns<ResourceAccessSettings> = {
       obj.name = message.name;
     }
     if (message.ownership_kind !== OwnershipKind.OWNED) {
-      obj.ownership_kind = ownershipKindToJSON(message.ownership_kind);
+      obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
     }
     if (message.user_type !== UserType.NONE) {
-      obj.user_type = userTypeToJSON(message.user_type);
+      obj.userType = userTypeToJSON(message.user_type);
     }
     if (message.access_rules?.length) {
-      obj.access_rules = message.access_rules.map((e) => AccessRule.toJSON(e));
+      obj.accessRules = message.access_rules.map((e) => AccessRule.toJSON(e));
     }
     return obj;
   },
@@ -455,8 +455,8 @@ export const AccessRule: MessageFns<AccessRule> = {
 
   fromJSON(object: any): AccessRule {
     return {
-      permission_type: isSet(object.permission_type)
-        ? accessPermissionTypeFromJSON(object.permission_type)
+      permission_type: isSet(object.permissionType)
+        ? accessPermissionTypeFromJSON(object.permissionType)
         : AccessPermissionType.ALLOW_READ,
       principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : PrincipalType.USER,
       wildcard: isSet(object.wildcard) ? WildcardAccess.fromJSON(object.wildcard) : undefined,
@@ -466,7 +466,7 @@ export const AccessRule: MessageFns<AccessRule> = {
   toJSON(message: AccessRule): unknown {
     const obj: any = {};
     if (message.permission_type !== AccessPermissionType.ALLOW_READ) {
-      obj.permission_type = accessPermissionTypeToJSON(message.permission_type);
+      obj.permissionType = accessPermissionTypeToJSON(message.permission_type);
     }
     if (message.principal !== undefined && message.principal !== PrincipalType.USER) {
       obj.principal = principalTypeToJSON(message.principal);

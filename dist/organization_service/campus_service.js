@@ -112,8 +112,8 @@ exports.CreateCampusRequest = {
             address: isSet(object.address) ? globalThis.String(object.address) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
-            principal_id: isSet(object.principal_id) ? object_id_1.ObjectId.fromJSON(object.principal_id) : undefined,
-            supervisor_id: isSet(object.supervisor_id) ? object_id_1.ObjectId.fromJSON(object.supervisor_id) : undefined,
+            principal_id: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
+            supervisor_id: isSet(object.supervisorId) ? object_id_1.ObjectId.fromJSON(object.supervisorId) : undefined,
         };
     },
     toJSON(message) {
@@ -134,10 +134,10 @@ exports.CreateCampusRequest = {
             obj.phone = message.phone;
         }
         if (message.principal_id !== undefined) {
-            obj.principal_id = object_id_1.ObjectId.toJSON(message.principal_id);
+            obj.principalId = object_id_1.ObjectId.toJSON(message.principal_id);
         }
         if (message.supervisor_id !== undefined) {
-            obj.supervisor_id = object_id_1.ObjectId.toJSON(message.supervisor_id);
+            obj.supervisorId = object_id_1.ObjectId.toJSON(message.supervisor_id);
         }
         return obj;
     },
@@ -273,8 +273,8 @@ exports.UpdateCampusRequest = {
             address: isSet(object.address) ? globalThis.String(object.address) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
-            principal_id: isSet(object.principal_id) ? object_id_1.ObjectId.fromJSON(object.principal_id) : undefined,
-            supervisor_id: isSet(object.supervisor_id) ? object_id_1.ObjectId.fromJSON(object.supervisor_id) : undefined,
+            principal_id: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
+            supervisor_id: isSet(object.supervisorId) ? object_id_1.ObjectId.fromJSON(object.supervisorId) : undefined,
         };
     },
     toJSON(message) {
@@ -298,10 +298,10 @@ exports.UpdateCampusRequest = {
             obj.phone = message.phone;
         }
         if (message.principal_id !== undefined) {
-            obj.principal_id = object_id_1.ObjectId.toJSON(message.principal_id);
+            obj.principalId = object_id_1.ObjectId.toJSON(message.principal_id);
         }
         if (message.supervisor_id !== undefined) {
-            obj.supervisor_id = object_id_1.ObjectId.toJSON(message.supervisor_id);
+            obj.supervisorId = object_id_1.ObjectId.toJSON(message.supervisor_id);
         }
         return obj;
     },
@@ -388,9 +388,9 @@ exports.UpdateLogoRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            campus_id: isSet(object.campus_id) ? object_id_1.ObjectId.fromJSON(object.campus_id) : undefined,
-            file_name: isSet(object.file_name) ? globalThis.String(object.file_name) : "",
-            aws_s3_file_location: isSet(object.aws_s3_file_location) ? globalThis.String(object.aws_s3_file_location) : "",
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+            aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
         };
     },
     toJSON(message) {
@@ -399,13 +399,13 @@ exports.UpdateLogoRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.campus_id !== undefined) {
-            obj.campus_id = object_id_1.ObjectId.toJSON(message.campus_id);
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
         if (message.file_name !== "") {
-            obj.file_name = message.file_name;
+            obj.fileName = message.file_name;
         }
         if (message.aws_s3_file_location !== "") {
-            obj.aws_s3_file_location = message.aws_s3_file_location;
+            obj.awsS3FileLocation = message.aws_s3_file_location;
         }
         return obj;
     },
@@ -468,7 +468,7 @@ exports.GetCampusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            campus_id: isSet(object.campus_id) ? object_id_1.ObjectId.fromJSON(object.campus_id) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
         };
     },
     toJSON(message) {
@@ -477,7 +477,7 @@ exports.GetCampusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.campus_id !== undefined) {
-            obj.campus_id = object_id_1.ObjectId.toJSON(message.campus_id);
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
         return obj;
     },
@@ -538,7 +538,7 @@ exports.GetOrganizationCampusesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
         };
     },
     toJSON(message) {
@@ -547,7 +547,7 @@ exports.GetOrganizationCampusesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },

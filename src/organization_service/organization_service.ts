@@ -259,7 +259,7 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
   fromJSON(object: any): GetOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -269,7 +269,7 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -406,13 +406,13 @@ export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetO
   },
 
   fromJSON(object: any): UnsafeGetOrganizationByOrganizationIdRequest {
-    return { organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined };
+    return { organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined };
   },
 
   toJSON(message: UnsafeGetOrganizationByOrganizationIdRequest): unknown {
     const obj: any = {};
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -552,8 +552,8 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
   fromJSON(object: any): RenameOrganizationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      new_name: isSet(object.new_name) ? globalThis.String(object.new_name) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_name: isSet(object.newName) ? globalThis.String(object.newName) : "",
     };
   },
 
@@ -563,10 +563,10 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.new_name !== "") {
-      obj.new_name = message.new_name;
+      obj.newName = message.new_name;
     }
     return obj;
   },
@@ -645,8 +645,8 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
   fromJSON(object: any): UpdateDefaultDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      new_default_domain: isSet(object.new_default_domain) ? globalThis.String(object.new_default_domain) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_default_domain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
     };
   },
 
@@ -656,10 +656,10 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.new_default_domain !== "") {
-      obj.new_default_domain = message.new_default_domain;
+      obj.newDefaultDomain = message.new_default_domain;
     }
     return obj;
   },
@@ -738,8 +738,8 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
   fromJSON(object: any): AddDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      new_domain: isSet(object.new_domain) ? globalThis.String(object.new_domain) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      new_domain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
     };
   },
 
@@ -749,10 +749,10 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.new_domain !== "") {
-      obj.new_domain = message.new_domain;
+      obj.newDomain = message.new_domain;
     }
     return obj;
   },
@@ -831,8 +831,8 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
   fromJSON(object: any): RemoveDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      remove_domain: isSet(object.remove_domain) ? globalThis.String(object.remove_domain) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      remove_domain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
     };
   },
 
@@ -842,10 +842,10 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.remove_domain !== "") {
-      obj.remove_domain = message.remove_domain;
+      obj.removeDomain = message.remove_domain;
     }
     return obj;
   },
@@ -1028,16 +1028,16 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
   fromJSON(object: any): UpdateOrganizationSettingsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
-      default_domain: isSet(object.default_domain) ? globalThis.String(object.default_domain) : "",
-      country_code: isSet(object.country_code) ? globalThis.String(object.country_code) : "",
+      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
-      login_id: isSet(object.login_id) ? globalThis.String(object.login_id) : "",
-      main_address: isSet(object.main_address) ? globalThis.String(object.main_address) : "",
-      weekend_days: globalThis.Array.isArray(object?.weekend_days)
-        ? object.weekend_days.map((e: any) => dayOfWeekFromJSON(e))
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      weekend_days: globalThis.Array.isArray(object?.weekendDays)
+        ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
         : [],
       timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
     };
@@ -1049,7 +1049,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1058,22 +1058,22 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       obj.domains = message.domains;
     }
     if (message.default_domain !== "") {
-      obj.default_domain = message.default_domain;
+      obj.defaultDomain = message.default_domain;
     }
     if (message.country_code !== "") {
-      obj.country_code = message.country_code;
+      obj.countryCode = message.country_code;
     }
     if (message.currency !== Currency.USD) {
       obj.currency = currencyToJSON(message.currency);
     }
     if (message.login_id !== "") {
-      obj.login_id = message.login_id;
+      obj.loginId = message.login_id;
     }
     if (message.main_address !== "") {
-      obj.main_address = message.main_address;
+      obj.mainAddress = message.main_address;
     }
     if (message.weekend_days?.length) {
-      obj.weekend_days = message.weekend_days.map((e) => dayOfWeekToJSON(e));
+      obj.weekendDays = message.weekend_days.map((e) => dayOfWeekToJSON(e));
     }
     if (message.timezone !== "") {
       obj.timezone = message.timezone;
@@ -1167,8 +1167,8 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
   fromJSON(object: any): UpdateOrganizationAutoPayRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      auto_pay_disabled: isSet(object.auto_pay_disabled) ? globalThis.Boolean(object.auto_pay_disabled) : false,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
     };
   },
 
@@ -1178,10 +1178,10 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.auto_pay_disabled !== false) {
-      obj.auto_pay_disabled = message.auto_pay_disabled;
+      obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
   },
@@ -1274,9 +1274,9 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
   fromJSON(object: any): UpdateAutoPayRetryConfigRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      max_retries: isSet(object.max_retries) ? globalThis.Number(object.max_retries) : 0,
-      retry_interval_hours: isSet(object.retry_interval_hours) ? globalThis.Number(object.retry_interval_hours) : 0,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
+      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
     };
   },
 
@@ -1286,13 +1286,13 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.max_retries !== 0) {
-      obj.max_retries = Math.round(message.max_retries);
+      obj.maxRetries = Math.round(message.max_retries);
     }
     if (message.retry_interval_hours !== 0) {
-      obj.retry_interval_hours = Math.round(message.retry_interval_hours);
+      obj.retryIntervalHours = Math.round(message.retry_interval_hours);
     }
     return obj;
   },
@@ -1484,7 +1484,7 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
   fromJSON(object: any): GetSchoolYearsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -1494,7 +1494,7 @@ export const GetSchoolYearsRequest: MessageFns<GetSchoolYearsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -1562,7 +1562,7 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
   fromJSON(object: any): GetSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -1572,7 +1572,7 @@ export const GetSchoolYearRequest: MessageFns<GetSchoolYearRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year_id !== undefined) {
-      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -1629,8 +1629,8 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
 
   fromJSON(object: any): GetSchoolYearsResponse {
     return {
-      school_years: globalThis.Array.isArray(object?.school_years)
-        ? object.school_years.map((e: any) => SchoolYear.fromJSON(e))
+      school_years: globalThis.Array.isArray(object?.schoolYears)
+        ? object.schoolYears.map((e: any) => SchoolYear.fromJSON(e))
         : [],
     };
   },
@@ -1638,7 +1638,7 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
   toJSON(message: GetSchoolYearsResponse): unknown {
     const obj: any = {};
     if (message.school_years?.length) {
-      obj.school_years = message.school_years.map((e) => SchoolYear.toJSON(e));
+      obj.schoolYears = message.school_years.map((e) => SchoolYear.toJSON(e));
     }
     return obj;
   },
@@ -1731,10 +1731,10 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
   fromJSON(object: any): CreateSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -1744,16 +1744,16 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
-      obj.start_date = message.start_date.toISOString();
+      obj.startDate = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.end_date = message.end_date.toISOString();
+      obj.endDate = message.end_date.toISOString();
     }
     return obj;
   },
@@ -1834,9 +1834,9 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
   fromJSON(object: any): UpdateSchoolYearRegistrationStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
-      new_registration_status: isSet(object.new_registration_status)
-        ? globalThis.Boolean(object.new_registration_status)
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      new_registration_status: isSet(object.newRegistrationStatus)
+        ? globalThis.Boolean(object.newRegistrationStatus)
         : false,
     };
   },
@@ -1847,10 +1847,10 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year_id !== undefined) {
-      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     if (message.new_registration_status !== false) {
-      obj.new_registration_status = message.new_registration_status;
+      obj.newRegistrationStatus = message.new_registration_status;
     }
     return obj;
   },
@@ -1943,10 +1943,10 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
   fromJSON(object: any): UpdateSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      is_open_for_registration: isSet(object.is_open_for_registration)
-        ? globalThis.Boolean(object.is_open_for_registration)
+      is_open_for_registration: isSet(object.isOpenForRegistration)
+        ? globalThis.Boolean(object.isOpenForRegistration)
         : false,
     };
   },
@@ -1957,13 +1957,13 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year_id !== undefined) {
-      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.is_open_for_registration !== false) {
-      obj.is_open_for_registration = message.is_open_for_registration;
+      obj.isOpenForRegistration = message.is_open_for_registration;
     }
     return obj;
   },
@@ -2022,8 +2022,8 @@ export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
 
   fromJSON(object: any): CreateSchoolYearResponse {
     return {
-      school_years: globalThis.Array.isArray(object?.school_years)
-        ? object.school_years.map((e: any) => SchoolYear.fromJSON(e))
+      school_years: globalThis.Array.isArray(object?.schoolYears)
+        ? object.schoolYears.map((e: any) => SchoolYear.fromJSON(e))
         : [],
     };
   },
@@ -2031,7 +2031,7 @@ export const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse> = {
   toJSON(message: CreateSchoolYearResponse): unknown {
     const obj: any = {};
     if (message.school_years?.length) {
-      obj.school_years = message.school_years.map((e) => SchoolYear.toJSON(e));
+      obj.schoolYears = message.school_years.map((e) => SchoolYear.toJSON(e));
     }
     return obj;
   },
@@ -2094,7 +2094,7 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
   fromJSON(object: any): StartSchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -2104,7 +2104,7 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -2172,7 +2172,7 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
   fromJSON(object: any): StartReregistrationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -2182,7 +2182,7 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -2238,13 +2238,13 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
   },
 
   fromJSON(object: any): GetOrganizationByStripeRequest {
-    return { stripe_account_id: isSet(object.stripe_account_id) ? globalThis.String(object.stripe_account_id) : "" };
+    return { stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "" };
   },
 
   toJSON(message: GetOrganizationByStripeRequest): unknown {
     const obj: any = {};
     if (message.stripe_account_id !== "") {
-      obj.stripe_account_id = message.stripe_account_id;
+      obj.stripeAccountId = message.stripe_account_id;
     }
     return obj;
   },
@@ -2319,8 +2319,8 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
   fromJSON(object: any): UpdateStripeIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      stripe_acount_id: isSet(object.stripe_acount_id) ? globalThis.String(object.stripe_acount_id) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      stripe_acount_id: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : "",
     };
   },
 
@@ -2330,10 +2330,10 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.stripe_acount_id !== "") {
-      obj.stripe_acount_id = message.stripe_acount_id;
+      obj.stripeAcountId = message.stripe_acount_id;
     }
     return obj;
   },
@@ -2438,15 +2438,15 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
   fromJSON(object: any): UpdateOrganizationStripePaymentInfoRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      stripe_payouts_enabled: isSet(object.stripe_payouts_enabled)
-        ? globalThis.Boolean(object.stripe_payouts_enabled)
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
+        ? globalThis.Boolean(object.stripePayoutsEnabled)
         : false,
-      stripe_details_submitted: isSet(object.stripe_details_submitted)
-        ? globalThis.Boolean(object.stripe_details_submitted)
+      stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
+        ? globalThis.Boolean(object.stripeDetailsSubmitted)
         : false,
-      stripe_charges_enabled: isSet(object.stripe_charges_enabled)
-        ? globalThis.Boolean(object.stripe_charges_enabled)
+      stripe_charges_enabled: isSet(object.stripeChargesEnabled)
+        ? globalThis.Boolean(object.stripeChargesEnabled)
         : false,
     };
   },
@@ -2457,16 +2457,16 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.stripe_payouts_enabled !== false) {
-      obj.stripe_payouts_enabled = message.stripe_payouts_enabled;
+      obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
     }
     if (message.stripe_details_submitted !== false) {
-      obj.stripe_details_submitted = message.stripe_details_submitted;
+      obj.stripeDetailsSubmitted = message.stripe_details_submitted;
     }
     if (message.stripe_charges_enabled !== false) {
-      obj.stripe_charges_enabled = message.stripe_charges_enabled;
+      obj.stripeChargesEnabled = message.stripe_charges_enabled;
     }
     return obj;
   },
@@ -2541,7 +2541,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
   fromJSON(object: any): GetOrganizationByLoginIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      login_id: isSet(object.login_id) ? globalThis.String(object.login_id) : "",
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
     };
   },
 
@@ -2551,7 +2551,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.login_id !== "") {
-      obj.login_id = message.login_id;
+      obj.loginId = message.login_id;
     }
     return obj;
   },
@@ -2619,8 +2619,8 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
   fromJSON(object: any): GetOrganizationsByIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_ids: globalThis.Array.isArray(object?.organization_ids)
-        ? object.organization_ids.map((e: any) => ObjectId.fromJSON(e))
+      organization_ids: globalThis.Array.isArray(object?.organizationIds)
+        ? object.organizationIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -2631,7 +2631,7 @@ export const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_ids?.length) {
-      obj.organization_ids = message.organization_ids.map((e) => ObjectId.toJSON(e));
+      obj.organizationIds = message.organization_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -2700,7 +2700,7 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
   fromJSON(object: any): GetOrganizationOnboardingStepsStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
     };
   },
 
@@ -2710,7 +2710,7 @@ export const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganiza
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     return obj;
   },
@@ -2844,8 +2844,8 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
 
   fromJSON(object: any): GetAllOrganizationsOnboardingStepsStatusResponse {
     return {
-      orgs_onboarding_steps_status: globalThis.Array.isArray(object?.orgs_onboarding_steps_status)
-        ? object.orgs_onboarding_steps_status.map((e: any) => OnboardingStepsStatus.fromJSON(e))
+      orgs_onboarding_steps_status: globalThis.Array.isArray(object?.orgsOnboardingStepsStatus)
+        ? object.orgsOnboardingStepsStatus.map((e: any) => OnboardingStepsStatus.fromJSON(e))
         : [],
     };
   },
@@ -2853,9 +2853,7 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
   toJSON(message: GetAllOrganizationsOnboardingStepsStatusResponse): unknown {
     const obj: any = {};
     if (message.orgs_onboarding_steps_status?.length) {
-      obj.orgs_onboarding_steps_status = message.orgs_onboarding_steps_status.map((e) =>
-        OnboardingStepsStatus.toJSON(e)
-      );
+      obj.orgsOnboardingStepsStatus = message.orgs_onboarding_steps_status.map((e) => OnboardingStepsStatus.toJSON(e));
     }
     return obj;
   },
@@ -2923,8 +2921,8 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
   fromJSON(object: any): MarkOnboardingStepAsCompletedRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      step_name: isSet(object.step_name)
-        ? onboardingStepNameFromJSON(object.step_name)
+      step_name: isSet(object.stepName)
+        ? onboardingStepNameFromJSON(object.stepName)
         : OnboardingStepName.ORG_OWNER_PROFILE,
     };
   },
@@ -2935,7 +2933,7 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
-      obj.step_name = onboardingStepNameToJSON(message.step_name);
+      obj.stepName = onboardingStepNameToJSON(message.step_name);
     }
     return obj;
   },
@@ -3025,9 +3023,9 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
   fromJSON(object: any): UpdateInvoiceSettingsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
-      disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
-      hst_number: isSet(object.hst_number) ? globalThis.String(object.hst_number) : "",
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
     };
   },
 
@@ -3037,13 +3035,13 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organization_id = ObjectId.toJSON(message.organization_id);
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
     if (message.disable_tax !== false) {
-      obj.disable_tax = message.disable_tax;
+      obj.disableTax = message.disable_tax;
     }
     if (message.hst_number !== undefined && message.hst_number !== "") {
-      obj.hst_number = message.hst_number;
+      obj.hstNumber = message.hst_number;
     }
     return obj;
   },

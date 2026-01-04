@@ -373,8 +373,8 @@ export const CreateAnnouncementRequest: MessageFns<CreateAnnouncementRequest> = 
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       body: isSet(object.body) ? globalThis.String(object.body) : "",
-      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       link: isSet(object.link) ? globalThis.String(object.link) : "",
       audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e: any) => userTypeFromJSON(e)) : [],
     };
@@ -392,10 +392,10 @@ export const CreateAnnouncementRequest: MessageFns<CreateAnnouncementRequest> = 
       obj.body = message.body;
     }
     if (message.start_date !== undefined) {
-      obj.start_date = message.start_date.toISOString();
+      obj.startDate = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.end_date = message.end_date.toISOString();
+      obj.endDate = message.end_date.toISOString();
     }
     if (message.link !== undefined && message.link !== "") {
       obj.link = message.link;
@@ -556,8 +556,8 @@ export const UpdateAnnouncementRequest: MessageFns<UpdateAnnouncementRequest> = 
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       body: isSet(object.body) ? globalThis.String(object.body) : "",
-      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
-      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       link: isSet(object.link) ? globalThis.String(object.link) : "",
       audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e: any) => userTypeFromJSON(e)) : [],
     };
@@ -578,10 +578,10 @@ export const UpdateAnnouncementRequest: MessageFns<UpdateAnnouncementRequest> = 
       obj.body = message.body;
     }
     if (message.start_date !== undefined) {
-      obj.start_date = message.start_date.toISOString();
+      obj.startDate = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.end_date = message.end_date.toISOString();
+      obj.endDate = message.end_date.toISOString();
     }
     if (message.link !== undefined && message.link !== "") {
       obj.link = message.link;

@@ -85,7 +85,7 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
   fromJSON(object: any): GetByCourseRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
     };
   },
 
@@ -95,7 +95,7 @@ export const GetByCourseRequest: MessageFns<GetByCourseRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -163,8 +163,8 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
   fromJSON(object: any): GetByCoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_ids: globalThis.Array.isArray(object?.course_ids)
-        ? object.course_ids.map((e: any) => ObjectId.fromJSON(e))
+      course_ids: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -175,7 +175,7 @@ export const GetByCoursesRequest: MessageFns<GetByCoursesRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_ids?.length) {
-      obj.course_ids = message.course_ids.map((e) => ObjectId.toJSON(e));
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -301,7 +301,7 @@ export const CourseReportLayout: MessageFns<CourseReportLayout> = {
 
   fromJSON(object: any): CourseReportLayout {
     return {
-      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       layout: isSet(object.layout) ? ReportLayout.fromJSON(object.layout) : undefined,
     };
   },
@@ -309,7 +309,7 @@ export const CourseReportLayout: MessageFns<CourseReportLayout> = {
   toJSON(message: CourseReportLayout): unknown {
     const obj: any = {};
     if (message.course_id !== undefined) {
-      obj.course_id = ObjectId.toJSON(message.course_id);
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.layout !== undefined) {
       obj.layout = ReportLayout.toJSON(message.layout);
@@ -390,11 +390,11 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
   fromJSON(object: any): UpdateReportLayoutRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      report_card_layout_id: isSet(object.report_card_layout_id)
-        ? ObjectId.fromJSON(object.report_card_layout_id)
+      report_card_layout_id: isSet(object.reportCardLayoutId)
+        ? ObjectId.fromJSON(object.reportCardLayoutId)
         : undefined,
-      updated_report_card_layout: isSet(object.updated_report_card_layout)
-        ? ReportLayout.fromJSON(object.updated_report_card_layout)
+      updated_report_card_layout: isSet(object.updatedReportCardLayout)
+        ? ReportLayout.fromJSON(object.updatedReportCardLayout)
         : undefined,
     };
   },
@@ -405,10 +405,10 @@ export const UpdateReportLayoutRequest: MessageFns<UpdateReportLayoutRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.report_card_layout_id !== undefined) {
-      obj.report_card_layout_id = ObjectId.toJSON(message.report_card_layout_id);
+      obj.reportCardLayoutId = ObjectId.toJSON(message.report_card_layout_id);
     }
     if (message.updated_report_card_layout !== undefined) {
-      obj.updated_report_card_layout = ReportLayout.toJSON(message.updated_report_card_layout);
+      obj.updatedReportCardLayout = ReportLayout.toJSON(message.updated_report_card_layout);
     }
     return obj;
   },

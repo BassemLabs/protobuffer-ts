@@ -277,8 +277,8 @@ exports.CreateManualTransactionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            payment_type: isSet(object.payment_type) ? (0, transaction_1.paymentTypeFromJSON)(object.payment_type) : transaction_1.PaymentType.Stripe,
-            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
+            payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
         };
     },
@@ -288,10 +288,10 @@ exports.CreateManualTransactionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.payment_type !== transaction_1.PaymentType.Stripe) {
-            obj.payment_type = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;
@@ -384,8 +384,8 @@ exports.IssueRefundRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            transaction_id: isSet(object.transaction_id) ? object_id_1.ObjectId.fromJSON(object.transaction_id) : undefined,
-            payment_type: isSet(object.payment_type) ? (0, transaction_1.paymentTypeFromJSON)(object.payment_type) : transaction_1.PaymentType.Stripe,
+            transaction_id: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
+            payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : transaction_1.PaymentType.Stripe,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
         };
@@ -396,10 +396,10 @@ exports.IssueRefundRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.transaction_id !== undefined) {
-            obj.transaction_id = object_id_1.ObjectId.toJSON(message.transaction_id);
+            obj.transactionId = object_id_1.ObjectId.toJSON(message.transaction_id);
         }
         if (message.payment_type !== transaction_1.PaymentType.Stripe) {
-            obj.payment_type = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
+            obj.paymentType = (0, transaction_1.paymentTypeToJSON)(message.payment_type);
         }
         if (message.amount !== 0) {
             obj.amount = message.amount;

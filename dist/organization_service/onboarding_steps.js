@@ -278,8 +278,8 @@ exports.OnboardingStepData = {
     },
     fromJSON(object) {
         return {
-            step_name: isSet(object.step_name)
-                ? onboardingStepNameFromJSON(object.step_name)
+            step_name: isSet(object.stepName)
+                ? onboardingStepNameFromJSON(object.stepName)
                 : OnboardingStepName.ORG_OWNER_PROFILE,
             status: isSet(object.status) ? onboardingStepStatusFromJSON(object.status) : OnboardingStepStatus.ONGOING,
         };
@@ -287,7 +287,7 @@ exports.OnboardingStepData = {
     toJSON(message) {
         const obj = {};
         if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
-            obj.step_name = onboardingStepNameToJSON(message.step_name);
+            obj.stepName = onboardingStepNameToJSON(message.step_name);
         }
         if (message.status !== OnboardingStepStatus.ONGOING) {
             obj.status = onboardingStepStatusToJSON(message.status);
@@ -365,11 +365,11 @@ exports.OnboardingStepsStatus = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             steps: globalThis.Array.isArray(object?.steps)
                 ? object.steps.map((e) => exports.OnboardingStepData.fromJSON(e))
                 : [],
-            all_steps_done: isSet(object.all_steps_done) ? globalThis.Boolean(object.all_steps_done) : false,
+            all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
         };
     },
     toJSON(message) {
@@ -378,13 +378,13 @@ exports.OnboardingStepsStatus = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.organization_id !== undefined) {
-            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.steps?.length) {
             obj.steps = message.steps.map((e) => exports.OnboardingStepData.toJSON(e));
         }
         if (message.all_steps_done !== false) {
-            obj.all_steps_done = message.all_steps_done;
+            obj.allStepsDone = message.all_steps_done;
         }
         return obj;
     },
