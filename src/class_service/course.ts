@@ -185,15 +185,15 @@ export const Course: MessageFns<Course> = {
       semester: isSet(object.semester) ? Semester.fromJSON(object.semester) : undefined,
       homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
-      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-        ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
+      course_code: isSet(object.course_code) ? globalThis.String(object.course_code) : "",
+      teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+        ? object.teacher_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      student_ids: globalThis.Array.isArray(object?.studentIds)
-        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.student_ids)
+        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      lms_course: isSet(object.lmsCourse) ? LmsCourse.fromJSON(object.lmsCourse) : undefined,
-      report_layout: isSet(object.reportLayout) ? ReportLayout.fromJSON(object.reportLayout) : undefined,
+      lms_course: isSet(object.lms_course) ? LmsCourse.fromJSON(object.lms_course) : undefined,
+      report_layout: isSet(object.report_layout) ? ReportLayout.fromJSON(object.report_layout) : undefined,
     };
   },
 
@@ -215,19 +215,19 @@ export const Course: MessageFns<Course> = {
       obj.name = message.name;
     }
     if (message.course_code !== "") {
-      obj.courseCode = message.course_code;
+      obj.course_code = message.course_code;
     }
     if (message.teacher_ids?.length) {
-      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
+      obj.teacher_ids = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.student_ids?.length) {
-      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.lms_course !== undefined) {
-      obj.lmsCourse = LmsCourse.toJSON(message.lms_course);
+      obj.lms_course = LmsCourse.toJSON(message.lms_course);
     }
     if (message.report_layout !== undefined) {
-      obj.reportLayout = ReportLayout.toJSON(message.report_layout);
+      obj.report_layout = ReportLayout.toJSON(message.report_layout);
     }
     return obj;
   },
@@ -368,7 +368,7 @@ export const ListCourse: MessageFns<ListCourse> = {
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
+      course_code: isSet(object.course_code) ? globalThis.String(object.course_code) : "",
       homeroom: isSet(object.homeroom) ? ListHomeroom.fromJSON(object.homeroom) : undefined,
       teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => ObjectId.fromJSON(e)) : [],
     };
@@ -389,7 +389,7 @@ export const ListCourse: MessageFns<ListCourse> = {
       obj.semester = ListSemester.toJSON(message.semester);
     }
     if (message.course_code !== "") {
-      obj.courseCode = message.course_code;
+      obj.course_code = message.course_code;
     }
     if (message.homeroom !== undefined) {
       obj.homeroom = ListHomeroom.toJSON(message.homeroom);
@@ -468,7 +468,7 @@ export const CourseList: MessageFns<CourseList> = {
   fromJSON(object: any): CourseList {
     return {
       courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => ListCourse.fromJSON(e)) : [],
-      courses_count: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : 0,
+      courses_count: isSet(object.courses_count) ? globalThis.Number(object.courses_count) : 0,
     };
   },
 
@@ -478,7 +478,7 @@ export const CourseList: MessageFns<CourseList> = {
       obj.courses = message.courses.map((e) => ListCourse.toJSON(e));
     }
     if (message.courses_count !== 0) {
-      obj.coursesCount = Math.round(message.courses_count);
+      obj.courses_count = Math.round(message.courses_count);
     }
     return obj;
   },

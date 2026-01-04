@@ -220,15 +220,15 @@ exports.TuitionPlanSnapshot = {
     fromJSON(object) {
         return {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            schedule_type: isSet(object.scheduleType)
-                ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
+            schedule_type: isSet(object.schedule_type)
+                ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.schedule_type)
                 : tuition_1.PaymentScheduleType.ONE_TIME,
-            day_of_month: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
+            day_of_month: isSet(object.day_of_month) ? globalThis.Number(object.day_of_month) : 0,
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
                 : [],
-            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
         };
     },
     toJSON(message) {
@@ -237,19 +237,19 @@ exports.TuitionPlanSnapshot = {
             obj.name = message.name;
         }
         if (message.schedule_type !== tuition_1.PaymentScheduleType.ONE_TIME) {
-            obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.schedule_type);
+            obj.schedule_type = (0, tuition_1.paymentScheduleTypeToJSON)(message.schedule_type);
         }
         if (message.day_of_month !== undefined && message.day_of_month !== 0) {
-            obj.dayOfMonth = Math.round(message.day_of_month);
+            obj.day_of_month = Math.round(message.day_of_month);
         }
         if (message.installments?.length) {
             obj.installments = message.installments.map((e) => tuition_1.PaymentInstallment.toJSON(e));
         }
         if (message.start_date !== undefined) {
-            obj.startDate = message.start_date.toISOString();
+            obj.start_date = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.endDate = message.end_date.toISOString();
+            obj.end_date = message.end_date.toISOString();
         }
         return obj;
     },
@@ -336,7 +336,7 @@ exports.TuitionInvoiceLineItem = {
     },
     fromJSON(object) {
         return {
-            line_type: isSet(object.lineType) ? lineTypeFromJSON(object.lineType) : LineType.BASE_RATE,
+            line_type: isSet(object.line_type) ? lineTypeFromJSON(object.line_type) : LineType.BASE_RATE,
             scope: isSet(object.scope) ? (0, tuition_1.scopeFromJSON)(object.scope) : tuition_1.Scope.STUDENT_SCOPE,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
@@ -346,7 +346,7 @@ exports.TuitionInvoiceLineItem = {
     toJSON(message) {
         const obj = {};
         if (message.line_type !== LineType.BASE_RATE) {
-            obj.lineType = lineTypeToJSON(message.line_type);
+            obj.line_type = lineTypeToJSON(message.line_type);
         }
         if (message.scope !== tuition_1.Scope.STUDENT_SCOPE) {
             obj.scope = (0, tuition_1.scopeToJSON)(message.scope);
@@ -494,15 +494,15 @@ exports.TuitionInvoice = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            tuition_plan: isSet(object.tuitionPlan) ? exports.TuitionPlanSnapshot.fromJSON(object.tuitionPlan) : undefined,
-            line_items: globalThis.Array.isArray(object?.lineItems)
-                ? object.lineItems.map((e) => exports.TuitionInvoiceLineItem.fromJSON(e))
+            tuition_plan: isSet(object.tuition_plan) ? exports.TuitionPlanSnapshot.fromJSON(object.tuition_plan) : undefined,
+            line_items: globalThis.Array.isArray(object?.line_items)
+                ? object.line_items.map((e) => exports.TuitionInvoiceLineItem.fromJSON(e))
                 : [],
-            total_gross: isSet(object.totalGross) ? globalThis.Number(object.totalGross) : 0,
-            total_discounts: isSet(object.totalDiscounts) ? globalThis.Number(object.totalDiscounts) : 0,
-            total_net: isSet(object.totalNet) ? globalThis.Number(object.totalNet) : 0,
+            total_gross: isSet(object.total_gross) ? globalThis.Number(object.total_gross) : 0,
+            total_discounts: isSet(object.total_discounts) ? globalThis.Number(object.total_discounts) : 0,
+            total_net: isSet(object.total_net) ? globalThis.Number(object.total_net) : 0,
         };
     },
     toJSON(message) {
@@ -514,25 +514,25 @@ exports.TuitionInvoice = {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.family !== undefined) {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.tuition_plan !== undefined) {
-            obj.tuitionPlan = exports.TuitionPlanSnapshot.toJSON(message.tuition_plan);
+            obj.tuition_plan = exports.TuitionPlanSnapshot.toJSON(message.tuition_plan);
         }
         if (message.line_items?.length) {
-            obj.lineItems = message.line_items.map((e) => exports.TuitionInvoiceLineItem.toJSON(e));
+            obj.line_items = message.line_items.map((e) => exports.TuitionInvoiceLineItem.toJSON(e));
         }
         if (message.total_gross !== 0) {
-            obj.totalGross = message.total_gross;
+            obj.total_gross = message.total_gross;
         }
         if (message.total_discounts !== 0) {
-            obj.totalDiscounts = message.total_discounts;
+            obj.total_discounts = message.total_discounts;
         }
         if (message.total_net !== 0) {
-            obj.totalNet = message.total_net;
+            obj.total_net = message.total_net;
         }
         return obj;
     },

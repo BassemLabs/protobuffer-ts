@@ -106,47 +106,47 @@ exports.OnboardingSettings = {
     },
     fromJSON(object) {
         return {
-            has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
-                ? globalThis.Boolean(object.hasInterviewForNewcomers)
+            has_interview_for_newcomers: isSet(object.has_interview_for_newcomers)
+                ? globalThis.Boolean(object.has_interview_for_newcomers)
                 : false,
-            enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
-                ? globalThis.Boolean(object.enableGroupApprovalSystem)
+            enable_group_approval_system: isSet(object.enable_group_approval_system)
+                ? globalThis.Boolean(object.enable_group_approval_system)
                 : false,
-            waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
-            registration_fees: globalThis.Array.isArray(object?.registrationFees)
-                ? object.registrationFees.map((e) => exports.GradeFeeMapping.fromJSON(e))
+            waitlist_fee: isSet(object.waitlist_fee) ? globalThis.Number(object.waitlist_fee) : 0,
+            registration_fees: globalThis.Array.isArray(object?.registration_fees)
+                ? object.registration_fees.map((e) => exports.GradeFeeMapping.fromJSON(e))
                 : [],
-            reregistration_fees: globalThis.Array.isArray(object?.reregistrationFees)
-                ? object.reregistrationFees.map((e) => exports.GradeFeeMapping.fromJSON(e))
+            reregistration_fees: globalThis.Array.isArray(object?.reregistration_fees)
+                ? object.reregistration_fees.map((e) => exports.GradeFeeMapping.fromJSON(e))
                 : [],
-            school_handbook: globalThis.Array.isArray(object?.schoolHandbook)
-                ? object.schoolHandbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
+            school_handbook: globalThis.Array.isArray(object?.school_handbook)
+                ? object.school_handbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
                 : [],
-            interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+            interview_fee: isSet(object.interview_fee) ? globalThis.Number(object.interview_fee) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.has_interview_for_newcomers !== false) {
-            obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
+            obj.has_interview_for_newcomers = message.has_interview_for_newcomers;
         }
         if (message.enable_group_approval_system !== false) {
-            obj.enableGroupApprovalSystem = message.enable_group_approval_system;
+            obj.enable_group_approval_system = message.enable_group_approval_system;
         }
         if (message.waitlist_fee !== 0) {
-            obj.waitlistFee = message.waitlist_fee;
+            obj.waitlist_fee = message.waitlist_fee;
         }
         if (message.registration_fees?.length) {
-            obj.registrationFees = message.registration_fees.map((e) => exports.GradeFeeMapping.toJSON(e));
+            obj.registration_fees = message.registration_fees.map((e) => exports.GradeFeeMapping.toJSON(e));
         }
         if (message.reregistration_fees?.length) {
-            obj.reregistrationFees = message.reregistration_fees.map((e) => exports.GradeFeeMapping.toJSON(e));
+            obj.reregistration_fees = message.reregistration_fees.map((e) => exports.GradeFeeMapping.toJSON(e));
         }
         if (message.school_handbook?.length) {
-            obj.schoolHandbook = message.school_handbook.map((e) => aws_file_1.AWSFile.toJSON(e));
+            obj.school_handbook = message.school_handbook.map((e) => aws_file_1.AWSFile.toJSON(e));
         }
         if (message.interview_fee !== 0) {
-            obj.interviewFee = message.interview_fee;
+            obj.interview_fee = message.interview_fee;
         }
         return obj;
     },

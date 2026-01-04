@@ -123,13 +123,13 @@ exports.Homeroom = {
             semester: isSet(object.semester) ? semester_1.Semester.fromJSON(object.semester) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
-            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            student_ids: globalThis.Array.isArray(object?.studentIds)
-                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            student_ids: globalThis.Array.isArray(object?.student_ids)
+                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            lms_course: isSet(object.lmsCourse) ? lms_course_1.LmsCourse.fromJSON(object.lmsCourse) : undefined,
+            lms_course: isSet(object.lms_course) ? lms_course_1.LmsCourse.fromJSON(object.lms_course) : undefined,
         };
     },
     toJSON(message) {
@@ -150,13 +150,13 @@ exports.Homeroom = {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.teacher_ids?.length) {
-            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.student_ids?.length) {
-            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.lms_course !== undefined) {
-            obj.lmsCourse = lms_course_1.LmsCourse.toJSON(message.lms_course);
+            obj.lms_course = lms_course_1.LmsCourse.toJSON(message.lms_course);
         }
         return obj;
     },
@@ -272,11 +272,11 @@ exports.ListHomeroom = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
             semester: isSet(object.semester) ? semester_1.ListSemester.fromJSON(object.semester) : undefined,
-            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            student_ids: globalThis.Array.isArray(object?.studentIds)
-                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            student_ids: globalThis.Array.isArray(object?.student_ids)
+                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -298,10 +298,10 @@ exports.ListHomeroom = {
             obj.semester = semester_1.ListSemester.toJSON(message.semester);
         }
         if (message.teacher_ids?.length) {
-            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.student_ids?.length) {
-            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -367,7 +367,7 @@ exports.HomeroomList = {
             homerooms: globalThis.Array.isArray(object?.homerooms)
                 ? object.homerooms.map((e) => exports.ListHomeroom.fromJSON(e))
                 : [],
-            homerooms_count: isSet(object.homeroomsCount) ? globalThis.Number(object.homeroomsCount) : 0,
+            homerooms_count: isSet(object.homerooms_count) ? globalThis.Number(object.homerooms_count) : 0,
         };
     },
     toJSON(message) {
@@ -376,7 +376,7 @@ exports.HomeroomList = {
             obj.homerooms = message.homerooms.map((e) => exports.ListHomeroom.toJSON(e));
         }
         if (message.homerooms_count !== 0) {
-            obj.homeroomsCount = Math.round(message.homerooms_count);
+            obj.homerooms_count = Math.round(message.homerooms_count);
         }
         return obj;
     },

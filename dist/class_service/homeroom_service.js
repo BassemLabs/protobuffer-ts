@@ -58,7 +58,7 @@ exports.GetHomeroomRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
         };
     },
     toJSON(message) {
@@ -67,7 +67,7 @@ exports.GetHomeroomRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         return obj;
     },
@@ -191,13 +191,13 @@ exports.ListHomeroomsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            name_search: isSet(object.name_search) ? globalThis.String(object.name_search) : "",
             semester: isSet(object.semester) ? object_id_1.ObjectId.fromJSON(object.semester) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacher_id) ? object_id_1.ObjectId.fromJSON(object.teacher_id) : undefined,
         };
     },
     toJSON(message) {
@@ -206,25 +206,25 @@ exports.ListHomeroomsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.per_page !== undefined && message.per_page !== 0) {
-            obj.perPage = Math.round(message.per_page);
+            obj.per_page = Math.round(message.per_page);
         }
         if (message.page !== undefined && message.page !== 0) {
             obj.page = Math.round(message.page);
         }
         if (message.name_search !== undefined && message.name_search !== "") {
-            obj.nameSearch = message.name_search;
+            obj.name_search = message.name_search;
         }
         if (message.semester !== undefined) {
             obj.semester = object_id_1.ObjectId.toJSON(message.semester);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.archived !== undefined && message.archived !== false) {
             obj.archived = message.archived;
         }
         if (message.teacher_id !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+            obj.teacher_id = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -339,13 +339,13 @@ exports.CreateHomeroomRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
-            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
-            lms_provider: isSet(object.lmsProvider)
-                ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.lmsProvider)
+            lms_provider: isSet(object.lms_provider)
+                ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.lms_provider)
                 : lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
         };
     },
@@ -358,16 +358,16 @@ exports.CreateHomeroomRequest = {
             obj.name = message.name;
         }
         if (message.semester_id !== undefined) {
-            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         if (message.teacher_ids?.length) {
-            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.grade !== student_1.StudentGrade.PRE_K) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.lms_provider !== undefined && message.lms_provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
-            obj.lmsProvider = (0, lms_course_1.lmsProviderTypeToJSON)(message.lms_provider);
+            obj.lms_provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.lms_provider);
         }
         return obj;
     },
@@ -475,11 +475,13 @@ exports.CloneHomeroomRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_to_clone_id: isSet(object.homeroomToCloneId) ? object_id_1.ObjectId.fromJSON(object.homeroomToCloneId) : undefined,
+            homeroom_to_clone_id: isSet(object.homeroom_to_clone_id)
+                ? object_id_1.ObjectId.fromJSON(object.homeroom_to_clone_id)
+                : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
-            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
+            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
         };
@@ -490,16 +492,16 @@ exports.CloneHomeroomRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_to_clone_id !== undefined) {
-            obj.homeroomToCloneId = object_id_1.ObjectId.toJSON(message.homeroom_to_clone_id);
+            obj.homeroom_to_clone_id = object_id_1.ObjectId.toJSON(message.homeroom_to_clone_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
         if (message.semester_id !== undefined) {
-            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         if (message.teacher_ids?.length) {
-            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.grade !== student_1.StudentGrade.PRE_K) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
@@ -578,8 +580,8 @@ exports.GetHomeroomCoursesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            include_archived: isSet(object.include_archived) ? globalThis.Boolean(object.include_archived) : false,
         };
     },
     toJSON(message) {
@@ -588,10 +590,10 @@ exports.GetHomeroomCoursesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.include_archived !== false) {
-            obj.includeArchived = message.include_archived;
+            obj.include_archived = message.include_archived;
         }
         return obj;
     },
@@ -714,8 +716,8 @@ exports.GetStudentHomeroomsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
+            include_archived: isSet(object.include_archived) ? globalThis.Boolean(object.include_archived) : false,
         };
     },
     toJSON(message) {
@@ -724,10 +726,10 @@ exports.GetStudentHomeroomsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.include_archived !== undefined && message.include_archived !== false) {
-            obj.includeArchived = message.include_archived;
+            obj.include_archived = message.include_archived;
         }
         return obj;
     },
@@ -843,7 +845,7 @@ exports.ArchiveHomeroomRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
         };
     },
     toJSON(message) {
@@ -852,7 +854,7 @@ exports.ArchiveHomeroomRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         return obj;
     },
@@ -940,8 +942,8 @@ exports.UpdateHomeroomRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            semester_id: isSet(object.semester_id) ? object_id_1.ObjectId.fromJSON(object.semester_id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
         };
@@ -952,10 +954,10 @@ exports.UpdateHomeroomRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.semester_id !== undefined) {
-            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+            obj.semester_id = object_id_1.ObjectId.toJSON(message.semester_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -1036,9 +1038,9 @@ exports.AddTeachersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -1048,10 +1050,10 @@ exports.AddTeachersRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.teacher_ids?.length) {
-            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -1122,9 +1124,9 @@ exports.RemoveTeachersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+                ? object.teacher_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -1134,10 +1136,10 @@ exports.RemoveTeachersRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.teacher_ids?.length) {
-            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.teacher_ids = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -1208,9 +1210,9 @@ exports.AddStudentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            student_ids: globalThis.Array.isArray(object?.studentIds)
-                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            student_ids: globalThis.Array.isArray(object?.student_ids)
+                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -1220,10 +1222,10 @@ exports.AddStudentsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.student_ids?.length) {
-            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -1294,9 +1296,9 @@ exports.RemoveStudentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            student_ids: globalThis.Array.isArray(object?.studentIds)
-                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            student_ids: globalThis.Array.isArray(object?.student_ids)
+                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -1306,10 +1308,10 @@ exports.RemoveStudentsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.student_ids?.length) {
-            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -1371,7 +1373,7 @@ exports.GetAttendanceClassesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_id: isSet(object.teacher_id) ? object_id_1.ObjectId.fromJSON(object.teacher_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1380,7 +1382,7 @@ exports.GetAttendanceClassesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.teacher_id !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+            obj.teacher_id = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         return obj;
     },
@@ -1601,7 +1603,7 @@ exports.GetLmsCourseWorkRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1610,7 +1612,7 @@ exports.GetLmsCourseWorkRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         return obj;
     },
@@ -1661,15 +1663,15 @@ exports.LmsCourseWorkResponse = {
     },
     fromJSON(object) {
         return {
-            lms_course_work: globalThis.Array.isArray(object?.lmsCourseWork)
-                ? object.lmsCourseWork.map((e) => lms_course_1.LmsCourseWork.fromJSON(e))
+            lms_course_work: globalThis.Array.isArray(object?.lms_course_work)
+                ? object.lms_course_work.map((e) => lms_course_1.LmsCourseWork.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.lms_course_work?.length) {
-            obj.lmsCourseWork = message.lms_course_work.map((e) => lms_course_1.LmsCourseWork.toJSON(e));
+            obj.lms_course_work = message.lms_course_work.map((e) => lms_course_1.LmsCourseWork.toJSON(e));
         }
         return obj;
     },
@@ -1734,8 +1736,8 @@ exports.GetStudentLmsCourseWorkRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            homeroom_id: isSet(object.homeroom_id) ? object_id_1.ObjectId.fromJSON(object.homeroom_id) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1744,10 +1746,10 @@ exports.GetStudentLmsCourseWorkRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+            obj.homeroom_id = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         return obj;
     },
@@ -1801,15 +1803,15 @@ exports.LmsStudentSubmissionResponse = {
     },
     fromJSON(object) {
         return {
-            lms_student_submission: globalThis.Array.isArray(object?.lmsStudentSubmission)
-                ? object.lmsStudentSubmission.map((e) => lms_course_1.LmsSubmission.fromJSON(e))
+            lms_student_submission: globalThis.Array.isArray(object?.lms_student_submission)
+                ? object.lms_student_submission.map((e) => lms_course_1.LmsSubmission.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.lms_student_submission?.length) {
-            obj.lmsStudentSubmission = message.lms_student_submission.map((e) => lms_course_1.LmsSubmission.toJSON(e));
+            obj.lms_student_submission = message.lms_student_submission.map((e) => lms_course_1.LmsSubmission.toJSON(e));
         }
         return obj;
     },

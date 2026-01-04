@@ -157,10 +157,10 @@ export const RequestContext: MessageFns<RequestContext> = {
 
   fromJSON(object: any): RequestContext {
     return {
-      user_context: isSet(object.userContext) ? UserContext.fromJSON(object.userContext) : undefined,
-      is_testing: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : false,
-      service_based_context_name: isSet(object.serviceBasedContextName)
-        ? serviceContextFromJSON(object.serviceBasedContextName)
+      user_context: isSet(object.user_context) ? UserContext.fromJSON(object.user_context) : undefined,
+      is_testing: isSet(object.is_testing) ? globalThis.Boolean(object.is_testing) : false,
+      service_based_context_name: isSet(object.service_based_context_name)
+        ? serviceContextFromJSON(object.service_based_context_name)
         : ServiceContext.AutoPaymentScheduling,
     };
   },
@@ -168,16 +168,16 @@ export const RequestContext: MessageFns<RequestContext> = {
   toJSON(message: RequestContext): unknown {
     const obj: any = {};
     if (message.user_context !== undefined) {
-      obj.userContext = UserContext.toJSON(message.user_context);
+      obj.user_context = UserContext.toJSON(message.user_context);
     }
     if (message.is_testing !== false) {
-      obj.isTesting = message.is_testing;
+      obj.is_testing = message.is_testing;
     }
     if (
       message.service_based_context_name !== undefined &&
       message.service_based_context_name !== ServiceContext.AutoPaymentScheduling
     ) {
-      obj.serviceBasedContextName = serviceContextToJSON(message.service_based_context_name);
+      obj.service_based_context_name = serviceContextToJSON(message.service_based_context_name);
     }
     return obj;
   },
@@ -357,58 +357,58 @@ export const UserContext: MessageFns<UserContext> = {
 
   fromJSON(object: any): UserContext {
     return {
-      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      user_id: isSet(object.user_id) ? ObjectId.fromJSON(object.user_id) : undefined,
+      user_type: isSet(object.user_type) ? userTypeFromJSON(object.user_type) : UserType.NONE,
+      user_auth_token: isSet(object.user_auth_token) ? globalThis.String(object.user_auth_token) : "",
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
       roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
-      parent_family_ids: globalThis.Array.isArray(object?.parentFamilyIds)
-        ? object.parentFamilyIds.map((e: any) => ObjectId.fromJSON(e))
+      parent_family_ids: globalThis.Array.isArray(object?.parent_family_ids)
+        ? object.parent_family_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      parent_student_ids: globalThis.Array.isArray(object?.parentStudentIds)
-        ? object.parentStudentIds.map((e: any) => ObjectId.fromJSON(e))
+      parent_student_ids: globalThis.Array.isArray(object?.parent_student_ids)
+        ? object.parent_student_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : "",
-      firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : "",
+      full_name: isSet(object.full_name) ? globalThis.String(object.full_name) : "",
+      firebase_token: isSet(object.firebase_token) ? globalThis.String(object.firebase_token) : "",
       exp: isSet(object.exp) ? globalThis.Number(object.exp) : 0,
-      trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : "",
+      trace_id: isSet(object.trace_id) ? globalThis.String(object.trace_id) : "",
     };
   },
 
   toJSON(message: UserContext): unknown {
     const obj: any = {};
     if (message.user_id !== undefined) {
-      obj.userId = ObjectId.toJSON(message.user_id);
+      obj.user_id = ObjectId.toJSON(message.user_id);
     }
     if (message.user_type !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.user_type);
+      obj.user_type = userTypeToJSON(message.user_type);
     }
     if (message.user_auth_token !== "") {
-      obj.userAuthToken = message.user_auth_token;
+      obj.user_auth_token = message.user_auth_token;
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.roles?.length) {
       obj.roles = message.roles.map((e) => userRoleToJSON(e));
     }
     if (message.parent_family_ids?.length) {
-      obj.parentFamilyIds = message.parent_family_ids.map((e) => ObjectId.toJSON(e));
+      obj.parent_family_ids = message.parent_family_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.parent_student_ids?.length) {
-      obj.parentStudentIds = message.parent_student_ids.map((e) => ObjectId.toJSON(e));
+      obj.parent_student_ids = message.parent_student_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.full_name !== "") {
-      obj.fullName = message.full_name;
+      obj.full_name = message.full_name;
     }
     if (message.firebase_token !== "") {
-      obj.firebaseToken = message.firebase_token;
+      obj.firebase_token = message.firebase_token;
     }
     if (message.exp !== 0) {
       obj.exp = Math.round(message.exp);
     }
     if (message.trace_id !== "") {
-      obj.traceId = message.trace_id;
+      obj.trace_id = message.trace_id;
     }
     return obj;
   },

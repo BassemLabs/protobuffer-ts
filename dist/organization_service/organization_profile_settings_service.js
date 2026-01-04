@@ -55,7 +55,7 @@ exports.GetOrganizationProfileSettingsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -64,7 +64,7 @@ exports.GetOrganizationProfileSettingsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -134,9 +134,9 @@ exports.AddParentProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            new_profile_section: isSet(object.newProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            new_profile_section: isSet(object.new_profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.new_profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -146,10 +146,10 @@ exports.AddParentProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
+            obj.new_profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
         }
         return obj;
     },
@@ -220,9 +220,9 @@ exports.RemoveParentProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            remove_profile_section: isSet(object.removeProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            remove_profile_section: isSet(object.remove_profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.remove_profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -232,10 +232,10 @@ exports.RemoveParentProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
+            obj.remove_profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
         }
         return obj;
     },
@@ -306,9 +306,9 @@ exports.AddTeacherProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            new_profile_section: isSet(object.newProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            new_profile_section: isSet(object.new_profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.new_profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -318,10 +318,10 @@ exports.AddTeacherProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
+            obj.new_profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
         }
         return obj;
     },
@@ -392,9 +392,9 @@ exports.RemoveTeacherProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            remove_profile_section: isSet(object.removeProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            remove_profile_section: isSet(object.remove_profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.remove_profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -404,10 +404,10 @@ exports.RemoveTeacherProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
+            obj.remove_profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
         }
         return obj;
     },
@@ -478,9 +478,9 @@ exports.AddStudentProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            new_profile_section: isSet(object.newProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            new_profile_section: isSet(object.new_profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.new_profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -490,10 +490,10 @@ exports.AddStudentProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
+            obj.new_profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
         }
         return obj;
     },
@@ -564,9 +564,9 @@ exports.RemoveStudentProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            remove_profile_section: isSet(object.removeProfileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            remove_profile_section: isSet(object.remove_profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.remove_profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -576,10 +576,10 @@ exports.RemoveStudentProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
+            obj.remove_profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
         }
         return obj;
     },
@@ -650,9 +650,9 @@ exports.SetStudentPrimaryIdCustomFieldRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
-                ? object_id_1.ObjectId.fromJSON(object.studentPrimaryIdCustomField)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            student_primary_id_custom_field: isSet(object.student_primary_id_custom_field)
+                ? object_id_1.ObjectId.fromJSON(object.student_primary_id_custom_field)
                 : undefined,
         };
     },
@@ -662,10 +662,10 @@ exports.SetStudentPrimaryIdCustomFieldRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.student_primary_id_custom_field !== undefined) {
-            obj.studentPrimaryIdCustomField = object_id_1.ObjectId.toJSON(message.student_primary_id_custom_field);
+            obj.student_primary_id_custom_field = object_id_1.ObjectId.toJSON(message.student_primary_id_custom_field);
         }
         return obj;
     },

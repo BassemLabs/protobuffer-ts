@@ -299,12 +299,12 @@ export const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest> = {
   fromJSON(object: any): CreateEvaluationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       total: isSet(object.total) ? globalThis.Number(object.total) : 0,
       weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      mark_category: isSet(object.markCategory) ? ObjectId.fromJSON(object.markCategory) : undefined,
+      mark_category: isSet(object.mark_category) ? ObjectId.fromJSON(object.mark_category) : undefined,
     };
   },
 
@@ -314,7 +314,7 @@ export const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -329,7 +329,7 @@ export const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest> = {
       obj.date = message.date;
     }
     if (message.mark_category !== undefined) {
-      obj.markCategory = ObjectId.toJSON(message.mark_category);
+      obj.mark_category = ObjectId.toJSON(message.mark_category);
     }
     return obj;
   },
@@ -462,12 +462,12 @@ export const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest> = {
   fromJSON(object: any): UpdateEvaluationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      evaluation_id: isSet(object.evaluation_id) ? ObjectId.fromJSON(object.evaluation_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       total: isSet(object.total) ? globalThis.Number(object.total) : 0,
       weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      mark_category: isSet(object.markCategory) ? ObjectId.fromJSON(object.markCategory) : undefined,
+      mark_category: isSet(object.mark_category) ? ObjectId.fromJSON(object.mark_category) : undefined,
     };
   },
 
@@ -477,7 +477,7 @@ export const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.evaluation_id !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+      obj.evaluation_id = ObjectId.toJSON(message.evaluation_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -492,7 +492,7 @@ export const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest> = {
       obj.date = message.date;
     }
     if (message.mark_category !== undefined) {
-      obj.markCategory = ObjectId.toJSON(message.mark_category);
+      obj.mark_category = ObjectId.toJSON(message.mark_category);
     }
     return obj;
   },
@@ -567,7 +567,7 @@ export const DeleteEvaluationRequest: MessageFns<DeleteEvaluationRequest> = {
   fromJSON(object: any): DeleteEvaluationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      evaluation_id: isSet(object.evaluation_id) ? ObjectId.fromJSON(object.evaluation_id) : undefined,
     };
   },
 
@@ -577,7 +577,7 @@ export const DeleteEvaluationRequest: MessageFns<DeleteEvaluationRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.evaluation_id !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+      obj.evaluation_id = ObjectId.toJSON(message.evaluation_id);
     }
     return obj;
   },
@@ -771,7 +771,7 @@ export const PublishEvaluationRequest: MessageFns<PublishEvaluationRequest> = {
   fromJSON(object: any): PublishEvaluationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      evaluation_id: isSet(object.evaluation_id) ? ObjectId.fromJSON(object.evaluation_id) : undefined,
     };
   },
 
@@ -781,7 +781,7 @@ export const PublishEvaluationRequest: MessageFns<PublishEvaluationRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.evaluation_id !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+      obj.evaluation_id = ObjectId.toJSON(message.evaluation_id);
     }
     return obj;
   },
@@ -849,7 +849,7 @@ export const UnpublishEvaluationRequest: MessageFns<UnpublishEvaluationRequest> 
   fromJSON(object: any): UnpublishEvaluationRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      evaluation_id: isSet(object.evaluation_id) ? ObjectId.fromJSON(object.evaluation_id) : undefined,
     };
   },
 
@@ -859,7 +859,7 @@ export const UnpublishEvaluationRequest: MessageFns<UnpublishEvaluationRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.evaluation_id !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+      obj.evaluation_id = ObjectId.toJSON(message.evaluation_id);
     }
     return obj;
   },
@@ -927,7 +927,7 @@ export const GetEvaluationEntriesRequest: MessageFns<GetEvaluationEntriesRequest
   fromJSON(object: any): GetEvaluationEntriesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      evaluation_id: isSet(object.evaluation_id) ? ObjectId.fromJSON(object.evaluation_id) : undefined,
     };
   },
 
@@ -937,7 +937,7 @@ export const GetEvaluationEntriesRequest: MessageFns<GetEvaluationEntriesRequest
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.evaluation_id !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+      obj.evaluation_id = ObjectId.toJSON(message.evaluation_id);
     }
     return obj;
   },
@@ -1076,8 +1076,8 @@ export const GetStudentCourseEvaluationEntriesRequest: MessageFns<GetStudentCour
   fromJSON(object: any): GetStudentCourseEvaluationEntriesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -1087,10 +1087,10 @@ export const GetStudentCourseEvaluationEntriesRequest: MessageFns<GetStudentCour
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -1164,7 +1164,7 @@ export const StudentMarkUpdate: MessageFns<StudentMarkUpdate> = {
 
   fromJSON(object: any): StudentMarkUpdate {
     return {
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
       mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
     };
   },
@@ -1172,7 +1172,7 @@ export const StudentMarkUpdate: MessageFns<StudentMarkUpdate> = {
   toJSON(message: StudentMarkUpdate): unknown {
     const obj: any = {};
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.mark !== 0) {
       obj.mark = message.mark;
@@ -1251,9 +1251,9 @@ export const UpdateEvaluationMarksRequest: MessageFns<UpdateEvaluationMarksReque
   fromJSON(object: any): UpdateEvaluationMarksRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
-      student_marks: globalThis.Array.isArray(object?.studentMarks)
-        ? object.studentMarks.map((e: any) => StudentMarkUpdate.fromJSON(e))
+      evaluation_id: isSet(object.evaluation_id) ? ObjectId.fromJSON(object.evaluation_id) : undefined,
+      student_marks: globalThis.Array.isArray(object?.student_marks)
+        ? object.student_marks.map((e: any) => StudentMarkUpdate.fromJSON(e))
         : [],
     };
   },
@@ -1264,10 +1264,10 @@ export const UpdateEvaluationMarksRequest: MessageFns<UpdateEvaluationMarksReque
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.evaluation_id !== undefined) {
-      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+      obj.evaluation_id = ObjectId.toJSON(message.evaluation_id);
     }
     if (message.student_marks?.length) {
-      obj.studentMarks = message.student_marks.map((e) => StudentMarkUpdate.toJSON(e));
+      obj.student_marks = message.student_marks.map((e) => StudentMarkUpdate.toJSON(e));
     }
     return obj;
   },
@@ -1356,7 +1356,7 @@ export const CreateMarkCategoryRequest: MessageFns<CreateMarkCategoryRequest> = 
   fromJSON(object: any): CreateMarkCategoryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
     };
@@ -1368,7 +1368,7 @@ export const CreateMarkCategoryRequest: MessageFns<CreateMarkCategoryRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1464,7 +1464,7 @@ export const UpdateMarkCategoryRequest: MessageFns<UpdateMarkCategoryRequest> = 
   fromJSON(object: any): UpdateMarkCategoryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      mark_category_id: isSet(object.markCategoryId) ? ObjectId.fromJSON(object.markCategoryId) : undefined,
+      mark_category_id: isSet(object.mark_category_id) ? ObjectId.fromJSON(object.mark_category_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
     };
@@ -1476,7 +1476,7 @@ export const UpdateMarkCategoryRequest: MessageFns<UpdateMarkCategoryRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.mark_category_id !== undefined) {
-      obj.markCategoryId = ObjectId.toJSON(message.mark_category_id);
+      obj.mark_category_id = ObjectId.toJSON(message.mark_category_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1552,7 +1552,7 @@ export const DeleteMarkCategoryRequest: MessageFns<DeleteMarkCategoryRequest> = 
   fromJSON(object: any): DeleteMarkCategoryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      mark_category_id: isSet(object.markCategoryId) ? ObjectId.fromJSON(object.markCategoryId) : undefined,
+      mark_category_id: isSet(object.mark_category_id) ? ObjectId.fromJSON(object.mark_category_id) : undefined,
     };
   },
 
@@ -1562,7 +1562,7 @@ export const DeleteMarkCategoryRequest: MessageFns<DeleteMarkCategoryRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.mark_category_id !== undefined) {
-      obj.markCategoryId = ObjectId.toJSON(message.mark_category_id);
+      obj.mark_category_id = ObjectId.toJSON(message.mark_category_id);
     }
     return obj;
   },
@@ -1630,7 +1630,7 @@ export const GetCourseMarkCategoriesRequest: MessageFns<GetCourseMarkCategoriesR
   fromJSON(object: any): GetCourseMarkCategoriesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -1640,7 +1640,7 @@ export const GetCourseMarkCategoriesRequest: MessageFns<GetCourseMarkCategoriesR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -1712,8 +1712,8 @@ export const DetailedMarkCategoriesAndEvaluationsResponse: MessageFns<DetailedMa
 
   fromJSON(object: any): DetailedMarkCategoriesAndEvaluationsResponse {
     return {
-      mark_categories: globalThis.Array.isArray(object?.markCategories)
-        ? object.markCategories.map((e: any) => DetailedMarkCategory.fromJSON(e))
+      mark_categories: globalThis.Array.isArray(object?.mark_categories)
+        ? object.mark_categories.map((e: any) => DetailedMarkCategory.fromJSON(e))
         : [],
       evaluations: globalThis.Array.isArray(object?.evaluations)
         ? object.evaluations.map((e: any) => DetailedEvaluation.fromJSON(e))
@@ -1724,7 +1724,7 @@ export const DetailedMarkCategoriesAndEvaluationsResponse: MessageFns<DetailedMa
   toJSON(message: DetailedMarkCategoriesAndEvaluationsResponse): unknown {
     const obj: any = {};
     if (message.mark_categories?.length) {
-      obj.markCategories = message.mark_categories.map((e) => DetailedMarkCategory.toJSON(e));
+      obj.mark_categories = message.mark_categories.map((e) => DetailedMarkCategory.toJSON(e));
     }
     if (message.evaluations?.length) {
       obj.evaluations = message.evaluations.map((e) => DetailedEvaluation.toJSON(e));
@@ -1800,7 +1800,7 @@ export const GetCourseDetailedMarkCategoriesAndEvaluationsRequest: MessageFns<
   fromJSON(object: any): GetCourseDetailedMarkCategoriesAndEvaluationsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -1810,7 +1810,7 @@ export const GetCourseDetailedMarkCategoriesAndEvaluationsRequest: MessageFns<
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -1882,7 +1882,7 @@ export const GetStudentsCoursePerformanceRequest: MessageFns<GetStudentsCoursePe
   fromJSON(object: any): GetStudentsCoursePerformanceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -1892,7 +1892,7 @@ export const GetStudentsCoursePerformanceRequest: MessageFns<GetStudentsCoursePe
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -1953,8 +1953,8 @@ export const GetStudentsCoursePerformanceResponse: MessageFns<GetStudentsCourseP
 
   fromJSON(object: any): GetStudentsCoursePerformanceResponse {
     return {
-      student_performanes: globalThis.Array.isArray(object?.studentPerformanes)
-        ? object.studentPerformanes.map((e: any) => StudentCoursePerformance.fromJSON(e))
+      student_performanes: globalThis.Array.isArray(object?.student_performanes)
+        ? object.student_performanes.map((e: any) => StudentCoursePerformance.fromJSON(e))
         : [],
     };
   },
@@ -1962,7 +1962,7 @@ export const GetStudentsCoursePerformanceResponse: MessageFns<GetStudentsCourseP
   toJSON(message: GetStudentsCoursePerformanceResponse): unknown {
     const obj: any = {};
     if (message.student_performanes?.length) {
-      obj.studentPerformanes = message.student_performanes.map((e) => StudentCoursePerformance.toJSON(e));
+      obj.student_performanes = message.student_performanes.map((e) => StudentCoursePerformance.toJSON(e));
     }
     return obj;
   },
@@ -2039,8 +2039,8 @@ export const GetStudentCoursePerformanceRequest: MessageFns<GetStudentCoursePerf
   fromJSON(object: any): GetStudentCoursePerformanceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -2050,10 +2050,10 @@ export const GetStudentCoursePerformanceRequest: MessageFns<GetStudentCoursePerf
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -2175,16 +2175,18 @@ export const StudentCoursePerformance: MessageFns<StudentCoursePerformance> = {
   fromJSON(object: any): StudentCoursePerformance {
     return {
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      final_mark: isSet(object.finalMark) ? globalThis.Number(object.finalMark) : 0,
-      maximum_potential_mark: isSet(object.maximumPotentialMark) ? globalThis.Number(object.maximumPotentialMark) : 0,
+      final_mark: isSet(object.final_mark) ? globalThis.Number(object.final_mark) : 0,
+      maximum_potential_mark: isSet(object.maximum_potential_mark)
+        ? globalThis.Number(object.maximum_potential_mark)
+        : 0,
       evaluations: globalThis.Array.isArray(object?.evaluations)
         ? object.evaluations.map((e: any) => PersonalizedEvaluation.fromJSON(e))
         : [],
-      mark_categories: globalThis.Array.isArray(object?.markCategories)
-        ? object.markCategories.map((e: any) => PersonalizedMarkCategory.fromJSON(e))
+      mark_categories: globalThis.Array.isArray(object?.mark_categories)
+        ? object.mark_categories.map((e: any) => PersonalizedMarkCategory.fromJSON(e))
         : [],
-      student_evaluation_entries: globalThis.Array.isArray(object?.studentEvaluationEntries)
-        ? object.studentEvaluationEntries.map((e: any) => EvaluationEntry.fromJSON(e))
+      student_evaluation_entries: globalThis.Array.isArray(object?.student_evaluation_entries)
+        ? object.student_evaluation_entries.map((e: any) => EvaluationEntry.fromJSON(e))
         : [],
     };
   },
@@ -2195,19 +2197,19 @@ export const StudentCoursePerformance: MessageFns<StudentCoursePerformance> = {
       obj.student = ObjectId.toJSON(message.student);
     }
     if (message.final_mark !== undefined && message.final_mark !== 0) {
-      obj.finalMark = message.final_mark;
+      obj.final_mark = message.final_mark;
     }
     if (message.maximum_potential_mark !== 0) {
-      obj.maximumPotentialMark = message.maximum_potential_mark;
+      obj.maximum_potential_mark = message.maximum_potential_mark;
     }
     if (message.evaluations?.length) {
       obj.evaluations = message.evaluations.map((e) => PersonalizedEvaluation.toJSON(e));
     }
     if (message.mark_categories?.length) {
-      obj.markCategories = message.mark_categories.map((e) => PersonalizedMarkCategory.toJSON(e));
+      obj.mark_categories = message.mark_categories.map((e) => PersonalizedMarkCategory.toJSON(e));
     }
     if (message.student_evaluation_entries?.length) {
-      obj.studentEvaluationEntries = message.student_evaluation_entries.map((e) => EvaluationEntry.toJSON(e));
+      obj.student_evaluation_entries = message.student_evaluation_entries.map((e) => EvaluationEntry.toJSON(e));
     }
     return obj;
   },
@@ -2288,8 +2290,8 @@ export const GetStudentCoursesMarkOverviewRequest: MessageFns<GetStudentCoursesM
   fromJSON(object: any): GetStudentCoursesMarkOverviewRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
     };
   },
 
@@ -2299,10 +2301,10 @@ export const GetStudentCoursesMarkOverviewRequest: MessageFns<GetStudentCoursesM
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year_id !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -2366,8 +2368,8 @@ export const GetStudentCoursesMarkOverviewResponse: MessageFns<GetStudentCourses
 
   fromJSON(object: any): GetStudentCoursesMarkOverviewResponse {
     return {
-      course_marks: globalThis.Array.isArray(object?.courseMarks)
-        ? object.courseMarks.map((e: any) => StudentCourseMarkOverview.fromJSON(e))
+      course_marks: globalThis.Array.isArray(object?.course_marks)
+        ? object.course_marks.map((e: any) => StudentCourseMarkOverview.fromJSON(e))
         : [],
     };
   },
@@ -2375,7 +2377,7 @@ export const GetStudentCoursesMarkOverviewResponse: MessageFns<GetStudentCourses
   toJSON(message: GetStudentCoursesMarkOverviewResponse): unknown {
     const obj: any = {};
     if (message.course_marks?.length) {
-      obj.courseMarks = message.course_marks.map((e) => StudentCourseMarkOverview.toJSON(e));
+      obj.course_marks = message.course_marks.map((e) => StudentCourseMarkOverview.toJSON(e));
     }
     return obj;
   },
@@ -2488,34 +2490,36 @@ export const StudentCourseMarkOverview: MessageFns<StudentCourseMarkOverview> = 
 
   fromJSON(object: any): StudentCourseMarkOverview {
     return {
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
-      course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : "",
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
-      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
-      student_mark: isSet(object.studentMark) ? globalThis.Number(object.studentMark) : 0,
-      maximum_potential_mark: isSet(object.maximumPotentialMark) ? globalThis.Number(object.maximumPotentialMark) : 0,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
+      course_name: isSet(object.course_name) ? globalThis.String(object.course_name) : "",
+      course_code: isSet(object.course_code) ? globalThis.String(object.course_code) : "",
+      semester_id: isSet(object.semester_id) ? ObjectId.fromJSON(object.semester_id) : undefined,
+      student_mark: isSet(object.student_mark) ? globalThis.Number(object.student_mark) : 0,
+      maximum_potential_mark: isSet(object.maximum_potential_mark)
+        ? globalThis.Number(object.maximum_potential_mark)
+        : 0,
     };
   },
 
   toJSON(message: StudentCourseMarkOverview): unknown {
     const obj: any = {};
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     if (message.course_name !== "") {
-      obj.courseName = message.course_name;
+      obj.course_name = message.course_name;
     }
     if (message.course_code !== "") {
-      obj.courseCode = message.course_code;
+      obj.course_code = message.course_code;
     }
     if (message.semester_id !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semester_id);
+      obj.semester_id = ObjectId.toJSON(message.semester_id);
     }
     if (message.student_mark !== undefined && message.student_mark !== 0) {
-      obj.studentMark = message.student_mark;
+      obj.student_mark = message.student_mark;
     }
     if (message.maximum_potential_mark !== 0) {
-      obj.maximumPotentialMark = message.maximum_potential_mark;
+      obj.maximum_potential_mark = message.maximum_potential_mark;
     }
     return obj;
   },
@@ -2587,7 +2591,7 @@ export const ExportMarkbookExcelRequest: MessageFns<ExportMarkbookExcelRequest> 
   fromJSON(object: any): ExportMarkbookExcelRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -2597,7 +2601,7 @@ export const ExportMarkbookExcelRequest: MessageFns<ExportMarkbookExcelRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },
@@ -2664,18 +2668,18 @@ export const ExportMarkbookExcelResponse: MessageFns<ExportMarkbookExcelResponse
 
   fromJSON(object: any): ExportMarkbookExcelResponse {
     return {
-      excel_data: isSet(object.excelData) ? globalThis.String(object.excelData) : "",
-      course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : "",
+      excel_data: isSet(object.excel_data) ? globalThis.String(object.excel_data) : "",
+      course_name: isSet(object.course_name) ? globalThis.String(object.course_name) : "",
     };
   },
 
   toJSON(message: ExportMarkbookExcelResponse): unknown {
     const obj: any = {};
     if (message.excel_data !== "") {
-      obj.excelData = message.excel_data;
+      obj.excel_data = message.excel_data;
     }
     if (message.course_name !== "") {
-      obj.courseName = message.course_name;
+      obj.course_name = message.course_name;
     }
     return obj;
   },

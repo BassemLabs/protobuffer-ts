@@ -64,7 +64,7 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
   fromJSON(object: any): GetByIDRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
     };
   },
 
@@ -74,7 +74,7 @@ export const GetByIDRequest: MessageFns<GetByIDRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     return obj;
   },

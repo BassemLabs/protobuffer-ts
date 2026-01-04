@@ -289,9 +289,9 @@ exports.CreateCustomFieldsTemplateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_name: isSet(object.templateName) ? globalThis.String(object.templateName) : "",
-            template_description: isSet(object.templateDescription) ? globalThis.String(object.templateDescription) : "",
-            is_active: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+            template_name: isSet(object.template_name) ? globalThis.String(object.template_name) : "",
+            template_description: isSet(object.template_description) ? globalThis.String(object.template_description) : "",
+            is_active: isSet(object.is_active) ? globalThis.Boolean(object.is_active) : false,
         };
     },
     toJSON(message) {
@@ -300,13 +300,13 @@ exports.CreateCustomFieldsTemplateRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_name !== "") {
-            obj.templateName = message.template_name;
+            obj.template_name = message.template_name;
         }
         if (message.template_description !== "") {
-            obj.templateDescription = message.template_description;
+            obj.template_description = message.template_description;
         }
         if (message.is_active !== false) {
-            obj.isActive = message.is_active;
+            obj.is_active = message.is_active;
         }
         return obj;
     },
@@ -448,18 +448,18 @@ exports.AddGroupToTemplateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
-            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            profile_section: isSet(object.profileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection)
+            template_id: isSet(object.template_id) ? object_id_1.ObjectId.fromJSON(object.template_id) : undefined,
+            group_name: isSet(object.group_name) ? globalThis.String(object.group_name) : "",
+            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
+            profile_section: isSet(object.profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
             hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e) => globalThis.String(e)) : [],
-            visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
-                ? object.visibleToParentsForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visible_to_parents_for_statuses)
+                ? object.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
-            visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
-                ? object.visibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visible_to_teachers_for_statuses)
+                ? object.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
         };
     },
@@ -469,25 +469,25 @@ exports.AddGroupToTemplateRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_id !== undefined) {
-            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+            obj.template_id = object_id_1.ObjectId.toJSON(message.template_id);
         }
         if (message.group_name !== "") {
-            obj.groupName = message.group_name;
+            obj.group_name = message.group_name;
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
+            obj.profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
         }
         if (message.hints?.length) {
             obj.hints = message.hints;
         }
         if (message.visible_to_parents_for_statuses?.length) {
-            obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.visible_to_parents_for_statuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         if (message.visible_to_teachers_for_statuses?.length) {
-            obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.visible_to_teachers_for_statuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         return obj;
     },
@@ -627,13 +627,13 @@ exports.AddFieldToTemplateGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
-            field_type: isSet(object.fieldType) ? (0, custom_field_1.customFieldTypeFromJSON)(object.fieldType) : custom_field_1.CustomFieldType.STRING,
-            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
+            template_id: isSet(object.template_id) ? object_id_1.ObjectId.fromJSON(object.template_id) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            field_name: isSet(object.field_name) ? globalThis.String(object.field_name) : "",
+            field_type: isSet(object.field_type) ? (0, custom_field_1.customFieldTypeFromJSON)(object.field_type) : custom_field_1.CustomFieldType.STRING,
+            is_required: isSet(object.is_required) ? globalThis.Boolean(object.is_required) : false,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+            regex_pattern: isSet(object.regex_pattern) ? globalThis.String(object.regex_pattern) : "",
             options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
         };
     },
@@ -643,25 +643,25 @@ exports.AddFieldToTemplateGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_id !== undefined) {
-            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+            obj.template_id = object_id_1.ObjectId.toJSON(message.template_id);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.field_name !== "") {
-            obj.fieldName = message.field_name;
+            obj.field_name = message.field_name;
         }
         if (message.field_type !== custom_field_1.CustomFieldType.STRING) {
-            obj.fieldType = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
+            obj.field_type = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
         }
         if (message.is_required !== false) {
-            obj.isRequired = message.is_required;
+            obj.is_required = message.is_required;
         }
         if (message.description !== "") {
             obj.description = message.description;
         }
         if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
-            obj.regexPattern = message.regex_pattern;
+            obj.regex_pattern = message.regex_pattern;
         }
         if (message.options?.length) {
             obj.options = message.options;
@@ -742,25 +742,25 @@ exports.GroupAccessSettingsEntry = {
     },
     fromJSON(object) {
         return {
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            group_access_settings: isSet(object.groupAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.groupAccessSettings)
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            group_access_settings: isSet(object.group_access_settings)
+                ? object_id_1.ObjectId.fromJSON(object.group_access_settings)
                 : undefined,
-            entries_access_settings: isSet(object.entriesAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.entriesAccessSettings)
+            entries_access_settings: isSet(object.entries_access_settings)
+                ? object_id_1.ObjectId.fromJSON(object.entries_access_settings)
                 : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.group_access_settings !== undefined) {
-            obj.groupAccessSettings = object_id_1.ObjectId.toJSON(message.group_access_settings);
+            obj.group_access_settings = object_id_1.ObjectId.toJSON(message.group_access_settings);
         }
         if (message.entries_access_settings !== undefined) {
-            obj.entriesAccessSettings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
+            obj.entries_access_settings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
         }
         return obj;
     },
@@ -835,9 +835,9 @@ exports.InstantiateTemplateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
-            group_access_settings: globalThis.Array.isArray(object?.groupAccessSettings)
-                ? object.groupAccessSettings.map((e) => exports.GroupAccessSettingsEntry.fromJSON(e))
+            template_id: isSet(object.template_id) ? object_id_1.ObjectId.fromJSON(object.template_id) : undefined,
+            group_access_settings: globalThis.Array.isArray(object?.group_access_settings)
+                ? object.group_access_settings.map((e) => exports.GroupAccessSettingsEntry.fromJSON(e))
                 : [],
         };
     },
@@ -847,10 +847,10 @@ exports.InstantiateTemplateRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_id !== undefined) {
-            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+            obj.template_id = object_id_1.ObjectId.toJSON(message.template_id);
         }
         if (message.group_access_settings?.length) {
-            obj.groupAccessSettings = message.group_access_settings.map((e) => exports.GroupAccessSettingsEntry.toJSON(e));
+            obj.group_access_settings = message.group_access_settings.map((e) => exports.GroupAccessSettingsEntry.toJSON(e));
         }
         return obj;
     },

@@ -58,7 +58,7 @@ exports.GetOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -67,7 +67,7 @@ exports.GetOrganizationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -185,12 +185,12 @@ exports.UnsafeGetOrganizationByOrganizationIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined };
+        return { organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined };
     },
     toJSON(message) {
         const obj = {};
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -307,8 +307,8 @@ exports.RenameOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            new_name: isSet(object.newName) ? globalThis.String(object.newName) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            new_name: isSet(object.new_name) ? globalThis.String(object.new_name) : "",
         };
     },
     toJSON(message) {
@@ -317,10 +317,10 @@ exports.RenameOrganizationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.new_name !== "") {
-            obj.newName = message.new_name;
+            obj.new_name = message.new_name;
         }
         return obj;
     },
@@ -391,8 +391,8 @@ exports.UpdateDefaultDomainRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            new_default_domain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            new_default_domain: isSet(object.new_default_domain) ? globalThis.String(object.new_default_domain) : "",
         };
     },
     toJSON(message) {
@@ -401,10 +401,10 @@ exports.UpdateDefaultDomainRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.new_default_domain !== "") {
-            obj.newDefaultDomain = message.new_default_domain;
+            obj.new_default_domain = message.new_default_domain;
         }
         return obj;
     },
@@ -475,8 +475,8 @@ exports.AddDomainRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            new_domain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            new_domain: isSet(object.new_domain) ? globalThis.String(object.new_domain) : "",
         };
     },
     toJSON(message) {
@@ -485,10 +485,10 @@ exports.AddDomainRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.new_domain !== "") {
-            obj.newDomain = message.new_domain;
+            obj.new_domain = message.new_domain;
         }
         return obj;
     },
@@ -559,8 +559,8 @@ exports.RemoveDomainRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            remove_domain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            remove_domain: isSet(object.remove_domain) ? globalThis.String(object.remove_domain) : "",
         };
     },
     toJSON(message) {
@@ -569,10 +569,10 @@ exports.RemoveDomainRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.remove_domain !== "") {
-            obj.removeDomain = message.remove_domain;
+            obj.remove_domain = message.remove_domain;
         }
         return obj;
     },
@@ -736,16 +736,16 @@ exports.UpdateOrganizationSettingsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e) => globalThis.String(e)) : [],
-            default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
-            country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+            default_domain: isSet(object.default_domain) ? globalThis.String(object.default_domain) : "",
+            country_code: isSet(object.country_code) ? globalThis.String(object.country_code) : "",
             currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
-            login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
-            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            weekend_days: globalThis.Array.isArray(object?.weekendDays)
-                ? object.weekendDays.map((e) => (0, dayofweek_1.dayOfWeekFromJSON)(e))
+            login_id: isSet(object.login_id) ? globalThis.String(object.login_id) : "",
+            main_address: isSet(object.main_address) ? globalThis.String(object.main_address) : "",
+            weekend_days: globalThis.Array.isArray(object?.weekend_days)
+                ? object.weekend_days.map((e) => (0, dayofweek_1.dayOfWeekFromJSON)(e))
                 : [],
             timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
         };
@@ -756,7 +756,7 @@ exports.UpdateOrganizationSettingsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -765,22 +765,22 @@ exports.UpdateOrganizationSettingsRequest = {
             obj.domains = message.domains;
         }
         if (message.default_domain !== "") {
-            obj.defaultDomain = message.default_domain;
+            obj.default_domain = message.default_domain;
         }
         if (message.country_code !== "") {
-            obj.countryCode = message.country_code;
+            obj.country_code = message.country_code;
         }
         if (message.currency !== organization_1.Currency.USD) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
         }
         if (message.login_id !== "") {
-            obj.loginId = message.login_id;
+            obj.login_id = message.login_id;
         }
         if (message.main_address !== "") {
-            obj.mainAddress = message.main_address;
+            obj.main_address = message.main_address;
         }
         if (message.weekend_days?.length) {
-            obj.weekendDays = message.weekend_days.map((e) => (0, dayofweek_1.dayOfWeekToJSON)(e));
+            obj.weekend_days = message.weekend_days.map((e) => (0, dayofweek_1.dayOfWeekToJSON)(e));
         }
         if (message.timezone !== "") {
             obj.timezone = message.timezone;
@@ -862,8 +862,8 @@ exports.UpdateOrganizationAutoPayRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            auto_pay_disabled: isSet(object.auto_pay_disabled) ? globalThis.Boolean(object.auto_pay_disabled) : false,
         };
     },
     toJSON(message) {
@@ -872,10 +872,10 @@ exports.UpdateOrganizationAutoPayRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.auto_pay_disabled !== false) {
-            obj.autoPayDisabled = message.auto_pay_disabled;
+            obj.auto_pay_disabled = message.auto_pay_disabled;
         }
         return obj;
     },
@@ -955,9 +955,9 @@ exports.UpdateAutoPayRetryConfigRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
-            retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            max_retries: isSet(object.max_retries) ? globalThis.Number(object.max_retries) : 0,
+            retry_interval_hours: isSet(object.retry_interval_hours) ? globalThis.Number(object.retry_interval_hours) : 0,
         };
     },
     toJSON(message) {
@@ -966,13 +966,13 @@ exports.UpdateAutoPayRetryConfigRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.max_retries !== 0) {
-            obj.maxRetries = Math.round(message.max_retries);
+            obj.max_retries = Math.round(message.max_retries);
         }
         if (message.retry_interval_hours !== 0) {
-            obj.retryIntervalHours = Math.round(message.retry_interval_hours);
+            obj.retry_interval_hours = Math.round(message.retry_interval_hours);
         }
         return obj;
     },
@@ -1141,7 +1141,7 @@ exports.GetSchoolYearsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1150,7 +1150,7 @@ exports.GetSchoolYearsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -1211,7 +1211,7 @@ exports.GetSchoolYearRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1220,7 +1220,7 @@ exports.GetSchoolYearRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.school_year_id !== undefined) {
-            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -1271,15 +1271,15 @@ exports.GetSchoolYearsResponse = {
     },
     fromJSON(object) {
         return {
-            school_years: globalThis.Array.isArray(object?.schoolYears)
-                ? object.schoolYears.map((e) => organization_1.SchoolYear.fromJSON(e))
+            school_years: globalThis.Array.isArray(object?.school_years)
+                ? object.school_years.map((e) => organization_1.SchoolYear.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.school_years?.length) {
-            obj.schoolYears = message.school_years.map((e) => organization_1.SchoolYear.toJSON(e));
+            obj.school_years = message.school_years.map((e) => organization_1.SchoolYear.toJSON(e));
         }
         return obj;
     },
@@ -1362,10 +1362,10 @@ exports.CreateSchoolYearRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
         };
     },
     toJSON(message) {
@@ -1374,16 +1374,16 @@ exports.CreateSchoolYearRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
         if (message.start_date !== undefined) {
-            obj.startDate = message.start_date.toISOString();
+            obj.start_date = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.endDate = message.end_date.toISOString();
+            obj.end_date = message.end_date.toISOString();
         }
         return obj;
     },
@@ -1456,9 +1456,9 @@ exports.UpdateSchoolYearRegistrationStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
-            new_registration_status: isSet(object.newRegistrationStatus)
-                ? globalThis.Boolean(object.newRegistrationStatus)
+            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
+            new_registration_status: isSet(object.new_registration_status)
+                ? globalThis.Boolean(object.new_registration_status)
                 : false,
         };
     },
@@ -1468,10 +1468,10 @@ exports.UpdateSchoolYearRegistrationStatusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.school_year_id !== undefined) {
-            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         if (message.new_registration_status !== false) {
-            obj.newRegistrationStatus = message.new_registration_status;
+            obj.new_registration_status = message.new_registration_status;
         }
         return obj;
     },
@@ -1551,10 +1551,10 @@ exports.UpdateSchoolYearRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            school_year_id: isSet(object.school_year_id) ? object_id_1.ObjectId.fromJSON(object.school_year_id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            is_open_for_registration: isSet(object.isOpenForRegistration)
-                ? globalThis.Boolean(object.isOpenForRegistration)
+            is_open_for_registration: isSet(object.is_open_for_registration)
+                ? globalThis.Boolean(object.is_open_for_registration)
                 : false,
         };
     },
@@ -1564,13 +1564,13 @@ exports.UpdateSchoolYearRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.school_year_id !== undefined) {
-            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+            obj.school_year_id = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
         if (message.is_open_for_registration !== false) {
-            obj.isOpenForRegistration = message.is_open_for_registration;
+            obj.is_open_for_registration = message.is_open_for_registration;
         }
         return obj;
     },
@@ -1623,15 +1623,15 @@ exports.CreateSchoolYearResponse = {
     },
     fromJSON(object) {
         return {
-            school_years: globalThis.Array.isArray(object?.schoolYears)
-                ? object.schoolYears.map((e) => organization_1.SchoolYear.fromJSON(e))
+            school_years: globalThis.Array.isArray(object?.school_years)
+                ? object.school_years.map((e) => organization_1.SchoolYear.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.school_years?.length) {
-            obj.schoolYears = message.school_years.map((e) => organization_1.SchoolYear.toJSON(e));
+            obj.school_years = message.school_years.map((e) => organization_1.SchoolYear.toJSON(e));
         }
         return obj;
     },
@@ -1687,7 +1687,7 @@ exports.StartSchoolYearRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1696,7 +1696,7 @@ exports.StartSchoolYearRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -1757,7 +1757,7 @@ exports.StartReregistrationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1766,7 +1766,7 @@ exports.StartReregistrationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -1816,12 +1816,12 @@ exports.GetOrganizationByStripeRequest = {
         return message;
     },
     fromJSON(object) {
-        return { stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "" };
+        return { stripe_account_id: isSet(object.stripe_account_id) ? globalThis.String(object.stripe_account_id) : "" };
     },
     toJSON(message) {
         const obj = {};
         if (message.stripe_account_id !== "") {
-            obj.stripeAccountId = message.stripe_account_id;
+            obj.stripe_account_id = message.stripe_account_id;
         }
         return obj;
     },
@@ -1886,8 +1886,8 @@ exports.UpdateStripeIdRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            stripe_acount_id: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            stripe_acount_id: isSet(object.stripe_acount_id) ? globalThis.String(object.stripe_acount_id) : "",
         };
     },
     toJSON(message) {
@@ -1896,10 +1896,10 @@ exports.UpdateStripeIdRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.stripe_acount_id !== "") {
-            obj.stripeAcountId = message.stripe_acount_id;
+            obj.stripe_acount_id = message.stripe_acount_id;
         }
         return obj;
     },
@@ -1994,15 +1994,15 @@ exports.UpdateOrganizationStripePaymentInfoRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
-                ? globalThis.Boolean(object.stripePayoutsEnabled)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            stripe_payouts_enabled: isSet(object.stripe_payouts_enabled)
+                ? globalThis.Boolean(object.stripe_payouts_enabled)
                 : false,
-            stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
-                ? globalThis.Boolean(object.stripeDetailsSubmitted)
+            stripe_details_submitted: isSet(object.stripe_details_submitted)
+                ? globalThis.Boolean(object.stripe_details_submitted)
                 : false,
-            stripe_charges_enabled: isSet(object.stripeChargesEnabled)
-                ? globalThis.Boolean(object.stripeChargesEnabled)
+            stripe_charges_enabled: isSet(object.stripe_charges_enabled)
+                ? globalThis.Boolean(object.stripe_charges_enabled)
                 : false,
         };
     },
@@ -2012,16 +2012,16 @@ exports.UpdateOrganizationStripePaymentInfoRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.stripe_payouts_enabled !== false) {
-            obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
+            obj.stripe_payouts_enabled = message.stripe_payouts_enabled;
         }
         if (message.stripe_details_submitted !== false) {
-            obj.stripeDetailsSubmitted = message.stripe_details_submitted;
+            obj.stripe_details_submitted = message.stripe_details_submitted;
         }
         if (message.stripe_charges_enabled !== false) {
-            obj.stripeChargesEnabled = message.stripe_charges_enabled;
+            obj.stripe_charges_enabled = message.stripe_charges_enabled;
         }
         return obj;
     },
@@ -2085,7 +2085,7 @@ exports.GetOrganizationByLoginIdRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+            login_id: isSet(object.login_id) ? globalThis.String(object.login_id) : "",
         };
     },
     toJSON(message) {
@@ -2094,7 +2094,7 @@ exports.GetOrganizationByLoginIdRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.login_id !== "") {
-            obj.loginId = message.login_id;
+            obj.login_id = message.login_id;
         }
         return obj;
     },
@@ -2153,8 +2153,8 @@ exports.GetOrganizationsByIdRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_ids: globalThis.Array.isArray(object?.organizationIds)
-                ? object.organizationIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            organization_ids: globalThis.Array.isArray(object?.organization_ids)
+                ? object.organization_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -2164,7 +2164,7 @@ exports.GetOrganizationsByIdRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_ids?.length) {
-            obj.organizationIds = message.organization_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.organization_ids = message.organization_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -2223,7 +2223,7 @@ exports.GetOrganizationOnboardingStepsStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -2232,7 +2232,7 @@ exports.GetOrganizationOnboardingStepsStatusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -2335,15 +2335,15 @@ exports.GetAllOrganizationsOnboardingStepsStatusResponse = {
     },
     fromJSON(object) {
         return {
-            orgs_onboarding_steps_status: globalThis.Array.isArray(object?.orgsOnboardingStepsStatus)
-                ? object.orgsOnboardingStepsStatus.map((e) => onboarding_steps_1.OnboardingStepsStatus.fromJSON(e))
+            orgs_onboarding_steps_status: globalThis.Array.isArray(object?.orgs_onboarding_steps_status)
+                ? object.orgs_onboarding_steps_status.map((e) => onboarding_steps_1.OnboardingStepsStatus.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.orgs_onboarding_steps_status?.length) {
-            obj.orgsOnboardingStepsStatus = message.orgs_onboarding_steps_status.map((e) => onboarding_steps_1.OnboardingStepsStatus.toJSON(e));
+            obj.orgs_onboarding_steps_status = message.orgs_onboarding_steps_status.map((e) => onboarding_steps_1.OnboardingStepsStatus.toJSON(e));
         }
         return obj;
     },
@@ -2400,8 +2400,8 @@ exports.MarkOnboardingStepAsCompletedRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            step_name: isSet(object.stepName)
-                ? (0, onboarding_steps_1.onboardingStepNameFromJSON)(object.stepName)
+            step_name: isSet(object.step_name)
+                ? (0, onboarding_steps_1.onboardingStepNameFromJSON)(object.step_name)
                 : onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE,
         };
     },
@@ -2411,7 +2411,7 @@ exports.MarkOnboardingStepAsCompletedRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.step_name !== onboarding_steps_1.OnboardingStepName.ORG_OWNER_PROFILE) {
-            obj.stepName = (0, onboarding_steps_1.onboardingStepNameToJSON)(message.step_name);
+            obj.step_name = (0, onboarding_steps_1.onboardingStepNameToJSON)(message.step_name);
         }
         return obj;
     },
@@ -2488,9 +2488,9 @@ exports.UpdateInvoiceSettingsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-            hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
+            hst_number: isSet(object.hst_number) ? globalThis.String(object.hst_number) : "",
         };
     },
     toJSON(message) {
@@ -2499,13 +2499,13 @@ exports.UpdateInvoiceSettingsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.disable_tax !== false) {
-            obj.disableTax = message.disable_tax;
+            obj.disable_tax = message.disable_tax;
         }
         if (message.hst_number !== undefined && message.hst_number !== "") {
-            obj.hstNumber = message.hst_number;
+            obj.hst_number = message.hst_number;
         }
         return obj;
     },

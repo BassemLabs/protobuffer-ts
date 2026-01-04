@@ -55,7 +55,7 @@ exports.GetByCourseRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
         };
     },
     toJSON(message) {
@@ -64,7 +64,7 @@ exports.GetByCourseRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.course_id !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
         }
         return obj;
     },
@@ -125,8 +125,8 @@ exports.GetByCoursesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            course_ids: globalThis.Array.isArray(object?.courseIds)
-                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            course_ids: globalThis.Array.isArray(object?.course_ids)
+                ? object.course_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
@@ -136,7 +136,7 @@ exports.GetByCoursesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.course_ids?.length) {
-            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.course_ids = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -248,14 +248,14 @@ exports.CourseReportLayout = {
     },
     fromJSON(object) {
         return {
-            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_id: isSet(object.course_id) ? object_id_1.ObjectId.fromJSON(object.course_id) : undefined,
             layout: isSet(object.layout) ? report_layout_1.ReportLayout.fromJSON(object.layout) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.course_id !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+            obj.course_id = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.layout !== undefined) {
             obj.layout = report_layout_1.ReportLayout.toJSON(message.layout);
@@ -328,11 +328,11 @@ exports.UpdateReportLayoutRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            report_card_layout_id: isSet(object.reportCardLayoutId)
-                ? object_id_1.ObjectId.fromJSON(object.reportCardLayoutId)
+            report_card_layout_id: isSet(object.report_card_layout_id)
+                ? object_id_1.ObjectId.fromJSON(object.report_card_layout_id)
                 : undefined,
-            updated_report_card_layout: isSet(object.updatedReportCardLayout)
-                ? report_layout_1.ReportLayout.fromJSON(object.updatedReportCardLayout)
+            updated_report_card_layout: isSet(object.updated_report_card_layout)
+                ? report_layout_1.ReportLayout.fromJSON(object.updated_report_card_layout)
                 : undefined,
         };
     },
@@ -342,10 +342,10 @@ exports.UpdateReportLayoutRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.report_card_layout_id !== undefined) {
-            obj.reportCardLayoutId = object_id_1.ObjectId.toJSON(message.report_card_layout_id);
+            obj.report_card_layout_id = object_id_1.ObjectId.toJSON(message.report_card_layout_id);
         }
         if (message.updated_report_card_layout !== undefined) {
-            obj.updatedReportCardLayout = report_layout_1.ReportLayout.toJSON(message.updated_report_card_layout);
+            obj.updated_report_card_layout = report_layout_1.ReportLayout.toJSON(message.updated_report_card_layout);
         }
         return obj;
     },

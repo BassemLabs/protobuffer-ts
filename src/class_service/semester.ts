@@ -229,11 +229,11 @@ export const Semester: MessageFns<Semester> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      report_layout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
-      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      report_layout: isSet(object.report_layout) ? SemesterReportLayout.fromJSON(object.report_layout) : undefined,
+      campus_id: isSet(object.campus_id) ? ObjectId.fromJSON(object.campus_id) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
@@ -249,19 +249,19 @@ export const Semester: MessageFns<Semester> = {
       obj.archived = message.archived;
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     if (message.report_layout !== undefined) {
-      obj.reportLayout = SemesterReportLayout.toJSON(message.report_layout);
+      obj.report_layout = SemesterReportLayout.toJSON(message.report_layout);
     }
     if (message.campus_id !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campus_id);
+      obj.campus_id = ObjectId.toJSON(message.campus_id);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -394,24 +394,24 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
 
   fromJSON(object: any): SemesterReportLayout {
     return {
-      comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
-      include_progress_report_cards: isSet(object.includeProgressReportCards)
-        ? globalThis.Boolean(object.includeProgressReportCards)
+      comment_char_limit: isSet(object.comment_char_limit) ? globalThis.Number(object.comment_char_limit) : 0,
+      include_progress_report_cards: isSet(object.include_progress_report_cards)
+        ? globalThis.Boolean(object.include_progress_report_cards)
         : false,
-      show_credits_earned_entry: isSet(object.showCreditsEarnedEntry)
-        ? globalThis.Boolean(object.showCreditsEarnedEntry)
+      show_credits_earned_entry: isSet(object.show_credits_earned_entry)
+        ? globalThis.Boolean(object.show_credits_earned_entry)
         : false,
-      learning_skills: globalThis.Array.isArray(object?.learningSkills)
-        ? object.learningSkills.map((e: any) => SemesterLearningSkill.fromJSON(e))
+      learning_skills: globalThis.Array.isArray(object?.learning_skills)
+        ? object.learning_skills.map((e: any) => SemesterLearningSkill.fromJSON(e))
         : [],
-      report_dates: globalThis.Array.isArray(object?.reportDates)
-        ? object.reportDates.map((e: any) => ReportDates.fromJSON(e))
+      report_dates: globalThis.Array.isArray(object?.report_dates)
+        ? object.report_dates.map((e: any) => ReportDates.fromJSON(e))
         : [],
-      hide_learning_skills_from_homerooms: isSet(object.hideLearningSkillsFromHomerooms)
-        ? globalThis.Boolean(object.hideLearningSkillsFromHomerooms)
+      hide_learning_skills_from_homerooms: isSet(object.hide_learning_skills_from_homerooms)
+        ? globalThis.Boolean(object.hide_learning_skills_from_homerooms)
         : false,
-      hide_learning_skills_from_courses: isSet(object.hideLearningSkillsFromCourses)
-        ? globalThis.Boolean(object.hideLearningSkillsFromCourses)
+      hide_learning_skills_from_courses: isSet(object.hide_learning_skills_from_courses)
+        ? globalThis.Boolean(object.hide_learning_skills_from_courses)
         : false,
     };
   },
@@ -419,25 +419,25 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
   toJSON(message: SemesterReportLayout): unknown {
     const obj: any = {};
     if (message.comment_char_limit !== 0) {
-      obj.commentCharLimit = Math.round(message.comment_char_limit);
+      obj.comment_char_limit = Math.round(message.comment_char_limit);
     }
     if (message.include_progress_report_cards !== false) {
-      obj.includeProgressReportCards = message.include_progress_report_cards;
+      obj.include_progress_report_cards = message.include_progress_report_cards;
     }
     if (message.show_credits_earned_entry !== false) {
-      obj.showCreditsEarnedEntry = message.show_credits_earned_entry;
+      obj.show_credits_earned_entry = message.show_credits_earned_entry;
     }
     if (message.learning_skills?.length) {
-      obj.learningSkills = message.learning_skills.map((e) => SemesterLearningSkill.toJSON(e));
+      obj.learning_skills = message.learning_skills.map((e) => SemesterLearningSkill.toJSON(e));
     }
     if (message.report_dates?.length) {
-      obj.reportDates = message.report_dates.map((e) => ReportDates.toJSON(e));
+      obj.report_dates = message.report_dates.map((e) => ReportDates.toJSON(e));
     }
     if (message.hide_learning_skills_from_homerooms !== false) {
-      obj.hideLearningSkillsFromHomerooms = message.hide_learning_skills_from_homerooms;
+      obj.hide_learning_skills_from_homerooms = message.hide_learning_skills_from_homerooms;
     }
     if (message.hide_learning_skills_from_courses !== false) {
-      obj.hideLearningSkillsFromCourses = message.hide_learning_skills_from_courses;
+      obj.hide_learning_skills_from_courses = message.hide_learning_skills_from_courses;
     }
     return obj;
   },
@@ -515,22 +515,22 @@ export const ReportDates: MessageFns<ReportDates> = {
 
   fromJSON(object: any): ReportDates {
     return {
-      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : ReportType.Progress,
-      due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-      distribution_date: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
+      report_type: isSet(object.report_type) ? reportTypeFromJSON(object.report_type) : ReportType.Progress,
+      due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
+      distribution_date: isSet(object.distribution_date) ? fromJsonTimestamp(object.distribution_date) : undefined,
     };
   },
 
   toJSON(message: ReportDates): unknown {
     const obj: any = {};
     if (message.report_type !== ReportType.Progress) {
-      obj.reportType = reportTypeToJSON(message.report_type);
+      obj.report_type = reportTypeToJSON(message.report_type);
     }
     if (message.due_date !== undefined) {
-      obj.dueDate = message.due_date.toISOString();
+      obj.due_date = message.due_date.toISOString();
     }
     if (message.distribution_date !== undefined) {
-      obj.distributionDate = message.distribution_date.toISOString();
+      obj.distribution_date = message.distribution_date.toISOString();
     }
     return obj;
   },
@@ -716,8 +716,8 @@ export const ListSemester: MessageFns<ListSemester> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
     };
   },
 
@@ -733,10 +733,10 @@ export const ListSemester: MessageFns<ListSemester> = {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     return obj;
   },
@@ -805,7 +805,7 @@ export const SemesterList: MessageFns<SemesterList> = {
       semesters: globalThis.Array.isArray(object?.semesters)
         ? object.semesters.map((e: any) => ListSemester.fromJSON(e))
         : [],
-      semesters_count: isSet(object.semestersCount) ? globalThis.Number(object.semestersCount) : 0,
+      semesters_count: isSet(object.semesters_count) ? globalThis.Number(object.semesters_count) : 0,
     };
   },
 
@@ -815,7 +815,7 @@ export const SemesterList: MessageFns<SemesterList> = {
       obj.semesters = message.semesters.map((e) => ListSemester.toJSON(e));
     }
     if (message.semesters_count !== 0) {
-      obj.semestersCount = Math.round(message.semesters_count);
+      obj.semesters_count = Math.round(message.semesters_count);
     }
     return obj;
   },

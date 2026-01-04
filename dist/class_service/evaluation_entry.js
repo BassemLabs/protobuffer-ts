@@ -81,10 +81,10 @@ exports.EvaluationEntry = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            evaluation_id: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
+            evaluation_id: isSet(object.evaluation_id) ? object_id_1.ObjectId.fromJSON(object.evaluation_id) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
-            last_published_at: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
+            last_published_at: isSet(object.last_published_at) ? fromJsonTimestamp(object.last_published_at) : undefined,
         };
     },
     toJSON(message) {
@@ -93,7 +93,7 @@ exports.EvaluationEntry = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.evaluation_id !== undefined) {
-            obj.evaluationId = object_id_1.ObjectId.toJSON(message.evaluation_id);
+            obj.evaluation_id = object_id_1.ObjectId.toJSON(message.evaluation_id);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
@@ -102,7 +102,7 @@ exports.EvaluationEntry = {
             obj.mark = message.mark;
         }
         if (message.last_published_at !== undefined) {
-            obj.lastPublishedAt = message.last_published_at.toISOString();
+            obj.last_published_at = message.last_published_at.toISOString();
         }
         return obj;
     },

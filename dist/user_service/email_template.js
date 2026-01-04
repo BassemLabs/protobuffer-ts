@@ -294,15 +294,17 @@ exports.EmailTemplate = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            template_key: isSet(object.templateKey)
-                ? emailTemplateKeyFromJSON(object.templateKey)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            template_key: isSet(object.template_key)
+                ? emailTemplateKeyFromJSON(object.template_key)
                 : EmailTemplateKey.REJECTION_EMAIL,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             header: isSet(object.header) ? globalThis.String(object.header) : "",
             body: isSet(object.body) ? globalThis.String(object.body) : "",
             footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
-            receiver_user_type: isSet(object.receiverUserType) ? (0, user_type_1.userTypeFromJSON)(object.receiverUserType) : user_type_1.UserType.NONE,
+            receiver_user_type: isSet(object.receiver_user_type)
+                ? (0, user_type_1.userTypeFromJSON)(object.receiver_user_type)
+                : user_type_1.UserType.NONE,
         };
     },
     toJSON(message) {
@@ -311,10 +313,10 @@ exports.EmailTemplate = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
-            obj.templateKey = emailTemplateKeyToJSON(message.template_key);
+            obj.template_key = emailTemplateKeyToJSON(message.template_key);
         }
         if (message.title !== "") {
             obj.title = message.title;
@@ -329,7 +331,7 @@ exports.EmailTemplate = {
             obj.footer = message.footer;
         }
         if (message.receiver_user_type !== user_type_1.UserType.NONE) {
-            obj.receiverUserType = (0, user_type_1.userTypeToJSON)(message.receiver_user_type);
+            obj.receiver_user_type = (0, user_type_1.userTypeToJSON)(message.receiver_user_type);
         }
         return obj;
     },

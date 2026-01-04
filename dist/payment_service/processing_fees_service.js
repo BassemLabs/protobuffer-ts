@@ -219,11 +219,11 @@ exports.CreateProcessingFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_type: isSet(object.invoiceType) ? (0, processing_fees_1.invoiceTypeFromJSON)(object.invoiceType) : processing_fees_1.InvoiceType.TUITION,
-            fee_type: isSet(object.feeType) ? (0, processing_fees_1.feeTypeFromJSON)(object.feeType) : processing_fees_1.FeeType.CARD_FEE,
-            value_type: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
+            invoice_type: isSet(object.invoice_type) ? (0, processing_fees_1.invoiceTypeFromJSON)(object.invoice_type) : processing_fees_1.InvoiceType.TUITION,
+            fee_type: isSet(object.fee_type) ? (0, processing_fees_1.feeTypeFromJSON)(object.fee_type) : processing_fees_1.FeeType.CARD_FEE,
+            value_type: isSet(object.value_type) ? (0, tuition_1.discountValueTypeFromJSON)(object.value_type) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-            cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : 0,
+            cap_amount: isSet(object.cap_amount) ? globalThis.Number(object.cap_amount) : 0,
         };
     },
     toJSON(message) {
@@ -232,19 +232,19 @@ exports.CreateProcessingFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_type !== processing_fees_1.InvoiceType.TUITION) {
-            obj.invoiceType = (0, processing_fees_1.invoiceTypeToJSON)(message.invoice_type);
+            obj.invoice_type = (0, processing_fees_1.invoiceTypeToJSON)(message.invoice_type);
         }
         if (message.fee_type !== processing_fees_1.FeeType.CARD_FEE) {
-            obj.feeType = (0, processing_fees_1.feeTypeToJSON)(message.fee_type);
+            obj.fee_type = (0, processing_fees_1.feeTypeToJSON)(message.fee_type);
         }
         if (message.value_type !== tuition_1.DiscountValueType.AMOUNT) {
-            obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.value_type);
+            obj.value_type = (0, tuition_1.discountValueTypeToJSON)(message.value_type);
         }
         if (message.value !== 0) {
             obj.value = message.value;
         }
         if (message.cap_amount !== undefined && message.cap_amount !== 0) {
-            obj.capAmount = message.cap_amount;
+            obj.cap_amount = message.cap_amount;
         }
         return obj;
     },
@@ -429,11 +429,11 @@ exports.UpdateProcessingFeeRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            invoice_type: isSet(object.invoiceType) ? (0, processing_fees_1.invoiceTypeFromJSON)(object.invoiceType) : processing_fees_1.InvoiceType.TUITION,
-            fee_type: isSet(object.feeType) ? (0, processing_fees_1.feeTypeFromJSON)(object.feeType) : processing_fees_1.FeeType.CARD_FEE,
-            value_type: isSet(object.valueType) ? (0, tuition_1.discountValueTypeFromJSON)(object.valueType) : tuition_1.DiscountValueType.AMOUNT,
+            invoice_type: isSet(object.invoice_type) ? (0, processing_fees_1.invoiceTypeFromJSON)(object.invoice_type) : processing_fees_1.InvoiceType.TUITION,
+            fee_type: isSet(object.fee_type) ? (0, processing_fees_1.feeTypeFromJSON)(object.fee_type) : processing_fees_1.FeeType.CARD_FEE,
+            value_type: isSet(object.value_type) ? (0, tuition_1.discountValueTypeFromJSON)(object.value_type) : tuition_1.DiscountValueType.AMOUNT,
             value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-            cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : 0,
+            cap_amount: isSet(object.cap_amount) ? globalThis.Number(object.cap_amount) : 0,
         };
     },
     toJSON(message) {
@@ -445,19 +445,19 @@ exports.UpdateProcessingFeeRequest = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.invoice_type !== processing_fees_1.InvoiceType.TUITION) {
-            obj.invoiceType = (0, processing_fees_1.invoiceTypeToJSON)(message.invoice_type);
+            obj.invoice_type = (0, processing_fees_1.invoiceTypeToJSON)(message.invoice_type);
         }
         if (message.fee_type !== processing_fees_1.FeeType.CARD_FEE) {
-            obj.feeType = (0, processing_fees_1.feeTypeToJSON)(message.fee_type);
+            obj.fee_type = (0, processing_fees_1.feeTypeToJSON)(message.fee_type);
         }
         if (message.value_type !== tuition_1.DiscountValueType.AMOUNT) {
-            obj.valueType = (0, tuition_1.discountValueTypeToJSON)(message.value_type);
+            obj.value_type = (0, tuition_1.discountValueTypeToJSON)(message.value_type);
         }
         if (message.value !== 0) {
             obj.value = message.value;
         }
         if (message.cap_amount !== undefined && message.cap_amount !== 0) {
-            obj.capAmount = message.cap_amount;
+            obj.cap_amount = message.cap_amount;
         }
         return obj;
     },
@@ -657,7 +657,7 @@ exports.GetActiveProcessingFeesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_type: isSet(object.invoiceType) ? (0, processing_fees_1.invoiceTypeFromJSON)(object.invoiceType) : processing_fees_1.InvoiceType.TUITION,
+            invoice_type: isSet(object.invoice_type) ? (0, processing_fees_1.invoiceTypeFromJSON)(object.invoice_type) : processing_fees_1.InvoiceType.TUITION,
         };
     },
     toJSON(message) {
@@ -666,7 +666,7 @@ exports.GetActiveProcessingFeesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_type !== processing_fees_1.InvoiceType.TUITION) {
-            obj.invoiceType = (0, processing_fees_1.invoiceTypeToJSON)(message.invoice_type);
+            obj.invoice_type = (0, processing_fees_1.invoiceTypeToJSON)(message.invoice_type);
         }
         return obj;
     },
@@ -786,11 +786,11 @@ exports.UpdateOrganizationProcessingFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            tuition_invoice_fees_enabled: isSet(object.tuitionInvoiceFeesEnabled)
-                ? globalThis.Boolean(object.tuitionInvoiceFeesEnabled)
+            tuition_invoice_fees_enabled: isSet(object.tuition_invoice_fees_enabled)
+                ? globalThis.Boolean(object.tuition_invoice_fees_enabled)
                 : false,
-            non_tuition_invoice_fees_enabled: isSet(object.nonTuitionInvoiceFeesEnabled)
-                ? globalThis.Boolean(object.nonTuitionInvoiceFeesEnabled)
+            non_tuition_invoice_fees_enabled: isSet(object.non_tuition_invoice_fees_enabled)
+                ? globalThis.Boolean(object.non_tuition_invoice_fees_enabled)
                 : false,
         };
     },
@@ -800,10 +800,10 @@ exports.UpdateOrganizationProcessingFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.tuition_invoice_fees_enabled !== false) {
-            obj.tuitionInvoiceFeesEnabled = message.tuition_invoice_fees_enabled;
+            obj.tuition_invoice_fees_enabled = message.tuition_invoice_fees_enabled;
         }
         if (message.non_tuition_invoice_fees_enabled !== false) {
-            obj.nonTuitionInvoiceFeesEnabled = message.non_tuition_invoice_fees_enabled;
+            obj.non_tuition_invoice_fees_enabled = message.non_tuition_invoice_fees_enabled;
         }
         return obj;
     },

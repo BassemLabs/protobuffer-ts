@@ -436,19 +436,19 @@ export const Transaction: MessageFns<Transaction> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      stripe_payment_intent_id: isSet(object.stripePaymentIntentId)
-        ? globalThis.String(object.stripePaymentIntentId)
+      stripe_payment_intent_id: isSet(object.stripe_payment_intent_id)
+        ? globalThis.String(object.stripe_payment_intent_id)
         : "",
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
       status: isSet(object.status) ? transactionStatusFromJSON(object.status) : TransactionStatus.Created,
-      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      payment_type: isSet(object.payment_type) ? paymentTypeFromJSON(object.payment_type) : PaymentType.Stripe,
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
       invoice: isSet(object.invoice) ? ObjectId.fromJSON(object.invoice) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-      declined_reason: isSet(object.declinedReason) ? globalThis.String(object.declinedReason) : "",
-      processing_fee_amount: isSet(object.processingFeeAmount) ? globalThis.Number(object.processingFeeAmount) : 0,
-      bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : 0,
-      invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : 0,
+      declined_reason: isSet(object.declined_reason) ? globalThis.String(object.declined_reason) : "",
+      processing_fee_amount: isSet(object.processing_fee_amount) ? globalThis.Number(object.processing_fee_amount) : 0,
+      bassem_labs_fee: isSet(object.bassem_labs_fee) ? globalThis.Number(object.bassem_labs_fee) : 0,
+      invoice_surcharge: isSet(object.invoice_surcharge) ? globalThis.Number(object.invoice_surcharge) : 0,
     };
   },
 
@@ -461,7 +461,7 @@ export const Transaction: MessageFns<Transaction> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.stripe_payment_intent_id !== "") {
-      obj.stripePaymentIntentId = message.stripe_payment_intent_id;
+      obj.stripe_payment_intent_id = message.stripe_payment_intent_id;
     }
     if (message.currency !== Currency.USD) {
       obj.currency = currencyToJSON(message.currency);
@@ -470,7 +470,7 @@ export const Transaction: MessageFns<Transaction> = {
       obj.status = transactionStatusToJSON(message.status);
     }
     if (message.payment_type !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.payment_type);
+      obj.payment_type = paymentTypeToJSON(message.payment_type);
     }
     if (message.date !== undefined) {
       obj.date = message.date.toISOString();
@@ -482,16 +482,16 @@ export const Transaction: MessageFns<Transaction> = {
       obj.amount = message.amount;
     }
     if (message.declined_reason !== undefined && message.declined_reason !== "") {
-      obj.declinedReason = message.declined_reason;
+      obj.declined_reason = message.declined_reason;
     }
     if (message.processing_fee_amount !== undefined && message.processing_fee_amount !== 0) {
-      obj.processingFeeAmount = message.processing_fee_amount;
+      obj.processing_fee_amount = message.processing_fee_amount;
     }
     if (message.bassem_labs_fee !== undefined && message.bassem_labs_fee !== 0) {
-      obj.bassemLabsFee = message.bassem_labs_fee;
+      obj.bassem_labs_fee = message.bassem_labs_fee;
     }
     if (message.invoice_surcharge !== undefined && message.invoice_surcharge !== 0) {
-      obj.invoiceSurcharge = message.invoice_surcharge;
+      obj.invoice_surcharge = message.invoice_surcharge;
     }
     return obj;
   },
@@ -651,10 +651,10 @@ export const RefundTransaction: MessageFns<RefundTransaction> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      transaction_id: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
-      stripe_refund_id: isSet(object.stripeRefundId) ? globalThis.String(object.stripeRefundId) : "",
+      transaction_id: isSet(object.transaction_id) ? ObjectId.fromJSON(object.transaction_id) : undefined,
+      stripe_refund_id: isSet(object.stripe_refund_id) ? globalThis.String(object.stripe_refund_id) : "",
       status: isSet(object.status) ? refundTransactionStatusFromJSON(object.status) : RefundTransactionStatus.Pending,
-      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      payment_type: isSet(object.payment_type) ? paymentTypeFromJSON(object.payment_type) : PaymentType.Stripe,
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
       reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
@@ -670,16 +670,16 @@ export const RefundTransaction: MessageFns<RefundTransaction> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.transaction_id !== undefined) {
-      obj.transactionId = ObjectId.toJSON(message.transaction_id);
+      obj.transaction_id = ObjectId.toJSON(message.transaction_id);
     }
     if (message.stripe_refund_id !== undefined && message.stripe_refund_id !== "") {
-      obj.stripeRefundId = message.stripe_refund_id;
+      obj.stripe_refund_id = message.stripe_refund_id;
     }
     if (message.status !== RefundTransactionStatus.Pending) {
       obj.status = refundTransactionStatusToJSON(message.status);
     }
     if (message.payment_type !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.payment_type);
+      obj.payment_type = paymentTypeToJSON(message.payment_type);
     }
     if (message.date !== undefined) {
       obj.date = message.date.toISOString();

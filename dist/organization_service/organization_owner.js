@@ -92,8 +92,8 @@ exports.OrganizationOwner = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            main_address: isSet(object.main_address) ? globalThis.String(object.main_address) : "",
+            phone_number: isSet(object.phone_number) ? globalThis.String(object.phone_number) : "",
         };
     },
     toJSON(message) {
@@ -111,10 +111,10 @@ exports.OrganizationOwner = {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
         if (message.main_address !== undefined && message.main_address !== "") {
-            obj.mainAddress = message.main_address;
+            obj.main_address = message.main_address;
         }
         if (message.phone_number !== undefined && message.phone_number !== "") {
-            obj.phoneNumber = message.phone_number;
+            obj.phone_number = message.phone_number;
         }
         return obj;
     },

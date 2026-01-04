@@ -123,25 +123,25 @@ exports.ActionRequiredByParents = {
     },
     fromJSON(object) {
         return {
-            action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.PAY_INVOICE,
+            action_type: isSet(object.action_type) ? actionTypeFromJSON(object.action_type) : ActionType.PAY_INVOICE,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.action_type !== ActionType.PAY_INVOICE) {
-            obj.actionType = actionTypeToJSON(message.action_type);
+            obj.action_type = actionTypeToJSON(message.action_type);
         }
         if (message.title !== "") {
             obj.title = message.title;
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         return obj;
     },

@@ -234,7 +234,7 @@ export const AdditionalFeeApplication: MessageFns<AdditionalFeeApplication> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      additional_fee: isSet(object.additionalFee) ? ObjectId.fromJSON(object.additionalFee) : undefined,
+      additional_fee: isSet(object.additional_fee) ? ObjectId.fromJSON(object.additional_fee) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
     };
@@ -249,7 +249,7 @@ export const AdditionalFeeApplication: MessageFns<AdditionalFeeApplication> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.additional_fee !== undefined) {
-      obj.additionalFee = ObjectId.toJSON(message.additional_fee);
+      obj.additional_fee = ObjectId.toJSON(message.additional_fee);
     }
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);

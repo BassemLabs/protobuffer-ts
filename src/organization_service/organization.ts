@@ -328,28 +328,28 @@ export const Organization: MessageFns<Organization> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
+      default_domain: isSet(object.default_domain) ? globalThis.String(object.default_domain) : "",
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
-      organization_profile_settings: isSet(object.organizationProfileSettings)
-        ? OrganizationProfileSettings.fromJSON(object.organizationProfileSettings)
+      organization_profile_settings: isSet(object.organization_profile_settings)
+        ? OrganizationProfileSettings.fromJSON(object.organization_profile_settings)
         : undefined,
-      onboarding_settings: isSet(object.onboardingSettings)
-        ? OnboardingSettings.fromJSON(object.onboardingSettings)
+      onboarding_settings: isSet(object.onboarding_settings)
+        ? OnboardingSettings.fromJSON(object.onboarding_settings)
         : undefined,
-      active_school_year: isSet(object.activeSchoolYear) ? SchoolYear.fromJSON(object.activeSchoolYear) : undefined,
-      coming_school_year: isSet(object.comingSchoolYear) ? SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
-      opened_reregistration_for_coming_school_year: isSet(object.openedReregistrationForComingSchoolYear)
-        ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
+      active_school_year: isSet(object.active_school_year) ? SchoolYear.fromJSON(object.active_school_year) : undefined,
+      coming_school_year: isSet(object.coming_school_year) ? SchoolYear.fromJSON(object.coming_school_year) : undefined,
+      opened_reregistration_for_coming_school_year: isSet(object.opened_reregistration_for_coming_school_year)
+        ? globalThis.Boolean(object.opened_reregistration_for_coming_school_year)
         : false,
-      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
-      payment_information: isSet(object.paymentInformation)
-        ? PaymentInformation.fromJSON(object.paymentInformation)
+      country_code: isSet(object.country_code) ? globalThis.String(object.country_code) : "",
+      payment_information: isSet(object.payment_information)
+        ? PaymentInformation.fromJSON(object.payment_information)
         : undefined,
-      invoice_settings: isSet(object.invoiceSettings) ? InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
-      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
-      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-      weekend_days: globalThis.Array.isArray(object?.weekendDays)
-        ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
+      invoice_settings: isSet(object.invoice_settings) ? InvoiceSettings.fromJSON(object.invoice_settings) : undefined,
+      login_id: isSet(object.login_id) ? globalThis.String(object.login_id) : "",
+      main_address: isSet(object.main_address) ? globalThis.String(object.main_address) : "",
+      weekend_days: globalThis.Array.isArray(object?.weekend_days)
+        ? object.weekend_days.map((e: any) => dayOfWeekFromJSON(e))
         : [],
       timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
     };
@@ -364,43 +364,43 @@ export const Organization: MessageFns<Organization> = {
       obj.name = message.name;
     }
     if (message.default_domain !== "") {
-      obj.defaultDomain = message.default_domain;
+      obj.default_domain = message.default_domain;
     }
     if (message.domains?.length) {
       obj.domains = message.domains;
     }
     if (message.organization_profile_settings !== undefined) {
-      obj.organizationProfileSettings = OrganizationProfileSettings.toJSON(message.organization_profile_settings);
+      obj.organization_profile_settings = OrganizationProfileSettings.toJSON(message.organization_profile_settings);
     }
     if (message.onboarding_settings !== undefined) {
-      obj.onboardingSettings = OnboardingSettings.toJSON(message.onboarding_settings);
+      obj.onboarding_settings = OnboardingSettings.toJSON(message.onboarding_settings);
     }
     if (message.active_school_year !== undefined) {
-      obj.activeSchoolYear = SchoolYear.toJSON(message.active_school_year);
+      obj.active_school_year = SchoolYear.toJSON(message.active_school_year);
     }
     if (message.coming_school_year !== undefined) {
-      obj.comingSchoolYear = SchoolYear.toJSON(message.coming_school_year);
+      obj.coming_school_year = SchoolYear.toJSON(message.coming_school_year);
     }
     if (message.opened_reregistration_for_coming_school_year !== false) {
-      obj.openedReregistrationForComingSchoolYear = message.opened_reregistration_for_coming_school_year;
+      obj.opened_reregistration_for_coming_school_year = message.opened_reregistration_for_coming_school_year;
     }
     if (message.country_code !== undefined && message.country_code !== "") {
-      obj.countryCode = message.country_code;
+      obj.country_code = message.country_code;
     }
     if (message.payment_information !== undefined) {
-      obj.paymentInformation = PaymentInformation.toJSON(message.payment_information);
+      obj.payment_information = PaymentInformation.toJSON(message.payment_information);
     }
     if (message.invoice_settings !== undefined) {
-      obj.invoiceSettings = InvoiceSettings.toJSON(message.invoice_settings);
+      obj.invoice_settings = InvoiceSettings.toJSON(message.invoice_settings);
     }
     if (message.login_id !== "") {
-      obj.loginId = message.login_id;
+      obj.login_id = message.login_id;
     }
     if (message.main_address !== "") {
-      obj.mainAddress = message.main_address;
+      obj.main_address = message.main_address;
     }
     if (message.weekend_days?.length) {
-      obj.weekendDays = message.weekend_days.map((e) => dayOfWeekToJSON(e));
+      obj.weekend_days = message.weekend_days.map((e) => dayOfWeekToJSON(e));
     }
     if (message.timezone !== "") {
       obj.timezone = message.timezone;
@@ -541,12 +541,12 @@ export const SchoolYear: MessageFns<SchoolYear> = {
   fromJSON(object: any): SchoolYear {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      is_open_for_registration: isSet(object.isOpenForRegistration)
-        ? globalThis.Boolean(object.isOpenForRegistration)
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      is_open_for_registration: isSet(object.is_open_for_registration)
+        ? globalThis.Boolean(object.is_open_for_registration)
         : false,
     };
   },
@@ -557,19 +557,19 @@ export const SchoolYear: MessageFns<SchoolYear> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     if (message.is_open_for_registration !== undefined && message.is_open_for_registration !== false) {
-      obj.isOpenForRegistration = message.is_open_for_registration;
+      obj.is_open_for_registration = message.is_open_for_registration;
     }
     return obj;
   },
@@ -696,20 +696,20 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
 
   fromJSON(object: any): PaymentInformation {
     return {
-      stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "",
-      account_currency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : Currency.USD,
-      stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
-        ? globalThis.Boolean(object.stripePayoutsEnabled)
+      stripe_account_id: isSet(object.stripe_account_id) ? globalThis.String(object.stripe_account_id) : "",
+      account_currency: isSet(object.account_currency) ? currencyFromJSON(object.account_currency) : Currency.USD,
+      stripe_payouts_enabled: isSet(object.stripe_payouts_enabled)
+        ? globalThis.Boolean(object.stripe_payouts_enabled)
         : false,
-      stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
-        ? globalThis.Boolean(object.stripeDetailsSubmitted)
+      stripe_details_submitted: isSet(object.stripe_details_submitted)
+        ? globalThis.Boolean(object.stripe_details_submitted)
         : false,
-      stripe_charges_enabled: isSet(object.stripeChargesEnabled)
-        ? globalThis.Boolean(object.stripeChargesEnabled)
+      stripe_charges_enabled: isSet(object.stripe_charges_enabled)
+        ? globalThis.Boolean(object.stripe_charges_enabled)
         : false,
-      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
-      auto_pay_retry_config: isSet(object.autoPayRetryConfig)
-        ? AutoPayRetryConfig.fromJSON(object.autoPayRetryConfig)
+      auto_pay_disabled: isSet(object.auto_pay_disabled) ? globalThis.Boolean(object.auto_pay_disabled) : false,
+      auto_pay_retry_config: isSet(object.auto_pay_retry_config)
+        ? AutoPayRetryConfig.fromJSON(object.auto_pay_retry_config)
         : undefined,
     };
   },
@@ -717,25 +717,25 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
   toJSON(message: PaymentInformation): unknown {
     const obj: any = {};
     if (message.stripe_account_id !== undefined && message.stripe_account_id !== "") {
-      obj.stripeAccountId = message.stripe_account_id;
+      obj.stripe_account_id = message.stripe_account_id;
     }
     if (message.account_currency !== undefined && message.account_currency !== Currency.USD) {
-      obj.accountCurrency = currencyToJSON(message.account_currency);
+      obj.account_currency = currencyToJSON(message.account_currency);
     }
     if (message.stripe_payouts_enabled !== false) {
-      obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
+      obj.stripe_payouts_enabled = message.stripe_payouts_enabled;
     }
     if (message.stripe_details_submitted !== false) {
-      obj.stripeDetailsSubmitted = message.stripe_details_submitted;
+      obj.stripe_details_submitted = message.stripe_details_submitted;
     }
     if (message.stripe_charges_enabled !== false) {
-      obj.stripeChargesEnabled = message.stripe_charges_enabled;
+      obj.stripe_charges_enabled = message.stripe_charges_enabled;
     }
     if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
-      obj.autoPayDisabled = message.auto_pay_disabled;
+      obj.auto_pay_disabled = message.auto_pay_disabled;
     }
     if (message.auto_pay_retry_config !== undefined) {
-      obj.autoPayRetryConfig = AutoPayRetryConfig.toJSON(message.auto_pay_retry_config);
+      obj.auto_pay_retry_config = AutoPayRetryConfig.toJSON(message.auto_pay_retry_config);
     }
     return obj;
   },
@@ -806,18 +806,18 @@ export const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig> = {
 
   fromJSON(object: any): AutoPayRetryConfig {
     return {
-      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
-      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+      max_retries: isSet(object.max_retries) ? globalThis.Number(object.max_retries) : 0,
+      retry_interval_hours: isSet(object.retry_interval_hours) ? globalThis.Number(object.retry_interval_hours) : 0,
     };
   },
 
   toJSON(message: AutoPayRetryConfig): unknown {
     const obj: any = {};
     if (message.max_retries !== 0) {
-      obj.maxRetries = Math.round(message.max_retries);
+      obj.max_retries = Math.round(message.max_retries);
     }
     if (message.retry_interval_hours !== 0) {
-      obj.retryIntervalHours = Math.round(message.retry_interval_hours);
+      obj.retry_interval_hours = Math.round(message.retry_interval_hours);
     }
     return obj;
   },

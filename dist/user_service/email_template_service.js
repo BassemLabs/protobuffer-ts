@@ -56,8 +56,8 @@ exports.GetByTemplateKeyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_key: isSet(object.templateKey)
-                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.templateKey)
+            template_key: isSet(object.template_key)
+                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.template_key)
                 : email_template_1.EmailTemplateKey.REJECTION_EMAIL,
         };
     },
@@ -67,7 +67,7 @@ exports.GetByTemplateKeyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_key !== email_template_1.EmailTemplateKey.REJECTION_EMAIL) {
-            obj.templateKey = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
+            obj.template_key = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
         }
         return obj;
     },
@@ -275,8 +275,8 @@ exports.UpdateOrCreateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_key: isSet(object.templateKey)
-                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.templateKey)
+            template_key: isSet(object.template_key)
+                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.template_key)
                 : email_template_1.EmailTemplateKey.REJECTION_EMAIL,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             header: isSet(object.header) ? globalThis.String(object.header) : "",
@@ -290,7 +290,7 @@ exports.UpdateOrCreateRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_key !== email_template_1.EmailTemplateKey.REJECTION_EMAIL) {
-            obj.templateKey = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
+            obj.template_key = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
         }
         if (message.title !== "") {
             obj.title = message.title;
@@ -365,7 +365,7 @@ exports.CreateDefaultTemplatesForOrganizationRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -374,7 +374,7 @@ exports.CreateDefaultTemplatesForOrganizationRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -485,8 +485,8 @@ exports.GetSupportedPlaceholdersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_key: isSet(object.templateKey)
-                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.templateKey)
+            template_key: isSet(object.template_key)
+                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.template_key)
                 : email_template_1.EmailTemplateKey.REJECTION_EMAIL,
         };
     },
@@ -496,7 +496,7 @@ exports.GetSupportedPlaceholdersRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_key !== email_template_1.EmailTemplateKey.REJECTION_EMAIL) {
-            obj.templateKey = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
+            obj.template_key = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
         }
         return obj;
     },
@@ -651,15 +651,15 @@ exports.GetAllStaticTemplateBodiesResponse = {
     },
     fromJSON(object) {
         return {
-            static_bodies: globalThis.Array.isArray(object?.staticBodies)
-                ? object.staticBodies.map((e) => exports.StaticTemplateBodyEntry.fromJSON(e))
+            static_bodies: globalThis.Array.isArray(object?.static_bodies)
+                ? object.static_bodies.map((e) => exports.StaticTemplateBodyEntry.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.static_bodies?.length) {
-            obj.staticBodies = message.static_bodies.map((e) => exports.StaticTemplateBodyEntry.toJSON(e));
+            obj.static_bodies = message.static_bodies.map((e) => exports.StaticTemplateBodyEntry.toJSON(e));
         }
         return obj;
     },
@@ -714,8 +714,8 @@ exports.StaticTemplateBodyEntry = {
     },
     fromJSON(object) {
         return {
-            template_key: isSet(object.templateKey)
-                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.templateKey)
+            template_key: isSet(object.template_key)
+                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.template_key)
                 : email_template_1.EmailTemplateKey.REJECTION_EMAIL,
             body: isSet(object.body) ? globalThis.String(object.body) : "",
         };
@@ -723,7 +723,7 @@ exports.StaticTemplateBodyEntry = {
     toJSON(message) {
         const obj = {};
         if (message.template_key !== email_template_1.EmailTemplateKey.REJECTION_EMAIL) {
-            obj.templateKey = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
+            obj.template_key = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
         }
         if (message.body !== "") {
             obj.body = message.body;
@@ -902,16 +902,18 @@ exports.SendEmailByTemplateKeyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_key: isSet(object.templateKey)
-                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.templateKey)
+            template_key: isSet(object.template_key)
+                ? (0, email_template_1.emailTemplateKeyFromJSON)(object.template_key)
                 : email_template_1.EmailTemplateKey.REJECTION_EMAIL,
             replacements: globalThis.Array.isArray(object?.replacements)
                 ? object.replacements.map((e) => exports.Replacement.fromJSON(e))
                 : [],
-            recipient_user_type: isSet(object.recipientUserType) ? (0, user_type_1.userTypeFromJSON)(object.recipientUserType) : user_type_1.UserType.NONE,
-            recipient_user_id: isSet(object.recipientUserId) ? object_id_1.ObjectId.fromJSON(object.recipientUserId) : undefined,
-            recipient_email: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : "",
-            date_to_send: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : 0,
+            recipient_user_type: isSet(object.recipient_user_type)
+                ? (0, user_type_1.userTypeFromJSON)(object.recipient_user_type)
+                : user_type_1.UserType.NONE,
+            recipient_user_id: isSet(object.recipient_user_id) ? object_id_1.ObjectId.fromJSON(object.recipient_user_id) : undefined,
+            recipient_email: isSet(object.recipient_email) ? globalThis.String(object.recipient_email) : "",
+            date_to_send: isSet(object.date_to_send) ? globalThis.Number(object.date_to_send) : 0,
         };
     },
     toJSON(message) {
@@ -920,22 +922,22 @@ exports.SendEmailByTemplateKeyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.template_key !== email_template_1.EmailTemplateKey.REJECTION_EMAIL) {
-            obj.templateKey = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
+            obj.template_key = (0, email_template_1.emailTemplateKeyToJSON)(message.template_key);
         }
         if (message.replacements?.length) {
             obj.replacements = message.replacements.map((e) => exports.Replacement.toJSON(e));
         }
         if (message.recipient_user_type !== user_type_1.UserType.NONE) {
-            obj.recipientUserType = (0, user_type_1.userTypeToJSON)(message.recipient_user_type);
+            obj.recipient_user_type = (0, user_type_1.userTypeToJSON)(message.recipient_user_type);
         }
         if (message.recipient_user_id !== undefined) {
-            obj.recipientUserId = object_id_1.ObjectId.toJSON(message.recipient_user_id);
+            obj.recipient_user_id = object_id_1.ObjectId.toJSON(message.recipient_user_id);
         }
         if (message.recipient_email !== "") {
-            obj.recipientEmail = message.recipient_email;
+            obj.recipient_email = message.recipient_email;
         }
         if (message.date_to_send !== undefined && message.date_to_send !== 0) {
-            obj.dateToSend = Math.round(message.date_to_send);
+            obj.date_to_send = Math.round(message.date_to_send);
         }
         return obj;
     },
@@ -1091,10 +1093,12 @@ exports.SendEmailWithTemplateRequest = {
             replacements: globalThis.Array.isArray(object?.replacements)
                 ? object.replacements.map((e) => exports.Replacement.fromJSON(e))
                 : [],
-            recipient_user_type: isSet(object.recipientUserType) ? (0, user_type_1.userTypeFromJSON)(object.recipientUserType) : user_type_1.UserType.NONE,
-            recipient_user_id: isSet(object.recipientUserId) ? object_id_1.ObjectId.fromJSON(object.recipientUserId) : undefined,
-            recipient_email: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : "",
-            date_to_send: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : 0,
+            recipient_user_type: isSet(object.recipient_user_type)
+                ? (0, user_type_1.userTypeFromJSON)(object.recipient_user_type)
+                : user_type_1.UserType.NONE,
+            recipient_user_id: isSet(object.recipient_user_id) ? object_id_1.ObjectId.fromJSON(object.recipient_user_id) : undefined,
+            recipient_email: isSet(object.recipient_email) ? globalThis.String(object.recipient_email) : "",
+            date_to_send: isSet(object.date_to_send) ? globalThis.Number(object.date_to_send) : 0,
         };
     },
     toJSON(message) {
@@ -1118,16 +1122,16 @@ exports.SendEmailWithTemplateRequest = {
             obj.replacements = message.replacements.map((e) => exports.Replacement.toJSON(e));
         }
         if (message.recipient_user_type !== user_type_1.UserType.NONE) {
-            obj.recipientUserType = (0, user_type_1.userTypeToJSON)(message.recipient_user_type);
+            obj.recipient_user_type = (0, user_type_1.userTypeToJSON)(message.recipient_user_type);
         }
         if (message.recipient_user_id !== undefined) {
-            obj.recipientUserId = object_id_1.ObjectId.toJSON(message.recipient_user_id);
+            obj.recipient_user_id = object_id_1.ObjectId.toJSON(message.recipient_user_id);
         }
         if (message.recipient_email !== "") {
-            obj.recipientEmail = message.recipient_email;
+            obj.recipient_email = message.recipient_email;
         }
         if (message.date_to_send !== undefined && message.date_to_send !== 0) {
-            obj.dateToSend = Math.round(message.date_to_send);
+            obj.date_to_send = Math.round(message.date_to_send);
         }
         return obj;
     },
@@ -1196,7 +1200,7 @@ exports.SendEmailResponse = {
     fromJSON(object) {
         return {
             success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
-            error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
+            error_message: isSet(object.error_message) ? globalThis.String(object.error_message) : "",
         };
     },
     toJSON(message) {
@@ -1205,7 +1209,7 @@ exports.SendEmailResponse = {
             obj.success = message.success;
         }
         if (message.error_message !== undefined && message.error_message !== "") {
-            obj.errorMessage = message.error_message;
+            obj.error_message = message.error_message;
         }
         return obj;
     },

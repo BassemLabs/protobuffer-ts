@@ -168,14 +168,14 @@ export const Evaluation: MessageFns<Evaluation> = {
   fromJSON(object: any): Evaluation {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       total: isSet(object.total) ? globalThis.Number(object.total) : 0,
       weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      mark_category: isSet(object.markCategory) ? ObjectId.fromJSON(object.markCategory) : undefined,
-      visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
-        ? globalThis.Boolean(object.visibleToParentsAndStudents)
+      mark_category: isSet(object.mark_category) ? ObjectId.fromJSON(object.mark_category) : undefined,
+      visible_to_parents_and_students: isSet(object.visible_to_parents_and_students)
+        ? globalThis.Boolean(object.visible_to_parents_and_students)
         : false,
     };
   },
@@ -186,7 +186,7 @@ export const Evaluation: MessageFns<Evaluation> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -201,10 +201,10 @@ export const Evaluation: MessageFns<Evaluation> = {
       obj.date = message.date;
     }
     if (message.mark_category !== undefined) {
-      obj.markCategory = ObjectId.toJSON(message.mark_category);
+      obj.mark_category = ObjectId.toJSON(message.mark_category);
     }
     if (message.visible_to_parents_and_students !== false) {
-      obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
+      obj.visible_to_parents_and_students = message.visible_to_parents_and_students;
     }
     return obj;
   },
@@ -358,17 +358,17 @@ export const DetailedEvaluation: MessageFns<DetailedEvaluation> = {
   fromJSON(object: any): DetailedEvaluation {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       total: isSet(object.total) ? globalThis.Number(object.total) : 0,
       weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      mark_category: isSet(object.markCategory) ? ObjectId.fromJSON(object.markCategory) : undefined,
-      visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
-        ? globalThis.Boolean(object.visibleToParentsAndStudents)
+      mark_category: isSet(object.mark_category) ? ObjectId.fromJSON(object.mark_category) : undefined,
+      visible_to_parents_and_students: isSet(object.visible_to_parents_and_students)
+        ? globalThis.Boolean(object.visible_to_parents_and_students)
         : false,
-      evaluation_contribution_to_final_mark: isSet(object.evaluationContributionToFinalMark)
-        ? globalThis.Number(object.evaluationContributionToFinalMark)
+      evaluation_contribution_to_final_mark: isSet(object.evaluation_contribution_to_final_mark)
+        ? globalThis.Number(object.evaluation_contribution_to_final_mark)
         : 0,
     };
   },
@@ -379,7 +379,7 @@ export const DetailedEvaluation: MessageFns<DetailedEvaluation> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -394,13 +394,13 @@ export const DetailedEvaluation: MessageFns<DetailedEvaluation> = {
       obj.date = message.date;
     }
     if (message.mark_category !== undefined) {
-      obj.markCategory = ObjectId.toJSON(message.mark_category);
+      obj.mark_category = ObjectId.toJSON(message.mark_category);
     }
     if (message.visible_to_parents_and_students !== false) {
-      obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
+      obj.visible_to_parents_and_students = message.visible_to_parents_and_students;
     }
     if (message.evaluation_contribution_to_final_mark !== 0) {
-      obj.evaluationContributionToFinalMark = message.evaluation_contribution_to_final_mark;
+      obj.evaluation_contribution_to_final_mark = message.evaluation_contribution_to_final_mark;
     }
     return obj;
   },
@@ -566,18 +566,18 @@ export const PersonalizedEvaluation: MessageFns<PersonalizedEvaluation> = {
   fromJSON(object: any): PersonalizedEvaluation {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      course_id: isSet(object.course_id) ? ObjectId.fromJSON(object.course_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       total: isSet(object.total) ? globalThis.Number(object.total) : 0,
       weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
-      mark_category: isSet(object.markCategory) ? ObjectId.fromJSON(object.markCategory) : undefined,
-      visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
-        ? globalThis.Boolean(object.visibleToParentsAndStudents)
+      mark_category: isSet(object.mark_category) ? ObjectId.fromJSON(object.mark_category) : undefined,
+      visible_to_parents_and_students: isSet(object.visible_to_parents_and_students)
+        ? globalThis.Boolean(object.visible_to_parents_and_students)
         : false,
-      evaluation_contribution_to_student_final_mark: isSet(object.evaluationContributionToStudentFinalMark)
-        ? globalThis.Number(object.evaluationContributionToStudentFinalMark)
+      evaluation_contribution_to_student_final_mark: isSet(object.evaluation_contribution_to_student_final_mark)
+        ? globalThis.Number(object.evaluation_contribution_to_student_final_mark)
         : 0,
     };
   },
@@ -588,10 +588,10 @@ export const PersonalizedEvaluation: MessageFns<PersonalizedEvaluation> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
+      obj.course_id = ObjectId.toJSON(message.course_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -606,13 +606,13 @@ export const PersonalizedEvaluation: MessageFns<PersonalizedEvaluation> = {
       obj.date = message.date;
     }
     if (message.mark_category !== undefined) {
-      obj.markCategory = ObjectId.toJSON(message.mark_category);
+      obj.mark_category = ObjectId.toJSON(message.mark_category);
     }
     if (message.visible_to_parents_and_students !== false) {
-      obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
+      obj.visible_to_parents_and_students = message.visible_to_parents_and_students;
     }
     if (message.evaluation_contribution_to_student_final_mark !== 0) {
-      obj.evaluationContributionToStudentFinalMark = message.evaluation_contribution_to_student_final_mark;
+      obj.evaluation_contribution_to_student_final_mark = message.evaluation_contribution_to_student_final_mark;
     }
     return obj;
   },

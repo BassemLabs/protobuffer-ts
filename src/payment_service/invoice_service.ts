@@ -394,7 +394,7 @@ export const GetInvoiceRequest: MessageFns<GetInvoiceRequest> = {
   fromJSON(object: any): GetInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
     };
   },
 
@@ -404,7 +404,7 @@ export const GetInvoiceRequest: MessageFns<GetInvoiceRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     return obj;
   },
@@ -472,7 +472,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
   fromJSON(object: any): GetInvoiceByNumberRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_number: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : 0,
+      invoice_number: isSet(object.invoice_number) ? globalThis.Number(object.invoice_number) : 0,
     };
   },
 
@@ -482,7 +482,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_number !== 0) {
-      obj.invoiceNumber = Math.round(message.invoice_number);
+      obj.invoice_number = Math.round(message.invoice_number);
     }
     return obj;
   },
@@ -548,7 +548,7 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
   fromJSON(object: any): GetUserInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      user_id: isSet(object.user_id) ? ObjectId.fromJSON(object.user_id) : undefined,
     };
   },
 
@@ -558,7 +558,7 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.user_id !== undefined) {
-      obj.userId = ObjectId.toJSON(message.user_id);
+      obj.user_id = ObjectId.toJSON(message.user_id);
     }
     return obj;
   },
@@ -687,7 +687,7 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
   fromJSON(object: any): GetFamilyInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
     };
   },
 
@@ -697,7 +697,7 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -785,8 +785,8 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
   fromJSON(object: any): GetParentInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
     };
   },
@@ -797,10 +797,10 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parent_id);
+      obj.parent_id = ObjectId.toJSON(message.parent_id);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     if (message.title !== undefined && message.title !== "") {
       obj.title = message.title;
@@ -875,7 +875,7 @@ export const GetActionsRequiredByParentsRequest: MessageFns<GetActionsRequiredBy
   fromJSON(object: any): GetActionsRequiredByParentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
     };
   },
 
@@ -885,7 +885,7 @@ export const GetActionsRequiredByParentsRequest: MessageFns<GetActionsRequiredBy
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -1022,7 +1022,7 @@ export const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInv
   fromJSON(object: any): StudentHasNoUnpaidInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
     };
   },
 
@@ -1032,7 +1032,7 @@ export const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInv
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     return obj;
   },
@@ -1093,8 +1093,8 @@ export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidIn
 
   fromJSON(object: any): StudentHasNoUnpaidInvoicesResponse {
     return {
-      has_no_unpaid_invoices: isSet(object.hasNoUnpaidInvoices)
-        ? globalThis.Boolean(object.hasNoUnpaidInvoices)
+      has_no_unpaid_invoices: isSet(object.has_no_unpaid_invoices)
+        ? globalThis.Boolean(object.has_no_unpaid_invoices)
         : false,
     };
   },
@@ -1102,7 +1102,7 @@ export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidIn
   toJSON(message: StudentHasNoUnpaidInvoicesResponse): unknown {
     const obj: any = {};
     if (message.has_no_unpaid_invoices !== false) {
-      obj.hasNoUnpaidInvoices = message.has_no_unpaid_invoices;
+      obj.has_no_unpaid_invoices = message.has_no_unpaid_invoices;
     }
     return obj;
   },
@@ -1247,7 +1247,7 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
   fromJSON(object: any): AggregationResponse {
     return {
       invoices: globalThis.Array.isArray(object?.invoices) ? object.invoices.map((e: any) => Invoice.fromJSON(e)) : [],
-      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : 0,
+      invoices_count: isSet(object.invoices_count) ? globalThis.Number(object.invoices_count) : 0,
     };
   },
 
@@ -1257,7 +1257,7 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
       obj.invoices = message.invoices.map((e) => Invoice.toJSON(e));
     }
     if (message.invoices_count !== 0) {
-      obj.invoicesCount = Math.round(message.invoices_count);
+      obj.invoices_count = Math.round(message.invoices_count);
     }
     return obj;
   },
@@ -1323,7 +1323,7 @@ export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResp
       invoices: globalThis.Array.isArray(object?.invoices)
         ? object.invoices.map((e: any) => InvoiceResponse.fromJSON(e))
         : [],
-      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : 0,
+      invoices_count: isSet(object.invoices_count) ? globalThis.Number(object.invoices_count) : 0,
     };
   },
 
@@ -1333,7 +1333,7 @@ export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResp
       obj.invoices = message.invoices.map((e) => InvoiceResponse.toJSON(e));
     }
     if (message.invoices_count !== 0) {
-      obj.invoicesCount = Math.round(message.invoices_count);
+      obj.invoices_count = Math.round(message.invoices_count);
     }
     return obj;
   },
@@ -1460,7 +1460,7 @@ export const IsInvoicePaidRequest: MessageFns<IsInvoicePaidRequest> = {
   fromJSON(object: any): IsInvoicePaidRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
     };
   },
 
@@ -1470,7 +1470,7 @@ export const IsInvoicePaidRequest: MessageFns<IsInvoicePaidRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     return obj;
   },
@@ -1526,13 +1526,13 @@ export const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse> = {
   },
 
   fromJSON(object: any): IsInvoicePaidResponse {
-    return { is_paid: isSet(object.isPaid) ? globalThis.Boolean(object.isPaid) : false };
+    return { is_paid: isSet(object.is_paid) ? globalThis.Boolean(object.is_paid) : false };
   },
 
   toJSON(message: IsInvoicePaidResponse): unknown {
     const obj: any = {};
     if (message.is_paid !== false) {
-      obj.isPaid = message.is_paid;
+      obj.is_paid = message.is_paid;
     }
     return obj;
   },
@@ -1743,20 +1743,20 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+      disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
       users: globalThis.Array.isArray(object?.users) ? object.users.map((e: any) => ObjectId.fromJSON(e)) : [],
       families: globalThis.Array.isArray(object?.families) ? object.families.map((e: any) => ObjectId.fromJSON(e)) : [],
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
-      due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-      charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
-      auto_payment_status: isSet(object.autoPaymentStatus)
-        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+      due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+      charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
+      auto_payment_status: isSet(object.auto_payment_status)
+        ? autoPaymentStatusFromJSON(object.auto_payment_status)
         : AutoPaymentStatus.AutoPayPending,
-      is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
+      is_tuition: isSet(object.is_tuition) ? globalThis.Boolean(object.is_tuition) : false,
     };
   },
 
@@ -1772,10 +1772,10 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
       obj.description = message.description;
     }
     if (message.show_hst !== false) {
-      obj.showHst = message.show_hst;
+      obj.show_hst = message.show_hst;
     }
     if (message.disable_tax !== false) {
-      obj.disableTax = message.disable_tax;
+      obj.disable_tax = message.disable_tax;
     }
     if (message.users?.length) {
       obj.users = message.users.map((e) => ObjectId.toJSON(e));
@@ -1790,22 +1790,22 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
       obj.coupons = message.coupons.map((e) => Coupon.toJSON(e));
     }
     if (message.due_date !== undefined) {
-      obj.dueDate = message.due_date.toISOString();
+      obj.due_date = message.due_date.toISOString();
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
-      obj.autoPayEnabled = message.auto_pay_enabled;
+      obj.auto_pay_enabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
-      obj.chargeOnDate = message.charge_on_date.toISOString();
+      obj.charge_on_date = message.charge_on_date.toISOString();
     }
     if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
-      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
+      obj.auto_payment_status = autoPaymentStatusToJSON(message.auto_payment_status);
     }
     if (message.is_tuition !== undefined && message.is_tuition !== false) {
-      obj.isTuition = message.is_tuition;
+      obj.is_tuition = message.is_tuition;
     }
     return obj;
   },
@@ -2084,20 +2084,20 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+      disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
       homerooms: globalThis.Array.isArray(object?.homerooms)
         ? object.homerooms.map((e: any) => ObjectId.fromJSON(e))
         : [],
       courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => ObjectId.fromJSON(e)) : [],
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
-      due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-      charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
-      auto_payment_status: isSet(object.autoPaymentStatus)
-        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+      due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+      charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
+      auto_payment_status: isSet(object.auto_payment_status)
+        ? autoPaymentStatusFromJSON(object.auto_payment_status)
         : AutoPaymentStatus.AutoPayPending,
     };
   },
@@ -2114,10 +2114,10 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
       obj.description = message.description;
     }
     if (message.show_hst !== false) {
-      obj.showHst = message.show_hst;
+      obj.show_hst = message.show_hst;
     }
     if (message.disable_tax !== false) {
-      obj.disableTax = message.disable_tax;
+      obj.disable_tax = message.disable_tax;
     }
     if (message.homerooms?.length) {
       obj.homerooms = message.homerooms.map((e) => ObjectId.toJSON(e));
@@ -2132,19 +2132,19 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
       obj.coupons = message.coupons.map((e) => Coupon.toJSON(e));
     }
     if (message.due_date !== undefined) {
-      obj.dueDate = message.due_date.toISOString();
+      obj.due_date = message.due_date.toISOString();
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
-      obj.autoPayEnabled = message.auto_pay_enabled;
+      obj.auto_pay_enabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
-      obj.chargeOnDate = message.charge_on_date.toISOString();
+      obj.charge_on_date = message.charge_on_date.toISOString();
     }
     if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
-      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
+      obj.auto_payment_status = autoPaymentStatusToJSON(message.auto_payment_status);
     }
     return obj;
   },
@@ -2234,8 +2234,8 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
   fromJSON(object: any): GenerateInterviewFeeInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
@@ -2245,10 +2245,10 @@ export const GenerateInterviewFeeInvoiceRequest: MessageFns<GenerateInterviewFee
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -2333,8 +2333,8 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
   fromJSON(object: any): GenerateWaitlistFeeInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
@@ -2344,10 +2344,10 @@ export const GenerateWaitlistFeeInvoiceRequest: MessageFns<GenerateWaitlistFeeIn
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -2432,8 +2432,8 @@ export const GenerateRegistrationFeesInvoiceRequest: MessageFns<GenerateRegistra
   fromJSON(object: any): GenerateRegistrationFeesInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
@@ -2443,10 +2443,10 @@ export const GenerateRegistrationFeesInvoiceRequest: MessageFns<GenerateRegistra
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -2667,11 +2667,11 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+      disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
-      due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+      due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
     };
   },
 
@@ -2690,10 +2690,10 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
       obj.description = message.description;
     }
     if (message.show_hst !== false) {
-      obj.showHst = message.show_hst;
+      obj.show_hst = message.show_hst;
     }
     if (message.disable_tax !== false) {
-      obj.disableTax = message.disable_tax;
+      obj.disable_tax = message.disable_tax;
     }
     if (message.items?.length) {
       obj.items = message.items.map((e) => InvoiceItem.toJSON(e));
@@ -2702,7 +2702,7 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
       obj.coupons = message.coupons.map((e) => Coupon.toJSON(e));
     }
     if (message.due_date !== undefined) {
-      obj.dueDate = message.due_date.toISOString();
+      obj.due_date = message.due_date.toISOString();
     }
     return obj;
   },
@@ -2796,8 +2796,8 @@ export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymen
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-      charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+      auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+      charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
     };
   },
 
@@ -2810,10 +2810,10 @@ export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymen
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.auto_pay_enabled !== false) {
-      obj.autoPayEnabled = message.auto_pay_enabled;
+      obj.auto_pay_enabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
-      obj.chargeOnDate = message.charge_on_date.toISOString();
+      obj.charge_on_date = message.charge_on_date.toISOString();
     }
     return obj;
   },
@@ -2883,7 +2883,7 @@ export const ArchiveInvoiceRequest: MessageFns<ArchiveInvoiceRequest> = {
   fromJSON(object: any): ArchiveInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
     };
   },
 
@@ -2893,7 +2893,7 @@ export const ArchiveInvoiceRequest: MessageFns<ArchiveInvoiceRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     return obj;
   },
@@ -2961,7 +2961,7 @@ export const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest> = {
   fromJSON(object: any): UnarchiveInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
     };
   },
 
@@ -2971,7 +2971,7 @@ export const UnarchiveInvoiceRequest: MessageFns<UnarchiveInvoiceRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     return obj;
   },
@@ -3112,9 +3112,9 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
   fromJSON(object: any): SetAutoPayInvoiceStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
-      auto_payment_status: isSet(object.autoPaymentStatus)
-        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
+      auto_payment_status: isSet(object.auto_payment_status)
+        ? autoPaymentStatusFromJSON(object.auto_payment_status)
         : AutoPaymentStatus.AutoPayPending,
     };
   },
@@ -3125,10 +3125,10 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     if (message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
-      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
+      obj.auto_payment_status = autoPaymentStatusToJSON(message.auto_payment_status);
     }
     return obj;
   },
@@ -3235,10 +3235,10 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
   fromJSON(object: any): GetFamilyTuitionInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
     };
   },
 
@@ -3248,16 +3248,16 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     return obj;
   },
@@ -3354,10 +3354,10 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
   fromJSON(object: any): GetStudentsWithUnpaidInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_statuses: globalThis.Array.isArray(object?.studentStatuses)
-        ? object.studentStatuses.map((e: any) => studentStatusFromJSON(e))
+      student_statuses: globalThis.Array.isArray(object?.student_statuses)
+        ? object.student_statuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
@@ -3367,10 +3367,10 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_statuses?.length) {
-      obj.studentStatuses = message.student_statuses.map((e) => studentStatusToJSON(e));
+      obj.student_statuses = message.student_statuses.map((e) => studentStatusToJSON(e));
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -3432,8 +3432,8 @@ export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUn
 
   fromJSON(object: any): GetStudentsWithUnpaidInvoicesResponse {
     return {
-      student_ids: globalThis.Array.isArray(object?.studentIds)
-        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.student_ids)
+        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -3441,7 +3441,7 @@ export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUn
   toJSON(message: GetStudentsWithUnpaidInvoicesResponse): unknown {
     const obj: any = {};
     if (message.student_ids?.length) {
-      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -3511,7 +3511,7 @@ export const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudent
   fromJSON(object: any): GetStudentsWithReregistrationInvoicesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
@@ -3521,7 +3521,7 @@ export const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudent
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -3586,8 +3586,8 @@ export const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStuden
 
     fromJSON(object: any): GetStudentsWithReregistrationInvoicesResponse {
       return {
-        student_ids: globalThis.Array.isArray(object?.studentIds)
-          ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        student_ids: globalThis.Array.isArray(object?.student_ids)
+          ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
           : [],
       };
     },
@@ -3595,7 +3595,7 @@ export const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStuden
     toJSON(message: GetStudentsWithReregistrationInvoicesResponse): unknown {
       const obj: any = {};
       if (message.student_ids?.length) {
-        obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+        obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
       }
       return obj;
     },
@@ -3682,9 +3682,9 @@ export const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBasse
   fromJSON(object: any): GetOrgPaidBassemLabsFeesInPeriodRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
     };
   },
 
@@ -3694,13 +3694,13 @@ export const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBasse
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     return obj;
   },
@@ -3762,13 +3762,13 @@ export const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBass
   },
 
   fromJSON(object: any): GetOrgPaidBassemLabsFeesInPeriodResponse {
-    return { total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0 };
+    return { total_amount: isSet(object.total_amount) ? globalThis.Number(object.total_amount) : 0 };
   },
 
   toJSON(message: GetOrgPaidBassemLabsFeesInPeriodResponse): unknown {
     const obj: any = {};
     if (message.total_amount !== 0) {
-      obj.totalAmount = message.total_amount;
+      obj.total_amount = message.total_amount;
     }
     return obj;
   },
@@ -3882,13 +3882,13 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
   fromJSON(object: any): UpsertOrganizationInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      invoice_start_date: isSet(object.invoiceStartDate) ? fromJsonTimestamp(object.invoiceStartDate) : undefined,
-      invoice_end_date: isSet(object.invoiceEndDate) ? fromJsonTimestamp(object.invoiceEndDate) : undefined,
-      current_enrolled_students_count: isSet(object.currentEnrolledStudentsCount)
-        ? globalThis.Number(object.currentEnrolledStudentsCount)
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      invoice_start_date: isSet(object.invoice_start_date) ? fromJsonTimestamp(object.invoice_start_date) : undefined,
+      invoice_end_date: isSet(object.invoice_end_date) ? fromJsonTimestamp(object.invoice_end_date) : undefined,
+      current_enrolled_students_count: isSet(object.current_enrolled_students_count)
+        ? globalThis.Number(object.current_enrolled_students_count)
         : 0,
-      is_in_trial_period: isSet(object.isInTrialPeriod) ? globalThis.Boolean(object.isInTrialPeriod) : false,
+      is_in_trial_period: isSet(object.is_in_trial_period) ? globalThis.Boolean(object.is_in_trial_period) : false,
     };
   },
 
@@ -3898,19 +3898,19 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.invoice_start_date !== undefined) {
-      obj.invoiceStartDate = message.invoice_start_date.toISOString();
+      obj.invoice_start_date = message.invoice_start_date.toISOString();
     }
     if (message.invoice_end_date !== undefined) {
-      obj.invoiceEndDate = message.invoice_end_date.toISOString();
+      obj.invoice_end_date = message.invoice_end_date.toISOString();
     }
     if (message.current_enrolled_students_count !== 0) {
-      obj.currentEnrolledStudentsCount = Math.round(message.current_enrolled_students_count);
+      obj.current_enrolled_students_count = Math.round(message.current_enrolled_students_count);
     }
     if (message.is_in_trial_period !== false) {
-      obj.isInTrialPeriod = message.is_in_trial_period;
+      obj.is_in_trial_period = message.is_in_trial_period;
     }
     return obj;
   },
@@ -4171,7 +4171,7 @@ export const GetAutoPaymentAttemptsRequest: MessageFns<GetAutoPaymentAttemptsReq
   fromJSON(object: any): GetAutoPaymentAttemptsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
     };
   },
 
@@ -4181,7 +4181,7 @@ export const GetAutoPaymentAttemptsRequest: MessageFns<GetAutoPaymentAttemptsReq
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     return obj;
   },
@@ -4314,7 +4314,7 @@ export const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetr
   fromJSON(object: any): ResetAutoPaymentForRetryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
     };
   },
 
@@ -4324,7 +4324,7 @@ export const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetr
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     return obj;
   },

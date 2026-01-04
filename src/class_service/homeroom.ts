@@ -160,13 +160,13 @@ export const Homeroom: MessageFns<Homeroom> = {
       semester: isSet(object.semester) ? Semester.fromJSON(object.semester) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
-      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-        ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
+      teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+        ? object.teacher_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      student_ids: globalThis.Array.isArray(object?.studentIds)
-        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.student_ids)
+        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      lms_course: isSet(object.lmsCourse) ? LmsCourse.fromJSON(object.lmsCourse) : undefined,
+      lms_course: isSet(object.lms_course) ? LmsCourse.fromJSON(object.lms_course) : undefined,
     };
   },
 
@@ -188,13 +188,13 @@ export const Homeroom: MessageFns<Homeroom> = {
       obj.grade = studentGradeToJSON(message.grade);
     }
     if (message.teacher_ids?.length) {
-      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
+      obj.teacher_ids = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.student_ids?.length) {
-      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.lms_course !== undefined) {
-      obj.lmsCourse = LmsCourse.toJSON(message.lms_course);
+      obj.lms_course = LmsCourse.toJSON(message.lms_course);
     }
     return obj;
   },
@@ -322,11 +322,11 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
       semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
-      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
-        ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
+      teacher_ids: globalThis.Array.isArray(object?.teacher_ids)
+        ? object.teacher_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      student_ids: globalThis.Array.isArray(object?.studentIds)
-        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+      student_ids: globalThis.Array.isArray(object?.student_ids)
+        ? object.student_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -349,10 +349,10 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
       obj.semester = ListSemester.toJSON(message.semester);
     }
     if (message.teacher_ids?.length) {
-      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
+      obj.teacher_ids = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.student_ids?.length) {
-      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+      obj.student_ids = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -425,7 +425,7 @@ export const HomeroomList: MessageFns<HomeroomList> = {
       homerooms: globalThis.Array.isArray(object?.homerooms)
         ? object.homerooms.map((e: any) => ListHomeroom.fromJSON(e))
         : [],
-      homerooms_count: isSet(object.homeroomsCount) ? globalThis.Number(object.homeroomsCount) : 0,
+      homerooms_count: isSet(object.homerooms_count) ? globalThis.Number(object.homerooms_count) : 0,
     };
   },
 
@@ -435,7 +435,7 @@ export const HomeroomList: MessageFns<HomeroomList> = {
       obj.homerooms = message.homerooms.map((e) => ListHomeroom.toJSON(e));
     }
     if (message.homerooms_count !== 0) {
-      obj.homeroomsCount = Math.round(message.homerooms_count);
+      obj.homerooms_count = Math.round(message.homerooms_count);
     }
     return obj;
   },

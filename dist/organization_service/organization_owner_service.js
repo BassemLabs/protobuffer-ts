@@ -204,7 +204,7 @@ exports.GetOwnerRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            owner_id: isSet(object.ownerId) ? object_id_1.ObjectId.fromJSON(object.ownerId) : undefined,
+            owner_id: isSet(object.owner_id) ? object_id_1.ObjectId.fromJSON(object.owner_id) : undefined,
         };
     },
     toJSON(message) {
@@ -213,7 +213,7 @@ exports.GetOwnerRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.owner_id !== undefined) {
-            obj.ownerId = object_id_1.ObjectId.toJSON(message.owner_id);
+            obj.owner_id = object_id_1.ObjectId.toJSON(message.owner_id);
         }
         return obj;
     },
@@ -345,8 +345,8 @@ exports.UpdateOwnerProfileRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            main_address: isSet(object.main_address) ? globalThis.String(object.main_address) : "",
+            phone_number: isSet(object.phone_number) ? globalThis.String(object.phone_number) : "",
         };
     },
     toJSON(message) {
@@ -358,10 +358,10 @@ exports.UpdateOwnerProfileRequest = {
             obj.name = message.name;
         }
         if (message.main_address !== undefined && message.main_address !== "") {
-            obj.mainAddress = message.main_address;
+            obj.main_address = message.main_address;
         }
         if (message.phone_number !== undefined && message.phone_number !== "") {
-            obj.phoneNumber = message.phone_number;
+            obj.phone_number = message.phone_number;
         }
         return obj;
     },

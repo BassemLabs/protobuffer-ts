@@ -114,10 +114,10 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
   fromJSON(object: any): CustomFieldEntry {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
-      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      custom_field_id: isSet(object.custom_field_id) ? ObjectId.fromJSON(object.custom_field_id) : undefined,
+      group_id: isSet(object.group_id) ? ObjectId.fromJSON(object.group_id) : undefined,
+      user_id: isSet(object.user_id) ? ObjectId.fromJSON(object.user_id) : undefined,
       value: isSet(object.value) ? globalThis.String(object.value) : "",
     };
   },
@@ -128,16 +128,16 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.custom_field_id !== undefined) {
-      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
+      obj.custom_field_id = ObjectId.toJSON(message.custom_field_id);
     }
     if (message.group_id !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.group_id);
+      obj.group_id = ObjectId.toJSON(message.group_id);
     }
     if (message.user_id !== undefined) {
-      obj.userId = ObjectId.toJSON(message.user_id);
+      obj.user_id = ObjectId.toJSON(message.user_id);
     }
     if (message.value !== "") {
       obj.value = message.value;

@@ -110,7 +110,7 @@ exports.GetInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
         };
     },
     toJSON(message) {
@@ -119,7 +119,7 @@ exports.GetInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         return obj;
     },
@@ -180,7 +180,7 @@ exports.GetInvoiceByNumberRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_number: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : 0,
+            invoice_number: isSet(object.invoice_number) ? globalThis.Number(object.invoice_number) : 0,
         };
     },
     toJSON(message) {
@@ -189,7 +189,7 @@ exports.GetInvoiceByNumberRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_number !== 0) {
-            obj.invoiceNumber = Math.round(message.invoice_number);
+            obj.invoice_number = Math.round(message.invoice_number);
         }
         return obj;
     },
@@ -248,7 +248,7 @@ exports.GetUserInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
         };
     },
     toJSON(message) {
@@ -257,7 +257,7 @@ exports.GetUserInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         return obj;
     },
@@ -372,7 +372,7 @@ exports.GetFamilyInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
         };
     },
     toJSON(message) {
@@ -381,7 +381,7 @@ exports.GetFamilyInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
         }
         return obj;
     },
@@ -460,8 +460,8 @@ exports.GetParentInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            parent_id: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            parent_id: isSet(object.parent_id) ? object_id_1.ObjectId.fromJSON(object.parent_id) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
         };
     },
@@ -471,10 +471,10 @@ exports.GetParentInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.parent_id !== undefined) {
-            obj.parentId = object_id_1.ObjectId.toJSON(message.parent_id);
+            obj.parent_id = object_id_1.ObjectId.toJSON(message.parent_id);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.title !== undefined && message.title !== "") {
             obj.title = message.title;
@@ -542,7 +542,7 @@ exports.GetActionsRequiredByParentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
         };
     },
     toJSON(message) {
@@ -551,7 +551,7 @@ exports.GetActionsRequiredByParentsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         return obj;
     },
@@ -666,7 +666,7 @@ exports.StudentHasNoUnpaidInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
         };
     },
     toJSON(message) {
@@ -675,7 +675,7 @@ exports.StudentHasNoUnpaidInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         return obj;
     },
@@ -726,15 +726,15 @@ exports.StudentHasNoUnpaidInvoicesResponse = {
     },
     fromJSON(object) {
         return {
-            has_no_unpaid_invoices: isSet(object.hasNoUnpaidInvoices)
-                ? globalThis.Boolean(object.hasNoUnpaidInvoices)
+            has_no_unpaid_invoices: isSet(object.has_no_unpaid_invoices)
+                ? globalThis.Boolean(object.has_no_unpaid_invoices)
                 : false,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.has_no_unpaid_invoices !== false) {
-            obj.hasNoUnpaidInvoices = message.has_no_unpaid_invoices;
+            obj.has_no_unpaid_invoices = message.has_no_unpaid_invoices;
         }
         return obj;
     },
@@ -860,7 +860,7 @@ exports.AggregationResponse = {
     fromJSON(object) {
         return {
             invoices: globalThis.Array.isArray(object?.invoices) ? object.invoices.map((e) => invoice_1.Invoice.fromJSON(e)) : [],
-            invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : 0,
+            invoices_count: isSet(object.invoices_count) ? globalThis.Number(object.invoices_count) : 0,
         };
     },
     toJSON(message) {
@@ -869,7 +869,7 @@ exports.AggregationResponse = {
             obj.invoices = message.invoices.map((e) => invoice_1.Invoice.toJSON(e));
         }
         if (message.invoices_count !== 0) {
-            obj.invoicesCount = Math.round(message.invoices_count);
+            obj.invoices_count = Math.round(message.invoices_count);
         }
         return obj;
     },
@@ -928,7 +928,7 @@ exports.PaginatedListInvoicesResponse = {
             invoices: globalThis.Array.isArray(object?.invoices)
                 ? object.invoices.map((e) => invoice_1.InvoiceResponse.fromJSON(e))
                 : [],
-            invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : 0,
+            invoices_count: isSet(object.invoices_count) ? globalThis.Number(object.invoices_count) : 0,
         };
     },
     toJSON(message) {
@@ -937,7 +937,7 @@ exports.PaginatedListInvoicesResponse = {
             obj.invoices = message.invoices.map((e) => invoice_1.InvoiceResponse.toJSON(e));
         }
         if (message.invoices_count !== 0) {
-            obj.invoicesCount = Math.round(message.invoices_count);
+            obj.invoices_count = Math.round(message.invoices_count);
         }
         return obj;
     },
@@ -1048,7 +1048,7 @@ exports.IsInvoicePaidRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1057,7 +1057,7 @@ exports.IsInvoicePaidRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         return obj;
     },
@@ -1107,12 +1107,12 @@ exports.IsInvoicePaidResponse = {
         return message;
     },
     fromJSON(object) {
-        return { is_paid: isSet(object.isPaid) ? globalThis.Boolean(object.isPaid) : false };
+        return { is_paid: isSet(object.is_paid) ? globalThis.Boolean(object.is_paid) : false };
     },
     toJSON(message) {
         const obj = {};
         if (message.is_paid !== false) {
-            obj.isPaid = message.is_paid;
+            obj.is_paid = message.is_paid;
         }
         return obj;
     },
@@ -1303,20 +1303,20 @@ exports.CreateInvoiceRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+            show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+            disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
             users: globalThis.Array.isArray(object?.users) ? object.users.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             families: globalThis.Array.isArray(object?.families) ? object.families.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
-            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-            charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
-            auto_payment_status: isSet(object.autoPaymentStatus)
-                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.autoPaymentStatus)
+            due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
+            auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+            charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
+            auto_payment_status: isSet(object.auto_payment_status)
+                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.auto_payment_status)
                 : invoice_1.AutoPaymentStatus.AutoPayPending,
-            is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
+            is_tuition: isSet(object.is_tuition) ? globalThis.Boolean(object.is_tuition) : false,
         };
     },
     toJSON(message) {
@@ -1331,10 +1331,10 @@ exports.CreateInvoiceRequest = {
             obj.description = message.description;
         }
         if (message.show_hst !== false) {
-            obj.showHst = message.show_hst;
+            obj.show_hst = message.show_hst;
         }
         if (message.disable_tax !== false) {
-            obj.disableTax = message.disable_tax;
+            obj.disable_tax = message.disable_tax;
         }
         if (message.users?.length) {
             obj.users = message.users.map((e) => object_id_1.ObjectId.toJSON(e));
@@ -1349,22 +1349,22 @@ exports.CreateInvoiceRequest = {
             obj.coupons = message.coupons.map((e) => invoice_1.Coupon.toJSON(e));
         }
         if (message.due_date !== undefined) {
-            obj.dueDate = message.due_date.toISOString();
+            obj.due_date = message.due_date.toISOString();
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
-            obj.autoPayEnabled = message.auto_pay_enabled;
+            obj.auto_pay_enabled = message.auto_pay_enabled;
         }
         if (message.charge_on_date !== undefined) {
-            obj.chargeOnDate = message.charge_on_date.toISOString();
+            obj.charge_on_date = message.charge_on_date.toISOString();
         }
         if (message.auto_payment_status !== undefined && message.auto_payment_status !== invoice_1.AutoPaymentStatus.AutoPayPending) {
-            obj.autoPaymentStatus = (0, invoice_1.autoPaymentStatusToJSON)(message.auto_payment_status);
+            obj.auto_payment_status = (0, invoice_1.autoPaymentStatusToJSON)(message.auto_payment_status);
         }
         if (message.is_tuition !== undefined && message.is_tuition !== false) {
-            obj.isTuition = message.is_tuition;
+            obj.is_tuition = message.is_tuition;
         }
         return obj;
     },
@@ -1617,20 +1617,20 @@ exports.CreateInvoiceForClassRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+            show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+            disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
             homerooms: globalThis.Array.isArray(object?.homerooms)
                 ? object.homerooms.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
-            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-            charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
-            auto_payment_status: isSet(object.autoPaymentStatus)
-                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.autoPaymentStatus)
+            due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
+            auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+            charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
+            auto_payment_status: isSet(object.auto_payment_status)
+                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.auto_payment_status)
                 : invoice_1.AutoPaymentStatus.AutoPayPending,
         };
     },
@@ -1646,10 +1646,10 @@ exports.CreateInvoiceForClassRequest = {
             obj.description = message.description;
         }
         if (message.show_hst !== false) {
-            obj.showHst = message.show_hst;
+            obj.show_hst = message.show_hst;
         }
         if (message.disable_tax !== false) {
-            obj.disableTax = message.disable_tax;
+            obj.disable_tax = message.disable_tax;
         }
         if (message.homerooms?.length) {
             obj.homerooms = message.homerooms.map((e) => object_id_1.ObjectId.toJSON(e));
@@ -1664,19 +1664,19 @@ exports.CreateInvoiceForClassRequest = {
             obj.coupons = message.coupons.map((e) => invoice_1.Coupon.toJSON(e));
         }
         if (message.due_date !== undefined) {
-            obj.dueDate = message.due_date.toISOString();
+            obj.due_date = message.due_date.toISOString();
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
-            obj.autoPayEnabled = message.auto_pay_enabled;
+            obj.auto_pay_enabled = message.auto_pay_enabled;
         }
         if (message.charge_on_date !== undefined) {
-            obj.chargeOnDate = message.charge_on_date.toISOString();
+            obj.charge_on_date = message.charge_on_date.toISOString();
         }
         if (message.auto_payment_status !== undefined && message.auto_payment_status !== invoice_1.AutoPaymentStatus.AutoPayPending) {
-            obj.autoPaymentStatus = (0, invoice_1.autoPaymentStatusToJSON)(message.auto_payment_status);
+            obj.auto_payment_status = (0, invoice_1.autoPaymentStatusToJSON)(message.auto_payment_status);
         }
         return obj;
     },
@@ -1758,8 +1758,8 @@ exports.GenerateInterviewFeeInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -1768,10 +1768,10 @@ exports.GenerateInterviewFeeInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -1844,8 +1844,8 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -1854,10 +1854,10 @@ exports.GenerateWaitlistFeeInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -1930,8 +1930,8 @@ exports.GenerateRegistrationFeesInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -1940,10 +1940,10 @@ exports.GenerateRegistrationFeesInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -2137,11 +2137,11 @@ exports.UpdateInvoiceRequest = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+            show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+            disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
             coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
-            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
         };
     },
     toJSON(message) {
@@ -2159,10 +2159,10 @@ exports.UpdateInvoiceRequest = {
             obj.description = message.description;
         }
         if (message.show_hst !== false) {
-            obj.showHst = message.show_hst;
+            obj.show_hst = message.show_hst;
         }
         if (message.disable_tax !== false) {
-            obj.disableTax = message.disable_tax;
+            obj.disable_tax = message.disable_tax;
         }
         if (message.items?.length) {
             obj.items = message.items.map((e) => invoice_1.InvoiceItem.toJSON(e));
@@ -2171,7 +2171,7 @@ exports.UpdateInvoiceRequest = {
             obj.coupons = message.coupons.map((e) => invoice_1.Coupon.toJSON(e));
         }
         if (message.due_date !== undefined) {
-            obj.dueDate = message.due_date.toISOString();
+            obj.due_date = message.due_date.toISOString();
         }
         return obj;
     },
@@ -2256,8 +2256,8 @@ exports.UpdateInvoiceAutoPaymentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-            charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
+            auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+            charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
         };
     },
     toJSON(message) {
@@ -2269,10 +2269,10 @@ exports.UpdateInvoiceAutoPaymentRequest = {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
         if (message.auto_pay_enabled !== false) {
-            obj.autoPayEnabled = message.auto_pay_enabled;
+            obj.auto_pay_enabled = message.auto_pay_enabled;
         }
         if (message.charge_on_date !== undefined) {
-            obj.chargeOnDate = message.charge_on_date.toISOString();
+            obj.charge_on_date = message.charge_on_date.toISOString();
         }
         return obj;
     },
@@ -2333,7 +2333,7 @@ exports.ArchiveInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
         };
     },
     toJSON(message) {
@@ -2342,7 +2342,7 @@ exports.ArchiveInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         return obj;
     },
@@ -2403,7 +2403,7 @@ exports.UnarchiveInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
         };
     },
     toJSON(message) {
@@ -2412,7 +2412,7 @@ exports.UnarchiveInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         return obj;
     },
@@ -2534,9 +2534,9 @@ exports.SetAutoPayInvoiceStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
-            auto_payment_status: isSet(object.autoPaymentStatus)
-                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.autoPaymentStatus)
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
+            auto_payment_status: isSet(object.auto_payment_status)
+                ? (0, invoice_1.autoPaymentStatusFromJSON)(object.auto_payment_status)
                 : invoice_1.AutoPaymentStatus.AutoPayPending,
         };
     },
@@ -2546,10 +2546,10 @@ exports.SetAutoPayInvoiceStatusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         if (message.auto_payment_status !== invoice_1.AutoPaymentStatus.AutoPayPending) {
-            obj.autoPaymentStatus = (0, invoice_1.autoPaymentStatusToJSON)(message.auto_payment_status);
+            obj.auto_payment_status = (0, invoice_1.autoPaymentStatusToJSON)(message.auto_payment_status);
         }
         return obj;
     },
@@ -2644,10 +2644,10 @@ exports.GetFamilyTuitionInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            family_id: isSet(object.family_id) ? object_id_1.ObjectId.fromJSON(object.family_id) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
+            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
         };
     },
     toJSON(message) {
@@ -2656,16 +2656,16 @@ exports.GetFamilyTuitionInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.family_id !== undefined) {
-            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+            obj.family_id = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.start_date !== undefined) {
-            obj.startDate = message.start_date.toISOString();
+            obj.start_date = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.endDate = message.end_date.toISOString();
+            obj.end_date = message.end_date.toISOString();
         }
         return obj;
     },
@@ -2749,10 +2749,10 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_statuses: globalThis.Array.isArray(object?.studentStatuses)
-                ? object.studentStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            student_statuses: globalThis.Array.isArray(object?.student_statuses)
+                ? object.student_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -2761,10 +2761,10 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_statuses?.length) {
-            obj.studentStatuses = message.student_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.student_statuses = message.student_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -2816,15 +2816,15 @@ exports.GetStudentsWithUnpaidInvoicesResponse = {
     },
     fromJSON(object) {
         return {
-            student_ids: globalThis.Array.isArray(object?.studentIds)
-                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            student_ids: globalThis.Array.isArray(object?.student_ids)
+                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.student_ids?.length) {
-            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -2880,7 +2880,7 @@ exports.GetStudentsWithReregistrationInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -2889,7 +2889,7 @@ exports.GetStudentsWithReregistrationInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -2940,15 +2940,15 @@ exports.GetStudentsWithReregistrationInvoicesResponse = {
     },
     fromJSON(object) {
         return {
-            student_ids: globalThis.Array.isArray(object?.studentIds)
-                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            student_ids: globalThis.Array.isArray(object?.student_ids)
+                ? object.student_ids.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.student_ids?.length) {
-            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+            obj.student_ids = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -3022,9 +3022,9 @@ exports.GetOrgPaidBassemLabsFeesInPeriodRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+            end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
         };
     },
     toJSON(message) {
@@ -3033,13 +3033,13 @@ exports.GetOrgPaidBassemLabsFeesInPeriodRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.start_date !== undefined) {
-            obj.startDate = message.start_date.toISOString();
+            obj.start_date = message.start_date.toISOString();
         }
         if (message.end_date !== undefined) {
-            obj.endDate = message.end_date.toISOString();
+            obj.end_date = message.end_date.toISOString();
         }
         return obj;
     },
@@ -3091,12 +3091,12 @@ exports.GetOrgPaidBassemLabsFeesInPeriodResponse = {
         return message;
     },
     fromJSON(object) {
-        return { total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0 };
+        return { total_amount: isSet(object.total_amount) ? globalThis.Number(object.total_amount) : 0 };
     },
     toJSON(message) {
         const obj = {};
         if (message.total_amount !== 0) {
-            obj.totalAmount = message.total_amount;
+            obj.total_amount = message.total_amount;
         }
         return obj;
     },
@@ -3195,13 +3195,13 @@ exports.UpsertOrganizationInvoiceRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            invoice_start_date: isSet(object.invoiceStartDate) ? fromJsonTimestamp(object.invoiceStartDate) : undefined,
-            invoice_end_date: isSet(object.invoiceEndDate) ? fromJsonTimestamp(object.invoiceEndDate) : undefined,
-            current_enrolled_students_count: isSet(object.currentEnrolledStudentsCount)
-                ? globalThis.Number(object.currentEnrolledStudentsCount)
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            invoice_start_date: isSet(object.invoice_start_date) ? fromJsonTimestamp(object.invoice_start_date) : undefined,
+            invoice_end_date: isSet(object.invoice_end_date) ? fromJsonTimestamp(object.invoice_end_date) : undefined,
+            current_enrolled_students_count: isSet(object.current_enrolled_students_count)
+                ? globalThis.Number(object.current_enrolled_students_count)
                 : 0,
-            is_in_trial_period: isSet(object.isInTrialPeriod) ? globalThis.Boolean(object.isInTrialPeriod) : false,
+            is_in_trial_period: isSet(object.is_in_trial_period) ? globalThis.Boolean(object.is_in_trial_period) : false,
         };
     },
     toJSON(message) {
@@ -3210,19 +3210,19 @@ exports.UpsertOrganizationInvoiceRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.invoice_start_date !== undefined) {
-            obj.invoiceStartDate = message.invoice_start_date.toISOString();
+            obj.invoice_start_date = message.invoice_start_date.toISOString();
         }
         if (message.invoice_end_date !== undefined) {
-            obj.invoiceEndDate = message.invoice_end_date.toISOString();
+            obj.invoice_end_date = message.invoice_end_date.toISOString();
         }
         if (message.current_enrolled_students_count !== 0) {
-            obj.currentEnrolledStudentsCount = Math.round(message.current_enrolled_students_count);
+            obj.current_enrolled_students_count = Math.round(message.current_enrolled_students_count);
         }
         if (message.is_in_trial_period !== false) {
-            obj.isInTrialPeriod = message.is_in_trial_period;
+            obj.is_in_trial_period = message.is_in_trial_period;
         }
         return obj;
     },
@@ -3443,7 +3443,7 @@ exports.GetAutoPaymentAttemptsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
         };
     },
     toJSON(message) {
@@ -3452,7 +3452,7 @@ exports.GetAutoPaymentAttemptsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         return obj;
     },
@@ -3567,7 +3567,7 @@ exports.ResetAutoPaymentForRetryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            invoice_id: isSet(object.invoice_id) ? object_id_1.ObjectId.fromJSON(object.invoice_id) : undefined,
         };
     },
     toJSON(message) {
@@ -3576,7 +3576,7 @@ exports.ResetAutoPaymentForRetryRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.invoice_id !== undefined) {
-            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+            obj.invoice_id = object_id_1.ObjectId.toJSON(message.invoice_id);
         }
         return obj;
     },

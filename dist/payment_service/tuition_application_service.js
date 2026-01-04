@@ -285,7 +285,7 @@ exports.ListStudentDiscountsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -297,7 +297,7 @@ exports.ListStudentDiscountsRequest = {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -425,7 +425,7 @@ exports.ListFamilyDiscountsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -437,7 +437,7 @@ exports.ListFamilyDiscountsRequest = {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -573,7 +573,7 @@ exports.ApplyAdditionalFeeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            additional_fee: isSet(object.additionalFee) ? object_id_1.ObjectId.fromJSON(object.additionalFee) : undefined,
+            additional_fee: isSet(object.additional_fee) ? object_id_1.ObjectId.fromJSON(object.additional_fee) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
         };
@@ -584,7 +584,7 @@ exports.ApplyAdditionalFeeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.additional_fee !== undefined) {
-            obj.additionalFee = object_id_1.ObjectId.toJSON(message.additional_fee);
+            obj.additional_fee = object_id_1.ObjectId.toJSON(message.additional_fee);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
@@ -785,7 +785,7 @@ exports.ListStudentAdditionalFeesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -797,7 +797,7 @@ exports.ListStudentAdditionalFeesRequest = {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -925,7 +925,7 @@ exports.ListFamilyAdditionalFeesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
-            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            school_year: isSet(object.school_year) ? object_id_1.ObjectId.fromJSON(object.school_year) : undefined,
         };
     },
     toJSON(message) {
@@ -937,7 +937,7 @@ exports.ListFamilyAdditionalFeesRequest = {
             obj.family = object_id_1.ObjectId.toJSON(message.family);
         }
         if (message.school_year !== undefined) {
-            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+            obj.school_year = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },

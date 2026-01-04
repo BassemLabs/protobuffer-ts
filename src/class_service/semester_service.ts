@@ -157,7 +157,7 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
   fromJSON(object: any): GetSemesterRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semester_id) ? ObjectId.fromJSON(object.semester_id) : undefined,
     };
   },
 
@@ -167,7 +167,7 @@ export const GetSemesterRequest: MessageFns<GetSemesterRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.semester_id !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semester_id);
+      obj.semester_id = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -235,8 +235,8 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
   fromJSON(object: any): GetSemestersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semester_ids: globalThis.Array.isArray(object?.semesterIds)
-        ? object.semesterIds.map((e: any) => ObjectId.fromJSON(e))
+      semester_ids: globalThis.Array.isArray(object?.semester_ids)
+        ? object.semester_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -247,7 +247,7 @@ export const GetSemestersRequest: MessageFns<GetSemestersRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.semester_ids?.length) {
-      obj.semesterIds = message.semester_ids.map((e) => ObjectId.toJSON(e));
+      obj.semester_ids = message.semester_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -433,7 +433,7 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
   fromJSON(object: any): GetActiveSemestersBySchoolYearRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
     };
   },
 
@@ -443,7 +443,7 @@ export const GetActiveSemestersBySchoolYearRequest: MessageFns<GetActiveSemester
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.school_year_id !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -515,7 +515,7 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
   fromJSON(object: any): CoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semester_id) ? ObjectId.fromJSON(object.semester_id) : undefined,
     };
   },
 
@@ -525,7 +525,7 @@ export const CoursesRequest: MessageFns<CoursesRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.semester_id !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semester_id);
+      obj.semester_id = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -652,7 +652,7 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
   fromJSON(object: any): HomeroomsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semester_id) ? ObjectId.fromJSON(object.semester_id) : undefined,
     };
   },
 
@@ -662,7 +662,7 @@ export const HomeroomsRequest: MessageFns<HomeroomsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.semester_id !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semester_id);
+      obj.semester_id = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -849,12 +849,12 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semester_id) ? ObjectId.fromJSON(object.semester_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      report_layout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
-      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      report_layout: isSet(object.report_layout) ? SemesterReportLayout.fromJSON(object.report_layout) : undefined,
+      campus_id: isSet(object.campus_id) ? ObjectId.fromJSON(object.campus_id) : undefined,
     };
   },
 
@@ -864,22 +864,22 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.semester_id !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semester_id);
+      obj.semester_id = ObjectId.toJSON(message.semester_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     if (message.report_layout !== undefined) {
-      obj.reportLayout = SemesterReportLayout.toJSON(message.report_layout);
+      obj.report_layout = SemesterReportLayout.toJSON(message.report_layout);
     }
     if (message.campus_id !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campus_id);
+      obj.campus_id = ObjectId.toJSON(message.campus_id);
     }
     return obj;
   },
@@ -956,7 +956,7 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
   fromJSON(object: any): ArchiveRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_id: isSet(object.semester_id) ? ObjectId.fromJSON(object.semester_id) : undefined,
     };
   },
 
@@ -966,7 +966,7 @@ export const ArchiveRequest: MessageFns<ArchiveRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.semester_id !== undefined) {
-      obj.semesterId = ObjectId.toJSON(message.semester_id);
+      obj.semester_id = ObjectId.toJSON(message.semester_id);
     }
     return obj;
   },
@@ -1082,10 +1082,10 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
-      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      start_date: isSet(object.start_date) ? fromJsonTimestamp(object.start_date) : undefined,
+      end_date: isSet(object.end_date) ? fromJsonTimestamp(object.end_date) : undefined,
+      campus_id: isSet(object.campus_id) ? ObjectId.fromJSON(object.campus_id) : undefined,
+      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
     };
   },
 
@@ -1098,16 +1098,16 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
-      obj.startDate = message.start_date.toISOString();
+      obj.start_date = message.start_date.toISOString();
     }
     if (message.end_date !== undefined) {
-      obj.endDate = message.end_date.toISOString();
+      obj.end_date = message.end_date.toISOString();
     }
     if (message.campus_id !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campus_id);
+      obj.campus_id = ObjectId.toJSON(message.campus_id);
     }
     if (message.school_year_id !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -1250,8 +1250,8 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
   fromJSON(object: any): GetStudentSemestersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      include_archived: isSet(object.include_archived) ? globalThis.Boolean(object.include_archived) : false,
     };
   },
 
@@ -1261,10 +1261,10 @@ export const GetStudentSemestersRequest: MessageFns<GetStudentSemestersRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.include_archived !== undefined && message.include_archived !== false) {
-      obj.includeArchived = message.include_archived;
+      obj.include_archived = message.include_archived;
     }
     return obj;
   },
@@ -1434,10 +1434,10 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
   fromJSON(object: any): ListSemestersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      name_search: isSet(object.name_search) ? globalThis.String(object.name_search) : "",
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
     };
   },
@@ -1448,16 +1448,16 @@ export const ListSemestersRequest: MessageFns<ListSemestersRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.per_page !== undefined && message.per_page !== 0) {
-      obj.perPage = Math.round(message.per_page);
+      obj.per_page = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
     if (message.name_search !== undefined && message.name_search !== "") {
-      obj.nameSearch = message.name_search;
+      obj.name_search = message.name_search;
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     if (message.archived !== undefined && message.archived !== false) {
       obj.archived = message.archived;

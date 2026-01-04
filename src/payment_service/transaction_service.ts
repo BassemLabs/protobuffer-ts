@@ -338,8 +338,8 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
   fromJSON(object: any): CreateManualTransactionRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      payment_type: isSet(object.payment_type) ? paymentTypeFromJSON(object.payment_type) : PaymentType.Stripe,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
     };
   },
@@ -350,10 +350,10 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.payment_type !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.payment_type);
+      obj.payment_type = paymentTypeToJSON(message.payment_type);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     if (message.amount !== 0) {
       obj.amount = message.amount;
@@ -458,8 +458,8 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
   fromJSON(object: any): IssueRefundRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      transaction_id: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
-      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      transaction_id: isSet(object.transaction_id) ? ObjectId.fromJSON(object.transaction_id) : undefined,
+      payment_type: isSet(object.payment_type) ? paymentTypeFromJSON(object.payment_type) : PaymentType.Stripe,
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
       reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
     };
@@ -471,10 +471,10 @@ export const IssueRefundRequest: MessageFns<IssueRefundRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.transaction_id !== undefined) {
-      obj.transactionId = ObjectId.toJSON(message.transaction_id);
+      obj.transaction_id = ObjectId.toJSON(message.transaction_id);
     }
     if (message.payment_type !== PaymentType.Stripe) {
-      obj.paymentType = paymentTypeToJSON(message.payment_type);
+      obj.payment_type = paymentTypeToJSON(message.payment_type);
     }
     if (message.amount !== 0) {
       obj.amount = message.amount;

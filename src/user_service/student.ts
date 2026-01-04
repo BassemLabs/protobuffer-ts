@@ -486,16 +486,18 @@ export const Student: MessageFns<Student> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      id_number: isSet(object.idNumber) ? globalThis.String(object.idNumber) : "",
+      id_number: isSet(object.id_number) ? globalThis.String(object.id_number) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
-      email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+      email_domain: isSet(object.email_domain) ? globalThis.String(object.email_domain) : "",
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
+      last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-      has_waitlist_priority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+      has_waitlist_priority: isSet(object.has_waitlist_priority)
+        ? globalThis.Boolean(object.has_waitlist_priority)
+        : false,
+      date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
+      interview_date: isSet(object.interview_date) ? fromJsonTimestamp(object.interview_date) : undefined,
     };
   },
 
@@ -508,34 +510,34 @@ export const Student: MessageFns<Student> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.id_number !== "") {
-      obj.idNumber = message.id_number;
+      obj.id_number = message.id_number;
     }
     if (message.username !== "") {
       obj.username = message.username;
     }
     if (message.email_domain !== "") {
-      obj.emailDomain = message.email_domain;
+      obj.email_domain = message.email_domain;
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.first_name !== "") {
-      obj.firstName = message.first_name;
+      obj.first_name = message.first_name;
     }
     if (message.last_name !== "") {
-      obj.lastName = message.last_name;
+      obj.last_name = message.last_name;
     }
     if (message.gender !== "") {
       obj.gender = message.gender;
     }
     if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
-      obj.hasWaitlistPriority = message.has_waitlist_priority;
+      obj.has_waitlist_priority = message.has_waitlist_priority;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.date_of_birth = message.date_of_birth.toISOString();
     }
     if (message.interview_date !== undefined) {
-      obj.interviewDate = message.interview_date.toISOString();
+      obj.interview_date = message.interview_date.toISOString();
     }
     return obj;
   },
@@ -705,14 +707,16 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
-      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+      first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
+      last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      has_non_paid_invoices: isSet(object.hasNonPaidInvoices) ? globalThis.Boolean(object.hasNonPaidInvoices) : false,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      has_non_paid_invoices: isSet(object.has_non_paid_invoices)
+        ? globalThis.Boolean(object.has_non_paid_invoices)
+        : false,
+      date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
+      interview_date: isSet(object.interview_date) ? fromJsonTimestamp(object.interview_date) : undefined,
     };
   },
 
@@ -725,10 +729,10 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
       obj.status = studentStatusToJSON(message.status);
     }
     if (message.first_name !== "") {
-      obj.firstName = message.first_name;
+      obj.first_name = message.first_name;
     }
     if (message.last_name !== "") {
-      obj.lastName = message.last_name;
+      obj.last_name = message.last_name;
     }
     if (message.gender !== "") {
       obj.gender = message.gender;
@@ -737,16 +741,16 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
       obj.grade = studentGradeToJSON(message.grade);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.has_non_paid_invoices !== undefined && message.has_non_paid_invoices !== false) {
-      obj.hasNonPaidInvoices = message.has_non_paid_invoices;
+      obj.has_non_paid_invoices = message.has_non_paid_invoices;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.date_of_birth = message.date_of_birth.toISOString();
     }
     if (message.interview_date !== undefined) {
-      obj.interviewDate = message.interview_date.toISOString();
+      obj.interview_date = message.interview_date.toISOString();
     }
     return obj;
   },
@@ -866,34 +870,36 @@ export const StudentProfile: MessageFns<StudentProfile> = {
 
   fromJSON(object: any): StudentProfile {
     return {
-      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
+      first_name: isSet(object.first_name) ? globalThis.String(object.first_name) : "",
+      last_name: isSet(object.last_name) ? globalThis.String(object.last_name) : "",
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
-      has_waitlist_priority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
+      date_of_birth: isSet(object.date_of_birth) ? fromJsonTimestamp(object.date_of_birth) : undefined,
+      interview_date: isSet(object.interview_date) ? fromJsonTimestamp(object.interview_date) : undefined,
+      has_waitlist_priority: isSet(object.has_waitlist_priority)
+        ? globalThis.Boolean(object.has_waitlist_priority)
+        : false,
     };
   },
 
   toJSON(message: StudentProfile): unknown {
     const obj: any = {};
     if (message.first_name !== "") {
-      obj.firstName = message.first_name;
+      obj.first_name = message.first_name;
     }
     if (message.last_name !== "") {
-      obj.lastName = message.last_name;
+      obj.last_name = message.last_name;
     }
     if (message.gender !== "") {
       obj.gender = message.gender;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.date_of_birth = message.date_of_birth.toISOString();
     }
     if (message.interview_date !== undefined) {
-      obj.interviewDate = message.interview_date.toISOString();
+      obj.interview_date = message.interview_date.toISOString();
     }
     if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
-      obj.hasWaitlistPriority = message.has_waitlist_priority;
+      obj.has_waitlist_priority = message.has_waitlist_priority;
     }
     return obj;
   },
@@ -1009,8 +1015,8 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      student_id: isSet(object.student_id) ? ObjectId.fromJSON(object.student_id) : undefined,
+      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
     };
@@ -1025,10 +1031,10 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
+      obj.student_id = ObjectId.toJSON(message.student_id);
     }
     if (message.school_year_id !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
     }
     if (message.status !== StudentStatus.WAITLIST) {
       obj.status = studentStatusToJSON(message.status);

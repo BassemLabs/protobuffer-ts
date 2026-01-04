@@ -64,8 +64,8 @@ exports.GetKmsKeyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            key_type: isSet(object.keyType) ? (0, kms_key_1.kMSKeyTypeFromJSON)(object.keyType) : kms_key_1.KMSKeyType.GoogelAdminEmail,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            key_type: isSet(object.key_type) ? (0, kms_key_1.kMSKeyTypeFromJSON)(object.key_type) : kms_key_1.KMSKeyType.GoogelAdminEmail,
         };
     },
     toJSON(message) {
@@ -74,10 +74,10 @@ exports.GetKmsKeyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.key_type !== kms_key_1.KMSKeyType.GoogelAdminEmail) {
-            obj.keyType = (0, kms_key_1.kMSKeyTypeToJSON)(message.key_type);
+            obj.key_type = (0, kms_key_1.kMSKeyTypeToJSON)(message.key_type);
         }
         return obj;
     },
@@ -139,7 +139,7 @@ exports.GetOrganizationKmsKeysRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
         };
     },
     toJSON(message) {
@@ -148,7 +148,7 @@ exports.GetOrganizationKmsKeysRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         return obj;
     },
@@ -277,9 +277,9 @@ exports.UpdateKmsKeyRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            key_type: isSet(object.keyType) ? (0, kms_key_1.kMSKeyTypeFromJSON)(object.keyType) : kms_key_1.KMSKeyType.GoogelAdminEmail,
-            secret_material: isSet(object.secretMaterial) ? globalThis.String(object.secretMaterial) : "",
+            organization_id: isSet(object.organization_id) ? object_id_1.ObjectId.fromJSON(object.organization_id) : undefined,
+            key_type: isSet(object.key_type) ? (0, kms_key_1.kMSKeyTypeFromJSON)(object.key_type) : kms_key_1.KMSKeyType.GoogelAdminEmail,
+            secret_material: isSet(object.secret_material) ? globalThis.String(object.secret_material) : "",
         };
     },
     toJSON(message) {
@@ -288,13 +288,13 @@ exports.UpdateKmsKeyRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+            obj.organization_id = object_id_1.ObjectId.toJSON(message.organization_id);
         }
         if (message.key_type !== kms_key_1.KMSKeyType.GoogelAdminEmail) {
-            obj.keyType = (0, kms_key_1.kMSKeyTypeToJSON)(message.key_type);
+            obj.key_type = (0, kms_key_1.kMSKeyTypeToJSON)(message.key_type);
         }
         if (message.secret_material !== "") {
-            obj.secretMaterial = message.secret_material;
+            obj.secret_material = message.secret_material;
         }
         return obj;
     },

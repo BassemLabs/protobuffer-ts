@@ -180,7 +180,7 @@ export const GetFamilyRequest: MessageFns<GetFamilyRequest> = {
   fromJSON(object: any): GetFamilyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
     };
   },
 
@@ -190,7 +190,7 @@ export const GetFamilyRequest: MessageFns<GetFamilyRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -376,8 +376,8 @@ export const GetFamiliesByIdsRequest: MessageFns<GetFamiliesByIdsRequest> = {
   fromJSON(object: any): GetFamiliesByIdsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_ids: globalThis.Array.isArray(object?.familyIds)
-        ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
+      family_ids: globalThis.Array.isArray(object?.family_ids)
+        ? object.family_ids.map((e: any) => ObjectId.fromJSON(e))
         : [],
     };
   },
@@ -388,7 +388,7 @@ export const GetFamiliesByIdsRequest: MessageFns<GetFamiliesByIdsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_ids?.length) {
-      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
+      obj.family_ids = message.family_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -513,7 +513,7 @@ export const GetFamiliesByParentRequest: MessageFns<GetFamiliesByParentRequest> 
   fromJSON(object: any): GetFamiliesByParentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
+      parent_id: isSet(object.parent_id) ? ObjectId.fromJSON(object.parent_id) : undefined,
     };
   },
 
@@ -523,7 +523,7 @@ export const GetFamiliesByParentRequest: MessageFns<GetFamiliesByParentRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.parent_id !== undefined) {
-      obj.parentId = ObjectId.toJSON(message.parent_id);
+      obj.parent_id = ObjectId.toJSON(message.parent_id);
     }
     return obj;
   },
@@ -650,7 +650,7 @@ export const GetFamilyGuardiansRequest: MessageFns<GetFamilyGuardiansRequest> = 
   fromJSON(object: any): GetFamilyGuardiansRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
     };
   },
 
@@ -660,7 +660,7 @@ export const GetFamilyGuardiansRequest: MessageFns<GetFamilyGuardiansRequest> = 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -789,7 +789,7 @@ export const GetContactGuardiansRequest: MessageFns<GetContactGuardiansRequest> 
   fromJSON(object: any): GetContactGuardiansRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
     };
   },
 
@@ -799,7 +799,7 @@ export const GetContactGuardiansRequest: MessageFns<GetContactGuardiansRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -928,7 +928,7 @@ export const GetFamilyStudentsRequest: MessageFns<GetFamilyStudentsRequest> = {
   fromJSON(object: any): GetFamilyStudentsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
     };
   },
 
@@ -938,7 +938,7 @@ export const GetFamilyStudentsRequest: MessageFns<GetFamilyStudentsRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     return obj;
   },
@@ -1075,8 +1075,8 @@ export const GetEnrolledStudentsForFamilyRequest: MessageFns<GetEnrolledStudents
   fromJSON(object: any): GetEnrolledStudentsForFamilyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
     };
   },
 
@@ -1086,10 +1086,10 @@ export const GetEnrolledStudentsForFamilyRequest: MessageFns<GetEnrolledStudents
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.school_year_id !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -1249,10 +1249,10 @@ export const GetFamiliesByStudentStatusRequest: MessageFns<GetFamiliesByStudentS
   fromJSON(object: any): GetFamiliesByStudentStatusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_statuses: globalThis.Array.isArray(object?.studentStatuses)
-        ? object.studentStatuses.map((e: any) => studentStatusFromJSON(e))
+      student_statuses: globalThis.Array.isArray(object?.student_statuses)
+        ? object.student_statuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      school_year_id: isSet(object.school_year_id) ? ObjectId.fromJSON(object.school_year_id) : undefined,
     };
   },
 
@@ -1262,10 +1262,10 @@ export const GetFamiliesByStudentStatusRequest: MessageFns<GetFamiliesByStudentS
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.student_statuses?.length) {
-      obj.studentStatuses = message.student_statuses.map((e) => studentStatusToJSON(e));
+      obj.student_statuses = message.student_statuses.map((e) => studentStatusToJSON(e));
     }
     if (message.school_year_id !== undefined) {
-      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      obj.school_year_id = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -1338,7 +1338,7 @@ export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
   fromJSON(object: any): FamilyWithStudentCount {
     return {
       family: isSet(object.family) ? Family.fromJSON(object.family) : undefined,
-      student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
+      student_count: isSet(object.student_count) ? globalThis.Number(object.student_count) : 0,
     };
   },
 
@@ -1348,7 +1348,7 @@ export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
       obj.family = Family.toJSON(message.family);
     }
     if (message.student_count !== 0) {
-      obj.studentCount = Math.round(message.student_count);
+      obj.student_count = Math.round(message.student_count);
     }
     return obj;
   },
@@ -1636,13 +1636,13 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
   fromJSON(object: any): UpdateFamilyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       guardians: globalThis.Array.isArray(object?.guardians)
         ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
-        ? object.guardiansToNotContact.map((e: any) => ObjectId.fromJSON(e))
+      guardians_to_not_contact: globalThis.Array.isArray(object?.guardians_to_not_contact)
+        ? object.guardians_to_not_contact.map((e: any) => ObjectId.fromJSON(e))
         : [],
       information: isSet(object.information) ? FamilyInformation.fromJSON(object.information) : undefined,
     };
@@ -1654,7 +1654,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1663,7 +1663,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
       obj.guardians = message.guardians.map((e) => ObjectId.toJSON(e));
     }
     if (message.guardians_to_not_contact?.length) {
-      obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => ObjectId.toJSON(e));
+      obj.guardians_to_not_contact = message.guardians_to_not_contact.map((e) => ObjectId.toJSON(e));
     }
     if (message.information !== undefined) {
       obj.information = FamilyInformation.toJSON(message.information);
@@ -1750,7 +1750,7 @@ export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
   fromJSON(object: any): UpdateFamilyNameRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
     };
   },
@@ -1761,7 +1761,7 @@ export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -1843,8 +1843,8 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
   fromJSON(object: any): UpdateFamilyAutoPayRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      family_id: isSet(object.family_id) ? ObjectId.fromJSON(object.family_id) : undefined,
+      auto_pay_disabled: isSet(object.auto_pay_disabled) ? globalThis.Boolean(object.auto_pay_disabled) : false,
     };
   },
 
@@ -1854,10 +1854,10 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.family_id !== undefined) {
-      obj.familyId = ObjectId.toJSON(message.family_id);
+      obj.family_id = ObjectId.toJSON(message.family_id);
     }
     if (message.auto_pay_disabled !== false) {
-      obj.autoPayDisabled = message.auto_pay_disabled;
+      obj.auto_pay_disabled = message.auto_pay_disabled;
     }
     return obj;
   },

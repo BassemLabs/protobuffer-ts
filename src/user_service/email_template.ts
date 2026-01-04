@@ -316,15 +316,17 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
   fromJSON(object: any): EmailTemplate {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      template_key: isSet(object.templateKey)
-        ? emailTemplateKeyFromJSON(object.templateKey)
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
+      template_key: isSet(object.template_key)
+        ? emailTemplateKeyFromJSON(object.template_key)
         : EmailTemplateKey.REJECTION_EMAIL,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       header: isSet(object.header) ? globalThis.String(object.header) : "",
       body: isSet(object.body) ? globalThis.String(object.body) : "",
       footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
-      receiver_user_type: isSet(object.receiverUserType) ? userTypeFromJSON(object.receiverUserType) : UserType.NONE,
+      receiver_user_type: isSet(object.receiver_user_type)
+        ? userTypeFromJSON(object.receiver_user_type)
+        : UserType.NONE,
     };
   },
 
@@ -334,10 +336,10 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
-      obj.templateKey = emailTemplateKeyToJSON(message.template_key);
+      obj.template_key = emailTemplateKeyToJSON(message.template_key);
     }
     if (message.title !== "") {
       obj.title = message.title;
@@ -352,7 +354,7 @@ export const EmailTemplate: MessageFns<EmailTemplate> = {
       obj.footer = message.footer;
     }
     if (message.receiver_user_type !== UserType.NONE) {
-      obj.receiverUserType = userTypeToJSON(message.receiver_user_type);
+      obj.receiver_user_type = userTypeToJSON(message.receiver_user_type);
     }
     return obj;
   },

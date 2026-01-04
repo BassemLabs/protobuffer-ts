@@ -373,7 +373,7 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       price: isSet(object.price) ? globalThis.Number(object.price) : 0,
       quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
-      is_bassem_labs_fee: isSet(object.isBassemLabsFee) ? globalThis.Boolean(object.isBassemLabsFee) : false,
+      is_bassem_labs_fee: isSet(object.is_bassem_labs_fee) ? globalThis.Boolean(object.is_bassem_labs_fee) : false,
     };
   },
 
@@ -392,7 +392,7 @@ export const InvoiceItem: MessageFns<InvoiceItem> = {
       obj.quantity = Math.round(message.quantity);
     }
     if (message.is_bassem_labs_fee !== undefined && message.is_bassem_labs_fee !== false) {
-      obj.isBassemLabsFee = message.is_bassem_labs_fee;
+      obj.is_bassem_labs_fee = message.is_bassem_labs_fee;
     }
     return obj;
   },
@@ -469,7 +469,7 @@ export const Coupon: MessageFns<Coupon> = {
   fromJSON(object: any): Coupon {
     return {
       title: isSet(object.title) ? globalThis.String(object.title) : "",
-      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
+      value_type: isSet(object.value_type) ? discountValueTypeFromJSON(object.value_type) : DiscountValueType.AMOUNT,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
     };
   },
@@ -480,7 +480,7 @@ export const Coupon: MessageFns<Coupon> = {
       obj.title = message.title;
     }
     if (message.value_type !== DiscountValueType.AMOUNT) {
-      obj.valueType = discountValueTypeToJSON(message.value_type);
+      obj.value_type = discountValueTypeToJSON(message.value_type);
     }
     if (message.value !== 0) {
       obj.value = message.value;
@@ -583,30 +583,32 @@ export const OrganizationInvoiceDetails: MessageFns<OrganizationInvoiceDetails> 
 
   fromJSON(object: any): OrganizationInvoiceDetails {
     return {
-      period_start_date: isSet(object.periodStartDate) ? fromJsonTimestamp(object.periodStartDate) : undefined,
-      period_end_date: isSet(object.periodEndDate) ? fromJsonTimestamp(object.periodEndDate) : undefined,
-      number_of_students: isSet(object.numberOfStudents) ? globalThis.Number(object.numberOfStudents) : 0,
-      payment_plan_id: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
-      payment_plan_info_id: isSet(object.paymentPlanInfoId) ? ObjectId.fromJSON(object.paymentPlanInfoId) : undefined,
+      period_start_date: isSet(object.period_start_date) ? fromJsonTimestamp(object.period_start_date) : undefined,
+      period_end_date: isSet(object.period_end_date) ? fromJsonTimestamp(object.period_end_date) : undefined,
+      number_of_students: isSet(object.number_of_students) ? globalThis.Number(object.number_of_students) : 0,
+      payment_plan_id: isSet(object.payment_plan_id) ? ObjectId.fromJSON(object.payment_plan_id) : undefined,
+      payment_plan_info_id: isSet(object.payment_plan_info_id)
+        ? ObjectId.fromJSON(object.payment_plan_info_id)
+        : undefined,
     };
   },
 
   toJSON(message: OrganizationInvoiceDetails): unknown {
     const obj: any = {};
     if (message.period_start_date !== undefined) {
-      obj.periodStartDate = message.period_start_date.toISOString();
+      obj.period_start_date = message.period_start_date.toISOString();
     }
     if (message.period_end_date !== undefined) {
-      obj.periodEndDate = message.period_end_date.toISOString();
+      obj.period_end_date = message.period_end_date.toISOString();
     }
     if (message.number_of_students !== 0) {
-      obj.numberOfStudents = Math.round(message.number_of_students);
+      obj.number_of_students = Math.round(message.number_of_students);
     }
     if (message.payment_plan_id !== undefined) {
-      obj.paymentPlanId = ObjectId.toJSON(message.payment_plan_id);
+      obj.payment_plan_id = ObjectId.toJSON(message.payment_plan_id);
     }
     if (message.payment_plan_info_id !== undefined) {
-      obj.paymentPlanInfoId = ObjectId.toJSON(message.payment_plan_info_id);
+      obj.payment_plan_info_id = ObjectId.toJSON(message.payment_plan_info_id);
     }
     return obj;
   },
@@ -904,35 +906,35 @@ export const Invoice: MessageFns<Invoice> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      invoice_number: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : 0,
+      invoice_number: isSet(object.invoice_number) ? globalThis.Number(object.invoice_number) : 0,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      show_hst: isSet(object.show_hst) ? globalThis.Boolean(object.show_hst) : false,
+      disable_tax: isSet(object.disable_tax) ? globalThis.Boolean(object.disable_tax) : false,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
-      due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-      invoice_student_registration_pipeline_status: isSet(object.invoiceStudentRegistrationPipelineStatus)
-        ? studentStatusFromJSON(object.invoiceStudentRegistrationPipelineStatus)
+      due_date: isSet(object.due_date) ? fromJsonTimestamp(object.due_date) : undefined,
+      invoice_student_registration_pipeline_status: isSet(object.invoice_student_registration_pipeline_status)
+        ? studentStatusFromJSON(object.invoice_student_registration_pipeline_status)
         : StudentStatus.WAITLIST,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
-      charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
-      auto_payment_status: isSet(object.autoPaymentStatus)
-        ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
+      auto_pay_enabled: isSet(object.auto_pay_enabled) ? globalThis.Boolean(object.auto_pay_enabled) : false,
+      charge_on_date: isSet(object.charge_on_date) ? fromJsonTimestamp(object.charge_on_date) : undefined,
+      auto_payment_status: isSet(object.auto_payment_status)
+        ? autoPaymentStatusFromJSON(object.auto_payment_status)
         : AutoPaymentStatus.AutoPayPending,
-      is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
-      organization_invoice_details: isSet(object.organizationInvoiceDetails)
-        ? OrganizationInvoiceDetails.fromJSON(object.organizationInvoiceDetails)
+      is_tuition: isSet(object.is_tuition) ? globalThis.Boolean(object.is_tuition) : false,
+      organization_invoice_details: isSet(object.organization_invoice_details)
+        ? OrganizationInvoiceDetails.fromJSON(object.organization_invoice_details)
         : undefined,
-      auto_payment_retry_count: isSet(object.autoPaymentRetryCount)
-        ? globalThis.Number(object.autoPaymentRetryCount)
+      auto_payment_retry_count: isSet(object.auto_payment_retry_count)
+        ? globalThis.Number(object.auto_payment_retry_count)
         : 0,
-      auto_payment_next_retry_at: isSet(object.autoPaymentNextRetryAt)
-        ? fromJsonTimestamp(object.autoPaymentNextRetryAt)
+      auto_payment_next_retry_at: isSet(object.auto_payment_next_retry_at)
+        ? fromJsonTimestamp(object.auto_payment_next_retry_at)
         : undefined,
     };
   },
@@ -946,7 +948,7 @@ export const Invoice: MessageFns<Invoice> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.invoice_number !== 0) {
-      obj.invoiceNumber = Math.round(message.invoice_number);
+      obj.invoice_number = Math.round(message.invoice_number);
     }
     if (message.title !== "") {
       obj.title = message.title;
@@ -955,10 +957,10 @@ export const Invoice: MessageFns<Invoice> = {
       obj.description = message.description;
     }
     if (message.show_hst !== false) {
-      obj.showHst = message.show_hst;
+      obj.show_hst = message.show_hst;
     }
     if (message.disable_tax !== false) {
-      obj.disableTax = message.disable_tax;
+      obj.disable_tax = message.disable_tax;
     }
     if (message.archived !== false) {
       obj.archived = message.archived;
@@ -976,39 +978,39 @@ export const Invoice: MessageFns<Invoice> = {
       obj.coupons = message.coupons.map((e) => Coupon.toJSON(e));
     }
     if (message.due_date !== undefined) {
-      obj.dueDate = message.due_date.toISOString();
+      obj.due_date = message.due_date.toISOString();
     }
     if (
       message.invoice_student_registration_pipeline_status !== undefined &&
       message.invoice_student_registration_pipeline_status !== StudentStatus.WAITLIST
     ) {
-      obj.invoiceStudentRegistrationPipelineStatus = studentStatusToJSON(
+      obj.invoice_student_registration_pipeline_status = studentStatusToJSON(
         message.invoice_student_registration_pipeline_status,
       );
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
-      obj.autoPayEnabled = message.auto_pay_enabled;
+      obj.auto_pay_enabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
-      obj.chargeOnDate = message.charge_on_date.toISOString();
+      obj.charge_on_date = message.charge_on_date.toISOString();
     }
     if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
-      obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
+      obj.auto_payment_status = autoPaymentStatusToJSON(message.auto_payment_status);
     }
     if (message.is_tuition !== false) {
-      obj.isTuition = message.is_tuition;
+      obj.is_tuition = message.is_tuition;
     }
     if (message.organization_invoice_details !== undefined) {
-      obj.organizationInvoiceDetails = OrganizationInvoiceDetails.toJSON(message.organization_invoice_details);
+      obj.organization_invoice_details = OrganizationInvoiceDetails.toJSON(message.organization_invoice_details);
     }
     if (message.auto_payment_retry_count !== undefined && message.auto_payment_retry_count !== 0) {
-      obj.autoPaymentRetryCount = Math.round(message.auto_payment_retry_count);
+      obj.auto_payment_retry_count = Math.round(message.auto_payment_retry_count);
     }
     if (message.auto_payment_next_retry_at !== undefined) {
-      obj.autoPaymentNextRetryAt = message.auto_payment_next_retry_at.toISOString();
+      obj.auto_payment_next_retry_at = message.auto_payment_next_retry_at.toISOString();
     }
     return obj;
   },
@@ -1185,15 +1187,15 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
       transactions: globalThis.Array.isArray(object?.transactions)
         ? object.transactions.map((e: any) => Transaction.fromJSON(e))
         : [],
-      total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0,
-      gross_amount_paid: isSet(object.grossAmountPaid) ? globalThis.Number(object.grossAmountPaid) : 0,
+      total_amount: isSet(object.total_amount) ? globalThis.Number(object.total_amount) : 0,
+      gross_amount_paid: isSet(object.gross_amount_paid) ? globalThis.Number(object.gross_amount_paid) : 0,
       status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
-      bill_to_name: isSet(object.billToName) ? globalThis.String(object.billToName) : "",
-      refund_transactions: globalThis.Array.isArray(object?.refundTransactions)
-        ? object.refundTransactions.map((e: any) => RefundTransaction.fromJSON(e))
+      bill_to_name: isSet(object.bill_to_name) ? globalThis.String(object.bill_to_name) : "",
+      refund_transactions: globalThis.Array.isArray(object?.refund_transactions)
+        ? object.refund_transactions.map((e: any) => RefundTransaction.fromJSON(e))
         : [],
-      total_amount_refunded: isSet(object.totalAmountRefunded) ? globalThis.Number(object.totalAmountRefunded) : 0,
-      net_amount_paid: isSet(object.netAmountPaid) ? globalThis.Number(object.netAmountPaid) : 0,
+      total_amount_refunded: isSet(object.total_amount_refunded) ? globalThis.Number(object.total_amount_refunded) : 0,
+      net_amount_paid: isSet(object.net_amount_paid) ? globalThis.Number(object.net_amount_paid) : 0,
     };
   },
 
@@ -1206,25 +1208,25 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
       obj.transactions = message.transactions.map((e) => Transaction.toJSON(e));
     }
     if (message.total_amount !== 0) {
-      obj.totalAmount = message.total_amount;
+      obj.total_amount = message.total_amount;
     }
     if (message.gross_amount_paid !== 0) {
-      obj.grossAmountPaid = message.gross_amount_paid;
+      obj.gross_amount_paid = message.gross_amount_paid;
     }
     if (message.status !== InvoiceStatus.Paid) {
       obj.status = invoiceStatusToJSON(message.status);
     }
     if (message.bill_to_name !== undefined && message.bill_to_name !== "") {
-      obj.billToName = message.bill_to_name;
+      obj.bill_to_name = message.bill_to_name;
     }
     if (message.refund_transactions?.length) {
-      obj.refundTransactions = message.refund_transactions.map((e) => RefundTransaction.toJSON(e));
+      obj.refund_transactions = message.refund_transactions.map((e) => RefundTransaction.toJSON(e));
     }
     if (message.total_amount_refunded !== 0) {
-      obj.totalAmountRefunded = message.total_amount_refunded;
+      obj.total_amount_refunded = message.total_amount_refunded;
     }
     if (message.net_amount_paid !== 0) {
-      obj.netAmountPaid = message.net_amount_paid;
+      obj.net_amount_paid = message.net_amount_paid;
     }
     return obj;
   },
@@ -1365,21 +1367,21 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
 
   fromJSON(object: any): InvoiceFilter {
     return {
-      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      per_page: isSet(object.per_page) ? globalThis.Number(object.per_page) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : InvoiceStatus.Paid,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      school_year: isSet(object.school_year) ? ObjectId.fromJSON(object.school_year) : undefined,
     };
   },
 
   toJSON(message: InvoiceFilter): unknown {
     const obj: any = {};
     if (message.per_page !== undefined && message.per_page !== 0) {
-      obj.perPage = Math.round(message.per_page);
+      obj.per_page = Math.round(message.per_page);
     }
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
@@ -1400,7 +1402,7 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
       obj.family = ObjectId.toJSON(message.family);
     }
     if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
+      obj.school_year = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -1533,11 +1535,11 @@ export const AutoPaymentAttempt: MessageFns<AutoPaymentAttempt> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
-      attempted_at: isSet(object.attemptedAt) ? fromJsonTimestamp(object.attemptedAt) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
+      attempted_at: isSet(object.attempted_at) ? fromJsonTimestamp(object.attempted_at) : undefined,
       status: isSet(object.status) ? autoPaymentStatusFromJSON(object.status) : AutoPaymentStatus.AutoPayPending,
-      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
-      attempt_number: isSet(object.attemptNumber) ? globalThis.Number(object.attemptNumber) : 0,
+      error_message: isSet(object.error_message) ? globalThis.String(object.error_message) : "",
+      attempt_number: isSet(object.attempt_number) ? globalThis.Number(object.attempt_number) : 0,
     };
   },
 
@@ -1550,19 +1552,19 @@ export const AutoPaymentAttempt: MessageFns<AutoPaymentAttempt> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     if (message.attempted_at !== undefined) {
-      obj.attemptedAt = message.attempted_at.toISOString();
+      obj.attempted_at = message.attempted_at.toISOString();
     }
     if (message.status !== AutoPaymentStatus.AutoPayPending) {
       obj.status = autoPaymentStatusToJSON(message.status);
     }
     if (message.error_message !== undefined && message.error_message !== "") {
-      obj.errorMessage = message.error_message;
+      obj.error_message = message.error_message;
     }
     if (message.attempt_number !== 0) {
-      obj.attemptNumber = Math.round(message.attempt_number);
+      obj.attempt_number = Math.round(message.attempt_number);
     }
     return obj;
   },

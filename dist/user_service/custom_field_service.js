@@ -69,8 +69,8 @@ exports.GetCustomFieldsByGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            include_archived: isSet(object.include_archived) ? globalThis.Boolean(object.include_archived) : false,
         };
     },
     toJSON(message) {
@@ -79,10 +79,10 @@ exports.GetCustomFieldsByGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.include_archived !== undefined && message.include_archived !== false) {
-            obj.includeArchived = message.include_archived;
+            obj.include_archived = message.include_archived;
         }
         return obj;
     },
@@ -134,15 +134,15 @@ exports.GetCustomFieldsByGroupResponse = {
     },
     fromJSON(object) {
         return {
-            custom_fields: globalThis.Array.isArray(object?.customFields)
-                ? object.customFields.map((e) => custom_field_1.CustomField.fromJSON(e))
+            custom_fields: globalThis.Array.isArray(object?.custom_fields)
+                ? object.custom_fields.map((e) => custom_field_1.CustomField.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.custom_fields?.length) {
-            obj.customFields = message.custom_fields.map((e) => custom_field_1.CustomField.toJSON(e));
+            obj.custom_fields = message.custom_fields.map((e) => custom_field_1.CustomField.toJSON(e));
         }
         return obj;
     },
@@ -198,7 +198,7 @@ exports.GetActiveCustomFieldsByGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
         };
     },
     toJSON(message) {
@@ -207,7 +207,7 @@ exports.GetActiveCustomFieldsByGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         return obj;
     },
@@ -258,15 +258,15 @@ exports.GetActiveCustomFieldsByGroupResponse = {
     },
     fromJSON(object) {
         return {
-            custom_fields: globalThis.Array.isArray(object?.customFields)
-                ? object.customFields.map((e) => custom_field_1.CustomField.fromJSON(e))
+            custom_fields: globalThis.Array.isArray(object?.custom_fields)
+                ? object.custom_fields.map((e) => custom_field_1.CustomField.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.custom_fields?.length) {
-            obj.customFields = message.custom_fields.map((e) => custom_field_1.CustomField.toJSON(e));
+            obj.custom_fields = message.custom_fields.map((e) => custom_field_1.CustomField.toJSON(e));
         }
         return obj;
     },
@@ -331,8 +331,8 @@ exports.GetCustomFieldsByUserTypeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
+            include_archived: isSet(object.include_archived) ? globalThis.Boolean(object.include_archived) : false,
         };
     },
     toJSON(message) {
@@ -341,10 +341,10 @@ exports.GetCustomFieldsByUserTypeRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.include_archived !== undefined && message.include_archived !== false) {
-            obj.includeArchived = message.include_archived;
+            obj.include_archived = message.include_archived;
         }
         return obj;
     },
@@ -394,15 +394,15 @@ exports.GetCustomFieldsByUserTypeResponse = {
     },
     fromJSON(object) {
         return {
-            custom_fields: globalThis.Array.isArray(object?.customFields)
-                ? object.customFields.map((e) => custom_field_1.CustomField.fromJSON(e))
+            custom_fields: globalThis.Array.isArray(object?.custom_fields)
+                ? object.custom_fields.map((e) => custom_field_1.CustomField.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.custom_fields?.length) {
-            obj.customFields = message.custom_fields.map((e) => custom_field_1.CustomField.toJSON(e));
+            obj.custom_fields = message.custom_fields.map((e) => custom_field_1.CustomField.toJSON(e));
         }
         return obj;
     },
@@ -531,13 +531,13 @@ exports.CreateCustomFieldRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            field_type: isSet(object.fieldType) ? (0, custom_field_1.customFieldTypeFromJSON)(object.fieldType) : custom_field_1.CustomFieldType.STRING,
-            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
+            field_type: isSet(object.field_type) ? (0, custom_field_1.customFieldTypeFromJSON)(object.field_type) : custom_field_1.CustomFieldType.STRING,
+            is_required: isSet(object.is_required) ? globalThis.Boolean(object.is_required) : false,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
-            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+            is_archived: isSet(object.is_archived) ? globalThis.Boolean(object.is_archived) : false,
+            regex_pattern: isSet(object.regex_pattern) ? globalThis.String(object.regex_pattern) : "",
             options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
         };
     },
@@ -547,25 +547,25 @@ exports.CreateCustomFieldRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
         if (message.field_type !== custom_field_1.CustomFieldType.STRING) {
-            obj.fieldType = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
+            obj.field_type = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
         }
         if (message.is_required !== false) {
-            obj.isRequired = message.is_required;
+            obj.is_required = message.is_required;
         }
         if (message.description !== "") {
             obj.description = message.description;
         }
         if (message.is_archived !== false) {
-            obj.isArchived = message.is_archived;
+            obj.is_archived = message.is_archived;
         }
         if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
-            obj.regexPattern = message.regex_pattern;
+            obj.regex_pattern = message.regex_pattern;
         }
         if (message.options?.length) {
             obj.options = message.options;
@@ -709,13 +709,13 @@ exports.UpdateCustomFieldRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
+            custom_field_id: isSet(object.custom_field_id) ? object_id_1.ObjectId.fromJSON(object.custom_field_id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            field_type: isSet(object.fieldType) ? (0, custom_field_1.customFieldTypeFromJSON)(object.fieldType) : custom_field_1.CustomFieldType.STRING,
+            field_type: isSet(object.field_type) ? (0, custom_field_1.customFieldTypeFromJSON)(object.field_type) : custom_field_1.CustomFieldType.STRING,
             description: isSet(object.description) ? globalThis.String(object.description) : "",
-            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
-            is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
-            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+            is_required: isSet(object.is_required) ? globalThis.Boolean(object.is_required) : false,
+            is_archived: isSet(object.is_archived) ? globalThis.Boolean(object.is_archived) : false,
+            regex_pattern: isSet(object.regex_pattern) ? globalThis.String(object.regex_pattern) : "",
             options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
         };
     },
@@ -725,25 +725,25 @@ exports.UpdateCustomFieldRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.custom_field_id !== undefined) {
-            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
+            obj.custom_field_id = object_id_1.ObjectId.toJSON(message.custom_field_id);
         }
         if (message.name !== "") {
             obj.name = message.name;
         }
         if (message.field_type !== custom_field_1.CustomFieldType.STRING) {
-            obj.fieldType = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
+            obj.field_type = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
         }
         if (message.description !== "") {
             obj.description = message.description;
         }
         if (message.is_required !== false) {
-            obj.isRequired = message.is_required;
+            obj.is_required = message.is_required;
         }
         if (message.is_archived !== false) {
-            obj.isArchived = message.is_archived;
+            obj.is_archived = message.is_archived;
         }
         if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
-            obj.regexPattern = message.regex_pattern;
+            obj.regex_pattern = message.regex_pattern;
         }
         if (message.options?.length) {
             obj.options = message.options;
@@ -814,7 +814,7 @@ exports.GetStudentPrimaryIdFieldRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            student_id: isSet(object.student_id) ? object_id_1.ObjectId.fromJSON(object.student_id) : undefined,
         };
     },
     toJSON(message) {
@@ -823,7 +823,7 @@ exports.GetStudentPrimaryIdFieldRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_id !== undefined) {
-            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+            obj.student_id = object_id_1.ObjectId.toJSON(message.student_id);
         }
         return obj;
     },
@@ -874,15 +874,15 @@ exports.GetStudentPrimaryIdFieldResponse = {
     },
     fromJSON(object) {
         return {
-            primary_id_field: isSet(object.primaryIdField)
-                ? custom_field_1.StudentPrimaryIdField.fromJSON(object.primaryIdField)
+            primary_id_field: isSet(object.primary_id_field)
+                ? custom_field_1.StudentPrimaryIdField.fromJSON(object.primary_id_field)
                 : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.primary_id_field !== undefined) {
-            obj.primaryIdField = custom_field_1.StudentPrimaryIdField.toJSON(message.primary_id_field);
+            obj.primary_id_field = custom_field_1.StudentPrimaryIdField.toJSON(message.primary_id_field);
         }
         return obj;
     },
@@ -940,7 +940,7 @@ exports.GetAllCustomFieldEntriesByUserRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
         };
     },
     toJSON(message) {
@@ -949,7 +949,7 @@ exports.GetAllCustomFieldEntriesByUserRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         return obj;
     },
@@ -1073,8 +1073,8 @@ exports.GetCustomFieldEntriesByUserAndGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1083,10 +1083,10 @@ exports.GetCustomFieldEntriesByUserAndGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         return obj;
     },
@@ -1213,8 +1213,8 @@ exports.GetGroupActiveEntriesForUserRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
         };
     },
     toJSON(message) {
@@ -1223,10 +1223,10 @@ exports.GetGroupActiveEntriesForUserRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         return obj;
     },
@@ -1362,8 +1362,8 @@ exports.UpdateCustomFieldsForGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
             entries: globalThis.Array.isArray(object?.entries)
                 ? object.entries.map((e) => exports.CustomFieldEntryUpdate.fromJSON(e))
                 : [],
@@ -1375,10 +1375,10 @@ exports.UpdateCustomFieldsForGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.entries?.length) {
             obj.entries = message.entries.map((e) => exports.CustomFieldEntryUpdate.toJSON(e));
@@ -1445,14 +1445,14 @@ exports.CustomFieldEntryUpdate = {
     },
     fromJSON(object) {
         return {
-            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
+            custom_field_id: isSet(object.custom_field_id) ? object_id_1.ObjectId.fromJSON(object.custom_field_id) : undefined,
             value: isSet(object.value) ? globalThis.String(object.value) : "",
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.custom_field_id !== undefined) {
-            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
+            obj.custom_field_id = object_id_1.ObjectId.toJSON(message.custom_field_id);
         }
         if (message.value !== "") {
             obj.value = message.value;
@@ -1611,11 +1611,11 @@ exports.UploadDocumentToCustomFieldEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
-            document_name: isSet(object.documentName) ? globalThis.String(object.documentName) : "",
-            file_content: isSet(object.fileContent) ? globalThis.String(object.fileContent) : "",
-            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            custom_field_id: isSet(object.custom_field_id) ? object_id_1.ObjectId.fromJSON(object.custom_field_id) : undefined,
+            document_name: isSet(object.document_name) ? globalThis.String(object.document_name) : "",
+            file_content: isSet(object.file_content) ? globalThis.String(object.file_content) : "",
+            file_name: isSet(object.file_name) ? globalThis.String(object.file_name) : "",
         };
     },
     toJSON(message) {
@@ -1624,19 +1624,19 @@ exports.UploadDocumentToCustomFieldEntryRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.custom_field_id !== undefined) {
-            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
+            obj.custom_field_id = object_id_1.ObjectId.toJSON(message.custom_field_id);
         }
         if (message.document_name !== "") {
-            obj.documentName = message.document_name;
+            obj.document_name = message.document_name;
         }
         if (message.file_content !== "") {
-            obj.fileContent = message.file_content;
+            obj.file_content = message.file_content;
         }
         if (message.file_name !== "") {
-            obj.fileName = message.file_name;
+            obj.file_name = message.file_name;
         }
         return obj;
     },
@@ -1721,9 +1721,9 @@ exports.RemoveDocumentFromCustomFieldEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
-            document_index: isSet(object.documentIndex) ? globalThis.Number(object.documentIndex) : 0,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            custom_field_id: isSet(object.custom_field_id) ? object_id_1.ObjectId.fromJSON(object.custom_field_id) : undefined,
+            document_index: isSet(object.document_index) ? globalThis.Number(object.document_index) : 0,
         };
     },
     toJSON(message) {
@@ -1732,13 +1732,13 @@ exports.RemoveDocumentFromCustomFieldEntryRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.custom_field_id !== undefined) {
-            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
+            obj.custom_field_id = object_id_1.ObjectId.toJSON(message.custom_field_id);
         }
         if (message.document_index !== 0) {
-            obj.documentIndex = Math.round(message.document_index);
+            obj.document_index = Math.round(message.document_index);
         }
         return obj;
     },
@@ -1948,23 +1948,23 @@ exports.CreateCustomFieldsGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            profile_section: isSet(object.profileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection)
+            group_name: isSet(object.group_name) ? globalThis.String(object.group_name) : "",
+            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
+            profile_section: isSet(object.profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
             hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e) => globalThis.String(e)) : [],
-            group_access_settings: isSet(object.groupAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.groupAccessSettings)
+            group_access_settings: isSet(object.group_access_settings)
+                ? object_id_1.ObjectId.fromJSON(object.group_access_settings)
                 : undefined,
-            entries_access_settings: isSet(object.entriesAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.entriesAccessSettings)
+            entries_access_settings: isSet(object.entries_access_settings)
+                ? object_id_1.ObjectId.fromJSON(object.entries_access_settings)
                 : undefined,
-            visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
-                ? object.visibleToParentsForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visible_to_parents_for_statuses)
+                ? object.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
-            visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
-                ? object.visibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visible_to_teachers_for_statuses)
+                ? object.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
         };
     },
@@ -1974,28 +1974,28 @@ exports.CreateCustomFieldsGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_name !== "") {
-            obj.groupName = message.group_name;
+            obj.group_name = message.group_name;
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
+            obj.profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
         }
         if (message.hints?.length) {
             obj.hints = message.hints;
         }
         if (message.group_access_settings !== undefined) {
-            obj.groupAccessSettings = object_id_1.ObjectId.toJSON(message.group_access_settings);
+            obj.group_access_settings = object_id_1.ObjectId.toJSON(message.group_access_settings);
         }
         if (message.entries_access_settings !== undefined) {
-            obj.entriesAccessSettings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
+            obj.entries_access_settings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
         }
         if (message.visible_to_parents_for_statuses?.length) {
-            obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.visible_to_parents_for_statuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         if (message.visible_to_teachers_for_statuses?.length) {
-            obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.visible_to_teachers_for_statuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         return obj;
     },
@@ -2138,17 +2138,17 @@ exports.UpdateCustomFieldsGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-            profile_section: isSet(object.profileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection)
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            group_name: isSet(object.group_name) ? globalThis.String(object.group_name) : "",
+            profile_section: isSet(object.profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
             hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e) => globalThis.String(e)) : [],
-            visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
-                ? object.visibleToParentsForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visible_to_parents_for_statuses)
+                ? object.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
-            visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
-                ? object.visibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+            visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visible_to_teachers_for_statuses)
+                ? object.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
         };
     },
@@ -2158,22 +2158,22 @@ exports.UpdateCustomFieldsGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.group_name !== "") {
-            obj.groupName = message.group_name;
+            obj.group_name = message.group_name;
         }
         if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
+            obj.profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
         }
         if (message.hints?.length) {
             obj.hints = message.hints;
         }
         if (message.visible_to_parents_for_statuses?.length) {
-            obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.visible_to_parents_for_statuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         if (message.visible_to_teachers_for_statuses?.length) {
-            obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+            obj.visible_to_teachers_for_statuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
         return obj;
     },
@@ -2291,7 +2291,7 @@ exports.GetAccessibleCustomFieldsGroupsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
+            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
         };
     },
     toJSON(message) {
@@ -2300,7 +2300,7 @@ exports.GetAccessibleCustomFieldsGroupsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         return obj;
     },
@@ -2368,9 +2368,9 @@ exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            profile_section: isSet(object.profileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection)
+            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
+            profile_section: isSet(object.profile_section)
+                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profile_section)
                 : organization_profile_settings_1.ProfileSection.OVERVIEW,
         };
     },
@@ -2380,10 +2380,10 @@ exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
-            obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
+            obj.profile_section = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
         }
         return obj;
     },
@@ -2443,8 +2443,8 @@ exports.GetStudentGroupsWithFieldsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_status: isSet(object.studentStatus)
-                ? (0, student_1.studentStatusFromJSON)(object.studentStatus)
+            student_status: isSet(object.student_status)
+                ? (0, student_1.studentStatusFromJSON)(object.student_status)
                 : student_1.StudentStatus.WAITLIST,
         };
     },
@@ -2454,7 +2454,7 @@ exports.GetStudentGroupsWithFieldsRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.student_status !== student_1.StudentStatus.WAITLIST) {
-            obj.studentStatus = (0, student_1.studentStatusToJSON)(message.student_status);
+            obj.student_status = (0, student_1.studentStatusToJSON)(message.student_status);
         }
         return obj;
     },
@@ -2555,15 +2555,15 @@ exports.GetCustomFieldsGroupsWithFieldsResponse = {
     },
     fromJSON(object) {
         return {
-            groups_with_fields: globalThis.Array.isArray(object?.groupsWithFields)
-                ? object.groupsWithFields.map((e) => custom_field_1.CustomFieldsGroupWithFields.fromJSON(e))
+            groups_with_fields: globalThis.Array.isArray(object?.groups_with_fields)
+                ? object.groups_with_fields.map((e) => custom_field_1.CustomFieldsGroupWithFields.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.groups_with_fields?.length) {
-            obj.groupsWithFields = message.groups_with_fields.map((e) => custom_field_1.CustomFieldsGroupWithFields.toJSON(e));
+            obj.groups_with_fields = message.groups_with_fields.map((e) => custom_field_1.CustomFieldsGroupWithFields.toJSON(e));
         }
         return obj;
     },
@@ -2629,8 +2629,8 @@ exports.GetGroupStatusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
         };
     },
     toJSON(message) {
@@ -2639,10 +2639,10 @@ exports.GetGroupStatusRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         return obj;
     },
@@ -2715,8 +2715,8 @@ exports.ApproveGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
         };
     },
     toJSON(message) {
@@ -2725,10 +2725,10 @@ exports.ApproveGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         return obj;
     },
@@ -2810,9 +2810,9 @@ exports.RejectGroupRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+            group_id: isSet(object.group_id) ? object_id_1.ObjectId.fromJSON(object.group_id) : undefined,
+            user_id: isSet(object.user_id) ? object_id_1.ObjectId.fromJSON(object.user_id) : undefined,
+            rejection_message: isSet(object.rejection_message) ? globalThis.String(object.rejection_message) : "",
         };
     },
     toJSON(message) {
@@ -2821,13 +2821,13 @@ exports.RejectGroupRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.group_id !== undefined) {
-            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+            obj.group_id = object_id_1.ObjectId.toJSON(message.group_id);
         }
         if (message.user_id !== undefined) {
-            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+            obj.user_id = object_id_1.ObjectId.toJSON(message.user_id);
         }
         if (message.rejection_message !== "") {
-            obj.rejectionMessage = message.rejection_message;
+            obj.rejection_message = message.rejection_message;
         }
         return obj;
     },
@@ -3032,10 +3032,10 @@ exports.CreateResourceAccessSettingsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            ownership_kind: isSet(object.ownershipKind) ? (0, resource_access_settings_1.ownershipKindFromJSON)(object.ownershipKind) : resource_access_settings_1.OwnershipKind.OWNED,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            access_rules: globalThis.Array.isArray(object?.accessRules)
-                ? object.accessRules.map((e) => resource_access_settings_1.AccessRule.fromJSON(e))
+            ownership_kind: isSet(object.ownership_kind) ? (0, resource_access_settings_1.ownershipKindFromJSON)(object.ownership_kind) : resource_access_settings_1.OwnershipKind.OWNED,
+            user_type: isSet(object.user_type) ? (0, user_type_1.userTypeFromJSON)(object.user_type) : user_type_1.UserType.NONE,
+            access_rules: globalThis.Array.isArray(object?.access_rules)
+                ? object.access_rules.map((e) => resource_access_settings_1.AccessRule.fromJSON(e))
                 : [],
         };
     },
@@ -3048,13 +3048,13 @@ exports.CreateResourceAccessSettingsRequest = {
             obj.name = message.name;
         }
         if (message.ownership_kind !== resource_access_settings_1.OwnershipKind.OWNED) {
-            obj.ownershipKind = (0, resource_access_settings_1.ownershipKindToJSON)(message.ownership_kind);
+            obj.ownership_kind = (0, resource_access_settings_1.ownershipKindToJSON)(message.ownership_kind);
         }
         if (message.user_type !== user_type_1.UserType.NONE) {
-            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+            obj.user_type = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.access_rules?.length) {
-            obj.accessRules = message.access_rules.map((e) => resource_access_settings_1.AccessRule.toJSON(e));
+            obj.access_rules = message.access_rules.map((e) => resource_access_settings_1.AccessRule.toJSON(e));
         }
         return obj;
     },

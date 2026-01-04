@@ -63,18 +63,18 @@ export const InvoiceToCharge: MessageFns<InvoiceToCharge> = {
 
   fromJSON(object: any): InvoiceToCharge {
     return {
-      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
-      date_sent: isSet(object.dateSent) ? fromJsonTimestamp(object.dateSent) : undefined,
+      invoice_id: isSet(object.invoice_id) ? ObjectId.fromJSON(object.invoice_id) : undefined,
+      date_sent: isSet(object.date_sent) ? fromJsonTimestamp(object.date_sent) : undefined,
     };
   },
 
   toJSON(message: InvoiceToCharge): unknown {
     const obj: any = {};
     if (message.invoice_id !== undefined) {
-      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+      obj.invoice_id = ObjectId.toJSON(message.invoice_id);
     }
     if (message.date_sent !== undefined) {
-      obj.dateSent = message.date_sent.toISOString();
+      obj.date_sent = message.date_sent.toISOString();
     }
     return obj;
   },

@@ -370,15 +370,15 @@ export const CustomField: MessageFns<CustomField> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      group_id: isSet(object.group_id) ? ObjectId.fromJSON(object.group_id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
+      field_type: isSet(object.field_type) ? customFieldTypeFromJSON(object.field_type) : CustomFieldType.STRING,
+      user_type: isSet(object.user_type) ? userTypeFromJSON(object.user_type) : UserType.NONE,
+      is_required: isSet(object.is_required) ? globalThis.Boolean(object.is_required) : false,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+      regex_pattern: isSet(object.regex_pattern) ? globalThis.String(object.regex_pattern) : "",
       options: globalThis.Array.isArray(object?.options) ? object.options.map((e: any) => globalThis.String(e)) : [],
-      is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
+      is_archived: isSet(object.is_archived) ? globalThis.Boolean(object.is_archived) : false,
     };
   },
 
@@ -391,31 +391,31 @@ export const CustomField: MessageFns<CustomField> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.group_id !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.group_id);
+      obj.group_id = ObjectId.toJSON(message.group_id);
     }
     if (message.name !== "") {
       obj.name = message.name;
     }
     if (message.field_type !== CustomFieldType.STRING) {
-      obj.fieldType = customFieldTypeToJSON(message.field_type);
+      obj.field_type = customFieldTypeToJSON(message.field_type);
     }
     if (message.user_type !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.user_type);
+      obj.user_type = userTypeToJSON(message.user_type);
     }
     if (message.is_required !== false) {
-      obj.isRequired = message.is_required;
+      obj.is_required = message.is_required;
     }
     if (message.description !== "") {
       obj.description = message.description;
     }
     if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
-      obj.regexPattern = message.regex_pattern;
+      obj.regex_pattern = message.regex_pattern;
     }
     if (message.options?.length) {
       obj.options = message.options;
     }
     if (message.is_archived !== false) {
-      obj.isArchived = message.is_archived;
+      obj.is_archived = message.is_archived;
     }
     return obj;
   },
@@ -608,23 +608,23 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      profile_section: isSet(object.profileSection)
-        ? profileSectionFromJSON(object.profileSection)
+      group_name: isSet(object.group_name) ? globalThis.String(object.group_name) : "",
+      user_type: isSet(object.user_type) ? userTypeFromJSON(object.user_type) : UserType.NONE,
+      profile_section: isSet(object.profile_section)
+        ? profileSectionFromJSON(object.profile_section)
         : ProfileSection.OVERVIEW,
       hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e: any) => globalThis.String(e)) : [],
-      group_access_settings: isSet(object.groupAccessSettings)
-        ? ObjectId.fromJSON(object.groupAccessSettings)
+      group_access_settings: isSet(object.group_access_settings)
+        ? ObjectId.fromJSON(object.group_access_settings)
         : undefined,
-      entries_access_settings: isSet(object.entriesAccessSettings)
-        ? ObjectId.fromJSON(object.entriesAccessSettings)
+      entries_access_settings: isSet(object.entries_access_settings)
+        ? ObjectId.fromJSON(object.entries_access_settings)
         : undefined,
-      visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
-        ? object.visibleToParentsForStatuses.map((e: any) => studentStatusFromJSON(e))
+      visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visible_to_parents_for_statuses)
+        ? object.visible_to_parents_for_statuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
-        ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
+      visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visible_to_teachers_for_statuses)
+        ? object.visible_to_teachers_for_statuses.map((e: any) => studentStatusFromJSON(e))
         : [],
     };
   },
@@ -638,28 +638,30 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.group_name !== "") {
-      obj.groupName = message.group_name;
+      obj.group_name = message.group_name;
     }
     if (message.user_type !== UserType.NONE) {
-      obj.userType = userTypeToJSON(message.user_type);
+      obj.user_type = userTypeToJSON(message.user_type);
     }
     if (message.profile_section !== ProfileSection.OVERVIEW) {
-      obj.profileSection = profileSectionToJSON(message.profile_section);
+      obj.profile_section = profileSectionToJSON(message.profile_section);
     }
     if (message.hints?.length) {
       obj.hints = message.hints;
     }
     if (message.group_access_settings !== undefined) {
-      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
+      obj.group_access_settings = ObjectId.toJSON(message.group_access_settings);
     }
     if (message.entries_access_settings !== undefined) {
-      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
+      obj.entries_access_settings = ObjectId.toJSON(message.entries_access_settings);
     }
     if (message.visible_to_parents_for_statuses?.length) {
-      obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => studentStatusToJSON(e));
+      obj.visible_to_parents_for_statuses = message.visible_to_parents_for_statuses.map((e) => studentStatusToJSON(e));
     }
     if (message.visible_to_teachers_for_statuses?.length) {
-      obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => studentStatusToJSON(e));
+      obj.visible_to_teachers_for_statuses = message.visible_to_teachers_for_statuses.map((e) =>
+        studentStatusToJSON(e)
+      );
     }
     return obj;
   },
@@ -787,12 +789,12 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      group_id: isSet(object.group_id) ? ObjectId.fromJSON(object.group_id) : undefined,
+      user_id: isSet(object.user_id) ? ObjectId.fromJSON(object.user_id) : undefined,
       status: isSet(object.status)
         ? approvalStatusFromJSON(object.status)
         : ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL,
-      rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+      rejection_message: isSet(object.rejection_message) ? globalThis.String(object.rejection_message) : "",
     };
   },
 
@@ -805,16 +807,16 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.group_id !== undefined) {
-      obj.groupId = ObjectId.toJSON(message.group_id);
+      obj.group_id = ObjectId.toJSON(message.group_id);
     }
     if (message.user_id !== undefined) {
-      obj.userId = ObjectId.toJSON(message.user_id);
+      obj.user_id = ObjectId.toJSON(message.user_id);
     }
     if (message.status !== ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL) {
       obj.status = approvalStatusToJSON(message.status);
     }
     if (message.rejection_message !== undefined && message.rejection_message !== "") {
-      obj.rejectionMessage = message.rejection_message;
+      obj.rejection_message = message.rejection_message;
     }
     return obj;
   },
@@ -887,7 +889,7 @@ export const StudentPrimaryIdField: MessageFns<StudentPrimaryIdField> = {
 
   fromJSON(object: any): StudentPrimaryIdField {
     return {
-      field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
+      field_name: isSet(object.field_name) ? globalThis.String(object.field_name) : "",
       value: isSet(object.value) ? globalThis.String(object.value) : "",
     };
   },
@@ -895,7 +897,7 @@ export const StudentPrimaryIdField: MessageFns<StudentPrimaryIdField> = {
   toJSON(message: StudentPrimaryIdField): unknown {
     const obj: any = {};
     if (message.field_name !== "") {
-      obj.fieldName = message.field_name;
+      obj.field_name = message.field_name;
     }
     if (message.value !== "") {
       obj.value = message.value;

@@ -295,8 +295,8 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
 
   fromJSON(object: any): OnboardingStepData {
     return {
-      step_name: isSet(object.stepName)
-        ? onboardingStepNameFromJSON(object.stepName)
+      step_name: isSet(object.step_name)
+        ? onboardingStepNameFromJSON(object.step_name)
         : OnboardingStepName.ORG_OWNER_PROFILE,
       status: isSet(object.status) ? onboardingStepStatusFromJSON(object.status) : OnboardingStepStatus.ONGOING,
     };
@@ -305,7 +305,7 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
   toJSON(message: OnboardingStepData): unknown {
     const obj: any = {};
     if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
-      obj.stepName = onboardingStepNameToJSON(message.step_name);
+      obj.step_name = onboardingStepNameToJSON(message.step_name);
     }
     if (message.status !== OnboardingStepStatus.ONGOING) {
       obj.status = onboardingStepStatusToJSON(message.status);
@@ -392,11 +392,11 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
   fromJSON(object: any): OnboardingStepsStatus {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      organization_id: isSet(object.organization_id) ? ObjectId.fromJSON(object.organization_id) : undefined,
       steps: globalThis.Array.isArray(object?.steps)
         ? object.steps.map((e: any) => OnboardingStepData.fromJSON(e))
         : [],
-      all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
+      all_steps_done: isSet(object.all_steps_done) ? globalThis.Boolean(object.all_steps_done) : false,
     };
   },
 
@@ -406,13 +406,13 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
       obj.id = ObjectId.toJSON(message.id);
     }
     if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
+      obj.organization_id = ObjectId.toJSON(message.organization_id);
     }
     if (message.steps?.length) {
       obj.steps = message.steps.map((e) => OnboardingStepData.toJSON(e));
     }
     if (message.all_steps_done !== false) {
-      obj.allStepsDone = message.all_steps_done;
+      obj.all_steps_done = message.all_steps_done;
     }
     return obj;
   },
