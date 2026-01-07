@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
+exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -556,6 +556,128 @@ exports.GetTeachersByIdsResponse = {
     fromPartial(object) {
         const message = createBaseGetTeachersByIdsResponse();
         message.teachers = object.teachers?.map((e) => teacher_1.TeacherBasic.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetFullTeachersByIdsRequest() {
+    return { context: undefined, teacher_ids: [] };
+}
+exports.GetFullTeachersByIdsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.teacher_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetFullTeachersByIdsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.teacher_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
+                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.teacher_ids?.length) {
+            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetFullTeachersByIdsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetFullTeachersByIdsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.teacher_ids = object.teacher_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetFullTeachersByIdsResponse() {
+    return { teachers: [] };
+}
+exports.GetFullTeachersByIdsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.teachers) {
+            teacher_1.Teacher.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetFullTeachersByIdsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.teachers.push(teacher_1.Teacher.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => teacher_1.Teacher.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.teachers?.length) {
+            obj.teachers = message.teachers.map((e) => teacher_1.Teacher.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetFullTeachersByIdsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetFullTeachersByIdsResponse();
+        message.teachers = object.teachers?.map((e) => teacher_1.Teacher.fromPartial(e)) || [];
         return message;
     },
 };

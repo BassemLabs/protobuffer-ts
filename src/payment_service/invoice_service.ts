@@ -260,6 +260,10 @@ export interface UpsertOrganizationInvoiceRequest {
   is_in_trial_period: boolean;
 }
 
+export interface GetLatestOrganizationInvoiceRequest {
+  context: RequestContext | undefined;
+}
+
 export interface GetOrganizationInvoicesRequest {
   context: RequestContext | undefined;
 }
@@ -3934,6 +3938,69 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
     message.invoice_end_date = object.invoice_end_date ?? undefined;
     message.current_enrolled_students_count = object.current_enrolled_students_count ?? 0;
     message.is_in_trial_period = object.is_in_trial_period ?? false;
+    return message;
+  },
+};
+
+function createBaseGetLatestOrganizationInvoiceRequest(): GetLatestOrganizationInvoiceRequest {
+  return { context: undefined };
+}
+
+export const GetLatestOrganizationInvoiceRequest: MessageFns<GetLatestOrganizationInvoiceRequest> = {
+  encode(message: GetLatestOrganizationInvoiceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetLatestOrganizationInvoiceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLatestOrganizationInvoiceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLatestOrganizationInvoiceRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetLatestOrganizationInvoiceRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLatestOrganizationInvoiceRequest>, I>>(
+    base?: I,
+  ): GetLatestOrganizationInvoiceRequest {
+    return GetLatestOrganizationInvoiceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetLatestOrganizationInvoiceRequest>, I>>(
+    object: I,
+  ): GetLatestOrganizationInvoiceRequest {
+    const message = createBaseGetLatestOrganizationInvoiceRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };

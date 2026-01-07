@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
+exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetActionsRequiredByParentsResponse = exports.GetActionsRequiredByParentsRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -3241,6 +3241,58 @@ exports.UpsertOrganizationInvoiceRequest = {
         message.invoice_end_date = object.invoice_end_date ?? undefined;
         message.current_enrolled_students_count = object.current_enrolled_students_count ?? 0;
         message.is_in_trial_period = object.is_in_trial_period ?? false;
+        return message;
+    },
+};
+function createBaseGetLatestOrganizationInvoiceRequest() {
+    return { context: undefined };
+}
+exports.GetLatestOrganizationInvoiceRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetLatestOrganizationInvoiceRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetLatestOrganizationInvoiceRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetLatestOrganizationInvoiceRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
         return message;
     },
 };

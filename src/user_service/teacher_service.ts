@@ -63,6 +63,15 @@ export interface GetTeachersByIdsResponse {
   teachers: TeacherBasic[];
 }
 
+export interface GetFullTeachersByIdsRequest {
+  context: RequestContext | undefined;
+  teacher_ids: ObjectId[];
+}
+
+export interface GetFullTeachersByIdsResponse {
+  teachers: Teacher[];
+}
+
 export interface GetTeacherSignatureRequest {
   context: RequestContext | undefined;
   teacher_id: ObjectId | undefined;
@@ -764,6 +773,143 @@ export const GetTeachersByIdsResponse: MessageFns<GetTeachersByIdsResponse> = {
   fromPartial<I extends Exact<DeepPartial<GetTeachersByIdsResponse>, I>>(object: I): GetTeachersByIdsResponse {
     const message = createBaseGetTeachersByIdsResponse();
     message.teachers = object.teachers?.map((e) => TeacherBasic.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetFullTeachersByIdsRequest(): GetFullTeachersByIdsRequest {
+  return { context: undefined, teacher_ids: [] };
+}
+
+export const GetFullTeachersByIdsRequest: MessageFns<GetFullTeachersByIdsRequest> = {
+  encode(message: GetFullTeachersByIdsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.teacher_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetFullTeachersByIdsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFullTeachersByIdsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teacher_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFullTeachersByIdsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      teacher_ids: globalThis.Array.isArray(object?.teacherIds)
+        ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetFullTeachersByIdsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.teacher_ids?.length) {
+      obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetFullTeachersByIdsRequest>, I>>(base?: I): GetFullTeachersByIdsRequest {
+    return GetFullTeachersByIdsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetFullTeachersByIdsRequest>, I>>(object: I): GetFullTeachersByIdsRequest {
+    const message = createBaseGetFullTeachersByIdsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetFullTeachersByIdsResponse(): GetFullTeachersByIdsResponse {
+  return { teachers: [] };
+}
+
+export const GetFullTeachersByIdsResponse: MessageFns<GetFullTeachersByIdsResponse> = {
+  encode(message: GetFullTeachersByIdsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.teachers) {
+      Teacher.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetFullTeachersByIdsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFullTeachersByIdsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teachers.push(Teacher.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFullTeachersByIdsResponse {
+    return {
+      teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => Teacher.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetFullTeachersByIdsResponse): unknown {
+    const obj: any = {};
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => Teacher.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetFullTeachersByIdsResponse>, I>>(base?: I): GetFullTeachersByIdsResponse {
+    return GetFullTeachersByIdsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetFullTeachersByIdsResponse>, I>>(object: I): GetFullTeachersByIdsResponse {
+    const message = createBaseGetFullTeachersByIdsResponse();
+    message.teachers = object.teachers?.map((e) => Teacher.fromPartial(e)) || [];
     return message;
   },
 };

@@ -196,6 +196,9 @@ export interface UpsertOrganizationInvoiceRequest {
     current_enrolled_students_count: number;
     is_in_trial_period: boolean;
 }
+export interface GetLatestOrganizationInvoiceRequest {
+    context: RequestContext | undefined;
+}
 export interface GetOrganizationInvoicesRequest {
     context: RequestContext | undefined;
 }
@@ -255,6 +258,7 @@ export declare const GetStudentsWithReregistrationInvoicesResponse: MessageFns<G
 export declare const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBassemLabsFeesInPeriodRequest>;
 export declare const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBassemLabsFeesInPeriodResponse>;
 export declare const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvoiceRequest>;
+export declare const GetLatestOrganizationInvoiceRequest: MessageFns<GetLatestOrganizationInvoiceRequest>;
 export declare const GetOrganizationInvoicesRequest: MessageFns<GetOrganizationInvoicesRequest>;
 export declare const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInvoicesRequest>;
 export declare const GetFailedAutoPayInvoicesRequest: MessageFns<GetFailedAutoPayInvoicesRequest>;

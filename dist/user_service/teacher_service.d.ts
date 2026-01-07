@@ -37,6 +37,13 @@ export interface GetTeachersByIdsRequest {
 export interface GetTeachersByIdsResponse {
     teachers: TeacherBasic[];
 }
+export interface GetFullTeachersByIdsRequest {
+    context: RequestContext | undefined;
+    teacher_ids: ObjectId[];
+}
+export interface GetFullTeachersByIdsResponse {
+    teachers: Teacher[];
+}
 export interface GetTeacherSignatureRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
@@ -119,6 +126,8 @@ export declare const GetAllTeachersForStagingRequest: MessageFns<GetAllTeachersF
 export declare const GetAllTeachersForStagingResponse: MessageFns<GetAllTeachersForStagingResponse>;
 export declare const GetTeachersByIdsRequest: MessageFns<GetTeachersByIdsRequest>;
 export declare const GetTeachersByIdsResponse: MessageFns<GetTeachersByIdsResponse>;
+export declare const GetFullTeachersByIdsRequest: MessageFns<GetFullTeachersByIdsRequest>;
+export declare const GetFullTeachersByIdsResponse: MessageFns<GetFullTeachersByIdsResponse>;
 export declare const GetTeacherSignatureRequest: MessageFns<GetTeacherSignatureRequest>;
 export declare const GetTeacherSignatureResponse: MessageFns<GetTeacherSignatureResponse>;
 export declare const UpdateTeacherSignatureRequest: MessageFns<UpdateTeacherSignatureRequest>;
