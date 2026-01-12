@@ -5,13 +5,14 @@
 //   protoc               unknown
 // source: class_service/report_entry.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportEntryMedian = exports.ReportEntrySectionMedian = exports.ReportEntryView = exports.ReportEntry = exports.GuardianSignature = exports.GuardianSignatureSessionMetadata = exports.GuardianSignatureHeader = exports.ReportEntryLearningSkill = exports.ReportEntrySection = exports.ReportEntryCheckBox = exports.ReportStatus = exports.protobufPackage = void 0;
+exports.ParentStudentReportSummary = exports.ReportEntryMedian = exports.ReportEntrySectionMedian = exports.ReportEntryView = exports.ReportEntry = exports.GuardianSignature = exports.GuardianSignatureSessionMetadata = exports.GuardianSignatureHeader = exports.ReportEntryLearningSkill = exports.ReportEntrySection = exports.ReportEntryCheckBox = exports.ReportStatus = exports.protobufPackage = void 0;
 exports.reportStatusFromJSON = reportStatusFromJSON;
 exports.reportStatusToJSON = reportStatusToJSON;
 exports.reportStatusToNumber = reportStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service";
@@ -1080,6 +1081,88 @@ exports.ReportEntryMedian = {
             ? object_id_1.ObjectId.fromPartial(object.report_entry)
             : undefined;
         message.section_medians = object.section_medians?.map((e) => exports.ReportEntrySectionMedian.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseParentStudentReportSummary() {
+    return { student: undefined, total_reports: 0, unsigned_reports_count: 0 };
+}
+exports.ParentStudentReportSummary = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student !== undefined) {
+            student_1.Student.encode(message.student, writer.uint32(10).fork()).join();
+        }
+        if (message.total_reports !== 0) {
+            writer.uint32(16).uint32(message.total_reports);
+        }
+        if (message.unsigned_reports_count !== 0) {
+            writer.uint32(24).uint32(message.unsigned_reports_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentStudentReportSummary();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student = student_1.Student.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.total_reports = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.unsigned_reports_count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
+            total_reports: isSet(object.totalReports) ? globalThis.Number(object.totalReports) : 0,
+            unsigned_reports_count: isSet(object.unsignedReportsCount) ? globalThis.Number(object.unsignedReportsCount) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student !== undefined) {
+            obj.student = student_1.Student.toJSON(message.student);
+        }
+        if (message.total_reports !== 0) {
+            obj.totalReports = Math.round(message.total_reports);
+        }
+        if (message.unsigned_reports_count !== 0) {
+            obj.unsignedReportsCount = Math.round(message.unsigned_reports_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentStudentReportSummary.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentStudentReportSummary();
+        message.student = (object.student !== undefined && object.student !== null)
+            ? student_1.Student.fromPartial(object.student)
+            : undefined;
+        message.total_reports = object.total_reports ?? 0;
+        message.unsigned_reports_count = object.unsigned_reports_count ?? 0;
         return message;
     },
 };

@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import { Student } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import {
   ReportType,
@@ -163,6 +164,12 @@ export interface ReportEntrySectionMedian {
 export interface ReportEntryMedian {
   report_entry: ObjectId | undefined;
   section_medians: ReportEntrySectionMedian[];
+}
+
+export interface ParentStudentReportSummary {
+  student: Student | undefined;
+  total_reports: number;
+  unsigned_reports_count: number;
 }
 
 function createBaseReportEntryCheckBox(): ReportEntryCheckBox {
@@ -1258,6 +1265,97 @@ export const ReportEntryMedian: MessageFns<ReportEntryMedian> = {
       ? ObjectId.fromPartial(object.report_entry)
       : undefined;
     message.section_medians = object.section_medians?.map((e) => ReportEntrySectionMedian.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseParentStudentReportSummary(): ParentStudentReportSummary {
+  return { student: undefined, total_reports: 0, unsigned_reports_count: 0 };
+}
+
+export const ParentStudentReportSummary: MessageFns<ParentStudentReportSummary> = {
+  encode(message: ParentStudentReportSummary, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student !== undefined) {
+      Student.encode(message.student, writer.uint32(10).fork()).join();
+    }
+    if (message.total_reports !== 0) {
+      writer.uint32(16).uint32(message.total_reports);
+    }
+    if (message.unsigned_reports_count !== 0) {
+      writer.uint32(24).uint32(message.unsigned_reports_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ParentStudentReportSummary {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParentStudentReportSummary();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student = Student.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total_reports = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.unsigned_reports_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ParentStudentReportSummary {
+    return {
+      student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
+      total_reports: isSet(object.totalReports) ? globalThis.Number(object.totalReports) : 0,
+      unsigned_reports_count: isSet(object.unsignedReportsCount) ? globalThis.Number(object.unsignedReportsCount) : 0,
+    };
+  },
+
+  toJSON(message: ParentStudentReportSummary): unknown {
+    const obj: any = {};
+    if (message.student !== undefined) {
+      obj.student = Student.toJSON(message.student);
+    }
+    if (message.total_reports !== 0) {
+      obj.totalReports = Math.round(message.total_reports);
+    }
+    if (message.unsigned_reports_count !== 0) {
+      obj.unsignedReportsCount = Math.round(message.unsigned_reports_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ParentStudentReportSummary>, I>>(base?: I): ParentStudentReportSummary {
+    return ParentStudentReportSummary.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ParentStudentReportSummary>, I>>(object: I): ParentStudentReportSummary {
+    const message = createBaseParentStudentReportSummary();
+    message.student = (object.student !== undefined && object.student !== null)
+      ? Student.fromPartial(object.student)
+      : undefined;
+    message.total_reports = object.total_reports ?? 0;
+    message.unsigned_reports_count = object.unsigned_reports_count ?? 0;
     return message;
   },
 };

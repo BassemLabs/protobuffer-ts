@@ -10,6 +10,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
   GuardianSignatureSessionMetadata,
+  ParentStudentReportSummary,
   ReportEntry,
   ReportEntryCheckBox,
   ReportEntryLearningSkill,
@@ -52,6 +53,15 @@ export interface GetStudentReportEntriesForHomeroomRequest {
 export interface GetStudentPublishedReportEntriesRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
+}
+
+export interface GetParentPublishedReportSummariesRequest {
+  context: RequestContext | undefined;
+  school_year_id?: ObjectId | undefined;
+}
+
+export interface GetParentPublishedReportSummariesResponse {
+  summaries: ParentStudentReportSummary[];
 }
 
 export interface GetReportEntriesQueueRequest {
@@ -680,6 +690,153 @@ export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPubli
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetParentPublishedReportSummariesRequest(): GetParentPublishedReportSummariesRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetParentPublishedReportSummariesRequest: MessageFns<GetParentPublishedReportSummariesRequest> = {
+  encode(message: GetParentPublishedReportSummariesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetParentPublishedReportSummariesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetParentPublishedReportSummariesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetParentPublishedReportSummariesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetParentPublishedReportSummariesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetParentPublishedReportSummariesRequest>, I>>(
+    base?: I,
+  ): GetParentPublishedReportSummariesRequest {
+    return GetParentPublishedReportSummariesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetParentPublishedReportSummariesRequest>, I>>(
+    object: I,
+  ): GetParentPublishedReportSummariesRequest {
+    const message = createBaseGetParentPublishedReportSummariesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetParentPublishedReportSummariesResponse(): GetParentPublishedReportSummariesResponse {
+  return { summaries: [] };
+}
+
+export const GetParentPublishedReportSummariesResponse: MessageFns<GetParentPublishedReportSummariesResponse> = {
+  encode(message: GetParentPublishedReportSummariesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.summaries) {
+      ParentStudentReportSummary.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetParentPublishedReportSummariesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetParentPublishedReportSummariesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.summaries.push(ParentStudentReportSummary.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetParentPublishedReportSummariesResponse {
+    return {
+      summaries: globalThis.Array.isArray(object?.summaries)
+        ? object.summaries.map((e: any) => ParentStudentReportSummary.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetParentPublishedReportSummariesResponse): unknown {
+    const obj: any = {};
+    if (message.summaries?.length) {
+      obj.summaries = message.summaries.map((e) => ParentStudentReportSummary.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetParentPublishedReportSummariesResponse>, I>>(
+    base?: I,
+  ): GetParentPublishedReportSummariesResponse {
+    return GetParentPublishedReportSummariesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetParentPublishedReportSummariesResponse>, I>>(
+    object: I,
+  ): GetParentPublishedReportSummariesResponse {
+    const message = createBaseGetParentPublishedReportSummariesResponse();
+    message.summaries = object.summaries?.map((e) => ParentStudentReportSummary.fromPartial(e)) || [];
     return message;
   },
 };

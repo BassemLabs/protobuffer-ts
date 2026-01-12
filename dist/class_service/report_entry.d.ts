@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Student } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { ReportType, Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service";
@@ -73,6 +74,11 @@ export interface ReportEntryMedian {
     report_entry: ObjectId | undefined;
     section_medians: ReportEntrySectionMedian[];
 }
+export interface ParentStudentReportSummary {
+    student: Student | undefined;
+    total_reports: number;
+    unsigned_reports_count: number;
+}
 export declare const ReportEntryCheckBox: MessageFns<ReportEntryCheckBox>;
 export declare const ReportEntrySection: MessageFns<ReportEntrySection>;
 export declare const ReportEntryLearningSkill: MessageFns<ReportEntryLearningSkill>;
@@ -83,6 +89,7 @@ export declare const ReportEntry: MessageFns<ReportEntry>;
 export declare const ReportEntryView: MessageFns<ReportEntryView>;
 export declare const ReportEntrySectionMedian: MessageFns<ReportEntrySectionMedian>;
 export declare const ReportEntryMedian: MessageFns<ReportEntryMedian>;
+export declare const ParentStudentReportSummary: MessageFns<ParentStudentReportSummary>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

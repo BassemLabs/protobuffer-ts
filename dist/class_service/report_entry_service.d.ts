@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { GuardianSignatureSessionMetadata, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
+import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
 import { ReportType } from "./semester";
 export declare const protobufPackage = "class_service.report_entry_service";
 export interface GetCourseReportEntriesRequest {
@@ -30,6 +30,13 @@ export interface GetStudentReportEntriesForHomeroomRequest {
 export interface GetStudentPublishedReportEntriesRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
+}
+export interface GetParentPublishedReportSummariesRequest {
+    context: RequestContext | undefined;
+    school_year_id?: ObjectId | undefined;
+}
+export interface GetParentPublishedReportSummariesResponse {
+    summaries: ParentStudentReportSummary[];
 }
 export interface GetReportEntriesQueueRequest {
     context: RequestContext | undefined;
@@ -112,6 +119,8 @@ export declare const GetStudentReportEntriesRequest: MessageFns<GetStudentReport
 export declare const GetStudentReportEntriesForCourseRequest: MessageFns<GetStudentReportEntriesForCourseRequest>;
 export declare const GetStudentReportEntriesForHomeroomRequest: MessageFns<GetStudentReportEntriesForHomeroomRequest>;
 export declare const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPublishedReportEntriesRequest>;
+export declare const GetParentPublishedReportSummariesRequest: MessageFns<GetParentPublishedReportSummariesRequest>;
+export declare const GetParentPublishedReportSummariesResponse: MessageFns<GetParentPublishedReportSummariesResponse>;
 export declare const GetReportEntriesQueueRequest: MessageFns<GetReportEntriesQueueRequest>;
 export declare const GetReportEntryRequest: MessageFns<GetReportEntryRequest>;
 export declare const GetReportEntryResponse: MessageFns<GetReportEntryResponse>;
