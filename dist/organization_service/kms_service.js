@@ -5,9 +5,10 @@
 //   protoc               unknown
 // source: organization_service/kms_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateKmsKeyRequest = exports.GetOrganizationKmsKeysResponse = exports.GetOrganizationKmsKeysRequest = exports.GetKmsKeyRequest = exports.protobufPackage = void 0;
+exports.GetAvailableLmsProvidersResponse = exports.GetAvailableLmsProvidersRequest = exports.UpdateKmsKeyRequest = exports.GetOrganizationKmsKeysResponse = exports.GetOrganizationKmsKeysRequest = exports.GetKmsKeyRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const lms_course_1 = require("../class_service/lms_course");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const kms_key_1 = require("./kms_key");
@@ -311,6 +312,121 @@ exports.UpdateKmsKeyRequest = {
             : undefined;
         message.key_type = object.key_type ?? kms_key_1.KMSKeyType.GoogelAdminEmail;
         message.secret_material = object.secret_material ?? "";
+        return message;
+    },
+};
+function createBaseGetAvailableLmsProvidersRequest() {
+    return { context: undefined };
+}
+exports.GetAvailableLmsProvidersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAvailableLmsProvidersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAvailableLmsProvidersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAvailableLmsProvidersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAvailableLmsProvidersResponse() {
+    return { providers: [] };
+}
+exports.GetAvailableLmsProvidersResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        writer.uint32(10).fork();
+        for (const v of message.providers) {
+            writer.int32((0, lms_course_1.lmsProviderTypeToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAvailableLmsProvidersResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag === 8) {
+                        message.providers.push((0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 10) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.providers.push((0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            providers: globalThis.Array.isArray(object?.providers)
+                ? object.providers.map((e) => (0, lms_course_1.lmsProviderTypeFromJSON)(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.providers?.length) {
+            obj.providers = message.providers.map((e) => (0, lms_course_1.lmsProviderTypeToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAvailableLmsProvidersResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAvailableLmsProvidersResponse();
+        message.providers = object.providers?.map((e) => e) || [];
         return message;
     },
 };

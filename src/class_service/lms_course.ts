@@ -13,6 +13,7 @@ export const protobufPackage = "class_service";
 
 export enum LmsProviderType {
   GOOGLE_CLASSROOM = "GOOGLE_CLASSROOM",
+  CANVAS = "CANVAS",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -21,6 +22,9 @@ export function lmsProviderTypeFromJSON(object: any): LmsProviderType {
     case 1:
     case "GOOGLE_CLASSROOM":
       return LmsProviderType.GOOGLE_CLASSROOM;
+    case 2:
+    case "CANVAS":
+      return LmsProviderType.CANVAS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -32,6 +36,8 @@ export function lmsProviderTypeToJSON(object: LmsProviderType): string {
   switch (object) {
     case LmsProviderType.GOOGLE_CLASSROOM:
       return "GOOGLE_CLASSROOM";
+    case LmsProviderType.CANVAS:
+      return "CANVAS";
     case LmsProviderType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -42,6 +48,8 @@ export function lmsProviderTypeToNumber(object: LmsProviderType): number {
   switch (object) {
     case LmsProviderType.GOOGLE_CLASSROOM:
       return 1;
+    case LmsProviderType.CANVAS:
+      return 2;
     case LmsProviderType.UNRECOGNIZED:
     default:
       return -1;

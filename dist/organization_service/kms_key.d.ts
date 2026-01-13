@@ -13,6 +13,7 @@ export declare enum KMSKeyType {
     GoogelAdminEmail = "GoogelAdminEmail",
     GoogleAdminServiceAccountKey = "GoogleAdminServiceAccountKey",
     GoogleAdminServiceAccountId = "GoogleAdminServiceAccountId",
+    CanvasApiToken = "CanvasApiToken",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function kMSKeyTypeFromJSON(object: any): KMSKeyType;

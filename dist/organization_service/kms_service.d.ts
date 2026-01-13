@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { LmsProviderType } from "../class_service/lms_course";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { KMSKey, KMSKeyType } from "./kms_key";
@@ -21,10 +22,18 @@ export interface UpdateKmsKeyRequest {
     key_type: KMSKeyType;
     secret_material: string;
 }
+export interface GetAvailableLmsProvidersRequest {
+    context: RequestContext | undefined;
+}
+export interface GetAvailableLmsProvidersResponse {
+    providers: LmsProviderType[];
+}
 export declare const GetKmsKeyRequest: MessageFns<GetKmsKeyRequest>;
 export declare const GetOrganizationKmsKeysRequest: MessageFns<GetOrganizationKmsKeysRequest>;
 export declare const GetOrganizationKmsKeysResponse: MessageFns<GetOrganizationKmsKeysResponse>;
 export declare const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest>;
+export declare const GetAvailableLmsProvidersRequest: MessageFns<GetAvailableLmsProvidersRequest>;
+export declare const GetAvailableLmsProvidersResponse: MessageFns<GetAvailableLmsProvidersResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

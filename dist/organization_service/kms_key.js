@@ -63,6 +63,7 @@ var KMSKeyType;
     KMSKeyType["GoogelAdminEmail"] = "GoogelAdminEmail";
     KMSKeyType["GoogleAdminServiceAccountKey"] = "GoogleAdminServiceAccountKey";
     KMSKeyType["GoogleAdminServiceAccountId"] = "GoogleAdminServiceAccountId";
+    KMSKeyType["CanvasApiToken"] = "CanvasApiToken";
     KMSKeyType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(KMSKeyType || (exports.KMSKeyType = KMSKeyType = {}));
 function kMSKeyTypeFromJSON(object) {
@@ -76,6 +77,9 @@ function kMSKeyTypeFromJSON(object) {
         case 3:
         case "GoogleAdminServiceAccountId":
             return KMSKeyType.GoogleAdminServiceAccountId;
+        case 4:
+        case "CanvasApiToken":
+            return KMSKeyType.CanvasApiToken;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -90,6 +94,8 @@ function kMSKeyTypeToJSON(object) {
             return "GoogleAdminServiceAccountKey";
         case KMSKeyType.GoogleAdminServiceAccountId:
             return "GoogleAdminServiceAccountId";
+        case KMSKeyType.CanvasApiToken:
+            return "CanvasApiToken";
         case KMSKeyType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -103,6 +109,8 @@ function kMSKeyTypeToNumber(object) {
             return 2;
         case KMSKeyType.GoogleAdminServiceAccountId:
             return 3;
+        case KMSKeyType.CanvasApiToken:
+            return 4;
         case KMSKeyType.UNRECOGNIZED:
         default:
             return -1;

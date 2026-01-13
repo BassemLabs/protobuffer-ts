@@ -59,6 +59,7 @@ export enum KMSKeyType {
   GoogelAdminEmail = "GoogelAdminEmail",
   GoogleAdminServiceAccountKey = "GoogleAdminServiceAccountKey",
   GoogleAdminServiceAccountId = "GoogleAdminServiceAccountId",
+  CanvasApiToken = "CanvasApiToken",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -73,6 +74,9 @@ export function kMSKeyTypeFromJSON(object: any): KMSKeyType {
     case 3:
     case "GoogleAdminServiceAccountId":
       return KMSKeyType.GoogleAdminServiceAccountId;
+    case 4:
+    case "CanvasApiToken":
+      return KMSKeyType.CanvasApiToken;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -88,6 +92,8 @@ export function kMSKeyTypeToJSON(object: KMSKeyType): string {
       return "GoogleAdminServiceAccountKey";
     case KMSKeyType.GoogleAdminServiceAccountId:
       return "GoogleAdminServiceAccountId";
+    case KMSKeyType.CanvasApiToken:
+      return "CanvasApiToken";
     case KMSKeyType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -102,6 +108,8 @@ export function kMSKeyTypeToNumber(object: KMSKeyType): number {
       return 2;
     case KMSKeyType.GoogleAdminServiceAccountId:
       return 3;
+    case KMSKeyType.CanvasApiToken:
+      return 4;
     case KMSKeyType.UNRECOGNIZED:
     default:
       return -1;

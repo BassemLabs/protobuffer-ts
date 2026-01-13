@@ -23,6 +23,7 @@ exports.protobufPackage = "class_service";
 var LmsProviderType;
 (function (LmsProviderType) {
     LmsProviderType["GOOGLE_CLASSROOM"] = "GOOGLE_CLASSROOM";
+    LmsProviderType["CANVAS"] = "CANVAS";
     LmsProviderType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(LmsProviderType || (exports.LmsProviderType = LmsProviderType = {}));
 function lmsProviderTypeFromJSON(object) {
@@ -30,6 +31,9 @@ function lmsProviderTypeFromJSON(object) {
         case 1:
         case "GOOGLE_CLASSROOM":
             return LmsProviderType.GOOGLE_CLASSROOM;
+        case 2:
+        case "CANVAS":
+            return LmsProviderType.CANVAS;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -40,6 +44,8 @@ function lmsProviderTypeToJSON(object) {
     switch (object) {
         case LmsProviderType.GOOGLE_CLASSROOM:
             return "GOOGLE_CLASSROOM";
+        case LmsProviderType.CANVAS:
+            return "CANVAS";
         case LmsProviderType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -49,6 +55,8 @@ function lmsProviderTypeToNumber(object) {
     switch (object) {
         case LmsProviderType.GOOGLE_CLASSROOM:
             return 1;
+        case LmsProviderType.CANVAS:
+            return 2;
         case LmsProviderType.UNRECOGNIZED:
         default:
             return -1;

@@ -3,6 +3,7 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
 export declare enum LmsProviderType {
     GOOGLE_CLASSROOM = "GOOGLE_CLASSROOM",
+    CANVAS = "CANVAS",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function lmsProviderTypeFromJSON(object: any): LmsProviderType;

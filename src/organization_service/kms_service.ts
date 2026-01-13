@@ -6,6 +6,12 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import {
+  LmsProviderType,
+  lmsProviderTypeFromJSON,
+  lmsProviderTypeToJSON,
+  lmsProviderTypeToNumber,
+} from "../class_service/lms_course";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { KMSKey, KMSKeyType, kMSKeyTypeFromJSON, kMSKeyTypeToJSON, kMSKeyTypeToNumber } from "./kms_key";
@@ -32,6 +38,14 @@ export interface UpdateKmsKeyRequest {
   organization_id: ObjectId | undefined;
   key_type: KMSKeyType;
   secret_material: string;
+}
+
+export interface GetAvailableLmsProvidersRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetAvailableLmsProvidersResponse {
+  providers: LmsProviderType[];
 }
 
 function createBaseGetKmsKeyRequest(): GetKmsKeyRequest {
@@ -370,6 +384,144 @@ export const UpdateKmsKeyRequest: MessageFns<UpdateKmsKeyRequest> = {
       : undefined;
     message.key_type = object.key_type ?? KMSKeyType.GoogelAdminEmail;
     message.secret_material = object.secret_material ?? "";
+    return message;
+  },
+};
+
+function createBaseGetAvailableLmsProvidersRequest(): GetAvailableLmsProvidersRequest {
+  return { context: undefined };
+}
+
+export const GetAvailableLmsProvidersRequest: MessageFns<GetAvailableLmsProvidersRequest> = {
+  encode(message: GetAvailableLmsProvidersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAvailableLmsProvidersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAvailableLmsProvidersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAvailableLmsProvidersRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetAvailableLmsProvidersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAvailableLmsProvidersRequest>, I>>(base?: I): GetAvailableLmsProvidersRequest {
+    return GetAvailableLmsProvidersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAvailableLmsProvidersRequest>, I>>(
+    object: I,
+  ): GetAvailableLmsProvidersRequest {
+    const message = createBaseGetAvailableLmsProvidersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAvailableLmsProvidersResponse(): GetAvailableLmsProvidersResponse {
+  return { providers: [] };
+}
+
+export const GetAvailableLmsProvidersResponse: MessageFns<GetAvailableLmsProvidersResponse> = {
+  encode(message: GetAvailableLmsProvidersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    writer.uint32(10).fork();
+    for (const v of message.providers) {
+      writer.int32(lmsProviderTypeToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAvailableLmsProvidersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAvailableLmsProvidersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag === 8) {
+            message.providers.push(lmsProviderTypeFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.providers.push(lmsProviderTypeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAvailableLmsProvidersResponse {
+    return {
+      providers: globalThis.Array.isArray(object?.providers)
+        ? object.providers.map((e: any) => lmsProviderTypeFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetAvailableLmsProvidersResponse): unknown {
+    const obj: any = {};
+    if (message.providers?.length) {
+      obj.providers = message.providers.map((e) => lmsProviderTypeToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAvailableLmsProvidersResponse>, I>>(
+    base?: I,
+  ): GetAvailableLmsProvidersResponse {
+    return GetAvailableLmsProvidersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAvailableLmsProvidersResponse>, I>>(
+    object: I,
+  ): GetAvailableLmsProvidersResponse {
+    const message = createBaseGetAvailableLmsProvidersResponse();
+    message.providers = object.providers?.map((e) => e) || [];
     return message;
   },
 };
