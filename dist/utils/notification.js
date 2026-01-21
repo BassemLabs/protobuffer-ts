@@ -84,6 +84,7 @@ function createBaseNotification() {
         notification_destination_email: "",
         notification_destination_phone: "",
         date_to_send: undefined,
+        deep_link: "",
     };
 }
 exports.Notification = {
@@ -137,6 +138,9 @@ exports.Notification = {
         }
         if (message.date_to_send !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.date_to_send), writer.uint32(130).fork()).join();
+        }
+        if (message.deep_link !== undefined && message.deep_link !== "") {
+            writer.uint32(138).string(message.deep_link);
         }
         return writer;
     },
@@ -250,6 +254,12 @@ exports.Notification = {
                     }
                     message.date_to_send = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 17:
+                    if (tag !== 138) {
+                        break;
+                    }
+                    message.deep_link = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -286,6 +296,7 @@ exports.Notification = {
                 ? globalThis.String(object.notificationDestinationPhone)
                 : "",
             date_to_send: isSet(object.dateToSend) ? fromJsonTimestamp(object.dateToSend) : undefined,
+            deep_link: isSet(object.deepLink) ? globalThis.String(object.deepLink) : "",
         };
     },
     toJSON(message) {
@@ -338,6 +349,9 @@ exports.Notification = {
         if (message.date_to_send !== undefined) {
             obj.dateToSend = message.date_to_send.toISOString();
         }
+        if (message.deep_link !== undefined && message.deep_link !== "") {
+            obj.deepLink = message.deep_link;
+        }
         return obj;
     },
     create(base) {
@@ -370,6 +384,7 @@ exports.Notification = {
         message.notification_destination_email = object.notification_destination_email ?? "";
         message.notification_destination_phone = object.notification_destination_phone ?? "";
         message.date_to_send = object.date_to_send ?? undefined;
+        message.deep_link = object.deep_link ?? "";
         return message;
     },
 };

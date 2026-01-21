@@ -88,6 +88,7 @@ export interface Notification {
   notification_destination_email?: string | undefined;
   notification_destination_phone?: string | undefined;
   date_to_send?: Date | undefined;
+  deep_link?: string | undefined;
 }
 
 function createBaseNotification(): Notification {
@@ -108,6 +109,7 @@ function createBaseNotification(): Notification {
     notification_destination_email: "",
     notification_destination_phone: "",
     date_to_send: undefined,
+    deep_link: "",
   };
 }
 
@@ -162,6 +164,9 @@ export const Notification: MessageFns<Notification> = {
     }
     if (message.date_to_send !== undefined) {
       Timestamp.encode(toTimestamp(message.date_to_send), writer.uint32(130).fork()).join();
+    }
+    if (message.deep_link !== undefined && message.deep_link !== "") {
+      writer.uint32(138).string(message.deep_link);
     }
     return writer;
   },
@@ -295,6 +300,13 @@ export const Notification: MessageFns<Notification> = {
 
           message.date_to_send = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 17:
+          if (tag !== 138) {
+            break;
+          }
+
+          message.deep_link = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -332,6 +344,7 @@ export const Notification: MessageFns<Notification> = {
         ? globalThis.String(object.notificationDestinationPhone)
         : "",
       date_to_send: isSet(object.dateToSend) ? fromJsonTimestamp(object.dateToSend) : undefined,
+      deep_link: isSet(object.deepLink) ? globalThis.String(object.deepLink) : "",
     };
   },
 
@@ -385,6 +398,9 @@ export const Notification: MessageFns<Notification> = {
     if (message.date_to_send !== undefined) {
       obj.dateToSend = message.date_to_send.toISOString();
     }
+    if (message.deep_link !== undefined && message.deep_link !== "") {
+      obj.deepLink = message.deep_link;
+    }
     return obj;
   },
 
@@ -418,6 +434,7 @@ export const Notification: MessageFns<Notification> = {
     message.notification_destination_email = object.notification_destination_email ?? "";
     message.notification_destination_phone = object.notification_destination_phone ?? "";
     message.date_to_send = object.date_to_send ?? undefined;
+    message.deep_link = object.deep_link ?? "";
     return message;
   },
 };

@@ -1,4 +1,6 @@
 // Auto-generated index.ts
+import * as Device_token_service from './user_service/device_token_service';
+export { Device_token_service };
 import * as Parent from './user_service/parent';
 export { Parent };
 import * as Email_template from './user_service/email_template';
@@ -11,6 +13,8 @@ import * as Communication from './user_service/communication';
 export { Communication };
 import * as User_role from './user_service/user_role';
 export { User_role };
+import * as Device_token from './user_service/device_token';
+export { Device_token };
 import * as Custom_field from './user_service/custom_field';
 export { Custom_field };
 import * as Family_service from './user_service/family_service';

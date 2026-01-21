@@ -29,6 +29,7 @@ export interface Notification {
     notification_destination_email?: string | undefined;
     notification_destination_phone?: string | undefined;
     date_to_send?: Date | undefined;
+    deep_link?: string | undefined;
 }
 export declare const Notification: MessageFns<Notification>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
