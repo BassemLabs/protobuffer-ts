@@ -987,7 +987,7 @@ exports.SemesterResponse = {
     },
 };
 function createBaseGetStudentSemestersRequest() {
-    return { context: undefined, student_id: undefined, include_archived: false };
+    return { context: undefined, student_id: undefined, include_archived: false, school_year_id: undefined };
 }
 exports.GetStudentSemestersRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -999,6 +999,9 @@ exports.GetStudentSemestersRequest = {
         }
         if (message.include_archived !== undefined && message.include_archived !== false) {
             writer.uint32(24).bool(message.include_archived);
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -1027,6 +1030,12 @@ exports.GetStudentSemestersRequest = {
                     }
                     message.include_archived = reader.bool();
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1040,6 +1049,7 @@ exports.GetStudentSemestersRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : false,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -1052,6 +1062,9 @@ exports.GetStudentSemestersRequest = {
         }
         if (message.include_archived !== undefined && message.include_archived !== false) {
             obj.includeArchived = message.include_archived;
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
         return obj;
     },
@@ -1067,6 +1080,9 @@ exports.GetStudentSemestersRequest = {
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
         message.include_archived = object.include_archived ?? false;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
         return message;
     },
 };
