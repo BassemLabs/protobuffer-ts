@@ -1,8 +1,9 @@
 # ============================================================================
 # Auto-Approve Package.json Dependency Updates
 # ============================================================================
-# This workflow automatically approves and enables auto-merge for PRs that only
-# modify package.json and lock files (dependency updates).
+# This workflow automatically APPROVES PRs that only modify package.json and
+# lock files (dependency updates).
+# NOTE: Does NOT auto-merge - merging is controlled by the update-dependencies.sh script
 # ============================================================================
 
 name: Auto-Approve Package Updates
@@ -17,7 +18,6 @@ on:
       - 'pnpm-lock.yaml'
 
 permissions:
-  contents: write
   pull-requests: write
 
 jobs:
@@ -68,11 +68,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           review-message: |
             ✅ Auto-approved: This PR only modifies package.json and/or lock files.
-
-      - name: Enable auto-merge
-        run: |
-          gh pr merge --auto --squash "${{ github.event.pull_request.number }}" || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
+            ℹ️ Merge will be handled by the dependency update script.
 
