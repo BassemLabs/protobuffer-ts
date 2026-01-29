@@ -2,17 +2,7 @@
 # Auto-Approve Package.json Dependency Updates
 # ============================================================================
 # This workflow automatically approves and enables auto-merge for PRs that only
-# modify package.json and package-lock.json files (dependency updates).
-#
-# To use this workflow:
-# 1. Copy this file to your repo's .github/workflows/ directory
-# 2. Ensure your repo has a GitHub App or PAT with PR approval permissions
-# 3. Set up the required secrets (see below)
-#
-# Required secrets:
-# - GITHUB_TOKEN (automatically available)
-# - Or a PAT with repo permissions stored as AUTO_APPROVE_TOKEN
-#
+# modify package.json and lock files (dependency updates).
 # ============================================================================
 
 name: Auto-Approve Package Updates
@@ -75,66 +65,14 @@ jobs:
       - name: Approve PR
         uses: hmarr/auto-approve-action@v4
         with:
-          # Use PAT if available (needed for approving PRs created by same user)
-          # Otherwise falls back to GITHUB_TOKEN (works for PRs from other users/bots)
-          github-token: ${{ secrets.AUTO_APPROVE_PAT || secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           review-message: |
             ✅ Auto-approved: This PR only modifies package.json and/or lock files.
-            
-            This automated review verifies that:
-            - Only dependency files were changed
-            - No source code modifications detected
-            
-            Please ensure CI passes before merging.
 
       - name: Enable auto-merge
-        if: success()
         run: |
-          gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
+          gh pr merge --auto --squash "${{ github.event.pull_request.number }}" || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
 
-  notify-manual-review:
-    name: Notify Manual Review Needed
-    needs: check-package-only
-    if: needs.check-package-only.outputs.package_only == 'false'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Add comment for manual review
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            
-            const botComment = comments.find(comment => 
-              comment.user.type === 'Bot' && 
-              comment.body.includes('Manual Review Required')
-            );
-            
-            if (!botComment) {
-              const body = [
-                '## Manual Review Required',
-                '',
-                'This PR modifies files other than package.json and lock files, so it requires manual review.',
-                '',
-                '**Auto-approval is only available for PRs that exclusively modify:**',
-                '- `package.json`',
-                '- `package-lock.json`',
-                '- `yarn.lock`',
-                '- `pnpm-lock.yaml`',
-                '',
-                'Please wait for a maintainer to review this PR.'
-              ].join('\n');
-              
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: body
-              });
-            }
