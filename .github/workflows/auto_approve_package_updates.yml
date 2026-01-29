@@ -75,7 +75,9 @@ jobs:
       - name: Approve PR
         uses: hmarr/auto-approve-action@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Use PAT if available (needed for approving PRs created by same user)
+          # Otherwise falls back to GITHUB_TOKEN (works for PRs from other users/bots)
+          github-token: ${{ secrets.AUTO_APPROVE_PAT || secrets.GITHUB_TOKEN }}
           review-message: |
             ✅ Auto-approved: This PR only modifies package.json and/or lock files.
             
@@ -115,21 +117,24 @@ jobs:
             );
             
             if (!botComment) {
-              github.rest.issues.createComment({
+              const body = [
+                '## Manual Review Required',
+                '',
+                'This PR modifies files other than package.json and lock files, so it requires manual review.',
+                '',
+                '**Auto-approval is only available for PRs that exclusively modify:**',
+                '- `package.json`',
+                '- `package-lock.json`',
+                '- `yarn.lock`',
+                '- `pnpm-lock.yaml`',
+                '',
+                'Please wait for a maintainer to review this PR.'
+              ].join('\n');
+              
+              await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `## 🔍 Manual Review Required
-                
-This PR modifies files other than package.json and lock files, so it requires manual review.
-
-**Auto-approval is only available for PRs that exclusively modify:**
-- \`package.json\`
-- \`package-lock.json\`
-- \`yarn.lock\`
-- \`pnpm-lock.yaml\`
-
-Please wait for a maintainer to review this PR.`
+                body: body
               });
             }
-
