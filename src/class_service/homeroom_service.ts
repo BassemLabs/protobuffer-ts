@@ -107,6 +107,26 @@ export interface AddStudentsRequest {
   student_ids: ObjectId[];
 }
 
+export interface TeacherFailure {
+  teacher_id: ObjectId | undefined;
+  reason: string;
+}
+
+export interface StudentFailure {
+  student_id: ObjectId | undefined;
+  reason: string;
+}
+
+export interface AddTeachersResponse {
+  homeroom: Homeroom | undefined;
+  failed_teachers: TeacherFailure[];
+}
+
+export interface AddStudentsResponse {
+  homeroom: Homeroom | undefined;
+  failed_students: StudentFailure[];
+}
+
 export interface RemoveStudentsRequest {
   context: RequestContext | undefined;
   homeroom_id: ObjectId | undefined;
@@ -1496,6 +1516,314 @@ export const AddStudentsRequest: MessageFns<AddStudentsRequest> = {
       ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseTeacherFailure(): TeacherFailure {
+  return { teacher_id: undefined, reason: "" };
+}
+
+export const TeacherFailure: MessageFns<TeacherFailure> = {
+  encode(message: TeacherFailure, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(10).fork()).join();
+    }
+    if (message.reason !== "") {
+      writer.uint32(18).string(message.reason);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TeacherFailure {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTeacherFailure();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TeacherFailure {
+    return {
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+    };
+  },
+
+  toJSON(message: TeacherFailure): unknown {
+    const obj: any = {};
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.reason !== "") {
+      obj.reason = message.reason;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TeacherFailure>, I>>(base?: I): TeacherFailure {
+    return TeacherFailure.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TeacherFailure>, I>>(object: I): TeacherFailure {
+    const message = createBaseTeacherFailure();
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.reason = object.reason ?? "";
+    return message;
+  },
+};
+
+function createBaseStudentFailure(): StudentFailure {
+  return { student_id: undefined, reason: "" };
+}
+
+export const StudentFailure: MessageFns<StudentFailure> = {
+  encode(message: StudentFailure, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.reason !== "") {
+      writer.uint32(18).string(message.reason);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StudentFailure {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStudentFailure();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StudentFailure {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+    };
+  },
+
+  toJSON(message: StudentFailure): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.reason !== "") {
+      obj.reason = message.reason;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StudentFailure>, I>>(base?: I): StudentFailure {
+    return StudentFailure.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StudentFailure>, I>>(object: I): StudentFailure {
+    const message = createBaseStudentFailure();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.reason = object.reason ?? "";
+    return message;
+  },
+};
+
+function createBaseAddTeachersResponse(): AddTeachersResponse {
+  return { homeroom: undefined, failed_teachers: [] };
+}
+
+export const AddTeachersResponse: MessageFns<AddTeachersResponse> = {
+  encode(message: AddTeachersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.homeroom !== undefined) {
+      Homeroom.encode(message.homeroom, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.failed_teachers) {
+      TeacherFailure.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddTeachersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddTeachersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.homeroom = Homeroom.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.failed_teachers.push(TeacherFailure.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddTeachersResponse {
+    return {
+      homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
+      failed_teachers: globalThis.Array.isArray(object?.failedTeachers)
+        ? object.failedTeachers.map((e: any) => TeacherFailure.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: AddTeachersResponse): unknown {
+    const obj: any = {};
+    if (message.homeroom !== undefined) {
+      obj.homeroom = Homeroom.toJSON(message.homeroom);
+    }
+    if (message.failed_teachers?.length) {
+      obj.failedTeachers = message.failed_teachers.map((e) => TeacherFailure.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddTeachersResponse>, I>>(base?: I): AddTeachersResponse {
+    return AddTeachersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AddTeachersResponse>, I>>(object: I): AddTeachersResponse {
+    const message = createBaseAddTeachersResponse();
+    message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+      ? Homeroom.fromPartial(object.homeroom)
+      : undefined;
+    message.failed_teachers = object.failed_teachers?.map((e) => TeacherFailure.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseAddStudentsResponse(): AddStudentsResponse {
+  return { homeroom: undefined, failed_students: [] };
+}
+
+export const AddStudentsResponse: MessageFns<AddStudentsResponse> = {
+  encode(message: AddStudentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.homeroom !== undefined) {
+      Homeroom.encode(message.homeroom, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.failed_students) {
+      StudentFailure.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddStudentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddStudentsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.homeroom = Homeroom.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.failed_students.push(StudentFailure.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddStudentsResponse {
+    return {
+      homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
+      failed_students: globalThis.Array.isArray(object?.failedStudents)
+        ? object.failedStudents.map((e: any) => StudentFailure.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: AddStudentsResponse): unknown {
+    const obj: any = {};
+    if (message.homeroom !== undefined) {
+      obj.homeroom = Homeroom.toJSON(message.homeroom);
+    }
+    if (message.failed_students?.length) {
+      obj.failedStudents = message.failed_students.map((e) => StudentFailure.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddStudentsResponse>, I>>(base?: I): AddStudentsResponse {
+    return AddStudentsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AddStudentsResponse>, I>>(object: I): AddStudentsResponse {
+    const message = createBaseAddStudentsResponse();
+    message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+      ? Homeroom.fromPartial(object.homeroom)
+      : undefined;
+    message.failed_students = object.failed_students?.map((e) => StudentFailure.fromPartial(e)) || [];
     return message;
   },
 };

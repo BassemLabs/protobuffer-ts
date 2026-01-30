@@ -74,6 +74,22 @@ export interface AddStudentsRequest {
     course_id: ObjectId | undefined;
     student_ids: ObjectId[];
 }
+export interface TeacherFailure {
+    teacher_id: ObjectId | undefined;
+    reason: string;
+}
+export interface StudentFailure {
+    student_id: ObjectId | undefined;
+    reason: string;
+}
+export interface AddTeachersResponse {
+    course: Course | undefined;
+    failed_teachers: TeacherFailure[];
+}
+export interface AddStudentsResponse {
+    course: Course | undefined;
+    failed_students: StudentFailure[];
+}
 /** Request to remove students from a course */
 export interface RemoveStudentsRequest {
     context: RequestContext | undefined;
@@ -151,6 +167,10 @@ export declare const UpdateCourseRequest: MessageFns<UpdateCourseRequest>;
 export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;
 export declare const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest>;
 export declare const AddStudentsRequest: MessageFns<AddStudentsRequest>;
+export declare const TeacherFailure: MessageFns<TeacherFailure>;
+export declare const StudentFailure: MessageFns<StudentFailure>;
+export declare const AddTeachersResponse: MessageFns<AddTeachersResponse>;
+export declare const AddStudentsResponse: MessageFns<AddStudentsResponse>;
 export declare const RemoveStudentsRequest: MessageFns<RemoveStudentsRequest>;
 export declare const AttendanceClassesRequest: MessageFns<AttendanceClassesRequest>;
 export declare const AllAttendanceClassesRequest: MessageFns<AllAttendanceClassesRequest>;

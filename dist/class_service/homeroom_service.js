@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/homeroom_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
+exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -1239,6 +1239,282 @@ exports.AddStudentsRequest = {
             ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
         message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseTeacherFailure() {
+    return { teacher_id: undefined, reason: "" };
+}
+exports.TeacherFailure = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(10).fork()).join();
+        }
+        if (message.reason !== "") {
+            writer.uint32(18).string(message.reason);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTeacherFailure();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.reason = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.reason !== "") {
+            obj.reason = message.reason;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TeacherFailure.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTeacherFailure();
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        message.reason = object.reason ?? "";
+        return message;
+    },
+};
+function createBaseStudentFailure() {
+    return { student_id: undefined, reason: "" };
+}
+exports.StudentFailure = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+        }
+        if (message.reason !== "") {
+            writer.uint32(18).string(message.reason);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStudentFailure();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.reason = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            reason: isSet(object.reason) ? globalThis.String(object.reason) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.reason !== "") {
+            obj.reason = message.reason;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StudentFailure.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStudentFailure();
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.reason = object.reason ?? "";
+        return message;
+    },
+};
+function createBaseAddTeachersResponse() {
+    return { homeroom: undefined, failed_teachers: [] };
+}
+exports.AddTeachersResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.homeroom !== undefined) {
+            homeroom_1.Homeroom.encode(message.homeroom, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.failed_teachers) {
+            exports.TeacherFailure.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseAddTeachersResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.homeroom = homeroom_1.Homeroom.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.failed_teachers.push(exports.TeacherFailure.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
+            failed_teachers: globalThis.Array.isArray(object?.failedTeachers)
+                ? object.failedTeachers.map((e) => exports.TeacherFailure.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.homeroom !== undefined) {
+            obj.homeroom = homeroom_1.Homeroom.toJSON(message.homeroom);
+        }
+        if (message.failed_teachers?.length) {
+            obj.failedTeachers = message.failed_teachers.map((e) => exports.TeacherFailure.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.AddTeachersResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseAddTeachersResponse();
+        message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+            ? homeroom_1.Homeroom.fromPartial(object.homeroom)
+            : undefined;
+        message.failed_teachers = object.failed_teachers?.map((e) => exports.TeacherFailure.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseAddStudentsResponse() {
+    return { homeroom: undefined, failed_students: [] };
+}
+exports.AddStudentsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.homeroom !== undefined) {
+            homeroom_1.Homeroom.encode(message.homeroom, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.failed_students) {
+            exports.StudentFailure.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseAddStudentsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.homeroom = homeroom_1.Homeroom.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.failed_students.push(exports.StudentFailure.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
+            failed_students: globalThis.Array.isArray(object?.failedStudents)
+                ? object.failedStudents.map((e) => exports.StudentFailure.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.homeroom !== undefined) {
+            obj.homeroom = homeroom_1.Homeroom.toJSON(message.homeroom);
+        }
+        if (message.failed_students?.length) {
+            obj.failedStudents = message.failed_students.map((e) => exports.StudentFailure.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.AddStudentsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseAddStudentsResponse();
+        message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+            ? homeroom_1.Homeroom.fromPartial(object.homeroom)
+            : undefined;
+        message.failed_students = object.failed_students?.map((e) => exports.StudentFailure.fromPartial(e)) || [];
         return message;
     },
 };
