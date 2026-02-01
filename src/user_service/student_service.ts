@@ -8,12 +8,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { SchoolYear } from "../organization_service/organization";
-import {
-  ProfileSection,
-  profileSectionFromJSON,
-  profileSectionToJSON,
-  profileSectionToNumber,
-} from "../organization_service/organization_profile_settings";
 import { InvoiceResponse } from "../payment_service/invoice";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
@@ -316,9 +310,12 @@ export interface GetFilteredStudentsListRequest {
   no_nonpaid_registration?: boolean | undefined;
   no_nonpaid_reregistration?: boolean | undefined;
   sort_enrolled_family_first?: boolean | undefined;
-  filled_profile_sections: ProfileSection[];
   school_year?: ObjectId | undefined;
-  has_priority_first?: boolean | undefined;
+  has_priority_first?:
+    | boolean
+    | undefined;
+  /** When true, restrict to students who have filled all groups visible for this status (visible_to_parents_for_statuses contains status) */
+  completed_only?: boolean | undefined;
 }
 
 export interface GetFilteredStudentsListResponse {
@@ -4400,9 +4397,9 @@ function createBaseGetFilteredStudentsListRequest(): GetFilteredStudentsListRequ
     no_nonpaid_registration: false,
     no_nonpaid_reregistration: false,
     sort_enrolled_family_first: false,
-    filled_profile_sections: [],
     school_year: undefined,
     has_priority_first: false,
+    completed_only: false,
   };
 }
 
@@ -4438,16 +4435,14 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
       writer.uint32(80).bool(message.sort_enrolled_family_first);
     }
-    writer.uint32(90).fork();
-    for (const v of message.filled_profile_sections) {
-      writer.int32(profileSectionToNumber(v));
-    }
-    writer.join();
     if (message.school_year !== undefined) {
-      ObjectId.encode(message.school_year, writer.uint32(98).fork()).join();
+      ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
     }
     if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
-      writer.uint32(104).bool(message.has_priority_first);
+      writer.uint32(96).bool(message.has_priority_first);
+    }
+    if (message.completed_only !== undefined && message.completed_only !== false) {
+      writer.uint32(104).bool(message.completed_only);
     }
     return writer;
   },
@@ -4530,35 +4525,25 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
           message.sort_enrolled_family_first = reader.bool();
           continue;
         case 11:
-          if (tag === 88) {
-            message.filled_profile_sections.push(profileSectionFromJSON(reader.int32()));
-
-            continue;
-          }
-
-          if (tag === 90) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.filled_profile_sections.push(profileSectionFromJSON(reader.int32()));
-            }
-
-            continue;
-          }
-
-          break;
-        case 12:
-          if (tag !== 98) {
+          if (tag !== 90) {
             break;
           }
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.has_priority_first = reader.bool();
           continue;
         case 13:
           if (tag !== 104) {
             break;
           }
 
-          message.has_priority_first = reader.bool();
+          message.completed_only = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4587,11 +4572,9 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       sort_enrolled_family_first: isSet(object.sortEnrolledFamilyFirst)
         ? globalThis.Boolean(object.sortEnrolledFamilyFirst)
         : false,
-      filled_profile_sections: globalThis.Array.isArray(object?.filledProfileSections)
-        ? object.filledProfileSections.map((e: any) => profileSectionFromJSON(e))
-        : [],
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       has_priority_first: isSet(object.hasPriorityFirst) ? globalThis.Boolean(object.hasPriorityFirst) : false,
+      completed_only: isSet(object.completedOnly) ? globalThis.Boolean(object.completedOnly) : false,
     };
   },
 
@@ -4627,14 +4610,14 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
       obj.sortEnrolledFamilyFirst = message.sort_enrolled_family_first;
     }
-    if (message.filled_profile_sections?.length) {
-      obj.filledProfileSections = message.filled_profile_sections.map((e) => profileSectionToJSON(e));
-    }
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
       obj.hasPriorityFirst = message.has_priority_first;
+    }
+    if (message.completed_only !== undefined && message.completed_only !== false) {
+      obj.completedOnly = message.completed_only;
     }
     return obj;
   },
@@ -4658,11 +4641,11 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     message.no_nonpaid_registration = object.no_nonpaid_registration ?? false;
     message.no_nonpaid_reregistration = object.no_nonpaid_reregistration ?? false;
     message.sort_enrolled_family_first = object.sort_enrolled_family_first ?? false;
-    message.filled_profile_sections = object.filled_profile_sections?.map((e) => e) || [];
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.has_priority_first = object.has_priority_first ?? false;
+    message.completed_only = object.completed_only ?? false;
     return message;
   },
 };

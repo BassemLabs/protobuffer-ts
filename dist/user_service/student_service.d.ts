@@ -1,6 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { SchoolYear } from "../organization_service/organization";
-import { ProfileSection } from "../organization_service/organization_profile_settings";
 import { InvoiceResponse } from "../payment_service/invoice";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
@@ -240,9 +239,10 @@ export interface GetFilteredStudentsListRequest {
     no_nonpaid_registration?: boolean | undefined;
     no_nonpaid_reregistration?: boolean | undefined;
     sort_enrolled_family_first?: boolean | undefined;
-    filled_profile_sections: ProfileSection[];
     school_year?: ObjectId | undefined;
     has_priority_first?: boolean | undefined;
+    /** When true, restrict to students who have filled all groups visible for this status (visible_to_parents_for_statuses contains status) */
+    completed_only?: boolean | undefined;
 }
 export interface GetFilteredStudentsListResponse {
     students: SchoolYearStudent[];

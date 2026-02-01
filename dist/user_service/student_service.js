@@ -11,7 +11,6 @@ exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingReque
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const organization_1 = require("../organization_service/organization");
-const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
 const invoice_1 = require("../payment_service/invoice");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
@@ -3547,9 +3546,9 @@ function createBaseGetFilteredStudentsListRequest() {
         no_nonpaid_registration: false,
         no_nonpaid_reregistration: false,
         sort_enrolled_family_first: false,
-        filled_profile_sections: [],
         school_year: undefined,
         has_priority_first: false,
+        completed_only: false,
     };
 }
 exports.GetFilteredStudentsListRequest = {
@@ -3584,16 +3583,14 @@ exports.GetFilteredStudentsListRequest = {
         if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
             writer.uint32(80).bool(message.sort_enrolled_family_first);
         }
-        writer.uint32(90).fork();
-        for (const v of message.filled_profile_sections) {
-            writer.int32((0, organization_profile_settings_1.profileSectionToNumber)(v));
-        }
-        writer.join();
         if (message.school_year !== undefined) {
-            object_id_1.ObjectId.encode(message.school_year, writer.uint32(98).fork()).join();
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
         }
         if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
-            writer.uint32(104).bool(message.has_priority_first);
+            writer.uint32(96).bool(message.has_priority_first);
+        }
+        if (message.completed_only !== undefined && message.completed_only !== false) {
+            writer.uint32(104).bool(message.completed_only);
         }
         return writer;
     },
@@ -3665,29 +3662,22 @@ exports.GetFilteredStudentsListRequest = {
                     message.sort_enrolled_family_first = reader.bool();
                     continue;
                 case 11:
-                    if (tag === 88) {
-                        message.filled_profile_sections.push((0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32()));
-                        continue;
-                    }
-                    if (tag === 90) {
-                        const end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2) {
-                            message.filled_profile_sections.push((0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32()));
-                        }
-                        continue;
-                    }
-                    break;
-                case 12:
-                    if (tag !== 98) {
+                    if (tag !== 90) {
                         break;
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.has_priority_first = reader.bool();
                     continue;
                 case 13:
                     if (tag !== 104) {
                         break;
                     }
-                    message.has_priority_first = reader.bool();
+                    message.completed_only = reader.bool();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -3715,11 +3705,9 @@ exports.GetFilteredStudentsListRequest = {
             sort_enrolled_family_first: isSet(object.sortEnrolledFamilyFirst)
                 ? globalThis.Boolean(object.sortEnrolledFamilyFirst)
                 : false,
-            filled_profile_sections: globalThis.Array.isArray(object?.filledProfileSections)
-                ? object.filledProfileSections.map((e) => (0, organization_profile_settings_1.profileSectionFromJSON)(e))
-                : [],
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             has_priority_first: isSet(object.hasPriorityFirst) ? globalThis.Boolean(object.hasPriorityFirst) : false,
+            completed_only: isSet(object.completedOnly) ? globalThis.Boolean(object.completedOnly) : false,
         };
     },
     toJSON(message) {
@@ -3754,14 +3742,14 @@ exports.GetFilteredStudentsListRequest = {
         if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
             obj.sortEnrolledFamilyFirst = message.sort_enrolled_family_first;
         }
-        if (message.filled_profile_sections?.length) {
-            obj.filledProfileSections = message.filled_profile_sections.map((e) => (0, organization_profile_settings_1.profileSectionToJSON)(e));
-        }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
             obj.hasPriorityFirst = message.has_priority_first;
+        }
+        if (message.completed_only !== undefined && message.completed_only !== false) {
+            obj.completedOnly = message.completed_only;
         }
         return obj;
     },
@@ -3782,11 +3770,11 @@ exports.GetFilteredStudentsListRequest = {
         message.no_nonpaid_registration = object.no_nonpaid_registration ?? false;
         message.no_nonpaid_reregistration = object.no_nonpaid_reregistration ?? false;
         message.sort_enrolled_family_first = object.sort_enrolled_family_first ?? false;
-        message.filled_profile_sections = object.filled_profile_sections?.map((e) => e) || [];
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.has_priority_first = object.has_priority_first ?? false;
+        message.completed_only = object.completed_only ?? false;
         return message;
     },
 };
