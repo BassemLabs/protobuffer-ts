@@ -61,6 +61,19 @@ export interface GetStudentCourseEvaluationEntriesRequest {
     student_id: ObjectId | undefined;
     course_id: ObjectId | undefined;
 }
+/** Get Evaluation Entry Fill Counts (Batch) */
+export interface GetEvaluationEntriesFillCountsRequest {
+    context: RequestContext | undefined;
+    evaluation_ids: ObjectId[];
+    student_ids: ObjectId[];
+}
+export interface EvaluationEntryFillCount {
+    evaluation_id: ObjectId | undefined;
+    filled_count: number;
+}
+export interface GetEvaluationEntriesFillCountsResponse {
+    counts: EvaluationEntryFillCount[];
+}
 /** Update Evaluation Marks (Batch) */
 export interface StudentMarkUpdate {
     student_id: ObjectId | undefined;
@@ -163,6 +176,9 @@ export declare const UnpublishEvaluationRequest: MessageFns<UnpublishEvaluationR
 export declare const GetEvaluationEntriesRequest: MessageFns<GetEvaluationEntriesRequest>;
 export declare const GetEvaluationEntriesResponse: MessageFns<GetEvaluationEntriesResponse>;
 export declare const GetStudentCourseEvaluationEntriesRequest: MessageFns<GetStudentCourseEvaluationEntriesRequest>;
+export declare const GetEvaluationEntriesFillCountsRequest: MessageFns<GetEvaluationEntriesFillCountsRequest>;
+export declare const EvaluationEntryFillCount: MessageFns<EvaluationEntryFillCount>;
+export declare const GetEvaluationEntriesFillCountsResponse: MessageFns<GetEvaluationEntriesFillCountsResponse>;
 export declare const StudentMarkUpdate: MessageFns<StudentMarkUpdate>;
 export declare const UpdateEvaluationMarksRequest: MessageFns<UpdateEvaluationMarksRequest>;
 export declare const CreateMarkCategoryRequest: MessageFns<CreateMarkCategoryRequest>;

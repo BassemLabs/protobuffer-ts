@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/evaluation_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExportMarkbookExcelResponse = exports.ExportMarkbookExcelRequest = exports.StudentCourseMarkOverview = exports.GetStudentCoursesMarkOverviewResponse = exports.GetStudentCoursesMarkOverviewRequest = exports.StudentCoursePerformance = exports.GetStudentCoursePerformanceRequest = exports.GetStudentsCoursePerformanceResponse = exports.GetStudentsCoursePerformanceRequest = exports.GetCourseDetailedMarkCategoriesAndEvaluationsRequest = exports.DetailedMarkCategoriesAndEvaluationsResponse = exports.GetCourseMarkCategoriesRequest = exports.DeleteMarkCategoryRequest = exports.UpdateMarkCategoryRequest = exports.CreateMarkCategoryRequest = exports.UpdateEvaluationMarksRequest = exports.StudentMarkUpdate = exports.GetStudentCourseEvaluationEntriesRequest = exports.GetEvaluationEntriesResponse = exports.GetEvaluationEntriesRequest = exports.UnpublishEvaluationRequest = exports.PublishEvaluationRequest = exports.GetCourseEvaluationsResponse = exports.GetCourseDetailedEvaluationsResponse = exports.DeleteEvaluationRequest = exports.UpdateEvaluationRequest = exports.CreateEvaluationRequest = exports.protobufPackage = void 0;
+exports.ExportMarkbookExcelResponse = exports.ExportMarkbookExcelRequest = exports.StudentCourseMarkOverview = exports.GetStudentCoursesMarkOverviewResponse = exports.GetStudentCoursesMarkOverviewRequest = exports.StudentCoursePerformance = exports.GetStudentCoursePerformanceRequest = exports.GetStudentsCoursePerformanceResponse = exports.GetStudentsCoursePerformanceRequest = exports.GetCourseDetailedMarkCategoriesAndEvaluationsRequest = exports.DetailedMarkCategoriesAndEvaluationsResponse = exports.GetCourseMarkCategoriesRequest = exports.DeleteMarkCategoryRequest = exports.UpdateMarkCategoryRequest = exports.CreateMarkCategoryRequest = exports.UpdateEvaluationMarksRequest = exports.StudentMarkUpdate = exports.GetEvaluationEntriesFillCountsResponse = exports.EvaluationEntryFillCount = exports.GetEvaluationEntriesFillCountsRequest = exports.GetStudentCourseEvaluationEntriesRequest = exports.GetEvaluationEntriesResponse = exports.GetEvaluationEntriesRequest = exports.UnpublishEvaluationRequest = exports.PublishEvaluationRequest = exports.GetCourseEvaluationsResponse = exports.GetCourseDetailedEvaluationsResponse = exports.DeleteEvaluationRequest = exports.UpdateEvaluationRequest = exports.CreateEvaluationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -839,6 +839,214 @@ exports.GetStudentCourseEvaluationEntriesRequest = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetEvaluationEntriesFillCountsRequest() {
+    return { context: undefined, evaluation_ids: [], student_ids: [] };
+}
+exports.GetEvaluationEntriesFillCountsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.evaluation_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetEvaluationEntriesFillCountsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.evaluation_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            evaluation_ids: globalThis.Array.isArray(object?.evaluationIds)
+                ? object.evaluationIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.evaluation_ids?.length) {
+            obj.evaluationIds = message.evaluation_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetEvaluationEntriesFillCountsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetEvaluationEntriesFillCountsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.evaluation_ids = object.evaluation_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseEvaluationEntryFillCount() {
+    return { evaluation_id: undefined, filled_count: 0 };
+}
+exports.EvaluationEntryFillCount = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.evaluation_id !== undefined) {
+            object_id_1.ObjectId.encode(message.evaluation_id, writer.uint32(10).fork()).join();
+        }
+        if (message.filled_count !== 0) {
+            writer.uint32(16).uint32(message.filled_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseEvaluationEntryFillCount();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.evaluation_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.filled_count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            evaluation_id: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
+            filled_count: isSet(object.filledCount) ? globalThis.Number(object.filledCount) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.evaluation_id !== undefined) {
+            obj.evaluationId = object_id_1.ObjectId.toJSON(message.evaluation_id);
+        }
+        if (message.filled_count !== 0) {
+            obj.filledCount = Math.round(message.filled_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.EvaluationEntryFillCount.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseEvaluationEntryFillCount();
+        message.evaluation_id = (object.evaluation_id !== undefined && object.evaluation_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.evaluation_id)
+            : undefined;
+        message.filled_count = object.filled_count ?? 0;
+        return message;
+    },
+};
+function createBaseGetEvaluationEntriesFillCountsResponse() {
+    return { counts: [] };
+}
+exports.GetEvaluationEntriesFillCountsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.counts) {
+            exports.EvaluationEntryFillCount.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetEvaluationEntriesFillCountsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.counts.push(exports.EvaluationEntryFillCount.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            counts: globalThis.Array.isArray(object?.counts)
+                ? object.counts.map((e) => exports.EvaluationEntryFillCount.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.counts?.length) {
+            obj.counts = message.counts.map((e) => exports.EvaluationEntryFillCount.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetEvaluationEntriesFillCountsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetEvaluationEntriesFillCountsResponse();
+        message.counts = object.counts?.map((e) => exports.EvaluationEntryFillCount.fromPartial(e)) || [];
         return message;
     },
 };

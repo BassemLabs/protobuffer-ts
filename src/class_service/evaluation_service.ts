@@ -80,6 +80,22 @@ export interface GetStudentCourseEvaluationEntriesRequest {
   course_id: ObjectId | undefined;
 }
 
+/** Get Evaluation Entry Fill Counts (Batch) */
+export interface GetEvaluationEntriesFillCountsRequest {
+  context: RequestContext | undefined;
+  evaluation_ids: ObjectId[];
+  student_ids: ObjectId[];
+}
+
+export interface EvaluationEntryFillCount {
+  evaluation_id: ObjectId | undefined;
+  filled_count: number;
+}
+
+export interface GetEvaluationEntriesFillCountsResponse {
+  counts: EvaluationEntryFillCount[];
+}
+
 /** Update Evaluation Marks (Batch) */
 export interface StudentMarkUpdate {
   student_id: ObjectId | undefined;
@@ -1113,6 +1129,246 @@ export const GetStudentCourseEvaluationEntriesRequest: MessageFns<GetStudentCour
     message.course_id = (object.course_id !== undefined && object.course_id !== null)
       ? ObjectId.fromPartial(object.course_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetEvaluationEntriesFillCountsRequest(): GetEvaluationEntriesFillCountsRequest {
+  return { context: undefined, evaluation_ids: [], student_ids: [] };
+}
+
+export const GetEvaluationEntriesFillCountsRequest: MessageFns<GetEvaluationEntriesFillCountsRequest> = {
+  encode(message: GetEvaluationEntriesFillCountsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.evaluation_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetEvaluationEntriesFillCountsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetEvaluationEntriesFillCountsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.evaluation_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetEvaluationEntriesFillCountsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      evaluation_ids: globalThis.Array.isArray(object?.evaluationIds)
+        ? object.evaluationIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetEvaluationEntriesFillCountsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.evaluation_ids?.length) {
+      obj.evaluationIds = message.evaluation_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetEvaluationEntriesFillCountsRequest>, I>>(
+    base?: I,
+  ): GetEvaluationEntriesFillCountsRequest {
+    return GetEvaluationEntriesFillCountsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetEvaluationEntriesFillCountsRequest>, I>>(
+    object: I,
+  ): GetEvaluationEntriesFillCountsRequest {
+    const message = createBaseGetEvaluationEntriesFillCountsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.evaluation_ids = object.evaluation_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseEvaluationEntryFillCount(): EvaluationEntryFillCount {
+  return { evaluation_id: undefined, filled_count: 0 };
+}
+
+export const EvaluationEntryFillCount: MessageFns<EvaluationEntryFillCount> = {
+  encode(message: EvaluationEntryFillCount, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.evaluation_id !== undefined) {
+      ObjectId.encode(message.evaluation_id, writer.uint32(10).fork()).join();
+    }
+    if (message.filled_count !== 0) {
+      writer.uint32(16).uint32(message.filled_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EvaluationEntryFillCount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEvaluationEntryFillCount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.evaluation_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.filled_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EvaluationEntryFillCount {
+    return {
+      evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
+      filled_count: isSet(object.filledCount) ? globalThis.Number(object.filledCount) : 0,
+    };
+  },
+
+  toJSON(message: EvaluationEntryFillCount): unknown {
+    const obj: any = {};
+    if (message.evaluation_id !== undefined) {
+      obj.evaluationId = ObjectId.toJSON(message.evaluation_id);
+    }
+    if (message.filled_count !== 0) {
+      obj.filledCount = Math.round(message.filled_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EvaluationEntryFillCount>, I>>(base?: I): EvaluationEntryFillCount {
+    return EvaluationEntryFillCount.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<EvaluationEntryFillCount>, I>>(object: I): EvaluationEntryFillCount {
+    const message = createBaseEvaluationEntryFillCount();
+    message.evaluation_id = (object.evaluation_id !== undefined && object.evaluation_id !== null)
+      ? ObjectId.fromPartial(object.evaluation_id)
+      : undefined;
+    message.filled_count = object.filled_count ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetEvaluationEntriesFillCountsResponse(): GetEvaluationEntriesFillCountsResponse {
+  return { counts: [] };
+}
+
+export const GetEvaluationEntriesFillCountsResponse: MessageFns<GetEvaluationEntriesFillCountsResponse> = {
+  encode(message: GetEvaluationEntriesFillCountsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.counts) {
+      EvaluationEntryFillCount.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetEvaluationEntriesFillCountsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetEvaluationEntriesFillCountsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.counts.push(EvaluationEntryFillCount.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetEvaluationEntriesFillCountsResponse {
+    return {
+      counts: globalThis.Array.isArray(object?.counts)
+        ? object.counts.map((e: any) => EvaluationEntryFillCount.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetEvaluationEntriesFillCountsResponse): unknown {
+    const obj: any = {};
+    if (message.counts?.length) {
+      obj.counts = message.counts.map((e) => EvaluationEntryFillCount.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetEvaluationEntriesFillCountsResponse>, I>>(
+    base?: I,
+  ): GetEvaluationEntriesFillCountsResponse {
+    return GetEvaluationEntriesFillCountsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetEvaluationEntriesFillCountsResponse>, I>>(
+    object: I,
+  ): GetEvaluationEntriesFillCountsResponse {
+    const message = createBaseGetEvaluationEntriesFillCountsResponse();
+    message.counts = object.counts?.map((e) => EvaluationEntryFillCount.fromPartial(e)) || [];
     return message;
   },
 };
