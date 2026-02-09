@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 
@@ -35,7 +36,15 @@ export interface Family {
   name: string;
   guardians: ObjectId[];
   guardians_to_not_contact: ObjectId[];
-  information: FamilyInformation | undefined;
+  information:
+    | FamilyInformation
+    | undefined;
+  /** Admin invitation tracking (for CRM metrics - conversion rates) */
+  invited_by?:
+    | ObjectId
+    | undefined;
+  /** When the family was invited */
+  invited_at?: Date | undefined;
 }
 
 function createBaseFamilyContact(): FamilyContact {
@@ -284,6 +293,8 @@ function createBaseFamily(): Family {
     guardians: [],
     guardians_to_not_contact: [],
     information: undefined,
+    invited_by: undefined,
+    invited_at: undefined,
   };
 }
 
@@ -306,6 +317,12 @@ export const Family: MessageFns<Family> = {
     }
     if (message.information !== undefined) {
       FamilyInformation.encode(message.information, writer.uint32(50).fork()).join();
+    }
+    if (message.invited_by !== undefined) {
+      ObjectId.encode(message.invited_by, writer.uint32(58).fork()).join();
+    }
+    if (message.invited_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.invited_at), writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -359,6 +376,20 @@ export const Family: MessageFns<Family> = {
 
           message.information = FamilyInformation.decode(reader, reader.uint32());
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.invited_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.invited_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -380,6 +411,8 @@ export const Family: MessageFns<Family> = {
         ? object.guardiansToNotContact.map((e: any) => ObjectId.fromJSON(e))
         : [],
       information: isSet(object.information) ? FamilyInformation.fromJSON(object.information) : undefined,
+      invited_by: isSet(object.invitedBy) ? ObjectId.fromJSON(object.invitedBy) : undefined,
+      invited_at: isSet(object.invitedAt) ? fromJsonTimestamp(object.invitedAt) : undefined,
     };
   },
 
@@ -403,6 +436,12 @@ export const Family: MessageFns<Family> = {
     if (message.information !== undefined) {
       obj.information = FamilyInformation.toJSON(message.information);
     }
+    if (message.invited_by !== undefined) {
+      obj.invitedBy = ObjectId.toJSON(message.invited_by);
+    }
+    if (message.invited_at !== undefined) {
+      obj.invitedAt = message.invited_at.toISOString();
+    }
     return obj;
   },
 
@@ -421,6 +460,10 @@ export const Family: MessageFns<Family> = {
     message.information = (object.information !== undefined && object.information !== null)
       ? FamilyInformation.fromPartial(object.information)
       : undefined;
+    message.invited_by = (object.invited_by !== undefined && object.invited_by !== null)
+      ? ObjectId.fromPartial(object.invited_by)
+      : undefined;
+    message.invited_at = object.invited_at ?? undefined;
     return message;
   },
 };
@@ -436,6 +479,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

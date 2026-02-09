@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Family, FamilyInformation } from "./family";
 import { Parent } from "./parent";
@@ -101,6 +102,21 @@ export interface UpdateFamilyAutoPayRequest {
     family_id: ObjectId | undefined;
     auto_pay_disabled: boolean;
 }
+/** Request for creating a family with a guardian and sending invitation email (CRM onboarding) */
+export interface CreateFamilyWithGuardianAndInviteRequest {
+    context: RequestContext | undefined;
+    /** Guardian info */
+    guardian_name: string;
+    guardian_email: string;
+    guardian_phone: PhoneNumber | undefined;
+    /** Family info */
+    family_name: string;
+    family_information: FamilyInformation | undefined;
+}
+export interface CreateFamilyWithGuardianAndInviteResponse {
+    family: Family | undefined;
+    guardian: Parent | undefined;
+}
 export declare const GetFamilyRequest: MessageFns<GetFamilyRequest>;
 export declare const GetAllFamiliesRequest: MessageFns<GetAllFamiliesRequest>;
 export declare const GetAllFamiliesResponse: MessageFns<GetAllFamiliesResponse>;
@@ -123,6 +139,8 @@ export declare const CreateFamilyRequest: MessageFns<CreateFamilyRequest>;
 export declare const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest>;
 export declare const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest>;
 export declare const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest>;
+export declare const CreateFamilyWithGuardianAndInviteRequest: MessageFns<CreateFamilyWithGuardianAndInviteRequest>;
+export declare const CreateFamilyWithGuardianAndInviteResponse: MessageFns<CreateFamilyWithGuardianAndInviteResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

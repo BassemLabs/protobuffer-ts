@@ -38,6 +38,8 @@ var EmailTemplateKey;
     EmailTemplateKey["AUTO_PAY_PERMANENT_FAILURE_EMAIL"] = "AUTO_PAY_PERMANENT_FAILURE_EMAIL";
     /** INVOICE_CREATED_EMAIL - Invoice templates */
     EmailTemplateKey["INVOICE_CREATED_EMAIL"] = "INVOICE_CREATED_EMAIL";
+    /** PARENT_INVITATION_EMAIL - Parent invitation template */
+    EmailTemplateKey["PARENT_INVITATION_EMAIL"] = "PARENT_INVITATION_EMAIL";
     EmailTemplateKey["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(EmailTemplateKey || (exports.EmailTemplateKey = EmailTemplateKey = {}));
 function emailTemplateKeyFromJSON(object) {
@@ -96,6 +98,9 @@ function emailTemplateKeyFromJSON(object) {
         case 17:
         case "INVOICE_CREATED_EMAIL":
             return EmailTemplateKey.INVOICE_CREATED_EMAIL;
+        case 18:
+        case "PARENT_INVITATION_EMAIL":
+            return EmailTemplateKey.PARENT_INVITATION_EMAIL;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -140,6 +145,8 @@ function emailTemplateKeyToJSON(object) {
             return "AUTO_PAY_PERMANENT_FAILURE_EMAIL";
         case EmailTemplateKey.INVOICE_CREATED_EMAIL:
             return "INVOICE_CREATED_EMAIL";
+        case EmailTemplateKey.PARENT_INVITATION_EMAIL:
+            return "PARENT_INVITATION_EMAIL";
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -183,6 +190,8 @@ function emailTemplateKeyToNumber(object) {
             return 16;
         case EmailTemplateKey.INVOICE_CREATED_EMAIL:
             return 17;
+        case EmailTemplateKey.PARENT_INVITATION_EMAIL:
+            return 18;
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return -1;

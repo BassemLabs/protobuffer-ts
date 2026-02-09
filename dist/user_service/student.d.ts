@@ -90,6 +90,13 @@ export interface StudentProfile {
     interview_date?: Date | undefined;
     has_waitlist_priority?: boolean | undefined;
 }
+/** Entry in the status history timeline */
+export interface StatusHistoryEntry {
+    status: StudentStatus;
+    changed_at: Date | undefined;
+    /** User who made the status change (admin, system, etc.) */
+    changed_by?: ObjectId | undefined;
+}
 /** Student school year specific information (mapping table: student + school_year -> status + grade) */
 export interface StudentSchoolYearInformation {
     id: ObjectId | undefined;
@@ -98,10 +105,12 @@ export interface StudentSchoolYearInformation {
     school_year_id: ObjectId | undefined;
     status: StudentStatus;
     grade: StudentGrade;
+    status_history: StatusHistoryEntry[];
 }
 export declare const Student: MessageFns<Student>;
 export declare const SchoolYearStudent: MessageFns<SchoolYearStudent>;
 export declare const StudentProfile: MessageFns<StudentProfile>;
+export declare const StatusHistoryEntry: MessageFns<StatusHistoryEntry>;
 export declare const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformation>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

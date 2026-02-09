@@ -34,6 +34,8 @@ export enum EmailTemplateKey {
   AUTO_PAY_PERMANENT_FAILURE_EMAIL = "AUTO_PAY_PERMANENT_FAILURE_EMAIL",
   /** INVOICE_CREATED_EMAIL - Invoice templates */
   INVOICE_CREATED_EMAIL = "INVOICE_CREATED_EMAIL",
+  /** PARENT_INVITATION_EMAIL - Parent invitation template */
+  PARENT_INVITATION_EMAIL = "PARENT_INVITATION_EMAIL",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -93,6 +95,9 @@ export function emailTemplateKeyFromJSON(object: any): EmailTemplateKey {
     case 17:
     case "INVOICE_CREATED_EMAIL":
       return EmailTemplateKey.INVOICE_CREATED_EMAIL;
+    case 18:
+    case "PARENT_INVITATION_EMAIL":
+      return EmailTemplateKey.PARENT_INVITATION_EMAIL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -138,6 +143,8 @@ export function emailTemplateKeyToJSON(object: EmailTemplateKey): string {
       return "AUTO_PAY_PERMANENT_FAILURE_EMAIL";
     case EmailTemplateKey.INVOICE_CREATED_EMAIL:
       return "INVOICE_CREATED_EMAIL";
+    case EmailTemplateKey.PARENT_INVITATION_EMAIL:
+      return "PARENT_INVITATION_EMAIL";
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -182,6 +189,8 @@ export function emailTemplateKeyToNumber(object: EmailTemplateKey): number {
       return 16;
     case EmailTemplateKey.INVOICE_CREATED_EMAIL:
       return 17;
+    case EmailTemplateKey.PARENT_INVITATION_EMAIL:
+      return 18;
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return -1;

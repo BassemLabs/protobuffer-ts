@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Family = exports.FamilyInformation = exports.FamilyContact = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
 exports.protobufPackage = "user_service";
@@ -236,6 +237,8 @@ function createBaseFamily() {
         guardians: [],
         guardians_to_not_contact: [],
         information: undefined,
+        invited_by: undefined,
+        invited_at: undefined,
     };
 }
 exports.Family = {
@@ -257,6 +260,12 @@ exports.Family = {
         }
         if (message.information !== undefined) {
             exports.FamilyInformation.encode(message.information, writer.uint32(50).fork()).join();
+        }
+        if (message.invited_by !== undefined) {
+            object_id_1.ObjectId.encode(message.invited_by, writer.uint32(58).fork()).join();
+        }
+        if (message.invited_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.invited_at), writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -303,6 +312,18 @@ exports.Family = {
                     }
                     message.information = exports.FamilyInformation.decode(reader, reader.uint32());
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.invited_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.invited_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -323,6 +344,8 @@ exports.Family = {
                 ? object.guardiansToNotContact.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             information: isSet(object.information) ? exports.FamilyInformation.fromJSON(object.information) : undefined,
+            invited_by: isSet(object.invitedBy) ? object_id_1.ObjectId.fromJSON(object.invitedBy) : undefined,
+            invited_at: isSet(object.invitedAt) ? fromJsonTimestamp(object.invitedAt) : undefined,
         };
     },
     toJSON(message) {
@@ -345,6 +368,12 @@ exports.Family = {
         if (message.information !== undefined) {
             obj.information = exports.FamilyInformation.toJSON(message.information);
         }
+        if (message.invited_by !== undefined) {
+            obj.invitedBy = object_id_1.ObjectId.toJSON(message.invited_by);
+        }
+        if (message.invited_at !== undefined) {
+            obj.invitedAt = message.invited_at.toISOString();
+        }
         return obj;
     },
     create(base) {
@@ -362,9 +391,34 @@ exports.Family = {
         message.information = (object.information !== undefined && object.information !== null)
             ? exports.FamilyInformation.fromPartial(object.information)
             : undefined;
+        message.invited_by = (object.invited_by !== undefined && object.invited_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invited_by)
+            : undefined;
+        message.invited_at = object.invited_at ?? undefined;
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

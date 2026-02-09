@@ -25,6 +25,8 @@ export declare enum EmailTemplateKey {
     AUTO_PAY_PERMANENT_FAILURE_EMAIL = "AUTO_PAY_PERMANENT_FAILURE_EMAIL",
     /** INVOICE_CREATED_EMAIL - Invoice templates */
     INVOICE_CREATED_EMAIL = "INVOICE_CREATED_EMAIL",
+    /** PARENT_INVITATION_EMAIL - Parent invitation template */
+    PARENT_INVITATION_EMAIL = "PARENT_INVITATION_EMAIL",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function emailTemplateKeyFromJSON(object: any): EmailTemplateKey;

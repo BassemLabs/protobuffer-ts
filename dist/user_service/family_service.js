@@ -5,10 +5,11 @@
 //   protoc               unknown
 // source: user_service/family_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
+exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
+const phone_number_1 = require("../utils/phone_number");
 const request_context_1 = require("../utils/request_context");
 const family_1 = require("./family");
 const parent_1 = require("./parent");
@@ -1561,6 +1562,213 @@ exports.UpdateFamilyAutoPayRequest = {
             ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
         message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+        return message;
+    },
+};
+function createBaseCreateFamilyWithGuardianAndInviteRequest() {
+    return {
+        context: undefined,
+        guardian_name: "",
+        guardian_email: "",
+        guardian_phone: undefined,
+        family_name: "",
+        family_information: undefined,
+    };
+}
+exports.CreateFamilyWithGuardianAndInviteRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.guardian_name !== "") {
+            writer.uint32(18).string(message.guardian_name);
+        }
+        if (message.guardian_email !== "") {
+            writer.uint32(26).string(message.guardian_email);
+        }
+        if (message.guardian_phone !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.guardian_phone, writer.uint32(34).fork()).join();
+        }
+        if (message.family_name !== "") {
+            writer.uint32(42).string(message.family_name);
+        }
+        if (message.family_information !== undefined) {
+            family_1.FamilyInformation.encode(message.family_information, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateFamilyWithGuardianAndInviteRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.guardian_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.guardian_email = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.guardian_phone = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.family_name = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.family_information = family_1.FamilyInformation.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            guardian_name: isSet(object.guardianName) ? globalThis.String(object.guardianName) : "",
+            guardian_email: isSet(object.guardianEmail) ? globalThis.String(object.guardianEmail) : "",
+            guardian_phone: isSet(object.guardianPhone) ? phone_number_1.PhoneNumber.fromJSON(object.guardianPhone) : undefined,
+            family_name: isSet(object.familyName) ? globalThis.String(object.familyName) : "",
+            family_information: isSet(object.familyInformation)
+                ? family_1.FamilyInformation.fromJSON(object.familyInformation)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.guardian_name !== "") {
+            obj.guardianName = message.guardian_name;
+        }
+        if (message.guardian_email !== "") {
+            obj.guardianEmail = message.guardian_email;
+        }
+        if (message.guardian_phone !== undefined) {
+            obj.guardianPhone = phone_number_1.PhoneNumber.toJSON(message.guardian_phone);
+        }
+        if (message.family_name !== "") {
+            obj.familyName = message.family_name;
+        }
+        if (message.family_information !== undefined) {
+            obj.familyInformation = family_1.FamilyInformation.toJSON(message.family_information);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateFamilyWithGuardianAndInviteRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateFamilyWithGuardianAndInviteRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.guardian_name = object.guardian_name ?? "";
+        message.guardian_email = object.guardian_email ?? "";
+        message.guardian_phone = (object.guardian_phone !== undefined && object.guardian_phone !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.guardian_phone)
+            : undefined;
+        message.family_name = object.family_name ?? "";
+        message.family_information = (object.family_information !== undefined && object.family_information !== null)
+            ? family_1.FamilyInformation.fromPartial(object.family_information)
+            : undefined;
+        return message;
+    },
+};
+function createBaseCreateFamilyWithGuardianAndInviteResponse() {
+    return { family: undefined, guardian: undefined };
+}
+exports.CreateFamilyWithGuardianAndInviteResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.family !== undefined) {
+            family_1.Family.encode(message.family, writer.uint32(10).fork()).join();
+        }
+        if (message.guardian !== undefined) {
+            parent_1.Parent.encode(message.guardian, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateFamilyWithGuardianAndInviteResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.family = family_1.Family.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.guardian = parent_1.Parent.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            family: isSet(object.family) ? family_1.Family.fromJSON(object.family) : undefined,
+            guardian: isSet(object.guardian) ? parent_1.Parent.fromJSON(object.guardian) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.family !== undefined) {
+            obj.family = family_1.Family.toJSON(message.family);
+        }
+        if (message.guardian !== undefined) {
+            obj.guardian = parent_1.Parent.toJSON(message.guardian);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateFamilyWithGuardianAndInviteResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateFamilyWithGuardianAndInviteResponse();
+        message.family = (object.family !== undefined && object.family !== null)
+            ? family_1.Family.fromPartial(object.family)
+            : undefined;
+        message.guardian = (object.guardian !== undefined && object.guardian !== null)
+            ? parent_1.Parent.fromPartial(object.guardian)
+            : undefined;
         return message;
     },
 };

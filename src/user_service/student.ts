@@ -314,6 +314,16 @@ export interface StudentProfile {
   has_waitlist_priority?: boolean | undefined;
 }
 
+/** Entry in the status history timeline */
+export interface StatusHistoryEntry {
+  status: StudentStatus;
+  changed_at:
+    | Date
+    | undefined;
+  /** User who made the status change (admin, system, etc.) */
+  changed_by?: ObjectId | undefined;
+}
+
 /** Student school year specific information (mapping table: student + school_year -> status + grade) */
 export interface StudentSchoolYearInformation {
   id: ObjectId | undefined;
@@ -322,6 +332,7 @@ export interface StudentSchoolYearInformation {
   school_year_id: ObjectId | undefined;
   status: StudentStatus;
   grade: StudentGrade;
+  status_history: StatusHistoryEntry[];
 }
 
 function createBaseStudent(): Student {
@@ -913,6 +924,97 @@ export const StudentProfile: MessageFns<StudentProfile> = {
   },
 };
 
+function createBaseStatusHistoryEntry(): StatusHistoryEntry {
+  return { status: StudentStatus.WAITLIST, changed_at: undefined, changed_by: undefined };
+}
+
+export const StatusHistoryEntry: MessageFns<StatusHistoryEntry> = {
+  encode(message: StatusHistoryEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.status !== StudentStatus.WAITLIST) {
+      writer.uint32(8).int32(studentStatusToNumber(message.status));
+    }
+    if (message.changed_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.changed_at), writer.uint32(18).fork()).join();
+    }
+    if (message.changed_by !== undefined) {
+      ObjectId.encode(message.changed_by, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StatusHistoryEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStatusHistoryEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.status = studentStatusFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.changed_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.changed_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StatusHistoryEntry {
+    return {
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
+      changed_at: isSet(object.changedAt) ? fromJsonTimestamp(object.changedAt) : undefined,
+      changed_by: isSet(object.changedBy) ? ObjectId.fromJSON(object.changedBy) : undefined,
+    };
+  },
+
+  toJSON(message: StatusHistoryEntry): unknown {
+    const obj: any = {};
+    if (message.status !== StudentStatus.WAITLIST) {
+      obj.status = studentStatusToJSON(message.status);
+    }
+    if (message.changed_at !== undefined) {
+      obj.changedAt = message.changed_at.toISOString();
+    }
+    if (message.changed_by !== undefined) {
+      obj.changedBy = ObjectId.toJSON(message.changed_by);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StatusHistoryEntry>, I>>(base?: I): StatusHistoryEntry {
+    return StatusHistoryEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StatusHistoryEntry>, I>>(object: I): StatusHistoryEntry {
+    const message = createBaseStatusHistoryEntry();
+    message.status = object.status ?? StudentStatus.WAITLIST;
+    message.changed_at = object.changed_at ?? undefined;
+    message.changed_by = (object.changed_by !== undefined && object.changed_by !== null)
+      ? ObjectId.fromPartial(object.changed_by)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseStudentSchoolYearInformation(): StudentSchoolYearInformation {
   return {
     id: undefined,
@@ -921,6 +1023,7 @@ function createBaseStudentSchoolYearInformation(): StudentSchoolYearInformation 
     school_year_id: undefined,
     status: StudentStatus.WAITLIST,
     grade: StudentGrade.PRE_K,
+    status_history: [],
   };
 }
 
@@ -943,6 +1046,9 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     }
     if (message.grade !== StudentGrade.PRE_K) {
       writer.uint32(48).int32(studentGradeToNumber(message.grade));
+    }
+    for (const v of message.status_history) {
+      StatusHistoryEntry.encode(v!, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -996,6 +1102,13 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
 
           message.grade = studentGradeFromJSON(reader.int32());
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.status_history.push(StatusHistoryEntry.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1013,6 +1126,9 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
       school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      status_history: globalThis.Array.isArray(object?.statusHistory)
+        ? object.statusHistory.map((e: any) => StatusHistoryEntry.fromJSON(e))
+        : [],
     };
   },
 
@@ -1036,6 +1152,9 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     if (message.grade !== StudentGrade.PRE_K) {
       obj.grade = studentGradeToJSON(message.grade);
     }
+    if (message.status_history?.length) {
+      obj.statusHistory = message.status_history.map((e) => StatusHistoryEntry.toJSON(e));
+    }
     return obj;
   },
 
@@ -1056,6 +1175,7 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
       : undefined;
     message.status = object.status ?? StudentStatus.WAITLIST;
     message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.status_history = object.status_history?.map((e) => StatusHistoryEntry.fromPartial(e)) || [];
     return message;
   },
 };

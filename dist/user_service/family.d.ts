@@ -23,6 +23,10 @@ export interface Family {
     guardians: ObjectId[];
     guardians_to_not_contact: ObjectId[];
     information: FamilyInformation | undefined;
+    /** Admin invitation tracking (for CRM metrics - conversion rates) */
+    invited_by?: ObjectId | undefined;
+    /** When the family was invited */
+    invited_at?: Date | undefined;
 }
 export declare const FamilyContact: MessageFns<FamilyContact>;
 export declare const FamilyInformation: MessageFns<FamilyInformation>;

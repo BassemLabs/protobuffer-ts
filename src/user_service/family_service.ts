@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Family, FamilyInformation } from "./family";
 import { Parent } from "./parent";
@@ -130,6 +131,27 @@ export interface UpdateFamilyAutoPayRequest {
   context: RequestContext | undefined;
   family_id: ObjectId | undefined;
   auto_pay_disabled: boolean;
+}
+
+/** Request for creating a family with a guardian and sending invitation email (CRM onboarding) */
+export interface CreateFamilyWithGuardianAndInviteRequest {
+  context:
+    | RequestContext
+    | undefined;
+  /** Guardian info */
+  guardian_name: string;
+  guardian_email: string;
+  guardian_phone:
+    | PhoneNumber
+    | undefined;
+  /** Family info */
+  family_name: string;
+  family_information: FamilyInformation | undefined;
+}
+
+export interface CreateFamilyWithGuardianAndInviteResponse {
+  family: Family | undefined;
+  guardian: Parent | undefined;
 }
 
 function createBaseGetFamilyRequest(): GetFamilyRequest {
@@ -1874,6 +1896,241 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
     message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+    return message;
+  },
+};
+
+function createBaseCreateFamilyWithGuardianAndInviteRequest(): CreateFamilyWithGuardianAndInviteRequest {
+  return {
+    context: undefined,
+    guardian_name: "",
+    guardian_email: "",
+    guardian_phone: undefined,
+    family_name: "",
+    family_information: undefined,
+  };
+}
+
+export const CreateFamilyWithGuardianAndInviteRequest: MessageFns<CreateFamilyWithGuardianAndInviteRequest> = {
+  encode(message: CreateFamilyWithGuardianAndInviteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.guardian_name !== "") {
+      writer.uint32(18).string(message.guardian_name);
+    }
+    if (message.guardian_email !== "") {
+      writer.uint32(26).string(message.guardian_email);
+    }
+    if (message.guardian_phone !== undefined) {
+      PhoneNumber.encode(message.guardian_phone, writer.uint32(34).fork()).join();
+    }
+    if (message.family_name !== "") {
+      writer.uint32(42).string(message.family_name);
+    }
+    if (message.family_information !== undefined) {
+      FamilyInformation.encode(message.family_information, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateFamilyWithGuardianAndInviteRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFamilyWithGuardianAndInviteRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.guardian_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.guardian_email = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.guardian_phone = PhoneNumber.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.family_name = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.family_information = FamilyInformation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFamilyWithGuardianAndInviteRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      guardian_name: isSet(object.guardianName) ? globalThis.String(object.guardianName) : "",
+      guardian_email: isSet(object.guardianEmail) ? globalThis.String(object.guardianEmail) : "",
+      guardian_phone: isSet(object.guardianPhone) ? PhoneNumber.fromJSON(object.guardianPhone) : undefined,
+      family_name: isSet(object.familyName) ? globalThis.String(object.familyName) : "",
+      family_information: isSet(object.familyInformation)
+        ? FamilyInformation.fromJSON(object.familyInformation)
+        : undefined,
+    };
+  },
+
+  toJSON(message: CreateFamilyWithGuardianAndInviteRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.guardian_name !== "") {
+      obj.guardianName = message.guardian_name;
+    }
+    if (message.guardian_email !== "") {
+      obj.guardianEmail = message.guardian_email;
+    }
+    if (message.guardian_phone !== undefined) {
+      obj.guardianPhone = PhoneNumber.toJSON(message.guardian_phone);
+    }
+    if (message.family_name !== "") {
+      obj.familyName = message.family_name;
+    }
+    if (message.family_information !== undefined) {
+      obj.familyInformation = FamilyInformation.toJSON(message.family_information);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateFamilyWithGuardianAndInviteRequest>, I>>(
+    base?: I,
+  ): CreateFamilyWithGuardianAndInviteRequest {
+    return CreateFamilyWithGuardianAndInviteRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateFamilyWithGuardianAndInviteRequest>, I>>(
+    object: I,
+  ): CreateFamilyWithGuardianAndInviteRequest {
+    const message = createBaseCreateFamilyWithGuardianAndInviteRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.guardian_name = object.guardian_name ?? "";
+    message.guardian_email = object.guardian_email ?? "";
+    message.guardian_phone = (object.guardian_phone !== undefined && object.guardian_phone !== null)
+      ? PhoneNumber.fromPartial(object.guardian_phone)
+      : undefined;
+    message.family_name = object.family_name ?? "";
+    message.family_information = (object.family_information !== undefined && object.family_information !== null)
+      ? FamilyInformation.fromPartial(object.family_information)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateFamilyWithGuardianAndInviteResponse(): CreateFamilyWithGuardianAndInviteResponse {
+  return { family: undefined, guardian: undefined };
+}
+
+export const CreateFamilyWithGuardianAndInviteResponse: MessageFns<CreateFamilyWithGuardianAndInviteResponse> = {
+  encode(message: CreateFamilyWithGuardianAndInviteResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.family !== undefined) {
+      Family.encode(message.family, writer.uint32(10).fork()).join();
+    }
+    if (message.guardian !== undefined) {
+      Parent.encode(message.guardian, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateFamilyWithGuardianAndInviteResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFamilyWithGuardianAndInviteResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.family = Family.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.guardian = Parent.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFamilyWithGuardianAndInviteResponse {
+    return {
+      family: isSet(object.family) ? Family.fromJSON(object.family) : undefined,
+      guardian: isSet(object.guardian) ? Parent.fromJSON(object.guardian) : undefined,
+    };
+  },
+
+  toJSON(message: CreateFamilyWithGuardianAndInviteResponse): unknown {
+    const obj: any = {};
+    if (message.family !== undefined) {
+      obj.family = Family.toJSON(message.family);
+    }
+    if (message.guardian !== undefined) {
+      obj.guardian = Parent.toJSON(message.guardian);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateFamilyWithGuardianAndInviteResponse>, I>>(
+    base?: I,
+  ): CreateFamilyWithGuardianAndInviteResponse {
+    return CreateFamilyWithGuardianAndInviteResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateFamilyWithGuardianAndInviteResponse>, I>>(
+    object: I,
+  ): CreateFamilyWithGuardianAndInviteResponse {
+    const message = createBaseCreateFamilyWithGuardianAndInviteResponse();
+    message.family = (object.family !== undefined && object.family !== null)
+      ? Family.fromPartial(object.family)
+      : undefined;
+    message.guardian = (object.guardian !== undefined && object.guardian !== null)
+      ? Parent.fromPartial(object.guardian)
+      : undefined;
     return message;
   },
 };
