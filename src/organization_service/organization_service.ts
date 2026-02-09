@@ -17,7 +17,18 @@ import {
   onboardingStepNameToNumber,
   OnboardingStepsStatus,
 } from "./onboarding_steps";
-import { Currency, currencyFromJSON, currencyToJSON, currencyToNumber, Organization, SchoolYear } from "./organization";
+import {
+  Currency,
+  currencyFromJSON,
+  currencyToJSON,
+  currencyToNumber,
+  DirectoryProviderType,
+  directoryProviderTypeFromJSON,
+  directoryProviderTypeToJSON,
+  directoryProviderTypeToNumber,
+  Organization,
+  SchoolYear,
+} from "./organization";
 
 export const protobufPackage = "organization_service";
 
@@ -209,6 +220,14 @@ export interface UpdateInvoiceSettingsRequest {
   organization_id: ObjectId | undefined;
   disable_tax: boolean;
   hst_number?: string | undefined;
+}
+
+export interface GetDirectoryProviderRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetDirectoryProviderResponse {
+  provider_type?: DirectoryProviderType | undefined;
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -3059,6 +3078,126 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
       : undefined;
     message.disable_tax = object.disable_tax ?? false;
     message.hst_number = object.hst_number ?? "";
+    return message;
+  },
+};
+
+function createBaseGetDirectoryProviderRequest(): GetDirectoryProviderRequest {
+  return { context: undefined };
+}
+
+export const GetDirectoryProviderRequest: MessageFns<GetDirectoryProviderRequest> = {
+  encode(message: GetDirectoryProviderRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetDirectoryProviderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDirectoryProviderRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDirectoryProviderRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetDirectoryProviderRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetDirectoryProviderRequest>, I>>(base?: I): GetDirectoryProviderRequest {
+    return GetDirectoryProviderRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetDirectoryProviderRequest>, I>>(object: I): GetDirectoryProviderRequest {
+    const message = createBaseGetDirectoryProviderRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetDirectoryProviderResponse(): GetDirectoryProviderResponse {
+  return { provider_type: DirectoryProviderType.GOOGLE_WORKSPACE };
+}
+
+export const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderResponse> = {
+  encode(message: GetDirectoryProviderResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.provider_type !== undefined && message.provider_type !== DirectoryProviderType.GOOGLE_WORKSPACE) {
+      writer.uint32(8).int32(directoryProviderTypeToNumber(message.provider_type));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetDirectoryProviderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDirectoryProviderResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.provider_type = directoryProviderTypeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDirectoryProviderResponse {
+    return {
+      provider_type: isSet(object.providerType)
+        ? directoryProviderTypeFromJSON(object.providerType)
+        : DirectoryProviderType.GOOGLE_WORKSPACE,
+    };
+  },
+
+  toJSON(message: GetDirectoryProviderResponse): unknown {
+    const obj: any = {};
+    if (message.provider_type !== undefined && message.provider_type !== DirectoryProviderType.GOOGLE_WORKSPACE) {
+      obj.providerType = directoryProviderTypeToJSON(message.provider_type);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetDirectoryProviderResponse>, I>>(base?: I): GetDirectoryProviderResponse {
+    return GetDirectoryProviderResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetDirectoryProviderResponse>, I>>(object: I): GetDirectoryProviderResponse {
+    const message = createBaseGetDirectoryProviderResponse();
+    message.provider_type = object.provider_type ?? DirectoryProviderType.GOOGLE_WORKSPACE;
     return message;
   },
 };

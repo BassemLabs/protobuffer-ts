@@ -14,6 +14,12 @@ export declare enum KMSKeyType {
     GoogleAdminServiceAccountKey = "GoogleAdminServiceAccountKey",
     GoogleAdminServiceAccountId = "GoogleAdminServiceAccountId",
     CanvasApiToken = "CanvasApiToken",
+    Office365TenantId = "Office365TenantId",
+    Office365ClientId = "Office365ClientId",
+    Office365ClientSecret = "Office365ClientSecret",
+    LdapServerUrl = "LdapServerUrl",
+    LdapBindDn = "LdapBindDn",
+    LdapBindPassword = "LdapBindPassword",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function kMSKeyTypeFromJSON(object: any): KMSKeyType;

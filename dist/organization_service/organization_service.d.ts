@@ -3,7 +3,7 @@ import { DayOfWeek } from "../google/type/dayofweek";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
-import { Currency, Organization, SchoolYear } from "./organization";
+import { Currency, DirectoryProviderType, Organization, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
@@ -163,6 +163,12 @@ export interface UpdateInvoiceSettingsRequest {
     disable_tax: boolean;
     hst_number?: string | undefined;
 }
+export interface GetDirectoryProviderRequest {
+    context: RequestContext | undefined;
+}
+export interface GetDirectoryProviderResponse {
+    provider_type?: DirectoryProviderType | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -195,6 +201,8 @@ export declare const GetAllOrganizationsOnboardingStepsStatusRequest: MessageFns
 export declare const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<GetAllOrganizationsOnboardingStepsStatusResponse>;
 export declare const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStepAsCompletedRequest>;
 export declare const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest>;
+export declare const GetDirectoryProviderRequest: MessageFns<GetDirectoryProviderRequest>;
+export declare const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

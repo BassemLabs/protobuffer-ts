@@ -13,6 +13,15 @@ export declare enum Currency {
 export declare function currencyFromJSON(object: any): Currency;
 export declare function currencyToJSON(object: Currency): string;
 export declare function currencyToNumber(object: Currency): number;
+export declare enum DirectoryProviderType {
+    GOOGLE_WORKSPACE = "GOOGLE_WORKSPACE",
+    MICROSOFT_365 = "MICROSOFT_365",
+    SELF_HOSTED_LDAP = "SELF_HOSTED_LDAP",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function directoryProviderTypeFromJSON(object: any): DirectoryProviderType;
+export declare function directoryProviderTypeToJSON(object: DirectoryProviderType): string;
+export declare function directoryProviderTypeToNumber(object: DirectoryProviderType): number;
 export interface Organization {
     id: ObjectId | undefined;
     name: string;
@@ -30,6 +39,7 @@ export interface Organization {
     main_address: string;
     weekend_days: DayOfWeek[];
     timezone: string;
+    directory_provider?: DirectoryProviderType | undefined;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;

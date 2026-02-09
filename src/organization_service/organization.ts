@@ -60,6 +60,59 @@ export function currencyToNumber(object: Currency): number {
   }
 }
 
+export enum DirectoryProviderType {
+  GOOGLE_WORKSPACE = "GOOGLE_WORKSPACE",
+  MICROSOFT_365 = "MICROSOFT_365",
+  SELF_HOSTED_LDAP = "SELF_HOSTED_LDAP",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function directoryProviderTypeFromJSON(object: any): DirectoryProviderType {
+  switch (object) {
+    case 1:
+    case "GOOGLE_WORKSPACE":
+      return DirectoryProviderType.GOOGLE_WORKSPACE;
+    case 2:
+    case "MICROSOFT_365":
+      return DirectoryProviderType.MICROSOFT_365;
+    case 3:
+    case "SELF_HOSTED_LDAP":
+      return DirectoryProviderType.SELF_HOSTED_LDAP;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return DirectoryProviderType.UNRECOGNIZED;
+  }
+}
+
+export function directoryProviderTypeToJSON(object: DirectoryProviderType): string {
+  switch (object) {
+    case DirectoryProviderType.GOOGLE_WORKSPACE:
+      return "GOOGLE_WORKSPACE";
+    case DirectoryProviderType.MICROSOFT_365:
+      return "MICROSOFT_365";
+    case DirectoryProviderType.SELF_HOSTED_LDAP:
+      return "SELF_HOSTED_LDAP";
+    case DirectoryProviderType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function directoryProviderTypeToNumber(object: DirectoryProviderType): number {
+  switch (object) {
+    case DirectoryProviderType.GOOGLE_WORKSPACE:
+      return 1;
+    case DirectoryProviderType.MICROSOFT_365:
+      return 2;
+    case DirectoryProviderType.SELF_HOSTED_LDAP:
+      return 3;
+    case DirectoryProviderType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface Organization {
   id: ObjectId | undefined;
   name: string;
@@ -77,6 +130,7 @@ export interface Organization {
   main_address: string;
   weekend_days: DayOfWeek[];
   timezone: string;
+  directory_provider?: DirectoryProviderType | undefined;
 }
 
 export interface SchoolYear {
@@ -128,6 +182,7 @@ function createBaseOrganization(): Organization {
     main_address: "",
     weekend_days: [],
     timezone: "",
+    directory_provider: DirectoryProviderType.GOOGLE_WORKSPACE,
   };
 }
 
@@ -182,6 +237,11 @@ export const Organization: MessageFns<Organization> = {
     writer.join();
     if (message.timezone !== "") {
       writer.uint32(130).string(message.timezone);
+    }
+    if (
+      message.directory_provider !== undefined && message.directory_provider !== DirectoryProviderType.GOOGLE_WORKSPACE
+    ) {
+      writer.uint32(136).int32(directoryProviderTypeToNumber(message.directory_provider));
     }
     return writer;
   },
@@ -315,6 +375,13 @@ export const Organization: MessageFns<Organization> = {
 
           message.timezone = reader.string();
           continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.directory_provider = directoryProviderTypeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -352,6 +419,9 @@ export const Organization: MessageFns<Organization> = {
         ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
         : [],
       timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
+      directory_provider: isSet(object.directoryProvider)
+        ? directoryProviderTypeFromJSON(object.directoryProvider)
+        : DirectoryProviderType.GOOGLE_WORKSPACE,
     };
   },
 
@@ -405,6 +475,11 @@ export const Organization: MessageFns<Organization> = {
     if (message.timezone !== "") {
       obj.timezone = message.timezone;
     }
+    if (
+      message.directory_provider !== undefined && message.directory_provider !== DirectoryProviderType.GOOGLE_WORKSPACE
+    ) {
+      obj.directoryProvider = directoryProviderTypeToJSON(message.directory_provider);
+    }
     return obj;
   },
 
@@ -442,6 +517,7 @@ export const Organization: MessageFns<Organization> = {
     message.main_address = object.main_address ?? "";
     message.weekend_days = object.weekend_days?.map((e) => e) || [];
     message.timezone = object.timezone ?? "";
+    message.directory_provider = object.directory_provider ?? DirectoryProviderType.GOOGLE_WORKSPACE;
     return message;
   },
 };

@@ -64,6 +64,12 @@ var KMSKeyType;
     KMSKeyType["GoogleAdminServiceAccountKey"] = "GoogleAdminServiceAccountKey";
     KMSKeyType["GoogleAdminServiceAccountId"] = "GoogleAdminServiceAccountId";
     KMSKeyType["CanvasApiToken"] = "CanvasApiToken";
+    KMSKeyType["Office365TenantId"] = "Office365TenantId";
+    KMSKeyType["Office365ClientId"] = "Office365ClientId";
+    KMSKeyType["Office365ClientSecret"] = "Office365ClientSecret";
+    KMSKeyType["LdapServerUrl"] = "LdapServerUrl";
+    KMSKeyType["LdapBindDn"] = "LdapBindDn";
+    KMSKeyType["LdapBindPassword"] = "LdapBindPassword";
     KMSKeyType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(KMSKeyType || (exports.KMSKeyType = KMSKeyType = {}));
 function kMSKeyTypeFromJSON(object) {
@@ -80,6 +86,24 @@ function kMSKeyTypeFromJSON(object) {
         case 4:
         case "CanvasApiToken":
             return KMSKeyType.CanvasApiToken;
+        case 5:
+        case "Office365TenantId":
+            return KMSKeyType.Office365TenantId;
+        case 6:
+        case "Office365ClientId":
+            return KMSKeyType.Office365ClientId;
+        case 7:
+        case "Office365ClientSecret":
+            return KMSKeyType.Office365ClientSecret;
+        case 8:
+        case "LdapServerUrl":
+            return KMSKeyType.LdapServerUrl;
+        case 9:
+        case "LdapBindDn":
+            return KMSKeyType.LdapBindDn;
+        case 10:
+        case "LdapBindPassword":
+            return KMSKeyType.LdapBindPassword;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -96,6 +120,18 @@ function kMSKeyTypeToJSON(object) {
             return "GoogleAdminServiceAccountId";
         case KMSKeyType.CanvasApiToken:
             return "CanvasApiToken";
+        case KMSKeyType.Office365TenantId:
+            return "Office365TenantId";
+        case KMSKeyType.Office365ClientId:
+            return "Office365ClientId";
+        case KMSKeyType.Office365ClientSecret:
+            return "Office365ClientSecret";
+        case KMSKeyType.LdapServerUrl:
+            return "LdapServerUrl";
+        case KMSKeyType.LdapBindDn:
+            return "LdapBindDn";
+        case KMSKeyType.LdapBindPassword:
+            return "LdapBindPassword";
         case KMSKeyType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -111,6 +147,18 @@ function kMSKeyTypeToNumber(object) {
             return 3;
         case KMSKeyType.CanvasApiToken:
             return 4;
+        case KMSKeyType.Office365TenantId:
+            return 5;
+        case KMSKeyType.Office365ClientId:
+            return 6;
+        case KMSKeyType.Office365ClientSecret:
+            return 7;
+        case KMSKeyType.LdapServerUrl:
+            return 8;
+        case KMSKeyType.LdapBindDn:
+            return 9;
+        case KMSKeyType.LdapBindPassword:
+            return 10;
         case KMSKeyType.UNRECOGNIZED:
         default:
             return -1;

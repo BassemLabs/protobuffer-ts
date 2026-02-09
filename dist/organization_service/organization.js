@@ -5,10 +5,13 @@
 //   protoc               unknown
 // source: organization_service/organization.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutoPayRetryConfig = exports.PaymentInformation = exports.SchoolYear = exports.Organization = exports.Currency = exports.protobufPackage = void 0;
+exports.AutoPayRetryConfig = exports.PaymentInformation = exports.SchoolYear = exports.Organization = exports.DirectoryProviderType = exports.Currency = exports.protobufPackage = void 0;
 exports.currencyFromJSON = currencyFromJSON;
 exports.currencyToJSON = currencyToJSON;
 exports.currencyToNumber = currencyToNumber;
+exports.directoryProviderTypeFromJSON = directoryProviderTypeFromJSON;
+exports.directoryProviderTypeToJSON = directoryProviderTypeToJSON;
+exports.directoryProviderTypeToNumber = directoryProviderTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -60,6 +63,56 @@ function currencyToNumber(object) {
             return -1;
     }
 }
+var DirectoryProviderType;
+(function (DirectoryProviderType) {
+    DirectoryProviderType["GOOGLE_WORKSPACE"] = "GOOGLE_WORKSPACE";
+    DirectoryProviderType["MICROSOFT_365"] = "MICROSOFT_365";
+    DirectoryProviderType["SELF_HOSTED_LDAP"] = "SELF_HOSTED_LDAP";
+    DirectoryProviderType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(DirectoryProviderType || (exports.DirectoryProviderType = DirectoryProviderType = {}));
+function directoryProviderTypeFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "GOOGLE_WORKSPACE":
+            return DirectoryProviderType.GOOGLE_WORKSPACE;
+        case 2:
+        case "MICROSOFT_365":
+            return DirectoryProviderType.MICROSOFT_365;
+        case 3:
+        case "SELF_HOSTED_LDAP":
+            return DirectoryProviderType.SELF_HOSTED_LDAP;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return DirectoryProviderType.UNRECOGNIZED;
+    }
+}
+function directoryProviderTypeToJSON(object) {
+    switch (object) {
+        case DirectoryProviderType.GOOGLE_WORKSPACE:
+            return "GOOGLE_WORKSPACE";
+        case DirectoryProviderType.MICROSOFT_365:
+            return "MICROSOFT_365";
+        case DirectoryProviderType.SELF_HOSTED_LDAP:
+            return "SELF_HOSTED_LDAP";
+        case DirectoryProviderType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function directoryProviderTypeToNumber(object) {
+    switch (object) {
+        case DirectoryProviderType.GOOGLE_WORKSPACE:
+            return 1;
+        case DirectoryProviderType.MICROSOFT_365:
+            return 2;
+        case DirectoryProviderType.SELF_HOSTED_LDAP:
+            return 3;
+        case DirectoryProviderType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseOrganization() {
     return {
         id: undefined,
@@ -78,6 +131,7 @@ function createBaseOrganization() {
         main_address: "",
         weekend_days: [],
         timezone: "",
+        directory_provider: DirectoryProviderType.GOOGLE_WORKSPACE,
     };
 }
 exports.Organization = {
@@ -131,6 +185,9 @@ exports.Organization = {
         writer.join();
         if (message.timezone !== "") {
             writer.uint32(130).string(message.timezone);
+        }
+        if (message.directory_provider !== undefined && message.directory_provider !== DirectoryProviderType.GOOGLE_WORKSPACE) {
+            writer.uint32(136).int32(directoryProviderTypeToNumber(message.directory_provider));
         }
         return writer;
     },
@@ -244,6 +301,12 @@ exports.Organization = {
                     }
                     message.timezone = reader.string();
                     continue;
+                case 17:
+                    if (tag !== 136) {
+                        break;
+                    }
+                    message.directory_provider = directoryProviderTypeFromJSON(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -280,6 +343,9 @@ exports.Organization = {
                 ? object.weekendDays.map((e) => (0, dayofweek_1.dayOfWeekFromJSON)(e))
                 : [],
             timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
+            directory_provider: isSet(object.directoryProvider)
+                ? directoryProviderTypeFromJSON(object.directoryProvider)
+                : DirectoryProviderType.GOOGLE_WORKSPACE,
         };
     },
     toJSON(message) {
@@ -332,6 +398,9 @@ exports.Organization = {
         if (message.timezone !== "") {
             obj.timezone = message.timezone;
         }
+        if (message.directory_provider !== undefined && message.directory_provider !== DirectoryProviderType.GOOGLE_WORKSPACE) {
+            obj.directoryProvider = directoryProviderTypeToJSON(message.directory_provider);
+        }
         return obj;
     },
     create(base) {
@@ -368,6 +437,7 @@ exports.Organization = {
         message.main_address = object.main_address ?? "";
         message.weekend_days = object.weekend_days?.map((e) => e) || [];
         message.timezone = object.timezone ?? "";
+        message.directory_provider = object.directory_provider ?? DirectoryProviderType.GOOGLE_WORKSPACE;
         return message;
     },
 };
