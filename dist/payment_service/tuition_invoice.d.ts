@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentStatus } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { PaymentInstallment, PaymentScheduleType, Scope } from "./tuition";
 export declare const protobufPackage = "payment_service";
@@ -38,6 +39,8 @@ export interface TuitionInvoiceLineItem {
     name: string;
     /** might be negative for discounts */
     amount: number;
+    /** status at time of invoice creation */
+    student_status?: StudentStatus | undefined;
 }
 export interface TuitionInvoice {
     id: ObjectId | undefined;
@@ -49,6 +52,12 @@ export interface TuitionInvoice {
     total_gross: number;
     total_discounts: number;
     total_net: number;
+    /** Store the original plan ID for regeneration */
+    tuition_plan_id: ObjectId | undefined;
+    /** Hypothetical totals if all admitted students were enrolled */
+    total_net_if_all_enrolled?: number | undefined;
+    total_gross_if_all_enrolled?: number | undefined;
+    total_discounts_if_all_enrolled?: number | undefined;
 }
 export declare const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot>;
 export declare const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem>;

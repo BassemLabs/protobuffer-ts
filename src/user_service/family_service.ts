@@ -11,7 +11,14 @@ import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Family, FamilyInformation } from "./family";
 import { Parent } from "./parent";
-import { Student, StudentStatus, studentStatusFromJSON, studentStatusToJSON, studentStatusToNumber } from "./student";
+import {
+  SchoolYearStudent,
+  Student,
+  StudentStatus,
+  studentStatusFromJSON,
+  studentStatusToJSON,
+  studentStatusToNumber,
+} from "./student";
 
 export const protobufPackage = "user_service";
 
@@ -85,6 +92,17 @@ export interface GetEnrolledStudentsForFamilyRequest {
 export interface GetEnrolledStudentsForFamilyResponse {
   /** Enrolled students for the specified school year */
   students: Student[];
+}
+
+export interface GetAdmittedStudentsForFamilyRequest {
+  context: RequestContext | undefined;
+  family_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface GetAdmittedStudentsForFamilyResponse {
+  /** Admitted students (Applicant, ReRegistration, Enrolled) with their status for the specified school year */
+  students: SchoolYearStudent[];
 }
 
 export interface GetFamiliesByStudentStatusRequest {
@@ -1197,6 +1215,170 @@ export const GetEnrolledStudentsForFamilyResponse: MessageFns<GetEnrolledStudent
   ): GetEnrolledStudentsForFamilyResponse {
     const message = createBaseGetEnrolledStudentsForFamilyResponse();
     message.students = object.students?.map((e) => Student.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetAdmittedStudentsForFamilyRequest(): GetAdmittedStudentsForFamilyRequest {
+  return { context: undefined, family_id: undefined, school_year_id: undefined };
+}
+
+export const GetAdmittedStudentsForFamilyRequest: MessageFns<GetAdmittedStudentsForFamilyRequest> = {
+  encode(message: GetAdmittedStudentsForFamilyRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family_id !== undefined) {
+      ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAdmittedStudentsForFamilyRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAdmittedStudentsForFamilyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAdmittedStudentsForFamilyRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetAdmittedStudentsForFamilyRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family_id !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAdmittedStudentsForFamilyRequest>, I>>(
+    base?: I,
+  ): GetAdmittedStudentsForFamilyRequest {
+    return GetAdmittedStudentsForFamilyRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAdmittedStudentsForFamilyRequest>, I>>(
+    object: I,
+  ): GetAdmittedStudentsForFamilyRequest {
+    const message = createBaseGetAdmittedStudentsForFamilyRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family_id = (object.family_id !== undefined && object.family_id !== null)
+      ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAdmittedStudentsForFamilyResponse(): GetAdmittedStudentsForFamilyResponse {
+  return { students: [] };
+}
+
+export const GetAdmittedStudentsForFamilyResponse: MessageFns<GetAdmittedStudentsForFamilyResponse> = {
+  encode(message: GetAdmittedStudentsForFamilyResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.students) {
+      SchoolYearStudent.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAdmittedStudentsForFamilyResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAdmittedStudentsForFamilyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.students.push(SchoolYearStudent.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAdmittedStudentsForFamilyResponse {
+    return {
+      students: globalThis.Array.isArray(object?.students)
+        ? object.students.map((e: any) => SchoolYearStudent.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetAdmittedStudentsForFamilyResponse): unknown {
+    const obj: any = {};
+    if (message.students?.length) {
+      obj.students = message.students.map((e) => SchoolYearStudent.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAdmittedStudentsForFamilyResponse>, I>>(
+    base?: I,
+  ): GetAdmittedStudentsForFamilyResponse {
+    return GetAdmittedStudentsForFamilyResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAdmittedStudentsForFamilyResponse>, I>>(
+    object: I,
+  ): GetAdmittedStudentsForFamilyResponse {
+    const message = createBaseGetAdmittedStudentsForFamilyResponse();
+    message.students = object.students?.map((e) => SchoolYearStudent.fromPartial(e)) || [];
     return message;
   },
 };

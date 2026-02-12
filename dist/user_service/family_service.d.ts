@@ -4,7 +4,7 @@ import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Family, FamilyInformation } from "./family";
 import { Parent } from "./parent";
-import { Student, StudentStatus } from "./student";
+import { SchoolYearStudent, Student, StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
 export interface GetFamilyRequest {
     context: RequestContext | undefined;
@@ -62,6 +62,15 @@ export interface GetEnrolledStudentsForFamilyRequest {
 export interface GetEnrolledStudentsForFamilyResponse {
     /** Enrolled students for the specified school year */
     students: Student[];
+}
+export interface GetAdmittedStudentsForFamilyRequest {
+    context: RequestContext | undefined;
+    family_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetAdmittedStudentsForFamilyResponse {
+    /** Admitted students (Applicant, ReRegistration, Enrolled) with their status for the specified school year */
+    students: SchoolYearStudent[];
 }
 export interface GetFamiliesByStudentStatusRequest {
     context: RequestContext | undefined;
@@ -132,6 +141,8 @@ export declare const GetFamilyStudentsRequest: MessageFns<GetFamilyStudentsReque
 export declare const GetFamilyStudentsResponse: MessageFns<GetFamilyStudentsResponse>;
 export declare const GetEnrolledStudentsForFamilyRequest: MessageFns<GetEnrolledStudentsForFamilyRequest>;
 export declare const GetEnrolledStudentsForFamilyResponse: MessageFns<GetEnrolledStudentsForFamilyResponse>;
+export declare const GetAdmittedStudentsForFamilyRequest: MessageFns<GetAdmittedStudentsForFamilyRequest>;
+export declare const GetAdmittedStudentsForFamilyResponse: MessageFns<GetAdmittedStudentsForFamilyResponse>;
 export declare const GetFamiliesByStudentStatusRequest: MessageFns<GetFamiliesByStudentStatusRequest>;
 export declare const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount>;
 export declare const GetFamiliesByStudentStatusResponse: MessageFns<GetFamiliesByStudentStatusResponse>;

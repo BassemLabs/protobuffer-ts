@@ -1,5 +1,4 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ActionRequiredByParents } from "../user_service/action_required_by_parents";
 import { StudentStatus } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
@@ -33,13 +32,6 @@ export interface GetParentInvoicesRequest {
     parent_id: ObjectId | undefined;
     school_year?: ObjectId | undefined;
     title?: string | undefined;
-}
-export interface GetActionsRequiredByParentsRequest {
-    context: RequestContext | undefined;
-    student_id: ObjectId | undefined;
-}
-export interface GetActionsRequiredByParentsResponse {
-    actions: ActionRequiredByParents[];
 }
 export interface StudentHasNoUnpaidInvoicesRequest {
     context: RequestContext | undefined;
@@ -179,6 +171,19 @@ export interface GetStudentsWithReregistrationInvoicesRequest {
 export interface GetStudentsWithReregistrationInvoicesResponse {
     student_ids: ObjectId[];
 }
+export interface GetNonPaidOnboardingInvoicesForStudentsRequest {
+    context: RequestContext | undefined;
+    student_ids: ObjectId[];
+    school_year_id: ObjectId | undefined;
+    student_statuses: StudentStatus[];
+}
+export interface GetNonPaidOnboardingInvoicesForStudentsResponse {
+    student_invoices: StudentInvoices[];
+}
+export interface StudentInvoices {
+    student_id: ObjectId | undefined;
+    invoice_ids: ObjectId[];
+}
 export interface GetOrgPaidBassemLabsFeesInPeriodRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -227,8 +232,6 @@ export declare const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest>;
 export declare const GetUserInvoicesResponse: MessageFns<GetUserInvoicesResponse>;
 export declare const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest>;
 export declare const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest>;
-export declare const GetActionsRequiredByParentsRequest: MessageFns<GetActionsRequiredByParentsRequest>;
-export declare const GetActionsRequiredByParentsResponse: MessageFns<GetActionsRequiredByParentsResponse>;
 export declare const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInvoicesRequest>;
 export declare const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidInvoicesResponse>;
 export declare const ListInvoicesRequest: MessageFns<ListInvoicesRequest>;
@@ -255,6 +258,9 @@ export declare const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudent
 export declare const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUnpaidInvoicesResponse>;
 export declare const GetStudentsWithReregistrationInvoicesRequest: MessageFns<GetStudentsWithReregistrationInvoicesRequest>;
 export declare const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStudentsWithReregistrationInvoicesResponse>;
+export declare const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<GetNonPaidOnboardingInvoicesForStudentsRequest>;
+export declare const GetNonPaidOnboardingInvoicesForStudentsResponse: MessageFns<GetNonPaidOnboardingInvoicesForStudentsResponse>;
+export declare const StudentInvoices: MessageFns<StudentInvoices>;
 export declare const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBassemLabsFeesInPeriodRequest>;
 export declare const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBassemLabsFeesInPeriodResponse>;
 export declare const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvoiceRequest>;

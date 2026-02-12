@@ -2,9 +2,10 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "user_service";
 export declare enum ActionType {
-    PAY_INVOICE = "PAY_INVOICE",
-    FILL_FIELDS = "FILL_FIELDS",
-    CORRECT_FIELDS = "CORRECT_FIELDS",
+    CUSTOM_FIELDS = "CUSTOM_FIELDS",
+    ONBOARDING_INVOICE = "ONBOARDING_INVOICE",
+    /** GENERATE_OR_REGENERATE_TUITION_INVOICE - in frontend we prevent showing this action if the family autopay is not setup yet */
+    GENERATE_OR_REGENERATE_TUITION_INVOICE = "GENERATE_OR_REGENERATE_TUITION_INVOICE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function actionTypeFromJSON(object: any): ActionType;

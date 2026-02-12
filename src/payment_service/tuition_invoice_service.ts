@@ -47,6 +47,12 @@ export interface ModifyTuitionInvoiceRequest {
   tuition_plan: ObjectId | undefined;
 }
 
+export interface RegenerateTuitionInvoiceRequest {
+  context: RequestContext | undefined;
+  family_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
 export interface ListFamiliesWithTuitionInvoicesRequest {
   context: RequestContext | undefined;
   school_year: ObjectId | undefined;
@@ -65,6 +71,18 @@ export interface FamilyWithTuitionInvoice {
   total_paid: number;
   status: TuitionInvoiceStatus;
   total_invoices_amount: number;
+}
+
+export interface CheckFamilyTuitionInvoiceStatusRequest {
+  context: RequestContext | undefined;
+  family_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+  admitted_student_ids: ObjectId[];
+}
+
+export interface CheckFamilyTuitionInvoiceStatusResponse {
+  tuition_invoice_exists: boolean;
+  missing_student_ids: ObjectId[];
 }
 
 function createBaseStudentObj(): StudentObj {
@@ -462,6 +480,103 @@ export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest
   },
 };
 
+function createBaseRegenerateTuitionInvoiceRequest(): RegenerateTuitionInvoiceRequest {
+  return { context: undefined, family_id: undefined, school_year_id: undefined };
+}
+
+export const RegenerateTuitionInvoiceRequest: MessageFns<RegenerateTuitionInvoiceRequest> = {
+  encode(message: RegenerateTuitionInvoiceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family_id !== undefined) {
+      ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RegenerateTuitionInvoiceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRegenerateTuitionInvoiceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RegenerateTuitionInvoiceRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: RegenerateTuitionInvoiceRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family_id !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RegenerateTuitionInvoiceRequest>, I>>(base?: I): RegenerateTuitionInvoiceRequest {
+    return RegenerateTuitionInvoiceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RegenerateTuitionInvoiceRequest>, I>>(
+    object: I,
+  ): RegenerateTuitionInvoiceRequest {
+    const message = createBaseRegenerateTuitionInvoiceRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family_id = (object.family_id !== undefined && object.family_id !== null)
+      ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseListFamiliesWithTuitionInvoicesRequest(): ListFamiliesWithTuitionInvoicesRequest {
   return { context: undefined, school_year: undefined, start_date: undefined, end_date: undefined };
 }
@@ -781,6 +896,204 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
     message.total_paid = object.total_paid ?? 0;
     message.status = object.status ?? TuitionInvoiceStatus.NOT_GENERATED;
     message.total_invoices_amount = object.total_invoices_amount ?? 0;
+    return message;
+  },
+};
+
+function createBaseCheckFamilyTuitionInvoiceStatusRequest(): CheckFamilyTuitionInvoiceStatusRequest {
+  return { context: undefined, family_id: undefined, school_year_id: undefined, admitted_student_ids: [] };
+}
+
+export const CheckFamilyTuitionInvoiceStatusRequest: MessageFns<CheckFamilyTuitionInvoiceStatusRequest> = {
+  encode(message: CheckFamilyTuitionInvoiceStatusRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family_id !== undefined) {
+      ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.admitted_student_ids) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CheckFamilyTuitionInvoiceStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCheckFamilyTuitionInvoiceStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.admitted_student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CheckFamilyTuitionInvoiceStatusRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      admitted_student_ids: globalThis.Array.isArray(object?.admittedStudentIds)
+        ? object.admittedStudentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CheckFamilyTuitionInvoiceStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family_id !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.admitted_student_ids?.length) {
+      obj.admittedStudentIds = message.admitted_student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CheckFamilyTuitionInvoiceStatusRequest>, I>>(
+    base?: I,
+  ): CheckFamilyTuitionInvoiceStatusRequest {
+    return CheckFamilyTuitionInvoiceStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CheckFamilyTuitionInvoiceStatusRequest>, I>>(
+    object: I,
+  ): CheckFamilyTuitionInvoiceStatusRequest {
+    const message = createBaseCheckFamilyTuitionInvoiceStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family_id = (object.family_id !== undefined && object.family_id !== null)
+      ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.admitted_student_ids = object.admitted_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCheckFamilyTuitionInvoiceStatusResponse(): CheckFamilyTuitionInvoiceStatusResponse {
+  return { tuition_invoice_exists: false, missing_student_ids: [] };
+}
+
+export const CheckFamilyTuitionInvoiceStatusResponse: MessageFns<CheckFamilyTuitionInvoiceStatusResponse> = {
+  encode(message: CheckFamilyTuitionInvoiceStatusResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.tuition_invoice_exists !== false) {
+      writer.uint32(8).bool(message.tuition_invoice_exists);
+    }
+    for (const v of message.missing_student_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CheckFamilyTuitionInvoiceStatusResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCheckFamilyTuitionInvoiceStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.tuition_invoice_exists = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.missing_student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CheckFamilyTuitionInvoiceStatusResponse {
+    return {
+      tuition_invoice_exists: isSet(object.tuitionInvoiceExists)
+        ? globalThis.Boolean(object.tuitionInvoiceExists)
+        : false,
+      missing_student_ids: globalThis.Array.isArray(object?.missingStudentIds)
+        ? object.missingStudentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CheckFamilyTuitionInvoiceStatusResponse): unknown {
+    const obj: any = {};
+    if (message.tuition_invoice_exists !== false) {
+      obj.tuitionInvoiceExists = message.tuition_invoice_exists;
+    }
+    if (message.missing_student_ids?.length) {
+      obj.missingStudentIds = message.missing_student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CheckFamilyTuitionInvoiceStatusResponse>, I>>(
+    base?: I,
+  ): CheckFamilyTuitionInvoiceStatusResponse {
+    return CheckFamilyTuitionInvoiceStatusResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CheckFamilyTuitionInvoiceStatusResponse>, I>>(
+    object: I,
+  ): CheckFamilyTuitionInvoiceStatusResponse {
+    const message = createBaseCheckFamilyTuitionInvoiceStatusResponse();
+    message.tuition_invoice_exists = object.tuition_invoice_exists ?? false;
+    message.missing_student_ids = object.missing_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

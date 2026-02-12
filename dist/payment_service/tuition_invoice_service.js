@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.ModifyTuitionInvoiceRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
+exports.CheckFamilyTuitionInvoiceStatusResponse = exports.CheckFamilyTuitionInvoiceStatusRequest = exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.RegenerateTuitionInvoiceRequest = exports.ModifyTuitionInvoiceRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -369,6 +369,92 @@ exports.ModifyTuitionInvoiceRequest = {
         return message;
     },
 };
+function createBaseRegenerateTuitionInvoiceRequest() {
+    return { context: undefined, family_id: undefined, school_year_id: undefined };
+}
+exports.RegenerateTuitionInvoiceRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRegenerateTuitionInvoiceRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RegenerateTuitionInvoiceRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRegenerateTuitionInvoiceRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
 function createBaseListFamiliesWithTuitionInvoicesRequest() {
     return { context: undefined, school_year: undefined, start_date: undefined, end_date: undefined };
 }
@@ -652,6 +738,178 @@ exports.FamilyWithTuitionInvoice = {
         message.total_paid = object.total_paid ?? 0;
         message.status = object.status ?? tuition_invoice_1.TuitionInvoiceStatus.NOT_GENERATED;
         message.total_invoices_amount = object.total_invoices_amount ?? 0;
+        return message;
+    },
+};
+function createBaseCheckFamilyTuitionInvoiceStatusRequest() {
+    return { context: undefined, family_id: undefined, school_year_id: undefined, admitted_student_ids: [] };
+}
+exports.CheckFamilyTuitionInvoiceStatusRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.admitted_student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCheckFamilyTuitionInvoiceStatusRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.admitted_student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            admitted_student_ids: globalThis.Array.isArray(object?.admittedStudentIds)
+                ? object.admittedStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.admitted_student_ids?.length) {
+            obj.admittedStudentIds = message.admitted_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CheckFamilyTuitionInvoiceStatusRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCheckFamilyTuitionInvoiceStatusRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.admitted_student_ids = object.admitted_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCheckFamilyTuitionInvoiceStatusResponse() {
+    return { tuition_invoice_exists: false, missing_student_ids: [] };
+}
+exports.CheckFamilyTuitionInvoiceStatusResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.tuition_invoice_exists !== false) {
+            writer.uint32(8).bool(message.tuition_invoice_exists);
+        }
+        for (const v of message.missing_student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCheckFamilyTuitionInvoiceStatusResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.tuition_invoice_exists = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.missing_student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            tuition_invoice_exists: isSet(object.tuitionInvoiceExists)
+                ? globalThis.Boolean(object.tuitionInvoiceExists)
+                : false,
+            missing_student_ids: globalThis.Array.isArray(object?.missingStudentIds)
+                ? object.missingStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.tuition_invoice_exists !== false) {
+            obj.tuitionInvoiceExists = message.tuition_invoice_exists;
+        }
+        if (message.missing_student_ids?.length) {
+            obj.missingStudentIds = message.missing_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CheckFamilyTuitionInvoiceStatusResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCheckFamilyTuitionInvoiceStatusResponse();
+        message.tuition_invoice_exists = object.tuition_invoice_exists ?? false;
+        message.missing_student_ids = object.missing_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

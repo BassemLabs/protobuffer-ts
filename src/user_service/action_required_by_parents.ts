@@ -11,23 +11,24 @@ import { ObjectId } from "../utils/object_id";
 export const protobufPackage = "user_service";
 
 export enum ActionType {
-  PAY_INVOICE = "PAY_INVOICE",
-  FILL_FIELDS = "FILL_FIELDS",
-  CORRECT_FIELDS = "CORRECT_FIELDS",
+  CUSTOM_FIELDS = "CUSTOM_FIELDS",
+  ONBOARDING_INVOICE = "ONBOARDING_INVOICE",
+  /** GENERATE_OR_REGENERATE_TUITION_INVOICE - in frontend we prevent showing this action if the family autopay is not setup yet */
+  GENERATE_OR_REGENERATE_TUITION_INVOICE = "GENERATE_OR_REGENERATE_TUITION_INVOICE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function actionTypeFromJSON(object: any): ActionType {
   switch (object) {
     case 0:
-    case "PAY_INVOICE":
-      return ActionType.PAY_INVOICE;
+    case "CUSTOM_FIELDS":
+      return ActionType.CUSTOM_FIELDS;
     case 1:
-    case "FILL_FIELDS":
-      return ActionType.FILL_FIELDS;
+    case "ONBOARDING_INVOICE":
+      return ActionType.ONBOARDING_INVOICE;
     case 2:
-    case "CORRECT_FIELDS":
-      return ActionType.CORRECT_FIELDS;
+    case "GENERATE_OR_REGENERATE_TUITION_INVOICE":
+      return ActionType.GENERATE_OR_REGENERATE_TUITION_INVOICE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -37,12 +38,12 @@ export function actionTypeFromJSON(object: any): ActionType {
 
 export function actionTypeToJSON(object: ActionType): string {
   switch (object) {
-    case ActionType.PAY_INVOICE:
-      return "PAY_INVOICE";
-    case ActionType.FILL_FIELDS:
-      return "FILL_FIELDS";
-    case ActionType.CORRECT_FIELDS:
-      return "CORRECT_FIELDS";
+    case ActionType.CUSTOM_FIELDS:
+      return "CUSTOM_FIELDS";
+    case ActionType.ONBOARDING_INVOICE:
+      return "ONBOARDING_INVOICE";
+    case ActionType.GENERATE_OR_REGENERATE_TUITION_INVOICE:
+      return "GENERATE_OR_REGENERATE_TUITION_INVOICE";
     case ActionType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -51,11 +52,11 @@ export function actionTypeToJSON(object: ActionType): string {
 
 export function actionTypeToNumber(object: ActionType): number {
   switch (object) {
-    case ActionType.PAY_INVOICE:
+    case ActionType.CUSTOM_FIELDS:
       return 0;
-    case ActionType.FILL_FIELDS:
+    case ActionType.ONBOARDING_INVOICE:
       return 1;
-    case ActionType.CORRECT_FIELDS:
+    case ActionType.GENERATE_OR_REGENERATE_TUITION_INVOICE:
       return 2;
     case ActionType.UNRECOGNIZED:
     default:
@@ -71,12 +72,12 @@ export interface ActionRequiredByParents {
 }
 
 function createBaseActionRequiredByParents(): ActionRequiredByParents {
-  return { action_type: ActionType.PAY_INVOICE, title: "", invoice_id: undefined, group_id: undefined };
+  return { action_type: ActionType.CUSTOM_FIELDS, title: "", invoice_id: undefined, group_id: undefined };
 }
 
 export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
   encode(message: ActionRequiredByParents, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.action_type !== ActionType.PAY_INVOICE) {
+    if (message.action_type !== ActionType.CUSTOM_FIELDS) {
       writer.uint32(8).int32(actionTypeToNumber(message.action_type));
     }
     if (message.title !== "") {
@@ -137,7 +138,7 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
 
   fromJSON(object: any): ActionRequiredByParents {
     return {
-      action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.PAY_INVOICE,
+      action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.CUSTOM_FIELDS,
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
       group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
@@ -146,7 +147,7 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
 
   toJSON(message: ActionRequiredByParents): unknown {
     const obj: any = {};
-    if (message.action_type !== ActionType.PAY_INVOICE) {
+    if (message.action_type !== ActionType.CUSTOM_FIELDS) {
       obj.actionType = actionTypeToJSON(message.action_type);
     }
     if (message.title !== "") {
@@ -166,7 +167,7 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActionRequiredByParents>, I>>(object: I): ActionRequiredByParents {
     const message = createBaseActionRequiredByParents();
-    message.action_type = object.action_type ?? ActionType.PAY_INVOICE;
+    message.action_type = object.action_type ?? ActionType.CUSTOM_FIELDS;
     message.title = object.title ?? "";
     message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
       ? ObjectId.fromPartial(object.invoice_id)

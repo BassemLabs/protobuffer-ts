@@ -27,6 +27,11 @@ export interface ModifyTuitionInvoiceRequest {
     tuition_invoice: ObjectId | undefined;
     tuition_plan: ObjectId | undefined;
 }
+export interface RegenerateTuitionInvoiceRequest {
+    context: RequestContext | undefined;
+    family_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+}
 export interface ListFamiliesWithTuitionInvoicesRequest {
     context: RequestContext | undefined;
     school_year: ObjectId | undefined;
@@ -44,13 +49,26 @@ export interface FamilyWithTuitionInvoice {
     status: TuitionInvoiceStatus;
     total_invoices_amount: number;
 }
+export interface CheckFamilyTuitionInvoiceStatusRequest {
+    context: RequestContext | undefined;
+    family_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+    admitted_student_ids: ObjectId[];
+}
+export interface CheckFamilyTuitionInvoiceStatusResponse {
+    tuition_invoice_exists: boolean;
+    missing_student_ids: ObjectId[];
+}
 export declare const StudentObj: MessageFns<StudentObj>;
 export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;
 export declare const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest>;
 export declare const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest>;
+export declare const RegenerateTuitionInvoiceRequest: MessageFns<RegenerateTuitionInvoiceRequest>;
 export declare const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWithTuitionInvoicesRequest>;
 export declare const ListFamiliesWithTuitionInvoicesResponse: MessageFns<ListFamiliesWithTuitionInvoicesResponse>;
 export declare const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice>;
+export declare const CheckFamilyTuitionInvoiceStatusRequest: MessageFns<CheckFamilyTuitionInvoiceStatusRequest>;
+export declare const CheckFamilyTuitionInvoiceStatusResponse: MessageFns<CheckFamilyTuitionInvoiceStatusResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -4,7 +4,6 @@ import { InvoiceResponse } from "../payment_service/invoice";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { UserType } from "../utils/user_type";
-import { ActionRequiredByParents } from "./action_required_by_parents";
 import { GroupApprovalStatus } from "./custom_field";
 import { CustomFieldEntry } from "./custom_field_entry";
 import { Family } from "./family";
@@ -209,13 +208,6 @@ export interface GetStudentsByIdsRequest {
 export interface GetStudentsByIdsResponse {
     students: Student[];
 }
-export interface GetRequiredActionsByParentsRequest {
-    context: RequestContext | undefined;
-    student_id: ObjectId | undefined;
-}
-export interface GetRequiredActionsByParentsResponse {
-    actions: ActionRequiredByParents[];
-}
 export interface GetStudentsStatusCountsRequest {
     context: RequestContext | undefined;
     statuses: StudentStatus[];
@@ -324,8 +316,6 @@ export declare const GetStudentsByIdsWithSchoolYearRequest: MessageFns<GetStuden
 export declare const GetStudentsByIdsWithSchoolYearResponse: MessageFns<GetStudentsByIdsWithSchoolYearResponse>;
 export declare const GetStudentsByIdsRequest: MessageFns<GetStudentsByIdsRequest>;
 export declare const GetStudentsByIdsResponse: MessageFns<GetStudentsByIdsResponse>;
-export declare const GetRequiredActionsByParentsRequest: MessageFns<GetRequiredActionsByParentsRequest>;
-export declare const GetRequiredActionsByParentsResponse: MessageFns<GetRequiredActionsByParentsResponse>;
 export declare const GetStudentsStatusCountsRequest: MessageFns<GetStudentsStatusCountsRequest>;
 export declare const GetStudentsStatusCountsResponse: MessageFns<GetStudentsStatusCountsResponse>;
 export declare const StudentStatusCount: MessageFns<StudentStatusCount>;

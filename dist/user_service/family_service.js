@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/family_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
+exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -938,6 +938,146 @@ exports.GetEnrolledStudentsForFamilyResponse = {
     fromPartial(object) {
         const message = createBaseGetEnrolledStudentsForFamilyResponse();
         message.students = object.students?.map((e) => student_1.Student.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetAdmittedStudentsForFamilyRequest() {
+    return { context: undefined, family_id: undefined, school_year_id: undefined };
+}
+exports.GetAdmittedStudentsForFamilyRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAdmittedStudentsForFamilyRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAdmittedStudentsForFamilyRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAdmittedStudentsForFamilyRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAdmittedStudentsForFamilyResponse() {
+    return { students: [] };
+}
+exports.GetAdmittedStudentsForFamilyResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.students) {
+            student_1.SchoolYearStudent.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAdmittedStudentsForFamilyResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.students.push(student_1.SchoolYearStudent.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            students: globalThis.Array.isArray(object?.students)
+                ? object.students.map((e) => student_1.SchoolYearStudent.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.students?.length) {
+            obj.students = message.students.map((e) => student_1.SchoolYearStudent.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAdmittedStudentsForFamilyResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAdmittedStudentsForFamilyResponse();
+        message.students = object.students?.map((e) => student_1.SchoolYearStudent.fromPartial(e)) || [];
         return message;
     },
 };

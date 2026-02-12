@@ -7,6 +7,12 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import {
+  StudentStatus,
+  studentStatusFromJSON,
+  studentStatusToJSON,
+  studentStatusToNumber,
+} from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import {
   PaymentInstallment,
@@ -161,6 +167,8 @@ export interface TuitionInvoiceLineItem {
   name: string;
   /** might be negative for discounts */
   amount: number;
+  /** status at time of invoice creation */
+  student_status?: StudentStatus | undefined;
 }
 
 export interface TuitionInvoice {
@@ -173,6 +181,14 @@ export interface TuitionInvoice {
   total_gross: number;
   total_discounts: number;
   total_net: number;
+  /** Store the original plan ID for regeneration */
+  tuition_plan_id:
+    | ObjectId
+    | undefined;
+  /** Hypothetical totals if all admitted students were enrolled */
+  total_net_if_all_enrolled?: number | undefined;
+  total_gross_if_all_enrolled?: number | undefined;
+  total_discounts_if_all_enrolled?: number | undefined;
 }
 
 function createBaseTuitionPlanSnapshot(): TuitionPlanSnapshot {
@@ -321,7 +337,14 @@ export const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot> = {
 };
 
 function createBaseTuitionInvoiceLineItem(): TuitionInvoiceLineItem {
-  return { line_type: LineType.BASE_RATE, scope: Scope.STUDENT_SCOPE, student: undefined, name: "", amount: 0 };
+  return {
+    line_type: LineType.BASE_RATE,
+    scope: Scope.STUDENT_SCOPE,
+    student: undefined,
+    name: "",
+    amount: 0,
+    student_status: StudentStatus.WAITLIST,
+  };
 }
 
 export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
@@ -340,6 +363,9 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
     }
     if (message.amount !== 0) {
       writer.uint32(41).double(message.amount);
+    }
+    if (message.student_status !== undefined && message.student_status !== StudentStatus.WAITLIST) {
+      writer.uint32(48).int32(studentStatusToNumber(message.student_status));
     }
     return writer;
   },
@@ -386,6 +412,13 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
 
           message.amount = reader.double();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.student_status = studentStatusFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -402,6 +435,9 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+      student_status: isSet(object.studentStatus)
+        ? studentStatusFromJSON(object.studentStatus)
+        : StudentStatus.WAITLIST,
     };
   },
 
@@ -422,6 +458,9 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
     if (message.amount !== 0) {
       obj.amount = message.amount;
     }
+    if (message.student_status !== undefined && message.student_status !== StudentStatus.WAITLIST) {
+      obj.studentStatus = studentStatusToJSON(message.student_status);
+    }
     return obj;
   },
 
@@ -437,6 +476,7 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
       : undefined;
     message.name = object.name ?? "";
     message.amount = object.amount ?? 0;
+    message.student_status = object.student_status ?? StudentStatus.WAITLIST;
     return message;
   },
 };
@@ -452,6 +492,10 @@ function createBaseTuitionInvoice(): TuitionInvoice {
     total_gross: 0,
     total_discounts: 0,
     total_net: 0,
+    tuition_plan_id: undefined,
+    total_net_if_all_enrolled: 0,
+    total_gross_if_all_enrolled: 0,
+    total_discounts_if_all_enrolled: 0,
   };
 }
 
@@ -483,6 +527,18 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     }
     if (message.total_net !== 0) {
       writer.uint32(73).double(message.total_net);
+    }
+    if (message.tuition_plan_id !== undefined) {
+      ObjectId.encode(message.tuition_plan_id, writer.uint32(82).fork()).join();
+    }
+    if (message.total_net_if_all_enrolled !== undefined && message.total_net_if_all_enrolled !== 0) {
+      writer.uint32(89).double(message.total_net_if_all_enrolled);
+    }
+    if (message.total_gross_if_all_enrolled !== undefined && message.total_gross_if_all_enrolled !== 0) {
+      writer.uint32(97).double(message.total_gross_if_all_enrolled);
+    }
+    if (message.total_discounts_if_all_enrolled !== undefined && message.total_discounts_if_all_enrolled !== 0) {
+      writer.uint32(105).double(message.total_discounts_if_all_enrolled);
     }
     return writer;
   },
@@ -557,6 +613,34 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
 
           message.total_net = reader.double();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.tuition_plan_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 11:
+          if (tag !== 89) {
+            break;
+          }
+
+          message.total_net_if_all_enrolled = reader.double();
+          continue;
+        case 12:
+          if (tag !== 97) {
+            break;
+          }
+
+          message.total_gross_if_all_enrolled = reader.double();
+          continue;
+        case 13:
+          if (tag !== 105) {
+            break;
+          }
+
+          message.total_discounts_if_all_enrolled = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -579,6 +663,16 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
       total_gross: isSet(object.totalGross) ? globalThis.Number(object.totalGross) : 0,
       total_discounts: isSet(object.totalDiscounts) ? globalThis.Number(object.totalDiscounts) : 0,
       total_net: isSet(object.totalNet) ? globalThis.Number(object.totalNet) : 0,
+      tuition_plan_id: isSet(object.tuitionPlanId) ? ObjectId.fromJSON(object.tuitionPlanId) : undefined,
+      total_net_if_all_enrolled: isSet(object.totalNetIfAllEnrolled)
+        ? globalThis.Number(object.totalNetIfAllEnrolled)
+        : 0,
+      total_gross_if_all_enrolled: isSet(object.totalGrossIfAllEnrolled)
+        ? globalThis.Number(object.totalGrossIfAllEnrolled)
+        : 0,
+      total_discounts_if_all_enrolled: isSet(object.totalDiscountsIfAllEnrolled)
+        ? globalThis.Number(object.totalDiscountsIfAllEnrolled)
+        : 0,
     };
   },
 
@@ -611,6 +705,18 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     if (message.total_net !== 0) {
       obj.totalNet = message.total_net;
     }
+    if (message.tuition_plan_id !== undefined) {
+      obj.tuitionPlanId = ObjectId.toJSON(message.tuition_plan_id);
+    }
+    if (message.total_net_if_all_enrolled !== undefined && message.total_net_if_all_enrolled !== 0) {
+      obj.totalNetIfAllEnrolled = message.total_net_if_all_enrolled;
+    }
+    if (message.total_gross_if_all_enrolled !== undefined && message.total_gross_if_all_enrolled !== 0) {
+      obj.totalGrossIfAllEnrolled = message.total_gross_if_all_enrolled;
+    }
+    if (message.total_discounts_if_all_enrolled !== undefined && message.total_discounts_if_all_enrolled !== 0) {
+      obj.totalDiscountsIfAllEnrolled = message.total_discounts_if_all_enrolled;
+    }
     return obj;
   },
 
@@ -636,6 +742,12 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     message.total_gross = object.total_gross ?? 0;
     message.total_discounts = object.total_discounts ?? 0;
     message.total_net = object.total_net ?? 0;
+    message.tuition_plan_id = (object.tuition_plan_id !== undefined && object.tuition_plan_id !== null)
+      ? ObjectId.fromPartial(object.tuition_plan_id)
+      : undefined;
+    message.total_net_if_all_enrolled = object.total_net_if_all_enrolled ?? 0;
+    message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? 0;
+    message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? 0;
     return message;
   },
 };

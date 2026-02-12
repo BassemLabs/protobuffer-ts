@@ -37,6 +37,8 @@ import * as Student from './user_service/student';
 export { Student };
 import * as Resource_access_settings from './user_service/resource_access_settings';
 export { Resource_access_settings };
+import * as Required_actions_service from './user_service/required_actions_service';
+export { Required_actions_service };
 import * as Provisioned_account_service from './user_service/provisioned_account_service';
 export { Provisioned_account_service };
 import * as Action_required_by_parents from './user_service/action_required_by_parents';

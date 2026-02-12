@@ -12,7 +12,6 @@ import { InvoiceResponse } from "../payment_service/invoice";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "../utils/user_type";
-import { ActionRequiredByParents } from "./action_required_by_parents";
 import { GroupApprovalStatus } from "./custom_field";
 import { CustomFieldEntry } from "./custom_field_entry";
 import { Family } from "./family";
@@ -273,15 +272,6 @@ export interface GetStudentsByIdsRequest {
 
 export interface GetStudentsByIdsResponse {
   students: Student[];
-}
-
-export interface GetRequiredActionsByParentsRequest {
-  context: RequestContext | undefined;
-  student_id: ObjectId | undefined;
-}
-
-export interface GetRequiredActionsByParentsResponse {
-  actions: ActionRequiredByParents[];
 }
 
 export interface GetStudentsStatusCountsRequest {
@@ -3988,153 +3978,6 @@ export const GetStudentsByIdsResponse: MessageFns<GetStudentsByIdsResponse> = {
   fromPartial<I extends Exact<DeepPartial<GetStudentsByIdsResponse>, I>>(object: I): GetStudentsByIdsResponse {
     const message = createBaseGetStudentsByIdsResponse();
     message.students = object.students?.map((e) => Student.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseGetRequiredActionsByParentsRequest(): GetRequiredActionsByParentsRequest {
-  return { context: undefined, student_id: undefined };
-}
-
-export const GetRequiredActionsByParentsRequest: MessageFns<GetRequiredActionsByParentsRequest> = {
-  encode(message: GetRequiredActionsByParentsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.student_id !== undefined) {
-      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetRequiredActionsByParentsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetRequiredActionsByParentsRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.student_id = ObjectId.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetRequiredActionsByParentsRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-    };
-  },
-
-  toJSON(message: GetRequiredActionsByParentsRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.student_id !== undefined) {
-      obj.studentId = ObjectId.toJSON(message.student_id);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetRequiredActionsByParentsRequest>, I>>(
-    base?: I,
-  ): GetRequiredActionsByParentsRequest {
-    return GetRequiredActionsByParentsRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetRequiredActionsByParentsRequest>, I>>(
-    object: I,
-  ): GetRequiredActionsByParentsRequest {
-    const message = createBaseGetRequiredActionsByParentsRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.student_id = (object.student_id !== undefined && object.student_id !== null)
-      ? ObjectId.fromPartial(object.student_id)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseGetRequiredActionsByParentsResponse(): GetRequiredActionsByParentsResponse {
-  return { actions: [] };
-}
-
-export const GetRequiredActionsByParentsResponse: MessageFns<GetRequiredActionsByParentsResponse> = {
-  encode(message: GetRequiredActionsByParentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.actions) {
-      ActionRequiredByParents.encode(v!, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetRequiredActionsByParentsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetRequiredActionsByParentsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.actions.push(ActionRequiredByParents.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetRequiredActionsByParentsResponse {
-    return {
-      actions: globalThis.Array.isArray(object?.actions)
-        ? object.actions.map((e: any) => ActionRequiredByParents.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: GetRequiredActionsByParentsResponse): unknown {
-    const obj: any = {};
-    if (message.actions?.length) {
-      obj.actions = message.actions.map((e) => ActionRequiredByParents.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetRequiredActionsByParentsResponse>, I>>(
-    base?: I,
-  ): GetRequiredActionsByParentsResponse {
-    return GetRequiredActionsByParentsResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetRequiredActionsByParentsResponse>, I>>(
-    object: I,
-  ): GetRequiredActionsByParentsResponse {
-    const message = createBaseGetRequiredActionsByParentsResponse();
-    message.actions = object.actions?.map((e) => ActionRequiredByParents.fromPartial(e)) || [];
     return message;
   },
 };
