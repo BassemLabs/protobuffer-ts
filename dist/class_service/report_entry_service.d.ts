@@ -108,9 +108,9 @@ export interface UnpublishReportEntryRequest {
     report_entry_id: ObjectId | undefined;
     requested_changes: string;
 }
-export interface GuardianSignReportCardRequest {
+export interface GuardianSignReportCardsRequest {
     context: RequestContext | undefined;
-    report_entry_id: ObjectId | undefined;
+    report_entry_ids: ObjectId[];
     session_metadata?: GuardianSignatureSessionMetadata | undefined;
 }
 export declare const GetCourseReportEntriesRequest: MessageFns<GetCourseReportEntriesRequest>;
@@ -136,7 +136,7 @@ export declare const RequestChangesReportEntryRequest: MessageFns<RequestChanges
 export declare const ApproveReportEntryRequest: MessageFns<ApproveReportEntryRequest>;
 export declare const PublishReportEntryRequest: MessageFns<PublishReportEntryRequest>;
 export declare const UnpublishReportEntryRequest: MessageFns<UnpublishReportEntryRequest>;
-export declare const GuardianSignReportCardRequest: MessageFns<GuardianSignReportCardRequest>;
+export declare const GuardianSignReportCardsRequest: MessageFns<GuardianSignReportCardsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

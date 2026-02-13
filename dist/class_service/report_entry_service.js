@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_entry_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GuardianSignReportCardRequest = exports.UnpublishReportEntryRequest = exports.PublishReportEntryRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetReportEntriesQueueRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.protobufPackage = void 0;
+exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishReportEntryRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetReportEntriesQueueRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -1782,16 +1782,16 @@ exports.UnpublishReportEntryRequest = {
         return message;
     },
 };
-function createBaseGuardianSignReportCardRequest() {
-    return { context: undefined, report_entry_id: undefined, session_metadata: undefined };
+function createBaseGuardianSignReportCardsRequest() {
+    return { context: undefined, report_entry_ids: [], session_metadata: undefined };
 }
-exports.GuardianSignReportCardRequest = {
+exports.GuardianSignReportCardsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.report_entry_id !== undefined) {
-            object_id_1.ObjectId.encode(message.report_entry_id, writer.uint32(18).fork()).join();
+        for (const v of message.report_entry_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
         }
         if (message.session_metadata !== undefined) {
             report_entry_1.GuardianSignatureSessionMetadata.encode(message.session_metadata, writer.uint32(26).fork()).join();
@@ -1801,7 +1801,7 @@ exports.GuardianSignReportCardRequest = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGuardianSignReportCardRequest();
+        const message = createBaseGuardianSignReportCardsRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1815,7 +1815,7 @@ exports.GuardianSignReportCardRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.report_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.report_entry_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1834,7 +1834,9 @@ exports.GuardianSignReportCardRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
+            report_entry_ids: globalThis.Array.isArray(object?.reportEntryIds)
+                ? object.reportEntryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
             session_metadata: isSet(object.sessionMetadata)
                 ? report_entry_1.GuardianSignatureSessionMetadata.fromJSON(object.sessionMetadata)
                 : undefined,
@@ -1845,8 +1847,8 @@ exports.GuardianSignReportCardRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.report_entry_id !== undefined) {
-            obj.reportEntryId = object_id_1.ObjectId.toJSON(message.report_entry_id);
+        if (message.report_entry_ids?.length) {
+            obj.reportEntryIds = message.report_entry_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         if (message.session_metadata !== undefined) {
             obj.sessionMetadata = report_entry_1.GuardianSignatureSessionMetadata.toJSON(message.session_metadata);
@@ -1854,16 +1856,14 @@ exports.GuardianSignReportCardRequest = {
         return obj;
     },
     create(base) {
-        return exports.GuardianSignReportCardRequest.fromPartial(base ?? {});
+        return exports.GuardianSignReportCardsRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGuardianSignReportCardRequest();
+        const message = createBaseGuardianSignReportCardsRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.report_entry_id = (object.report_entry_id !== undefined && object.report_entry_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.report_entry_id)
-            : undefined;
+        message.report_entry_ids = object.report_entry_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.session_metadata = (object.session_metadata !== undefined && object.session_metadata !== null)
             ? report_entry_1.GuardianSignatureSessionMetadata.fromPartial(object.session_metadata)
             : undefined;

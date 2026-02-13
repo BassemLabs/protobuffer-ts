@@ -151,9 +151,9 @@ export interface UnpublishReportEntryRequest {
   requested_changes: string;
 }
 
-export interface GuardianSignReportCardRequest {
+export interface GuardianSignReportCardsRequest {
   context: RequestContext | undefined;
-  report_entry_id: ObjectId | undefined;
+  report_entry_ids: ObjectId[];
   session_metadata?: GuardianSignatureSessionMetadata | undefined;
 }
 
@@ -2158,17 +2158,17 @@ export const UnpublishReportEntryRequest: MessageFns<UnpublishReportEntryRequest
   },
 };
 
-function createBaseGuardianSignReportCardRequest(): GuardianSignReportCardRequest {
-  return { context: undefined, report_entry_id: undefined, session_metadata: undefined };
+function createBaseGuardianSignReportCardsRequest(): GuardianSignReportCardsRequest {
+  return { context: undefined, report_entry_ids: [], session_metadata: undefined };
 }
 
-export const GuardianSignReportCardRequest: MessageFns<GuardianSignReportCardRequest> = {
-  encode(message: GuardianSignReportCardRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GuardianSignReportCardsRequest: MessageFns<GuardianSignReportCardsRequest> = {
+  encode(message: GuardianSignReportCardsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.report_entry_id !== undefined) {
-      ObjectId.encode(message.report_entry_id, writer.uint32(18).fork()).join();
+    for (const v of message.report_entry_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
     if (message.session_metadata !== undefined) {
       GuardianSignatureSessionMetadata.encode(message.session_metadata, writer.uint32(26).fork()).join();
@@ -2176,10 +2176,10 @@ export const GuardianSignReportCardRequest: MessageFns<GuardianSignReportCardReq
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GuardianSignReportCardRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GuardianSignReportCardsRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGuardianSignReportCardRequest();
+    const message = createBaseGuardianSignReportCardsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -2195,7 +2195,7 @@ export const GuardianSignReportCardRequest: MessageFns<GuardianSignReportCardReq
             break;
           }
 
-          message.report_entry_id = ObjectId.decode(reader, reader.uint32());
+          message.report_entry_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
         case 3:
           if (tag !== 26) {
@@ -2213,23 +2213,25 @@ export const GuardianSignReportCardRequest: MessageFns<GuardianSignReportCardReq
     return message;
   },
 
-  fromJSON(object: any): GuardianSignReportCardRequest {
+  fromJSON(object: any): GuardianSignReportCardsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      report_entry_id: isSet(object.reportEntryId) ? ObjectId.fromJSON(object.reportEntryId) : undefined,
+      report_entry_ids: globalThis.Array.isArray(object?.reportEntryIds)
+        ? object.reportEntryIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
       session_metadata: isSet(object.sessionMetadata)
         ? GuardianSignatureSessionMetadata.fromJSON(object.sessionMetadata)
         : undefined,
     };
   },
 
-  toJSON(message: GuardianSignReportCardRequest): unknown {
+  toJSON(message: GuardianSignReportCardsRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.report_entry_id !== undefined) {
-      obj.reportEntryId = ObjectId.toJSON(message.report_entry_id);
+    if (message.report_entry_ids?.length) {
+      obj.reportEntryIds = message.report_entry_ids.map((e) => ObjectId.toJSON(e));
     }
     if (message.session_metadata !== undefined) {
       obj.sessionMetadata = GuardianSignatureSessionMetadata.toJSON(message.session_metadata);
@@ -2237,19 +2239,17 @@ export const GuardianSignReportCardRequest: MessageFns<GuardianSignReportCardReq
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GuardianSignReportCardRequest>, I>>(base?: I): GuardianSignReportCardRequest {
-    return GuardianSignReportCardRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GuardianSignReportCardsRequest>, I>>(base?: I): GuardianSignReportCardsRequest {
+    return GuardianSignReportCardsRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GuardianSignReportCardRequest>, I>>(
+  fromPartial<I extends Exact<DeepPartial<GuardianSignReportCardsRequest>, I>>(
     object: I,
-  ): GuardianSignReportCardRequest {
-    const message = createBaseGuardianSignReportCardRequest();
+  ): GuardianSignReportCardsRequest {
+    const message = createBaseGuardianSignReportCardsRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.report_entry_id = (object.report_entry_id !== undefined && object.report_entry_id !== null)
-      ? ObjectId.fromPartial(object.report_entry_id)
-      : undefined;
+    message.report_entry_ids = object.report_entry_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.session_metadata = (object.session_metadata !== undefined && object.session_metadata !== null)
       ? GuardianSignatureSessionMetadata.fromPartial(object.session_metadata)
       : undefined;
