@@ -18,7 +18,7 @@ export interface Homeroom {
   archived: boolean;
   semester: Semester | undefined;
   name: string;
-  grade?: StudentGrade | undefined;
+  grades: StudentGrade[];
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
   lms_course?: LmsCourse | undefined;
@@ -28,7 +28,7 @@ export interface ListHomeroom {
   id: ObjectId | undefined;
   archived: boolean;
   name: string;
-  grade?: string | undefined;
+  grades: string[];
   semester: ListSemester | undefined;
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
@@ -45,7 +45,7 @@ function createBaseHomeroom(): Homeroom {
     archived: false,
     semester: undefined,
     name: "",
-    grade: StudentGrade.PRE_K,
+    grades: [],
     teacher_ids: [],
     student_ids: [],
     lms_course: undefined,
@@ -66,9 +66,11 @@ export const Homeroom: MessageFns<Homeroom> = {
     if (message.name !== "") {
       writer.uint32(34).string(message.name);
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
-      writer.uint32(40).int32(studentGradeToNumber(message.grade));
+    writer.uint32(42).fork();
+    for (const v of message.grades) {
+      writer.int32(studentGradeToNumber(v));
     }
+    writer.join();
     for (const v of message.teacher_ids) {
       ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
@@ -117,12 +119,22 @@ export const Homeroom: MessageFns<Homeroom> = {
           message.name = reader.string();
           continue;
         case 5:
-          if (tag !== 40) {
-            break;
+          if (tag === 40) {
+            message.grades.push(studentGradeFromJSON(reader.int32()));
+
+            continue;
           }
 
-          message.grade = studentGradeFromJSON(reader.int32());
-          continue;
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.grades.push(studentGradeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
         case 6:
           if (tag !== 50) {
             break;
@@ -159,7 +171,7 @@ export const Homeroom: MessageFns<Homeroom> = {
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       semester: isSet(object.semester) ? Semester.fromJSON(object.semester) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => studentGradeFromJSON(e)) : [],
       teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -184,8 +196,8 @@ export const Homeroom: MessageFns<Homeroom> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
-      obj.grade = studentGradeToJSON(message.grade);
+    if (message.grades?.length) {
+      obj.grades = message.grades.map((e) => studentGradeToJSON(e));
     }
     if (message.teacher_ids?.length) {
       obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
@@ -210,7 +222,7 @@ export const Homeroom: MessageFns<Homeroom> = {
       ? Semester.fromPartial(object.semester)
       : undefined;
     message.name = object.name ?? "";
-    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.grades = object.grades?.map((e) => e) || [];
     message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.lms_course = (object.lms_course !== undefined && object.lms_course !== null)
@@ -221,7 +233,15 @@ export const Homeroom: MessageFns<Homeroom> = {
 };
 
 function createBaseListHomeroom(): ListHomeroom {
-  return { id: undefined, archived: false, name: "", grade: "", semester: undefined, teacher_ids: [], student_ids: [] };
+  return {
+    id: undefined,
+    archived: false,
+    name: "",
+    grades: [],
+    semester: undefined,
+    teacher_ids: [],
+    student_ids: [],
+  };
 }
 
 export const ListHomeroom: MessageFns<ListHomeroom> = {
@@ -235,8 +255,8 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
-    if (message.grade !== undefined && message.grade !== "") {
-      writer.uint32(34).string(message.grade);
+    for (const v of message.grades) {
+      writer.uint32(34).string(v!);
     }
     if (message.semester !== undefined) {
       ListSemester.encode(message.semester, writer.uint32(42).fork()).join();
@@ -283,7 +303,7 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
             break;
           }
 
-          message.grade = reader.string();
+          message.grades.push(reader.string());
           continue;
         case 5:
           if (tag !== 42) {
@@ -320,7 +340,7 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      grade: isSet(object.grade) ? globalThis.String(object.grade) : "",
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => globalThis.String(e)) : [],
       semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
       teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
@@ -342,8 +362,8 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.grade !== undefined && message.grade !== "") {
-      obj.grade = message.grade;
+    if (message.grades?.length) {
+      obj.grades = message.grades;
     }
     if (message.semester !== undefined) {
       obj.semester = ListSemester.toJSON(message.semester);
@@ -365,7 +385,7 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.archived = object.archived ?? false;
     message.name = object.name ?? "";
-    message.grade = object.grade ?? "";
+    message.grades = object.grades?.map((e) => e) || [];
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? ListSemester.fromPartial(object.semester)
       : undefined;

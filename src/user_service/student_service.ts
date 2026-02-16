@@ -226,7 +226,7 @@ export interface GetStudentsListWithFiltersRequest {
   per_page?: number | undefined;
   page?: number | undefined;
   name_search?: string | undefined;
-  grade?: StudentGrade | undefined;
+  grades: StudentGrade[];
   gender?: string | undefined;
   status?:
     | StudentStatus
@@ -293,7 +293,7 @@ export interface GetFilteredStudentsListRequest {
   context: RequestContext | undefined;
   per_page?: number | undefined;
   page?: number | undefined;
-  grade?: StudentGrade | undefined;
+  grades: StudentGrade[];
   gender?: string | undefined;
   status: StudentStatus;
   name?: string | undefined;
@@ -3204,7 +3204,7 @@ function createBaseGetStudentsListWithFiltersRequest(): GetStudentsListWithFilte
     per_page: 0,
     page: 0,
     name_search: "",
-    grade: StudentGrade.PRE_K,
+    grades: [],
     gender: "",
     status: StudentStatus.WAITLIST,
     school_year: undefined,
@@ -3225,9 +3225,11 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     if (message.name_search !== undefined && message.name_search !== "") {
       writer.uint32(34).string(message.name_search);
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
-      writer.uint32(40).int32(studentGradeToNumber(message.grade));
+    writer.uint32(42).fork();
+    for (const v of message.grades) {
+      writer.int32(studentGradeToNumber(v));
     }
+    writer.join();
     if (message.gender !== undefined && message.gender !== "") {
       writer.uint32(50).string(message.gender);
     }
@@ -3276,12 +3278,22 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
           message.name_search = reader.string();
           continue;
         case 5:
-          if (tag !== 40) {
-            break;
+          if (tag === 40) {
+            message.grades.push(studentGradeFromJSON(reader.int32()));
+
+            continue;
           }
 
-          message.grade = studentGradeFromJSON(reader.int32());
-          continue;
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.grades.push(studentGradeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
         case 6:
           if (tag !== 50) {
             break;
@@ -3318,7 +3330,7 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
       name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
-      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => studentGradeFromJSON(e)) : [],
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
@@ -3339,8 +3351,8 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     if (message.name_search !== undefined && message.name_search !== "") {
       obj.nameSearch = message.name_search;
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
-      obj.grade = studentGradeToJSON(message.grade);
+    if (message.grades?.length) {
+      obj.grades = message.grades.map((e) => studentGradeToJSON(e));
     }
     if (message.gender !== undefined && message.gender !== "") {
       obj.gender = message.gender;
@@ -3369,7 +3381,7 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     message.per_page = object.per_page ?? 0;
     message.page = object.page ?? 0;
     message.name_search = object.name_search ?? "";
-    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.grades = object.grades?.map((e) => e) || [];
     message.gender = object.gender ?? "";
     message.status = object.status ?? StudentStatus.WAITLIST;
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
@@ -4233,7 +4245,7 @@ function createBaseGetFilteredStudentsListRequest(): GetFilteredStudentsListRequ
     context: undefined,
     per_page: 0,
     page: 0,
-    grade: StudentGrade.PRE_K,
+    grades: [],
     gender: "",
     status: StudentStatus.WAITLIST,
     name: "",
@@ -4257,9 +4269,11 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     if (message.page !== undefined && message.page !== 0) {
       writer.uint32(24).uint64(message.page);
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
-      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    writer.uint32(34).fork();
+    for (const v of message.grades) {
+      writer.int32(studentGradeToNumber(v));
     }
+    writer.join();
     if (message.gender !== undefined && message.gender !== "") {
       writer.uint32(42).string(message.gender);
     }
@@ -4319,12 +4333,22 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
           message.page = longToNumber(reader.uint64());
           continue;
         case 4:
-          if (tag !== 32) {
-            break;
+          if (tag === 32) {
+            message.grades.push(studentGradeFromJSON(reader.int32()));
+
+            continue;
           }
 
-          message.grade = studentGradeFromJSON(reader.int32());
-          continue;
+          if (tag === 34) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.grades.push(studentGradeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
         case 5:
           if (tag !== 42) {
             break;
@@ -4402,7 +4426,7 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => studentGradeFromJSON(e)) : [],
       gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
@@ -4432,8 +4456,8 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     if (message.page !== undefined && message.page !== 0) {
       obj.page = Math.round(message.page);
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
-      obj.grade = studentGradeToJSON(message.grade);
+    if (message.grades?.length) {
+      obj.grades = message.grades.map((e) => studentGradeToJSON(e));
     }
     if (message.gender !== undefined && message.gender !== "") {
       obj.gender = message.gender;
@@ -4477,7 +4501,7 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       : undefined;
     message.per_page = object.per_page ?? 0;
     message.page = object.page ?? 0;
-    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.grades = object.grades?.map((e) => e) || [];
     message.gender = object.gender ?? "";
     message.status = object.status ?? StudentStatus.WAITLIST;
     message.name = object.name ?? "";

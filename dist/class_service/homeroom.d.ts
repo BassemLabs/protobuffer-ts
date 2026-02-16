@@ -9,7 +9,7 @@ export interface Homeroom {
     archived: boolean;
     semester: Semester | undefined;
     name: string;
-    grade?: StudentGrade | undefined;
+    grades: StudentGrade[];
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];
     lms_course?: LmsCourse | undefined;
@@ -18,7 +18,7 @@ export interface ListHomeroom {
     id: ObjectId | undefined;
     archived: boolean;
     name: string;
-    grade?: string | undefined;
+    grades: string[];
     semester: ListSemester | undefined;
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];

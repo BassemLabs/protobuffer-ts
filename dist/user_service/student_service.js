@@ -2513,7 +2513,7 @@ function createBaseGetStudentsListWithFiltersRequest() {
         per_page: 0,
         page: 0,
         name_search: "",
-        grade: student_1.StudentGrade.PRE_K,
+        grades: [],
         gender: "",
         status: student_1.StudentStatus.WAITLIST,
         school_year: undefined,
@@ -2533,9 +2533,11 @@ exports.GetStudentsListWithFiltersRequest = {
         if (message.name_search !== undefined && message.name_search !== "") {
             writer.uint32(34).string(message.name_search);
         }
-        if (message.grade !== undefined && message.grade !== student_1.StudentGrade.PRE_K) {
-            writer.uint32(40).int32((0, student_1.studentGradeToNumber)(message.grade));
+        writer.uint32(42).fork();
+        for (const v of message.grades) {
+            writer.int32((0, student_1.studentGradeToNumber)(v));
         }
+        writer.join();
         if (message.gender !== undefined && message.gender !== "") {
             writer.uint32(50).string(message.gender);
         }
@@ -2579,11 +2581,18 @@ exports.GetStudentsListWithFiltersRequest = {
                     message.name_search = reader.string();
                     continue;
                 case 5:
-                    if (tag !== 40) {
-                        break;
+                    if (tag === 40) {
+                        message.grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        continue;
                     }
-                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
-                    continue;
+                    if (tag === 42) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
                 case 6:
                     if (tag !== 50) {
                         break;
@@ -2616,7 +2625,7 @@ exports.GetStudentsListWithFiltersRequest = {
             per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
             name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
-            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
+            grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => (0, student_1.studentGradeFromJSON)(e)) : [],
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
             status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : student_1.StudentStatus.WAITLIST,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
@@ -2636,8 +2645,8 @@ exports.GetStudentsListWithFiltersRequest = {
         if (message.name_search !== undefined && message.name_search !== "") {
             obj.nameSearch = message.name_search;
         }
-        if (message.grade !== undefined && message.grade !== student_1.StudentGrade.PRE_K) {
-            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        if (message.grades?.length) {
+            obj.grades = message.grades.map((e) => (0, student_1.studentGradeToJSON)(e));
         }
         if (message.gender !== undefined && message.gender !== "") {
             obj.gender = message.gender;
@@ -2661,7 +2670,7 @@ exports.GetStudentsListWithFiltersRequest = {
         message.per_page = object.per_page ?? 0;
         message.page = object.page ?? 0;
         message.name_search = object.name_search ?? "";
-        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
+        message.grades = object.grades?.map((e) => e) || [];
         message.gender = object.gender ?? "";
         message.status = object.status ?? student_1.StudentStatus.WAITLIST;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
@@ -3414,7 +3423,7 @@ function createBaseGetFilteredStudentsListRequest() {
         context: undefined,
         per_page: 0,
         page: 0,
-        grade: student_1.StudentGrade.PRE_K,
+        grades: [],
         gender: "",
         status: student_1.StudentStatus.WAITLIST,
         name: "",
@@ -3437,9 +3446,11 @@ exports.GetFilteredStudentsListRequest = {
         if (message.page !== undefined && message.page !== 0) {
             writer.uint32(24).uint64(message.page);
         }
-        if (message.grade !== undefined && message.grade !== student_1.StudentGrade.PRE_K) {
-            writer.uint32(32).int32((0, student_1.studentGradeToNumber)(message.grade));
+        writer.uint32(34).fork();
+        for (const v of message.grades) {
+            writer.int32((0, student_1.studentGradeToNumber)(v));
         }
+        writer.join();
         if (message.gender !== undefined && message.gender !== "") {
             writer.uint32(42).string(message.gender);
         }
@@ -3495,11 +3506,18 @@ exports.GetFilteredStudentsListRequest = {
                     message.page = longToNumber(reader.uint64());
                     continue;
                 case 4:
-                    if (tag !== 32) {
-                        break;
+                    if (tag === 32) {
+                        message.grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        continue;
                     }
-                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
-                    continue;
+                    if (tag === 34) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
                 case 5:
                     if (tag !== 42) {
                         break;
@@ -3567,7 +3585,7 @@ exports.GetFilteredStudentsListRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
+            grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => (0, student_1.studentGradeFromJSON)(e)) : [],
             gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
             status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : student_1.StudentStatus.WAITLIST,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
@@ -3596,8 +3614,8 @@ exports.GetFilteredStudentsListRequest = {
         if (message.page !== undefined && message.page !== 0) {
             obj.page = Math.round(message.page);
         }
-        if (message.grade !== undefined && message.grade !== student_1.StudentGrade.PRE_K) {
-            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        if (message.grades?.length) {
+            obj.grades = message.grades.map((e) => (0, student_1.studentGradeToJSON)(e));
         }
         if (message.gender !== undefined && message.gender !== "") {
             obj.gender = message.gender;
@@ -3638,7 +3656,7 @@ exports.GetFilteredStudentsListRequest = {
             : undefined;
         message.per_page = object.per_page ?? 0;
         message.page = object.page ?? 0;
-        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
+        message.grades = object.grades?.map((e) => e) || [];
         message.gender = object.gender ?? "";
         message.status = object.status ?? student_1.StudentStatus.WAITLIST;
         message.name = object.name ?? "";

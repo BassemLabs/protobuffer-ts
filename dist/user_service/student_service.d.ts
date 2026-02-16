@@ -170,7 +170,7 @@ export interface GetStudentsListWithFiltersRequest {
     per_page?: number | undefined;
     page?: number | undefined;
     name_search?: string | undefined;
-    grade?: StudentGrade | undefined;
+    grades: StudentGrade[];
     gender?: string | undefined;
     status?: StudentStatus | undefined;
     /** defaults to org's active school year if not provided */
@@ -224,7 +224,7 @@ export interface GetFilteredStudentsListRequest {
     context: RequestContext | undefined;
     per_page?: number | undefined;
     page?: number | undefined;
-    grade?: StudentGrade | undefined;
+    grades: StudentGrade[];
     gender?: string | undefined;
     status: StudentStatus;
     name?: string | undefined;

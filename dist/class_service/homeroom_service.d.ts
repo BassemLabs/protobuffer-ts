@@ -25,7 +25,7 @@ export interface CreateHomeroomRequest {
     name: string;
     semester_id: ObjectId | undefined;
     teacher_ids: ObjectId[];
-    grade: StudentGrade;
+    grades: StudentGrade[];
     lms_provider?: LmsProviderType | undefined;
 }
 export interface CloneHomeroomRequest {
@@ -34,7 +34,7 @@ export interface CloneHomeroomRequest {
     name: string;
     semester_id: ObjectId | undefined;
     teacher_ids: ObjectId[];
-    grade: StudentGrade;
+    grades: StudentGrade[];
 }
 export interface GetHomeroomCoursesRequest {
     context: RequestContext | undefined;
@@ -61,7 +61,7 @@ export interface UpdateHomeroomRequest {
     homeroom_id: ObjectId | undefined;
     semester_id: ObjectId | undefined;
     name: string;
-    grade: StudentGrade;
+    grades: StudentGrade[];
 }
 export interface AddTeachersRequest {
     context: RequestContext | undefined;
