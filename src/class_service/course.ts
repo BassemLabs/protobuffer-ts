@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { AbstractCourse } from "./abstract_course";
 import { Homeroom, ListHomeroom } from "./homeroom";
 import { LmsCourse } from "./lms_course";
 import { ReportLayout } from "./report_layout";
@@ -20,11 +21,12 @@ export interface Course {
   semester: Semester | undefined;
   homeroom?: Homeroom | undefined;
   name: string;
-  course_code: string;
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
   lms_course?: LmsCourse | undefined;
   report_layout: ReportLayout | undefined;
+  abstract_course_id?: ObjectId | undefined;
+  abstract_course?: AbstractCourse | undefined;
 }
 
 export interface ListCourse {
@@ -32,9 +34,10 @@ export interface ListCourse {
   archived: boolean;
   name: string;
   semester: ListSemester | undefined;
-  course_code: string;
   homeroom?: ListHomeroom | undefined;
   teachers: ObjectId[];
+  abstract_course_id?: ObjectId | undefined;
+  abstract_course?: AbstractCourse | undefined;
 }
 
 export interface CourseList {
@@ -49,11 +52,12 @@ function createBaseCourse(): Course {
     semester: undefined,
     homeroom: undefined,
     name: "",
-    course_code: "",
     teacher_ids: [],
     student_ids: [],
     lms_course: undefined,
     report_layout: undefined,
+    abstract_course_id: undefined,
+    abstract_course: undefined,
   };
 }
 
@@ -74,9 +78,6 @@ export const Course: MessageFns<Course> = {
     if (message.name !== "") {
       writer.uint32(42).string(message.name);
     }
-    if (message.course_code !== "") {
-      writer.uint32(50).string(message.course_code);
-    }
     for (const v of message.teacher_ids) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
     }
@@ -88,6 +89,12 @@ export const Course: MessageFns<Course> = {
     }
     if (message.report_layout !== undefined) {
       ReportLayout.encode(message.report_layout, writer.uint32(82).fork()).join();
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(90).fork()).join();
+    }
+    if (message.abstract_course !== undefined) {
+      AbstractCourse.encode(message.abstract_course, writer.uint32(98).fork()).join();
     }
     return writer;
   },
@@ -134,13 +141,6 @@ export const Course: MessageFns<Course> = {
 
           message.name = reader.string();
           continue;
-        case 6:
-          if (tag !== 50) {
-            break;
-          }
-
-          message.course_code = reader.string();
-          continue;
         case 7:
           if (tag !== 58) {
             break;
@@ -169,6 +169,20 @@ export const Course: MessageFns<Course> = {
 
           message.report_layout = ReportLayout.decode(reader, reader.uint32());
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.abstract_course = AbstractCourse.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -185,7 +199,6 @@ export const Course: MessageFns<Course> = {
       semester: isSet(object.semester) ? Semester.fromJSON(object.semester) : undefined,
       homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
       teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -194,6 +207,8 @@ export const Course: MessageFns<Course> = {
         : [],
       lms_course: isSet(object.lmsCourse) ? LmsCourse.fromJSON(object.lmsCourse) : undefined,
       report_layout: isSet(object.reportLayout) ? ReportLayout.fromJSON(object.reportLayout) : undefined,
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      abstract_course: isSet(object.abstractCourse) ? AbstractCourse.fromJSON(object.abstractCourse) : undefined,
     };
   },
 
@@ -214,9 +229,6 @@ export const Course: MessageFns<Course> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.course_code !== "") {
-      obj.courseCode = message.course_code;
-    }
     if (message.teacher_ids?.length) {
       obj.teacherIds = message.teacher_ids.map((e) => ObjectId.toJSON(e));
     }
@@ -228,6 +240,12 @@ export const Course: MessageFns<Course> = {
     }
     if (message.report_layout !== undefined) {
       obj.reportLayout = ReportLayout.toJSON(message.report_layout);
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.abstract_course !== undefined) {
+      obj.abstractCourse = AbstractCourse.toJSON(message.abstract_course);
     }
     return obj;
   },
@@ -246,7 +264,6 @@ export const Course: MessageFns<Course> = {
       ? Homeroom.fromPartial(object.homeroom)
       : undefined;
     message.name = object.name ?? "";
-    message.course_code = object.course_code ?? "";
     message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.lms_course = (object.lms_course !== undefined && object.lms_course !== null)
@@ -254,6 +271,12 @@ export const Course: MessageFns<Course> = {
       : undefined;
     message.report_layout = (object.report_layout !== undefined && object.report_layout !== null)
       ? ReportLayout.fromPartial(object.report_layout)
+      : undefined;
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.abstract_course = (object.abstract_course !== undefined && object.abstract_course !== null)
+      ? AbstractCourse.fromPartial(object.abstract_course)
       : undefined;
     return message;
   },
@@ -265,9 +288,10 @@ function createBaseListCourse(): ListCourse {
     archived: false,
     name: "",
     semester: undefined,
-    course_code: "",
     homeroom: undefined,
     teachers: [],
+    abstract_course_id: undefined,
+    abstract_course: undefined,
   };
 }
 
@@ -285,14 +309,17 @@ export const ListCourse: MessageFns<ListCourse> = {
     if (message.semester !== undefined) {
       ListSemester.encode(message.semester, writer.uint32(34).fork()).join();
     }
-    if (message.course_code !== "") {
-      writer.uint32(42).string(message.course_code);
-    }
     if (message.homeroom !== undefined) {
       ListHomeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
     }
     for (const v of message.teachers) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(66).fork()).join();
+    }
+    if (message.abstract_course !== undefined) {
+      AbstractCourse.encode(message.abstract_course, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -332,13 +359,6 @@ export const ListCourse: MessageFns<ListCourse> = {
 
           message.semester = ListSemester.decode(reader, reader.uint32());
           continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.course_code = reader.string();
-          continue;
         case 6:
           if (tag !== 50) {
             break;
@@ -352,6 +372,20 @@ export const ListCourse: MessageFns<ListCourse> = {
           }
 
           message.teachers.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.abstract_course = AbstractCourse.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -368,9 +402,10 @@ export const ListCourse: MessageFns<ListCourse> = {
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
       homeroom: isSet(object.homeroom) ? ListHomeroom.fromJSON(object.homeroom) : undefined,
       teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => ObjectId.fromJSON(e)) : [],
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      abstract_course: isSet(object.abstractCourse) ? AbstractCourse.fromJSON(object.abstractCourse) : undefined,
     };
   },
 
@@ -388,14 +423,17 @@ export const ListCourse: MessageFns<ListCourse> = {
     if (message.semester !== undefined) {
       obj.semester = ListSemester.toJSON(message.semester);
     }
-    if (message.course_code !== "") {
-      obj.courseCode = message.course_code;
-    }
     if (message.homeroom !== undefined) {
       obj.homeroom = ListHomeroom.toJSON(message.homeroom);
     }
     if (message.teachers?.length) {
       obj.teachers = message.teachers.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.abstract_course !== undefined) {
+      obj.abstractCourse = AbstractCourse.toJSON(message.abstract_course);
     }
     return obj;
   },
@@ -411,11 +449,16 @@ export const ListCourse: MessageFns<ListCourse> = {
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? ListSemester.fromPartial(object.semester)
       : undefined;
-    message.course_code = object.course_code ?? "";
     message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
       ? ListHomeroom.fromPartial(object.homeroom)
       : undefined;
     message.teachers = object.teachers?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.abstract_course = (object.abstract_course !== undefined && object.abstract_course !== null)
+      ? AbstractCourse.fromPartial(object.abstract_course)
+      : undefined;
     return message;
   },
 };

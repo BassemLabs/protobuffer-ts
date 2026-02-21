@@ -9,6 +9,7 @@ exports.CourseList = exports.ListCourse = exports.Course = exports.protobufPacka
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
+const abstract_course_1 = require("./abstract_course");
 const homeroom_1 = require("./homeroom");
 const lms_course_1 = require("./lms_course");
 const report_layout_1 = require("./report_layout");
@@ -21,11 +22,12 @@ function createBaseCourse() {
         semester: undefined,
         homeroom: undefined,
         name: "",
-        course_code: "",
         teacher_ids: [],
         student_ids: [],
         lms_course: undefined,
         report_layout: undefined,
+        abstract_course_id: undefined,
+        abstract_course: undefined,
     };
 }
 exports.Course = {
@@ -45,9 +47,6 @@ exports.Course = {
         if (message.name !== "") {
             writer.uint32(42).string(message.name);
         }
-        if (message.course_code !== "") {
-            writer.uint32(50).string(message.course_code);
-        }
         for (const v of message.teacher_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
         }
@@ -59,6 +58,12 @@ exports.Course = {
         }
         if (message.report_layout !== undefined) {
             report_layout_1.ReportLayout.encode(message.report_layout, writer.uint32(82).fork()).join();
+        }
+        if (message.abstract_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_course_id, writer.uint32(90).fork()).join();
+        }
+        if (message.abstract_course !== undefined) {
+            abstract_course_1.AbstractCourse.encode(message.abstract_course, writer.uint32(98).fork()).join();
         }
         return writer;
     },
@@ -99,12 +104,6 @@ exports.Course = {
                     }
                     message.name = reader.string();
                     continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
                 case 7:
                     if (tag !== 58) {
                         break;
@@ -129,6 +128,18 @@ exports.Course = {
                     }
                     message.report_layout = report_layout_1.ReportLayout.decode(reader, reader.uint32());
                     continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.abstract_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.abstract_course = abstract_course_1.AbstractCourse.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -144,7 +155,6 @@ exports.Course = {
             semester: isSet(object.semester) ? semester_1.Semester.fromJSON(object.semester) : undefined,
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             teacher_ids: globalThis.Array.isArray(object?.teacherIds)
                 ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
@@ -153,6 +163,8 @@ exports.Course = {
                 : [],
             lms_course: isSet(object.lmsCourse) ? lms_course_1.LmsCourse.fromJSON(object.lmsCourse) : undefined,
             report_layout: isSet(object.reportLayout) ? report_layout_1.ReportLayout.fromJSON(object.reportLayout) : undefined,
+            abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
+            abstract_course: isSet(object.abstractCourse) ? abstract_course_1.AbstractCourse.fromJSON(object.abstractCourse) : undefined,
         };
     },
     toJSON(message) {
@@ -172,9 +184,6 @@ exports.Course = {
         if (message.name !== "") {
             obj.name = message.name;
         }
-        if (message.course_code !== "") {
-            obj.courseCode = message.course_code;
-        }
         if (message.teacher_ids?.length) {
             obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
@@ -186,6 +195,12 @@ exports.Course = {
         }
         if (message.report_layout !== undefined) {
             obj.reportLayout = report_layout_1.ReportLayout.toJSON(message.report_layout);
+        }
+        if (message.abstract_course_id !== undefined) {
+            obj.abstractCourseId = object_id_1.ObjectId.toJSON(message.abstract_course_id);
+        }
+        if (message.abstract_course !== undefined) {
+            obj.abstractCourse = abstract_course_1.AbstractCourse.toJSON(message.abstract_course);
         }
         return obj;
     },
@@ -203,7 +218,6 @@ exports.Course = {
             ? homeroom_1.Homeroom.fromPartial(object.homeroom)
             : undefined;
         message.name = object.name ?? "";
-        message.course_code = object.course_code ?? "";
         message.teacher_ids = object.teacher_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.lms_course = (object.lms_course !== undefined && object.lms_course !== null)
@@ -211,6 +225,12 @@ exports.Course = {
             : undefined;
         message.report_layout = (object.report_layout !== undefined && object.report_layout !== null)
             ? report_layout_1.ReportLayout.fromPartial(object.report_layout)
+            : undefined;
+        message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.abstract_course_id)
+            : undefined;
+        message.abstract_course = (object.abstract_course !== undefined && object.abstract_course !== null)
+            ? abstract_course_1.AbstractCourse.fromPartial(object.abstract_course)
             : undefined;
         return message;
     },
@@ -221,9 +241,10 @@ function createBaseListCourse() {
         archived: false,
         name: "",
         semester: undefined,
-        course_code: "",
         homeroom: undefined,
         teachers: [],
+        abstract_course_id: undefined,
+        abstract_course: undefined,
     };
 }
 exports.ListCourse = {
@@ -240,14 +261,17 @@ exports.ListCourse = {
         if (message.semester !== undefined) {
             semester_1.ListSemester.encode(message.semester, writer.uint32(34).fork()).join();
         }
-        if (message.course_code !== "") {
-            writer.uint32(42).string(message.course_code);
-        }
         if (message.homeroom !== undefined) {
             homeroom_1.ListHomeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
         }
         for (const v of message.teachers) {
             object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.abstract_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_course_id, writer.uint32(66).fork()).join();
+        }
+        if (message.abstract_course !== undefined) {
+            abstract_course_1.AbstractCourse.encode(message.abstract_course, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -282,12 +306,6 @@ exports.ListCourse = {
                     }
                     message.semester = semester_1.ListSemester.decode(reader, reader.uint32());
                     continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
                 case 6:
                     if (tag !== 50) {
                         break;
@@ -299,6 +317,18 @@ exports.ListCourse = {
                         break;
                     }
                     message.teachers.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.abstract_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.abstract_course = abstract_course_1.AbstractCourse.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -314,9 +344,10 @@ exports.ListCourse = {
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             semester: isSet(object.semester) ? semester_1.ListSemester.fromJSON(object.semester) : undefined,
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             homeroom: isSet(object.homeroom) ? homeroom_1.ListHomeroom.fromJSON(object.homeroom) : undefined,
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
+            abstract_course: isSet(object.abstractCourse) ? abstract_course_1.AbstractCourse.fromJSON(object.abstractCourse) : undefined,
         };
     },
     toJSON(message) {
@@ -333,14 +364,17 @@ exports.ListCourse = {
         if (message.semester !== undefined) {
             obj.semester = semester_1.ListSemester.toJSON(message.semester);
         }
-        if (message.course_code !== "") {
-            obj.courseCode = message.course_code;
-        }
         if (message.homeroom !== undefined) {
             obj.homeroom = homeroom_1.ListHomeroom.toJSON(message.homeroom);
         }
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.abstract_course_id !== undefined) {
+            obj.abstractCourseId = object_id_1.ObjectId.toJSON(message.abstract_course_id);
+        }
+        if (message.abstract_course !== undefined) {
+            obj.abstractCourse = abstract_course_1.AbstractCourse.toJSON(message.abstract_course);
         }
         return obj;
     },
@@ -355,11 +389,16 @@ exports.ListCourse = {
         message.semester = (object.semester !== undefined && object.semester !== null)
             ? semester_1.ListSemester.fromPartial(object.semester)
             : undefined;
-        message.course_code = object.course_code ?? "";
         message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
             ? homeroom_1.ListHomeroom.fromPartial(object.homeroom)
             : undefined;
         message.teachers = object.teachers?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.abstract_course_id)
+            : undefined;
+        message.abstract_course = (object.abstract_course !== undefined && object.abstract_course !== null)
+            ? abstract_course_1.AbstractCourse.fromPartial(object.abstract_course)
+            : undefined;
         return message;
     },
 };

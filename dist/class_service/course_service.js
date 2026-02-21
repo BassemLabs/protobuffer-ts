@@ -736,7 +736,7 @@ exports.UnarchiveCourseRequest = {
     },
 };
 function createBaseUpdateCourseRequest() {
-    return { context: undefined, course_id: undefined, name: "", semester_id: undefined, course_code: "" };
+    return { context: undefined, course_id: undefined, name: "", semester_id: undefined };
 }
 exports.UpdateCourseRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -751,9 +751,6 @@ exports.UpdateCourseRequest = {
         }
         if (message.semester_id !== undefined) {
             object_id_1.ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
-        }
-        if (message.course_code !== undefined && message.course_code !== "") {
-            writer.uint32(42).string(message.course_code);
         }
         return writer;
     },
@@ -788,12 +785,6 @@ exports.UpdateCourseRequest = {
                     }
                     message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -808,7 +799,6 @@ exports.UpdateCourseRequest = {
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
         };
     },
     toJSON(message) {
@@ -824,9 +814,6 @@ exports.UpdateCourseRequest = {
         }
         if (message.semester_id !== undefined) {
             obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
-        }
-        if (message.course_code !== undefined && message.course_code !== "") {
-            obj.courseCode = message.course_code;
         }
         return obj;
     },
@@ -845,7 +832,6 @@ exports.UpdateCourseRequest = {
         message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
-        message.course_code = object.course_code ?? "";
         return message;
     },
 };
@@ -1753,8 +1739,8 @@ function createBaseStandaloneCreateRequest() {
         name: "",
         semester_id: undefined,
         teachers: [],
-        course_code: "",
         lms_provider: lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
+        abstract_course_id: undefined,
     };
 }
 exports.StandaloneCreateRequest = {
@@ -1771,11 +1757,11 @@ exports.StandaloneCreateRequest = {
         for (const v of message.teachers) {
             object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
         }
-        if (message.course_code !== "") {
-            writer.uint32(42).string(message.course_code);
-        }
         if (message.lms_provider !== undefined && message.lms_provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
             writer.uint32(48).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.lms_provider));
+        }
+        if (message.abstract_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_course_id, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -1810,17 +1796,17 @@ exports.StandaloneCreateRequest = {
                     }
                     message.teachers.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
                 case 6:
                     if (tag !== 48) {
                         break;
                     }
                     message.lms_provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.abstract_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1836,10 +1822,10 @@ exports.StandaloneCreateRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             lms_provider: isSet(object.lmsProvider)
                 ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.lmsProvider)
                 : lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
+            abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
         };
     },
     toJSON(message) {
@@ -1856,11 +1842,11 @@ exports.StandaloneCreateRequest = {
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.course_code !== "") {
-            obj.courseCode = message.course_code;
-        }
         if (message.lms_provider !== undefined && message.lms_provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
             obj.lmsProvider = (0, lms_course_1.lmsProviderTypeToJSON)(message.lms_provider);
+        }
+        if (message.abstract_course_id !== undefined) {
+            obj.abstractCourseId = object_id_1.ObjectId.toJSON(message.abstract_course_id);
         }
         return obj;
     },
@@ -1877,8 +1863,10 @@ exports.StandaloneCreateRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
         message.teachers = object.teachers?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.course_code = object.course_code ?? "";
         message.lms_provider = object.lms_provider ?? lms_course_1.LmsProviderType.GOOGLE_CLASSROOM;
+        message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.abstract_course_id)
+            : undefined;
         return message;
     },
 };
@@ -1889,8 +1877,8 @@ function createBaseStandaloneCloneRequest() {
         name: "",
         semester_id: undefined,
         teachers: [],
-        course_code: "",
         gclass_create: false,
+        abstract_course_id: undefined,
     };
 }
 exports.StandaloneCloneRequest = {
@@ -1910,11 +1898,11 @@ exports.StandaloneCloneRequest = {
         for (const v of message.teachers) {
             object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
         }
-        if (message.course_code !== "") {
-            writer.uint32(50).string(message.course_code);
-        }
         if (message.gclass_create !== false) {
             writer.uint32(56).bool(message.gclass_create);
+        }
+        if (message.abstract_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_course_id, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -1955,17 +1943,17 @@ exports.StandaloneCloneRequest = {
                     }
                     message.teachers.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
                 case 7:
                     if (tag !== 56) {
                         break;
                     }
                     message.gclass_create = reader.bool();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.abstract_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1982,8 +1970,8 @@ exports.StandaloneCloneRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             gclass_create: isSet(object.gclassCreate) ? globalThis.Boolean(object.gclassCreate) : false,
+            abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
         };
     },
     toJSON(message) {
@@ -2003,11 +1991,11 @@ exports.StandaloneCloneRequest = {
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.course_code !== "") {
-            obj.courseCode = message.course_code;
-        }
         if (message.gclass_create !== false) {
             obj.gclassCreate = message.gclass_create;
+        }
+        if (message.abstract_course_id !== undefined) {
+            obj.abstractCourseId = object_id_1.ObjectId.toJSON(message.abstract_course_id);
         }
         return obj;
     },
@@ -2027,8 +2015,10 @@ exports.StandaloneCloneRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
         message.teachers = object.teachers?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.course_code = object.course_code ?? "";
         message.gclass_create = object.gclass_create ?? false;
+        message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.abstract_course_id)
+            : undefined;
         return message;
     },
 };
@@ -2036,7 +2026,6 @@ function createBaseHomeroomCreateRequest() {
     return {
         context: undefined,
         name: "",
-        course_code: "",
         teachers: [],
         homeroom_id: undefined,
         lms_provider: lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
@@ -2049,9 +2038,6 @@ exports.HomeroomCreateRequest = {
         }
         if (message.name !== "") {
             writer.uint32(18).string(message.name);
-        }
-        if (message.course_code !== "") {
-            writer.uint32(26).string(message.course_code);
         }
         for (const v of message.teachers) {
             object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
@@ -2083,12 +2069,6 @@ exports.HomeroomCreateRequest = {
                     }
                     message.name = reader.string();
                     continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
                 case 4:
                     if (tag !== 34) {
                         break;
@@ -2119,7 +2099,6 @@ exports.HomeroomCreateRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             lms_provider: isSet(object.lmsProvider)
@@ -2134,9 +2113,6 @@ exports.HomeroomCreateRequest = {
         }
         if (message.name !== "") {
             obj.name = message.name;
-        }
-        if (message.course_code !== "") {
-            obj.courseCode = message.course_code;
         }
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => object_id_1.ObjectId.toJSON(e));
@@ -2158,7 +2134,6 @@ exports.HomeroomCreateRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.name = object.name ?? "";
-        message.course_code = object.course_code ?? "";
         message.teachers = object.teachers?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
@@ -2173,7 +2148,6 @@ function createBaseHomeroomCloneRequest() {
         course_to_clone: undefined,
         homeroom_to_clone_to: undefined,
         name: "",
-        course_code: "",
         teachers: [],
         gclass_create: false,
     };
@@ -2191,9 +2165,6 @@ exports.HomeroomCloneRequest = {
         }
         if (message.name !== "") {
             writer.uint32(34).string(message.name);
-        }
-        if (message.course_code !== "") {
-            writer.uint32(42).string(message.course_code);
         }
         for (const v of message.teachers) {
             object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
@@ -2234,12 +2205,6 @@ exports.HomeroomCloneRequest = {
                     }
                     message.name = reader.string();
                     continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.course_code = reader.string();
-                    continue;
                 case 6:
                     if (tag !== 50) {
                         break;
@@ -2266,7 +2231,6 @@ exports.HomeroomCloneRequest = {
             course_to_clone: isSet(object.courseToClone) ? object_id_1.ObjectId.fromJSON(object.courseToClone) : undefined,
             homeroom_to_clone_to: isSet(object.homeroomToCloneTo) ? object_id_1.ObjectId.fromJSON(object.homeroomToCloneTo) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             gclass_create: isSet(object.gclassCreate) ? globalThis.Boolean(object.gclassCreate) : false,
         };
@@ -2284,9 +2248,6 @@ exports.HomeroomCloneRequest = {
         }
         if (message.name !== "") {
             obj.name = message.name;
-        }
-        if (message.course_code !== "") {
-            obj.courseCode = message.course_code;
         }
         if (message.teachers?.length) {
             obj.teachers = message.teachers.map((e) => object_id_1.ObjectId.toJSON(e));
@@ -2311,7 +2272,6 @@ exports.HomeroomCloneRequest = {
             ? object_id_1.ObjectId.fromPartial(object.homeroom_to_clone_to)
             : undefined;
         message.name = object.name ?? "";
-        message.course_code = object.course_code ?? "";
         message.teachers = object.teachers?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.gclass_create = object.gclass_create ?? false;
         return message;

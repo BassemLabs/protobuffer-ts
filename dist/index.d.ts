@@ -88,6 +88,8 @@ import * as Tuition_invoice_service from './payment_service/tuition_invoice_serv
 export { Tuition_invoice_service };
 import * as Invoice_service from './payment_service/invoice_service';
 export { Invoice_service };
+import * as Abstract_course from './class_service/abstract_course';
+export { Abstract_course };
 import * as Report_entry_service from './class_service/report_entry_service';
 export { Report_entry_service };
 import * as Homeroom_service from './class_service/homeroom_service';
@@ -108,6 +110,10 @@ import * as Homeroom from './class_service/homeroom';
 export { Homeroom };
 import * as Evaluation_service from './class_service/evaluation_service';
 export { Evaluation_service };
+import * as Abstract_category from './class_service/abstract_category';
+export { Abstract_category };
+import * as Abstract_category_group from './class_service/abstract_category_group';
+export { Abstract_category_group };
 import * as Course_service from './class_service/course_service';
 export { Course_service };
 import * as Course from './class_service/course';
@@ -118,6 +124,8 @@ import * as Comment_template_service from './class_service/comment_template_serv
 export { Comment_template_service };
 import * as Attendance from './class_service/attendance';
 export { Attendance };
+import * as Abstract_catalog_service from './class_service/abstract_catalog_service';
+export { Abstract_catalog_service };
 import * as Evaluation from './class_service/evaluation';
 export { Evaluation };
 import * as Comment_template from './class_service/comment_template';

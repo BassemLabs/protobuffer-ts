@@ -54,7 +54,6 @@ export interface UpdateCourseRequest {
     course_id: ObjectId | undefined;
     name: string;
     semester_id: ObjectId | undefined;
-    course_code?: string | undefined;
 }
 /** Request to add teachers to a course */
 export interface AddTeachersRequest {
@@ -122,8 +121,8 @@ export interface StandaloneCreateRequest {
     name: string;
     semester_id: ObjectId | undefined;
     teachers: ObjectId[];
-    course_code: string;
     lms_provider?: LmsProviderType | undefined;
+    abstract_course_id: ObjectId | undefined;
 }
 /** Request for standalone_clone */
 export interface StandaloneCloneRequest {
@@ -132,14 +131,13 @@ export interface StandaloneCloneRequest {
     name: string;
     semester_id: ObjectId | undefined;
     teachers: ObjectId[];
-    course_code: string;
     gclass_create: boolean;
+    abstract_course_id: ObjectId | undefined;
 }
 /** Request for homeroom_create */
 export interface HomeroomCreateRequest {
     context: RequestContext | undefined;
     name: string;
-    course_code: string;
     teachers: ObjectId[];
     homeroom_id: ObjectId | undefined;
     lms_provider?: LmsProviderType | undefined;
@@ -150,7 +148,6 @@ export interface HomeroomCloneRequest {
     course_to_clone: ObjectId | undefined;
     homeroom_to_clone_to: ObjectId | undefined;
     name: string;
-    course_code: string;
     teachers: ObjectId[];
     gclass_create: boolean;
 }

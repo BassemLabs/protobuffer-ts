@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { AbstractCourse } from "./abstract_course";
 import { Homeroom, ListHomeroom } from "./homeroom";
 import { LmsCourse } from "./lms_course";
 import { ReportLayout } from "./report_layout";
@@ -11,20 +12,22 @@ export interface Course {
     semester: Semester | undefined;
     homeroom?: Homeroom | undefined;
     name: string;
-    course_code: string;
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];
     lms_course?: LmsCourse | undefined;
     report_layout: ReportLayout | undefined;
+    abstract_course_id?: ObjectId | undefined;
+    abstract_course?: AbstractCourse | undefined;
 }
 export interface ListCourse {
     id: ObjectId | undefined;
     archived: boolean;
     name: string;
     semester: ListSemester | undefined;
-    course_code: string;
     homeroom?: ListHomeroom | undefined;
     teachers: ObjectId[];
+    abstract_course_id?: ObjectId | undefined;
+    abstract_course?: AbstractCourse | undefined;
 }
 export interface CourseList {
     courses: ListCourse[];
