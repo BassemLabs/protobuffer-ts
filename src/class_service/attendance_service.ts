@@ -221,6 +221,8 @@ export interface GetCoursesAttendanceOverviewRequest {
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
   show_all_classes: boolean;
+  semester_id?: ObjectId | undefined;
+  show_archived_only?: boolean | undefined;
 }
 
 export interface GetCoursesAttendanceOverviewResponse {
@@ -241,6 +243,8 @@ export interface GetHomeroomsAttendanceOverviewRequest {
   /** YYYY-MM-DD format for NaiveDate */
   date: string;
   show_all_classes: boolean;
+  semester_id?: ObjectId | undefined;
+  show_archived_only?: boolean | undefined;
 }
 
 export interface GetHomeroomsAttendanceOverviewResponse {
@@ -1547,7 +1551,7 @@ export const StudentsAttendanceCountsResponse: MessageFns<StudentsAttendanceCoun
 };
 
 function createBaseGetCoursesAttendanceOverviewRequest(): GetCoursesAttendanceOverviewRequest {
-  return { context: undefined, date: "", show_all_classes: false };
+  return { context: undefined, date: "", show_all_classes: false, semester_id: undefined, show_archived_only: false };
 }
 
 export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanceOverviewRequest> = {
@@ -1560,6 +1564,12 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
     }
     if (message.show_all_classes !== false) {
       writer.uint32(24).bool(message.show_all_classes);
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+    }
+    if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+      writer.uint32(40).bool(message.show_archived_only);
     }
     return writer;
   },
@@ -1592,6 +1602,20 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
 
           message.show_all_classes = reader.bool();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.show_archived_only = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1606,6 +1630,8 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
       show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      show_archived_only: isSet(object.showArchivedOnly) ? globalThis.Boolean(object.showArchivedOnly) : false,
     };
   },
 
@@ -1619,6 +1645,12 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
     }
     if (message.show_all_classes !== false) {
       obj.showAllClasses = message.show_all_classes;
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+      obj.showArchivedOnly = message.show_archived_only;
     }
     return obj;
   },
@@ -1637,6 +1669,10 @@ export const GetCoursesAttendanceOverviewRequest: MessageFns<GetCoursesAttendanc
       : undefined;
     message.date = object.date ?? "";
     message.show_all_classes = object.show_all_classes ?? false;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.show_archived_only = object.show_archived_only ?? false;
     return message;
   },
 };
@@ -1815,7 +1851,7 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
 };
 
 function createBaseGetHomeroomsAttendanceOverviewRequest(): GetHomeroomsAttendanceOverviewRequest {
-  return { context: undefined, date: "", show_all_classes: false };
+  return { context: undefined, date: "", show_all_classes: false, semester_id: undefined, show_archived_only: false };
 }
 
 export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAttendanceOverviewRequest> = {
@@ -1828,6 +1864,12 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
     }
     if (message.show_all_classes !== false) {
       writer.uint32(24).bool(message.show_all_classes);
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+    }
+    if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+      writer.uint32(40).bool(message.show_archived_only);
     }
     return writer;
   },
@@ -1860,6 +1902,20 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
 
           message.show_all_classes = reader.bool();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.show_archived_only = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1874,6 +1930,8 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : "",
       show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      show_archived_only: isSet(object.showArchivedOnly) ? globalThis.Boolean(object.showArchivedOnly) : false,
     };
   },
 
@@ -1887,6 +1945,12 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
     }
     if (message.show_all_classes !== false) {
       obj.showAllClasses = message.show_all_classes;
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+      obj.showArchivedOnly = message.show_archived_only;
     }
     return obj;
   },
@@ -1905,6 +1969,10 @@ export const GetHomeroomsAttendanceOverviewRequest: MessageFns<GetHomeroomsAtten
       : undefined;
     message.date = object.date ?? "";
     message.show_all_classes = object.show_all_classes ?? false;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.show_archived_only = object.show_archived_only ?? false;
     return message;
   },
 };

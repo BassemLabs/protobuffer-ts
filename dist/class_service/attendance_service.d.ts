@@ -104,6 +104,8 @@ export interface GetCoursesAttendanceOverviewRequest {
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
     show_all_classes: boolean;
+    semester_id?: ObjectId | undefined;
+    show_archived_only?: boolean | undefined;
 }
 export interface GetCoursesAttendanceOverviewResponse {
     courses: Course[];
@@ -119,6 +121,8 @@ export interface GetHomeroomsAttendanceOverviewRequest {
     /** YYYY-MM-DD format for NaiveDate */
     date: string;
     show_all_classes: boolean;
+    semester_id?: ObjectId | undefined;
+    show_archived_only?: boolean | undefined;
 }
 export interface GetHomeroomsAttendanceOverviewResponse {
     homerooms: Homeroom[];

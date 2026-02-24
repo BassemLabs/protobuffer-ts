@@ -1187,7 +1187,7 @@ exports.StudentsAttendanceCountsResponse = {
     },
 };
 function createBaseGetCoursesAttendanceOverviewRequest() {
-    return { context: undefined, date: "", show_all_classes: false };
+    return { context: undefined, date: "", show_all_classes: false, semester_id: undefined, show_archived_only: false };
 }
 exports.GetCoursesAttendanceOverviewRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1199,6 +1199,12 @@ exports.GetCoursesAttendanceOverviewRequest = {
         }
         if (message.show_all_classes !== false) {
             writer.uint32(24).bool(message.show_all_classes);
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+        }
+        if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+            writer.uint32(40).bool(message.show_archived_only);
         }
         return writer;
     },
@@ -1227,6 +1233,18 @@ exports.GetCoursesAttendanceOverviewRequest = {
                     }
                     message.show_all_classes = reader.bool();
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.show_archived_only = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1240,6 +1258,8 @@ exports.GetCoursesAttendanceOverviewRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
             show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            show_archived_only: isSet(object.showArchivedOnly) ? globalThis.Boolean(object.showArchivedOnly) : false,
         };
     },
     toJSON(message) {
@@ -1253,6 +1273,12 @@ exports.GetCoursesAttendanceOverviewRequest = {
         if (message.show_all_classes !== false) {
             obj.showAllClasses = message.show_all_classes;
         }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+            obj.showArchivedOnly = message.show_archived_only;
+        }
         return obj;
     },
     create(base) {
@@ -1265,6 +1291,10 @@ exports.GetCoursesAttendanceOverviewRequest = {
             : undefined;
         message.date = object.date ?? "";
         message.show_all_classes = object.show_all_classes ?? false;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.show_archived_only = object.show_archived_only ?? false;
         return message;
     },
 };
@@ -1421,7 +1451,7 @@ exports.CourseEntryStatus = {
     },
 };
 function createBaseGetHomeroomsAttendanceOverviewRequest() {
-    return { context: undefined, date: "", show_all_classes: false };
+    return { context: undefined, date: "", show_all_classes: false, semester_id: undefined, show_archived_only: false };
 }
 exports.GetHomeroomsAttendanceOverviewRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1433,6 +1463,12 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         }
         if (message.show_all_classes !== false) {
             writer.uint32(24).bool(message.show_all_classes);
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+        }
+        if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+            writer.uint32(40).bool(message.show_archived_only);
         }
         return writer;
     },
@@ -1461,6 +1497,18 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
                     }
                     message.show_all_classes = reader.bool();
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.show_archived_only = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1474,6 +1522,8 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             date: isSet(object.date) ? globalThis.String(object.date) : "",
             show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : false,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            show_archived_only: isSet(object.showArchivedOnly) ? globalThis.Boolean(object.showArchivedOnly) : false,
         };
     },
     toJSON(message) {
@@ -1487,6 +1537,12 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         if (message.show_all_classes !== false) {
             obj.showAllClasses = message.show_all_classes;
         }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.show_archived_only !== undefined && message.show_archived_only !== false) {
+            obj.showArchivedOnly = message.show_archived_only;
+        }
         return obj;
     },
     create(base) {
@@ -1499,6 +1555,10 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
             : undefined;
         message.date = object.date ?? "";
         message.show_all_classes = object.show_all_classes ?? false;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.show_archived_only = object.show_archived_only ?? false;
         return message;
     },
 };
