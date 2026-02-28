@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/required_actions_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetFamilyRelevantSchoolYearsResponse = exports.GetFamilyRelevantSchoolYearsRequest = exports.GetFamilyAdmittedActionResponse = exports.GetFamilyAdmittedActionRequest = exports.GetStudentFirstOnboardingRequiredActionResponse = exports.GetStudentFirstOnboardingRequiredActionRequest = exports.FamilyActionSummary = exports.StudentActionSummary = exports.GetAdmittedStudentsActionsOverviewResponse = exports.GetAdmittedStudentsActionsOverviewRequest = exports.protobufPackage = void 0;
+exports.WithdrawReregistrationStudentRequest = exports.GetFamilyRelevantSchoolYearsResponse = exports.GetFamilyRelevantSchoolYearsRequest = exports.GetFamilyAdmittedActionResponse = exports.GetFamilyAdmittedActionRequest = exports.GetStudentFirstOnboardingRequiredActionResponse = exports.GetStudentFirstOnboardingRequiredActionRequest = exports.FamilyActionSummary = exports.StudentActionSummary = exports.GetAdmittedStudentsActionsOverviewResponse = exports.GetAdmittedStudentsActionsOverviewRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -169,7 +169,7 @@ exports.GetAdmittedStudentsActionsOverviewResponse = {
     },
 };
 function createBaseStudentActionSummary() {
-    return { student_id: undefined, student_name: "", description: "" };
+    return { student_id: undefined, student_name: "", description: "", is_reregistration: false };
 }
 exports.StudentActionSummary = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -181,6 +181,9 @@ exports.StudentActionSummary = {
         }
         if (message.description !== "") {
             writer.uint32(26).string(message.description);
+        }
+        if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+            writer.uint32(32).bool(message.is_reregistration);
         }
         return writer;
     },
@@ -209,6 +212,12 @@ exports.StudentActionSummary = {
                     }
                     message.description = reader.string();
                     continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.is_reregistration = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -222,6 +231,7 @@ exports.StudentActionSummary = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
+            is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : false,
         };
     },
     toJSON(message) {
@@ -235,6 +245,9 @@ exports.StudentActionSummary = {
         if (message.description !== "") {
             obj.description = message.description;
         }
+        if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+            obj.isReregistration = message.is_reregistration;
+        }
         return obj;
     },
     create(base) {
@@ -247,6 +260,7 @@ exports.StudentActionSummary = {
             : undefined;
         message.student_name = object.student_name ?? "";
         message.description = object.description ?? "";
+        message.is_reregistration = object.is_reregistration ?? false;
         return message;
     },
 };
@@ -715,6 +729,92 @@ exports.GetFamilyRelevantSchoolYearsResponse = {
     fromPartial(object) {
         const message = createBaseGetFamilyRelevantSchoolYearsResponse();
         message.school_year_ids = object.school_year_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseWithdrawReregistrationStudentRequest() {
+    return { context: undefined, student_id: undefined, school_year_id: undefined };
+}
+exports.WithdrawReregistrationStudentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseWithdrawReregistrationStudentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.WithdrawReregistrationStudentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseWithdrawReregistrationStudentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
         return message;
     },
 };

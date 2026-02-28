@@ -27,6 +27,7 @@ export interface StudentActionSummary {
   student_id: ObjectId | undefined;
   student_name: string;
   description: string;
+  is_reregistration?: boolean | undefined;
 }
 
 export interface FamilyActionSummary {
@@ -63,6 +64,12 @@ export interface GetFamilyRelevantSchoolYearsRequest {
 
 export interface GetFamilyRelevantSchoolYearsResponse {
   school_year_ids: ObjectId[];
+}
+
+export interface WithdrawReregistrationStudentRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
 }
 
 function createBaseGetAdmittedStudentsActionsOverviewRequest(): GetAdmittedStudentsActionsOverviewRequest {
@@ -247,7 +254,7 @@ export const GetAdmittedStudentsActionsOverviewResponse: MessageFns<GetAdmittedS
 };
 
 function createBaseStudentActionSummary(): StudentActionSummary {
-  return { student_id: undefined, student_name: "", description: "" };
+  return { student_id: undefined, student_name: "", description: "", is_reregistration: false };
 }
 
 export const StudentActionSummary: MessageFns<StudentActionSummary> = {
@@ -260,6 +267,9 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     }
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
+    }
+    if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+      writer.uint32(32).bool(message.is_reregistration);
     }
     return writer;
   },
@@ -292,6 +302,13 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
 
           message.description = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.is_reregistration = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -306,6 +323,7 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : false,
     };
   },
 
@@ -320,6 +338,9 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+      obj.isReregistration = message.is_reregistration;
+    }
     return obj;
   },
 
@@ -333,6 +354,7 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
       : undefined;
     message.student_name = object.student_name ?? "";
     message.description = object.description ?? "";
+    message.is_reregistration = object.is_reregistration ?? false;
     return message;
   },
 };
@@ -886,6 +908,105 @@ export const GetFamilyRelevantSchoolYearsResponse: MessageFns<GetFamilyRelevantS
   ): GetFamilyRelevantSchoolYearsResponse {
     const message = createBaseGetFamilyRelevantSchoolYearsResponse();
     message.school_year_ids = object.school_year_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseWithdrawReregistrationStudentRequest(): WithdrawReregistrationStudentRequest {
+  return { context: undefined, student_id: undefined, school_year_id: undefined };
+}
+
+export const WithdrawReregistrationStudentRequest: MessageFns<WithdrawReregistrationStudentRequest> = {
+  encode(message: WithdrawReregistrationStudentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WithdrawReregistrationStudentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWithdrawReregistrationStudentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WithdrawReregistrationStudentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: WithdrawReregistrationStudentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<WithdrawReregistrationStudentRequest>, I>>(
+    base?: I,
+  ): WithdrawReregistrationStudentRequest {
+    return WithdrawReregistrationStudentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<WithdrawReregistrationStudentRequest>, I>>(
+    object: I,
+  ): WithdrawReregistrationStudentRequest {
+    const message = createBaseWithdrawReregistrationStudentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
     return message;
   },
 };

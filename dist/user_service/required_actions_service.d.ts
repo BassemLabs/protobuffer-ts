@@ -16,6 +16,7 @@ export interface StudentActionSummary {
     student_id: ObjectId | undefined;
     student_name: string;
     description: string;
+    is_reregistration?: boolean | undefined;
 }
 export interface FamilyActionSummary {
     family_id: ObjectId | undefined;
@@ -46,6 +47,11 @@ export interface GetFamilyRelevantSchoolYearsRequest {
 export interface GetFamilyRelevantSchoolYearsResponse {
     school_year_ids: ObjectId[];
 }
+export interface WithdrawReregistrationStudentRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+}
 export declare const GetAdmittedStudentsActionsOverviewRequest: MessageFns<GetAdmittedStudentsActionsOverviewRequest>;
 export declare const GetAdmittedStudentsActionsOverviewResponse: MessageFns<GetAdmittedStudentsActionsOverviewResponse>;
 export declare const StudentActionSummary: MessageFns<StudentActionSummary>;
@@ -56,6 +62,7 @@ export declare const GetFamilyAdmittedActionRequest: MessageFns<GetFamilyAdmitte
 export declare const GetFamilyAdmittedActionResponse: MessageFns<GetFamilyAdmittedActionResponse>;
 export declare const GetFamilyRelevantSchoolYearsRequest: MessageFns<GetFamilyRelevantSchoolYearsRequest>;
 export declare const GetFamilyRelevantSchoolYearsResponse: MessageFns<GetFamilyRelevantSchoolYearsResponse>;
+export declare const WithdrawReregistrationStudentRequest: MessageFns<WithdrawReregistrationStudentRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

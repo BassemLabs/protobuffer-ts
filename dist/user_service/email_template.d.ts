@@ -27,6 +27,8 @@ export declare enum EmailTemplateKey {
     INVOICE_CREATED_EMAIL = "INVOICE_CREATED_EMAIL",
     /** PARENT_INVITATION_EMAIL - Parent invitation template */
     PARENT_INVITATION_EMAIL = "PARENT_INVITATION_EMAIL",
+    /** PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL - Parent withdraw re-registration student (during onboarding required actions) */
+    PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL = "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function emailTemplateKeyFromJSON(object: any): EmailTemplateKey;

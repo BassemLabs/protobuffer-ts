@@ -40,6 +40,8 @@ var EmailTemplateKey;
     EmailTemplateKey["INVOICE_CREATED_EMAIL"] = "INVOICE_CREATED_EMAIL";
     /** PARENT_INVITATION_EMAIL - Parent invitation template */
     EmailTemplateKey["PARENT_INVITATION_EMAIL"] = "PARENT_INVITATION_EMAIL";
+    /** PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL - Parent withdraw re-registration student (during onboarding required actions) */
+    EmailTemplateKey["PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL"] = "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL";
     EmailTemplateKey["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(EmailTemplateKey || (exports.EmailTemplateKey = EmailTemplateKey = {}));
 function emailTemplateKeyFromJSON(object) {
@@ -101,6 +103,9 @@ function emailTemplateKeyFromJSON(object) {
         case 18:
         case "PARENT_INVITATION_EMAIL":
             return EmailTemplateKey.PARENT_INVITATION_EMAIL;
+        case 19:
+        case "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL":
+            return EmailTemplateKey.PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -147,6 +152,8 @@ function emailTemplateKeyToJSON(object) {
             return "INVOICE_CREATED_EMAIL";
         case EmailTemplateKey.PARENT_INVITATION_EMAIL:
             return "PARENT_INVITATION_EMAIL";
+        case EmailTemplateKey.PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL:
+            return "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL";
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -192,6 +199,8 @@ function emailTemplateKeyToNumber(object) {
             return 17;
         case EmailTemplateKey.PARENT_INVITATION_EMAIL:
             return 18;
+        case EmailTemplateKey.PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL:
+            return 19;
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return -1;
