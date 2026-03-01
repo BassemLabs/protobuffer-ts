@@ -169,7 +169,7 @@ exports.GetAdmittedStudentsActionsOverviewResponse = {
     },
 };
 function createBaseStudentActionSummary() {
-    return { student_id: undefined, student_name: "", description: "", is_reregistration: false };
+    return { student_id: undefined, student_name: "", description: "", is_reregistration: false, actions_count: 0 };
 }
 exports.StudentActionSummary = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -184,6 +184,9 @@ exports.StudentActionSummary = {
         }
         if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
             writer.uint32(32).bool(message.is_reregistration);
+        }
+        if (message.actions_count !== 0) {
+            writer.uint32(40).int32(message.actions_count);
         }
         return writer;
     },
@@ -218,6 +221,12 @@ exports.StudentActionSummary = {
                     }
                     message.is_reregistration = reader.bool();
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.actions_count = reader.int32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -232,6 +241,7 @@ exports.StudentActionSummary = {
             student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : false,
+            actions_count: isSet(object.actionsCount) ? globalThis.Number(object.actionsCount) : 0,
         };
     },
     toJSON(message) {
@@ -248,6 +258,9 @@ exports.StudentActionSummary = {
         if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
             obj.isReregistration = message.is_reregistration;
         }
+        if (message.actions_count !== 0) {
+            obj.actionsCount = Math.round(message.actions_count);
+        }
         return obj;
     },
     create(base) {
@@ -261,6 +274,7 @@ exports.StudentActionSummary = {
         message.student_name = object.student_name ?? "";
         message.description = object.description ?? "";
         message.is_reregistration = object.is_reregistration ?? false;
+        message.actions_count = object.actions_count ?? 0;
         return message;
     },
 };

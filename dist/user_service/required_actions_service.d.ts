@@ -17,6 +17,7 @@ export interface StudentActionSummary {
     student_name: string;
     description: string;
     is_reregistration?: boolean | undefined;
+    actions_count: number;
 }
 export interface FamilyActionSummary {
     family_id: ObjectId | undefined;

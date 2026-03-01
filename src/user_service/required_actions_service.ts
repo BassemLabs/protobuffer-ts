@@ -28,6 +28,7 @@ export interface StudentActionSummary {
   student_name: string;
   description: string;
   is_reregistration?: boolean | undefined;
+  actions_count: number;
 }
 
 export interface FamilyActionSummary {
@@ -254,7 +255,7 @@ export const GetAdmittedStudentsActionsOverviewResponse: MessageFns<GetAdmittedS
 };
 
 function createBaseStudentActionSummary(): StudentActionSummary {
-  return { student_id: undefined, student_name: "", description: "", is_reregistration: false };
+  return { student_id: undefined, student_name: "", description: "", is_reregistration: false, actions_count: 0 };
 }
 
 export const StudentActionSummary: MessageFns<StudentActionSummary> = {
@@ -270,6 +271,9 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     }
     if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
       writer.uint32(32).bool(message.is_reregistration);
+    }
+    if (message.actions_count !== 0) {
+      writer.uint32(40).int32(message.actions_count);
     }
     return writer;
   },
@@ -309,6 +313,13 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
 
           message.is_reregistration = reader.bool();
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.actions_count = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -324,6 +335,7 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
       student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : false,
+      actions_count: isSet(object.actionsCount) ? globalThis.Number(object.actionsCount) : 0,
     };
   },
 
@@ -341,6 +353,9 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
       obj.isReregistration = message.is_reregistration;
     }
+    if (message.actions_count !== 0) {
+      obj.actionsCount = Math.round(message.actions_count);
+    }
     return obj;
   },
 
@@ -355,6 +370,7 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     message.student_name = object.student_name ?? "";
     message.description = object.description ?? "";
     message.is_reregistration = object.is_reregistration ?? false;
+    message.actions_count = object.actions_count ?? 0;
     return message;
   },
 };
