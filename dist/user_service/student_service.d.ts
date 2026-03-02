@@ -152,6 +152,12 @@ export interface NoReregStudentForActiveSchoolYearRequest {
 /** Empty response - if successful, there are no students in reregistration status */
 export interface NoReregStudentForActiveSchoolYearResponse {
 }
+export interface HasStudentsInInterviewStatusRequest {
+    context: RequestContext | undefined;
+}
+export interface HasStudentsInInterviewStatusResponse {
+    has_students_in_interview: boolean;
+}
 export interface StartReregistrationForComingSchoolYearRequest {
     context: RequestContext | undefined;
 }
@@ -304,6 +310,8 @@ export declare const AuthenticateStudentForOrgRequest: MessageFns<AuthenticateSt
 export declare const AuthenticateStudentForOrgResponse: MessageFns<AuthenticateStudentForOrgResponse>;
 export declare const NoReregStudentForActiveSchoolYearRequest: MessageFns<NoReregStudentForActiveSchoolYearRequest>;
 export declare const NoReregStudentForActiveSchoolYearResponse: MessageFns<NoReregStudentForActiveSchoolYearResponse>;
+export declare const HasStudentsInInterviewStatusRequest: MessageFns<HasStudentsInInterviewStatusRequest>;
+export declare const HasStudentsInInterviewStatusResponse: MessageFns<HasStudentsInInterviewStatusResponse>;
 export declare const StartReregistrationForComingSchoolYearRequest: MessageFns<StartReregistrationForComingSchoolYearRequest>;
 export declare const StartReregistrationForComingSchoolYearResponse: MessageFns<StartReregistrationForComingSchoolYearResponse>;
 export declare const CreateDefaultResourceAccessSettingsForOrgRequest: MessageFns<CreateDefaultResourceAccessSettingsForOrgRequest>;

@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: user_service/student_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.StartReregistrationForComingSchoolYearResponse = exports.StartReregistrationForComingSchoolYearRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
-exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = void 0;
+exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.StartReregistrationForComingSchoolYearResponse = exports.StartReregistrationForComingSchoolYearRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
+exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -2308,6 +2308,112 @@ exports.NoReregStudentForActiveSchoolYearResponse = {
     },
     fromPartial(_) {
         const message = createBaseNoReregStudentForActiveSchoolYearResponse();
+        return message;
+    },
+};
+function createBaseHasStudentsInInterviewStatusRequest() {
+    return { context: undefined };
+}
+exports.HasStudentsInInterviewStatusRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseHasStudentsInInterviewStatusRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.HasStudentsInInterviewStatusRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseHasStudentsInInterviewStatusRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseHasStudentsInInterviewStatusResponse() {
+    return { has_students_in_interview: false };
+}
+exports.HasStudentsInInterviewStatusResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.has_students_in_interview !== false) {
+            writer.uint32(8).bool(message.has_students_in_interview);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseHasStudentsInInterviewStatusResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.has_students_in_interview = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            has_students_in_interview: isSet(object.hasStudentsInInterview)
+                ? globalThis.Boolean(object.hasStudentsInInterview)
+                : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.has_students_in_interview !== false) {
+            obj.hasStudentsInInterview = message.has_students_in_interview;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.HasStudentsInInterviewStatusResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseHasStudentsInInterviewStatusResponse();
+        message.has_students_in_interview = object.has_students_in_interview ?? false;
         return message;
     },
 };

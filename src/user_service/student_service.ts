@@ -204,6 +204,14 @@ export interface NoReregStudentForActiveSchoolYearRequest {
 export interface NoReregStudentForActiveSchoolYearResponse {
 }
 
+export interface HasStudentsInInterviewStatusRequest {
+  context: RequestContext | undefined;
+}
+
+export interface HasStudentsInInterviewStatusResponse {
+  has_students_in_interview: boolean;
+}
+
 export interface StartReregistrationForComingSchoolYearRequest {
   context: RequestContext | undefined;
 }
@@ -2939,6 +2947,134 @@ export const NoReregStudentForActiveSchoolYearResponse: MessageFns<NoReregStuden
     _: I,
   ): NoReregStudentForActiveSchoolYearResponse {
     const message = createBaseNoReregStudentForActiveSchoolYearResponse();
+    return message;
+  },
+};
+
+function createBaseHasStudentsInInterviewStatusRequest(): HasStudentsInInterviewStatusRequest {
+  return { context: undefined };
+}
+
+export const HasStudentsInInterviewStatusRequest: MessageFns<HasStudentsInInterviewStatusRequest> = {
+  encode(message: HasStudentsInInterviewStatusRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HasStudentsInInterviewStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHasStudentsInInterviewStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HasStudentsInInterviewStatusRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: HasStudentsInInterviewStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HasStudentsInInterviewStatusRequest>, I>>(
+    base?: I,
+  ): HasStudentsInInterviewStatusRequest {
+    return HasStudentsInInterviewStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HasStudentsInInterviewStatusRequest>, I>>(
+    object: I,
+  ): HasStudentsInInterviewStatusRequest {
+    const message = createBaseHasStudentsInInterviewStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseHasStudentsInInterviewStatusResponse(): HasStudentsInInterviewStatusResponse {
+  return { has_students_in_interview: false };
+}
+
+export const HasStudentsInInterviewStatusResponse: MessageFns<HasStudentsInInterviewStatusResponse> = {
+  encode(message: HasStudentsInInterviewStatusResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.has_students_in_interview !== false) {
+      writer.uint32(8).bool(message.has_students_in_interview);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HasStudentsInInterviewStatusResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHasStudentsInInterviewStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.has_students_in_interview = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HasStudentsInInterviewStatusResponse {
+    return {
+      has_students_in_interview: isSet(object.hasStudentsInInterview)
+        ? globalThis.Boolean(object.hasStudentsInInterview)
+        : false,
+    };
+  },
+
+  toJSON(message: HasStudentsInInterviewStatusResponse): unknown {
+    const obj: any = {};
+    if (message.has_students_in_interview !== false) {
+      obj.hasStudentsInInterview = message.has_students_in_interview;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HasStudentsInInterviewStatusResponse>, I>>(
+    base?: I,
+  ): HasStudentsInInterviewStatusResponse {
+    return HasStudentsInInterviewStatusResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HasStudentsInInterviewStatusResponse>, I>>(
+    object: I,
+  ): HasStudentsInInterviewStatusResponse {
+    const message = createBaseHasStudentsInInterviewStatusResponse();
+    message.has_students_in_interview = object.has_students_in_interview ?? false;
     return message;
   },
 };
