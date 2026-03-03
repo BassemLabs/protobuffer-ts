@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "organization_service";
@@ -246,6 +247,7 @@ export interface OnboardingStepsStatus {
   organization_id: ObjectId | undefined;
   steps: OnboardingStepData[];
   all_steps_done: boolean;
+  completed_at?: Date | undefined;
 }
 
 function createBaseOnboardingStepData(): OnboardingStepData {
@@ -325,7 +327,7 @@ export const OnboardingStepData: MessageFns<OnboardingStepData> = {
 };
 
 function createBaseOnboardingStepsStatus(): OnboardingStepsStatus {
-  return { id: undefined, organization_id: undefined, steps: [], all_steps_done: false };
+  return { id: undefined, organization_id: undefined, steps: [], all_steps_done: false, completed_at: undefined };
 }
 
 export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
@@ -341,6 +343,9 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
     }
     if (message.all_steps_done !== false) {
       writer.uint32(32).bool(message.all_steps_done);
+    }
+    if (message.completed_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.completed_at), writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -380,6 +385,13 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
 
           message.all_steps_done = reader.bool();
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.completed_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -397,6 +409,7 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
         ? object.steps.map((e: any) => OnboardingStepData.fromJSON(e))
         : [],
       all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
+      completed_at: isSet(object.completedAt) ? fromJsonTimestamp(object.completedAt) : undefined,
     };
   },
 
@@ -414,6 +427,9 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
     if (message.all_steps_done !== false) {
       obj.allStepsDone = message.all_steps_done;
     }
+    if (message.completed_at !== undefined) {
+      obj.completedAt = message.completed_at.toISOString();
+    }
     return obj;
   },
 
@@ -428,6 +444,7 @@ export const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus> = {
       : undefined;
     message.steps = object.steps?.map((e) => OnboardingStepData.fromPartial(e)) || [];
     message.all_steps_done = object.all_steps_done ?? false;
+    message.completed_at = object.completed_at ?? undefined;
     return message;
   },
 };
@@ -443,6 +460,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

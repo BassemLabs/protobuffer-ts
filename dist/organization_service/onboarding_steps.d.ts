@@ -43,6 +43,7 @@ export interface OnboardingStepsStatus {
     organization_id: ObjectId | undefined;
     steps: OnboardingStepData[];
     all_steps_done: boolean;
+    completed_at?: Date | undefined;
 }
 export declare const OnboardingStepData: MessageFns<OnboardingStepData>;
 export declare const OnboardingStepsStatus: MessageFns<OnboardingStepsStatus>;

@@ -14,6 +14,7 @@ exports.onboardingStepNameToJSON = onboardingStepNameToJSON;
 exports.onboardingStepNameToNumber = onboardingStepNameToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "organization_service";
 var OnboardingStepStatus;
@@ -305,7 +306,7 @@ exports.OnboardingStepData = {
     },
 };
 function createBaseOnboardingStepsStatus() {
-    return { id: undefined, organization_id: undefined, steps: [], all_steps_done: false };
+    return { id: undefined, organization_id: undefined, steps: [], all_steps_done: false, completed_at: undefined };
 }
 exports.OnboardingStepsStatus = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -320,6 +321,9 @@ exports.OnboardingStepsStatus = {
         }
         if (message.all_steps_done !== false) {
             writer.uint32(32).bool(message.all_steps_done);
+        }
+        if (message.completed_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.completed_at), writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -354,6 +358,12 @@ exports.OnboardingStepsStatus = {
                     }
                     message.all_steps_done = reader.bool();
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.completed_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -370,6 +380,7 @@ exports.OnboardingStepsStatus = {
                 ? object.steps.map((e) => exports.OnboardingStepData.fromJSON(e))
                 : [],
             all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
+            completed_at: isSet(object.completedAt) ? fromJsonTimestamp(object.completedAt) : undefined,
         };
     },
     toJSON(message) {
@@ -386,6 +397,9 @@ exports.OnboardingStepsStatus = {
         if (message.all_steps_done !== false) {
             obj.allStepsDone = message.all_steps_done;
         }
+        if (message.completed_at !== undefined) {
+            obj.completedAt = message.completed_at.toISOString();
+        }
         return obj;
     },
     create(base) {
@@ -399,9 +413,31 @@ exports.OnboardingStepsStatus = {
             : undefined;
         message.steps = object.steps?.map((e) => exports.OnboardingStepData.fromPartial(e)) || [];
         message.all_steps_done = object.all_steps_done ?? false;
+        message.completed_at = object.completed_at ?? undefined;
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }
