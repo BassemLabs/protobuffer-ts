@@ -2033,6 +2033,8 @@ function createBaseUpdateCustomFieldsGroupRequest() {
         hints: [],
         visible_to_parents_for_statuses: [],
         visible_to_teachers_for_statuses: [],
+        group_access_settings: undefined,
+        entries_access_settings: undefined,
     };
 }
 exports.UpdateCustomFieldsGroupRequest = {
@@ -2062,6 +2064,12 @@ exports.UpdateCustomFieldsGroupRequest = {
             writer.int32((0, student_1.studentStatusToNumber)(v));
         }
         writer.join();
+        if (message.group_access_settings !== undefined) {
+            object_id_1.ObjectId.encode(message.group_access_settings, writer.uint32(66).fork()).join();
+        }
+        if (message.entries_access_settings !== undefined) {
+            object_id_1.ObjectId.encode(message.entries_access_settings, writer.uint32(74).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -2127,6 +2135,18 @@ exports.UpdateCustomFieldsGroupRequest = {
                         continue;
                     }
                     break;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.group_access_settings = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.entries_access_settings = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2150,6 +2170,12 @@ exports.UpdateCustomFieldsGroupRequest = {
             visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
                 ? object.visibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
+            group_access_settings: isSet(object.groupAccessSettings)
+                ? object_id_1.ObjectId.fromJSON(object.groupAccessSettings)
+                : undefined,
+            entries_access_settings: isSet(object.entriesAccessSettings)
+                ? object_id_1.ObjectId.fromJSON(object.entriesAccessSettings)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2175,6 +2201,12 @@ exports.UpdateCustomFieldsGroupRequest = {
         if (message.visible_to_teachers_for_statuses?.length) {
             obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
+        if (message.group_access_settings !== undefined) {
+            obj.groupAccessSettings = object_id_1.ObjectId.toJSON(message.group_access_settings);
+        }
+        if (message.entries_access_settings !== undefined) {
+            obj.entriesAccessSettings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
+        }
         return obj;
     },
     create(base) {
@@ -2193,6 +2225,14 @@ exports.UpdateCustomFieldsGroupRequest = {
         message.hints = object.hints?.map((e) => e) || [];
         message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
         message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
+        message.group_access_settings =
+            (object.group_access_settings !== undefined && object.group_access_settings !== null)
+                ? object_id_1.ObjectId.fromPartial(object.group_access_settings)
+                : undefined;
+        message.entries_access_settings =
+            (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
+                ? object_id_1.ObjectId.fromPartial(object.entries_access_settings)
+                : undefined;
         return message;
     },
 };

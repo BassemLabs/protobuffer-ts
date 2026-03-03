@@ -142,6 +142,12 @@ export interface UpdateCustomFieldsGroupRequest {
     /** these fields are only for custom field groups for user type: Student */
     visible_to_parents_for_statuses: StudentStatus[];
     visible_to_teachers_for_statuses: StudentStatus[];
+    /**
+     * Optional: allow changing which ResourceAccessSettings applies to the group/entries.
+     * This must be super-admin gated at the service layer.
+     */
+    group_access_settings?: ObjectId | undefined;
+    entries_access_settings?: ObjectId | undefined;
 }
 export interface GetAllCustomFieldsGroupsRequest {
     context: RequestContext | undefined;

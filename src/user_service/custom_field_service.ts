@@ -205,6 +205,12 @@ export interface UpdateCustomFieldsGroupRequest {
   /** these fields are only for custom field groups for user type: Student */
   visible_to_parents_for_statuses: StudentStatus[];
   visible_to_teachers_for_statuses: StudentStatus[];
+  /**
+   * Optional: allow changing which ResourceAccessSettings applies to the group/entries.
+   * This must be super-admin gated at the service layer.
+   */
+  group_access_settings?: ObjectId | undefined;
+  entries_access_settings?: ObjectId | undefined;
 }
 
 export interface GetAllCustomFieldsGroupsRequest {
@@ -2574,6 +2580,8 @@ function createBaseUpdateCustomFieldsGroupRequest(): UpdateCustomFieldsGroupRequ
     hints: [],
     visible_to_parents_for_statuses: [],
     visible_to_teachers_for_statuses: [],
+    group_access_settings: undefined,
+    entries_access_settings: undefined,
   };
 }
 
@@ -2604,6 +2612,12 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
+    if (message.group_access_settings !== undefined) {
+      ObjectId.encode(message.group_access_settings, writer.uint32(66).fork()).join();
+    }
+    if (message.entries_access_settings !== undefined) {
+      ObjectId.encode(message.entries_access_settings, writer.uint32(74).fork()).join();
+    }
     return writer;
   },
 
@@ -2683,6 +2697,20 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
           }
 
           break;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.group_access_settings = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.entries_access_settings = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2707,6 +2735,12 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
       visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
         ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
+      group_access_settings: isSet(object.groupAccessSettings)
+        ? ObjectId.fromJSON(object.groupAccessSettings)
+        : undefined,
+      entries_access_settings: isSet(object.entriesAccessSettings)
+        ? ObjectId.fromJSON(object.entriesAccessSettings)
+        : undefined,
     };
   },
 
@@ -2733,6 +2767,12 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     if (message.visible_to_teachers_for_statuses?.length) {
       obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => studentStatusToJSON(e));
     }
+    if (message.group_access_settings !== undefined) {
+      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
+    }
+    if (message.entries_access_settings !== undefined) {
+      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
+    }
     return obj;
   },
 
@@ -2754,6 +2794,14 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     message.hints = object.hints?.map((e) => e) || [];
     message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
     message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
+    message.group_access_settings =
+      (object.group_access_settings !== undefined && object.group_access_settings !== null)
+        ? ObjectId.fromPartial(object.group_access_settings)
+        : undefined;
+    message.entries_access_settings =
+      (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
+        ? ObjectId.fromPartial(object.entries_access_settings)
+        : undefined;
     return message;
   },
 };
