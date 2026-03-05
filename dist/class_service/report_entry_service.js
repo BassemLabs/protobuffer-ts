@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: class_service/report_entry_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishReportEntryRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetReportEntriesQueueRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.protobufPackage = void 0;
+exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.ReportPublishClassType = exports.protobufPackage = void 0;
+exports.reportPublishClassTypeFromJSON = reportPublishClassTypeFromJSON;
+exports.reportPublishClassTypeToJSON = reportPublishClassTypeToJSON;
+exports.reportPublishClassTypeToNumber = reportPublishClassTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -13,6 +16,50 @@ const request_context_1 = require("../utils/request_context");
 const report_entry_1 = require("./report_entry");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service.report_entry_service";
+var ReportPublishClassType;
+(function (ReportPublishClassType) {
+    /** REPORT_PUBLISH_CLASS_TYPE_COURSE - Standalone subject/course class. */
+    ReportPublishClassType["REPORT_PUBLISH_CLASS_TYPE_COURSE"] = "REPORT_PUBLISH_CLASS_TYPE_COURSE";
+    /** REPORT_PUBLISH_CLASS_TYPE_HOMEROOM - Homeroom aggregate class. */
+    ReportPublishClassType["REPORT_PUBLISH_CLASS_TYPE_HOMEROOM"] = "REPORT_PUBLISH_CLASS_TYPE_HOMEROOM";
+    ReportPublishClassType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportPublishClassType || (exports.ReportPublishClassType = ReportPublishClassType = {}));
+function reportPublishClassTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_PUBLISH_CLASS_TYPE_COURSE":
+            return ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE;
+        case 1:
+        case "REPORT_PUBLISH_CLASS_TYPE_HOMEROOM":
+            return ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_HOMEROOM;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportPublishClassType.UNRECOGNIZED;
+    }
+}
+function reportPublishClassTypeToJSON(object) {
+    switch (object) {
+        case ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE:
+            return "REPORT_PUBLISH_CLASS_TYPE_COURSE";
+        case ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_HOMEROOM:
+            return "REPORT_PUBLISH_CLASS_TYPE_HOMEROOM";
+        case ReportPublishClassType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportPublishClassTypeToNumber(object) {
+    switch (object) {
+        case ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE:
+            return 0;
+        case ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_HOMEROOM:
+            return 1;
+        case ReportPublishClassType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetCourseReportEntriesRequest() {
     return { context: undefined, course_id: undefined };
 }
@@ -725,6 +772,780 @@ exports.GetReportEntriesQueueRequest = {
             : undefined;
         message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseReportStatusCounters() {
+    return { not_filled: 0, filled: 0, changes_requested: 0, approved: 0, published: 0 };
+}
+exports.ReportStatusCounters = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.not_filled !== 0) {
+            writer.uint32(8).uint32(message.not_filled);
+        }
+        if (message.filled !== 0) {
+            writer.uint32(16).uint32(message.filled);
+        }
+        if (message.changes_requested !== 0) {
+            writer.uint32(24).uint32(message.changes_requested);
+        }
+        if (message.approved !== 0) {
+            writer.uint32(32).uint32(message.approved);
+        }
+        if (message.published !== 0) {
+            writer.uint32(40).uint32(message.published);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportStatusCounters();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.not_filled = reader.uint32();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.filled = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.changes_requested = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.approved = reader.uint32();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.published = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            not_filled: isSet(object.notFilled) ? globalThis.Number(object.notFilled) : 0,
+            filled: isSet(object.filled) ? globalThis.Number(object.filled) : 0,
+            changes_requested: isSet(object.changesRequested) ? globalThis.Number(object.changesRequested) : 0,
+            approved: isSet(object.approved) ? globalThis.Number(object.approved) : 0,
+            published: isSet(object.published) ? globalThis.Number(object.published) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.not_filled !== 0) {
+            obj.notFilled = Math.round(message.not_filled);
+        }
+        if (message.filled !== 0) {
+            obj.filled = Math.round(message.filled);
+        }
+        if (message.changes_requested !== 0) {
+            obj.changesRequested = Math.round(message.changes_requested);
+        }
+        if (message.approved !== 0) {
+            obj.approved = Math.round(message.approved);
+        }
+        if (message.published !== 0) {
+            obj.published = Math.round(message.published);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportStatusCounters.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportStatusCounters();
+        message.not_filled = object.not_filled ?? 0;
+        message.filled = object.filled ?? 0;
+        message.changes_requested = object.changes_requested ?? 0;
+        message.approved = object.approved ?? 0;
+        message.published = object.published ?? 0;
+        return message;
+    },
+};
+function createBaseReportPublishQueueClass() {
+    return {
+        class_type: ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE,
+        class_id: undefined,
+        class_name: "",
+        counters: undefined,
+        total_expected: 0,
+        can_publish: false,
+        blocking_reason: "",
+    };
+}
+exports.ReportPublishQueueClass = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.class_type !== ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE) {
+            writer.uint32(8).int32(reportPublishClassTypeToNumber(message.class_type));
+        }
+        if (message.class_id !== undefined) {
+            object_id_1.ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
+        }
+        if (message.class_name !== "") {
+            writer.uint32(26).string(message.class_name);
+        }
+        if (message.counters !== undefined) {
+            exports.ReportStatusCounters.encode(message.counters, writer.uint32(34).fork()).join();
+        }
+        if (message.total_expected !== 0) {
+            writer.uint32(40).uint32(message.total_expected);
+        }
+        if (message.can_publish !== false) {
+            writer.uint32(48).bool(message.can_publish);
+        }
+        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+            writer.uint32(58).string(message.blocking_reason);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportPublishQueueClass();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.class_type = reportPublishClassTypeFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.class_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.class_name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.counters = exports.ReportStatusCounters.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.total_expected = reader.uint32();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.can_publish = reader.bool();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.blocking_reason = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            class_type: isSet(object.classType)
+                ? reportPublishClassTypeFromJSON(object.classType)
+                : ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE,
+            class_id: isSet(object.classId) ? object_id_1.ObjectId.fromJSON(object.classId) : undefined,
+            class_name: isSet(object.className) ? globalThis.String(object.className) : "",
+            counters: isSet(object.counters) ? exports.ReportStatusCounters.fromJSON(object.counters) : undefined,
+            total_expected: isSet(object.totalExpected) ? globalThis.Number(object.totalExpected) : 0,
+            can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : false,
+            blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.class_type !== ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE) {
+            obj.classType = reportPublishClassTypeToJSON(message.class_type);
+        }
+        if (message.class_id !== undefined) {
+            obj.classId = object_id_1.ObjectId.toJSON(message.class_id);
+        }
+        if (message.class_name !== "") {
+            obj.className = message.class_name;
+        }
+        if (message.counters !== undefined) {
+            obj.counters = exports.ReportStatusCounters.toJSON(message.counters);
+        }
+        if (message.total_expected !== 0) {
+            obj.totalExpected = Math.round(message.total_expected);
+        }
+        if (message.can_publish !== false) {
+            obj.canPublish = message.can_publish;
+        }
+        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+            obj.blockingReason = message.blocking_reason;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportPublishQueueClass.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportPublishQueueClass();
+        message.class_type = object.class_type ?? ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE;
+        message.class_id = (object.class_id !== undefined && object.class_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.class_id)
+            : undefined;
+        message.class_name = object.class_name ?? "";
+        message.counters = (object.counters !== undefined && object.counters !== null)
+            ? exports.ReportStatusCounters.fromPartial(object.counters)
+            : undefined;
+        message.total_expected = object.total_expected ?? 0;
+        message.can_publish = object.can_publish ?? false;
+        message.blocking_reason = object.blocking_reason ?? "";
+        return message;
+    },
+};
+function createBaseGetReportPublishQueueClassesRequest() {
+    return {
+        context: undefined,
+        report_type: semester_1.ReportType.Progress,
+        teacher_id: undefined,
+        student_id: undefined,
+        school_year_id: undefined,
+        semester_id: undefined,
+    };
+}
+exports.GetReportPublishQueueClassesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            writer.uint32(16).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(26).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(34).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(42).fork()).join();
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetReportPublishQueueClassesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetReportPublishQueueClassesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetReportPublishQueueClassesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetReportPublishQueueClassesResponse() {
+    return { classes: [] };
+}
+exports.GetReportPublishQueueClassesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.classes) {
+            exports.ReportPublishQueueClass.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetReportPublishQueueClassesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.classes.push(exports.ReportPublishQueueClass.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            classes: globalThis.Array.isArray(object?.classes)
+                ? object.classes.map((e) => exports.ReportPublishQueueClass.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.classes?.length) {
+            obj.classes = message.classes.map((e) => exports.ReportPublishQueueClass.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetReportPublishQueueClassesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetReportPublishQueueClassesResponse();
+        message.classes = object.classes?.map((e) => exports.ReportPublishQueueClass.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetHomeroomPublishBreakdownRequest() {
+    return { context: undefined, homeroom_id: undefined, report_type: semester_1.ReportType.Progress };
+}
+exports.GetHomeroomPublishBreakdownRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetHomeroomPublishBreakdownRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetHomeroomPublishBreakdownRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetHomeroomPublishBreakdownRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
+            : undefined;
+        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        return message;
+    },
+};
+function createBaseGetHomeroomPublishBreakdownResponse() {
+    return {
+        overall: undefined,
+        holistic_counters: undefined,
+        holistic_total_expected: 0,
+        subjects: [],
+        can_publish: false,
+        blocking_reason: "",
+    };
+}
+exports.GetHomeroomPublishBreakdownResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.overall !== undefined) {
+            exports.ReportPublishQueueClass.encode(message.overall, writer.uint32(10).fork()).join();
+        }
+        if (message.holistic_counters !== undefined) {
+            exports.ReportStatusCounters.encode(message.holistic_counters, writer.uint32(18).fork()).join();
+        }
+        if (message.holistic_total_expected !== 0) {
+            writer.uint32(24).uint32(message.holistic_total_expected);
+        }
+        for (const v of message.subjects) {
+            exports.ReportPublishQueueClass.encode(v, writer.uint32(34).fork()).join();
+        }
+        if (message.can_publish !== false) {
+            writer.uint32(40).bool(message.can_publish);
+        }
+        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+            writer.uint32(50).string(message.blocking_reason);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetHomeroomPublishBreakdownResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.overall = exports.ReportPublishQueueClass.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.holistic_counters = exports.ReportStatusCounters.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.holistic_total_expected = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.subjects.push(exports.ReportPublishQueueClass.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.can_publish = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.blocking_reason = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            overall: isSet(object.overall) ? exports.ReportPublishQueueClass.fromJSON(object.overall) : undefined,
+            holistic_counters: isSet(object.holisticCounters)
+                ? exports.ReportStatusCounters.fromJSON(object.holisticCounters)
+                : undefined,
+            holistic_total_expected: isSet(object.holisticTotalExpected)
+                ? globalThis.Number(object.holisticTotalExpected)
+                : 0,
+            subjects: globalThis.Array.isArray(object?.subjects)
+                ? object.subjects.map((e) => exports.ReportPublishQueueClass.fromJSON(e))
+                : [],
+            can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : false,
+            blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.overall !== undefined) {
+            obj.overall = exports.ReportPublishQueueClass.toJSON(message.overall);
+        }
+        if (message.holistic_counters !== undefined) {
+            obj.holisticCounters = exports.ReportStatusCounters.toJSON(message.holistic_counters);
+        }
+        if (message.holistic_total_expected !== 0) {
+            obj.holisticTotalExpected = Math.round(message.holistic_total_expected);
+        }
+        if (message.subjects?.length) {
+            obj.subjects = message.subjects.map((e) => exports.ReportPublishQueueClass.toJSON(e));
+        }
+        if (message.can_publish !== false) {
+            obj.canPublish = message.can_publish;
+        }
+        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+            obj.blockingReason = message.blocking_reason;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetHomeroomPublishBreakdownResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetHomeroomPublishBreakdownResponse();
+        message.overall = (object.overall !== undefined && object.overall !== null)
+            ? exports.ReportPublishQueueClass.fromPartial(object.overall)
+            : undefined;
+        message.holistic_counters = (object.holistic_counters !== undefined && object.holistic_counters !== null)
+            ? exports.ReportStatusCounters.fromPartial(object.holistic_counters)
+            : undefined;
+        message.holistic_total_expected = object.holistic_total_expected ?? 0;
+        message.subjects = object.subjects?.map((e) => exports.ReportPublishQueueClass.fromPartial(e)) || [];
+        message.can_publish = object.can_publish ?? false;
+        message.blocking_reason = object.blocking_reason ?? "";
+        return message;
+    },
+};
+function createBaseGetClassReportEntriesByTypeRequest() {
+    return { context: undefined, report_type: semester_1.ReportType.Progress, course_id: undefined, homeroom_id: undefined };
+}
+exports.GetClassReportEntriesByTypeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            writer.uint32(16).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+        }
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
+        }
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetClassReportEntriesByTypeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+        }
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+        }
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetClassReportEntriesByTypeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetClassReportEntriesByTypeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
+            : undefined;
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
         return message;
     },
@@ -1628,23 +2449,26 @@ exports.ApproveReportEntryRequest = {
         return message;
     },
 };
-function createBasePublishReportEntryRequest() {
-    return { context: undefined, report_entry_id: undefined };
+function createBasePublishCourseReportTypeRequest() {
+    return { context: undefined, course_id: undefined, report_type: semester_1.ReportType.Progress };
 }
-exports.PublishReportEntryRequest = {
+exports.PublishCourseReportTypeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.report_entry_id !== undefined) {
-            object_id_1.ObjectId.encode(message.report_entry_id, writer.uint32(18).fork()).join();
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBasePublishReportEntryRequest();
+        const message = createBasePublishCourseReportTypeRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1658,7 +2482,13 @@ exports.PublishReportEntryRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.report_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1671,7 +2501,8 @@ exports.PublishReportEntryRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
         };
     },
     toJSON(message) {
@@ -1679,22 +2510,194 @@ exports.PublishReportEntryRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.report_entry_id !== undefined) {
-            obj.reportEntryId = object_id_1.ObjectId.toJSON(message.report_entry_id);
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
         return obj;
     },
     create(base) {
-        return exports.PublishReportEntryRequest.fromPartial(base ?? {});
+        return exports.PublishCourseReportTypeRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBasePublishReportEntryRequest();
+        const message = createBasePublishCourseReportTypeRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.report_entry_id = (object.report_entry_id !== undefined && object.report_entry_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.report_entry_id)
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
+        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        return message;
+    },
+};
+function createBasePublishHomeroomReportTypeRequest() {
+    return { context: undefined, homeroom_id: undefined, report_type: semester_1.ReportType.Progress };
+}
+exports.PublishHomeroomReportTypeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePublishHomeroomReportTypeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        if (message.report_type !== semester_1.ReportType.Progress) {
+            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PublishHomeroomReportTypeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePublishHomeroomReportTypeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
+            : undefined;
+        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        return message;
+    },
+};
+function createBasePublishClassReportTypeResponse() {
+    return { class_summary: undefined, updated_entries: 0, already_published_entries: 0 };
+}
+exports.PublishClassReportTypeResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.class_summary !== undefined) {
+            exports.ReportPublishQueueClass.encode(message.class_summary, writer.uint32(10).fork()).join();
+        }
+        if (message.updated_entries !== 0) {
+            writer.uint32(16).uint32(message.updated_entries);
+        }
+        if (message.already_published_entries !== 0) {
+            writer.uint32(24).uint32(message.already_published_entries);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePublishClassReportTypeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.class_summary = exports.ReportPublishQueueClass.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.updated_entries = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.already_published_entries = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            class_summary: isSet(object.classSummary) ? exports.ReportPublishQueueClass.fromJSON(object.classSummary) : undefined,
+            updated_entries: isSet(object.updatedEntries) ? globalThis.Number(object.updatedEntries) : 0,
+            already_published_entries: isSet(object.alreadyPublishedEntries)
+                ? globalThis.Number(object.alreadyPublishedEntries)
+                : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.class_summary !== undefined) {
+            obj.classSummary = exports.ReportPublishQueueClass.toJSON(message.class_summary);
+        }
+        if (message.updated_entries !== 0) {
+            obj.updatedEntries = Math.round(message.updated_entries);
+        }
+        if (message.already_published_entries !== 0) {
+            obj.alreadyPublishedEntries = Math.round(message.already_published_entries);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PublishClassReportTypeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePublishClassReportTypeResponse();
+        message.class_summary = (object.class_summary !== undefined && object.class_summary !== null)
+            ? exports.ReportPublishQueueClass.fromPartial(object.class_summary)
+            : undefined;
+        message.updated_entries = object.updated_entries ?? 0;
+        message.already_published_entries = object.already_published_entries ?? 0;
         return message;
     },
 };

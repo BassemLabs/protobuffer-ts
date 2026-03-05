@@ -4,6 +4,16 @@ import { RequestContext } from "../utils/request_context";
 import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
 import { ReportType } from "./semester";
 export declare const protobufPackage = "class_service.report_entry_service";
+export declare enum ReportPublishClassType {
+    /** REPORT_PUBLISH_CLASS_TYPE_COURSE - Standalone subject/course class. */
+    REPORT_PUBLISH_CLASS_TYPE_COURSE = "REPORT_PUBLISH_CLASS_TYPE_COURSE",
+    /** REPORT_PUBLISH_CLASS_TYPE_HOMEROOM - Homeroom aggregate class. */
+    REPORT_PUBLISH_CLASS_TYPE_HOMEROOM = "REPORT_PUBLISH_CLASS_TYPE_HOMEROOM",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportPublishClassTypeFromJSON(object: any): ReportPublishClassType;
+export declare function reportPublishClassTypeToJSON(object: ReportPublishClassType): string;
+export declare function reportPublishClassTypeToNumber(object: ReportPublishClassType): number;
 export interface GetCourseReportEntriesRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
@@ -44,6 +54,74 @@ export interface GetReportEntriesQueueRequest {
     student_id?: ObjectId | undefined;
     school_year_id?: ObjectId | undefined;
     semester_id?: ObjectId | undefined;
+}
+export interface ReportStatusCounters {
+    /** Students with no persisted entry or a NOT_FILLED effective state. */
+    not_filled: number;
+    /** Students with FILLED state awaiting approval. */
+    filled: number;
+    /** Students with CHANGES_REQUESTED state. */
+    changes_requested: number;
+    /** Students with APPROVED state. */
+    approved: number;
+    /** Students with already PUBLISHED state. */
+    published: number;
+}
+export interface ReportPublishQueueClass {
+    /** Class scope type (course or homeroom). */
+    class_type: ReportPublishClassType;
+    /** Class identifier for this row. */
+    class_id: ObjectId | undefined;
+    /** Class display name. */
+    class_name: string;
+    /** Status counters across expected students. */
+    counters: ReportStatusCounters | undefined;
+    /** Number of expected students in scope. */
+    total_expected: number;
+    /** True only when scope is ready for atomic publish. */
+    can_publish: boolean;
+    /** Human-readable reason when can_publish is false. */
+    blocking_reason?: string | undefined;
+}
+export interface GetReportPublishQueueClassesRequest {
+    context: RequestContext | undefined;
+    /** Queue is always computed for exactly one report type. */
+    report_type: ReportType;
+    teacher_id?: ObjectId | undefined;
+    student_id?: ObjectId | undefined;
+    school_year_id?: ObjectId | undefined;
+    semester_id?: ObjectId | undefined;
+}
+export interface GetReportPublishQueueClassesResponse {
+    classes: ReportPublishQueueClass[];
+}
+export interface GetHomeroomPublishBreakdownRequest {
+    context: RequestContext | undefined;
+    homeroom_id: ObjectId | undefined;
+    report_type: ReportType;
+}
+export interface GetHomeroomPublishBreakdownResponse {
+    /** Overall homeroom publish summary (holistic + subjects merged). */
+    overall: ReportPublishQueueClass | undefined;
+    /** Counters for homeroom holistic entries only. */
+    holistic_counters: ReportStatusCounters | undefined;
+    /** Expected student count for holistic entries only. */
+    holistic_total_expected: number;
+    /** Per-subject counters for linked courses under the homeroom. */
+    subjects: ReportPublishQueueClass[];
+    /** Mirrors overall.can_publish. */
+    can_publish: boolean;
+    /** Mirrors overall.blocking_reason. */
+    blocking_reason?: string | undefined;
+}
+export interface GetClassReportEntriesByTypeRequest {
+    context: RequestContext | undefined;
+    /** Exactly one report type per request. */
+    report_type: ReportType;
+    /** Exactly one of course_id or homeroom_id must be set. */
+    course_id?: ObjectId | undefined;
+    /** Exactly one of course_id or homeroom_id must be set. */
+    homeroom_id?: ObjectId | undefined;
 }
 export interface GetReportEntryRequest {
     context: RequestContext | undefined;
@@ -99,9 +177,27 @@ export interface ApproveReportEntryRequest {
     context: RequestContext | undefined;
     report_entry_id: ObjectId | undefined;
 }
-export interface PublishReportEntryRequest {
+export interface PublishCourseReportTypeRequest {
     context: RequestContext | undefined;
-    report_entry_id: ObjectId | undefined;
+    /** Must reference a standalone course (not linked to a homeroom). */
+    course_id: ObjectId | undefined;
+    /** Publish is atomic within this class/report_type scope. */
+    report_type: ReportType;
+}
+export interface PublishHomeroomReportTypeRequest {
+    context: RequestContext | undefined;
+    /** Homeroom publish includes holistic + linked subject entries. */
+    homeroom_id: ObjectId | undefined;
+    /** Publish is atomic within this class/report_type scope. */
+    report_type: ReportType;
+}
+export interface PublishClassReportTypeResponse {
+    /** Fresh queue summary for the same scope after publish attempt. */
+    class_summary: ReportPublishQueueClass | undefined;
+    /** Number of entries transitioned APPROVED -> PUBLISHED. */
+    updated_entries: number;
+    /** Number of entries that were already PUBLISHED. */
+    already_published_entries: number;
 }
 export interface UnpublishReportEntryRequest {
     context: RequestContext | undefined;
@@ -122,6 +218,13 @@ export declare const GetStudentPublishedReportEntriesRequest: MessageFns<GetStud
 export declare const GetParentPublishedReportSummariesRequest: MessageFns<GetParentPublishedReportSummariesRequest>;
 export declare const GetParentPublishedReportSummariesResponse: MessageFns<GetParentPublishedReportSummariesResponse>;
 export declare const GetReportEntriesQueueRequest: MessageFns<GetReportEntriesQueueRequest>;
+export declare const ReportStatusCounters: MessageFns<ReportStatusCounters>;
+export declare const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass>;
+export declare const GetReportPublishQueueClassesRequest: MessageFns<GetReportPublishQueueClassesRequest>;
+export declare const GetReportPublishQueueClassesResponse: MessageFns<GetReportPublishQueueClassesResponse>;
+export declare const GetHomeroomPublishBreakdownRequest: MessageFns<GetHomeroomPublishBreakdownRequest>;
+export declare const GetHomeroomPublishBreakdownResponse: MessageFns<GetHomeroomPublishBreakdownResponse>;
+export declare const GetClassReportEntriesByTypeRequest: MessageFns<GetClassReportEntriesByTypeRequest>;
 export declare const GetReportEntryRequest: MessageFns<GetReportEntryRequest>;
 export declare const GetReportEntryResponse: MessageFns<GetReportEntryResponse>;
 export declare const GetReportEntryMedianRequest: MessageFns<GetReportEntryMedianRequest>;
@@ -134,7 +237,9 @@ export declare const GetReportEntryViewsResponse: MessageFns<GetReportEntryViews
 export declare const GetReportEntriesResponse: MessageFns<GetReportEntriesResponse>;
 export declare const RequestChangesReportEntryRequest: MessageFns<RequestChangesReportEntryRequest>;
 export declare const ApproveReportEntryRequest: MessageFns<ApproveReportEntryRequest>;
-export declare const PublishReportEntryRequest: MessageFns<PublishReportEntryRequest>;
+export declare const PublishCourseReportTypeRequest: MessageFns<PublishCourseReportTypeRequest>;
+export declare const PublishHomeroomReportTypeRequest: MessageFns<PublishHomeroomReportTypeRequest>;
+export declare const PublishClassReportTypeResponse: MessageFns<PublishClassReportTypeResponse>;
 export declare const UnpublishReportEntryRequest: MessageFns<UnpublishReportEntryRequest>;
 export declare const GuardianSignReportCardsRequest: MessageFns<GuardianSignReportCardsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
