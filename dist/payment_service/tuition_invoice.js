@@ -137,9 +137,9 @@ function tuitionInvoiceStatusToNumber(object) {
 }
 function createBaseTuitionPlanSnapshot() {
     return {
-        name: "",
-        schedule_type: tuition_1.PaymentScheduleType.ONE_TIME,
-        day_of_month: 0,
+        name: undefined,
+        schedule_type: undefined,
+        day_of_month: undefined,
         installments: [],
         start_date: undefined,
         end_date: undefined,
@@ -147,13 +147,13 @@ function createBaseTuitionPlanSnapshot() {
 }
 exports.TuitionPlanSnapshot = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(10).string(message.name);
         }
-        if (message.schedule_type !== tuition_1.PaymentScheduleType.ONE_TIME) {
+        if (message.schedule_type !== undefined) {
             writer.uint32(16).int32((0, tuition_1.paymentScheduleTypeToNumber)(message.schedule_type));
         }
-        if (message.day_of_month !== undefined && message.day_of_month !== 0) {
+        if (message.day_of_month !== undefined) {
             writer.uint32(24).int32(message.day_of_month);
         }
         for (const v of message.installments) {
@@ -220,11 +220,9 @@ exports.TuitionPlanSnapshot = {
     },
     fromJSON(object) {
         return {
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            schedule_type: isSet(object.scheduleType)
-                ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType)
-                : tuition_1.PaymentScheduleType.ONE_TIME,
-            day_of_month: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : 0,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            schedule_type: isSet(object.scheduleType) ? (0, tuition_1.paymentScheduleTypeFromJSON)(object.scheduleType) : undefined,
+            day_of_month: isSet(object.dayOfMonth) ? globalThis.Number(object.dayOfMonth) : undefined,
             installments: globalThis.Array.isArray(object?.installments)
                 ? object.installments.map((e) => tuition_1.PaymentInstallment.fromJSON(e))
                 : [],
@@ -234,13 +232,13 @@ exports.TuitionPlanSnapshot = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.schedule_type !== tuition_1.PaymentScheduleType.ONE_TIME) {
+        if (message.schedule_type !== undefined) {
             obj.scheduleType = (0, tuition_1.paymentScheduleTypeToJSON)(message.schedule_type);
         }
-        if (message.day_of_month !== undefined && message.day_of_month !== 0) {
+        if (message.day_of_month !== undefined) {
             obj.dayOfMonth = Math.round(message.day_of_month);
         }
         if (message.installments?.length) {
@@ -259,9 +257,9 @@ exports.TuitionPlanSnapshot = {
     },
     fromPartial(object) {
         const message = createBaseTuitionPlanSnapshot();
-        message.name = object.name ?? "";
-        message.schedule_type = object.schedule_type ?? tuition_1.PaymentScheduleType.ONE_TIME;
-        message.day_of_month = object.day_of_month ?? 0;
+        message.name = object.name ?? undefined;
+        message.schedule_type = object.schedule_type ?? undefined;
+        message.day_of_month = object.day_of_month ?? undefined;
         message.installments = object.installments?.map((e) => tuition_1.PaymentInstallment.fromPartial(e)) || [];
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;
@@ -270,32 +268,32 @@ exports.TuitionPlanSnapshot = {
 };
 function createBaseTuitionInvoiceLineItem() {
     return {
-        line_type: LineType.BASE_RATE,
-        scope: tuition_1.Scope.STUDENT_SCOPE,
+        line_type: undefined,
+        scope: undefined,
         student: undefined,
-        name: "",
-        amount: 0,
-        student_status: student_1.StudentStatus.WAITLIST,
+        name: undefined,
+        amount: undefined,
+        student_status: undefined,
     };
 }
 exports.TuitionInvoiceLineItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.line_type !== LineType.BASE_RATE) {
+        if (message.line_type !== undefined) {
             writer.uint32(8).int32(lineTypeToNumber(message.line_type));
         }
-        if (message.scope !== tuition_1.Scope.STUDENT_SCOPE) {
+        if (message.scope !== undefined) {
             writer.uint32(16).int32((0, tuition_1.scopeToNumber)(message.scope));
         }
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(26).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(34).string(message.name);
         }
-        if (message.amount !== 0) {
+        if (message.amount !== undefined) {
             writer.uint32(41).double(message.amount);
         }
-        if (message.student_status !== undefined && message.student_status !== student_1.StudentStatus.WAITLIST) {
+        if (message.student_status !== undefined) {
             writer.uint32(48).int32((0, student_1.studentStatusToNumber)(message.student_status));
         }
         return writer;
@@ -353,34 +351,32 @@ exports.TuitionInvoiceLineItem = {
     },
     fromJSON(object) {
         return {
-            line_type: isSet(object.lineType) ? lineTypeFromJSON(object.lineType) : LineType.BASE_RATE,
-            scope: isSet(object.scope) ? (0, tuition_1.scopeFromJSON)(object.scope) : tuition_1.Scope.STUDENT_SCOPE,
+            line_type: isSet(object.lineType) ? lineTypeFromJSON(object.lineType) : undefined,
+            scope: isSet(object.scope) ? (0, tuition_1.scopeFromJSON)(object.scope) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
-            student_status: isSet(object.studentStatus)
-                ? (0, student_1.studentStatusFromJSON)(object.studentStatus)
-                : student_1.StudentStatus.WAITLIST,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
+            student_status: isSet(object.studentStatus) ? (0, student_1.studentStatusFromJSON)(object.studentStatus) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.line_type !== LineType.BASE_RATE) {
+        if (message.line_type !== undefined) {
             obj.lineType = lineTypeToJSON(message.line_type);
         }
-        if (message.scope !== tuition_1.Scope.STUDENT_SCOPE) {
+        if (message.scope !== undefined) {
             obj.scope = (0, tuition_1.scopeToJSON)(message.scope);
         }
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.amount !== 0) {
+        if (message.amount !== undefined) {
             obj.amount = message.amount;
         }
-        if (message.student_status !== undefined && message.student_status !== student_1.StudentStatus.WAITLIST) {
+        if (message.student_status !== undefined) {
             obj.studentStatus = (0, student_1.studentStatusToJSON)(message.student_status);
         }
         return obj;
@@ -390,14 +386,14 @@ exports.TuitionInvoiceLineItem = {
     },
     fromPartial(object) {
         const message = createBaseTuitionInvoiceLineItem();
-        message.line_type = object.line_type ?? LineType.BASE_RATE;
-        message.scope = object.scope ?? tuition_1.Scope.STUDENT_SCOPE;
+        message.line_type = object.line_type ?? undefined;
+        message.scope = object.scope ?? undefined;
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
-        message.name = object.name ?? "";
-        message.amount = object.amount ?? 0;
-        message.student_status = object.student_status ?? student_1.StudentStatus.WAITLIST;
+        message.name = object.name ?? undefined;
+        message.amount = object.amount ?? undefined;
+        message.student_status = object.student_status ?? undefined;
         return message;
     },
 };
@@ -409,13 +405,13 @@ function createBaseTuitionInvoice() {
         family: undefined,
         tuition_plan: undefined,
         line_items: [],
-        total_gross: 0,
-        total_discounts: 0,
-        total_net: 0,
+        total_gross: undefined,
+        total_discounts: undefined,
+        total_net: undefined,
         tuition_plan_id: undefined,
-        total_net_if_all_enrolled: 0,
-        total_gross_if_all_enrolled: 0,
-        total_discounts_if_all_enrolled: 0,
+        total_net_if_all_enrolled: undefined,
+        total_gross_if_all_enrolled: undefined,
+        total_discounts_if_all_enrolled: undefined,
     };
 }
 exports.TuitionInvoice = {
@@ -438,25 +434,25 @@ exports.TuitionInvoice = {
         for (const v of message.line_items) {
             exports.TuitionInvoiceLineItem.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.total_gross !== 0) {
+        if (message.total_gross !== undefined) {
             writer.uint32(57).double(message.total_gross);
         }
-        if (message.total_discounts !== 0) {
+        if (message.total_discounts !== undefined) {
             writer.uint32(65).double(message.total_discounts);
         }
-        if (message.total_net !== 0) {
+        if (message.total_net !== undefined) {
             writer.uint32(73).double(message.total_net);
         }
         if (message.tuition_plan_id !== undefined) {
             object_id_1.ObjectId.encode(message.tuition_plan_id, writer.uint32(82).fork()).join();
         }
-        if (message.total_net_if_all_enrolled !== undefined && message.total_net_if_all_enrolled !== 0) {
+        if (message.total_net_if_all_enrolled !== undefined) {
             writer.uint32(89).double(message.total_net_if_all_enrolled);
         }
-        if (message.total_gross_if_all_enrolled !== undefined && message.total_gross_if_all_enrolled !== 0) {
+        if (message.total_gross_if_all_enrolled !== undefined) {
             writer.uint32(97).double(message.total_gross_if_all_enrolled);
         }
-        if (message.total_discounts_if_all_enrolled !== undefined && message.total_discounts_if_all_enrolled !== 0) {
+        if (message.total_discounts_if_all_enrolled !== undefined) {
             writer.uint32(105).double(message.total_discounts_if_all_enrolled);
         }
         return writer;
@@ -564,19 +560,19 @@ exports.TuitionInvoice = {
             line_items: globalThis.Array.isArray(object?.lineItems)
                 ? object.lineItems.map((e) => exports.TuitionInvoiceLineItem.fromJSON(e))
                 : [],
-            total_gross: isSet(object.totalGross) ? globalThis.Number(object.totalGross) : 0,
-            total_discounts: isSet(object.totalDiscounts) ? globalThis.Number(object.totalDiscounts) : 0,
-            total_net: isSet(object.totalNet) ? globalThis.Number(object.totalNet) : 0,
+            total_gross: isSet(object.totalGross) ? globalThis.Number(object.totalGross) : undefined,
+            total_discounts: isSet(object.totalDiscounts) ? globalThis.Number(object.totalDiscounts) : undefined,
+            total_net: isSet(object.totalNet) ? globalThis.Number(object.totalNet) : undefined,
             tuition_plan_id: isSet(object.tuitionPlanId) ? object_id_1.ObjectId.fromJSON(object.tuitionPlanId) : undefined,
             total_net_if_all_enrolled: isSet(object.totalNetIfAllEnrolled)
                 ? globalThis.Number(object.totalNetIfAllEnrolled)
-                : 0,
+                : undefined,
             total_gross_if_all_enrolled: isSet(object.totalGrossIfAllEnrolled)
                 ? globalThis.Number(object.totalGrossIfAllEnrolled)
-                : 0,
+                : undefined,
             total_discounts_if_all_enrolled: isSet(object.totalDiscountsIfAllEnrolled)
                 ? globalThis.Number(object.totalDiscountsIfAllEnrolled)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -599,25 +595,25 @@ exports.TuitionInvoice = {
         if (message.line_items?.length) {
             obj.lineItems = message.line_items.map((e) => exports.TuitionInvoiceLineItem.toJSON(e));
         }
-        if (message.total_gross !== 0) {
+        if (message.total_gross !== undefined) {
             obj.totalGross = message.total_gross;
         }
-        if (message.total_discounts !== 0) {
+        if (message.total_discounts !== undefined) {
             obj.totalDiscounts = message.total_discounts;
         }
-        if (message.total_net !== 0) {
+        if (message.total_net !== undefined) {
             obj.totalNet = message.total_net;
         }
         if (message.tuition_plan_id !== undefined) {
             obj.tuitionPlanId = object_id_1.ObjectId.toJSON(message.tuition_plan_id);
         }
-        if (message.total_net_if_all_enrolled !== undefined && message.total_net_if_all_enrolled !== 0) {
+        if (message.total_net_if_all_enrolled !== undefined) {
             obj.totalNetIfAllEnrolled = message.total_net_if_all_enrolled;
         }
-        if (message.total_gross_if_all_enrolled !== undefined && message.total_gross_if_all_enrolled !== 0) {
+        if (message.total_gross_if_all_enrolled !== undefined) {
             obj.totalGrossIfAllEnrolled = message.total_gross_if_all_enrolled;
         }
-        if (message.total_discounts_if_all_enrolled !== undefined && message.total_discounts_if_all_enrolled !== 0) {
+        if (message.total_discounts_if_all_enrolled !== undefined) {
             obj.totalDiscountsIfAllEnrolled = message.total_discounts_if_all_enrolled;
         }
         return obj;
@@ -641,15 +637,15 @@ exports.TuitionInvoice = {
             ? exports.TuitionPlanSnapshot.fromPartial(object.tuition_plan)
             : undefined;
         message.line_items = object.line_items?.map((e) => exports.TuitionInvoiceLineItem.fromPartial(e)) || [];
-        message.total_gross = object.total_gross ?? 0;
-        message.total_discounts = object.total_discounts ?? 0;
-        message.total_net = object.total_net ?? 0;
+        message.total_gross = object.total_gross ?? undefined;
+        message.total_discounts = object.total_discounts ?? undefined;
+        message.total_net = object.total_net ?? undefined;
         message.tuition_plan_id = (object.tuition_plan_id !== undefined && object.tuition_plan_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.tuition_plan_id)
             : undefined;
-        message.total_net_if_all_enrolled = object.total_net_if_all_enrolled ?? 0;
-        message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? 0;
-        message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? 0;
+        message.total_net_if_all_enrolled = object.total_net_if_all_enrolled ?? undefined;
+        message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? undefined;
+        message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? undefined;
         return message;
     },
 };

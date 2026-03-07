@@ -19,12 +19,12 @@ export interface Attendance {
     course?: ObjectId | undefined;
     homeroom?: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    period_number: number;
-    reason: string;
+    date?: string | undefined;
+    period_number?: number | undefined;
+    reason?: string | undefined;
     sign_in_time?: Date | undefined;
     sign_out_time?: Date | undefined;
-    status: AttendanceStatus;
+    status?: AttendanceStatus | undefined;
     late_dismissal_date?: Date | undefined;
     student_excused_by?: ObjectId | undefined;
     student_excused_by_user_type?: UserType | undefined;

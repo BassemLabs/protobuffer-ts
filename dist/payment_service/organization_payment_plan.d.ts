@@ -14,15 +14,15 @@ export declare function paymentIntervalToJSON(object: PaymentInterval): string;
 export declare function paymentIntervalToNumber(object: PaymentInterval): number;
 export interface OrganizationPaymentPlan {
     id: ObjectId | undefined;
-    name: string;
-    description: string;
-    currency: Currency;
-    is_public: boolean;
-    is_active: boolean;
-    upfront_cost: number;
-    upfront_cost_payment_interval: PaymentInterval;
-    per_student_cost: number;
-    payment_processing_percentage: number;
+    name?: string | undefined;
+    description?: string | undefined;
+    currency?: Currency | undefined;
+    is_public?: boolean | undefined;
+    is_active?: boolean | undefined;
+    upfront_cost?: number | undefined;
+    upfront_cost_payment_interval?: PaymentInterval | undefined;
+    per_student_cost?: number | undefined;
+    payment_processing_percentage?: number | undefined;
 }
 export interface OrganizationPlanAccess {
     organization_id: ObjectId | undefined;
@@ -32,10 +32,10 @@ export interface OrganizationPaymentPlanInformation {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
     payment_plan: ObjectId | undefined;
-    defer_per_student_cost_to_parent: boolean;
+    defer_per_student_cost_to_parent?: boolean | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
-    trial_days: number;
+    trial_days?: number | undefined;
 }
 export interface OrganizationPaymentPlanWithInfo {
     payment_plan: OrganizationPaymentPlan | undefined;

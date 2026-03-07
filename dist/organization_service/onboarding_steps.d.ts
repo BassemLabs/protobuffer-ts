@@ -35,14 +35,14 @@ export declare function onboardingStepNameFromJSON(object: any): OnboardingStepN
 export declare function onboardingStepNameToJSON(object: OnboardingStepName): string;
 export declare function onboardingStepNameToNumber(object: OnboardingStepName): number;
 export interface OnboardingStepData {
-    step_name: OnboardingStepName;
-    status: OnboardingStepStatus;
+    step_name?: OnboardingStepName | undefined;
+    status?: OnboardingStepStatus | undefined;
 }
 export interface OnboardingStepsStatus {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
     steps: OnboardingStepData[];
-    all_steps_done: boolean;
+    all_steps_done?: boolean | undefined;
     completed_at?: Date | undefined;
 }
 export declare const OnboardingStepData: MessageFns<OnboardingStepData>;

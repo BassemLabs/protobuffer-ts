@@ -68,12 +68,12 @@ export interface DeviceToken {
   id: ObjectId | undefined;
   organization_id: ObjectId | undefined;
   user_id: ObjectId | undefined;
-  token: string;
-  platform: DevicePlatform;
-  device_id: string;
-  app_version: string;
+  token?: string | undefined;
+  platform?: DevicePlatform | undefined;
+  device_id?: string | undefined;
+  app_version?: string | undefined;
   last_seen?: Date | undefined;
-  enabled: boolean;
+  enabled?: boolean | undefined;
 }
 
 function createBaseDeviceToken(): DeviceToken {
@@ -81,12 +81,12 @@ function createBaseDeviceToken(): DeviceToken {
     id: undefined,
     organization_id: undefined,
     user_id: undefined,
-    token: "",
-    platform: DevicePlatform.DEVICE_PLATFORM_UNKNOWN,
-    device_id: "",
-    app_version: "",
+    token: undefined,
+    platform: undefined,
+    device_id: undefined,
+    app_version: undefined,
     last_seen: undefined,
-    enabled: false,
+    enabled: undefined,
   };
 }
 
@@ -101,22 +101,22 @@ export const DeviceToken: MessageFns<DeviceToken> = {
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(26).fork()).join();
     }
-    if (message.token !== "") {
+    if (message.token !== undefined) {
       writer.uint32(34).string(message.token);
     }
-    if (message.platform !== DevicePlatform.DEVICE_PLATFORM_UNKNOWN) {
+    if (message.platform !== undefined) {
       writer.uint32(40).int32(devicePlatformToNumber(message.platform));
     }
-    if (message.device_id !== "") {
+    if (message.device_id !== undefined) {
       writer.uint32(50).string(message.device_id);
     }
-    if (message.app_version !== "") {
+    if (message.app_version !== undefined) {
       writer.uint32(58).string(message.app_version);
     }
     if (message.last_seen !== undefined) {
       Timestamp.encode(toTimestamp(message.last_seen), writer.uint32(66).fork()).join();
     }
-    if (message.enabled !== false) {
+    if (message.enabled !== undefined) {
       writer.uint32(72).bool(message.enabled);
     }
     return writer;
@@ -206,14 +206,12 @@ export const DeviceToken: MessageFns<DeviceToken> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      token: isSet(object.token) ? globalThis.String(object.token) : "",
-      platform: isSet(object.platform)
-        ? devicePlatformFromJSON(object.platform)
-        : DevicePlatform.DEVICE_PLATFORM_UNKNOWN,
-      device_id: isSet(object.deviceId) ? globalThis.String(object.deviceId) : "",
-      app_version: isSet(object.appVersion) ? globalThis.String(object.appVersion) : "",
+      token: isSet(object.token) ? globalThis.String(object.token) : undefined,
+      platform: isSet(object.platform) ? devicePlatformFromJSON(object.platform) : undefined,
+      device_id: isSet(object.deviceId) ? globalThis.String(object.deviceId) : undefined,
+      app_version: isSet(object.appVersion) ? globalThis.String(object.appVersion) : undefined,
       last_seen: isSet(object.lastSeen) ? fromJsonTimestamp(object.lastSeen) : undefined,
-      enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : false,
+      enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : undefined,
     };
   },
 
@@ -228,22 +226,22 @@ export const DeviceToken: MessageFns<DeviceToken> = {
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.token !== "") {
+    if (message.token !== undefined) {
       obj.token = message.token;
     }
-    if (message.platform !== DevicePlatform.DEVICE_PLATFORM_UNKNOWN) {
+    if (message.platform !== undefined) {
       obj.platform = devicePlatformToJSON(message.platform);
     }
-    if (message.device_id !== "") {
+    if (message.device_id !== undefined) {
       obj.deviceId = message.device_id;
     }
-    if (message.app_version !== "") {
+    if (message.app_version !== undefined) {
       obj.appVersion = message.app_version;
     }
     if (message.last_seen !== undefined) {
       obj.lastSeen = message.last_seen.toISOString();
     }
-    if (message.enabled !== false) {
+    if (message.enabled !== undefined) {
       obj.enabled = message.enabled;
     }
     return obj;
@@ -261,12 +259,12 @@ export const DeviceToken: MessageFns<DeviceToken> = {
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.token = object.token ?? "";
-    message.platform = object.platform ?? DevicePlatform.DEVICE_PLATFORM_UNKNOWN;
-    message.device_id = object.device_id ?? "";
-    message.app_version = object.app_version ?? "";
+    message.token = object.token ?? undefined;
+    message.platform = object.platform ?? undefined;
+    message.device_id = object.device_id ?? undefined;
+    message.app_version = object.app_version ?? undefined;
     message.last_seen = object.last_seen ?? undefined;
-    message.enabled = object.enabled ?? false;
+    message.enabled = object.enabled ?? undefined;
     return message;
   },
 };

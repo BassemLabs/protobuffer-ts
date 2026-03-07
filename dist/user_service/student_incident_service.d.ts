@@ -6,20 +6,20 @@ export declare const protobufPackage = "user_service";
 export interface CreateStudentIncidentRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    title: string;
+    title?: string | undefined;
     date: Date | undefined;
 }
 export interface UpdateStudentIncidentRequest {
     context: RequestContext | undefined;
     incident_id: ObjectId | undefined;
-    title: string;
+    title?: string | undefined;
     date: Date | undefined;
-    description: string;
-    status: StudentIncidentStatus;
-    severity: StudentIncidentSeverity;
-    police_officer_name: string;
-    police_case_id: string;
-    action_taken: string;
+    description?: string | undefined;
+    status?: StudentIncidentStatus | undefined;
+    severity?: StudentIncidentSeverity | undefined;
+    police_officer_name?: string | undefined;
+    police_case_id?: string | undefined;
+    action_taken?: string | undefined;
     police_date_contact?: Date | undefined;
     police_date_investigation?: Date | undefined;
 }

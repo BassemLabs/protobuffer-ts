@@ -13,8 +13,8 @@ export interface SendCommunicationRequest {
     context: RequestContext | undefined;
     filters: CommunicationFilters | undefined;
     channels: NotificationType[];
-    subject: string;
-    body: string;
+    subject?: string | undefined;
+    body?: string | undefined;
 }
 export interface GetBroadcastsListRequest {
     context: RequestContext | undefined;

@@ -62,9 +62,9 @@ function createBaseProvisionedAccount() {
         organization: undefined,
         student_id: undefined,
         teacher_id: undefined,
-        provider: lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
-        status: ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE,
-        lms_user_id: "",
+        provider: undefined,
+        status: undefined,
+        lms_user_id: undefined,
     };
 }
 exports.ProvisionedAccount = {
@@ -81,13 +81,13 @@ exports.ProvisionedAccount = {
         if (message.teacher_id !== undefined) {
             object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(34).fork()).join();
         }
-        if (message.provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
+        if (message.provider !== undefined) {
             writer.uint32(40).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
         }
-        if (message.status !== ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE) {
+        if (message.status !== undefined) {
             writer.uint32(48).int32(provisionedAccountStatusToNumber(message.status));
         }
-        if (message.lms_user_id !== undefined && message.lms_user_id !== "") {
+        if (message.lms_user_id !== undefined) {
             writer.uint32(58).string(message.lms_user_id);
         }
         return writer;
@@ -155,11 +155,9 @@ exports.ProvisionedAccount = {
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
-            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
-            status: isSet(object.status)
-                ? provisionedAccountStatusFromJSON(object.status)
-                : ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE,
-            lms_user_id: isSet(object.lmsUserId) ? globalThis.String(object.lmsUserId) : "",
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
+            status: isSet(object.status) ? provisionedAccountStatusFromJSON(object.status) : undefined,
+            lms_user_id: isSet(object.lmsUserId) ? globalThis.String(object.lmsUserId) : undefined,
         };
     },
     toJSON(message) {
@@ -176,13 +174,13 @@ exports.ProvisionedAccount = {
         if (message.teacher_id !== undefined) {
             obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
-        if (message.provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
+        if (message.provider !== undefined) {
             obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
         }
-        if (message.status !== ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE) {
+        if (message.status !== undefined) {
             obj.status = provisionedAccountStatusToJSON(message.status);
         }
-        if (message.lms_user_id !== undefined && message.lms_user_id !== "") {
+        if (message.lms_user_id !== undefined) {
             obj.lmsUserId = message.lms_user_id;
         }
         return obj;
@@ -202,9 +200,9 @@ exports.ProvisionedAccount = {
         message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
-        message.provider = object.provider ?? lms_course_1.LmsProviderType.GOOGLE_CLASSROOM;
-        message.status = object.status ?? ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE;
-        message.lms_user_id = object.lms_user_id ?? "";
+        message.provider = object.provider ?? undefined;
+        message.status = object.status ?? undefined;
+        message.lms_user_id = object.lms_user_id ?? undefined;
         return message;
     },
 };

@@ -5,18 +5,18 @@ import { DevicePlatform, DeviceToken } from "./device_token";
 export declare const protobufPackage = "user_service";
 export interface RefreshDeviceTokenRequest {
     context: RequestContext | undefined;
-    token: string;
-    platform: DevicePlatform;
-    device_id: string;
-    app_version: string;
+    token?: string | undefined;
+    platform?: DevicePlatform | undefined;
+    device_id?: string | undefined;
+    app_version?: string | undefined;
 }
 export interface DisableDeviceTokenRequest {
     context: RequestContext | undefined;
-    token: string;
+    token?: string | undefined;
     user_id: ObjectId | undefined;
 }
 export interface DisableDeviceTokenResponse {
-    success: boolean;
+    success?: boolean | undefined;
     disabled_count?: number | undefined;
 }
 export interface ListDeviceTokensRequest {
@@ -25,7 +25,7 @@ export interface ListDeviceTokensRequest {
 }
 export interface DeviceTokenList {
     tokens: DeviceToken[];
-    tokens_count: number;
+    tokens_count?: number | undefined;
 }
 export declare const RefreshDeviceTokenRequest: MessageFns<RefreshDeviceTokenRequest>;
 export declare const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest>;

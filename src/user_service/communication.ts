@@ -33,39 +33,39 @@ export interface CommunicationBroadcast {
   organization: ObjectId | undefined;
   filters: CommunicationFilters | undefined;
   channels: NotificationType[];
-  subject: string;
-  body: string;
+  subject?: string | undefined;
+  body?: string | undefined;
 }
 
 export interface CommunicationTarget {
-  user_type: UserType;
+  user_type?: UserType | undefined;
   user_id: ObjectId | undefined;
   email?: string | undefined;
   phone_number?: PhoneNumber | undefined;
 }
 
 export interface CommunicationChannelCounts {
-  email_recipients: number;
-  sms_recipients: number;
-  phone_call_recipients: number;
+  email_recipients?: number | undefined;
+  sms_recipients?: number | undefined;
+  phone_call_recipients?: number | undefined;
 }
 
 export interface BroadcastList {
   broadcasts: CommunicationBroadcast[];
-  broadcasts_count: number;
+  broadcasts_count?: number | undefined;
 }
 
 export interface RecipientList {
   recipients: Notification[];
-  recipients_count: number;
+  recipients_count?: number | undefined;
 }
 
 export interface PreviewCommunicationResponse {
-  total_recipients: number;
-  email_recipients: number;
-  sms_recipients: number;
-  phone_call_recipients: number;
-  estimated_cost: number;
+  total_recipients?: number | undefined;
+  email_recipients?: number | undefined;
+  sms_recipients?: number | undefined;
+  phone_call_recipients?: number | undefined;
+  estimated_cost?: number | undefined;
 }
 
 function createBaseCommunicationFilters(): CommunicationFilters {
@@ -234,7 +234,14 @@ export const CommunicationFilters: MessageFns<CommunicationFilters> = {
 };
 
 function createBaseCommunicationBroadcast(): CommunicationBroadcast {
-  return { id: undefined, organization: undefined, filters: undefined, channels: [], subject: "", body: "" };
+  return {
+    id: undefined,
+    organization: undefined,
+    filters: undefined,
+    channels: [],
+    subject: undefined,
+    body: undefined,
+  };
 }
 
 export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
@@ -253,10 +260,10 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
       writer.int32(notificationTypeToNumber(v));
     }
     writer.join();
-    if (message.subject !== "") {
+    if (message.subject !== undefined) {
       writer.uint32(42).string(message.subject);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(50).string(message.body);
     }
     return writer;
@@ -338,8 +345,8 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
       channels: globalThis.Array.isArray(object?.channels)
         ? object.channels.map((e: any) => notificationTypeFromJSON(e))
         : [],
-      subject: isSet(object.subject) ? globalThis.String(object.subject) : "",
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
+      subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
     };
   },
 
@@ -357,10 +364,10 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     if (message.channels?.length) {
       obj.channels = message.channels.map((e) => notificationTypeToJSON(e));
     }
-    if (message.subject !== "") {
+    if (message.subject !== undefined) {
       obj.subject = message.subject;
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
     return obj;
@@ -379,25 +386,25 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
       ? CommunicationFilters.fromPartial(object.filters)
       : undefined;
     message.channels = object.channels?.map((e) => e) || [];
-    message.subject = object.subject ?? "";
-    message.body = object.body ?? "";
+    message.subject = object.subject ?? undefined;
+    message.body = object.body ?? undefined;
     return message;
   },
 };
 
 function createBaseCommunicationTarget(): CommunicationTarget {
-  return { user_type: UserType.NONE, user_id: undefined, email: "", phone_number: undefined };
+  return { user_type: undefined, user_id: undefined, email: undefined, phone_number: undefined };
 }
 
 export const CommunicationTarget: MessageFns<CommunicationTarget> = {
   encode(message: CommunicationTarget, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       writer.uint32(8).int32(userTypeToNumber(message.user_type));
     }
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
     }
-    if (message.email !== undefined && message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(26).string(message.email);
     }
     if (message.phone_number !== undefined) {
@@ -452,22 +459,22 @@ export const CommunicationTarget: MessageFns<CommunicationTarget> = {
 
   fromJSON(object: any): CommunicationTarget {
     return {
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
       phone_number: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
     };
   },
 
   toJSON(message: CommunicationTarget): unknown {
     const obj: any = {};
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       obj.userType = userTypeToJSON(message.user_type);
     }
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.email !== undefined && message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
     if (message.phone_number !== undefined) {
@@ -481,11 +488,11 @@ export const CommunicationTarget: MessageFns<CommunicationTarget> = {
   },
   fromPartial<I extends Exact<DeepPartial<CommunicationTarget>, I>>(object: I): CommunicationTarget {
     const message = createBaseCommunicationTarget();
-    message.user_type = object.user_type ?? UserType.NONE;
+    message.user_type = object.user_type ?? undefined;
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.email = object.email ?? "";
+    message.email = object.email ?? undefined;
     message.phone_number = (object.phone_number !== undefined && object.phone_number !== null)
       ? PhoneNumber.fromPartial(object.phone_number)
       : undefined;
@@ -494,18 +501,18 @@ export const CommunicationTarget: MessageFns<CommunicationTarget> = {
 };
 
 function createBaseCommunicationChannelCounts(): CommunicationChannelCounts {
-  return { email_recipients: 0, sms_recipients: 0, phone_call_recipients: 0 };
+  return { email_recipients: undefined, sms_recipients: undefined, phone_call_recipients: undefined };
 }
 
 export const CommunicationChannelCounts: MessageFns<CommunicationChannelCounts> = {
   encode(message: CommunicationChannelCounts, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.email_recipients !== 0) {
+    if (message.email_recipients !== undefined) {
       writer.uint32(8).uint32(message.email_recipients);
     }
-    if (message.sms_recipients !== 0) {
+    if (message.sms_recipients !== undefined) {
       writer.uint32(16).uint32(message.sms_recipients);
     }
-    if (message.phone_call_recipients !== 0) {
+    if (message.phone_call_recipients !== undefined) {
       writer.uint32(24).uint32(message.phone_call_recipients);
     }
     return writer;
@@ -550,21 +557,23 @@ export const CommunicationChannelCounts: MessageFns<CommunicationChannelCounts> 
 
   fromJSON(object: any): CommunicationChannelCounts {
     return {
-      email_recipients: isSet(object.emailRecipients) ? globalThis.Number(object.emailRecipients) : 0,
-      sms_recipients: isSet(object.smsRecipients) ? globalThis.Number(object.smsRecipients) : 0,
-      phone_call_recipients: isSet(object.phoneCallRecipients) ? globalThis.Number(object.phoneCallRecipients) : 0,
+      email_recipients: isSet(object.emailRecipients) ? globalThis.Number(object.emailRecipients) : undefined,
+      sms_recipients: isSet(object.smsRecipients) ? globalThis.Number(object.smsRecipients) : undefined,
+      phone_call_recipients: isSet(object.phoneCallRecipients)
+        ? globalThis.Number(object.phoneCallRecipients)
+        : undefined,
     };
   },
 
   toJSON(message: CommunicationChannelCounts): unknown {
     const obj: any = {};
-    if (message.email_recipients !== 0) {
+    if (message.email_recipients !== undefined) {
       obj.emailRecipients = Math.round(message.email_recipients);
     }
-    if (message.sms_recipients !== 0) {
+    if (message.sms_recipients !== undefined) {
       obj.smsRecipients = Math.round(message.sms_recipients);
     }
-    if (message.phone_call_recipients !== 0) {
+    if (message.phone_call_recipients !== undefined) {
       obj.phoneCallRecipients = Math.round(message.phone_call_recipients);
     }
     return obj;
@@ -575,15 +584,15 @@ export const CommunicationChannelCounts: MessageFns<CommunicationChannelCounts> 
   },
   fromPartial<I extends Exact<DeepPartial<CommunicationChannelCounts>, I>>(object: I): CommunicationChannelCounts {
     const message = createBaseCommunicationChannelCounts();
-    message.email_recipients = object.email_recipients ?? 0;
-    message.sms_recipients = object.sms_recipients ?? 0;
-    message.phone_call_recipients = object.phone_call_recipients ?? 0;
+    message.email_recipients = object.email_recipients ?? undefined;
+    message.sms_recipients = object.sms_recipients ?? undefined;
+    message.phone_call_recipients = object.phone_call_recipients ?? undefined;
     return message;
   },
 };
 
 function createBaseBroadcastList(): BroadcastList {
-  return { broadcasts: [], broadcasts_count: 0 };
+  return { broadcasts: [], broadcasts_count: undefined };
 }
 
 export const BroadcastList: MessageFns<BroadcastList> = {
@@ -591,7 +600,7 @@ export const BroadcastList: MessageFns<BroadcastList> = {
     for (const v of message.broadcasts) {
       CommunicationBroadcast.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.broadcasts_count !== 0) {
+    if (message.broadcasts_count !== undefined) {
       writer.uint32(16).uint64(message.broadcasts_count);
     }
     return writer;
@@ -632,7 +641,7 @@ export const BroadcastList: MessageFns<BroadcastList> = {
       broadcasts: globalThis.Array.isArray(object?.broadcasts)
         ? object.broadcasts.map((e: any) => CommunicationBroadcast.fromJSON(e))
         : [],
-      broadcasts_count: isSet(object.broadcastsCount) ? globalThis.Number(object.broadcastsCount) : 0,
+      broadcasts_count: isSet(object.broadcastsCount) ? globalThis.Number(object.broadcastsCount) : undefined,
     };
   },
 
@@ -641,7 +650,7 @@ export const BroadcastList: MessageFns<BroadcastList> = {
     if (message.broadcasts?.length) {
       obj.broadcasts = message.broadcasts.map((e) => CommunicationBroadcast.toJSON(e));
     }
-    if (message.broadcasts_count !== 0) {
+    if (message.broadcasts_count !== undefined) {
       obj.broadcastsCount = Math.round(message.broadcasts_count);
     }
     return obj;
@@ -653,13 +662,13 @@ export const BroadcastList: MessageFns<BroadcastList> = {
   fromPartial<I extends Exact<DeepPartial<BroadcastList>, I>>(object: I): BroadcastList {
     const message = createBaseBroadcastList();
     message.broadcasts = object.broadcasts?.map((e) => CommunicationBroadcast.fromPartial(e)) || [];
-    message.broadcasts_count = object.broadcasts_count ?? 0;
+    message.broadcasts_count = object.broadcasts_count ?? undefined;
     return message;
   },
 };
 
 function createBaseRecipientList(): RecipientList {
-  return { recipients: [], recipients_count: 0 };
+  return { recipients: [], recipients_count: undefined };
 }
 
 export const RecipientList: MessageFns<RecipientList> = {
@@ -667,7 +676,7 @@ export const RecipientList: MessageFns<RecipientList> = {
     for (const v of message.recipients) {
       Notification.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.recipients_count !== 0) {
+    if (message.recipients_count !== undefined) {
       writer.uint32(16).uint64(message.recipients_count);
     }
     return writer;
@@ -708,7 +717,7 @@ export const RecipientList: MessageFns<RecipientList> = {
       recipients: globalThis.Array.isArray(object?.recipients)
         ? object.recipients.map((e: any) => Notification.fromJSON(e))
         : [],
-      recipients_count: isSet(object.recipientsCount) ? globalThis.Number(object.recipientsCount) : 0,
+      recipients_count: isSet(object.recipientsCount) ? globalThis.Number(object.recipientsCount) : undefined,
     };
   },
 
@@ -717,7 +726,7 @@ export const RecipientList: MessageFns<RecipientList> = {
     if (message.recipients?.length) {
       obj.recipients = message.recipients.map((e) => Notification.toJSON(e));
     }
-    if (message.recipients_count !== 0) {
+    if (message.recipients_count !== undefined) {
       obj.recipientsCount = Math.round(message.recipients_count);
     }
     return obj;
@@ -729,30 +738,36 @@ export const RecipientList: MessageFns<RecipientList> = {
   fromPartial<I extends Exact<DeepPartial<RecipientList>, I>>(object: I): RecipientList {
     const message = createBaseRecipientList();
     message.recipients = object.recipients?.map((e) => Notification.fromPartial(e)) || [];
-    message.recipients_count = object.recipients_count ?? 0;
+    message.recipients_count = object.recipients_count ?? undefined;
     return message;
   },
 };
 
 function createBasePreviewCommunicationResponse(): PreviewCommunicationResponse {
-  return { total_recipients: 0, email_recipients: 0, sms_recipients: 0, phone_call_recipients: 0, estimated_cost: 0 };
+  return {
+    total_recipients: undefined,
+    email_recipients: undefined,
+    sms_recipients: undefined,
+    phone_call_recipients: undefined,
+    estimated_cost: undefined,
+  };
 }
 
 export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationResponse> = {
   encode(message: PreviewCommunicationResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.total_recipients !== 0) {
+    if (message.total_recipients !== undefined) {
       writer.uint32(8).uint32(message.total_recipients);
     }
-    if (message.email_recipients !== 0) {
+    if (message.email_recipients !== undefined) {
       writer.uint32(16).uint32(message.email_recipients);
     }
-    if (message.sms_recipients !== 0) {
+    if (message.sms_recipients !== undefined) {
       writer.uint32(24).uint32(message.sms_recipients);
     }
-    if (message.phone_call_recipients !== 0) {
+    if (message.phone_call_recipients !== undefined) {
       writer.uint32(32).uint32(message.phone_call_recipients);
     }
-    if (message.estimated_cost !== 0) {
+    if (message.estimated_cost !== undefined) {
       writer.uint32(41).double(message.estimated_cost);
     }
     return writer;
@@ -811,29 +826,31 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
 
   fromJSON(object: any): PreviewCommunicationResponse {
     return {
-      total_recipients: isSet(object.totalRecipients) ? globalThis.Number(object.totalRecipients) : 0,
-      email_recipients: isSet(object.emailRecipients) ? globalThis.Number(object.emailRecipients) : 0,
-      sms_recipients: isSet(object.smsRecipients) ? globalThis.Number(object.smsRecipients) : 0,
-      phone_call_recipients: isSet(object.phoneCallRecipients) ? globalThis.Number(object.phoneCallRecipients) : 0,
-      estimated_cost: isSet(object.estimatedCost) ? globalThis.Number(object.estimatedCost) : 0,
+      total_recipients: isSet(object.totalRecipients) ? globalThis.Number(object.totalRecipients) : undefined,
+      email_recipients: isSet(object.emailRecipients) ? globalThis.Number(object.emailRecipients) : undefined,
+      sms_recipients: isSet(object.smsRecipients) ? globalThis.Number(object.smsRecipients) : undefined,
+      phone_call_recipients: isSet(object.phoneCallRecipients)
+        ? globalThis.Number(object.phoneCallRecipients)
+        : undefined,
+      estimated_cost: isSet(object.estimatedCost) ? globalThis.Number(object.estimatedCost) : undefined,
     };
   },
 
   toJSON(message: PreviewCommunicationResponse): unknown {
     const obj: any = {};
-    if (message.total_recipients !== 0) {
+    if (message.total_recipients !== undefined) {
       obj.totalRecipients = Math.round(message.total_recipients);
     }
-    if (message.email_recipients !== 0) {
+    if (message.email_recipients !== undefined) {
       obj.emailRecipients = Math.round(message.email_recipients);
     }
-    if (message.sms_recipients !== 0) {
+    if (message.sms_recipients !== undefined) {
       obj.smsRecipients = Math.round(message.sms_recipients);
     }
-    if (message.phone_call_recipients !== 0) {
+    if (message.phone_call_recipients !== undefined) {
       obj.phoneCallRecipients = Math.round(message.phone_call_recipients);
     }
-    if (message.estimated_cost !== 0) {
+    if (message.estimated_cost !== undefined) {
       obj.estimatedCost = message.estimated_cost;
     }
     return obj;
@@ -844,11 +861,11 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
   },
   fromPartial<I extends Exact<DeepPartial<PreviewCommunicationResponse>, I>>(object: I): PreviewCommunicationResponse {
     const message = createBasePreviewCommunicationResponse();
-    message.total_recipients = object.total_recipients ?? 0;
-    message.email_recipients = object.email_recipients ?? 0;
-    message.sms_recipients = object.sms_recipients ?? 0;
-    message.phone_call_recipients = object.phone_call_recipients ?? 0;
-    message.estimated_cost = object.estimated_cost ?? 0;
+    message.total_recipients = object.total_recipients ?? undefined;
+    message.email_recipients = object.email_recipients ?? undefined;
+    message.sms_recipients = object.sms_recipients ?? undefined;
+    message.phone_call_recipients = object.phone_call_recipients ?? undefined;
+    message.estimated_cost = object.estimated_cost ?? undefined;
     return message;
   },
 };

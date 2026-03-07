@@ -28,9 +28,9 @@ export declare function kMSKeyTypeToNumber(object: KMSKeyType): number;
 export interface KMSKey {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    status: KMSKeyStatus;
-    key_type: KMSKeyType;
-    decrypted_key_material: string;
+    status?: KMSKeyStatus | undefined;
+    key_type?: KMSKeyType | undefined;
+    decrypted_key_material?: string | undefined;
 }
 export declare const KMSKey: MessageFns<KMSKey>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

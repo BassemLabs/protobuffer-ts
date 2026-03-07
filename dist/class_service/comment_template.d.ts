@@ -5,8 +5,8 @@ export interface CommentTemplate {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     teacher: ObjectId | undefined;
-    title: string;
-    comment: string;
+    title?: string | undefined;
+    comment?: string | undefined;
 }
 export declare const CommentTemplate: MessageFns<CommentTemplate>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -8,15 +8,15 @@ export interface ReportLayout {
     comment_char_limit?: number | undefined;
     sections: ReportLayoutSection[];
     check_boxes: ReportCheckBoxLayout[];
-    credit_weight: number;
+    credit_weight?: number | undefined;
 }
 export interface ReportLayoutSection {
     id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
 }
 export interface ReportCheckBoxLayout {
     id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
 }
 export declare const ReportLayout: MessageFns<ReportLayout>;
 export declare const ReportLayoutSection: MessageFns<ReportLayoutSection>;

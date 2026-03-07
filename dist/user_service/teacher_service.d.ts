@@ -11,7 +11,7 @@ export interface GetTeacherRequest {
 }
 export interface GetTeacherByEmailRequest {
     context: RequestContext | undefined;
-    email: string;
+    email?: string | undefined;
 }
 export interface GetTeachersListRequest {
     context: RequestContext | undefined;
@@ -22,7 +22,7 @@ export interface GetTeachersListRequest {
 }
 export interface GetTeachersListResponse {
     teachers: TeacherBasic[];
-    teachers_count: number;
+    teachers_count?: number | undefined;
 }
 export interface GetAllTeachersForStagingRequest {
     context: RequestContext | undefined;
@@ -68,17 +68,17 @@ export interface UpdateTeacherProfileRequest {
 export interface ChangeTeacherPasswordRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
-    password: string;
-    change_password_at_next_login: boolean;
+    password?: string | undefined;
+    change_password_at_next_login?: boolean | undefined;
 }
 export interface CreateTeacherRequest {
     context: RequestContext | undefined;
-    first_name: string;
-    last_name: string;
-    gender: string;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
     phone_number: PhoneNumber | undefined;
     date_of_birth: Date | undefined;
-    personal_email: string;
+    personal_email?: string | undefined;
 }
 export interface WithdrawTeacherRequest {
     context: RequestContext | undefined;
@@ -91,32 +91,32 @@ export interface ReactivateTeacherRequest {
 export interface AddTeacherRoleRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
-    role: UserRole;
+    role?: UserRole | undefined;
 }
 export interface RemoveTeacherRoleRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
-    role: UserRole;
+    role?: UserRole | undefined;
 }
 export interface UploadTeachersRequest {
     context: RequestContext | undefined;
     /** CSV file content as base64-encoded string */
-    csv_file_base64: string;
+    csv_file_base64?: string | undefined;
 }
 export interface UploadTeachersResponse {
-    success_count: number;
-    failed_count: number;
+    success_count?: number | undefined;
+    failed_count?: number | undefined;
     /** Base64 encoded CSV with errors (if any) */
     error_csv_base64?: string | undefined;
 }
 export interface CheckCanRemoveOrgDomainRequest {
     context: RequestContext | undefined;
-    domain: string;
+    domain?: string | undefined;
 }
 export interface CheckCanRemoveOrgDomainResponse {
-    can_remove: boolean;
-    active_teachers_count: number;
-    students_count: number;
+    can_remove?: boolean | undefined;
+    active_teachers_count?: number | undefined;
+    students_count?: number | undefined;
 }
 export declare const GetTeacherRequest: MessageFns<GetTeacherRequest>;
 export declare const GetTeacherByEmailRequest: MessageFns<GetTeacherByEmailRequest>;

@@ -41,7 +41,7 @@ export interface GetOrganizationRequest {
 /** Request to fetch an organization by domain */
 export interface GetOrganizationByDomainRequest {
   context: RequestContext | undefined;
-  domain: string;
+  domain?: string | undefined;
 }
 
 /** Request to unsafely fetch an organization by ID */
@@ -51,63 +51,63 @@ export interface UnsafeGetOrganizationByOrganizationIdRequest {
 
 /** Request to unsafely fetch an organization by domain */
 export interface UnsafeGetOrganizationByDomainRequest {
-  domain: string;
+  domain?: string | undefined;
 }
 
 /** Request to rename an organization */
 export interface RenameOrganizationRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  new_name: string;
+  new_name?: string | undefined;
 }
 
 /** Request to update the default domain of an organization */
 export interface UpdateDefaultDomainRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  new_default_domain: string;
+  new_default_domain?: string | undefined;
 }
 
 /** Request to add a domain to an organization */
 export interface AddDomainRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  new_domain: string;
+  new_domain?: string | undefined;
 }
 
 /** Request to remove a domain from an organization */
 export interface RemoveDomainRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  remove_domain: string;
+  remove_domain?: string | undefined;
 }
 
 /** Request to update organization main settings */
 export interface UpdateOrganizationSettingsRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
   domains: string[];
-  default_domain: string;
-  country_code: string;
-  currency: Currency;
-  login_id: string;
-  main_address: string;
+  default_domain?: string | undefined;
+  country_code?: string | undefined;
+  currency?: Currency | undefined;
+  login_id?: string | undefined;
+  main_address?: string | undefined;
   weekend_days: DayOfWeek[];
-  timezone: string;
+  timezone?: string | undefined;
 }
 
 export interface UpdateOrganizationAutoPayRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  auto_pay_disabled: boolean;
+  auto_pay_disabled?: boolean | undefined;
 }
 
 export interface UpdateAutoPayRetryConfigRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  max_retries: number;
-  retry_interval_hours: number;
+  max_retries?: number | undefined;
+  retry_interval_hours?: number | undefined;
 }
 
 /** Request to fetch all organizations */
@@ -137,7 +137,7 @@ export interface GetSchoolYearsResponse {
 export interface CreateSchoolYearRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
 }
@@ -145,14 +145,14 @@ export interface CreateSchoolYearRequest {
 export interface UpdateSchoolYearRegistrationStatusRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
-  new_registration_status: boolean;
+  new_registration_status?: boolean | undefined;
 }
 
 export interface UpdateSchoolYearRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
-  name: string;
-  is_open_for_registration: boolean;
+  name?: string | undefined;
+  is_open_for_registration?: boolean | undefined;
 }
 
 export interface CreateSchoolYearResponse {
@@ -170,26 +170,26 @@ export interface StartReregistrationRequest {
 }
 
 export interface GetOrganizationByStripeRequest {
-  stripe_account_id: string;
+  stripe_account_id?: string | undefined;
 }
 
 export interface UpdateStripeIdRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  stripe_acount_id: string;
+  stripe_acount_id?: string | undefined;
 }
 
 export interface UpdateOrganizationStripePaymentInfoRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  stripe_payouts_enabled: boolean;
-  stripe_details_submitted: boolean;
-  stripe_charges_enabled: boolean;
+  stripe_payouts_enabled?: boolean | undefined;
+  stripe_details_submitted?: boolean | undefined;
+  stripe_charges_enabled?: boolean | undefined;
 }
 
 export interface GetOrganizationByLoginIdRequest {
   context: RequestContext | undefined;
-  login_id: string;
+  login_id?: string | undefined;
 }
 
 export interface GetOrganizationsByIdRequest {
@@ -212,13 +212,13 @@ export interface GetAllOrganizationsOnboardingStepsStatusResponse {
 
 export interface MarkOnboardingStepAsCompletedRequest {
   context: RequestContext | undefined;
-  step_name: OnboardingStepName;
+  step_name?: OnboardingStepName | undefined;
 }
 
 export interface UpdateInvoiceSettingsRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  disable_tax: boolean;
+  disable_tax?: boolean | undefined;
   hst_number?: string | undefined;
 }
 
@@ -309,7 +309,7 @@ export const GetOrganizationRequest: MessageFns<GetOrganizationRequest> = {
 };
 
 function createBaseGetOrganizationByDomainRequest(): GetOrganizationByDomainRequest {
-  return { context: undefined, domain: "" };
+  return { context: undefined, domain: undefined };
 }
 
 export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest> = {
@@ -317,7 +317,7 @@ export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.domain !== "") {
+    if (message.domain !== undefined) {
       writer.uint32(18).string(message.domain);
     }
     return writer;
@@ -356,7 +356,7 @@ export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainR
   fromJSON(object: any): GetOrganizationByDomainRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      domain: isSet(object.domain) ? globalThis.String(object.domain) : "",
+      domain: isSet(object.domain) ? globalThis.String(object.domain) : undefined,
     };
   },
 
@@ -365,7 +365,7 @@ export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.domain !== "") {
+    if (message.domain !== undefined) {
       obj.domain = message.domain;
     }
     return obj;
@@ -381,7 +381,7 @@ export const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.domain = object.domain ?? "";
+    message.domain = object.domain ?? undefined;
     return message;
   },
 };
@@ -453,12 +453,12 @@ export const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetO
 };
 
 function createBaseUnsafeGetOrganizationByDomainRequest(): UnsafeGetOrganizationByDomainRequest {
-  return { domain: "" };
+  return { domain: undefined };
 }
 
 export const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizationByDomainRequest> = {
   encode(message: UnsafeGetOrganizationByDomainRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.domain !== "") {
+    if (message.domain !== undefined) {
       writer.uint32(10).string(message.domain);
     }
     return writer;
@@ -488,12 +488,12 @@ export const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizat
   },
 
   fromJSON(object: any): UnsafeGetOrganizationByDomainRequest {
-    return { domain: isSet(object.domain) ? globalThis.String(object.domain) : "" };
+    return { domain: isSet(object.domain) ? globalThis.String(object.domain) : undefined };
   },
 
   toJSON(message: UnsafeGetOrganizationByDomainRequest): unknown {
     const obj: any = {};
-    if (message.domain !== "") {
+    if (message.domain !== undefined) {
       obj.domain = message.domain;
     }
     return obj;
@@ -508,13 +508,13 @@ export const UnsafeGetOrganizationByDomainRequest: MessageFns<UnsafeGetOrganizat
     object: I,
   ): UnsafeGetOrganizationByDomainRequest {
     const message = createBaseUnsafeGetOrganizationByDomainRequest();
-    message.domain = object.domain ?? "";
+    message.domain = object.domain ?? undefined;
     return message;
   },
 };
 
 function createBaseRenameOrganizationRequest(): RenameOrganizationRequest {
-  return { context: undefined, organization_id: undefined, new_name: "" };
+  return { context: undefined, organization_id: undefined, new_name: undefined };
 }
 
 export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = {
@@ -525,7 +525,7 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.new_name !== "") {
+    if (message.new_name !== undefined) {
       writer.uint32(26).string(message.new_name);
     }
     return writer;
@@ -572,7 +572,7 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      new_name: isSet(object.newName) ? globalThis.String(object.newName) : "",
+      new_name: isSet(object.newName) ? globalThis.String(object.newName) : undefined,
     };
   },
 
@@ -584,7 +584,7 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.new_name !== "") {
+    if (message.new_name !== undefined) {
       obj.newName = message.new_name;
     }
     return obj;
@@ -601,13 +601,13 @@ export const RenameOrganizationRequest: MessageFns<RenameOrganizationRequest> = 
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.new_name = object.new_name ?? "";
+    message.new_name = object.new_name ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateDefaultDomainRequest(): UpdateDefaultDomainRequest {
-  return { context: undefined, organization_id: undefined, new_default_domain: "" };
+  return { context: undefined, organization_id: undefined, new_default_domain: undefined };
 }
 
 export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> = {
@@ -618,7 +618,7 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.new_default_domain !== "") {
+    if (message.new_default_domain !== undefined) {
       writer.uint32(26).string(message.new_default_domain);
     }
     return writer;
@@ -665,7 +665,7 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      new_default_domain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : "",
+      new_default_domain: isSet(object.newDefaultDomain) ? globalThis.String(object.newDefaultDomain) : undefined,
     };
   },
 
@@ -677,7 +677,7 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.new_default_domain !== "") {
+    if (message.new_default_domain !== undefined) {
       obj.newDefaultDomain = message.new_default_domain;
     }
     return obj;
@@ -694,13 +694,13 @@ export const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainRequest> 
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.new_default_domain = object.new_default_domain ?? "";
+    message.new_default_domain = object.new_default_domain ?? undefined;
     return message;
   },
 };
 
 function createBaseAddDomainRequest(): AddDomainRequest {
-  return { context: undefined, organization_id: undefined, new_domain: "" };
+  return { context: undefined, organization_id: undefined, new_domain: undefined };
 }
 
 export const AddDomainRequest: MessageFns<AddDomainRequest> = {
@@ -711,7 +711,7 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.new_domain !== "") {
+    if (message.new_domain !== undefined) {
       writer.uint32(26).string(message.new_domain);
     }
     return writer;
@@ -758,7 +758,7 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      new_domain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : "",
+      new_domain: isSet(object.newDomain) ? globalThis.String(object.newDomain) : undefined,
     };
   },
 
@@ -770,7 +770,7 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.new_domain !== "") {
+    if (message.new_domain !== undefined) {
       obj.newDomain = message.new_domain;
     }
     return obj;
@@ -787,13 +787,13 @@ export const AddDomainRequest: MessageFns<AddDomainRequest> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.new_domain = object.new_domain ?? "";
+    message.new_domain = object.new_domain ?? undefined;
     return message;
   },
 };
 
 function createBaseRemoveDomainRequest(): RemoveDomainRequest {
-  return { context: undefined, organization_id: undefined, remove_domain: "" };
+  return { context: undefined, organization_id: undefined, remove_domain: undefined };
 }
 
 export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
@@ -804,7 +804,7 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.remove_domain !== "") {
+    if (message.remove_domain !== undefined) {
       writer.uint32(26).string(message.remove_domain);
     }
     return writer;
@@ -851,7 +851,7 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      remove_domain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : "",
+      remove_domain: isSet(object.removeDomain) ? globalThis.String(object.removeDomain) : undefined,
     };
   },
 
@@ -863,7 +863,7 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.remove_domain !== "") {
+    if (message.remove_domain !== undefined) {
       obj.removeDomain = message.remove_domain;
     }
     return obj;
@@ -880,7 +880,7 @@ export const RemoveDomainRequest: MessageFns<RemoveDomainRequest> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.remove_domain = object.remove_domain ?? "";
+    message.remove_domain = object.remove_domain ?? undefined;
     return message;
   },
 };
@@ -889,15 +889,15 @@ function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettin
   return {
     context: undefined,
     organization_id: undefined,
-    name: "",
+    name: undefined,
     domains: [],
-    default_domain: "",
-    country_code: "",
-    currency: Currency.USD,
-    login_id: "",
-    main_address: "",
+    default_domain: undefined,
+    country_code: undefined,
+    currency: undefined,
+    login_id: undefined,
+    main_address: undefined,
     weekend_days: [],
-    timezone: "",
+    timezone: undefined,
   };
 }
 
@@ -909,25 +909,25 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     for (const v of message.domains) {
       writer.uint32(34).string(v!);
     }
-    if (message.default_domain !== "") {
+    if (message.default_domain !== undefined) {
       writer.uint32(42).string(message.default_domain);
     }
-    if (message.country_code !== "") {
+    if (message.country_code !== undefined) {
       writer.uint32(50).string(message.country_code);
     }
-    if (message.currency !== Currency.USD) {
+    if (message.currency !== undefined) {
       writer.uint32(56).int32(currencyToNumber(message.currency));
     }
-    if (message.login_id !== "") {
+    if (message.login_id !== undefined) {
       writer.uint32(66).string(message.login_id);
     }
-    if (message.main_address !== "") {
+    if (message.main_address !== undefined) {
       writer.uint32(74).string(message.main_address);
     }
     writer.uint32(82).fork();
@@ -935,7 +935,7 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       writer.int32(dayOfWeekToNumber(v));
     }
     writer.join();
-    if (message.timezone !== "") {
+    if (message.timezone !== undefined) {
       writer.uint32(90).string(message.timezone);
     }
     return writer;
@@ -1048,17 +1048,17 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
-      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
-      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
-      currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
-      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
-      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : undefined,
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : undefined,
+      currency: isSet(object.currency) ? currencyFromJSON(object.currency) : undefined,
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : undefined,
       weekend_days: globalThis.Array.isArray(object?.weekendDays)
         ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
         : [],
-      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
+      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : undefined,
     };
   },
 
@@ -1070,31 +1070,31 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.domains?.length) {
       obj.domains = message.domains;
     }
-    if (message.default_domain !== "") {
+    if (message.default_domain !== undefined) {
       obj.defaultDomain = message.default_domain;
     }
-    if (message.country_code !== "") {
+    if (message.country_code !== undefined) {
       obj.countryCode = message.country_code;
     }
-    if (message.currency !== Currency.USD) {
+    if (message.currency !== undefined) {
       obj.currency = currencyToJSON(message.currency);
     }
-    if (message.login_id !== "") {
+    if (message.login_id !== undefined) {
       obj.loginId = message.login_id;
     }
-    if (message.main_address !== "") {
+    if (message.main_address !== undefined) {
       obj.mainAddress = message.main_address;
     }
     if (message.weekend_days?.length) {
       obj.weekendDays = message.weekend_days.map((e) => dayOfWeekToJSON(e));
     }
-    if (message.timezone !== "") {
+    if (message.timezone !== undefined) {
       obj.timezone = message.timezone;
     }
     return obj;
@@ -1115,21 +1115,21 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.domains = object.domains?.map((e) => e) || [];
-    message.default_domain = object.default_domain ?? "";
-    message.country_code = object.country_code ?? "";
-    message.currency = object.currency ?? Currency.USD;
-    message.login_id = object.login_id ?? "";
-    message.main_address = object.main_address ?? "";
+    message.default_domain = object.default_domain ?? undefined;
+    message.country_code = object.country_code ?? undefined;
+    message.currency = object.currency ?? undefined;
+    message.login_id = object.login_id ?? undefined;
+    message.main_address = object.main_address ?? undefined;
     message.weekend_days = object.weekend_days?.map((e) => e) || [];
-    message.timezone = object.timezone ?? "";
+    message.timezone = object.timezone ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateOrganizationAutoPayRequest(): UpdateOrganizationAutoPayRequest {
-  return { context: undefined, organization_id: undefined, auto_pay_disabled: false };
+  return { context: undefined, organization_id: undefined, auto_pay_disabled: undefined };
 }
 
 export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest> = {
@@ -1140,7 +1140,7 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       writer.uint32(24).bool(message.auto_pay_disabled);
     }
     return writer;
@@ -1187,7 +1187,7 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : undefined,
     };
   },
 
@@ -1199,7 +1199,7 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
@@ -1220,13 +1220,13 @@ export const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAuto
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+    message.auto_pay_disabled = object.auto_pay_disabled ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateAutoPayRetryConfigRequest(): UpdateAutoPayRetryConfigRequest {
-  return { context: undefined, organization_id: undefined, max_retries: 0, retry_interval_hours: 0 };
+  return { context: undefined, organization_id: undefined, max_retries: undefined, retry_interval_hours: undefined };
 }
 
 export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfigRequest> = {
@@ -1237,10 +1237,10 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.max_retries !== 0) {
+    if (message.max_retries !== undefined) {
       writer.uint32(24).int32(message.max_retries);
     }
-    if (message.retry_interval_hours !== 0) {
+    if (message.retry_interval_hours !== undefined) {
       writer.uint32(32).int32(message.retry_interval_hours);
     }
     return writer;
@@ -1294,8 +1294,8 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
-      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : undefined,
+      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : undefined,
     };
   },
 
@@ -1307,10 +1307,10 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.max_retries !== 0) {
+    if (message.max_retries !== undefined) {
       obj.maxRetries = Math.round(message.max_retries);
     }
-    if (message.retry_interval_hours !== 0) {
+    if (message.retry_interval_hours !== undefined) {
       obj.retryIntervalHours = Math.round(message.retry_interval_hours);
     }
     return obj;
@@ -1329,8 +1329,8 @@ export const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfi
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.max_retries = object.max_retries ?? 0;
-    message.retry_interval_hours = object.retry_interval_hours ?? 0;
+    message.max_retries = object.max_retries ?? undefined;
+    message.retry_interval_hours = object.retry_interval_hours ?? undefined;
     return message;
   },
 };
@@ -1673,7 +1673,13 @@ export const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse> = {
 };
 
 function createBaseCreateSchoolYearRequest(): CreateSchoolYearRequest {
-  return { context: undefined, organization_id: undefined, name: "", start_date: undefined, end_date: undefined };
+  return {
+    context: undefined,
+    organization_id: undefined,
+    name: undefined,
+    start_date: undefined,
+    end_date: undefined,
+  };
 }
 
 export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
@@ -1684,7 +1690,7 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     if (message.start_date !== undefined) {
@@ -1751,7 +1757,7 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
@@ -1765,7 +1771,7 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
@@ -1788,7 +1794,7 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.start_date = object.start_date ?? undefined;
     message.end_date = object.end_date ?? undefined;
     return message;
@@ -1796,7 +1802,7 @@ export const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest> = {
 };
 
 function createBaseUpdateSchoolYearRegistrationStatusRequest(): UpdateSchoolYearRegistrationStatusRequest {
-  return { context: undefined, school_year_id: undefined, new_registration_status: false };
+  return { context: undefined, school_year_id: undefined, new_registration_status: undefined };
 }
 
 export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolYearRegistrationStatusRequest> = {
@@ -1807,7 +1813,7 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
     if (message.school_year_id !== undefined) {
       ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
     }
-    if (message.new_registration_status !== false) {
+    if (message.new_registration_status !== undefined) {
       writer.uint32(24).bool(message.new_registration_status);
     }
     return writer;
@@ -1856,7 +1862,7 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
       school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
       new_registration_status: isSet(object.newRegistrationStatus)
         ? globalThis.Boolean(object.newRegistrationStatus)
-        : false,
+        : undefined,
     };
   },
 
@@ -1868,7 +1874,7 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
     if (message.school_year_id !== undefined) {
       obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
-    if (message.new_registration_status !== false) {
+    if (message.new_registration_status !== undefined) {
       obj.newRegistrationStatus = message.new_registration_status;
     }
     return obj;
@@ -1889,13 +1895,13 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
-    message.new_registration_status = object.new_registration_status ?? false;
+    message.new_registration_status = object.new_registration_status ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateSchoolYearRequest(): UpdateSchoolYearRequest {
-  return { context: undefined, school_year_id: undefined, name: "", is_open_for_registration: false };
+  return { context: undefined, school_year_id: undefined, name: undefined, is_open_for_registration: undefined };
 }
 
 export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
@@ -1906,10 +1912,10 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.school_year_id !== undefined) {
       ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
-    if (message.is_open_for_registration !== false) {
+    if (message.is_open_for_registration !== undefined) {
       writer.uint32(32).bool(message.is_open_for_registration);
     }
     return writer;
@@ -1963,10 +1969,10 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       is_open_for_registration: isSet(object.isOpenForRegistration)
         ? globalThis.Boolean(object.isOpenForRegistration)
-        : false,
+        : undefined,
     };
   },
 
@@ -1978,10 +1984,10 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.school_year_id !== undefined) {
       obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.is_open_for_registration !== false) {
+    if (message.is_open_for_registration !== undefined) {
       obj.isOpenForRegistration = message.is_open_for_registration;
     }
     return obj;
@@ -1998,8 +2004,8 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
-    message.name = object.name ?? "";
-    message.is_open_for_registration = object.is_open_for_registration ?? false;
+    message.name = object.name ?? undefined;
+    message.is_open_for_registration = object.is_open_for_registration ?? undefined;
     return message;
   },
 };
@@ -2222,12 +2228,12 @@ export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> 
 };
 
 function createBaseGetOrganizationByStripeRequest(): GetOrganizationByStripeRequest {
-  return { stripe_account_id: "" };
+  return { stripe_account_id: undefined };
 }
 
 export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest> = {
   encode(message: GetOrganizationByStripeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.stripe_account_id !== "") {
+    if (message.stripe_account_id !== undefined) {
       writer.uint32(10).string(message.stripe_account_id);
     }
     return writer;
@@ -2257,12 +2263,12 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
   },
 
   fromJSON(object: any): GetOrganizationByStripeRequest {
-    return { stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "" };
+    return { stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : undefined };
   },
 
   toJSON(message: GetOrganizationByStripeRequest): unknown {
     const obj: any = {};
-    if (message.stripe_account_id !== "") {
+    if (message.stripe_account_id !== undefined) {
       obj.stripeAccountId = message.stripe_account_id;
     }
     return obj;
@@ -2275,13 +2281,13 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
     object: I,
   ): GetOrganizationByStripeRequest {
     const message = createBaseGetOrganizationByStripeRequest();
-    message.stripe_account_id = object.stripe_account_id ?? "";
+    message.stripe_account_id = object.stripe_account_id ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateStripeIdRequest(): UpdateStripeIdRequest {
-  return { context: undefined, organization_id: undefined, stripe_acount_id: "" };
+  return { context: undefined, organization_id: undefined, stripe_acount_id: undefined };
 }
 
 export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
@@ -2292,7 +2298,7 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.stripe_acount_id !== "") {
+    if (message.stripe_acount_id !== undefined) {
       writer.uint32(26).string(message.stripe_acount_id);
     }
     return writer;
@@ -2339,7 +2345,7 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      stripe_acount_id: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : "",
+      stripe_acount_id: isSet(object.stripeAcountId) ? globalThis.String(object.stripeAcountId) : undefined,
     };
   },
 
@@ -2351,7 +2357,7 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.stripe_acount_id !== "") {
+    if (message.stripe_acount_id !== undefined) {
       obj.stripeAcountId = message.stripe_acount_id;
     }
     return obj;
@@ -2368,7 +2374,7 @@ export const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.stripe_acount_id = object.stripe_acount_id ?? "";
+    message.stripe_acount_id = object.stripe_acount_id ?? undefined;
     return message;
   },
 };
@@ -2377,9 +2383,9 @@ function createBaseUpdateOrganizationStripePaymentInfoRequest(): UpdateOrganizat
   return {
     context: undefined,
     organization_id: undefined,
-    stripe_payouts_enabled: false,
-    stripe_details_submitted: false,
-    stripe_charges_enabled: false,
+    stripe_payouts_enabled: undefined,
+    stripe_details_submitted: undefined,
+    stripe_charges_enabled: undefined,
   };
 }
 
@@ -2391,13 +2397,13 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.stripe_payouts_enabled !== false) {
+    if (message.stripe_payouts_enabled !== undefined) {
       writer.uint32(24).bool(message.stripe_payouts_enabled);
     }
-    if (message.stripe_details_submitted !== false) {
+    if (message.stripe_details_submitted !== undefined) {
       writer.uint32(32).bool(message.stripe_details_submitted);
     }
-    if (message.stripe_charges_enabled !== false) {
+    if (message.stripe_charges_enabled !== undefined) {
       writer.uint32(40).bool(message.stripe_charges_enabled);
     }
     return writer;
@@ -2460,13 +2466,13 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
         ? globalThis.Boolean(object.stripePayoutsEnabled)
-        : false,
+        : undefined,
       stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
         ? globalThis.Boolean(object.stripeDetailsSubmitted)
-        : false,
+        : undefined,
       stripe_charges_enabled: isSet(object.stripeChargesEnabled)
         ? globalThis.Boolean(object.stripeChargesEnabled)
-        : false,
+        : undefined,
     };
   },
 
@@ -2478,13 +2484,13 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.stripe_payouts_enabled !== false) {
+    if (message.stripe_payouts_enabled !== undefined) {
       obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
     }
-    if (message.stripe_details_submitted !== false) {
+    if (message.stripe_details_submitted !== undefined) {
       obj.stripeDetailsSubmitted = message.stripe_details_submitted;
     }
-    if (message.stripe_charges_enabled !== false) {
+    if (message.stripe_charges_enabled !== undefined) {
       obj.stripeChargesEnabled = message.stripe_charges_enabled;
     }
     return obj;
@@ -2505,15 +2511,15 @@ export const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrgani
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.stripe_payouts_enabled = object.stripe_payouts_enabled ?? false;
-    message.stripe_details_submitted = object.stripe_details_submitted ?? false;
-    message.stripe_charges_enabled = object.stripe_charges_enabled ?? false;
+    message.stripe_payouts_enabled = object.stripe_payouts_enabled ?? undefined;
+    message.stripe_details_submitted = object.stripe_details_submitted ?? undefined;
+    message.stripe_charges_enabled = object.stripe_charges_enabled ?? undefined;
     return message;
   },
 };
 
 function createBaseGetOrganizationByLoginIdRequest(): GetOrganizationByLoginIdRequest {
-  return { context: undefined, login_id: "" };
+  return { context: undefined, login_id: undefined };
 }
 
 export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest> = {
@@ -2521,7 +2527,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.login_id !== "") {
+    if (message.login_id !== undefined) {
       writer.uint32(18).string(message.login_id);
     }
     return writer;
@@ -2560,7 +2566,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
   fromJSON(object: any): GetOrganizationByLoginIdRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
     };
   },
 
@@ -2569,7 +2575,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.login_id !== "") {
+    if (message.login_id !== undefined) {
       obj.loginId = message.login_id;
     }
     return obj;
@@ -2585,7 +2591,7 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.login_id = object.login_id ?? "";
+    message.login_id = object.login_id ?? undefined;
     return message;
   },
 };
@@ -2893,7 +2899,7 @@ export const GetAllOrganizationsOnboardingStepsStatusResponse: MessageFns<
 };
 
 function createBaseMarkOnboardingStepAsCompletedRequest(): MarkOnboardingStepAsCompletedRequest {
-  return { context: undefined, step_name: OnboardingStepName.ORG_OWNER_PROFILE };
+  return { context: undefined, step_name: undefined };
 }
 
 export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStepAsCompletedRequest> = {
@@ -2901,7 +2907,7 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+    if (message.step_name !== undefined) {
       writer.uint32(16).int32(onboardingStepNameToNumber(message.step_name));
     }
     return writer;
@@ -2940,9 +2946,7 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
   fromJSON(object: any): MarkOnboardingStepAsCompletedRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      step_name: isSet(object.stepName)
-        ? onboardingStepNameFromJSON(object.stepName)
-        : OnboardingStepName.ORG_OWNER_PROFILE,
+      step_name: isSet(object.stepName) ? onboardingStepNameFromJSON(object.stepName) : undefined,
     };
   },
 
@@ -2951,7 +2955,7 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+    if (message.step_name !== undefined) {
       obj.stepName = onboardingStepNameToJSON(message.step_name);
     }
     return obj;
@@ -2969,13 +2973,13 @@ export const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboardingStep
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.step_name = object.step_name ?? OnboardingStepName.ORG_OWNER_PROFILE;
+    message.step_name = object.step_name ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateInvoiceSettingsRequest(): UpdateInvoiceSettingsRequest {
-  return { context: undefined, organization_id: undefined, disable_tax: false, hst_number: "" };
+  return { context: undefined, organization_id: undefined, disable_tax: undefined, hst_number: undefined };
 }
 
 export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest> = {
@@ -2986,10 +2990,10 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       writer.uint32(24).bool(message.disable_tax);
     }
-    if (message.hst_number !== undefined && message.hst_number !== "") {
+    if (message.hst_number !== undefined) {
       writer.uint32(34).string(message.hst_number);
     }
     return writer;
@@ -3043,8 +3047,8 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
+      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : undefined,
     };
   },
 
@@ -3056,10 +3060,10 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       obj.disableTax = message.disable_tax;
     }
-    if (message.hst_number !== undefined && message.hst_number !== "") {
+    if (message.hst_number !== undefined) {
       obj.hstNumber = message.hst_number;
     }
     return obj;
@@ -3076,8 +3080,8 @@ export const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsReque
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.disable_tax = object.disable_tax ?? false;
-    message.hst_number = object.hst_number ?? "";
+    message.disable_tax = object.disable_tax ?? undefined;
+    message.hst_number = object.hst_number ?? undefined;
     return message;
   },
 };
@@ -3142,12 +3146,12 @@ export const GetDirectoryProviderRequest: MessageFns<GetDirectoryProviderRequest
 };
 
 function createBaseGetDirectoryProviderResponse(): GetDirectoryProviderResponse {
-  return { provider_type: DirectoryProviderType.GOOGLE_WORKSPACE };
+  return { provider_type: undefined };
 }
 
 export const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderResponse> = {
   encode(message: GetDirectoryProviderResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.provider_type !== undefined && message.provider_type !== DirectoryProviderType.GOOGLE_WORKSPACE) {
+    if (message.provider_type !== undefined) {
       writer.uint32(8).int32(directoryProviderTypeToNumber(message.provider_type));
     }
     return writer;
@@ -3178,15 +3182,13 @@ export const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderRespon
 
   fromJSON(object: any): GetDirectoryProviderResponse {
     return {
-      provider_type: isSet(object.providerType)
-        ? directoryProviderTypeFromJSON(object.providerType)
-        : DirectoryProviderType.GOOGLE_WORKSPACE,
+      provider_type: isSet(object.providerType) ? directoryProviderTypeFromJSON(object.providerType) : undefined,
     };
   },
 
   toJSON(message: GetDirectoryProviderResponse): unknown {
     const obj: any = {};
-    if (message.provider_type !== undefined && message.provider_type !== DirectoryProviderType.GOOGLE_WORKSPACE) {
+    if (message.provider_type !== undefined) {
       obj.providerType = directoryProviderTypeToJSON(message.provider_type);
     }
     return obj;
@@ -3197,7 +3199,7 @@ export const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderRespon
   },
   fromPartial<I extends Exact<DeepPartial<GetDirectoryProviderResponse>, I>>(object: I): GetDirectoryProviderResponse {
     const message = createBaseGetDirectoryProviderResponse();
-    message.provider_type = object.provider_type ?? DirectoryProviderType.GOOGLE_WORKSPACE;
+    message.provider_type = object.provider_type ?? undefined;
     return message;
   },
 };

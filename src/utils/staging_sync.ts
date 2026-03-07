@@ -15,7 +15,7 @@ export interface SyncAllForStagingRequest {
 }
 
 export interface SyncAllForStagingResponse {
-  result: string;
+  result?: string | undefined;
 }
 
 function createBaseSyncAllForStagingRequest(): SyncAllForStagingRequest {
@@ -78,12 +78,12 @@ export const SyncAllForStagingRequest: MessageFns<SyncAllForStagingRequest> = {
 };
 
 function createBaseSyncAllForStagingResponse(): SyncAllForStagingResponse {
-  return { result: "" };
+  return { result: undefined };
 }
 
 export const SyncAllForStagingResponse: MessageFns<SyncAllForStagingResponse> = {
   encode(message: SyncAllForStagingResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.result !== "") {
+    if (message.result !== undefined) {
       writer.uint32(10).string(message.result);
     }
     return writer;
@@ -113,12 +113,12 @@ export const SyncAllForStagingResponse: MessageFns<SyncAllForStagingResponse> = 
   },
 
   fromJSON(object: any): SyncAllForStagingResponse {
-    return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
+    return { result: isSet(object.result) ? globalThis.String(object.result) : undefined };
   },
 
   toJSON(message: SyncAllForStagingResponse): unknown {
     const obj: any = {};
-    if (message.result !== "") {
+    if (message.result !== undefined) {
       obj.result = message.result;
     }
     return obj;
@@ -129,7 +129,7 @@ export const SyncAllForStagingResponse: MessageFns<SyncAllForStagingResponse> = 
   },
   fromPartial<I extends Exact<DeepPartial<SyncAllForStagingResponse>, I>>(object: I): SyncAllForStagingResponse {
     const message = createBaseSyncAllForStagingResponse();
-    message.result = object.result ?? "";
+    message.result = object.result ?? undefined;
     return message;
   },
 };

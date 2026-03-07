@@ -24,27 +24,27 @@ export declare function directoryProviderTypeToJSON(object: DirectoryProviderTyp
 export declare function directoryProviderTypeToNumber(object: DirectoryProviderType): number;
 export interface Organization {
     id: ObjectId | undefined;
-    name: string;
-    default_domain: string;
+    name?: string | undefined;
+    default_domain?: string | undefined;
     domains: string[];
     organization_profile_settings: OrganizationProfileSettings | undefined;
     onboarding_settings: OnboardingSettings | undefined;
     active_school_year: SchoolYear | undefined;
     coming_school_year?: SchoolYear | undefined;
-    opened_reregistration_for_coming_school_year: boolean;
+    opened_reregistration_for_coming_school_year?: boolean | undefined;
     country_code?: string | undefined;
     payment_information: PaymentInformation | undefined;
     invoice_settings: InvoiceSettings | undefined;
-    login_id: string;
-    main_address: string;
+    login_id?: string | undefined;
+    main_address?: string | undefined;
     weekend_days: DayOfWeek[];
-    timezone: string;
+    timezone?: string | undefined;
     directory_provider?: DirectoryProviderType | undefined;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
     is_open_for_registration?: boolean | undefined;
@@ -52,9 +52,9 @@ export interface SchoolYear {
 export interface PaymentInformation {
     stripe_account_id?: string | undefined;
     account_currency?: Currency | undefined;
-    stripe_payouts_enabled: boolean;
-    stripe_details_submitted: boolean;
-    stripe_charges_enabled: boolean;
+    stripe_payouts_enabled?: boolean | undefined;
+    stripe_details_submitted?: boolean | undefined;
+    stripe_charges_enabled?: boolean | undefined;
     /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
     auto_pay_disabled?: boolean | undefined;
     /** Auto payment retry configuratio */
@@ -63,9 +63,9 @@ export interface PaymentInformation {
 /** Configuration for auto-payment retry behavior */
 export interface AutoPayRetryConfig {
     /** Maximum number of retry attempts (default: 3, max: 10) */
-    max_retries: number;
+    max_retries?: number | undefined;
     /** Retry interval in hours - retries every N hours until max_retries (default: 24) */
-    retry_interval_hours: number;
+    retry_interval_hours?: number | undefined;
 }
 export declare const Organization: MessageFns<Organization>;
 export declare const SchoolYear: MessageFns<SchoolYear>;

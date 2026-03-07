@@ -15,8 +15,8 @@ export interface ProvisionedAccount {
     organization: ObjectId | undefined;
     student_id?: ObjectId | undefined;
     teacher_id?: ObjectId | undefined;
-    provider: LmsProviderType;
-    status: ProvisionedAccountStatus;
+    provider?: LmsProviderType | undefined;
+    status?: ProvisionedAccountStatus | undefined;
     lms_user_id?: string | undefined;
 }
 export declare const ProvisionedAccount: MessageFns<ProvisionedAccount>;

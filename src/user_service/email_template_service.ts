@@ -21,7 +21,7 @@ export const protobufPackage = "user_service";
 
 export interface GetByTemplateKeyRequest {
   context: RequestContext | undefined;
-  template_key: EmailTemplateKey;
+  template_key?: EmailTemplateKey | undefined;
 }
 
 export interface ListTemplatesRequest {
@@ -34,11 +34,11 @@ export interface ListTemplatesResponse {
 
 export interface UpdateOrCreateRequest {
   context: RequestContext | undefined;
-  template_key: EmailTemplateKey;
-  title: string;
-  header: string;
-  body: string;
-  footer: string;
+  template_key?: EmailTemplateKey | undefined;
+  title?: string | undefined;
+  header?: string | undefined;
+  body?: string | undefined;
+  footer?: string | undefined;
 }
 
 export interface CreateDefaultTemplatesForOrganizationRequest {
@@ -47,12 +47,12 @@ export interface CreateDefaultTemplatesForOrganizationRequest {
 }
 
 export interface CreateDefaultTemplatesForOrganizationResponse {
-  success: boolean;
+  success?: boolean | undefined;
 }
 
 export interface GetSupportedPlaceholdersRequest {
   context: RequestContext | undefined;
-  template_key: EmailTemplateKey;
+  template_key?: EmailTemplateKey | undefined;
 }
 
 export interface GetSupportedPlaceholdersResponse {
@@ -68,45 +68,45 @@ export interface GetAllStaticTemplateBodiesResponse {
 }
 
 export interface StaticTemplateBodyEntry {
-  template_key: EmailTemplateKey;
-  body: string;
+  template_key?: EmailTemplateKey | undefined;
+  body?: string | undefined;
 }
 
 export interface Replacement {
-  placeholder: string;
-  value: string;
+  placeholder?: string | undefined;
+  value?: string | undefined;
 }
 
 export interface SendEmailByTemplateKeyRequest {
   context: RequestContext | undefined;
-  template_key: EmailTemplateKey;
+  template_key?: EmailTemplateKey | undefined;
   replacements: Replacement[];
-  recipient_user_type: UserType;
+  recipient_user_type?: UserType | undefined;
   recipient_user_id: ObjectId | undefined;
-  recipient_email: string;
+  recipient_email?: string | undefined;
   date_to_send?: number | undefined;
 }
 
 export interface SendEmailWithTemplateRequest {
   context: RequestContext | undefined;
-  title: string;
-  header: string;
-  body: string;
-  footer: string;
+  title?: string | undefined;
+  header?: string | undefined;
+  body?: string | undefined;
+  footer?: string | undefined;
   replacements: Replacement[];
-  recipient_user_type: UserType;
+  recipient_user_type?: UserType | undefined;
   recipient_user_id: ObjectId | undefined;
-  recipient_email: string;
+  recipient_email?: string | undefined;
   date_to_send?: number | undefined;
 }
 
 export interface SendEmailResponse {
-  success: boolean;
+  success?: boolean | undefined;
   error_message?: string | undefined;
 }
 
 function createBaseGetByTemplateKeyRequest(): GetByTemplateKeyRequest {
-  return { context: undefined, template_key: EmailTemplateKey.REJECTION_EMAIL };
+  return { context: undefined, template_key: undefined };
 }
 
 export const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest> = {
@@ -114,7 +114,7 @@ export const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       writer.uint32(16).int32(emailTemplateKeyToNumber(message.template_key));
     }
     return writer;
@@ -153,9 +153,7 @@ export const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest> = {
   fromJSON(object: any): GetByTemplateKeyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      template_key: isSet(object.templateKey)
-        ? emailTemplateKeyFromJSON(object.templateKey)
-        : EmailTemplateKey.REJECTION_EMAIL,
+      template_key: isSet(object.templateKey) ? emailTemplateKeyFromJSON(object.templateKey) : undefined,
     };
   },
 
@@ -164,7 +162,7 @@ export const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       obj.templateKey = emailTemplateKeyToJSON(message.template_key);
     }
     return obj;
@@ -178,7 +176,7 @@ export const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.template_key = object.template_key ?? EmailTemplateKey.REJECTION_EMAIL;
+    message.template_key = object.template_key ?? undefined;
     return message;
   },
 };
@@ -306,11 +304,11 @@ export const ListTemplatesResponse: MessageFns<ListTemplatesResponse> = {
 function createBaseUpdateOrCreateRequest(): UpdateOrCreateRequest {
   return {
     context: undefined,
-    template_key: EmailTemplateKey.REJECTION_EMAIL,
-    title: "",
-    header: "",
-    body: "",
-    footer: "",
+    template_key: undefined,
+    title: undefined,
+    header: undefined,
+    body: undefined,
+    footer: undefined,
   };
 }
 
@@ -319,19 +317,19 @@ export const UpdateOrCreateRequest: MessageFns<UpdateOrCreateRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       writer.uint32(16).int32(emailTemplateKeyToNumber(message.template_key));
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
-    if (message.header !== "") {
+    if (message.header !== undefined) {
       writer.uint32(34).string(message.header);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(42).string(message.body);
     }
-    if (message.footer !== "") {
+    if (message.footer !== undefined) {
       writer.uint32(50).string(message.footer);
     }
     return writer;
@@ -398,13 +396,11 @@ export const UpdateOrCreateRequest: MessageFns<UpdateOrCreateRequest> = {
   fromJSON(object: any): UpdateOrCreateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      template_key: isSet(object.templateKey)
-        ? emailTemplateKeyFromJSON(object.templateKey)
-        : EmailTemplateKey.REJECTION_EMAIL,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      header: isSet(object.header) ? globalThis.String(object.header) : "",
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
-      footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
+      template_key: isSet(object.templateKey) ? emailTemplateKeyFromJSON(object.templateKey) : undefined,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
     };
   },
 
@@ -413,19 +409,19 @@ export const UpdateOrCreateRequest: MessageFns<UpdateOrCreateRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       obj.templateKey = emailTemplateKeyToJSON(message.template_key);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.header !== "") {
+    if (message.header !== undefined) {
       obj.header = message.header;
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
-    if (message.footer !== "") {
+    if (message.footer !== undefined) {
       obj.footer = message.footer;
     }
     return obj;
@@ -439,11 +435,11 @@ export const UpdateOrCreateRequest: MessageFns<UpdateOrCreateRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.template_key = object.template_key ?? EmailTemplateKey.REJECTION_EMAIL;
-    message.title = object.title ?? "";
-    message.header = object.header ?? "";
-    message.body = object.body ?? "";
-    message.footer = object.footer ?? "";
+    message.template_key = object.template_key ?? undefined;
+    message.title = object.title ?? undefined;
+    message.header = object.header ?? undefined;
+    message.body = object.body ?? undefined;
+    message.footer = object.footer ?? undefined;
     return message;
   },
 };
@@ -534,7 +530,7 @@ export const CreateDefaultTemplatesForOrganizationRequest: MessageFns<CreateDefa
 };
 
 function createBaseCreateDefaultTemplatesForOrganizationResponse(): CreateDefaultTemplatesForOrganizationResponse {
-  return { success: false };
+  return { success: undefined };
 }
 
 export const CreateDefaultTemplatesForOrganizationResponse: MessageFns<CreateDefaultTemplatesForOrganizationResponse> =
@@ -543,7 +539,7 @@ export const CreateDefaultTemplatesForOrganizationResponse: MessageFns<CreateDef
       message: CreateDefaultTemplatesForOrganizationResponse,
       writer: BinaryWriter = new BinaryWriter(),
     ): BinaryWriter {
-      if (message.success !== false) {
+      if (message.success !== undefined) {
         writer.uint32(8).bool(message.success);
       }
       return writer;
@@ -573,12 +569,12 @@ export const CreateDefaultTemplatesForOrganizationResponse: MessageFns<CreateDef
     },
 
     fromJSON(object: any): CreateDefaultTemplatesForOrganizationResponse {
-      return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+      return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
     },
 
     toJSON(message: CreateDefaultTemplatesForOrganizationResponse): unknown {
       const obj: any = {};
-      if (message.success !== false) {
+      if (message.success !== undefined) {
         obj.success = message.success;
       }
       return obj;
@@ -593,13 +589,13 @@ export const CreateDefaultTemplatesForOrganizationResponse: MessageFns<CreateDef
       object: I,
     ): CreateDefaultTemplatesForOrganizationResponse {
       const message = createBaseCreateDefaultTemplatesForOrganizationResponse();
-      message.success = object.success ?? false;
+      message.success = object.success ?? undefined;
       return message;
     },
   };
 
 function createBaseGetSupportedPlaceholdersRequest(): GetSupportedPlaceholdersRequest {
-  return { context: undefined, template_key: EmailTemplateKey.REJECTION_EMAIL };
+  return { context: undefined, template_key: undefined };
 }
 
 export const GetSupportedPlaceholdersRequest: MessageFns<GetSupportedPlaceholdersRequest> = {
@@ -607,7 +603,7 @@ export const GetSupportedPlaceholdersRequest: MessageFns<GetSupportedPlaceholder
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       writer.uint32(16).int32(emailTemplateKeyToNumber(message.template_key));
     }
     return writer;
@@ -646,9 +642,7 @@ export const GetSupportedPlaceholdersRequest: MessageFns<GetSupportedPlaceholder
   fromJSON(object: any): GetSupportedPlaceholdersRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      template_key: isSet(object.templateKey)
-        ? emailTemplateKeyFromJSON(object.templateKey)
-        : EmailTemplateKey.REJECTION_EMAIL,
+      template_key: isSet(object.templateKey) ? emailTemplateKeyFromJSON(object.templateKey) : undefined,
     };
   },
 
@@ -657,7 +651,7 @@ export const GetSupportedPlaceholdersRequest: MessageFns<GetSupportedPlaceholder
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       obj.templateKey = emailTemplateKeyToJSON(message.template_key);
     }
     return obj;
@@ -673,7 +667,7 @@ export const GetSupportedPlaceholdersRequest: MessageFns<GetSupportedPlaceholder
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.template_key = object.template_key ?? EmailTemplateKey.REJECTION_EMAIL;
+    message.template_key = object.template_key ?? undefined;
     return message;
   },
 };
@@ -872,15 +866,15 @@ export const GetAllStaticTemplateBodiesResponse: MessageFns<GetAllStaticTemplate
 };
 
 function createBaseStaticTemplateBodyEntry(): StaticTemplateBodyEntry {
-  return { template_key: EmailTemplateKey.REJECTION_EMAIL, body: "" };
+  return { template_key: undefined, body: undefined };
 }
 
 export const StaticTemplateBodyEntry: MessageFns<StaticTemplateBodyEntry> = {
   encode(message: StaticTemplateBodyEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       writer.uint32(8).int32(emailTemplateKeyToNumber(message.template_key));
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(18).string(message.body);
     }
     return writer;
@@ -918,19 +912,17 @@ export const StaticTemplateBodyEntry: MessageFns<StaticTemplateBodyEntry> = {
 
   fromJSON(object: any): StaticTemplateBodyEntry {
     return {
-      template_key: isSet(object.templateKey)
-        ? emailTemplateKeyFromJSON(object.templateKey)
-        : EmailTemplateKey.REJECTION_EMAIL,
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
+      template_key: isSet(object.templateKey) ? emailTemplateKeyFromJSON(object.templateKey) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
     };
   },
 
   toJSON(message: StaticTemplateBodyEntry): unknown {
     const obj: any = {};
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       obj.templateKey = emailTemplateKeyToJSON(message.template_key);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
     return obj;
@@ -941,22 +933,22 @@ export const StaticTemplateBodyEntry: MessageFns<StaticTemplateBodyEntry> = {
   },
   fromPartial<I extends Exact<DeepPartial<StaticTemplateBodyEntry>, I>>(object: I): StaticTemplateBodyEntry {
     const message = createBaseStaticTemplateBodyEntry();
-    message.template_key = object.template_key ?? EmailTemplateKey.REJECTION_EMAIL;
-    message.body = object.body ?? "";
+    message.template_key = object.template_key ?? undefined;
+    message.body = object.body ?? undefined;
     return message;
   },
 };
 
 function createBaseReplacement(): Replacement {
-  return { placeholder: "", value: "" };
+  return { placeholder: undefined, value: undefined };
 }
 
 export const Replacement: MessageFns<Replacement> = {
   encode(message: Replacement, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.placeholder !== "") {
+    if (message.placeholder !== undefined) {
       writer.uint32(10).string(message.placeholder);
     }
-    if (message.value !== "") {
+    if (message.value !== undefined) {
       writer.uint32(18).string(message.value);
     }
     return writer;
@@ -994,17 +986,17 @@ export const Replacement: MessageFns<Replacement> = {
 
   fromJSON(object: any): Replacement {
     return {
-      placeholder: isSet(object.placeholder) ? globalThis.String(object.placeholder) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      placeholder: isSet(object.placeholder) ? globalThis.String(object.placeholder) : undefined,
+      value: isSet(object.value) ? globalThis.String(object.value) : undefined,
     };
   },
 
   toJSON(message: Replacement): unknown {
     const obj: any = {};
-    if (message.placeholder !== "") {
+    if (message.placeholder !== undefined) {
       obj.placeholder = message.placeholder;
     }
-    if (message.value !== "") {
+    if (message.value !== undefined) {
       obj.value = message.value;
     }
     return obj;
@@ -1015,8 +1007,8 @@ export const Replacement: MessageFns<Replacement> = {
   },
   fromPartial<I extends Exact<DeepPartial<Replacement>, I>>(object: I): Replacement {
     const message = createBaseReplacement();
-    message.placeholder = object.placeholder ?? "";
-    message.value = object.value ?? "";
+    message.placeholder = object.placeholder ?? undefined;
+    message.value = object.value ?? undefined;
     return message;
   },
 };
@@ -1024,12 +1016,12 @@ export const Replacement: MessageFns<Replacement> = {
 function createBaseSendEmailByTemplateKeyRequest(): SendEmailByTemplateKeyRequest {
   return {
     context: undefined,
-    template_key: EmailTemplateKey.REJECTION_EMAIL,
+    template_key: undefined,
     replacements: [],
-    recipient_user_type: UserType.NONE,
+    recipient_user_type: undefined,
     recipient_user_id: undefined,
-    recipient_email: "",
-    date_to_send: 0,
+    recipient_email: undefined,
+    date_to_send: undefined,
   };
 }
 
@@ -1038,22 +1030,22 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       writer.uint32(16).int32(emailTemplateKeyToNumber(message.template_key));
     }
     for (const v of message.replacements) {
       Replacement.encode(v!, writer.uint32(26).fork()).join();
     }
-    if (message.recipient_user_type !== UserType.NONE) {
+    if (message.recipient_user_type !== undefined) {
       writer.uint32(32).int32(userTypeToNumber(message.recipient_user_type));
     }
     if (message.recipient_user_id !== undefined) {
       ObjectId.encode(message.recipient_user_id, writer.uint32(42).fork()).join();
     }
-    if (message.recipient_email !== "") {
+    if (message.recipient_email !== undefined) {
       writer.uint32(50).string(message.recipient_email);
     }
-    if (message.date_to_send !== undefined && message.date_to_send !== 0) {
+    if (message.date_to_send !== undefined) {
       writer.uint32(56).int64(message.date_to_send);
     }
     return writer;
@@ -1127,16 +1119,14 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
   fromJSON(object: any): SendEmailByTemplateKeyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      template_key: isSet(object.templateKey)
-        ? emailTemplateKeyFromJSON(object.templateKey)
-        : EmailTemplateKey.REJECTION_EMAIL,
+      template_key: isSet(object.templateKey) ? emailTemplateKeyFromJSON(object.templateKey) : undefined,
       replacements: globalThis.Array.isArray(object?.replacements)
         ? object.replacements.map((e: any) => Replacement.fromJSON(e))
         : [],
-      recipient_user_type: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : UserType.NONE,
+      recipient_user_type: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : undefined,
       recipient_user_id: isSet(object.recipientUserId) ? ObjectId.fromJSON(object.recipientUserId) : undefined,
-      recipient_email: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : "",
-      date_to_send: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : 0,
+      recipient_email: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : undefined,
+      date_to_send: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : undefined,
     };
   },
 
@@ -1145,22 +1135,22 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.template_key !== EmailTemplateKey.REJECTION_EMAIL) {
+    if (message.template_key !== undefined) {
       obj.templateKey = emailTemplateKeyToJSON(message.template_key);
     }
     if (message.replacements?.length) {
       obj.replacements = message.replacements.map((e) => Replacement.toJSON(e));
     }
-    if (message.recipient_user_type !== UserType.NONE) {
+    if (message.recipient_user_type !== undefined) {
       obj.recipientUserType = userTypeToJSON(message.recipient_user_type);
     }
     if (message.recipient_user_id !== undefined) {
       obj.recipientUserId = ObjectId.toJSON(message.recipient_user_id);
     }
-    if (message.recipient_email !== "") {
+    if (message.recipient_email !== undefined) {
       obj.recipientEmail = message.recipient_email;
     }
-    if (message.date_to_send !== undefined && message.date_to_send !== 0) {
+    if (message.date_to_send !== undefined) {
       obj.dateToSend = Math.round(message.date_to_send);
     }
     return obj;
@@ -1176,14 +1166,14 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.template_key = object.template_key ?? EmailTemplateKey.REJECTION_EMAIL;
+    message.template_key = object.template_key ?? undefined;
     message.replacements = object.replacements?.map((e) => Replacement.fromPartial(e)) || [];
-    message.recipient_user_type = object.recipient_user_type ?? UserType.NONE;
+    message.recipient_user_type = object.recipient_user_type ?? undefined;
     message.recipient_user_id = (object.recipient_user_id !== undefined && object.recipient_user_id !== null)
       ? ObjectId.fromPartial(object.recipient_user_id)
       : undefined;
-    message.recipient_email = object.recipient_email ?? "";
-    message.date_to_send = object.date_to_send ?? 0;
+    message.recipient_email = object.recipient_email ?? undefined;
+    message.date_to_send = object.date_to_send ?? undefined;
     return message;
   },
 };
@@ -1191,15 +1181,15 @@ export const SendEmailByTemplateKeyRequest: MessageFns<SendEmailByTemplateKeyReq
 function createBaseSendEmailWithTemplateRequest(): SendEmailWithTemplateRequest {
   return {
     context: undefined,
-    title: "",
-    header: "",
-    body: "",
-    footer: "",
+    title: undefined,
+    header: undefined,
+    body: undefined,
+    footer: undefined,
     replacements: [],
-    recipient_user_type: UserType.NONE,
+    recipient_user_type: undefined,
     recipient_user_id: undefined,
-    recipient_email: "",
-    date_to_send: 0,
+    recipient_email: undefined,
+    date_to_send: undefined,
   };
 }
 
@@ -1208,31 +1198,31 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(18).string(message.title);
     }
-    if (message.header !== "") {
+    if (message.header !== undefined) {
       writer.uint32(26).string(message.header);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(34).string(message.body);
     }
-    if (message.footer !== "") {
+    if (message.footer !== undefined) {
       writer.uint32(42).string(message.footer);
     }
     for (const v of message.replacements) {
       Replacement.encode(v!, writer.uint32(50).fork()).join();
     }
-    if (message.recipient_user_type !== UserType.NONE) {
+    if (message.recipient_user_type !== undefined) {
       writer.uint32(56).int32(userTypeToNumber(message.recipient_user_type));
     }
     if (message.recipient_user_id !== undefined) {
       ObjectId.encode(message.recipient_user_id, writer.uint32(66).fork()).join();
     }
-    if (message.recipient_email !== "") {
+    if (message.recipient_email !== undefined) {
       writer.uint32(74).string(message.recipient_email);
     }
-    if (message.date_to_send !== undefined && message.date_to_send !== 0) {
+    if (message.date_to_send !== undefined) {
       writer.uint32(80).int64(message.date_to_send);
     }
     return writer;
@@ -1327,17 +1317,17 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
   fromJSON(object: any): SendEmailWithTemplateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      header: isSet(object.header) ? globalThis.String(object.header) : "",
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
-      footer: isSet(object.footer) ? globalThis.String(object.footer) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
       replacements: globalThis.Array.isArray(object?.replacements)
         ? object.replacements.map((e: any) => Replacement.fromJSON(e))
         : [],
-      recipient_user_type: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : UserType.NONE,
+      recipient_user_type: isSet(object.recipientUserType) ? userTypeFromJSON(object.recipientUserType) : undefined,
       recipient_user_id: isSet(object.recipientUserId) ? ObjectId.fromJSON(object.recipientUserId) : undefined,
-      recipient_email: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : "",
-      date_to_send: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : 0,
+      recipient_email: isSet(object.recipientEmail) ? globalThis.String(object.recipientEmail) : undefined,
+      date_to_send: isSet(object.dateToSend) ? globalThis.Number(object.dateToSend) : undefined,
     };
   },
 
@@ -1346,31 +1336,31 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.header !== "") {
+    if (message.header !== undefined) {
       obj.header = message.header;
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
-    if (message.footer !== "") {
+    if (message.footer !== undefined) {
       obj.footer = message.footer;
     }
     if (message.replacements?.length) {
       obj.replacements = message.replacements.map((e) => Replacement.toJSON(e));
     }
-    if (message.recipient_user_type !== UserType.NONE) {
+    if (message.recipient_user_type !== undefined) {
       obj.recipientUserType = userTypeToJSON(message.recipient_user_type);
     }
     if (message.recipient_user_id !== undefined) {
       obj.recipientUserId = ObjectId.toJSON(message.recipient_user_id);
     }
-    if (message.recipient_email !== "") {
+    if (message.recipient_email !== undefined) {
       obj.recipientEmail = message.recipient_email;
     }
-    if (message.date_to_send !== undefined && message.date_to_send !== 0) {
+    if (message.date_to_send !== undefined) {
       obj.dateToSend = Math.round(message.date_to_send);
     }
     return obj;
@@ -1384,31 +1374,31 @@ export const SendEmailWithTemplateRequest: MessageFns<SendEmailWithTemplateReque
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.title = object.title ?? "";
-    message.header = object.header ?? "";
-    message.body = object.body ?? "";
-    message.footer = object.footer ?? "";
+    message.title = object.title ?? undefined;
+    message.header = object.header ?? undefined;
+    message.body = object.body ?? undefined;
+    message.footer = object.footer ?? undefined;
     message.replacements = object.replacements?.map((e) => Replacement.fromPartial(e)) || [];
-    message.recipient_user_type = object.recipient_user_type ?? UserType.NONE;
+    message.recipient_user_type = object.recipient_user_type ?? undefined;
     message.recipient_user_id = (object.recipient_user_id !== undefined && object.recipient_user_id !== null)
       ? ObjectId.fromPartial(object.recipient_user_id)
       : undefined;
-    message.recipient_email = object.recipient_email ?? "";
-    message.date_to_send = object.date_to_send ?? 0;
+    message.recipient_email = object.recipient_email ?? undefined;
+    message.date_to_send = object.date_to_send ?? undefined;
     return message;
   },
 };
 
 function createBaseSendEmailResponse(): SendEmailResponse {
-  return { success: false, error_message: "" };
+  return { success: undefined, error_message: undefined };
 }
 
 export const SendEmailResponse: MessageFns<SendEmailResponse> = {
   encode(message: SendEmailResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
-    if (message.error_message !== undefined && message.error_message !== "") {
+    if (message.error_message !== undefined) {
       writer.uint32(18).string(message.error_message);
     }
     return writer;
@@ -1446,17 +1436,17 @@ export const SendEmailResponse: MessageFns<SendEmailResponse> = {
 
   fromJSON(object: any): SendEmailResponse {
     return {
-      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
-      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
+      success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined,
+      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : undefined,
     };
   },
 
   toJSON(message: SendEmailResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
-    if (message.error_message !== undefined && message.error_message !== "") {
+    if (message.error_message !== undefined) {
       obj.errorMessage = message.error_message;
     }
     return obj;
@@ -1467,8 +1457,8 @@ export const SendEmailResponse: MessageFns<SendEmailResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<SendEmailResponse>, I>>(object: I): SendEmailResponse {
     const message = createBaseSendEmailResponse();
-    message.success = object.success ?? false;
-    message.error_message = object.error_message ?? "";
+    message.success = object.success ?? undefined;
+    message.error_message = object.error_message ?? undefined;
     return message;
   },
 };

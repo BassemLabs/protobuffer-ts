@@ -28,8 +28,8 @@ export interface SendCommunicationRequest {
   context: RequestContext | undefined;
   filters: CommunicationFilters | undefined;
   channels: NotificationType[];
-  subject: string;
-  body: string;
+  subject?: string | undefined;
+  body?: string | undefined;
 }
 
 export interface GetBroadcastsListRequest {
@@ -165,7 +165,7 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
 };
 
 function createBaseSendCommunicationRequest(): SendCommunicationRequest {
-  return { context: undefined, filters: undefined, channels: [], subject: "", body: "" };
+  return { context: undefined, filters: undefined, channels: [], subject: undefined, body: undefined };
 }
 
 export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
@@ -181,10 +181,10 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
       writer.int32(notificationTypeToNumber(v));
     }
     writer.join();
-    if (message.subject !== "") {
+    if (message.subject !== undefined) {
       writer.uint32(34).string(message.subject);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(42).string(message.body);
     }
     return writer;
@@ -258,8 +258,8 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
       channels: globalThis.Array.isArray(object?.channels)
         ? object.channels.map((e: any) => notificationTypeFromJSON(e))
         : [],
-      subject: isSet(object.subject) ? globalThis.String(object.subject) : "",
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
+      subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
     };
   },
 
@@ -274,10 +274,10 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     if (message.channels?.length) {
       obj.channels = message.channels.map((e) => notificationTypeToJSON(e));
     }
-    if (message.subject !== "") {
+    if (message.subject !== undefined) {
       obj.subject = message.subject;
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
     return obj;
@@ -295,14 +295,14 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
       ? CommunicationFilters.fromPartial(object.filters)
       : undefined;
     message.channels = object.channels?.map((e) => e) || [];
-    message.subject = object.subject ?? "";
-    message.body = object.body ?? "";
+    message.subject = object.subject ?? undefined;
+    message.body = object.body ?? undefined;
     return message;
   },
 };
 
 function createBaseGetBroadcastsListRequest(): GetBroadcastsListRequest {
-  return { context: undefined, per_page: 0, page: 0 };
+  return { context: undefined, per_page: undefined, page: undefined };
 }
 
 export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
@@ -310,10 +310,10 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.per_page !== undefined && message.per_page !== 0) {
+    if (message.per_page !== undefined) {
       writer.uint32(16).uint64(message.per_page);
     }
-    if (message.page !== undefined && message.page !== 0) {
+    if (message.page !== undefined) {
       writer.uint32(24).uint64(message.page);
     }
     return writer;
@@ -359,8 +359,8 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
   fromJSON(object: any): GetBroadcastsListRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
     };
   },
 
@@ -369,10 +369,10 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.per_page !== undefined && message.per_page !== 0) {
+    if (message.per_page !== undefined) {
       obj.perPage = Math.round(message.per_page);
     }
-    if (message.page !== undefined && message.page !== 0) {
+    if (message.page !== undefined) {
       obj.page = Math.round(message.page);
     }
     return obj;
@@ -386,8 +386,8 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.per_page = object.per_page ?? 0;
-    message.page = object.page ?? 0;
+    message.per_page = object.per_page ?? undefined;
+    message.page = object.page ?? undefined;
     return message;
   },
 };

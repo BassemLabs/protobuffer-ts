@@ -238,14 +238,14 @@ function onboardingStepNameToNumber(object) {
     }
 }
 function createBaseOnboardingStepData() {
-    return { step_name: OnboardingStepName.ORG_OWNER_PROFILE, status: OnboardingStepStatus.ONGOING };
+    return { step_name: undefined, status: undefined };
 }
 exports.OnboardingStepData = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+        if (message.step_name !== undefined) {
             writer.uint32(8).int32(onboardingStepNameToNumber(message.step_name));
         }
-        if (message.status !== OnboardingStepStatus.ONGOING) {
+        if (message.status !== undefined) {
             writer.uint32(16).int32(onboardingStepStatusToNumber(message.status));
         }
         return writer;
@@ -279,18 +279,16 @@ exports.OnboardingStepData = {
     },
     fromJSON(object) {
         return {
-            step_name: isSet(object.stepName)
-                ? onboardingStepNameFromJSON(object.stepName)
-                : OnboardingStepName.ORG_OWNER_PROFILE,
-            status: isSet(object.status) ? onboardingStepStatusFromJSON(object.status) : OnboardingStepStatus.ONGOING,
+            step_name: isSet(object.stepName) ? onboardingStepNameFromJSON(object.stepName) : undefined,
+            status: isSet(object.status) ? onboardingStepStatusFromJSON(object.status) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.step_name !== OnboardingStepName.ORG_OWNER_PROFILE) {
+        if (message.step_name !== undefined) {
             obj.stepName = onboardingStepNameToJSON(message.step_name);
         }
-        if (message.status !== OnboardingStepStatus.ONGOING) {
+        if (message.status !== undefined) {
             obj.status = onboardingStepStatusToJSON(message.status);
         }
         return obj;
@@ -300,13 +298,13 @@ exports.OnboardingStepData = {
     },
     fromPartial(object) {
         const message = createBaseOnboardingStepData();
-        message.step_name = object.step_name ?? OnboardingStepName.ORG_OWNER_PROFILE;
-        message.status = object.status ?? OnboardingStepStatus.ONGOING;
+        message.step_name = object.step_name ?? undefined;
+        message.status = object.status ?? undefined;
         return message;
     },
 };
 function createBaseOnboardingStepsStatus() {
-    return { id: undefined, organization_id: undefined, steps: [], all_steps_done: false, completed_at: undefined };
+    return { id: undefined, organization_id: undefined, steps: [], all_steps_done: undefined, completed_at: undefined };
 }
 exports.OnboardingStepsStatus = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -319,7 +317,7 @@ exports.OnboardingStepsStatus = {
         for (const v of message.steps) {
             exports.OnboardingStepData.encode(v, writer.uint32(26).fork()).join();
         }
-        if (message.all_steps_done !== false) {
+        if (message.all_steps_done !== undefined) {
             writer.uint32(32).bool(message.all_steps_done);
         }
         if (message.completed_at !== undefined) {
@@ -379,7 +377,7 @@ exports.OnboardingStepsStatus = {
             steps: globalThis.Array.isArray(object?.steps)
                 ? object.steps.map((e) => exports.OnboardingStepData.fromJSON(e))
                 : [],
-            all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : false,
+            all_steps_done: isSet(object.allStepsDone) ? globalThis.Boolean(object.allStepsDone) : undefined,
             completed_at: isSet(object.completedAt) ? fromJsonTimestamp(object.completedAt) : undefined,
         };
     },
@@ -394,7 +392,7 @@ exports.OnboardingStepsStatus = {
         if (message.steps?.length) {
             obj.steps = message.steps.map((e) => exports.OnboardingStepData.toJSON(e));
         }
-        if (message.all_steps_done !== false) {
+        if (message.all_steps_done !== undefined) {
             obj.allStepsDone = message.all_steps_done;
         }
         if (message.completed_at !== undefined) {
@@ -412,7 +410,7 @@ exports.OnboardingStepsStatus = {
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         message.steps = object.steps?.map((e) => exports.OnboardingStepData.fromPartial(e)) || [];
-        message.all_steps_done = object.all_steps_done ?? false;
+        message.all_steps_done = object.all_steps_done ?? undefined;
         message.completed_at = object.completed_at ?? undefined;
         return message;
     },

@@ -8,17 +8,17 @@ export interface CreateUserRequest {
     /** Context of the request */
     context: RequestContext | undefined;
     /** Username */
-    username: string;
+    username?: string | undefined;
     /** First name */
-    first_name: string;
+    first_name?: string | undefined;
     /** Last name */
-    last_name: string;
+    last_name?: string | undefined;
     /** Gender */
-    gender: string;
+    gender?: string | undefined;
     /** Personal email */
-    personal_email: string;
+    personal_email?: string | undefined;
     /** Phone number */
-    phone_number: string;
+    phone_number?: string | undefined;
     /** Date of birth */
     date_of_birth: Date | undefined;
     /** User roles */
@@ -48,7 +48,7 @@ export interface UpdateStatusRequest {
     /** ID of the user */
     id: ObjectId | undefined;
     /** New status */
-    status: StaffStatus;
+    status?: StaffStatus | undefined;
 }
 export interface GetUserByIdRequest {
     /** Context of the request */
@@ -60,7 +60,7 @@ export interface GetUserByEmailRequest {
     /** Context of the request */
     context: RequestContext | undefined;
     /** Email of the user to fetch */
-    email: string;
+    email?: string | undefined;
 }
 export interface GetUsersRequest {
     /** Context of the request */

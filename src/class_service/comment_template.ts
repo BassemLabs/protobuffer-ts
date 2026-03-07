@@ -14,12 +14,12 @@ export interface CommentTemplate {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   teacher: ObjectId | undefined;
-  title: string;
-  comment: string;
+  title?: string | undefined;
+  comment?: string | undefined;
 }
 
 function createBaseCommentTemplate(): CommentTemplate {
-  return { id: undefined, organization: undefined, teacher: undefined, title: "", comment: "" };
+  return { id: undefined, organization: undefined, teacher: undefined, title: undefined, comment: undefined };
 }
 
 export const CommentTemplate: MessageFns<CommentTemplate> = {
@@ -33,10 +33,10 @@ export const CommentTemplate: MessageFns<CommentTemplate> = {
     if (message.teacher !== undefined) {
       ObjectId.encode(message.teacher, writer.uint32(26).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(34).string(message.title);
     }
-    if (message.comment !== "") {
+    if (message.comment !== undefined) {
       writer.uint32(42).string(message.comment);
     }
     return writer;
@@ -98,8 +98,8 @@ export const CommentTemplate: MessageFns<CommentTemplate> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       teacher: isSet(object.teacher) ? ObjectId.fromJSON(object.teacher) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
     };
   },
 
@@ -114,10 +114,10 @@ export const CommentTemplate: MessageFns<CommentTemplate> = {
     if (message.teacher !== undefined) {
       obj.teacher = ObjectId.toJSON(message.teacher);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.comment !== "") {
+    if (message.comment !== undefined) {
       obj.comment = message.comment;
     }
     return obj;
@@ -135,8 +135,8 @@ export const CommentTemplate: MessageFns<CommentTemplate> = {
     message.teacher = (object.teacher !== undefined && object.teacher !== null)
       ? ObjectId.fromPartial(object.teacher)
       : undefined;
-    message.title = object.title ?? "";
-    message.comment = object.comment ?? "";
+    message.title = object.title ?? undefined;
+    message.comment = object.comment ?? undefined;
     return message;
   },
 };

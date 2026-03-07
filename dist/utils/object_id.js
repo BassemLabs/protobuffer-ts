@@ -10,11 +10,11 @@ exports.ObjectId = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "utils";
 function createBaseObjectId() {
-    return { id: "" };
+    return { id: undefined };
 }
 exports.ObjectId = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.id !== "") {
+        if (message.id !== undefined) {
             writer.uint32(10).string(message.id);
         }
         return writer;
@@ -41,11 +41,11 @@ exports.ObjectId = {
         return message;
     },
     fromJSON(object) {
-        return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+        return { id: isSet(object.id) ? globalThis.String(object.id) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.id !== "") {
+        if (message.id !== undefined) {
             obj.id = message.id;
         }
         return obj;
@@ -55,7 +55,7 @@ exports.ObjectId = {
     },
     fromPartial(object) {
         const message = createBaseObjectId();
-        message.id = object.id ?? "";
+        message.id = object.id ?? undefined;
         return message;
     },
 };

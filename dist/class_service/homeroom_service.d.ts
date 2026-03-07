@@ -22,7 +22,7 @@ export interface ListHomeroomsRequest {
 }
 export interface CreateHomeroomRequest {
     context: RequestContext | undefined;
-    name: string;
+    name?: string | undefined;
     semester_id: ObjectId | undefined;
     teacher_ids: ObjectId[];
     grades: StudentGrade[];
@@ -31,7 +31,7 @@ export interface CreateHomeroomRequest {
 export interface CloneHomeroomRequest {
     context: RequestContext | undefined;
     homeroom_to_clone_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     semester_id: ObjectId | undefined;
     teacher_ids: ObjectId[];
     grades: StudentGrade[];
@@ -39,7 +39,7 @@ export interface CloneHomeroomRequest {
 export interface GetHomeroomCoursesRequest {
     context: RequestContext | undefined;
     homeroom_id: ObjectId | undefined;
-    include_archived: boolean;
+    include_archived?: boolean | undefined;
 }
 export interface GetHomeroomCoursesResponse {
     courses: Course[];
@@ -60,7 +60,7 @@ export interface UpdateHomeroomRequest {
     context: RequestContext | undefined;
     homeroom_id: ObjectId | undefined;
     semester_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     grades: StudentGrade[];
 }
 export interface AddTeachersRequest {
@@ -80,11 +80,11 @@ export interface AddStudentsRequest {
 }
 export interface TeacherFailure {
     teacher_id: ObjectId | undefined;
-    reason: string;
+    reason?: string | undefined;
 }
 export interface StudentFailure {
     student_id: ObjectId | undefined;
-    reason: string;
+    reason?: string | undefined;
 }
 export interface AddTeachersResponse {
     homeroom: Homeroom | undefined;

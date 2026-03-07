@@ -114,7 +114,7 @@ export interface GetFamiliesByStudentStatusRequest {
 /** Family with student count (used in bulk queries) */
 export interface FamilyWithStudentCount {
   family: Family | undefined;
-  student_count: number;
+  student_count?: number | undefined;
 }
 
 export interface GetFamiliesByStudentStatusResponse {
@@ -124,7 +124,9 @@ export interface GetFamiliesByStudentStatusResponse {
 
 export interface CreateFamilyRequest {
   context: RequestContext | undefined;
-  name: string;
+  name?:
+    | string
+    | undefined;
   /** Parent ObjectIds */
   guardians: ObjectId[];
   information: FamilyInformation | undefined;
@@ -133,7 +135,7 @@ export interface CreateFamilyRequest {
 export interface UpdateFamilyRequest {
   context: RequestContext | undefined;
   family_id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
   guardians: ObjectId[];
   guardians_to_not_contact: ObjectId[];
   information: FamilyInformation | undefined;
@@ -142,13 +144,13 @@ export interface UpdateFamilyRequest {
 export interface UpdateFamilyNameRequest {
   context: RequestContext | undefined;
   family_id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
 }
 
 export interface UpdateFamilyAutoPayRequest {
   context: RequestContext | undefined;
   family_id: ObjectId | undefined;
-  auto_pay_disabled: boolean;
+  auto_pay_disabled?: boolean | undefined;
 }
 
 /** Request for creating a family with a guardian and sending invitation email (CRM onboarding) */
@@ -157,13 +159,13 @@ export interface CreateFamilyWithGuardianAndInviteRequest {
     | RequestContext
     | undefined;
   /** Guardian info */
-  guardian_name: string;
-  guardian_email: string;
+  guardian_name?: string | undefined;
+  guardian_email?: string | undefined;
   guardian_phone:
     | PhoneNumber
     | undefined;
   /** Family info */
-  family_name: string;
+  family_name?: string | undefined;
   family_information: FamilyInformation | undefined;
 }
 
@@ -1495,7 +1497,7 @@ export const GetFamiliesByStudentStatusRequest: MessageFns<GetFamiliesByStudentS
 };
 
 function createBaseFamilyWithStudentCount(): FamilyWithStudentCount {
-  return { family: undefined, student_count: 0 };
+  return { family: undefined, student_count: undefined };
 }
 
 export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
@@ -1503,7 +1505,7 @@ export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
     if (message.family !== undefined) {
       Family.encode(message.family, writer.uint32(10).fork()).join();
     }
-    if (message.student_count !== 0) {
+    if (message.student_count !== undefined) {
       writer.uint32(16).int32(message.student_count);
     }
     return writer;
@@ -1542,7 +1544,7 @@ export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
   fromJSON(object: any): FamilyWithStudentCount {
     return {
       family: isSet(object.family) ? Family.fromJSON(object.family) : undefined,
-      student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : 0,
+      student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : undefined,
     };
   },
 
@@ -1551,7 +1553,7 @@ export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
     if (message.family !== undefined) {
       obj.family = Family.toJSON(message.family);
     }
-    if (message.student_count !== 0) {
+    if (message.student_count !== undefined) {
       obj.studentCount = Math.round(message.student_count);
     }
     return obj;
@@ -1565,7 +1567,7 @@ export const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount> = {
     message.family = (object.family !== undefined && object.family !== null)
       ? Family.fromPartial(object.family)
       : undefined;
-    message.student_count = object.student_count ?? 0;
+    message.student_count = object.student_count ?? undefined;
     return message;
   },
 };
@@ -1636,7 +1638,7 @@ export const GetFamiliesByStudentStatusResponse: MessageFns<GetFamiliesByStudent
 };
 
 function createBaseCreateFamilyRequest(): CreateFamilyRequest {
-  return { context: undefined, name: "", guardians: [], information: undefined };
+  return { context: undefined, name: undefined, guardians: [], information: undefined };
 }
 
 export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
@@ -1644,7 +1646,7 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
     for (const v of message.guardians) {
@@ -1703,7 +1705,7 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
   fromJSON(object: any): CreateFamilyRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       guardians: globalThis.Array.isArray(object?.guardians)
         ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -1716,7 +1718,7 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.guardians?.length) {
@@ -1736,7 +1738,7 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.guardians = object.guardians?.map((e) => ObjectId.fromPartial(e)) || [];
     message.information = (object.information !== undefined && object.information !== null)
       ? FamilyInformation.fromPartial(object.information)
@@ -1749,7 +1751,7 @@ function createBaseUpdateFamilyRequest(): UpdateFamilyRequest {
   return {
     context: undefined,
     family_id: undefined,
-    name: "",
+    name: undefined,
     guardians: [],
     guardians_to_not_contact: [],
     information: undefined,
@@ -1764,7 +1766,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     for (const v of message.guardians) {
@@ -1841,7 +1843,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       guardians: globalThis.Array.isArray(object?.guardians)
         ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -1860,7 +1862,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.guardians?.length) {
@@ -1886,7 +1888,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.guardians = object.guardians?.map((e) => ObjectId.fromPartial(e)) || [];
     message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => ObjectId.fromPartial(e)) || [];
     message.information = (object.information !== undefined && object.information !== null)
@@ -1897,7 +1899,7 @@ export const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest> = {
 };
 
 function createBaseUpdateFamilyNameRequest(): UpdateFamilyNameRequest {
-  return { context: undefined, family_id: undefined, name: "" };
+  return { context: undefined, family_id: undefined, name: undefined };
 }
 
 export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
@@ -1908,7 +1910,7 @@ export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     return writer;
@@ -1955,7 +1957,7 @@ export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
     };
   },
 
@@ -1967,7 +1969,7 @@ export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     return obj;
@@ -1984,13 +1986,13 @@ export const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest> = {
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateFamilyAutoPayRequest(): UpdateFamilyAutoPayRequest {
-  return { context: undefined, family_id: undefined, auto_pay_disabled: false };
+  return { context: undefined, family_id: undefined, auto_pay_disabled: undefined };
 }
 
 export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> = {
@@ -2001,7 +2003,7 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
     }
-    if (message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       writer.uint32(24).bool(message.auto_pay_disabled);
     }
     return writer;
@@ -2048,7 +2050,7 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : undefined,
     };
   },
 
@@ -2060,7 +2062,7 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
-    if (message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
@@ -2077,7 +2079,7 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
-    message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+    message.auto_pay_disabled = object.auto_pay_disabled ?? undefined;
     return message;
   },
 };
@@ -2085,10 +2087,10 @@ export const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest> 
 function createBaseCreateFamilyWithGuardianAndInviteRequest(): CreateFamilyWithGuardianAndInviteRequest {
   return {
     context: undefined,
-    guardian_name: "",
-    guardian_email: "",
+    guardian_name: undefined,
+    guardian_email: undefined,
     guardian_phone: undefined,
-    family_name: "",
+    family_name: undefined,
     family_information: undefined,
   };
 }
@@ -2098,16 +2100,16 @@ export const CreateFamilyWithGuardianAndInviteRequest: MessageFns<CreateFamilyWi
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.guardian_name !== "") {
+    if (message.guardian_name !== undefined) {
       writer.uint32(18).string(message.guardian_name);
     }
-    if (message.guardian_email !== "") {
+    if (message.guardian_email !== undefined) {
       writer.uint32(26).string(message.guardian_email);
     }
     if (message.guardian_phone !== undefined) {
       PhoneNumber.encode(message.guardian_phone, writer.uint32(34).fork()).join();
     }
-    if (message.family_name !== "") {
+    if (message.family_name !== undefined) {
       writer.uint32(42).string(message.family_name);
     }
     if (message.family_information !== undefined) {
@@ -2177,10 +2179,10 @@ export const CreateFamilyWithGuardianAndInviteRequest: MessageFns<CreateFamilyWi
   fromJSON(object: any): CreateFamilyWithGuardianAndInviteRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      guardian_name: isSet(object.guardianName) ? globalThis.String(object.guardianName) : "",
-      guardian_email: isSet(object.guardianEmail) ? globalThis.String(object.guardianEmail) : "",
+      guardian_name: isSet(object.guardianName) ? globalThis.String(object.guardianName) : undefined,
+      guardian_email: isSet(object.guardianEmail) ? globalThis.String(object.guardianEmail) : undefined,
       guardian_phone: isSet(object.guardianPhone) ? PhoneNumber.fromJSON(object.guardianPhone) : undefined,
-      family_name: isSet(object.familyName) ? globalThis.String(object.familyName) : "",
+      family_name: isSet(object.familyName) ? globalThis.String(object.familyName) : undefined,
       family_information: isSet(object.familyInformation)
         ? FamilyInformation.fromJSON(object.familyInformation)
         : undefined,
@@ -2192,16 +2194,16 @@ export const CreateFamilyWithGuardianAndInviteRequest: MessageFns<CreateFamilyWi
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.guardian_name !== "") {
+    if (message.guardian_name !== undefined) {
       obj.guardianName = message.guardian_name;
     }
-    if (message.guardian_email !== "") {
+    if (message.guardian_email !== undefined) {
       obj.guardianEmail = message.guardian_email;
     }
     if (message.guardian_phone !== undefined) {
       obj.guardianPhone = PhoneNumber.toJSON(message.guardian_phone);
     }
-    if (message.family_name !== "") {
+    if (message.family_name !== undefined) {
       obj.familyName = message.family_name;
     }
     if (message.family_information !== undefined) {
@@ -2222,12 +2224,12 @@ export const CreateFamilyWithGuardianAndInviteRequest: MessageFns<CreateFamilyWi
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.guardian_name = object.guardian_name ?? "";
-    message.guardian_email = object.guardian_email ?? "";
+    message.guardian_name = object.guardian_name ?? undefined;
+    message.guardian_email = object.guardian_email ?? undefined;
     message.guardian_phone = (object.guardian_phone !== undefined && object.guardian_phone !== null)
       ? PhoneNumber.fromPartial(object.guardian_phone)
       : undefined;
-    message.family_name = object.family_name ?? "";
+    message.family_name = object.family_name ?? undefined;
     message.family_information = (object.family_information !== undefined && object.family_information !== null)
       ? FamilyInformation.fromPartial(object.family_information)
       : undefined;

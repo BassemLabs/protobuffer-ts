@@ -20,27 +20,27 @@ export interface GetOnboardingSettingsRequest {
 export interface UpdateEnrollmentConfigurationRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  has_interview_for_newcomers: boolean;
-  enable_group_approval_system: boolean;
+  has_interview_for_newcomers?: boolean | undefined;
+  enable_group_approval_system?: boolean | undefined;
 }
 
 export interface AddSchoolHandbookFileRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  file_name: string;
-  aws_s3_file_location: string;
+  file_name?: string | undefined;
+  aws_s3_file_location?: string | undefined;
 }
 
 export interface RemoveSchoolHandbookFileRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  file_index: number;
+  file_index?: number | undefined;
 }
 
 export interface UpdateWaitlistFeeRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  waitlist_fee: number;
+  waitlist_fee?: number | undefined;
 }
 
 export interface UpdateRegistrationFeeRequest {
@@ -58,7 +58,7 @@ export interface UpdateReregistrationFeeRequest {
 export interface UpdateInterviewFeeRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
-  interview_fee: number;
+  interview_fee?: number | undefined;
 }
 
 function createBaseGetOnboardingSettingsRequest(): GetOnboardingSettingsRequest {
@@ -143,8 +143,8 @@ function createBaseUpdateEnrollmentConfigurationRequest(): UpdateEnrollmentConfi
   return {
     context: undefined,
     organization_id: undefined,
-    has_interview_for_newcomers: false,
-    enable_group_approval_system: false,
+    has_interview_for_newcomers: undefined,
+    enable_group_approval_system: undefined,
   };
 }
 
@@ -156,10 +156,10 @@ export const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentCo
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.has_interview_for_newcomers !== false) {
+    if (message.has_interview_for_newcomers !== undefined) {
       writer.uint32(24).bool(message.has_interview_for_newcomers);
     }
-    if (message.enable_group_approval_system !== false) {
+    if (message.enable_group_approval_system !== undefined) {
       writer.uint32(32).bool(message.enable_group_approval_system);
     }
     return writer;
@@ -215,10 +215,10 @@ export const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentCo
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
         ? globalThis.Boolean(object.hasInterviewForNewcomers)
-        : false,
+        : undefined,
       enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
         ? globalThis.Boolean(object.enableGroupApprovalSystem)
-        : false,
+        : undefined,
     };
   },
 
@@ -230,10 +230,10 @@ export const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentCo
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.has_interview_for_newcomers !== false) {
+    if (message.has_interview_for_newcomers !== undefined) {
       obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
     }
-    if (message.enable_group_approval_system !== false) {
+    if (message.enable_group_approval_system !== undefined) {
       obj.enableGroupApprovalSystem = message.enable_group_approval_system;
     }
     return obj;
@@ -254,14 +254,14 @@ export const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentCo
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? false;
-    message.enable_group_approval_system = object.enable_group_approval_system ?? false;
+    message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? undefined;
+    message.enable_group_approval_system = object.enable_group_approval_system ?? undefined;
     return message;
   },
 };
 
 function createBaseAddSchoolHandbookFileRequest(): AddSchoolHandbookFileRequest {
-  return { context: undefined, organization_id: undefined, file_name: "", aws_s3_file_location: "" };
+  return { context: undefined, organization_id: undefined, file_name: undefined, aws_s3_file_location: undefined };
 }
 
 export const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileRequest> = {
@@ -272,10 +272,10 @@ export const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileReque
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.file_name !== "") {
+    if (message.file_name !== undefined) {
       writer.uint32(26).string(message.file_name);
     }
-    if (message.aws_s3_file_location !== "") {
+    if (message.aws_s3_file_location !== undefined) {
       writer.uint32(34).string(message.aws_s3_file_location);
     }
     return writer;
@@ -329,8 +329,8 @@ export const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileReque
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : undefined,
     };
   },
 
@@ -342,10 +342,10 @@ export const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileReque
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.file_name !== "") {
+    if (message.file_name !== undefined) {
       obj.fileName = message.file_name;
     }
-    if (message.aws_s3_file_location !== "") {
+    if (message.aws_s3_file_location !== undefined) {
       obj.awsS3FileLocation = message.aws_s3_file_location;
     }
     return obj;
@@ -362,14 +362,14 @@ export const AddSchoolHandbookFileRequest: MessageFns<AddSchoolHandbookFileReque
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.file_name = object.file_name ?? "";
-    message.aws_s3_file_location = object.aws_s3_file_location ?? "";
+    message.file_name = object.file_name ?? undefined;
+    message.aws_s3_file_location = object.aws_s3_file_location ?? undefined;
     return message;
   },
 };
 
 function createBaseRemoveSchoolHandbookFileRequest(): RemoveSchoolHandbookFileRequest {
-  return { context: undefined, organization_id: undefined, file_index: 0 };
+  return { context: undefined, organization_id: undefined, file_index: undefined };
 }
 
 export const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFileRequest> = {
@@ -380,7 +380,7 @@ export const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFil
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.file_index !== 0) {
+    if (message.file_index !== undefined) {
       writer.uint32(24).uint32(message.file_index);
     }
     return writer;
@@ -427,7 +427,7 @@ export const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFil
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      file_index: isSet(object.fileIndex) ? globalThis.Number(object.fileIndex) : 0,
+      file_index: isSet(object.fileIndex) ? globalThis.Number(object.fileIndex) : undefined,
     };
   },
 
@@ -439,7 +439,7 @@ export const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFil
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.file_index !== 0) {
+    if (message.file_index !== undefined) {
       obj.fileIndex = Math.round(message.file_index);
     }
     return obj;
@@ -458,13 +458,13 @@ export const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFil
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.file_index = object.file_index ?? 0;
+    message.file_index = object.file_index ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateWaitlistFeeRequest(): UpdateWaitlistFeeRequest {
-  return { context: undefined, organization_id: undefined, waitlist_fee: 0 };
+  return { context: undefined, organization_id: undefined, waitlist_fee: undefined };
 }
 
 export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
@@ -475,7 +475,7 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.waitlist_fee !== 0) {
+    if (message.waitlist_fee !== undefined) {
       writer.uint32(29).float(message.waitlist_fee);
     }
     return writer;
@@ -522,7 +522,7 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
+      waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : undefined,
     };
   },
 
@@ -534,7 +534,7 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.waitlist_fee !== 0) {
+    if (message.waitlist_fee !== undefined) {
       obj.waitlistFee = message.waitlist_fee;
     }
     return obj;
@@ -551,7 +551,7 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.waitlist_fee = object.waitlist_fee ?? 0;
+    message.waitlist_fee = object.waitlist_fee ?? undefined;
     return message;
   },
 };
@@ -749,7 +749,7 @@ export const UpdateReregistrationFeeRequest: MessageFns<UpdateReregistrationFeeR
 };
 
 function createBaseUpdateInterviewFeeRequest(): UpdateInterviewFeeRequest {
-  return { context: undefined, organization_id: undefined, interview_fee: 0 };
+  return { context: undefined, organization_id: undefined, interview_fee: undefined };
 }
 
 export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = {
@@ -760,7 +760,7 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.interview_fee !== 0) {
+    if (message.interview_fee !== undefined) {
       writer.uint32(29).float(message.interview_fee);
     }
     return writer;
@@ -807,7 +807,7 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+      interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : undefined,
     };
   },
 
@@ -819,7 +819,7 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.interview_fee !== 0) {
+    if (message.interview_fee !== undefined) {
       obj.interviewFee = message.interview_fee;
     }
     return obj;
@@ -836,7 +836,7 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.interview_fee = object.interview_fee ?? 0;
+    message.interview_fee = object.interview_fee ?? undefined;
     return message;
   },
 };

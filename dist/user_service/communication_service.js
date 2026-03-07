@@ -109,7 +109,7 @@ exports.PreviewCommunicationRequest = {
     },
 };
 function createBaseSendCommunicationRequest() {
-    return { context: undefined, filters: undefined, channels: [], subject: "", body: "" };
+    return { context: undefined, filters: undefined, channels: [], subject: undefined, body: undefined };
 }
 exports.SendCommunicationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -124,10 +124,10 @@ exports.SendCommunicationRequest = {
             writer.int32((0, notification_type_1.notificationTypeToNumber)(v));
         }
         writer.join();
-        if (message.subject !== "") {
+        if (message.subject !== undefined) {
             writer.uint32(34).string(message.subject);
         }
-        if (message.body !== "") {
+        if (message.body !== undefined) {
             writer.uint32(42).string(message.body);
         }
         return writer;
@@ -191,8 +191,8 @@ exports.SendCommunicationRequest = {
             channels: globalThis.Array.isArray(object?.channels)
                 ? object.channels.map((e) => (0, notification_type_1.notificationTypeFromJSON)(e))
                 : [],
-            subject: isSet(object.subject) ? globalThis.String(object.subject) : "",
-            body: isSet(object.body) ? globalThis.String(object.body) : "",
+            subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
         };
     },
     toJSON(message) {
@@ -206,10 +206,10 @@ exports.SendCommunicationRequest = {
         if (message.channels?.length) {
             obj.channels = message.channels.map((e) => (0, notification_type_1.notificationTypeToJSON)(e));
         }
-        if (message.subject !== "") {
+        if (message.subject !== undefined) {
             obj.subject = message.subject;
         }
-        if (message.body !== "") {
+        if (message.body !== undefined) {
             obj.body = message.body;
         }
         return obj;
@@ -226,23 +226,23 @@ exports.SendCommunicationRequest = {
             ? communication_1.CommunicationFilters.fromPartial(object.filters)
             : undefined;
         message.channels = object.channels?.map((e) => e) || [];
-        message.subject = object.subject ?? "";
-        message.body = object.body ?? "";
+        message.subject = object.subject ?? undefined;
+        message.body = object.body ?? undefined;
         return message;
     },
 };
 function createBaseGetBroadcastsListRequest() {
-    return { context: undefined, per_page: 0, page: 0 };
+    return { context: undefined, per_page: undefined, page: undefined };
 }
 exports.GetBroadcastsListRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             writer.uint32(16).uint64(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             writer.uint32(24).uint64(message.page);
         }
         return writer;
@@ -283,8 +283,8 @@ exports.GetBroadcastsListRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
         };
     },
     toJSON(message) {
@@ -292,10 +292,10 @@ exports.GetBroadcastsListRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             obj.perPage = Math.round(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             obj.page = Math.round(message.page);
         }
         return obj;
@@ -308,8 +308,8 @@ exports.GetBroadcastsListRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.per_page = object.per_page ?? 0;
-        message.page = object.page ?? 0;
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
         return message;
     },
 };

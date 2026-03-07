@@ -15,14 +15,14 @@ function createBaseCampus() {
     return {
         id: undefined,
         organization: undefined,
-        name: "",
-        address: "",
-        email: "",
-        phone: "",
+        name: undefined,
+        address: undefined,
+        email: undefined,
+        phone: undefined,
         logo: undefined,
         principal_id: undefined,
         supervisor_id: undefined,
-        archived: false,
+        archived: undefined,
     };
 }
 exports.Campus = {
@@ -33,16 +33,16 @@ exports.Campus = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.address !== "") {
+        if (message.address !== undefined) {
             writer.uint32(34).string(message.address);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(42).string(message.email);
         }
-        if (message.phone !== "") {
+        if (message.phone !== undefined) {
             writer.uint32(50).string(message.phone);
         }
         if (message.logo !== undefined) {
@@ -54,7 +54,7 @@ exports.Campus = {
         if (message.supervisor_id !== undefined) {
             object_id_1.ObjectId.encode(message.supervisor_id, writer.uint32(74).fork()).join();
         }
-        if (message.archived !== false) {
+        if (message.archived !== undefined) {
             writer.uint32(80).bool(message.archived);
         }
         return writer;
@@ -138,14 +138,14 @@ exports.Campus = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            address: isSet(object.address) ? globalThis.String(object.address) : "",
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
-            phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            address: isSet(object.address) ? globalThis.String(object.address) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            phone: isSet(object.phone) ? globalThis.String(object.phone) : undefined,
             logo: isSet(object.logo) ? aws_file_1.AWSFile.fromJSON(object.logo) : undefined,
             principal_id: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
             supervisor_id: isSet(object.supervisorId) ? object_id_1.ObjectId.fromJSON(object.supervisorId) : undefined,
-            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
         };
     },
     toJSON(message) {
@@ -156,16 +156,16 @@ exports.Campus = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.address !== "") {
+        if (message.address !== undefined) {
             obj.address = message.address;
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
-        if (message.phone !== "") {
+        if (message.phone !== undefined) {
             obj.phone = message.phone;
         }
         if (message.logo !== undefined) {
@@ -177,7 +177,7 @@ exports.Campus = {
         if (message.supervisor_id !== undefined) {
             obj.supervisorId = object_id_1.ObjectId.toJSON(message.supervisor_id);
         }
-        if (message.archived !== false) {
+        if (message.archived !== undefined) {
             obj.archived = message.archived;
         }
         return obj;
@@ -191,10 +191,10 @@ exports.Campus = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.name = object.name ?? "";
-        message.address = object.address ?? "";
-        message.email = object.email ?? "";
-        message.phone = object.phone ?? "";
+        message.name = object.name ?? undefined;
+        message.address = object.address ?? undefined;
+        message.email = object.email ?? undefined;
+        message.phone = object.phone ?? undefined;
         message.logo = (object.logo !== undefined && object.logo !== null) ? aws_file_1.AWSFile.fromPartial(object.logo) : undefined;
         message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.principal_id)
@@ -202,7 +202,7 @@ exports.Campus = {
         message.supervisor_id = (object.supervisor_id !== undefined && object.supervisor_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.supervisor_id)
             : undefined;
-        message.archived = object.archived ?? false;
+        message.archived = object.archived ?? undefined;
         return message;
     },
 };

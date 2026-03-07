@@ -11,16 +11,16 @@ export const protobufPackage = "utils";
 
 export interface ObjectId {
   /** ObjectId can be represented as a 12-byte array (MongoDB ObjectId is 12 bytes long) */
-  id: string;
+  id?: string | undefined;
 }
 
 function createBaseObjectId(): ObjectId {
-  return { id: "" };
+  return { id: undefined };
 }
 
 export const ObjectId: MessageFns<ObjectId> = {
   encode(message: ObjectId, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
+    if (message.id !== undefined) {
       writer.uint32(10).string(message.id);
     }
     return writer;
@@ -50,12 +50,12 @@ export const ObjectId: MessageFns<ObjectId> = {
   },
 
   fromJSON(object: any): ObjectId {
-    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+    return { id: isSet(object.id) ? globalThis.String(object.id) : undefined };
   },
 
   toJSON(message: ObjectId): unknown {
     const obj: any = {};
-    if (message.id !== "") {
+    if (message.id !== undefined) {
       obj.id = message.id;
     }
     return obj;
@@ -66,7 +66,7 @@ export const ObjectId: MessageFns<ObjectId> = {
   },
   fromPartial<I extends Exact<DeepPartial<ObjectId>, I>>(object: I): ObjectId {
     const message = createBaseObjectId();
-    message.id = object.id ?? "";
+    message.id = object.id ?? undefined;
     return message;
   },
 };

@@ -8,7 +8,7 @@ export declare const protobufPackage = "payment_service";
 export interface GetTuitionRateRequest {
     context: RequestContext | undefined;
     school_year: ObjectId | undefined;
-    grade: StudentGrade;
+    grade?: StudentGrade | undefined;
 }
 export interface ListTuitionRatesRequest {
     context: RequestContext | undefined;
@@ -18,8 +18,8 @@ export interface ListTuitionRatesResponse {
     rates: TuitionRate[];
 }
 export interface GradeAmount {
-    grade: StudentGrade;
-    amount: number;
+    grade?: StudentGrade | undefined;
+    amount?: number | undefined;
 }
 export interface UpsertTuitionRatesRequest {
     context: RequestContext | undefined;
@@ -41,27 +41,27 @@ export interface ListAdditionalFeesResponse {
 export interface CreateAdditionalFeeRequest {
     context: RequestContext | undefined;
     school_year: ObjectId | undefined;
-    name: string;
-    description: string;
-    amount: number;
-    is_optional: boolean;
-    scope: Scope;
+    name?: string | undefined;
+    description?: string | undefined;
+    amount?: number | undefined;
+    is_optional?: boolean | undefined;
+    scope?: Scope | undefined;
 }
 export interface UpdateAdditionalFeeRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    name: string;
-    description: string;
-    amount: number;
-    is_optional: boolean;
-    scope: Scope;
+    name?: string | undefined;
+    description?: string | undefined;
+    amount?: number | undefined;
+    is_optional?: boolean | undefined;
+    scope?: Scope | undefined;
 }
 export interface DeleteAdditionalFeeRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
 }
 export interface DeleteAdditionalFeeResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 /** TuitionDiscount messages */
 export interface GetTuitionDiscountRequest {
@@ -78,31 +78,31 @@ export interface ListTuitionDiscountsResponse {
 export interface CreateTuitionDiscountRequest {
     context: RequestContext | undefined;
     school_year: ObjectId | undefined;
-    name: string;
-    discount_type: DiscountType;
-    scope: Scope;
-    value_type: DiscountValueType;
-    value: number;
-    description: string;
-    stack_mode: DiscountStackMode;
+    name?: string | undefined;
+    discount_type?: DiscountType | undefined;
+    scope?: Scope | undefined;
+    value_type?: DiscountValueType | undefined;
+    value?: number | undefined;
+    description?: string | undefined;
+    stack_mode?: DiscountStackMode | undefined;
 }
 export interface UpdateTuitionDiscountRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    name: string;
-    discount_type: DiscountType;
-    scope: Scope;
-    value_type: DiscountValueType;
-    value: number;
-    description: string;
-    stack_mode: DiscountStackMode;
+    name?: string | undefined;
+    discount_type?: DiscountType | undefined;
+    scope?: Scope | undefined;
+    value_type?: DiscountValueType | undefined;
+    value?: number | undefined;
+    description?: string | undefined;
+    stack_mode?: DiscountStackMode | undefined;
 }
 export interface DeleteTuitionDiscountRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
 }
 export interface DeleteTuitionDiscountResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 /** TuitionPlan messages */
 export interface GetTuitionPlanRequest {
@@ -120,9 +120,9 @@ export interface ListTuitionPlansResponse {
 export interface CreateTuitionPlanRequest {
     context: RequestContext | undefined;
     school_year: ObjectId | undefined;
-    name: string;
-    description: string;
-    schedule_type: PaymentScheduleType;
+    name?: string | undefined;
+    description?: string | undefined;
+    schedule_type?: PaymentScheduleType | undefined;
     day_of_month?: number | undefined;
     installments: PaymentInstallment[];
     start_date: Date | undefined;
@@ -131,9 +131,9 @@ export interface CreateTuitionPlanRequest {
 export interface UpdateTuitionPlanRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    name: string;
-    description: string;
-    schedule_type: PaymentScheduleType;
+    name?: string | undefined;
+    description?: string | undefined;
+    schedule_type?: PaymentScheduleType | undefined;
     day_of_month?: number | undefined;
     installments: PaymentInstallment[];
     start_date: Date | undefined;

@@ -15,7 +15,7 @@ export interface RemoveDiscountRequest {
     id: ObjectId | undefined;
 }
 export interface RemoveDiscountResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export interface ListStudentDiscountsRequest {
     context: RequestContext | undefined;
@@ -45,7 +45,7 @@ export interface RemoveAdditionalFeeRequest {
     id: ObjectId | undefined;
 }
 export interface RemoveAdditionalFeeResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export interface ListStudentAdditionalFeesRequest {
     context: RequestContext | undefined;

@@ -82,22 +82,17 @@ function serviceContextToNumber(object) {
     }
 }
 function createBaseRequestContext() {
-    return {
-        user_context: undefined,
-        is_testing: false,
-        service_based_context_name: ServiceContext.AutoPaymentScheduling,
-    };
+    return { user_context: undefined, is_testing: undefined, service_based_context_name: undefined };
 }
 exports.RequestContext = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.user_context !== undefined) {
             exports.UserContext.encode(message.user_context, writer.uint32(10).fork()).join();
         }
-        if (message.is_testing !== false) {
+        if (message.is_testing !== undefined) {
             writer.uint32(16).bool(message.is_testing);
         }
-        if (message.service_based_context_name !== undefined &&
-            message.service_based_context_name !== ServiceContext.AutoPaymentScheduling) {
+        if (message.service_based_context_name !== undefined) {
             writer.uint32(24).int32(serviceContextToNumber(message.service_based_context_name));
         }
         return writer;
@@ -138,10 +133,10 @@ exports.RequestContext = {
     fromJSON(object) {
         return {
             user_context: isSet(object.userContext) ? exports.UserContext.fromJSON(object.userContext) : undefined,
-            is_testing: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : false,
+            is_testing: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : undefined,
             service_based_context_name: isSet(object.serviceBasedContextName)
                 ? serviceContextFromJSON(object.serviceBasedContextName)
-                : ServiceContext.AutoPaymentScheduling,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -149,11 +144,10 @@ exports.RequestContext = {
         if (message.user_context !== undefined) {
             obj.userContext = exports.UserContext.toJSON(message.user_context);
         }
-        if (message.is_testing !== false) {
+        if (message.is_testing !== undefined) {
             obj.isTesting = message.is_testing;
         }
-        if (message.service_based_context_name !== undefined &&
-            message.service_based_context_name !== ServiceContext.AutoPaymentScheduling) {
+        if (message.service_based_context_name !== undefined) {
             obj.serviceBasedContextName = serviceContextToJSON(message.service_based_context_name);
         }
         return obj;
@@ -166,24 +160,24 @@ exports.RequestContext = {
         message.user_context = (object.user_context !== undefined && object.user_context !== null)
             ? exports.UserContext.fromPartial(object.user_context)
             : undefined;
-        message.is_testing = object.is_testing ?? false;
-        message.service_based_context_name = object.service_based_context_name ?? ServiceContext.AutoPaymentScheduling;
+        message.is_testing = object.is_testing ?? undefined;
+        message.service_based_context_name = object.service_based_context_name ?? undefined;
         return message;
     },
 };
 function createBaseUserContext() {
     return {
         user_id: undefined,
-        user_type: user_type_1.UserType.NONE,
-        user_auth_token: "",
+        user_type: undefined,
+        user_auth_token: undefined,
         organization_id: undefined,
         roles: [],
         parent_family_ids: [],
         parent_student_ids: [],
-        full_name: "",
-        firebase_token: "",
-        exp: 0,
-        trace_id: "",
+        full_name: undefined,
+        firebase_token: undefined,
+        exp: undefined,
+        trace_id: undefined,
     };
 }
 exports.UserContext = {
@@ -191,10 +185,10 @@ exports.UserContext = {
         if (message.user_id !== undefined) {
             object_id_1.ObjectId.encode(message.user_id, writer.uint32(10).fork()).join();
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             writer.uint32(16).int32((0, user_type_1.userTypeToNumber)(message.user_type));
         }
-        if (message.user_auth_token !== "") {
+        if (message.user_auth_token !== undefined) {
             writer.uint32(26).string(message.user_auth_token);
         }
         if (message.organization_id !== undefined) {
@@ -211,16 +205,16 @@ exports.UserContext = {
         for (const v of message.parent_student_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
         }
-        if (message.full_name !== "") {
+        if (message.full_name !== undefined) {
             writer.uint32(66).string(message.full_name);
         }
-        if (message.firebase_token !== "") {
+        if (message.firebase_token !== undefined) {
             writer.uint32(74).string(message.firebase_token);
         }
-        if (message.exp !== 0) {
+        if (message.exp !== undefined) {
             writer.uint32(80).uint64(message.exp);
         }
-        if (message.trace_id !== "") {
+        if (message.trace_id !== undefined) {
             writer.uint32(90).string(message.trace_id);
         }
         return writer;
@@ -316,8 +310,8 @@ exports.UserContext = {
     fromJSON(object) {
         return {
             user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
+            user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : undefined,
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
             parent_family_ids: globalThis.Array.isArray(object?.parentFamilyIds)
@@ -326,10 +320,10 @@ exports.UserContext = {
             parent_student_ids: globalThis.Array.isArray(object?.parentStudentIds)
                 ? object.parentStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
-            full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : "",
-            firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : "",
-            exp: isSet(object.exp) ? globalThis.Number(object.exp) : 0,
-            trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : "",
+            full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : undefined,
+            firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : undefined,
+            exp: isSet(object.exp) ? globalThis.Number(object.exp) : undefined,
+            trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : undefined,
         };
     },
     toJSON(message) {
@@ -337,10 +331,10 @@ exports.UserContext = {
         if (message.user_id !== undefined) {
             obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
-        if (message.user_auth_token !== "") {
+        if (message.user_auth_token !== undefined) {
             obj.userAuthToken = message.user_auth_token;
         }
         if (message.organization_id !== undefined) {
@@ -355,16 +349,16 @@ exports.UserContext = {
         if (message.parent_student_ids?.length) {
             obj.parentStudentIds = message.parent_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
-        if (message.full_name !== "") {
+        if (message.full_name !== undefined) {
             obj.fullName = message.full_name;
         }
-        if (message.firebase_token !== "") {
+        if (message.firebase_token !== undefined) {
             obj.firebaseToken = message.firebase_token;
         }
-        if (message.exp !== 0) {
+        if (message.exp !== undefined) {
             obj.exp = Math.round(message.exp);
         }
-        if (message.trace_id !== "") {
+        if (message.trace_id !== undefined) {
             obj.traceId = message.trace_id;
         }
         return obj;
@@ -377,18 +371,18 @@ exports.UserContext = {
         message.user_id = (object.user_id !== undefined && object.user_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.user_id)
             : undefined;
-        message.user_type = object.user_type ?? user_type_1.UserType.NONE;
-        message.user_auth_token = object.user_auth_token ?? "";
+        message.user_type = object.user_type ?? undefined;
+        message.user_auth_token = object.user_auth_token ?? undefined;
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         message.roles = object.roles?.map((e) => e) || [];
         message.parent_family_ids = object.parent_family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.parent_student_ids = object.parent_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.full_name = object.full_name ?? "";
-        message.firebase_token = object.firebase_token ?? "";
-        message.exp = object.exp ?? 0;
-        message.trace_id = object.trace_id ?? "";
+        message.full_name = object.full_name ?? undefined;
+        message.firebase_token = object.firebase_token ?? undefined;
+        message.exp = object.exp ?? undefined;
+        message.trace_id = object.trace_id ?? undefined;
         return message;
     },
 };

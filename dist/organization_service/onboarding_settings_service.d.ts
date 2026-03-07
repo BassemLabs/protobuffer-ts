@@ -10,24 +10,24 @@ export interface GetOnboardingSettingsRequest {
 export interface UpdateEnrollmentConfigurationRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    has_interview_for_newcomers: boolean;
-    enable_group_approval_system: boolean;
+    has_interview_for_newcomers?: boolean | undefined;
+    enable_group_approval_system?: boolean | undefined;
 }
 export interface AddSchoolHandbookFileRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    file_name: string;
-    aws_s3_file_location: string;
+    file_name?: string | undefined;
+    aws_s3_file_location?: string | undefined;
 }
 export interface RemoveSchoolHandbookFileRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    file_index: number;
+    file_index?: number | undefined;
 }
 export interface UpdateWaitlistFeeRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    waitlist_fee: number;
+    waitlist_fee?: number | undefined;
 }
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;
@@ -42,7 +42,7 @@ export interface UpdateReregistrationFeeRequest {
 export interface UpdateInterviewFeeRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    interview_fee: number;
+    interview_fee?: number | undefined;
 }
 export declare const GetOnboardingSettingsRequest: MessageFns<GetOnboardingSettingsRequest>;
 export declare const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentConfigurationRequest>;

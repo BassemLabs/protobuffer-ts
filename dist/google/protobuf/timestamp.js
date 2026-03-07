@@ -10,14 +10,14 @@ exports.Timestamp = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "google.protobuf";
 function createBaseTimestamp() {
-    return { seconds: 0, nanos: 0 };
+    return { seconds: undefined, nanos: undefined };
 }
 exports.Timestamp = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.seconds !== 0) {
+        if (message.seconds !== undefined) {
             writer.uint32(8).int64(message.seconds);
         }
-        if (message.nanos !== 0) {
+        if (message.nanos !== undefined) {
             writer.uint32(16).int32(message.nanos);
         }
         return writer;
@@ -51,16 +51,16 @@ exports.Timestamp = {
     },
     fromJSON(object) {
         return {
-            seconds: isSet(object.seconds) ? globalThis.Number(object.seconds) : 0,
-            nanos: isSet(object.nanos) ? globalThis.Number(object.nanos) : 0,
+            seconds: isSet(object.seconds) ? globalThis.Number(object.seconds) : undefined,
+            nanos: isSet(object.nanos) ? globalThis.Number(object.nanos) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.seconds !== 0) {
+        if (message.seconds !== undefined) {
             obj.seconds = Math.round(message.seconds);
         }
-        if (message.nanos !== 0) {
+        if (message.nanos !== undefined) {
             obj.nanos = Math.round(message.nanos);
         }
         return obj;
@@ -70,8 +70,8 @@ exports.Timestamp = {
     },
     fromPartial(object) {
         const message = createBaseTimestamp();
-        message.seconds = object.seconds ?? 0;
-        message.nanos = object.nanos ?? 0;
+        message.seconds = object.seconds ?? undefined;
+        message.nanos = object.nanos ?? undefined;
         return message;
     },
 };

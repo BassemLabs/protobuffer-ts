@@ -8,8 +8,8 @@ export declare const protobufPackage = "payment_service";
 /** TODO: Remove this once we move into payment service and call user service */
 export interface StudentObj {
     id: ObjectId | undefined;
-    name: string;
-    grade: StudentGrade;
+    name?: string | undefined;
+    grade?: StudentGrade | undefined;
 }
 export interface GetFamilyTuitionInvoiceRequest {
     context: RequestContext | undefined;
@@ -44,10 +44,10 @@ export interface ListFamiliesWithTuitionInvoicesResponse {
 export interface FamilyWithTuitionInvoice {
     family: Family | undefined;
     tuition_invoice?: TuitionInvoice | undefined;
-    student_count: number;
-    total_paid: number;
-    status: TuitionInvoiceStatus;
-    total_invoices_amount: number;
+    student_count?: number | undefined;
+    total_paid?: number | undefined;
+    status?: TuitionInvoiceStatus | undefined;
+    total_invoices_amount?: number | undefined;
 }
 export interface CheckFamilyTuitionInvoiceStatusRequest {
     context: RequestContext | undefined;
@@ -56,7 +56,7 @@ export interface CheckFamilyTuitionInvoiceStatusRequest {
     admitted_student_ids: ObjectId[];
 }
 export interface CheckFamilyTuitionInvoiceStatusResponse {
-    tuition_invoice_exists: boolean;
+    tuition_invoice_exists?: boolean | undefined;
     missing_student_ids: ObjectId[];
 }
 export declare const StudentObj: MessageFns<StudentObj>;

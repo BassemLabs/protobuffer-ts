@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "utils";
 export interface ObjectId {
     /** ObjectId can be represented as a 12-byte array (MongoDB ObjectId is 12 bytes long) */
-    id: string;
+    id?: string | undefined;
 }
 export declare const ObjectId: MessageFns<ObjectId>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

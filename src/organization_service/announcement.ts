@@ -15,8 +15,8 @@ export const protobufPackage = "organization_service";
 export interface Announcement {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  title: string;
-  body: string;
+  title?: string | undefined;
+  body?: string | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
   link?: string | undefined;
@@ -27,11 +27,11 @@ function createBaseAnnouncement(): Announcement {
   return {
     id: undefined,
     organization: undefined,
-    title: "",
-    body: "",
+    title: undefined,
+    body: undefined,
     start_date: undefined,
     end_date: undefined,
-    link: "",
+    link: undefined,
     audience: [],
   };
 }
@@ -44,10 +44,10 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(34).string(message.body);
     }
     if (message.start_date !== undefined) {
@@ -56,7 +56,7 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.end_date !== undefined) {
       Timestamp.encode(toTimestamp(message.end_date), writer.uint32(50).fork()).join();
     }
-    if (message.link !== undefined && message.link !== "") {
+    if (message.link !== undefined) {
       writer.uint32(58).string(message.link);
     }
     writer.uint32(66).fork();
@@ -153,11 +153,11 @@ export const Announcement: MessageFns<Announcement> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
       start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-      link: isSet(object.link) ? globalThis.String(object.link) : "",
+      link: isSet(object.link) ? globalThis.String(object.link) : undefined,
       audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e: any) => userTypeFromJSON(e)) : [],
     };
   },
@@ -170,10 +170,10 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
     if (message.start_date !== undefined) {
@@ -182,7 +182,7 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.end_date !== undefined) {
       obj.endDate = message.end_date.toISOString();
     }
-    if (message.link !== undefined && message.link !== "") {
+    if (message.link !== undefined) {
       obj.link = message.link;
     }
     if (message.audience?.length) {
@@ -200,11 +200,11 @@ export const Announcement: MessageFns<Announcement> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.title = object.title ?? "";
-    message.body = object.body ?? "";
+    message.title = object.title ?? undefined;
+    message.body = object.body ?? undefined;
     message.start_date = object.start_date ?? undefined;
     message.end_date = object.end_date ?? undefined;
-    message.link = object.link ?? "";
+    message.link = object.link ?? undefined;
     message.audience = object.audience?.map((e) => e) || [];
     return message;
   },

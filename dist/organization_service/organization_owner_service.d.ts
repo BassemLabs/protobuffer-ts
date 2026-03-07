@@ -4,12 +4,12 @@ import { RequestContext } from "../utils/request_context";
 export declare const protobufPackage = "organization_service";
 export interface CreateOwnerRequest {
     context: RequestContext | undefined;
-    name: string;
-    email: string;
+    name?: string | undefined;
+    email?: string | undefined;
 }
 export interface GetOwnerByEmailRequest {
     context: RequestContext | undefined;
-    email: string;
+    email?: string | undefined;
 }
 export interface GetOwnerRequest {
     context: RequestContext | undefined;

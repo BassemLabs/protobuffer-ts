@@ -17,19 +17,19 @@ export declare function reportStatusToJSON(object: ReportStatus): string;
 export declare function reportStatusToNumber(object: ReportStatus): number;
 export interface ReportEntryCheckBox {
     check_box_id: ObjectId | undefined;
-    state: boolean;
+    state?: boolean | undefined;
 }
 export interface ReportEntrySection {
     layout_id: ObjectId | undefined;
-    mark: string;
+    mark?: string | undefined;
 }
 export interface ReportEntryLearningSkill {
     learning_skill_id: ObjectId | undefined;
-    mark: string;
+    mark?: string | undefined;
 }
 export interface GuardianSignatureHeader {
-    key: string;
-    value: string;
+    key?: string | undefined;
+    value?: string | undefined;
 }
 export interface GuardianSignatureSessionMetadata {
     ip_address?: string | undefined;
@@ -39,7 +39,7 @@ export interface GuardianSignatureSessionMetadata {
 }
 export interface GuardianSignature {
     guardian_id: ObjectId | undefined;
-    guardian_name: string;
+    guardian_name?: string | undefined;
     guardian_signed_at: Date | undefined;
     session_metadata?: GuardianSignatureSessionMetadata | undefined;
 }
@@ -49,19 +49,19 @@ export interface ReportEntry {
     student: ObjectId | undefined;
     course?: ObjectId | undefined;
     homeroom?: ObjectId | undefined;
-    report_type: ReportType;
-    comment: string;
+    report_type?: ReportType | undefined;
+    comment?: string | undefined;
     checkboxes: ReportEntryCheckBox[];
     sections: ReportEntrySection[];
-    review_status: ReportStatus;
-    requested_changes: string;
+    review_status?: ReportStatus | undefined;
+    requested_changes?: string | undefined;
     learning_skills: ReportEntryLearningSkill[];
-    credit_earned: boolean;
+    credit_earned?: boolean | undefined;
     guardian_signature?: GuardianSignature | undefined;
 }
 export interface ReportEntryView {
     entry: ReportEntry | undefined;
-    class_name: string;
+    class_name?: string | undefined;
     semester: Semester | undefined;
     semester_report_layout: SemesterReportLayout | undefined;
     signed_by_guardian_name?: string | undefined;
@@ -76,8 +76,8 @@ export interface ReportEntryMedian {
 }
 export interface ParentStudentReportSummary {
     student: Student | undefined;
-    total_reports: number;
-    unsigned_reports_count: number;
+    total_reports?: number | undefined;
+    unsigned_reports_count?: number | undefined;
 }
 export declare const ReportEntryCheckBox: MessageFns<ReportEntryCheckBox>;
 export declare const ReportEntrySection: MessageFns<ReportEntrySection>;

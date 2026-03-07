@@ -14,12 +14,12 @@ export interface DeviceToken {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
     user_id: ObjectId | undefined;
-    token: string;
-    platform: DevicePlatform;
-    device_id: string;
-    app_version: string;
+    token?: string | undefined;
+    platform?: DevicePlatform | undefined;
+    device_id?: string | undefined;
+    app_version?: string | undefined;
     last_seen?: Date | undefined;
-    enabled: boolean;
+    enabled?: boolean | undefined;
 }
 export declare const DeviceToken: MessageFns<DeviceToken>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -14,10 +14,10 @@ export const protobufPackage = "organization_service";
 
 export interface CreateCampusRequest {
   context: RequestContext | undefined;
-  name: string;
-  address: string;
-  email: string;
-  phone: string;
+  name?: string | undefined;
+  address?: string | undefined;
+  email?: string | undefined;
+  phone?: string | undefined;
   principal_id: ObjectId | undefined;
   supervisor_id: ObjectId | undefined;
 }
@@ -25,10 +25,10 @@ export interface CreateCampusRequest {
 export interface UpdateCampusRequest {
   context: RequestContext | undefined;
   id: ObjectId | undefined;
-  name: string;
-  address: string;
-  email: string;
-  phone: string;
+  name?: string | undefined;
+  address?: string | undefined;
+  email?: string | undefined;
+  phone?: string | undefined;
   principal_id: ObjectId | undefined;
   supervisor_id: ObjectId | undefined;
 }
@@ -36,8 +36,8 @@ export interface UpdateCampusRequest {
 export interface UpdateLogoRequest {
   context: RequestContext | undefined;
   campus_id: ObjectId | undefined;
-  file_name: string;
-  aws_s3_file_location: string;
+  file_name?: string | undefined;
+  aws_s3_file_location?: string | undefined;
 }
 
 export interface GetCampusRequest {
@@ -57,10 +57,10 @@ export interface GetOrganizationCampusesResponse {
 function createBaseCreateCampusRequest(): CreateCampusRequest {
   return {
     context: undefined,
-    name: "",
-    address: "",
-    email: "",
-    phone: "",
+    name: undefined,
+    address: undefined,
+    email: undefined,
+    phone: undefined,
     principal_id: undefined,
     supervisor_id: undefined,
   };
@@ -71,16 +71,16 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.address !== "") {
+    if (message.address !== undefined) {
       writer.uint32(26).string(message.address);
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(34).string(message.email);
     }
-    if (message.phone !== "") {
+    if (message.phone !== undefined) {
       writer.uint32(42).string(message.phone);
     }
     if (message.principal_id !== undefined) {
@@ -160,10 +160,10 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
   fromJSON(object: any): CreateCampusRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
-      phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      address: isSet(object.address) ? globalThis.String(object.address) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      phone: isSet(object.phone) ? globalThis.String(object.phone) : undefined,
       principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
       supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
     };
@@ -174,16 +174,16 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.address !== "") {
+    if (message.address !== undefined) {
       obj.address = message.address;
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
-    if (message.phone !== "") {
+    if (message.phone !== undefined) {
       obj.phone = message.phone;
     }
     if (message.principal_id !== undefined) {
@@ -203,10 +203,10 @@ export const CreateCampusRequest: MessageFns<CreateCampusRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
-    message.address = object.address ?? "";
-    message.email = object.email ?? "";
-    message.phone = object.phone ?? "";
+    message.name = object.name ?? undefined;
+    message.address = object.address ?? undefined;
+    message.email = object.email ?? undefined;
+    message.phone = object.phone ?? undefined;
     message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
       ? ObjectId.fromPartial(object.principal_id)
       : undefined;
@@ -221,10 +221,10 @@ function createBaseUpdateCampusRequest(): UpdateCampusRequest {
   return {
     context: undefined,
     id: undefined,
-    name: "",
-    address: "",
-    email: "",
-    phone: "",
+    name: undefined,
+    address: undefined,
+    email: undefined,
+    phone: undefined,
     principal_id: undefined,
     supervisor_id: undefined,
   };
@@ -238,16 +238,16 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
-    if (message.address !== "") {
+    if (message.address !== undefined) {
       writer.uint32(34).string(message.address);
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(42).string(message.email);
     }
-    if (message.phone !== "") {
+    if (message.phone !== undefined) {
       writer.uint32(50).string(message.phone);
     }
     if (message.principal_id !== undefined) {
@@ -335,10 +335,10 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
-      phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      address: isSet(object.address) ? globalThis.String(object.address) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      phone: isSet(object.phone) ? globalThis.String(object.phone) : undefined,
       principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
       supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
     };
@@ -352,16 +352,16 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.address !== "") {
+    if (message.address !== undefined) {
       obj.address = message.address;
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
-    if (message.phone !== "") {
+    if (message.phone !== undefined) {
       obj.phone = message.phone;
     }
     if (message.principal_id !== undefined) {
@@ -382,10 +382,10 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.name = object.name ?? "";
-    message.address = object.address ?? "";
-    message.email = object.email ?? "";
-    message.phone = object.phone ?? "";
+    message.name = object.name ?? undefined;
+    message.address = object.address ?? undefined;
+    message.email = object.email ?? undefined;
+    message.phone = object.phone ?? undefined;
     message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
       ? ObjectId.fromPartial(object.principal_id)
       : undefined;
@@ -397,7 +397,7 @@ export const UpdateCampusRequest: MessageFns<UpdateCampusRequest> = {
 };
 
 function createBaseUpdateLogoRequest(): UpdateLogoRequest {
-  return { context: undefined, campus_id: undefined, file_name: "", aws_s3_file_location: "" };
+  return { context: undefined, campus_id: undefined, file_name: undefined, aws_s3_file_location: undefined };
 }
 
 export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
@@ -408,10 +408,10 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     if (message.campus_id !== undefined) {
       ObjectId.encode(message.campus_id, writer.uint32(18).fork()).join();
     }
-    if (message.file_name !== "") {
+    if (message.file_name !== undefined) {
       writer.uint32(26).string(message.file_name);
     }
-    if (message.aws_s3_file_location !== "") {
+    if (message.aws_s3_file_location !== undefined) {
       writer.uint32(34).string(message.aws_s3_file_location);
     }
     return writer;
@@ -465,8 +465,8 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
-      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : undefined,
     };
   },
 
@@ -478,10 +478,10 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     if (message.campus_id !== undefined) {
       obj.campusId = ObjectId.toJSON(message.campus_id);
     }
-    if (message.file_name !== "") {
+    if (message.file_name !== undefined) {
       obj.fileName = message.file_name;
     }
-    if (message.aws_s3_file_location !== "") {
+    if (message.aws_s3_file_location !== undefined) {
       obj.awsS3FileLocation = message.aws_s3_file_location;
     }
     return obj;
@@ -498,8 +498,8 @@ export const UpdateLogoRequest: MessageFns<UpdateLogoRequest> = {
     message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
       ? ObjectId.fromPartial(object.campus_id)
       : undefined;
-    message.file_name = object.file_name ?? "";
-    message.aws_s3_file_location = object.aws_s3_file_location ?? "";
+    message.file_name = object.file_name ?? undefined;
+    message.aws_s3_file_location = object.aws_s3_file_location ?? undefined;
     return message;
   },
 };

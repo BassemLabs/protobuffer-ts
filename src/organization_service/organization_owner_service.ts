@@ -13,13 +13,13 @@ export const protobufPackage = "organization_service";
 
 export interface CreateOwnerRequest {
   context: RequestContext | undefined;
-  name: string;
-  email: string;
+  name?: string | undefined;
+  email?: string | undefined;
 }
 
 export interface GetOwnerByEmailRequest {
   context: RequestContext | undefined;
-  email: string;
+  email?: string | undefined;
 }
 
 export interface GetOwnerRequest {
@@ -39,7 +39,7 @@ export interface UpdateOwnerProfileRequest {
 }
 
 function createBaseCreateOwnerRequest(): CreateOwnerRequest {
-  return { context: undefined, name: "", email: "" };
+  return { context: undefined, name: undefined, email: undefined };
 }
 
 export const CreateOwnerRequest: MessageFns<CreateOwnerRequest> = {
@@ -47,10 +47,10 @@ export const CreateOwnerRequest: MessageFns<CreateOwnerRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(26).string(message.email);
     }
     return writer;
@@ -96,8 +96,8 @@ export const CreateOwnerRequest: MessageFns<CreateOwnerRequest> = {
   fromJSON(object: any): CreateOwnerRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
     };
   },
 
@@ -106,10 +106,10 @@ export const CreateOwnerRequest: MessageFns<CreateOwnerRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
     return obj;
@@ -123,14 +123,14 @@ export const CreateOwnerRequest: MessageFns<CreateOwnerRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
-    message.email = object.email ?? "";
+    message.name = object.name ?? undefined;
+    message.email = object.email ?? undefined;
     return message;
   },
 };
 
 function createBaseGetOwnerByEmailRequest(): GetOwnerByEmailRequest {
-  return { context: undefined, email: "" };
+  return { context: undefined, email: undefined };
 }
 
 export const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest> = {
@@ -138,7 +138,7 @@ export const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(18).string(message.email);
     }
     return writer;
@@ -177,7 +177,7 @@ export const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest> = {
   fromJSON(object: any): GetOwnerByEmailRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
     };
   },
 
@@ -186,7 +186,7 @@ export const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
     return obj;
@@ -200,7 +200,7 @@ export const GetOwnerByEmailRequest: MessageFns<GetOwnerByEmailRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.email = object.email ?? "";
+    message.email = object.email ?? undefined;
     return message;
   },
 };
@@ -343,7 +343,7 @@ export const GetOrganizationOwnerRequest: MessageFns<GetOrganizationOwnerRequest
 };
 
 function createBaseUpdateOwnerProfileRequest(): UpdateOwnerProfileRequest {
-  return { context: undefined, name: "", main_address: "", phone_number: "" };
+  return { context: undefined, name: undefined, main_address: undefined, phone_number: undefined };
 }
 
 export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = {
@@ -351,13 +351,13 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== undefined && message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.main_address !== undefined && message.main_address !== "") {
+    if (message.main_address !== undefined) {
       writer.uint32(26).string(message.main_address);
     }
-    if (message.phone_number !== undefined && message.phone_number !== "") {
+    if (message.phone_number !== undefined) {
       writer.uint32(34).string(message.phone_number);
     }
     return writer;
@@ -410,9 +410,9 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
   fromJSON(object: any): UpdateOwnerProfileRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-      phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : undefined,
+      phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : undefined,
     };
   },
 
@@ -421,13 +421,13 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== undefined && message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.main_address !== undefined && message.main_address !== "") {
+    if (message.main_address !== undefined) {
       obj.mainAddress = message.main_address;
     }
-    if (message.phone_number !== undefined && message.phone_number !== "") {
+    if (message.phone_number !== undefined) {
       obj.phoneNumber = message.phone_number;
     }
     return obj;
@@ -441,9 +441,9 @@ export const UpdateOwnerProfileRequest: MessageFns<UpdateOwnerProfileRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
-    message.main_address = object.main_address ?? "";
-    message.phone_number = object.phone_number ?? "";
+    message.name = object.name ?? undefined;
+    message.main_address = object.main_address ?? undefined;
+    message.phone_number = object.phone_number ?? undefined;
     return message;
   },
 };

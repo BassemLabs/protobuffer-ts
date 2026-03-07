@@ -24,21 +24,21 @@ export declare function tuitionInvoiceStatusFromJSON(object: any): TuitionInvoic
 export declare function tuitionInvoiceStatusToJSON(object: TuitionInvoiceStatus): string;
 export declare function tuitionInvoiceStatusToNumber(object: TuitionInvoiceStatus): number;
 export interface TuitionPlanSnapshot {
-    name: string;
-    schedule_type: PaymentScheduleType;
+    name?: string | undefined;
+    schedule_type?: PaymentScheduleType | undefined;
     day_of_month?: number | undefined;
     installments: PaymentInstallment[];
     start_date: Date | undefined;
     end_date: Date | undefined;
 }
 export interface TuitionInvoiceLineItem {
-    line_type: LineType;
-    scope: Scope;
+    line_type?: LineType | undefined;
+    scope?: Scope | undefined;
     /** present when scope = STUDENT_SCOPE */
     student?: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     /** might be negative for discounts */
-    amount: number;
+    amount?: number | undefined;
     /** status at time of invoice creation */
     student_status?: StudentStatus | undefined;
 }
@@ -49,9 +49,9 @@ export interface TuitionInvoice {
     family: ObjectId | undefined;
     tuition_plan: TuitionPlanSnapshot | undefined;
     line_items: TuitionInvoiceLineItem[];
-    total_gross: number;
-    total_discounts: number;
-    total_net: number;
+    total_gross?: number | undefined;
+    total_discounts?: number | undefined;
+    total_net?: number | undefined;
     /** Store the original plan ID for regeneration */
     tuition_plan_id: ObjectId | undefined;
     /** Hypothetical totals if all admitted students were enrolled */

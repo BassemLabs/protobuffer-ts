@@ -11,7 +11,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseAbstractCategoryGroup() {
-    return { id: undefined, organization: undefined, name: "", credits_required: 0, category_ids: [] };
+    return { id: undefined, organization: undefined, name: undefined, credits_required: undefined, category_ids: [] };
 }
 exports.AbstractCategoryGroup = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -21,10 +21,10 @@ exports.AbstractCategoryGroup = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.credits_required !== 0) {
+        if (message.credits_required !== undefined) {
             writer.uint32(33).double(message.credits_required);
         }
         for (const v of message.category_ids) {
@@ -81,8 +81,8 @@ exports.AbstractCategoryGroup = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
             category_ids: globalThis.Array.isArray(object?.categoryIds)
                 ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
@@ -96,10 +96,10 @@ exports.AbstractCategoryGroup = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.credits_required !== 0) {
+        if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
         if (message.category_ids?.length) {
@@ -116,8 +116,8 @@ exports.AbstractCategoryGroup = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.name = object.name ?? "";
-        message.credits_required = object.credits_required ?? 0;
+        message.name = object.name ?? undefined;
+        message.credits_required = object.credits_required ?? undefined;
         message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },

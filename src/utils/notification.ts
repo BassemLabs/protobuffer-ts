@@ -76,14 +76,14 @@ export interface Notification {
   organization: ObjectId | undefined;
   broadcast_id?: ObjectId | undefined;
   title?: string | undefined;
-  body: string;
+  body?: string | undefined;
   created: Date | undefined;
-  created_by: UserType;
+  created_by?: UserType | undefined;
   created_by_id: ObjectId | undefined;
-  status: NotificationStatus;
+  status?: NotificationStatus | undefined;
   error_message?: string | undefined;
   notification_type: NotificationType[];
-  notification_destination_user: UserType;
+  notification_destination_user?: UserType | undefined;
   notification_destination_user_id: ObjectId | undefined;
   notification_destination_email?: string | undefined;
   notification_destination_phone?: string | undefined;
@@ -96,20 +96,20 @@ function createBaseNotification(): Notification {
     id: undefined,
     organization: undefined,
     broadcast_id: undefined,
-    title: "",
-    body: "",
+    title: undefined,
+    body: undefined,
     created: undefined,
-    created_by: UserType.NONE,
+    created_by: undefined,
     created_by_id: undefined,
-    status: NotificationStatus.QUEUED,
-    error_message: "",
+    status: undefined,
+    error_message: undefined,
     notification_type: [],
-    notification_destination_user: UserType.NONE,
+    notification_destination_user: undefined,
     notification_destination_user_id: undefined,
-    notification_destination_email: "",
-    notification_destination_phone: "",
+    notification_destination_email: undefined,
+    notification_destination_phone: undefined,
     date_to_send: undefined,
-    deep_link: "",
+    deep_link: undefined,
   };
 }
 
@@ -124,25 +124,25 @@ export const Notification: MessageFns<Notification> = {
     if (message.broadcast_id !== undefined) {
       ObjectId.encode(message.broadcast_id, writer.uint32(26).fork()).join();
     }
-    if (message.title !== undefined && message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(34).string(message.title);
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       writer.uint32(42).string(message.body);
     }
     if (message.created !== undefined) {
       Timestamp.encode(toTimestamp(message.created), writer.uint32(50).fork()).join();
     }
-    if (message.created_by !== UserType.NONE) {
+    if (message.created_by !== undefined) {
       writer.uint32(56).int32(userTypeToNumber(message.created_by));
     }
     if (message.created_by_id !== undefined) {
       ObjectId.encode(message.created_by_id, writer.uint32(66).fork()).join();
     }
-    if (message.status !== NotificationStatus.QUEUED) {
+    if (message.status !== undefined) {
       writer.uint32(72).int32(notificationStatusToNumber(message.status));
     }
-    if (message.error_message !== undefined && message.error_message !== "") {
+    if (message.error_message !== undefined) {
       writer.uint32(82).string(message.error_message);
     }
     writer.uint32(90).fork();
@@ -150,22 +150,22 @@ export const Notification: MessageFns<Notification> = {
       writer.int32(notificationTypeToNumber(v));
     }
     writer.join();
-    if (message.notification_destination_user !== UserType.NONE) {
+    if (message.notification_destination_user !== undefined) {
       writer.uint32(96).int32(userTypeToNumber(message.notification_destination_user));
     }
     if (message.notification_destination_user_id !== undefined) {
       ObjectId.encode(message.notification_destination_user_id, writer.uint32(106).fork()).join();
     }
-    if (message.notification_destination_email !== undefined && message.notification_destination_email !== "") {
+    if (message.notification_destination_email !== undefined) {
       writer.uint32(114).string(message.notification_destination_email);
     }
-    if (message.notification_destination_phone !== undefined && message.notification_destination_phone !== "") {
+    if (message.notification_destination_phone !== undefined) {
       writer.uint32(122).string(message.notification_destination_phone);
     }
     if (message.date_to_send !== undefined) {
       Timestamp.encode(toTimestamp(message.date_to_send), writer.uint32(130).fork()).join();
     }
-    if (message.deep_link !== undefined && message.deep_link !== "") {
+    if (message.deep_link !== undefined) {
       writer.uint32(138).string(message.deep_link);
     }
     return writer;
@@ -321,30 +321,30 @@ export const Notification: MessageFns<Notification> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       broadcast_id: isSet(object.broadcastId) ? ObjectId.fromJSON(object.broadcastId) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      body: isSet(object.body) ? globalThis.String(object.body) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
       created: isSet(object.created) ? fromJsonTimestamp(object.created) : undefined,
-      created_by: isSet(object.createdBy) ? userTypeFromJSON(object.createdBy) : UserType.NONE,
+      created_by: isSet(object.createdBy) ? userTypeFromJSON(object.createdBy) : undefined,
       created_by_id: isSet(object.createdById) ? ObjectId.fromJSON(object.createdById) : undefined,
-      status: isSet(object.status) ? notificationStatusFromJSON(object.status) : NotificationStatus.QUEUED,
-      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : "",
+      status: isSet(object.status) ? notificationStatusFromJSON(object.status) : undefined,
+      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : undefined,
       notification_type: globalThis.Array.isArray(object?.notificationType)
         ? object.notificationType.map((e: any) => notificationTypeFromJSON(e))
         : [],
       notification_destination_user: isSet(object.notificationDestinationUser)
         ? userTypeFromJSON(object.notificationDestinationUser)
-        : UserType.NONE,
+        : undefined,
       notification_destination_user_id: isSet(object.notificationDestinationUserId)
         ? ObjectId.fromJSON(object.notificationDestinationUserId)
         : undefined,
       notification_destination_email: isSet(object.notificationDestinationEmail)
         ? globalThis.String(object.notificationDestinationEmail)
-        : "",
+        : undefined,
       notification_destination_phone: isSet(object.notificationDestinationPhone)
         ? globalThis.String(object.notificationDestinationPhone)
-        : "",
+        : undefined,
       date_to_send: isSet(object.dateToSend) ? fromJsonTimestamp(object.dateToSend) : undefined,
-      deep_link: isSet(object.deepLink) ? globalThis.String(object.deepLink) : "",
+      deep_link: isSet(object.deepLink) ? globalThis.String(object.deepLink) : undefined,
     };
   },
 
@@ -359,46 +359,46 @@ export const Notification: MessageFns<Notification> = {
     if (message.broadcast_id !== undefined) {
       obj.broadcastId = ObjectId.toJSON(message.broadcast_id);
     }
-    if (message.title !== undefined && message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.body !== "") {
+    if (message.body !== undefined) {
       obj.body = message.body;
     }
     if (message.created !== undefined) {
       obj.created = message.created.toISOString();
     }
-    if (message.created_by !== UserType.NONE) {
+    if (message.created_by !== undefined) {
       obj.createdBy = userTypeToJSON(message.created_by);
     }
     if (message.created_by_id !== undefined) {
       obj.createdById = ObjectId.toJSON(message.created_by_id);
     }
-    if (message.status !== NotificationStatus.QUEUED) {
+    if (message.status !== undefined) {
       obj.status = notificationStatusToJSON(message.status);
     }
-    if (message.error_message !== undefined && message.error_message !== "") {
+    if (message.error_message !== undefined) {
       obj.errorMessage = message.error_message;
     }
     if (message.notification_type?.length) {
       obj.notificationType = message.notification_type.map((e) => notificationTypeToJSON(e));
     }
-    if (message.notification_destination_user !== UserType.NONE) {
+    if (message.notification_destination_user !== undefined) {
       obj.notificationDestinationUser = userTypeToJSON(message.notification_destination_user);
     }
     if (message.notification_destination_user_id !== undefined) {
       obj.notificationDestinationUserId = ObjectId.toJSON(message.notification_destination_user_id);
     }
-    if (message.notification_destination_email !== undefined && message.notification_destination_email !== "") {
+    if (message.notification_destination_email !== undefined) {
       obj.notificationDestinationEmail = message.notification_destination_email;
     }
-    if (message.notification_destination_phone !== undefined && message.notification_destination_phone !== "") {
+    if (message.notification_destination_phone !== undefined) {
       obj.notificationDestinationPhone = message.notification_destination_phone;
     }
     if (message.date_to_send !== undefined) {
       obj.dateToSend = message.date_to_send.toISOString();
     }
-    if (message.deep_link !== undefined && message.deep_link !== "") {
+    if (message.deep_link !== undefined) {
       obj.deepLink = message.deep_link;
     }
     return obj;
@@ -416,25 +416,25 @@ export const Notification: MessageFns<Notification> = {
     message.broadcast_id = (object.broadcast_id !== undefined && object.broadcast_id !== null)
       ? ObjectId.fromPartial(object.broadcast_id)
       : undefined;
-    message.title = object.title ?? "";
-    message.body = object.body ?? "";
+    message.title = object.title ?? undefined;
+    message.body = object.body ?? undefined;
     message.created = object.created ?? undefined;
-    message.created_by = object.created_by ?? UserType.NONE;
+    message.created_by = object.created_by ?? undefined;
     message.created_by_id = (object.created_by_id !== undefined && object.created_by_id !== null)
       ? ObjectId.fromPartial(object.created_by_id)
       : undefined;
-    message.status = object.status ?? NotificationStatus.QUEUED;
-    message.error_message = object.error_message ?? "";
+    message.status = object.status ?? undefined;
+    message.error_message = object.error_message ?? undefined;
     message.notification_type = object.notification_type?.map((e) => e) || [];
-    message.notification_destination_user = object.notification_destination_user ?? UserType.NONE;
+    message.notification_destination_user = object.notification_destination_user ?? undefined;
     message.notification_destination_user_id =
       (object.notification_destination_user_id !== undefined && object.notification_destination_user_id !== null)
         ? ObjectId.fromPartial(object.notification_destination_user_id)
         : undefined;
-    message.notification_destination_email = object.notification_destination_email ?? "";
-    message.notification_destination_phone = object.notification_destination_phone ?? "";
+    message.notification_destination_email = object.notification_destination_email ?? undefined;
+    message.notification_destination_phone = object.notification_destination_phone ?? undefined;
     message.date_to_send = object.date_to_send ?? undefined;
-    message.deep_link = object.deep_link ?? "";
+    message.deep_link = object.deep_link ?? undefined;
     return message;
   },
 };

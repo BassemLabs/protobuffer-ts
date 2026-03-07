@@ -15,10 +15,10 @@ function createBaseReportLayout() {
         id: undefined,
         organization_id: undefined,
         course_id: undefined,
-        comment_char_limit: 0,
+        comment_char_limit: undefined,
         sections: [],
         check_boxes: [],
-        credit_weight: 0,
+        credit_weight: undefined,
     };
 }
 exports.ReportLayout = {
@@ -32,7 +32,7 @@ exports.ReportLayout = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
         }
-        if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
+        if (message.comment_char_limit !== undefined) {
             writer.uint32(32).uint32(message.comment_char_limit);
         }
         for (const v of message.sections) {
@@ -41,7 +41,7 @@ exports.ReportLayout = {
         for (const v of message.check_boxes) {
             exports.ReportCheckBoxLayout.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.credit_weight !== 0) {
+        if (message.credit_weight !== undefined) {
             writer.uint32(61).float(message.credit_weight);
         }
         return writer;
@@ -108,14 +108,14 @@ exports.ReportLayout = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
+            comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : undefined,
             sections: globalThis.Array.isArray(object?.sections)
                 ? object.sections.map((e) => exports.ReportLayoutSection.fromJSON(e))
                 : [],
             check_boxes: globalThis.Array.isArray(object?.checkBoxes)
                 ? object.checkBoxes.map((e) => exports.ReportCheckBoxLayout.fromJSON(e))
                 : [],
-            credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
+            credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : undefined,
         };
     },
     toJSON(message) {
@@ -129,7 +129,7 @@ exports.ReportLayout = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
+        if (message.comment_char_limit !== undefined) {
             obj.commentCharLimit = Math.round(message.comment_char_limit);
         }
         if (message.sections?.length) {
@@ -138,7 +138,7 @@ exports.ReportLayout = {
         if (message.check_boxes?.length) {
             obj.checkBoxes = message.check_boxes.map((e) => exports.ReportCheckBoxLayout.toJSON(e));
         }
-        if (message.credit_weight !== 0) {
+        if (message.credit_weight !== undefined) {
             obj.creditWeight = message.credit_weight;
         }
         return obj;
@@ -155,22 +155,22 @@ exports.ReportLayout = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.comment_char_limit = object.comment_char_limit ?? 0;
+        message.comment_char_limit = object.comment_char_limit ?? undefined;
         message.sections = object.sections?.map((e) => exports.ReportLayoutSection.fromPartial(e)) || [];
         message.check_boxes = object.check_boxes?.map((e) => exports.ReportCheckBoxLayout.fromPartial(e)) || [];
-        message.credit_weight = object.credit_weight ?? 0;
+        message.credit_weight = object.credit_weight ?? undefined;
         return message;
     },
 };
 function createBaseReportLayoutSection() {
-    return { id: undefined, name: "" };
+    return { id: undefined, name: undefined };
 }
 exports.ReportLayoutSection = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
         return writer;
@@ -205,7 +205,7 @@ exports.ReportLayoutSection = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
         };
     },
     toJSON(message) {
@@ -213,7 +213,7 @@ exports.ReportLayoutSection = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
         return obj;
@@ -224,19 +224,19 @@ exports.ReportLayoutSection = {
     fromPartial(object) {
         const message = createBaseReportLayoutSection();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.name = object.name ?? "";
+        message.name = object.name ?? undefined;
         return message;
     },
 };
 function createBaseReportCheckBoxLayout() {
-    return { id: undefined, name: "" };
+    return { id: undefined, name: undefined };
 }
 exports.ReportCheckBoxLayout = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
         return writer;
@@ -271,7 +271,7 @@ exports.ReportCheckBoxLayout = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
         };
     },
     toJSON(message) {
@@ -279,7 +279,7 @@ exports.ReportCheckBoxLayout = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
         return obj;
@@ -290,7 +290,7 @@ exports.ReportCheckBoxLayout = {
     fromPartial(object) {
         const message = createBaseReportCheckBoxLayout();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.name = object.name ?? "";
+        message.name = object.name ?? undefined;
         return message;
     },
 };

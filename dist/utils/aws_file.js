@@ -10,14 +10,14 @@ exports.AWSFile = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "utils";
 function createBaseAWSFile() {
-    return { file_name: "", pre_signed_url: "" };
+    return { file_name: undefined, pre_signed_url: undefined };
 }
 exports.AWSFile = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.file_name !== "") {
+        if (message.file_name !== undefined) {
             writer.uint32(10).string(message.file_name);
         }
-        if (message.pre_signed_url !== "") {
+        if (message.pre_signed_url !== undefined) {
             writer.uint32(18).string(message.pre_signed_url);
         }
         return writer;
@@ -51,16 +51,16 @@ exports.AWSFile = {
     },
     fromJSON(object) {
         return {
-            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-            pre_signed_url: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : "",
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+            pre_signed_url: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.file_name !== "") {
+        if (message.file_name !== undefined) {
             obj.fileName = message.file_name;
         }
-        if (message.pre_signed_url !== "") {
+        if (message.pre_signed_url !== undefined) {
             obj.preSignedUrl = message.pre_signed_url;
         }
         return obj;
@@ -70,8 +70,8 @@ exports.AWSFile = {
     },
     fromPartial(object) {
         const message = createBaseAWSFile();
-        message.file_name = object.file_name ?? "";
-        message.pre_signed_url = object.pre_signed_url ?? "";
+        message.file_name = object.file_name ?? undefined;
+        message.pre_signed_url = object.pre_signed_url ?? undefined;
         return message;
     },
 };

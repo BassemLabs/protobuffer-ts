@@ -25,15 +25,15 @@ export interface GetAdmittedStudentsActionsOverviewResponse {
 
 export interface StudentActionSummary {
   student_id: ObjectId | undefined;
-  student_name: string;
-  description: string;
+  student_name?: string | undefined;
+  description?: string | undefined;
   is_reregistration?: boolean | undefined;
-  actions_count: number;
+  actions_count?: number | undefined;
 }
 
 export interface FamilyActionSummary {
   family_id: ObjectId | undefined;
-  description: string;
+  description?: string | undefined;
 }
 
 export interface GetStudentFirstOnboardingRequiredActionRequest {
@@ -255,7 +255,13 @@ export const GetAdmittedStudentsActionsOverviewResponse: MessageFns<GetAdmittedS
 };
 
 function createBaseStudentActionSummary(): StudentActionSummary {
-  return { student_id: undefined, student_name: "", description: "", is_reregistration: false, actions_count: 0 };
+  return {
+    student_id: undefined,
+    student_name: undefined,
+    description: undefined,
+    is_reregistration: undefined,
+    actions_count: undefined,
+  };
 }
 
 export const StudentActionSummary: MessageFns<StudentActionSummary> = {
@@ -263,16 +269,16 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
     }
-    if (message.student_name !== "") {
+    if (message.student_name !== undefined) {
       writer.uint32(18).string(message.student_name);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(26).string(message.description);
     }
-    if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+    if (message.is_reregistration !== undefined) {
       writer.uint32(32).bool(message.is_reregistration);
     }
-    if (message.actions_count !== 0) {
+    if (message.actions_count !== undefined) {
       writer.uint32(40).int32(message.actions_count);
     }
     return writer;
@@ -332,10 +338,10 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
   fromJSON(object: any): StudentActionSummary {
     return {
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : false,
-      actions_count: isSet(object.actionsCount) ? globalThis.Number(object.actionsCount) : 0,
+      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : undefined,
+      actions_count: isSet(object.actionsCount) ? globalThis.Number(object.actionsCount) : undefined,
     };
   },
 
@@ -344,16 +350,16 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.student_name !== "") {
+    if (message.student_name !== undefined) {
       obj.studentName = message.student_name;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+    if (message.is_reregistration !== undefined) {
       obj.isReregistration = message.is_reregistration;
     }
-    if (message.actions_count !== 0) {
+    if (message.actions_count !== undefined) {
       obj.actionsCount = Math.round(message.actions_count);
     }
     return obj;
@@ -367,16 +373,16 @@ export const StudentActionSummary: MessageFns<StudentActionSummary> = {
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.student_name = object.student_name ?? "";
-    message.description = object.description ?? "";
-    message.is_reregistration = object.is_reregistration ?? false;
-    message.actions_count = object.actions_count ?? 0;
+    message.student_name = object.student_name ?? undefined;
+    message.description = object.description ?? undefined;
+    message.is_reregistration = object.is_reregistration ?? undefined;
+    message.actions_count = object.actions_count ?? undefined;
     return message;
   },
 };
 
 function createBaseFamilyActionSummary(): FamilyActionSummary {
-  return { family_id: undefined, description: "" };
+  return { family_id: undefined, description: undefined };
 }
 
 export const FamilyActionSummary: MessageFns<FamilyActionSummary> = {
@@ -384,7 +390,7 @@ export const FamilyActionSummary: MessageFns<FamilyActionSummary> = {
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(10).fork()).join();
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(18).string(message.description);
     }
     return writer;
@@ -423,7 +429,7 @@ export const FamilyActionSummary: MessageFns<FamilyActionSummary> = {
   fromJSON(object: any): FamilyActionSummary {
     return {
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
     };
   },
 
@@ -432,7 +438,7 @@ export const FamilyActionSummary: MessageFns<FamilyActionSummary> = {
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
     return obj;
@@ -446,7 +452,7 @@ export const FamilyActionSummary: MessageFns<FamilyActionSummary> = {
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
-    message.description = object.description ?? "";
+    message.description = object.description ?? undefined;
     return message;
   },
 };

@@ -12,7 +12,7 @@ const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseEvaluationEntry() {
-    return { id: undefined, evaluation_id: undefined, student: undefined, mark: 0, last_published_at: undefined };
+    return { id: undefined, evaluation_id: undefined, student: undefined, mark: undefined, last_published_at: undefined };
 }
 exports.EvaluationEntry = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -25,7 +25,7 @@ exports.EvaluationEntry = {
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(26).fork()).join();
         }
-        if (message.mark !== 0) {
+        if (message.mark !== undefined) {
             writer.uint32(33).double(message.mark);
         }
         if (message.last_published_at !== undefined) {
@@ -83,7 +83,7 @@ exports.EvaluationEntry = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             evaluation_id: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
+            mark: isSet(object.mark) ? globalThis.Number(object.mark) : undefined,
             last_published_at: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
         };
     },
@@ -98,7 +98,7 @@ exports.EvaluationEntry = {
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
-        if (message.mark !== 0) {
+        if (message.mark !== undefined) {
             obj.mark = message.mark;
         }
         if (message.last_published_at !== undefined) {
@@ -118,7 +118,7 @@ exports.EvaluationEntry = {
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
-        message.mark = object.mark ?? 0;
+        message.mark = object.mark ?? undefined;
         message.last_published_at = object.last_published_at ?? undefined;
         return message;
     },

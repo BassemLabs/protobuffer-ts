@@ -39,7 +39,7 @@ export interface ListAbstractCoursesRequest {
 
 export interface ListAbstractCoursesResponse {
   abstract_courses: AbstractCourse[];
-  total: number;
+  total?: number | undefined;
 }
 
 export interface GetAbstractCourseRequest {
@@ -49,15 +49,15 @@ export interface GetAbstractCourseRequest {
 
 export interface CreateAbstractCategoryRequest {
   context: RequestContext | undefined;
-  name: string;
-  credits_required: number;
+  name?: string | undefined;
+  credits_required?: number | undefined;
 }
 
 export interface UpdateAbstractCategoryRequest {
   context: RequestContext | undefined;
   abstract_category_id: ObjectId | undefined;
-  name: string;
-  credits_required: number;
+  name?: string | undefined;
+  credits_required?: number | undefined;
 }
 
 export interface DeleteAbstractCategoryRequest {
@@ -67,35 +67,35 @@ export interface DeleteAbstractCategoryRequest {
 
 export interface CreateAbstractCategoryGroupRequest {
   context: RequestContext | undefined;
-  name: string;
-  credits_required: number;
+  name?: string | undefined;
+  credits_required?: number | undefined;
   category_ids: ObjectId[];
 }
 
 export interface UpdateAbstractCategoryGroupRequest {
   context: RequestContext | undefined;
   abstract_category_group_id: ObjectId | undefined;
-  name: string;
-  credits_required: number;
+  name?: string | undefined;
+  credits_required?: number | undefined;
   category_ids: ObjectId[];
 }
 
 export interface CreateAbstractCourseRequest {
   context: RequestContext | undefined;
-  course_code: string;
-  official_name: string;
-  credit: number;
-  mandatory: boolean;
+  course_code?: string | undefined;
+  official_name?: string | undefined;
+  credit?: number | undefined;
+  mandatory?: boolean | undefined;
   category_ids: ObjectId[];
 }
 
 export interface UpdateAbstractCourseRequest {
   context: RequestContext | undefined;
   abstract_course_id: ObjectId | undefined;
-  course_code: string;
-  official_name: string;
-  credit: number;
-  mandatory: boolean;
+  course_code?: string | undefined;
+  official_name?: string | undefined;
+  credit?: number | undefined;
+  mandatory?: boolean | undefined;
   category_ids: ObjectId[];
 }
 
@@ -358,7 +358,7 @@ export const ListAbstractCategoryGroupsResponse: MessageFns<ListAbstractCategory
 };
 
 function createBaseListAbstractCoursesRequest(): ListAbstractCoursesRequest {
-  return { context: undefined, per_page: 0, page: 0, search: "" };
+  return { context: undefined, per_page: undefined, page: undefined, search: undefined };
 }
 
 export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> = {
@@ -366,13 +366,13 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.per_page !== undefined && message.per_page !== 0) {
+    if (message.per_page !== undefined) {
       writer.uint32(16).uint64(message.per_page);
     }
-    if (message.page !== undefined && message.page !== 0) {
+    if (message.page !== undefined) {
       writer.uint32(24).uint64(message.page);
     }
-    if (message.search !== undefined && message.search !== "") {
+    if (message.search !== undefined) {
       writer.uint32(34).string(message.search);
     }
     return writer;
@@ -425,9 +425,9 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
   fromJSON(object: any): ListAbstractCoursesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      search: isSet(object.search) ? globalThis.String(object.search) : "",
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+      search: isSet(object.search) ? globalThis.String(object.search) : undefined,
     };
   },
 
@@ -436,13 +436,13 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.per_page !== undefined && message.per_page !== 0) {
+    if (message.per_page !== undefined) {
       obj.perPage = Math.round(message.per_page);
     }
-    if (message.page !== undefined && message.page !== 0) {
+    if (message.page !== undefined) {
       obj.page = Math.round(message.page);
     }
-    if (message.search !== undefined && message.search !== "") {
+    if (message.search !== undefined) {
       obj.search = message.search;
     }
     return obj;
@@ -456,15 +456,15 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.per_page = object.per_page ?? 0;
-    message.page = object.page ?? 0;
-    message.search = object.search ?? "";
+    message.per_page = object.per_page ?? undefined;
+    message.page = object.page ?? undefined;
+    message.search = object.search ?? undefined;
     return message;
   },
 };
 
 function createBaseListAbstractCoursesResponse(): ListAbstractCoursesResponse {
-  return { abstract_courses: [], total: 0 };
+  return { abstract_courses: [], total: undefined };
 }
 
 export const ListAbstractCoursesResponse: MessageFns<ListAbstractCoursesResponse> = {
@@ -472,7 +472,7 @@ export const ListAbstractCoursesResponse: MessageFns<ListAbstractCoursesResponse
     for (const v of message.abstract_courses) {
       AbstractCourse.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.total !== 0) {
+    if (message.total !== undefined) {
       writer.uint32(16).uint64(message.total);
     }
     return writer;
@@ -513,7 +513,7 @@ export const ListAbstractCoursesResponse: MessageFns<ListAbstractCoursesResponse
       abstract_courses: globalThis.Array.isArray(object?.abstractCourses)
         ? object.abstractCourses.map((e: any) => AbstractCourse.fromJSON(e))
         : [],
-      total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+      total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
     };
   },
 
@@ -522,7 +522,7 @@ export const ListAbstractCoursesResponse: MessageFns<ListAbstractCoursesResponse
     if (message.abstract_courses?.length) {
       obj.abstractCourses = message.abstract_courses.map((e) => AbstractCourse.toJSON(e));
     }
-    if (message.total !== 0) {
+    if (message.total !== undefined) {
       obj.total = Math.round(message.total);
     }
     return obj;
@@ -534,7 +534,7 @@ export const ListAbstractCoursesResponse: MessageFns<ListAbstractCoursesResponse
   fromPartial<I extends Exact<DeepPartial<ListAbstractCoursesResponse>, I>>(object: I): ListAbstractCoursesResponse {
     const message = createBaseListAbstractCoursesResponse();
     message.abstract_courses = object.abstract_courses?.map((e) => AbstractCourse.fromPartial(e)) || [];
-    message.total = object.total ?? 0;
+    message.total = object.total ?? undefined;
     return message;
   },
 };
@@ -618,7 +618,7 @@ export const GetAbstractCourseRequest: MessageFns<GetAbstractCourseRequest> = {
 };
 
 function createBaseCreateAbstractCategoryRequest(): CreateAbstractCategoryRequest {
-  return { context: undefined, name: "", credits_required: 0 };
+  return { context: undefined, name: undefined, credits_required: undefined };
 }
 
 export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryRequest> = {
@@ -626,10 +626,10 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       writer.uint32(25).double(message.credits_required);
     }
     return writer;
@@ -675,8 +675,8 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
   fromJSON(object: any): CreateAbstractCategoryRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
     };
   },
 
@@ -685,10 +685,10 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
     }
     return obj;
@@ -704,14 +704,14 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
-    message.credits_required = object.credits_required ?? 0;
+    message.name = object.name ?? undefined;
+    message.credits_required = object.credits_required ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateAbstractCategoryRequest(): UpdateAbstractCategoryRequest {
-  return { context: undefined, abstract_category_id: undefined, name: "", credits_required: 0 };
+  return { context: undefined, abstract_category_id: undefined, name: undefined, credits_required: undefined };
 }
 
 export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryRequest> = {
@@ -722,10 +722,10 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
     if (message.abstract_category_id !== undefined) {
       ObjectId.encode(message.abstract_category_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       writer.uint32(33).double(message.credits_required);
     }
     return writer;
@@ -779,8 +779,8 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       abstract_category_id: isSet(object.abstractCategoryId) ? ObjectId.fromJSON(object.abstractCategoryId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
     };
   },
 
@@ -792,10 +792,10 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
     if (message.abstract_category_id !== undefined) {
       obj.abstractCategoryId = ObjectId.toJSON(message.abstract_category_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
     }
     return obj;
@@ -814,8 +814,8 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
     message.abstract_category_id = (object.abstract_category_id !== undefined && object.abstract_category_id !== null)
       ? ObjectId.fromPartial(object.abstract_category_id)
       : undefined;
-    message.name = object.name ?? "";
-    message.credits_required = object.credits_required ?? 0;
+    message.name = object.name ?? undefined;
+    message.credits_required = object.credits_required ?? undefined;
     return message;
   },
 };
@@ -901,7 +901,7 @@ export const DeleteAbstractCategoryRequest: MessageFns<DeleteAbstractCategoryReq
 };
 
 function createBaseCreateAbstractCategoryGroupRequest(): CreateAbstractCategoryGroupRequest {
-  return { context: undefined, name: "", credits_required: 0, category_ids: [] };
+  return { context: undefined, name: undefined, credits_required: undefined, category_ids: [] };
 }
 
 export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCategoryGroupRequest> = {
@@ -909,10 +909,10 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       writer.uint32(25).double(message.credits_required);
     }
     for (const v of message.category_ids) {
@@ -968,8 +968,8 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
   fromJSON(object: any): CreateAbstractCategoryGroupRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -981,10 +981,10 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
     }
     if (message.category_ids?.length) {
@@ -1005,15 +1005,21 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
-    message.credits_required = object.credits_required ?? 0;
+    message.name = object.name ?? undefined;
+    message.credits_required = object.credits_required ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseUpdateAbstractCategoryGroupRequest(): UpdateAbstractCategoryGroupRequest {
-  return { context: undefined, abstract_category_group_id: undefined, name: "", credits_required: 0, category_ids: [] };
+  return {
+    context: undefined,
+    abstract_category_group_id: undefined,
+    name: undefined,
+    credits_required: undefined,
+    category_ids: [],
+  };
 }
 
 export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCategoryGroupRequest> = {
@@ -1024,10 +1030,10 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
     if (message.abstract_category_group_id !== undefined) {
       ObjectId.encode(message.abstract_category_group_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       writer.uint32(33).double(message.credits_required);
     }
     for (const v of message.category_ids) {
@@ -1093,8 +1099,8 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
       abstract_category_group_id: isSet(object.abstractCategoryGroupId)
         ? ObjectId.fromJSON(object.abstractCategoryGroupId)
         : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -1109,10 +1115,10 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
     if (message.abstract_category_group_id !== undefined) {
       obj.abstractCategoryGroupId = ObjectId.toJSON(message.abstract_category_group_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
     }
     if (message.category_ids?.length) {
@@ -1137,15 +1143,22 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
       (object.abstract_category_group_id !== undefined && object.abstract_category_group_id !== null)
         ? ObjectId.fromPartial(object.abstract_category_group_id)
         : undefined;
-    message.name = object.name ?? "";
-    message.credits_required = object.credits_required ?? 0;
+    message.name = object.name ?? undefined;
+    message.credits_required = object.credits_required ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseCreateAbstractCourseRequest(): CreateAbstractCourseRequest {
-  return { context: undefined, course_code: "", official_name: "", credit: 0, mandatory: false, category_ids: [] };
+  return {
+    context: undefined,
+    course_code: undefined,
+    official_name: undefined,
+    credit: undefined,
+    mandatory: undefined,
+    category_ids: [],
+  };
 }
 
 export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest> = {
@@ -1153,16 +1166,16 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.course_code !== "") {
+    if (message.course_code !== undefined) {
       writer.uint32(18).string(message.course_code);
     }
-    if (message.official_name !== "") {
+    if (message.official_name !== undefined) {
       writer.uint32(26).string(message.official_name);
     }
-    if (message.credit !== 0) {
+    if (message.credit !== undefined) {
       writer.uint32(33).double(message.credit);
     }
-    if (message.mandatory !== false) {
+    if (message.mandatory !== undefined) {
       writer.uint32(40).bool(message.mandatory);
     }
     for (const v of message.category_ids) {
@@ -1232,10 +1245,10 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
   fromJSON(object: any): CreateAbstractCourseRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
-      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : "",
-      credit: isSet(object.credit) ? globalThis.Number(object.credit) : 0,
-      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : false,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : undefined,
+      credit: isSet(object.credit) ? globalThis.Number(object.credit) : undefined,
+      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : undefined,
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -1247,16 +1260,16 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.course_code !== "") {
+    if (message.course_code !== undefined) {
       obj.courseCode = message.course_code;
     }
-    if (message.official_name !== "") {
+    if (message.official_name !== undefined) {
       obj.officialName = message.official_name;
     }
-    if (message.credit !== 0) {
+    if (message.credit !== undefined) {
       obj.credit = message.credit;
     }
-    if (message.mandatory !== false) {
+    if (message.mandatory !== undefined) {
       obj.mandatory = message.mandatory;
     }
     if (message.category_ids?.length) {
@@ -1273,10 +1286,10 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.course_code = object.course_code ?? "";
-    message.official_name = object.official_name ?? "";
-    message.credit = object.credit ?? 0;
-    message.mandatory = object.mandatory ?? false;
+    message.course_code = object.course_code ?? undefined;
+    message.official_name = object.official_name ?? undefined;
+    message.credit = object.credit ?? undefined;
+    message.mandatory = object.mandatory ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
@@ -1286,10 +1299,10 @@ function createBaseUpdateAbstractCourseRequest(): UpdateAbstractCourseRequest {
   return {
     context: undefined,
     abstract_course_id: undefined,
-    course_code: "",
-    official_name: "",
-    credit: 0,
-    mandatory: false,
+    course_code: undefined,
+    official_name: undefined,
+    credit: undefined,
+    mandatory: undefined,
     category_ids: [],
   };
 }
@@ -1302,16 +1315,16 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     if (message.abstract_course_id !== undefined) {
       ObjectId.encode(message.abstract_course_id, writer.uint32(18).fork()).join();
     }
-    if (message.course_code !== "") {
+    if (message.course_code !== undefined) {
       writer.uint32(26).string(message.course_code);
     }
-    if (message.official_name !== "") {
+    if (message.official_name !== undefined) {
       writer.uint32(34).string(message.official_name);
     }
-    if (message.credit !== 0) {
+    if (message.credit !== undefined) {
       writer.uint32(41).double(message.credit);
     }
-    if (message.mandatory !== false) {
+    if (message.mandatory !== undefined) {
       writer.uint32(48).bool(message.mandatory);
     }
     for (const v of message.category_ids) {
@@ -1389,10 +1402,10 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
-      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : "",
-      credit: isSet(object.credit) ? globalThis.Number(object.credit) : 0,
-      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : false,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : undefined,
+      credit: isSet(object.credit) ? globalThis.Number(object.credit) : undefined,
+      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : undefined,
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -1407,16 +1420,16 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     if (message.abstract_course_id !== undefined) {
       obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
     }
-    if (message.course_code !== "") {
+    if (message.course_code !== undefined) {
       obj.courseCode = message.course_code;
     }
-    if (message.official_name !== "") {
+    if (message.official_name !== undefined) {
       obj.officialName = message.official_name;
     }
-    if (message.credit !== 0) {
+    if (message.credit !== undefined) {
       obj.credit = message.credit;
     }
-    if (message.mandatory !== false) {
+    if (message.mandatory !== undefined) {
       obj.mandatory = message.mandatory;
     }
     if (message.category_ids?.length) {
@@ -1436,10 +1449,10 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
       ? ObjectId.fromPartial(object.abstract_course_id)
       : undefined;
-    message.course_code = object.course_code ?? "";
-    message.official_name = object.official_name ?? "";
-    message.credit = object.credit ?? 0;
-    message.mandatory = object.mandatory ?? false;
+    message.course_code = object.course_code ?? undefined;
+    message.official_name = object.official_name ?? undefined;
+    message.credit = object.credit ?? undefined;
+    message.mandatory = object.mandatory ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },

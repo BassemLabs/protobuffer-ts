@@ -4,41 +4,41 @@ import { RequestContext } from "../utils/request_context";
 import { PaymentType } from "./transaction";
 export declare const protobufPackage = "payment_service";
 export interface HandleWebhookRequest {
-    payload: string;
-    stripe_signature: string;
+    payload?: string | undefined;
+    stripe_signature?: string | undefined;
 }
 export interface HandleWebhookResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export interface GetSetupAutoIntentRequest {
     context: RequestContext | undefined;
 }
 export interface GetSetupAutoIntentResponse {
-    setup_auto_intent_secret: string;
+    setup_auto_intent_secret?: string | undefined;
 }
 export interface VerifyMicroDepositsRequest {
     context: RequestContext | undefined;
-    first: number;
-    second: number;
+    first?: number | undefined;
+    second?: number | undefined;
 }
 export interface VerifyMicroDepositsResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export interface CreatePaymentIntentRequest {
     context: RequestContext | undefined;
-    payment_type: PaymentType;
+    payment_type?: PaymentType | undefined;
     invoice_id: ObjectId | undefined;
-    amount: number;
+    amount?: number | undefined;
 }
 export interface CreatePaymentIntentResponse {
-    client_secret: string;
+    client_secret?: string | undefined;
 }
 export interface OnboardOrganizationStripeAccountRequest {
     context: RequestContext | undefined;
-    frontend_url: string;
+    frontend_url?: string | undefined;
 }
 export interface OnboardOrganizationStripeAccountResponse {
-    account_link_url: string;
+    account_link_url?: string | undefined;
 }
 export declare const HandleWebhookRequest: MessageFns<HandleWebhookRequest>;
 export declare const HandleWebhookResponse: MessageFns<HandleWebhookResponse>;

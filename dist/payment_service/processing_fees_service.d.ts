@@ -7,17 +7,17 @@ export declare const protobufPackage = "payment_service";
 /** single processing fee */
 export interface ListProcessingFeesRequest {
     context: RequestContext | undefined;
-    archived: boolean;
+    archived?: boolean | undefined;
 }
 export interface ListProcessingFeesResponse {
     fees: ProcessingFee[];
 }
 export interface CreateProcessingFeeRequest {
     context: RequestContext | undefined;
-    invoice_type: InvoiceType;
-    fee_type: FeeType;
-    value_type: DiscountValueType;
-    value: number;
+    invoice_type?: InvoiceType | undefined;
+    fee_type?: FeeType | undefined;
+    value_type?: DiscountValueType | undefined;
+    value?: number | undefined;
     cap_amount?: number | undefined;
 }
 export interface GetProcessingFeeRequest {
@@ -27,10 +27,10 @@ export interface GetProcessingFeeRequest {
 export interface UpdateProcessingFeeRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    invoice_type: InvoiceType;
-    fee_type: FeeType;
-    value_type: DiscountValueType;
-    value: number;
+    invoice_type?: InvoiceType | undefined;
+    fee_type?: FeeType | undefined;
+    value_type?: DiscountValueType | undefined;
+    value?: number | undefined;
     cap_amount?: number | undefined;
 }
 export interface ArchiveProcessingFeeRequest {
@@ -43,7 +43,7 @@ export interface UnarchiveProcessingFeeRequest {
 }
 export interface GetActiveProcessingFeesRequest {
     context: RequestContext | undefined;
-    invoice_type: InvoiceType;
+    invoice_type?: InvoiceType | undefined;
 }
 /** organization level */
 export interface GetOrganizationProcessingFeeRequest {
@@ -51,8 +51,8 @@ export interface GetOrganizationProcessingFeeRequest {
 }
 export interface UpdateOrganizationProcessingFeeRequest {
     context: RequestContext | undefined;
-    tuition_invoice_fees_enabled: boolean;
-    non_tuition_invoice_fees_enabled: boolean;
+    tuition_invoice_fees_enabled?: boolean | undefined;
+    non_tuition_invoice_fees_enabled?: boolean | undefined;
 }
 export declare const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest>;
 export declare const ListProcessingFeesResponse: MessageFns<ListProcessingFeesResponse>;

@@ -43,18 +43,18 @@ export declare function wildcardAccessTypeToNumber(object: WildcardAccessType): 
 export interface ResourceAccessSettings {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    name: string;
-    ownership_kind: OwnershipKind;
-    user_type: UserType;
+    name?: string | undefined;
+    ownership_kind?: OwnershipKind | undefined;
+    user_type?: UserType | undefined;
     access_rules: AccessRule[];
 }
 export interface AccessRule {
-    permission_type: AccessPermissionType;
+    permission_type?: AccessPermissionType | undefined;
     principal?: PrincipalType | undefined;
     wildcard?: WildcardAccess | undefined;
 }
 export interface WildcardAccess {
-    type: WildcardAccessType;
+    type?: WildcardAccessType | undefined;
     /** Only used when type is ROLE */
     role?: UserRole | undefined;
 }

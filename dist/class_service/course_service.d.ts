@@ -52,7 +52,7 @@ export interface UnarchiveCourseRequest {
 export interface UpdateCourseRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     semester_id: ObjectId | undefined;
 }
 /** Request to add teachers to a course */
@@ -75,11 +75,11 @@ export interface AddStudentsRequest {
 }
 export interface TeacherFailure {
     teacher_id: ObjectId | undefined;
-    reason: string;
+    reason?: string | undefined;
 }
 export interface StudentFailure {
     student_id: ObjectId | undefined;
-    reason: string;
+    reason?: string | undefined;
 }
 export interface AddTeachersResponse {
     course: Course | undefined;
@@ -118,7 +118,7 @@ export interface GetStudentLmsCourseWorkRequest {
 /** Request for standalone_create */
 export interface StandaloneCreateRequest {
     context: RequestContext | undefined;
-    name: string;
+    name?: string | undefined;
     semester_id: ObjectId | undefined;
     teachers: ObjectId[];
     lms_provider?: LmsProviderType | undefined;
@@ -128,16 +128,16 @@ export interface StandaloneCreateRequest {
 export interface StandaloneCloneRequest {
     context: RequestContext | undefined;
     course_to_clone: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     semester_id: ObjectId | undefined;
     teachers: ObjectId[];
-    gclass_create: boolean;
+    gclass_create?: boolean | undefined;
     abstract_course_id: ObjectId | undefined;
 }
 /** Request for homeroom_create */
 export interface HomeroomCreateRequest {
     context: RequestContext | undefined;
-    name: string;
+    name?: string | undefined;
     teachers: ObjectId[];
     homeroom_id: ObjectId | undefined;
     lms_provider?: LmsProviderType | undefined;
@@ -147,9 +147,9 @@ export interface HomeroomCloneRequest {
     context: RequestContext | undefined;
     course_to_clone: ObjectId | undefined;
     homeroom_to_clone_to: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     teachers: ObjectId[];
-    gclass_create: boolean;
+    gclass_create?: boolean | undefined;
 }
 export declare const GetCourseRequest: MessageFns<GetCourseRequest>;
 export declare const ListCoursesRequest: MessageFns<ListCoursesRequest>;

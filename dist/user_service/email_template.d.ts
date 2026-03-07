@@ -37,12 +37,12 @@ export declare function emailTemplateKeyToNumber(object: EmailTemplateKey): numb
 export interface EmailTemplate {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
-    template_key: EmailTemplateKey;
-    title: string;
-    header: string;
-    body: string;
-    footer: string;
-    receiver_user_type: UserType;
+    template_key?: EmailTemplateKey | undefined;
+    title?: string | undefined;
+    header?: string | undefined;
+    body?: string | undefined;
+    footer?: string | undefined;
+    receiver_user_type?: UserType | undefined;
 }
 export declare const EmailTemplate: MessageFns<EmailTemplate>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

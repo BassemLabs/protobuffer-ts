@@ -4,26 +4,26 @@ export declare const protobufPackage = "class_service";
 export interface MarkCategory {
     id: ObjectId | undefined;
     course_id: ObjectId | undefined;
-    name: string;
-    percentage: number;
+    name?: string | undefined;
+    percentage?: number | undefined;
 }
 export interface DetailedMarkCategory {
     id: ObjectId | undefined;
     course_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     /** Original configured percentage */
-    percentage: number;
+    percentage?: number | undefined;
     /** Adjusted percentage after redistribution of non evaluated categories of the course */
-    effective_percentage: number;
+    effective_percentage?: number | undefined;
 }
 export interface PersonalizedMarkCategory {
     id: ObjectId | undefined;
     course_id: ObjectId | undefined;
     student_id: ObjectId | undefined;
-    name: string;
-    percentage: number;
+    name?: string | undefined;
+    percentage?: number | undefined;
     /** calculated based on the student's marked evaluations */
-    effective_percentage_for_student: number;
+    effective_percentage_for_student?: number | undefined;
 }
 export declare const MarkCategory: MessageFns<MarkCategory>;
 export declare const DetailedMarkCategory: MessageFns<DetailedMarkCategory>;

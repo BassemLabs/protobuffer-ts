@@ -51,43 +51,43 @@ export interface TuitionRate {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     school_year: ObjectId | undefined;
-    grade: StudentGrade;
-    amount: number;
+    grade?: StudentGrade | undefined;
+    amount?: number | undefined;
 }
 export interface AdditionalFee {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     school_year: ObjectId | undefined;
-    name: string;
-    description: string;
-    amount: number;
-    is_optional: boolean;
-    scope: Scope;
+    name?: string | undefined;
+    description?: string | undefined;
+    amount?: number | undefined;
+    is_optional?: boolean | undefined;
+    scope?: Scope | undefined;
 }
 export interface TuitionDiscount {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     school_year: ObjectId | undefined;
-    name: string;
-    discount_type: DiscountType;
-    scope: Scope;
-    value_type: DiscountValueType;
-    value: number;
-    description: string;
-    stack_mode: DiscountStackMode;
+    name?: string | undefined;
+    discount_type?: DiscountType | undefined;
+    scope?: Scope | undefined;
+    value_type?: DiscountValueType | undefined;
+    value?: number | undefined;
+    description?: string | undefined;
+    stack_mode?: DiscountStackMode | undefined;
 }
 export interface TuitionPlan {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     school_year: ObjectId | undefined;
-    name: string;
-    description: string;
-    schedule_type: PaymentScheduleType;
+    name?: string | undefined;
+    description?: string | undefined;
+    schedule_type?: PaymentScheduleType | undefined;
     /** For monthly plans : the day of the month that the payment is due */
     day_of_month?: number | undefined;
     /** For custom plans */
     installments: PaymentInstallment[];
-    archived: boolean;
+    archived?: boolean | undefined;
     /** plan dates */
     start_date: Date | undefined;
     end_date: Date | undefined;

@@ -7,7 +7,7 @@ export interface CustomFieldEntry {
     custom_field_id: ObjectId | undefined;
     group_id: ObjectId | undefined;
     user_id: ObjectId | undefined;
-    value: string;
+    value?: string | undefined;
 }
 export declare const CustomFieldEntry: MessageFns<CustomFieldEntry>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

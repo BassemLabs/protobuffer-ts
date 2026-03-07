@@ -38,13 +38,13 @@ export declare function refundTransactionStatusToNumber(object: RefundTransactio
 export interface Transaction {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    stripe_payment_intent_id: string;
-    currency: Currency;
-    status: TransactionStatus;
-    payment_type: PaymentType;
+    stripe_payment_intent_id?: string | undefined;
+    currency?: Currency | undefined;
+    status?: TransactionStatus | undefined;
+    payment_type?: PaymentType | undefined;
     date: Date | undefined;
     invoice: ObjectId | undefined;
-    amount: number;
+    amount?: number | undefined;
     declined_reason?: string | undefined;
     processing_fee_amount?: number | undefined;
     /** this is for the fixed tuition cost */
@@ -63,12 +63,12 @@ export interface RefundTransaction {
      */
     stripe_refund_id?: string | undefined;
     /** Status of the refund */
-    status: RefundTransactionStatus;
+    status?: RefundTransactionStatus | undefined;
     /** Payment type of the refund, is it stripe or manual payments? */
-    payment_type: PaymentType;
+    payment_type?: PaymentType | undefined;
     date: Date | undefined;
     /** Amount of the refund */
-    amount: number;
+    amount?: number | undefined;
     /** Reason for the refund */
     reason?: string | undefined;
 }

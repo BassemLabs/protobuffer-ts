@@ -17,14 +17,14 @@ export interface Notification {
     organization: ObjectId | undefined;
     broadcast_id?: ObjectId | undefined;
     title?: string | undefined;
-    body: string;
+    body?: string | undefined;
     created: Date | undefined;
-    created_by: UserType;
+    created_by?: UserType | undefined;
     created_by_id: ObjectId | undefined;
-    status: NotificationStatus;
+    status?: NotificationStatus | undefined;
     error_message?: string | undefined;
     notification_type: NotificationType[];
-    notification_destination_user: UserType;
+    notification_destination_user?: UserType | undefined;
     notification_destination_user_id: ObjectId | undefined;
     notification_destination_email?: string | undefined;
     notification_destination_phone?: string | undefined;

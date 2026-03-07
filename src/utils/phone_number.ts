@@ -10,24 +10,24 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "utils";
 
 export interface PhoneNumber {
-  country_code: string;
-  number: string;
-  country: string;
+  country_code?: string | undefined;
+  number?: string | undefined;
+  country?: string | undefined;
 }
 
 function createBasePhoneNumber(): PhoneNumber {
-  return { country_code: "", number: "", country: "" };
+  return { country_code: undefined, number: undefined, country: undefined };
 }
 
 export const PhoneNumber: MessageFns<PhoneNumber> = {
   encode(message: PhoneNumber, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.country_code !== "") {
+    if (message.country_code !== undefined) {
       writer.uint32(10).string(message.country_code);
     }
-    if (message.number !== "") {
+    if (message.number !== undefined) {
       writer.uint32(18).string(message.number);
     }
-    if (message.country !== "") {
+    if (message.country !== undefined) {
       writer.uint32(26).string(message.country);
     }
     return writer;
@@ -72,21 +72,21 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
 
   fromJSON(object: any): PhoneNumber {
     return {
-      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
-      number: isSet(object.number) ? globalThis.String(object.number) : "",
-      country: isSet(object.country) ? globalThis.String(object.country) : "",
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : undefined,
+      number: isSet(object.number) ? globalThis.String(object.number) : undefined,
+      country: isSet(object.country) ? globalThis.String(object.country) : undefined,
     };
   },
 
   toJSON(message: PhoneNumber): unknown {
     const obj: any = {};
-    if (message.country_code !== "") {
+    if (message.country_code !== undefined) {
       obj.countryCode = message.country_code;
     }
-    if (message.number !== "") {
+    if (message.number !== undefined) {
       obj.number = message.number;
     }
-    if (message.country !== "") {
+    if (message.country !== undefined) {
       obj.country = message.country;
     }
     return obj;
@@ -97,9 +97,9 @@ export const PhoneNumber: MessageFns<PhoneNumber> = {
   },
   fromPartial<I extends Exact<DeepPartial<PhoneNumber>, I>>(object: I): PhoneNumber {
     const message = createBasePhoneNumber();
-    message.country_code = object.country_code ?? "";
-    message.number = object.number ?? "";
-    message.country = object.country ?? "";
+    message.country_code = object.country_code ?? undefined;
+    message.number = object.number ?? undefined;
+    message.country = object.country ?? undefined;
     return message;
   },
 };

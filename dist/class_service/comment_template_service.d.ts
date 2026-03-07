@@ -15,21 +15,21 @@ export interface ListCommentTemplatesResponse {
 }
 export interface CreateCommentTemplateRequest {
     context: RequestContext | undefined;
-    title: string;
-    comment: string;
+    title?: string | undefined;
+    comment?: string | undefined;
 }
 export interface UpdateCommentTemplateRequest {
     context: RequestContext | undefined;
     comment_template_id: ObjectId | undefined;
-    title: string;
-    comment: string;
+    title?: string | undefined;
+    comment?: string | undefined;
 }
 export interface DeleteCommentTemplateRequest {
     context: RequestContext | undefined;
     comment_template_id: ObjectId | undefined;
 }
 export interface DeleteCommentTemplateResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export declare const GetCommentTemplateRequest: MessageFns<GetCommentTemplateRequest>;
 export declare const ListCommentTemplatesRequest: MessageFns<ListCommentTemplatesRequest>;

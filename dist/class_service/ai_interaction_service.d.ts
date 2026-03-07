@@ -19,11 +19,11 @@ export interface ListAiInteractionRecordsRequest {
 }
 export interface ListAiInteractionRecordsResponse {
     ai_interaction_record: AiInteractionRecord[];
-    ai_interaction_record_count: number;
+    ai_interaction_record_count?: number | undefined;
 }
 export interface PreprocessingRequest {
     context: RequestContext | undefined;
-    prompt: string;
+    prompt?: string | undefined;
 }
 export interface PreprocessingResponse {
     ai_interaction_record: AiInteractionRecord | undefined;
@@ -31,8 +31,8 @@ export interface PreprocessingResponse {
 export interface PostprocessingRequest {
     context: RequestContext | undefined;
     ai_interaction_record_id: ObjectId | undefined;
-    response: string;
-    status: AiInteractionRecordStatus;
+    response?: string | undefined;
+    status?: AiInteractionRecordStatus | undefined;
 }
 export interface PostprocessingResponse {
     ai_interaction_record: AiInteractionRecord | undefined;

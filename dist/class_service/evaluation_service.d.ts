@@ -9,22 +9,22 @@ export declare const protobufPackage = "class_service.evaluation_service";
 export interface CreateEvaluationRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
-    name: string;
-    total: number;
-    weight: number;
+    name?: string | undefined;
+    total?: number | undefined;
+    weight?: number | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
+    date?: string | undefined;
     mark_category: ObjectId | undefined;
 }
 /** Update Evaluation */
 export interface UpdateEvaluationRequest {
     context: RequestContext | undefined;
     evaluation_id: ObjectId | undefined;
-    name: string;
-    total: number;
-    weight: number;
+    name?: string | undefined;
+    total?: number | undefined;
+    weight?: number | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
+    date?: string | undefined;
     mark_category: ObjectId | undefined;
 }
 /** Delete Evaluation */
@@ -69,7 +69,7 @@ export interface GetEvaluationEntriesFillCountsRequest {
 }
 export interface EvaluationEntryFillCount {
     evaluation_id: ObjectId | undefined;
-    filled_count: number;
+    filled_count?: number | undefined;
 }
 export interface GetEvaluationEntriesFillCountsResponse {
     counts: EvaluationEntryFillCount[];
@@ -77,7 +77,7 @@ export interface GetEvaluationEntriesFillCountsResponse {
 /** Update Evaluation Marks (Batch) */
 export interface StudentMarkUpdate {
     student_id: ObjectId | undefined;
-    mark: number;
+    mark?: number | undefined;
 }
 export interface UpdateEvaluationMarksRequest {
     context: RequestContext | undefined;
@@ -88,15 +88,15 @@ export interface UpdateEvaluationMarksRequest {
 export interface CreateMarkCategoryRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
-    name: string;
-    percentage: number;
+    name?: string | undefined;
+    percentage?: number | undefined;
 }
 /** Update Mark Category */
 export interface UpdateMarkCategoryRequest {
     context: RequestContext | undefined;
     mark_category_id: ObjectId | undefined;
-    name: string;
-    percentage: number;
+    name?: string | undefined;
+    percentage?: number | undefined;
 }
 /** Delete Mark Category */
 export interface DeleteMarkCategoryRequest {
@@ -132,7 +132,7 @@ export interface GetStudentCoursePerformanceRequest {
 export interface StudentCoursePerformance {
     student: ObjectId | undefined;
     final_mark?: number | undefined;
-    maximum_potential_mark: number;
+    maximum_potential_mark?: number | undefined;
     evaluations: PersonalizedEvaluation[];
     mark_categories: PersonalizedMarkCategory[];
     student_evaluation_entries: EvaluationEntry[];
@@ -148,13 +148,13 @@ export interface GetStudentCoursesMarkOverviewResponse {
 }
 export interface StudentCourseMarkOverview {
     course_id: ObjectId | undefined;
-    course_name: string;
-    course_code: string;
+    course_name?: string | undefined;
+    course_code?: string | undefined;
     semester_id: ObjectId | undefined;
     /** the mark for published evaluations for this course through all categories */
     student_mark?: number | undefined;
     /** assuming that the student got the full mark for non-marked evaluations */
-    maximum_potential_mark: number;
+    maximum_potential_mark?: number | undefined;
 }
 /** Export Markbook Excel */
 export interface ExportMarkbookExcelRequest {
@@ -163,8 +163,8 @@ export interface ExportMarkbookExcelRequest {
 }
 export interface ExportMarkbookExcelResponse {
     /** base64 encoded excel file */
-    excel_data: string;
-    course_name: string;
+    excel_data?: string | undefined;
+    course_name?: string | undefined;
 }
 export declare const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest>;
 export declare const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest>;

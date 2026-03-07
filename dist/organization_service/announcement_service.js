@@ -191,11 +191,11 @@ exports.GetAnnouncementRequest = {
 function createBaseCreateAnnouncementRequest() {
     return {
         context: undefined,
-        title: "",
-        body: "",
+        title: undefined,
+        body: undefined,
         start_date: undefined,
         end_date: undefined,
-        link: "",
+        link: undefined,
         audience: [],
     };
 }
@@ -204,10 +204,10 @@ exports.CreateAnnouncementRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(18).string(message.title);
         }
-        if (message.body !== "") {
+        if (message.body !== undefined) {
             writer.uint32(26).string(message.body);
         }
         if (message.start_date !== undefined) {
@@ -216,7 +216,7 @@ exports.CreateAnnouncementRequest = {
         if (message.end_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
         }
-        if (message.link !== undefined && message.link !== "") {
+        if (message.link !== undefined) {
             writer.uint32(50).string(message.link);
         }
         writer.uint32(58).fork();
@@ -293,11 +293,11 @@ exports.CreateAnnouncementRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
-            body: isSet(object.body) ? globalThis.String(object.body) : "",
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
             start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-            link: isSet(object.link) ? globalThis.String(object.link) : "",
+            link: isSet(object.link) ? globalThis.String(object.link) : undefined,
             audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e) => (0, user_type_1.userTypeFromJSON)(e)) : [],
         };
     },
@@ -306,10 +306,10 @@ exports.CreateAnnouncementRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
-        if (message.body !== "") {
+        if (message.body !== undefined) {
             obj.body = message.body;
         }
         if (message.start_date !== undefined) {
@@ -318,7 +318,7 @@ exports.CreateAnnouncementRequest = {
         if (message.end_date !== undefined) {
             obj.endDate = message.end_date.toISOString();
         }
-        if (message.link !== undefined && message.link !== "") {
+        if (message.link !== undefined) {
             obj.link = message.link;
         }
         if (message.audience?.length) {
@@ -334,11 +334,11 @@ exports.CreateAnnouncementRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.title = object.title ?? "";
-        message.body = object.body ?? "";
+        message.title = object.title ?? undefined;
+        message.body = object.body ?? undefined;
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;
-        message.link = object.link ?? "";
+        message.link = object.link ?? undefined;
         message.audience = object.audience?.map((e) => e) || [];
         return message;
     },
@@ -347,11 +347,11 @@ function createBaseUpdateAnnouncementRequest() {
     return {
         context: undefined,
         id: undefined,
-        title: "",
-        body: "",
+        title: undefined,
+        body: undefined,
         start_date: undefined,
         end_date: undefined,
-        link: "",
+        link: undefined,
         audience: [],
     };
 }
@@ -363,10 +363,10 @@ exports.UpdateAnnouncementRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(26).string(message.title);
         }
-        if (message.body !== "") {
+        if (message.body !== undefined) {
             writer.uint32(34).string(message.body);
         }
         if (message.start_date !== undefined) {
@@ -375,7 +375,7 @@ exports.UpdateAnnouncementRequest = {
         if (message.end_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(50).fork()).join();
         }
-        if (message.link !== undefined && message.link !== "") {
+        if (message.link !== undefined) {
             writer.uint32(58).string(message.link);
         }
         writer.uint32(66).fork();
@@ -459,11 +459,11 @@ exports.UpdateAnnouncementRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
-            body: isSet(object.body) ? globalThis.String(object.body) : "",
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
             start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-            link: isSet(object.link) ? globalThis.String(object.link) : "",
+            link: isSet(object.link) ? globalThis.String(object.link) : undefined,
             audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e) => (0, user_type_1.userTypeFromJSON)(e)) : [],
         };
     },
@@ -475,10 +475,10 @@ exports.UpdateAnnouncementRequest = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
-        if (message.body !== "") {
+        if (message.body !== undefined) {
             obj.body = message.body;
         }
         if (message.start_date !== undefined) {
@@ -487,7 +487,7 @@ exports.UpdateAnnouncementRequest = {
         if (message.end_date !== undefined) {
             obj.endDate = message.end_date.toISOString();
         }
-        if (message.link !== undefined && message.link !== "") {
+        if (message.link !== undefined) {
             obj.link = message.link;
         }
         if (message.audience?.length) {
@@ -504,11 +504,11 @@ exports.UpdateAnnouncementRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.title = object.title ?? "";
-        message.body = object.body ?? "";
+        message.title = object.title ?? undefined;
+        message.body = object.body ?? undefined;
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;
-        message.link = object.link ?? "";
+        message.link = object.link ?? undefined;
         message.audience = object.audience?.map((e) => e) || [];
         return message;
     },
@@ -582,11 +582,11 @@ exports.DeleteAnnouncementRequest = {
     },
 };
 function createBaseDeleteAnnouncementResponse() {
-    return { success: false };
+    return { success: undefined };
 }
 exports.DeleteAnnouncementResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             writer.uint32(8).bool(message.success);
         }
         return writer;
@@ -613,11 +613,11 @@ exports.DeleteAnnouncementResponse = {
         return message;
     },
     fromJSON(object) {
-        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             obj.success = message.success;
         }
         return obj;
@@ -627,7 +627,7 @@ exports.DeleteAnnouncementResponse = {
     },
     fromPartial(object) {
         const message = createBaseDeleteAnnouncementResponse();
-        message.success = object.success ?? false;
+        message.success = object.success ?? undefined;
         return message;
     },
 };

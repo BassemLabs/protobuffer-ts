@@ -14,12 +14,12 @@ function createBaseEvaluation() {
     return {
         id: undefined,
         course_id: undefined,
-        name: "",
-        total: 0,
-        weight: 0,
-        date: "",
+        name: undefined,
+        total: undefined,
+        weight: undefined,
+        date: undefined,
         mark_category: undefined,
-        visible_to_parents_and_students: false,
+        visible_to_parents_and_students: undefined,
     };
 }
 exports.Evaluation = {
@@ -30,22 +30,22 @@ exports.Evaluation = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             writer.uint32(32).uint32(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             writer.uint32(40).uint32(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             writer.uint32(50).string(message.date);
         }
         if (message.mark_category !== undefined) {
             object_id_1.ObjectId.encode(message.mark_category, writer.uint32(58).fork()).join();
         }
-        if (message.visible_to_parents_and_students !== false) {
+        if (message.visible_to_parents_and_students !== undefined) {
             writer.uint32(64).bool(message.visible_to_parents_and_students);
         }
         return writer;
@@ -117,14 +117,14 @@ exports.Evaluation = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
-            weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
-            date: isSet(object.date) ? globalThis.String(object.date) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+            weight: isSet(object.weight) ? globalThis.Number(object.weight) : undefined,
+            date: isSet(object.date) ? globalThis.String(object.date) : undefined,
             mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
             visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
                 ? globalThis.Boolean(object.visibleToParentsAndStudents)
-                : false,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -135,22 +135,22 @@ exports.Evaluation = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             obj.total = Math.round(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             obj.weight = Math.round(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
             obj.markCategory = object_id_1.ObjectId.toJSON(message.mark_category);
         }
-        if (message.visible_to_parents_and_students !== false) {
+        if (message.visible_to_parents_and_students !== undefined) {
             obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
         }
         return obj;
@@ -164,14 +164,14 @@ exports.Evaluation = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.total = object.total ?? 0;
-        message.weight = object.weight ?? 0;
-        message.date = object.date ?? "";
+        message.name = object.name ?? undefined;
+        message.total = object.total ?? undefined;
+        message.weight = object.weight ?? undefined;
+        message.date = object.date ?? undefined;
         message.mark_category = (object.mark_category !== undefined && object.mark_category !== null)
             ? object_id_1.ObjectId.fromPartial(object.mark_category)
             : undefined;
-        message.visible_to_parents_and_students = object.visible_to_parents_and_students ?? false;
+        message.visible_to_parents_and_students = object.visible_to_parents_and_students ?? undefined;
         return message;
     },
 };
@@ -179,13 +179,13 @@ function createBaseDetailedEvaluation() {
     return {
         id: undefined,
         course_id: undefined,
-        name: "",
-        total: 0,
-        weight: 0,
-        date: "",
+        name: undefined,
+        total: undefined,
+        weight: undefined,
+        date: undefined,
         mark_category: undefined,
-        visible_to_parents_and_students: false,
-        evaluation_contribution_to_final_mark: 0,
+        visible_to_parents_and_students: undefined,
+        evaluation_contribution_to_final_mark: undefined,
     };
 }
 exports.DetailedEvaluation = {
@@ -196,25 +196,25 @@ exports.DetailedEvaluation = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             writer.uint32(32).uint32(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             writer.uint32(40).uint32(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             writer.uint32(50).string(message.date);
         }
         if (message.mark_category !== undefined) {
             object_id_1.ObjectId.encode(message.mark_category, writer.uint32(58).fork()).join();
         }
-        if (message.visible_to_parents_and_students !== false) {
+        if (message.visible_to_parents_and_students !== undefined) {
             writer.uint32(64).bool(message.visible_to_parents_and_students);
         }
-        if (message.evaluation_contribution_to_final_mark !== 0) {
+        if (message.evaluation_contribution_to_final_mark !== undefined) {
             writer.uint32(73).double(message.evaluation_contribution_to_final_mark);
         }
         return writer;
@@ -292,17 +292,17 @@ exports.DetailedEvaluation = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
-            weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
-            date: isSet(object.date) ? globalThis.String(object.date) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+            weight: isSet(object.weight) ? globalThis.Number(object.weight) : undefined,
+            date: isSet(object.date) ? globalThis.String(object.date) : undefined,
             mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
             visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
                 ? globalThis.Boolean(object.visibleToParentsAndStudents)
-                : false,
+                : undefined,
             evaluation_contribution_to_final_mark: isSet(object.evaluationContributionToFinalMark)
                 ? globalThis.Number(object.evaluationContributionToFinalMark)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -313,25 +313,25 @@ exports.DetailedEvaluation = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             obj.total = Math.round(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             obj.weight = Math.round(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
             obj.markCategory = object_id_1.ObjectId.toJSON(message.mark_category);
         }
-        if (message.visible_to_parents_and_students !== false) {
+        if (message.visible_to_parents_and_students !== undefined) {
             obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
         }
-        if (message.evaluation_contribution_to_final_mark !== 0) {
+        if (message.evaluation_contribution_to_final_mark !== undefined) {
             obj.evaluationContributionToFinalMark = message.evaluation_contribution_to_final_mark;
         }
         return obj;
@@ -345,15 +345,15 @@ exports.DetailedEvaluation = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.total = object.total ?? 0;
-        message.weight = object.weight ?? 0;
-        message.date = object.date ?? "";
+        message.name = object.name ?? undefined;
+        message.total = object.total ?? undefined;
+        message.weight = object.weight ?? undefined;
+        message.date = object.date ?? undefined;
         message.mark_category = (object.mark_category !== undefined && object.mark_category !== null)
             ? object_id_1.ObjectId.fromPartial(object.mark_category)
             : undefined;
-        message.visible_to_parents_and_students = object.visible_to_parents_and_students ?? false;
-        message.evaluation_contribution_to_final_mark = object.evaluation_contribution_to_final_mark ?? 0;
+        message.visible_to_parents_and_students = object.visible_to_parents_and_students ?? undefined;
+        message.evaluation_contribution_to_final_mark = object.evaluation_contribution_to_final_mark ?? undefined;
         return message;
     },
 };
@@ -362,13 +362,13 @@ function createBasePersonalizedEvaluation() {
         id: undefined,
         student_id: undefined,
         course_id: undefined,
-        name: "",
-        total: 0,
-        weight: 0,
-        date: "",
+        name: undefined,
+        total: undefined,
+        weight: undefined,
+        date: undefined,
         mark_category: undefined,
-        visible_to_parents_and_students: false,
-        evaluation_contribution_to_student_final_mark: 0,
+        visible_to_parents_and_students: undefined,
+        evaluation_contribution_to_student_final_mark: undefined,
     };
 }
 exports.PersonalizedEvaluation = {
@@ -382,25 +382,25 @@ exports.PersonalizedEvaluation = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(34).string(message.name);
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             writer.uint32(40).uint32(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             writer.uint32(48).uint32(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             writer.uint32(58).string(message.date);
         }
         if (message.mark_category !== undefined) {
             object_id_1.ObjectId.encode(message.mark_category, writer.uint32(66).fork()).join();
         }
-        if (message.visible_to_parents_and_students !== false) {
+        if (message.visible_to_parents_and_students !== undefined) {
             writer.uint32(72).bool(message.visible_to_parents_and_students);
         }
-        if (message.evaluation_contribution_to_student_final_mark !== 0) {
+        if (message.evaluation_contribution_to_student_final_mark !== undefined) {
             writer.uint32(81).double(message.evaluation_contribution_to_student_final_mark);
         }
         return writer;
@@ -485,17 +485,17 @@ exports.PersonalizedEvaluation = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
-            weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
-            date: isSet(object.date) ? globalThis.String(object.date) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+            weight: isSet(object.weight) ? globalThis.Number(object.weight) : undefined,
+            date: isSet(object.date) ? globalThis.String(object.date) : undefined,
             mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
             visible_to_parents_and_students: isSet(object.visibleToParentsAndStudents)
                 ? globalThis.Boolean(object.visibleToParentsAndStudents)
-                : false,
+                : undefined,
             evaluation_contribution_to_student_final_mark: isSet(object.evaluationContributionToStudentFinalMark)
                 ? globalThis.Number(object.evaluationContributionToStudentFinalMark)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -509,25 +509,25 @@ exports.PersonalizedEvaluation = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             obj.total = Math.round(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             obj.weight = Math.round(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
             obj.markCategory = object_id_1.ObjectId.toJSON(message.mark_category);
         }
-        if (message.visible_to_parents_and_students !== false) {
+        if (message.visible_to_parents_and_students !== undefined) {
             obj.visibleToParentsAndStudents = message.visible_to_parents_and_students;
         }
-        if (message.evaluation_contribution_to_student_final_mark !== 0) {
+        if (message.evaluation_contribution_to_student_final_mark !== undefined) {
             obj.evaluationContributionToStudentFinalMark = message.evaluation_contribution_to_student_final_mark;
         }
         return obj;
@@ -544,15 +544,16 @@ exports.PersonalizedEvaluation = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.total = object.total ?? 0;
-        message.weight = object.weight ?? 0;
-        message.date = object.date ?? "";
+        message.name = object.name ?? undefined;
+        message.total = object.total ?? undefined;
+        message.weight = object.weight ?? undefined;
+        message.date = object.date ?? undefined;
         message.mark_category = (object.mark_category !== undefined && object.mark_category !== null)
             ? object_id_1.ObjectId.fromPartial(object.mark_category)
             : undefined;
-        message.visible_to_parents_and_students = object.visible_to_parents_and_students ?? false;
-        message.evaluation_contribution_to_student_final_mark = object.evaluation_contribution_to_student_final_mark ?? 0;
+        message.visible_to_parents_and_students = object.visible_to_parents_and_students ?? undefined;
+        message.evaluation_contribution_to_student_final_mark = object.evaluation_contribution_to_student_final_mark ??
+            undefined;
         return message;
     },
 };

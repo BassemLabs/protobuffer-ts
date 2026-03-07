@@ -25,7 +25,7 @@ export interface ListAbstractCoursesRequest {
 }
 export interface ListAbstractCoursesResponse {
     abstract_courses: AbstractCourse[];
-    total: number;
+    total?: number | undefined;
 }
 export interface GetAbstractCourseRequest {
     context: RequestContext | undefined;
@@ -33,14 +33,14 @@ export interface GetAbstractCourseRequest {
 }
 export interface CreateAbstractCategoryRequest {
     context: RequestContext | undefined;
-    name: string;
-    credits_required: number;
+    name?: string | undefined;
+    credits_required?: number | undefined;
 }
 export interface UpdateAbstractCategoryRequest {
     context: RequestContext | undefined;
     abstract_category_id: ObjectId | undefined;
-    name: string;
-    credits_required: number;
+    name?: string | undefined;
+    credits_required?: number | undefined;
 }
 export interface DeleteAbstractCategoryRequest {
     context: RequestContext | undefined;
@@ -48,32 +48,32 @@ export interface DeleteAbstractCategoryRequest {
 }
 export interface CreateAbstractCategoryGroupRequest {
     context: RequestContext | undefined;
-    name: string;
-    credits_required: number;
+    name?: string | undefined;
+    credits_required?: number | undefined;
     category_ids: ObjectId[];
 }
 export interface UpdateAbstractCategoryGroupRequest {
     context: RequestContext | undefined;
     abstract_category_group_id: ObjectId | undefined;
-    name: string;
-    credits_required: number;
+    name?: string | undefined;
+    credits_required?: number | undefined;
     category_ids: ObjectId[];
 }
 export interface CreateAbstractCourseRequest {
     context: RequestContext | undefined;
-    course_code: string;
-    official_name: string;
-    credit: number;
-    mandatory: boolean;
+    course_code?: string | undefined;
+    official_name?: string | undefined;
+    credit?: number | undefined;
+    mandatory?: boolean | undefined;
     category_ids: ObjectId[];
 }
 export interface UpdateAbstractCourseRequest {
     context: RequestContext | undefined;
     abstract_course_id: ObjectId | undefined;
-    course_code: string;
-    official_name: string;
-    credit: number;
-    mandatory: boolean;
+    course_code?: string | undefined;
+    official_name?: string | undefined;
+    credit?: number | undefined;
+    mandatory?: boolean | undefined;
     category_ids: ObjectId[];
 }
 export interface DeleteAbstractCourseRequest {

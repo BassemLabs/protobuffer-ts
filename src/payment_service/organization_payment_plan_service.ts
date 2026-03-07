@@ -31,14 +31,14 @@ export interface GetPaymentPlansResponse {
 
 export interface CreatePaymentPlanRequest {
   context: RequestContext | undefined;
-  name: string;
-  description: string;
-  currency: Currency;
-  is_public: boolean;
-  upfront_cost: number;
-  upfront_cost_payment_interval: PaymentInterval;
-  per_student_cost: number;
-  payment_processing_percentage: number;
+  name?: string | undefined;
+  description?: string | undefined;
+  currency?: Currency | undefined;
+  is_public?: boolean | undefined;
+  upfront_cost?: number | undefined;
+  upfront_cost_payment_interval?: PaymentInterval | undefined;
+  per_student_cost?: number | undefined;
+  payment_processing_percentage?: number | undefined;
 }
 
 export interface GetOrganizationVisiblePlansRequest {
@@ -62,7 +62,7 @@ export interface MakePaymentPlanAccessibleForOrganizationRequest {
 export interface AssignPaymentPlanToOrganizationRequest {
   context: RequestContext | undefined;
   payment_plan_id: ObjectId | undefined;
-  defer_per_student_cost_to_parent: boolean;
+  defer_per_student_cost_to_parent?: boolean | undefined;
 }
 
 export interface GetOrganizationActiveOrgPaymentPlanInfoRequest {
@@ -205,14 +205,14 @@ export const GetPaymentPlansResponse: MessageFns<GetPaymentPlansResponse> = {
 function createBaseCreatePaymentPlanRequest(): CreatePaymentPlanRequest {
   return {
     context: undefined,
-    name: "",
-    description: "",
-    currency: Currency.USD,
-    is_public: false,
-    upfront_cost: 0,
-    upfront_cost_payment_interval: PaymentInterval.Monthly,
-    per_student_cost: 0,
-    payment_processing_percentage: 0,
+    name: undefined,
+    description: undefined,
+    currency: undefined,
+    is_public: undefined,
+    upfront_cost: undefined,
+    upfront_cost_payment_interval: undefined,
+    per_student_cost: undefined,
+    payment_processing_percentage: undefined,
   };
 }
 
@@ -221,28 +221,28 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(26).string(message.description);
     }
-    if (message.currency !== Currency.USD) {
+    if (message.currency !== undefined) {
       writer.uint32(32).int32(currencyToNumber(message.currency));
     }
-    if (message.is_public !== false) {
+    if (message.is_public !== undefined) {
       writer.uint32(40).bool(message.is_public);
     }
-    if (message.upfront_cost !== 0) {
+    if (message.upfront_cost !== undefined) {
       writer.uint32(49).double(message.upfront_cost);
     }
-    if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
+    if (message.upfront_cost_payment_interval !== undefined) {
       writer.uint32(56).int32(paymentIntervalToNumber(message.upfront_cost_payment_interval));
     }
-    if (message.per_student_cost !== 0) {
+    if (message.per_student_cost !== undefined) {
       writer.uint32(65).double(message.per_student_cost);
     }
-    if (message.payment_processing_percentage !== 0) {
+    if (message.payment_processing_percentage !== undefined) {
       writer.uint32(73).double(message.payment_processing_percentage);
     }
     return writer;
@@ -330,18 +330,18 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
   fromJSON(object: any): CreatePaymentPlanRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      currency: isSet(object.currency) ? currencyFromJSON(object.currency) : Currency.USD,
-      is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
-      upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      currency: isSet(object.currency) ? currencyFromJSON(object.currency) : undefined,
+      is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : undefined,
+      upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : undefined,
       upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
         ? paymentIntervalFromJSON(object.upfrontCostPaymentInterval)
-        : PaymentInterval.Monthly,
-      per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+        : undefined,
+      per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : undefined,
       payment_processing_percentage: isSet(object.paymentProcessingPercentage)
         ? globalThis.Number(object.paymentProcessingPercentage)
-        : 0,
+        : undefined,
     };
   },
 
@@ -350,28 +350,28 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.currency !== Currency.USD) {
+    if (message.currency !== undefined) {
       obj.currency = currencyToJSON(message.currency);
     }
-    if (message.is_public !== false) {
+    if (message.is_public !== undefined) {
       obj.isPublic = message.is_public;
     }
-    if (message.upfront_cost !== 0) {
+    if (message.upfront_cost !== undefined) {
       obj.upfrontCost = message.upfront_cost;
     }
-    if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
+    if (message.upfront_cost_payment_interval !== undefined) {
       obj.upfrontCostPaymentInterval = paymentIntervalToJSON(message.upfront_cost_payment_interval);
     }
-    if (message.per_student_cost !== 0) {
+    if (message.per_student_cost !== undefined) {
       obj.perStudentCost = message.per_student_cost;
     }
-    if (message.payment_processing_percentage !== 0) {
+    if (message.payment_processing_percentage !== undefined) {
       obj.paymentProcessingPercentage = message.payment_processing_percentage;
     }
     return obj;
@@ -385,14 +385,14 @@ export const CreatePaymentPlanRequest: MessageFns<CreatePaymentPlanRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.name = object.name ?? "";
-    message.description = object.description ?? "";
-    message.currency = object.currency ?? Currency.USD;
-    message.is_public = object.is_public ?? false;
-    message.upfront_cost = object.upfront_cost ?? 0;
-    message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? PaymentInterval.Monthly;
-    message.per_student_cost = object.per_student_cost ?? 0;
-    message.payment_processing_percentage = object.payment_processing_percentage ?? 0;
+    message.name = object.name ?? undefined;
+    message.description = object.description ?? undefined;
+    message.currency = object.currency ?? undefined;
+    message.is_public = object.is_public ?? undefined;
+    message.upfront_cost = object.upfront_cost ?? undefined;
+    message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? undefined;
+    message.per_student_cost = object.per_student_cost ?? undefined;
+    message.payment_processing_percentage = object.payment_processing_percentage ?? undefined;
     return message;
   },
 };
@@ -690,7 +690,7 @@ export const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<
 };
 
 function createBaseAssignPaymentPlanToOrganizationRequest(): AssignPaymentPlanToOrganizationRequest {
-  return { context: undefined, payment_plan_id: undefined, defer_per_student_cost_to_parent: false };
+  return { context: undefined, payment_plan_id: undefined, defer_per_student_cost_to_parent: undefined };
 }
 
 export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPlanToOrganizationRequest> = {
@@ -701,7 +701,7 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
     if (message.payment_plan_id !== undefined) {
       ObjectId.encode(message.payment_plan_id, writer.uint32(18).fork()).join();
     }
-    if (message.defer_per_student_cost_to_parent !== false) {
+    if (message.defer_per_student_cost_to_parent !== undefined) {
       writer.uint32(24).bool(message.defer_per_student_cost_to_parent);
     }
     return writer;
@@ -750,7 +750,7 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
       payment_plan_id: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
       defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
         ? globalThis.Boolean(object.deferPerStudentCostToParent)
-        : false,
+        : undefined,
     };
   },
 
@@ -762,7 +762,7 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
     if (message.payment_plan_id !== undefined) {
       obj.paymentPlanId = ObjectId.toJSON(message.payment_plan_id);
     }
-    if (message.defer_per_student_cost_to_parent !== false) {
+    if (message.defer_per_student_cost_to_parent !== undefined) {
       obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
     }
     return obj;
@@ -783,7 +783,7 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
     message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
       ? ObjectId.fromPartial(object.payment_plan_id)
       : undefined;
-    message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? false;
+    message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? undefined;
     return message;
   },
 };

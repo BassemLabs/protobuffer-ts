@@ -5,14 +5,14 @@ export declare const protobufPackage = "organization_service";
 export interface Campus {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    name: string;
-    address: string;
-    email: string;
-    phone: string;
+    name?: string | undefined;
+    address?: string | undefined;
+    email?: string | undefined;
+    phone?: string | undefined;
     logo?: AWSFile | undefined;
     principal_id: ObjectId | undefined;
     supervisor_id: ObjectId | undefined;
-    archived: boolean;
+    archived?: boolean | undefined;
 }
 export declare const Campus: MessageFns<Campus>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

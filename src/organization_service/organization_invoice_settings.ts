@@ -10,20 +10,20 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "organization_service";
 
 export interface InvoiceSettings {
-  disable_tax: boolean;
+  disable_tax?: boolean | undefined;
   hst_number?: string | undefined;
 }
 
 function createBaseInvoiceSettings(): InvoiceSettings {
-  return { disable_tax: false, hst_number: "" };
+  return { disable_tax: undefined, hst_number: undefined };
 }
 
 export const InvoiceSettings: MessageFns<InvoiceSettings> = {
   encode(message: InvoiceSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       writer.uint32(8).bool(message.disable_tax);
     }
-    if (message.hst_number !== undefined && message.hst_number !== "") {
+    if (message.hst_number !== undefined) {
       writer.uint32(18).string(message.hst_number);
     }
     return writer;
@@ -61,17 +61,17 @@ export const InvoiceSettings: MessageFns<InvoiceSettings> = {
 
   fromJSON(object: any): InvoiceSettings {
     return {
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
+      hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : undefined,
     };
   },
 
   toJSON(message: InvoiceSettings): unknown {
     const obj: any = {};
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       obj.disableTax = message.disable_tax;
     }
-    if (message.hst_number !== undefined && message.hst_number !== "") {
+    if (message.hst_number !== undefined) {
       obj.hstNumber = message.hst_number;
     }
     return obj;
@@ -82,8 +82,8 @@ export const InvoiceSettings: MessageFns<InvoiceSettings> = {
   },
   fromPartial<I extends Exact<DeepPartial<InvoiceSettings>, I>>(object: I): InvoiceSettings {
     const message = createBaseInvoiceSettings();
-    message.disable_tax = object.disable_tax ?? false;
-    message.hst_number = object.hst_number ?? "";
+    message.disable_tax = object.disable_tax ?? undefined;
+    message.hst_number = object.hst_number ?? undefined;
     return message;
   },
 };

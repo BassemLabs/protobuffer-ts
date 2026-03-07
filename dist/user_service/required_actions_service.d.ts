@@ -14,14 +14,14 @@ export interface GetAdmittedStudentsActionsOverviewResponse {
 }
 export interface StudentActionSummary {
     student_id: ObjectId | undefined;
-    student_name: string;
-    description: string;
+    student_name?: string | undefined;
+    description?: string | undefined;
     is_reregistration?: boolean | undefined;
-    actions_count: number;
+    actions_count?: number | undefined;
 }
 export interface FamilyActionSummary {
     family_id: ObjectId | undefined;
-    description: string;
+    description?: string | undefined;
 }
 export interface GetStudentFirstOnboardingRequiredActionRequest {
     context: RequestContext | undefined;

@@ -15,23 +15,23 @@ export declare function teacherStatusToNumber(object: TeacherStatus): number;
 export interface TeacherBasic {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    username: string;
-    email_domain: string;
-    email: string;
-    first_name: string;
-    last_name: string;
+    username?: string | undefined;
+    email_domain?: string | undefined;
+    email?: string | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
 }
 /** Full teacher model with all fields */
 export interface Teacher {
     id: ObjectId | undefined;
-    status: TeacherStatus;
-    username: string;
-    email_domain: string;
-    first_name: string;
-    last_name: string;
-    gender: string;
-    email: string;
-    personal_email: string;
+    status?: TeacherStatus | undefined;
+    username?: string | undefined;
+    email_domain?: string | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
+    email?: string | undefined;
+    personal_email?: string | undefined;
     date_of_birth: Date | undefined;
     phone_number: PhoneNumber | undefined;
     signature_file_id?: ObjectId | undefined;
@@ -39,11 +39,11 @@ export interface Teacher {
     organization: ObjectId | undefined;
 }
 export interface TeacherProfile {
-    first_name: string;
-    last_name: string;
-    gender: string;
-    email: string;
-    personal_email: string;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
+    email?: string | undefined;
+    personal_email?: string | undefined;
     date_of_birth: Date | undefined;
     phone_number: PhoneNumber | undefined;
 }

@@ -31,7 +31,7 @@ export const protobufPackage = "payment_service";
 /** single processing fee */
 export interface ListProcessingFeesRequest {
   context: RequestContext | undefined;
-  archived: boolean;
+  archived?: boolean | undefined;
 }
 
 export interface ListProcessingFeesResponse {
@@ -40,10 +40,10 @@ export interface ListProcessingFeesResponse {
 
 export interface CreateProcessingFeeRequest {
   context: RequestContext | undefined;
-  invoice_type: InvoiceType;
-  fee_type: FeeType;
-  value_type: DiscountValueType;
-  value: number;
+  invoice_type?: InvoiceType | undefined;
+  fee_type?: FeeType | undefined;
+  value_type?: DiscountValueType | undefined;
+  value?: number | undefined;
   cap_amount?: number | undefined;
 }
 
@@ -55,10 +55,10 @@ export interface GetProcessingFeeRequest {
 export interface UpdateProcessingFeeRequest {
   context: RequestContext | undefined;
   id: ObjectId | undefined;
-  invoice_type: InvoiceType;
-  fee_type: FeeType;
-  value_type: DiscountValueType;
-  value: number;
+  invoice_type?: InvoiceType | undefined;
+  fee_type?: FeeType | undefined;
+  value_type?: DiscountValueType | undefined;
+  value?: number | undefined;
   cap_amount?: number | undefined;
 }
 
@@ -74,7 +74,7 @@ export interface UnarchiveProcessingFeeRequest {
 
 export interface GetActiveProcessingFeesRequest {
   context: RequestContext | undefined;
-  invoice_type: InvoiceType;
+  invoice_type?: InvoiceType | undefined;
 }
 
 /** organization level */
@@ -84,12 +84,12 @@ export interface GetOrganizationProcessingFeeRequest {
 
 export interface UpdateOrganizationProcessingFeeRequest {
   context: RequestContext | undefined;
-  tuition_invoice_fees_enabled: boolean;
-  non_tuition_invoice_fees_enabled: boolean;
+  tuition_invoice_fees_enabled?: boolean | undefined;
+  non_tuition_invoice_fees_enabled?: boolean | undefined;
 }
 
 function createBaseListProcessingFeesRequest(): ListProcessingFeesRequest {
-  return { context: undefined, archived: false };
+  return { context: undefined, archived: undefined };
 }
 
 export const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest> = {
@@ -97,7 +97,7 @@ export const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(16).bool(message.archived);
     }
     return writer;
@@ -136,7 +136,7 @@ export const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest> = 
   fromJSON(object: any): ListProcessingFeesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
     };
   },
 
@@ -145,7 +145,7 @@ export const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
     return obj;
@@ -159,7 +159,7 @@ export const ListProcessingFeesRequest: MessageFns<ListProcessingFeesRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.archived = object.archived ?? false;
+    message.archived = object.archived ?? undefined;
     return message;
   },
 };
@@ -226,11 +226,11 @@ export const ListProcessingFeesResponse: MessageFns<ListProcessingFeesResponse> 
 function createBaseCreateProcessingFeeRequest(): CreateProcessingFeeRequest {
   return {
     context: undefined,
-    invoice_type: InvoiceType.TUITION,
-    fee_type: FeeType.CARD_FEE,
-    value_type: DiscountValueType.AMOUNT,
-    value: 0,
-    cap_amount: 0,
+    invoice_type: undefined,
+    fee_type: undefined,
+    value_type: undefined,
+    value: undefined,
+    cap_amount: undefined,
   };
 }
 
@@ -239,19 +239,19 @@ export const CreateProcessingFeeRequest: MessageFns<CreateProcessingFeeRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.invoice_type !== InvoiceType.TUITION) {
+    if (message.invoice_type !== undefined) {
       writer.uint32(16).int32(invoiceTypeToNumber(message.invoice_type));
     }
-    if (message.fee_type !== FeeType.CARD_FEE) {
+    if (message.fee_type !== undefined) {
       writer.uint32(24).int32(feeTypeToNumber(message.fee_type));
     }
-    if (message.value_type !== DiscountValueType.AMOUNT) {
+    if (message.value_type !== undefined) {
       writer.uint32(32).int32(discountValueTypeToNumber(message.value_type));
     }
-    if (message.value !== 0) {
+    if (message.value !== undefined) {
       writer.uint32(41).double(message.value);
     }
-    if (message.cap_amount !== undefined && message.cap_amount !== 0) {
+    if (message.cap_amount !== undefined) {
       writer.uint32(49).double(message.cap_amount);
     }
     return writer;
@@ -318,11 +318,11 @@ export const CreateProcessingFeeRequest: MessageFns<CreateProcessingFeeRequest> 
   fromJSON(object: any): CreateProcessingFeeRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : InvoiceType.TUITION,
-      fee_type: isSet(object.feeType) ? feeTypeFromJSON(object.feeType) : FeeType.CARD_FEE,
-      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
-      value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-      cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : 0,
+      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : undefined,
+      fee_type: isSet(object.feeType) ? feeTypeFromJSON(object.feeType) : undefined,
+      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : undefined,
+      value: isSet(object.value) ? globalThis.Number(object.value) : undefined,
+      cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : undefined,
     };
   },
 
@@ -331,19 +331,19 @@ export const CreateProcessingFeeRequest: MessageFns<CreateProcessingFeeRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.invoice_type !== InvoiceType.TUITION) {
+    if (message.invoice_type !== undefined) {
       obj.invoiceType = invoiceTypeToJSON(message.invoice_type);
     }
-    if (message.fee_type !== FeeType.CARD_FEE) {
+    if (message.fee_type !== undefined) {
       obj.feeType = feeTypeToJSON(message.fee_type);
     }
-    if (message.value_type !== DiscountValueType.AMOUNT) {
+    if (message.value_type !== undefined) {
       obj.valueType = discountValueTypeToJSON(message.value_type);
     }
-    if (message.value !== 0) {
+    if (message.value !== undefined) {
       obj.value = message.value;
     }
-    if (message.cap_amount !== undefined && message.cap_amount !== 0) {
+    if (message.cap_amount !== undefined) {
       obj.capAmount = message.cap_amount;
     }
     return obj;
@@ -357,11 +357,11 @@ export const CreateProcessingFeeRequest: MessageFns<CreateProcessingFeeRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.invoice_type = object.invoice_type ?? InvoiceType.TUITION;
-    message.fee_type = object.fee_type ?? FeeType.CARD_FEE;
-    message.value_type = object.value_type ?? DiscountValueType.AMOUNT;
-    message.value = object.value ?? 0;
-    message.cap_amount = object.cap_amount ?? 0;
+    message.invoice_type = object.invoice_type ?? undefined;
+    message.fee_type = object.fee_type ?? undefined;
+    message.value_type = object.value_type ?? undefined;
+    message.value = object.value ?? undefined;
+    message.cap_amount = object.cap_amount ?? undefined;
     return message;
   },
 };
@@ -446,11 +446,11 @@ function createBaseUpdateProcessingFeeRequest(): UpdateProcessingFeeRequest {
   return {
     context: undefined,
     id: undefined,
-    invoice_type: InvoiceType.TUITION,
-    fee_type: FeeType.CARD_FEE,
-    value_type: DiscountValueType.AMOUNT,
-    value: 0,
-    cap_amount: 0,
+    invoice_type: undefined,
+    fee_type: undefined,
+    value_type: undefined,
+    value: undefined,
+    cap_amount: undefined,
   };
 }
 
@@ -462,19 +462,19 @@ export const UpdateProcessingFeeRequest: MessageFns<UpdateProcessingFeeRequest> 
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(18).fork()).join();
     }
-    if (message.invoice_type !== InvoiceType.TUITION) {
+    if (message.invoice_type !== undefined) {
       writer.uint32(24).int32(invoiceTypeToNumber(message.invoice_type));
     }
-    if (message.fee_type !== FeeType.CARD_FEE) {
+    if (message.fee_type !== undefined) {
       writer.uint32(32).int32(feeTypeToNumber(message.fee_type));
     }
-    if (message.value_type !== DiscountValueType.AMOUNT) {
+    if (message.value_type !== undefined) {
       writer.uint32(40).int32(discountValueTypeToNumber(message.value_type));
     }
-    if (message.value !== 0) {
+    if (message.value !== undefined) {
       writer.uint32(49).double(message.value);
     }
-    if (message.cap_amount !== undefined && message.cap_amount !== 0) {
+    if (message.cap_amount !== undefined) {
       writer.uint32(57).double(message.cap_amount);
     }
     return writer;
@@ -549,11 +549,11 @@ export const UpdateProcessingFeeRequest: MessageFns<UpdateProcessingFeeRequest> 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : InvoiceType.TUITION,
-      fee_type: isSet(object.feeType) ? feeTypeFromJSON(object.feeType) : FeeType.CARD_FEE,
-      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : DiscountValueType.AMOUNT,
-      value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-      cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : 0,
+      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : undefined,
+      fee_type: isSet(object.feeType) ? feeTypeFromJSON(object.feeType) : undefined,
+      value_type: isSet(object.valueType) ? discountValueTypeFromJSON(object.valueType) : undefined,
+      value: isSet(object.value) ? globalThis.Number(object.value) : undefined,
+      cap_amount: isSet(object.capAmount) ? globalThis.Number(object.capAmount) : undefined,
     };
   },
 
@@ -565,19 +565,19 @@ export const UpdateProcessingFeeRequest: MessageFns<UpdateProcessingFeeRequest> 
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.invoice_type !== InvoiceType.TUITION) {
+    if (message.invoice_type !== undefined) {
       obj.invoiceType = invoiceTypeToJSON(message.invoice_type);
     }
-    if (message.fee_type !== FeeType.CARD_FEE) {
+    if (message.fee_type !== undefined) {
       obj.feeType = feeTypeToJSON(message.fee_type);
     }
-    if (message.value_type !== DiscountValueType.AMOUNT) {
+    if (message.value_type !== undefined) {
       obj.valueType = discountValueTypeToJSON(message.value_type);
     }
-    if (message.value !== 0) {
+    if (message.value !== undefined) {
       obj.value = message.value;
     }
-    if (message.cap_amount !== undefined && message.cap_amount !== 0) {
+    if (message.cap_amount !== undefined) {
       obj.capAmount = message.cap_amount;
     }
     return obj;
@@ -592,11 +592,11 @@ export const UpdateProcessingFeeRequest: MessageFns<UpdateProcessingFeeRequest> 
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.invoice_type = object.invoice_type ?? InvoiceType.TUITION;
-    message.fee_type = object.fee_type ?? FeeType.CARD_FEE;
-    message.value_type = object.value_type ?? DiscountValueType.AMOUNT;
-    message.value = object.value ?? 0;
-    message.cap_amount = object.cap_amount ?? 0;
+    message.invoice_type = object.invoice_type ?? undefined;
+    message.fee_type = object.fee_type ?? undefined;
+    message.value_type = object.value_type ?? undefined;
+    message.value = object.value ?? undefined;
+    message.cap_amount = object.cap_amount ?? undefined;
     return message;
   },
 };
@@ -756,7 +756,7 @@ export const UnarchiveProcessingFeeRequest: MessageFns<UnarchiveProcessingFeeReq
 };
 
 function createBaseGetActiveProcessingFeesRequest(): GetActiveProcessingFeesRequest {
-  return { context: undefined, invoice_type: InvoiceType.TUITION };
+  return { context: undefined, invoice_type: undefined };
 }
 
 export const GetActiveProcessingFeesRequest: MessageFns<GetActiveProcessingFeesRequest> = {
@@ -764,7 +764,7 @@ export const GetActiveProcessingFeesRequest: MessageFns<GetActiveProcessingFeesR
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.invoice_type !== InvoiceType.TUITION) {
+    if (message.invoice_type !== undefined) {
       writer.uint32(16).int32(invoiceTypeToNumber(message.invoice_type));
     }
     return writer;
@@ -803,7 +803,7 @@ export const GetActiveProcessingFeesRequest: MessageFns<GetActiveProcessingFeesR
   fromJSON(object: any): GetActiveProcessingFeesRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : InvoiceType.TUITION,
+      invoice_type: isSet(object.invoiceType) ? invoiceTypeFromJSON(object.invoiceType) : undefined,
     };
   },
 
@@ -812,7 +812,7 @@ export const GetActiveProcessingFeesRequest: MessageFns<GetActiveProcessingFeesR
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.invoice_type !== InvoiceType.TUITION) {
+    if (message.invoice_type !== undefined) {
       obj.invoiceType = invoiceTypeToJSON(message.invoice_type);
     }
     return obj;
@@ -828,7 +828,7 @@ export const GetActiveProcessingFeesRequest: MessageFns<GetActiveProcessingFeesR
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.invoice_type = object.invoice_type ?? InvoiceType.TUITION;
+    message.invoice_type = object.invoice_type ?? undefined;
     return message;
   },
 };
@@ -897,7 +897,7 @@ export const GetOrganizationProcessingFeeRequest: MessageFns<GetOrganizationProc
 };
 
 function createBaseUpdateOrganizationProcessingFeeRequest(): UpdateOrganizationProcessingFeeRequest {
-  return { context: undefined, tuition_invoice_fees_enabled: false, non_tuition_invoice_fees_enabled: false };
+  return { context: undefined, tuition_invoice_fees_enabled: undefined, non_tuition_invoice_fees_enabled: undefined };
 }
 
 export const UpdateOrganizationProcessingFeeRequest: MessageFns<UpdateOrganizationProcessingFeeRequest> = {
@@ -905,10 +905,10 @@ export const UpdateOrganizationProcessingFeeRequest: MessageFns<UpdateOrganizati
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.tuition_invoice_fees_enabled !== false) {
+    if (message.tuition_invoice_fees_enabled !== undefined) {
       writer.uint32(16).bool(message.tuition_invoice_fees_enabled);
     }
-    if (message.non_tuition_invoice_fees_enabled !== false) {
+    if (message.non_tuition_invoice_fees_enabled !== undefined) {
       writer.uint32(24).bool(message.non_tuition_invoice_fees_enabled);
     }
     return writer;
@@ -956,10 +956,10 @@ export const UpdateOrganizationProcessingFeeRequest: MessageFns<UpdateOrganizati
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       tuition_invoice_fees_enabled: isSet(object.tuitionInvoiceFeesEnabled)
         ? globalThis.Boolean(object.tuitionInvoiceFeesEnabled)
-        : false,
+        : undefined,
       non_tuition_invoice_fees_enabled: isSet(object.nonTuitionInvoiceFeesEnabled)
         ? globalThis.Boolean(object.nonTuitionInvoiceFeesEnabled)
-        : false,
+        : undefined,
     };
   },
 
@@ -968,10 +968,10 @@ export const UpdateOrganizationProcessingFeeRequest: MessageFns<UpdateOrganizati
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.tuition_invoice_fees_enabled !== false) {
+    if (message.tuition_invoice_fees_enabled !== undefined) {
       obj.tuitionInvoiceFeesEnabled = message.tuition_invoice_fees_enabled;
     }
-    if (message.non_tuition_invoice_fees_enabled !== false) {
+    if (message.non_tuition_invoice_fees_enabled !== undefined) {
       obj.nonTuitionInvoiceFeesEnabled = message.non_tuition_invoice_fees_enabled;
     }
     return obj;
@@ -989,8 +989,8 @@ export const UpdateOrganizationProcessingFeeRequest: MessageFns<UpdateOrganizati
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.tuition_invoice_fees_enabled = object.tuition_invoice_fees_enabled ?? false;
-    message.non_tuition_invoice_fees_enabled = object.non_tuition_invoice_fees_enabled ?? false;
+    message.tuition_invoice_fees_enabled = object.tuition_invoice_fees_enabled ?? undefined;
+    message.non_tuition_invoice_fees_enabled = object.non_tuition_invoice_fees_enabled ?? undefined;
     return message;
   },
 };

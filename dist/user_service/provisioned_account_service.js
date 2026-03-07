@@ -208,7 +208,7 @@ exports.ListProvisionedAccountsResponse = {
     },
 };
 function createBaseCreateProvisionedAccountForStudentRequest() {
-    return { context: undefined, student_id: undefined, provider: lms_course_1.LmsProviderType.GOOGLE_CLASSROOM };
+    return { context: undefined, student_id: undefined, provider: undefined };
 }
 exports.CreateProvisionedAccountForStudentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -218,7 +218,7 @@ exports.CreateProvisionedAccountForStudentRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
+        if (message.provider !== undefined) {
             writer.uint32(24).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
         }
         return writer;
@@ -260,7 +260,7 @@ exports.CreateProvisionedAccountForStudentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
         };
     },
     toJSON(message) {
@@ -271,7 +271,7 @@ exports.CreateProvisionedAccountForStudentRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
+        if (message.provider !== undefined) {
             obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
         }
         return obj;
@@ -287,12 +287,12 @@ exports.CreateProvisionedAccountForStudentRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.provider = object.provider ?? lms_course_1.LmsProviderType.GOOGLE_CLASSROOM;
+        message.provider = object.provider ?? undefined;
         return message;
     },
 };
 function createBaseCreateProvisionedAccountForTeacherRequest() {
-    return { context: undefined, teacher_id: undefined, provider: lms_course_1.LmsProviderType.GOOGLE_CLASSROOM };
+    return { context: undefined, teacher_id: undefined, provider: undefined };
 }
 exports.CreateProvisionedAccountForTeacherRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -302,7 +302,7 @@ exports.CreateProvisionedAccountForTeacherRequest = {
         if (message.teacher_id !== undefined) {
             object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
-        if (message.provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
+        if (message.provider !== undefined) {
             writer.uint32(24).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
         }
         return writer;
@@ -344,7 +344,7 @@ exports.CreateProvisionedAccountForTeacherRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
-            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : lms_course_1.LmsProviderType.GOOGLE_CLASSROOM,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
         };
     },
     toJSON(message) {
@@ -355,7 +355,7 @@ exports.CreateProvisionedAccountForTeacherRequest = {
         if (message.teacher_id !== undefined) {
             obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
-        if (message.provider !== lms_course_1.LmsProviderType.GOOGLE_CLASSROOM) {
+        if (message.provider !== undefined) {
             obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
         }
         return obj;
@@ -371,7 +371,7 @@ exports.CreateProvisionedAccountForTeacherRequest = {
         message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
-        message.provider = object.provider ?? lms_course_1.LmsProviderType.GOOGLE_CLASSROOM;
+        message.provider = object.provider ?? undefined;
         return message;
     },
 };

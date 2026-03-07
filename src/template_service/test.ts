@@ -12,11 +12,11 @@ export const protobufPackage = "template_service";
 
 export interface TestModel {
   id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
 }
 
 function createBaseTestModel(): TestModel {
-  return { id: undefined, name: "" };
+  return { id: undefined, name: undefined };
 }
 
 export const TestModel: MessageFns<TestModel> = {
@@ -24,7 +24,7 @@ export const TestModel: MessageFns<TestModel> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
     return writer;
@@ -63,7 +63,7 @@ export const TestModel: MessageFns<TestModel> = {
   fromJSON(object: any): TestModel {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
     };
   },
 
@@ -72,7 +72,7 @@ export const TestModel: MessageFns<TestModel> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     return obj;
@@ -84,7 +84,7 @@ export const TestModel: MessageFns<TestModel> = {
   fromPartial<I extends Exact<DeepPartial<TestModel>, I>>(object: I): TestModel {
     const message = createBaseTestModel();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     return message;
   },
 };

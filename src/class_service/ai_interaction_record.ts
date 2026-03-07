@@ -67,9 +67,9 @@ export interface AiInteractionRecord {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   user_id: ObjectId | undefined;
-  prompt: string;
-  response: string;
-  status: AiInteractionRecordStatus;
+  prompt?: string | undefined;
+  response?: string | undefined;
+  status?: AiInteractionRecordStatus | undefined;
 }
 
 function createBaseAiInteractionRecord(): AiInteractionRecord {
@@ -77,9 +77,9 @@ function createBaseAiInteractionRecord(): AiInteractionRecord {
     id: undefined,
     organization: undefined,
     user_id: undefined,
-    prompt: "",
-    response: "",
-    status: AiInteractionRecordStatus.Pending,
+    prompt: undefined,
+    response: undefined,
+    status: undefined,
   };
 }
 
@@ -94,13 +94,13 @@ export const AiInteractionRecord: MessageFns<AiInteractionRecord> = {
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(26).fork()).join();
     }
-    if (message.prompt !== "") {
+    if (message.prompt !== undefined) {
       writer.uint32(34).string(message.prompt);
     }
-    if (message.response !== "") {
+    if (message.response !== undefined) {
       writer.uint32(42).string(message.response);
     }
-    if (message.status !== AiInteractionRecordStatus.Pending) {
+    if (message.status !== undefined) {
       writer.uint32(48).int32(aiInteractionRecordStatusToNumber(message.status));
     }
     return writer;
@@ -169,11 +169,9 @@ export const AiInteractionRecord: MessageFns<AiInteractionRecord> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      prompt: isSet(object.prompt) ? globalThis.String(object.prompt) : "",
-      response: isSet(object.response) ? globalThis.String(object.response) : "",
-      status: isSet(object.status)
-        ? aiInteractionRecordStatusFromJSON(object.status)
-        : AiInteractionRecordStatus.Pending,
+      prompt: isSet(object.prompt) ? globalThis.String(object.prompt) : undefined,
+      response: isSet(object.response) ? globalThis.String(object.response) : undefined,
+      status: isSet(object.status) ? aiInteractionRecordStatusFromJSON(object.status) : undefined,
     };
   },
 
@@ -188,13 +186,13 @@ export const AiInteractionRecord: MessageFns<AiInteractionRecord> = {
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.prompt !== "") {
+    if (message.prompt !== undefined) {
       obj.prompt = message.prompt;
     }
-    if (message.response !== "") {
+    if (message.response !== undefined) {
       obj.response = message.response;
     }
-    if (message.status !== AiInteractionRecordStatus.Pending) {
+    if (message.status !== undefined) {
       obj.status = aiInteractionRecordStatusToJSON(message.status);
     }
     return obj;
@@ -212,9 +210,9 @@ export const AiInteractionRecord: MessageFns<AiInteractionRecord> = {
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.prompt = object.prompt ?? "";
-    message.response = object.response ?? "";
-    message.status = object.status ?? AiInteractionRecordStatus.Pending;
+    message.prompt = object.prompt ?? undefined;
+    message.response = object.response ?? undefined;
+    message.status = object.status ?? undefined;
     return message;
   },
 };

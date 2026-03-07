@@ -171,23 +171,23 @@ export interface CustomField {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   group_id: ObjectId | undefined;
-  name: string;
-  field_type: CustomFieldType;
-  user_type: UserType;
-  is_required: boolean;
-  description: string;
+  name?: string | undefined;
+  field_type?: CustomFieldType | undefined;
+  user_type?: UserType | undefined;
+  is_required?: boolean | undefined;
+  description?: string | undefined;
   regex_pattern?: string | undefined;
   options: string[];
-  is_archived: boolean;
+  is_archived?: boolean | undefined;
 }
 
 /** Custom fields group */
 export interface CustomFieldsGroup {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  group_name: string;
-  user_type: UserType;
-  profile_section: ProfileSection;
+  group_name?: string | undefined;
+  user_type?: UserType | undefined;
+  profile_section?: ProfileSection | undefined;
   hints: string[];
   group_access_settings: ObjectId | undefined;
   entries_access_settings:
@@ -204,13 +204,13 @@ export interface GroupApprovalStatus {
   organization: ObjectId | undefined;
   group_id: ObjectId | undefined;
   user_id: ObjectId | undefined;
-  status: ApprovalStatus;
+  status?: ApprovalStatus | undefined;
   rejection_message?: string | undefined;
 }
 
 export interface StudentPrimaryIdField {
-  field_name: string;
-  value: string;
+  field_name?: string | undefined;
+  value?: string | undefined;
 }
 
 /** Custom fields group with its associated custom fields */
@@ -224,14 +224,14 @@ function createBaseCustomField(): CustomField {
     id: undefined,
     organization: undefined,
     group_id: undefined,
-    name: "",
-    field_type: CustomFieldType.STRING,
-    user_type: UserType.NONE,
-    is_required: false,
-    description: "",
-    regex_pattern: "",
+    name: undefined,
+    field_type: undefined,
+    user_type: undefined,
+    is_required: undefined,
+    description: undefined,
+    regex_pattern: undefined,
     options: [],
-    is_archived: false,
+    is_archived: undefined,
   };
 }
 
@@ -246,28 +246,28 @@ export const CustomField: MessageFns<CustomField> = {
     if (message.group_id !== undefined) {
       ObjectId.encode(message.group_id, writer.uint32(26).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(34).string(message.name);
     }
-    if (message.field_type !== CustomFieldType.STRING) {
+    if (message.field_type !== undefined) {
       writer.uint32(40).int32(customFieldTypeToNumber(message.field_type));
     }
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       writer.uint32(48).int32(userTypeToNumber(message.user_type));
     }
-    if (message.is_required !== false) {
+    if (message.is_required !== undefined) {
       writer.uint32(56).bool(message.is_required);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(66).string(message.description);
     }
-    if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+    if (message.regex_pattern !== undefined) {
       writer.uint32(74).string(message.regex_pattern);
     }
     for (const v of message.options) {
       writer.uint32(82).string(v!);
     }
-    if (message.is_archived !== false) {
+    if (message.is_archived !== undefined) {
       writer.uint32(88).bool(message.is_archived);
     }
     return writer;
@@ -371,14 +371,14 @@ export const CustomField: MessageFns<CustomField> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : undefined,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
+      is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : undefined,
       options: globalThis.Array.isArray(object?.options) ? object.options.map((e: any) => globalThis.String(e)) : [],
-      is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
+      is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : undefined,
     };
   },
 
@@ -393,28 +393,28 @@ export const CustomField: MessageFns<CustomField> = {
     if (message.group_id !== undefined) {
       obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.field_type !== CustomFieldType.STRING) {
+    if (message.field_type !== undefined) {
       obj.fieldType = customFieldTypeToJSON(message.field_type);
     }
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.is_required !== false) {
+    if (message.is_required !== undefined) {
       obj.isRequired = message.is_required;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+    if (message.regex_pattern !== undefined) {
       obj.regexPattern = message.regex_pattern;
     }
     if (message.options?.length) {
       obj.options = message.options;
     }
-    if (message.is_archived !== false) {
+    if (message.is_archived !== undefined) {
       obj.isArchived = message.is_archived;
     }
     return obj;
@@ -432,14 +432,14 @@ export const CustomField: MessageFns<CustomField> = {
     message.group_id = (object.group_id !== undefined && object.group_id !== null)
       ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.name = object.name ?? "";
-    message.field_type = object.field_type ?? CustomFieldType.STRING;
-    message.user_type = object.user_type ?? UserType.NONE;
-    message.is_required = object.is_required ?? false;
-    message.description = object.description ?? "";
-    message.regex_pattern = object.regex_pattern ?? "";
+    message.name = object.name ?? undefined;
+    message.field_type = object.field_type ?? undefined;
+    message.user_type = object.user_type ?? undefined;
+    message.is_required = object.is_required ?? undefined;
+    message.description = object.description ?? undefined;
+    message.regex_pattern = object.regex_pattern ?? undefined;
     message.options = object.options?.map((e) => e) || [];
-    message.is_archived = object.is_archived ?? false;
+    message.is_archived = object.is_archived ?? undefined;
     return message;
   },
 };
@@ -448,9 +448,9 @@ function createBaseCustomFieldsGroup(): CustomFieldsGroup {
   return {
     id: undefined,
     organization: undefined,
-    group_name: "",
-    user_type: UserType.NONE,
-    profile_section: ProfileSection.OVERVIEW,
+    group_name: undefined,
+    user_type: undefined,
+    profile_section: undefined,
     hints: [],
     group_access_settings: undefined,
     entries_access_settings: undefined,
@@ -467,13 +467,13 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.group_name !== "") {
+    if (message.group_name !== undefined) {
       writer.uint32(26).string(message.group_name);
     }
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       writer.uint32(32).int32(userTypeToNumber(message.user_type));
     }
-    if (message.profile_section !== ProfileSection.OVERVIEW) {
+    if (message.profile_section !== undefined) {
       writer.uint32(40).int32(profileSectionToNumber(message.profile_section));
     }
     for (const v of message.hints) {
@@ -608,11 +608,9 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      profile_section: isSet(object.profileSection)
-        ? profileSectionFromJSON(object.profileSection)
-        : ProfileSection.OVERVIEW,
+      group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : undefined,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
+      profile_section: isSet(object.profileSection) ? profileSectionFromJSON(object.profileSection) : undefined,
       hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e: any) => globalThis.String(e)) : [],
       group_access_settings: isSet(object.groupAccessSettings)
         ? ObjectId.fromJSON(object.groupAccessSettings)
@@ -637,13 +635,13 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.group_name !== "") {
+    if (message.group_name !== undefined) {
       obj.groupName = message.group_name;
     }
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.profile_section !== ProfileSection.OVERVIEW) {
+    if (message.profile_section !== undefined) {
       obj.profileSection = profileSectionToJSON(message.profile_section);
     }
     if (message.hints?.length) {
@@ -673,9 +671,9 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.group_name = object.group_name ?? "";
-    message.user_type = object.user_type ?? UserType.NONE;
-    message.profile_section = object.profile_section ?? ProfileSection.OVERVIEW;
+    message.group_name = object.group_name ?? undefined;
+    message.user_type = object.user_type ?? undefined;
+    message.profile_section = object.profile_section ?? undefined;
     message.hints = object.hints?.map((e) => e) || [];
     message.group_access_settings =
       (object.group_access_settings !== undefined && object.group_access_settings !== null)
@@ -697,8 +695,8 @@ function createBaseGroupApprovalStatus(): GroupApprovalStatus {
     organization: undefined,
     group_id: undefined,
     user_id: undefined,
-    status: ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL,
-    rejection_message: "",
+    status: undefined,
+    rejection_message: undefined,
   };
 }
 
@@ -716,10 +714,10 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(34).fork()).join();
     }
-    if (message.status !== ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL) {
+    if (message.status !== undefined) {
       writer.uint32(40).int32(approvalStatusToNumber(message.status));
     }
-    if (message.rejection_message !== undefined && message.rejection_message !== "") {
+    if (message.rejection_message !== undefined) {
       writer.uint32(50).string(message.rejection_message);
     }
     return writer;
@@ -789,10 +787,8 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      status: isSet(object.status)
-        ? approvalStatusFromJSON(object.status)
-        : ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL,
-      rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+      status: isSet(object.status) ? approvalStatusFromJSON(object.status) : undefined,
+      rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
     };
   },
 
@@ -810,10 +806,10 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.status !== ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL) {
+    if (message.status !== undefined) {
       obj.status = approvalStatusToJSON(message.status);
     }
-    if (message.rejection_message !== undefined && message.rejection_message !== "") {
+    if (message.rejection_message !== undefined) {
       obj.rejectionMessage = message.rejection_message;
     }
     return obj;
@@ -834,22 +830,22 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.status = object.status ?? ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL;
-    message.rejection_message = object.rejection_message ?? "";
+    message.status = object.status ?? undefined;
+    message.rejection_message = object.rejection_message ?? undefined;
     return message;
   },
 };
 
 function createBaseStudentPrimaryIdField(): StudentPrimaryIdField {
-  return { field_name: "", value: "" };
+  return { field_name: undefined, value: undefined };
 }
 
 export const StudentPrimaryIdField: MessageFns<StudentPrimaryIdField> = {
   encode(message: StudentPrimaryIdField, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.field_name !== "") {
+    if (message.field_name !== undefined) {
       writer.uint32(10).string(message.field_name);
     }
-    if (message.value !== "") {
+    if (message.value !== undefined) {
       writer.uint32(18).string(message.value);
     }
     return writer;
@@ -887,17 +883,17 @@ export const StudentPrimaryIdField: MessageFns<StudentPrimaryIdField> = {
 
   fromJSON(object: any): StudentPrimaryIdField {
     return {
-      field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : undefined,
+      value: isSet(object.value) ? globalThis.String(object.value) : undefined,
     };
   },
 
   toJSON(message: StudentPrimaryIdField): unknown {
     const obj: any = {};
-    if (message.field_name !== "") {
+    if (message.field_name !== undefined) {
       obj.fieldName = message.field_name;
     }
-    if (message.value !== "") {
+    if (message.value !== undefined) {
       obj.value = message.value;
     }
     return obj;
@@ -908,8 +904,8 @@ export const StudentPrimaryIdField: MessageFns<StudentPrimaryIdField> = {
   },
   fromPartial<I extends Exact<DeepPartial<StudentPrimaryIdField>, I>>(object: I): StudentPrimaryIdField {
     const message = createBaseStudentPrimaryIdField();
-    message.field_name = object.field_name ?? "";
-    message.value = object.value ?? "";
+    message.field_name = object.field_name ?? undefined;
+    message.value = object.value ?? undefined;
     return message;
   },
 };

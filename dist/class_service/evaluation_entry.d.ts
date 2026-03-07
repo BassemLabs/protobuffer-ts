@@ -5,7 +5,7 @@ export interface EvaluationEntry {
     id: ObjectId | undefined;
     evaluation_id: ObjectId | undefined;
     student: ObjectId | undefined;
-    mark: number;
+    mark?: number | undefined;
     last_published_at?: Date | undefined;
 }
 export declare const EvaluationEntry: MessageFns<EvaluationEntry>;

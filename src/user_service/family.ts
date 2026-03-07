@@ -13,14 +13,14 @@ import { PhoneNumber } from "../utils/phone_number";
 export const protobufPackage = "user_service";
 
 export interface FamilyContact {
-  name: string;
+  name?: string | undefined;
   phone: PhoneNumber | undefined;
-  email: string;
+  email?: string | undefined;
 }
 
 export interface FamilyInformation {
-  student_living: string;
-  language_spoken: string;
+  student_living?: string | undefined;
+  language_spoken?: string | undefined;
   preferred_contact?: ObjectId | undefined;
   emergency_contact: FamilyContact | undefined;
   primary_payer?:
@@ -33,7 +33,7 @@ export interface FamilyInformation {
 export interface Family {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
   guardians: ObjectId[];
   guardians_to_not_contact: ObjectId[];
   information:
@@ -48,18 +48,18 @@ export interface Family {
 }
 
 function createBaseFamilyContact(): FamilyContact {
-  return { name: "", phone: undefined, email: "" };
+  return { name: undefined, phone: undefined, email: undefined };
 }
 
 export const FamilyContact: MessageFns<FamilyContact> = {
   encode(message: FamilyContact, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(10).string(message.name);
     }
     if (message.phone !== undefined) {
       PhoneNumber.encode(message.phone, writer.uint32(18).fork()).join();
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(26).string(message.email);
     }
     return writer;
@@ -104,21 +104,21 @@ export const FamilyContact: MessageFns<FamilyContact> = {
 
   fromJSON(object: any): FamilyContact {
     return {
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       phone: isSet(object.phone) ? PhoneNumber.fromJSON(object.phone) : undefined,
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
     };
   },
 
   toJSON(message: FamilyContact): unknown {
     const obj: any = {};
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.phone !== undefined) {
       obj.phone = PhoneNumber.toJSON(message.phone);
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
     return obj;
@@ -129,32 +129,32 @@ export const FamilyContact: MessageFns<FamilyContact> = {
   },
   fromPartial<I extends Exact<DeepPartial<FamilyContact>, I>>(object: I): FamilyContact {
     const message = createBaseFamilyContact();
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.phone = (object.phone !== undefined && object.phone !== null)
       ? PhoneNumber.fromPartial(object.phone)
       : undefined;
-    message.email = object.email ?? "";
+    message.email = object.email ?? undefined;
     return message;
   },
 };
 
 function createBaseFamilyInformation(): FamilyInformation {
   return {
-    student_living: "",
-    language_spoken: "",
+    student_living: undefined,
+    language_spoken: undefined,
     preferred_contact: undefined,
     emergency_contact: undefined,
     primary_payer: undefined,
-    auto_pay_disabled: false,
+    auto_pay_disabled: undefined,
   };
 }
 
 export const FamilyInformation: MessageFns<FamilyInformation> = {
   encode(message: FamilyInformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.student_living !== "") {
+    if (message.student_living !== undefined) {
       writer.uint32(10).string(message.student_living);
     }
-    if (message.language_spoken !== "") {
+    if (message.language_spoken !== undefined) {
       writer.uint32(18).string(message.language_spoken);
     }
     if (message.preferred_contact !== undefined) {
@@ -166,7 +166,7 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
     if (message.primary_payer !== undefined) {
       ObjectId.encode(message.primary_payer, writer.uint32(42).fork()).join();
     }
-    if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       writer.uint32(48).bool(message.auto_pay_disabled);
     }
     return writer;
@@ -232,21 +232,21 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
 
   fromJSON(object: any): FamilyInformation {
     return {
-      student_living: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : "",
-      language_spoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : "",
+      student_living: isSet(object.studentLiving) ? globalThis.String(object.studentLiving) : undefined,
+      language_spoken: isSet(object.languageSpoken) ? globalThis.String(object.languageSpoken) : undefined,
       preferred_contact: isSet(object.preferredContact) ? ObjectId.fromJSON(object.preferredContact) : undefined,
       emergency_contact: isSet(object.emergencyContact) ? FamilyContact.fromJSON(object.emergencyContact) : undefined,
       primary_payer: isSet(object.primaryPayer) ? ObjectId.fromJSON(object.primaryPayer) : undefined,
-      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : undefined,
     };
   },
 
   toJSON(message: FamilyInformation): unknown {
     const obj: any = {};
-    if (message.student_living !== "") {
+    if (message.student_living !== undefined) {
       obj.studentLiving = message.student_living;
     }
-    if (message.language_spoken !== "") {
+    if (message.language_spoken !== undefined) {
       obj.languageSpoken = message.language_spoken;
     }
     if (message.preferred_contact !== undefined) {
@@ -258,7 +258,7 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
     if (message.primary_payer !== undefined) {
       obj.primaryPayer = ObjectId.toJSON(message.primary_payer);
     }
-    if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       obj.autoPayDisabled = message.auto_pay_disabled;
     }
     return obj;
@@ -269,8 +269,8 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
   },
   fromPartial<I extends Exact<DeepPartial<FamilyInformation>, I>>(object: I): FamilyInformation {
     const message = createBaseFamilyInformation();
-    message.student_living = object.student_living ?? "";
-    message.language_spoken = object.language_spoken ?? "";
+    message.student_living = object.student_living ?? undefined;
+    message.language_spoken = object.language_spoken ?? undefined;
     message.preferred_contact = (object.preferred_contact !== undefined && object.preferred_contact !== null)
       ? ObjectId.fromPartial(object.preferred_contact)
       : undefined;
@@ -280,7 +280,7 @@ export const FamilyInformation: MessageFns<FamilyInformation> = {
     message.primary_payer = (object.primary_payer !== undefined && object.primary_payer !== null)
       ? ObjectId.fromPartial(object.primary_payer)
       : undefined;
-    message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+    message.auto_pay_disabled = object.auto_pay_disabled ?? undefined;
     return message;
   },
 };
@@ -289,7 +289,7 @@ function createBaseFamily(): Family {
   return {
     id: undefined,
     organization: undefined,
-    name: "",
+    name: undefined,
     guardians: [],
     guardians_to_not_contact: [],
     information: undefined,
@@ -306,7 +306,7 @@ export const Family: MessageFns<Family> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     for (const v of message.guardians) {
@@ -403,7 +403,7 @@ export const Family: MessageFns<Family> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       guardians: globalThis.Array.isArray(object?.guardians)
         ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -424,7 +424,7 @@ export const Family: MessageFns<Family> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.guardians?.length) {
@@ -454,7 +454,7 @@ export const Family: MessageFns<Family> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.guardians = object.guardians?.map((e) => ObjectId.fromPartial(e)) || [];
     message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => ObjectId.fromPartial(e)) || [];
     message.information = (object.information !== undefined && object.information !== null)

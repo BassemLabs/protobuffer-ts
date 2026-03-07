@@ -189,17 +189,17 @@ exports.ListCommentTemplatesResponse = {
     },
 };
 function createBaseCreateCommentTemplateRequest() {
-    return { context: undefined, title: "", comment: "" };
+    return { context: undefined, title: undefined, comment: undefined };
 }
 exports.CreateCommentTemplateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(18).string(message.title);
         }
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             writer.uint32(26).string(message.comment);
         }
         return writer;
@@ -240,8 +240,8 @@ exports.CreateCommentTemplateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
-            comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
         };
     },
     toJSON(message) {
@@ -249,10 +249,10 @@ exports.CreateCommentTemplateRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             obj.comment = message.comment;
         }
         return obj;
@@ -265,13 +265,13 @@ exports.CreateCommentTemplateRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.title = object.title ?? "";
-        message.comment = object.comment ?? "";
+        message.title = object.title ?? undefined;
+        message.comment = object.comment ?? undefined;
         return message;
     },
 };
 function createBaseUpdateCommentTemplateRequest() {
-    return { context: undefined, comment_template_id: undefined, title: "", comment: "" };
+    return { context: undefined, comment_template_id: undefined, title: undefined, comment: undefined };
 }
 exports.UpdateCommentTemplateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -281,10 +281,10 @@ exports.UpdateCommentTemplateRequest = {
         if (message.comment_template_id !== undefined) {
             object_id_1.ObjectId.encode(message.comment_template_id, writer.uint32(18).fork()).join();
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(26).string(message.title);
         }
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             writer.uint32(34).string(message.comment);
         }
         return writer;
@@ -332,8 +332,8 @@ exports.UpdateCommentTemplateRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             comment_template_id: isSet(object.commentTemplateId) ? object_id_1.ObjectId.fromJSON(object.commentTemplateId) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
-            comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
         };
     },
     toJSON(message) {
@@ -344,10 +344,10 @@ exports.UpdateCommentTemplateRequest = {
         if (message.comment_template_id !== undefined) {
             obj.commentTemplateId = object_id_1.ObjectId.toJSON(message.comment_template_id);
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             obj.comment = message.comment;
         }
         return obj;
@@ -363,8 +363,8 @@ exports.UpdateCommentTemplateRequest = {
         message.comment_template_id = (object.comment_template_id !== undefined && object.comment_template_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.comment_template_id)
             : undefined;
-        message.title = object.title ?? "";
-        message.comment = object.comment ?? "";
+        message.title = object.title ?? undefined;
+        message.comment = object.comment ?? undefined;
         return message;
     },
 };
@@ -439,11 +439,11 @@ exports.DeleteCommentTemplateRequest = {
     },
 };
 function createBaseDeleteCommentTemplateResponse() {
-    return { success: false };
+    return { success: undefined };
 }
 exports.DeleteCommentTemplateResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             writer.uint32(8).bool(message.success);
         }
         return writer;
@@ -470,11 +470,11 @@ exports.DeleteCommentTemplateResponse = {
         return message;
     },
     fromJSON(object) {
-        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             obj.success = message.success;
         }
         return obj;
@@ -484,7 +484,7 @@ exports.DeleteCommentTemplateResponse = {
     },
     fromPartial(object) {
         const message = createBaseDeleteCommentTemplateResponse();
-        message.success = object.success ?? false;
+        message.success = object.success ?? undefined;
         return message;
     },
 };

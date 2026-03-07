@@ -18,34 +18,34 @@ export interface CommunicationBroadcast {
     organization: ObjectId | undefined;
     filters: CommunicationFilters | undefined;
     channels: NotificationType[];
-    subject: string;
-    body: string;
+    subject?: string | undefined;
+    body?: string | undefined;
 }
 export interface CommunicationTarget {
-    user_type: UserType;
+    user_type?: UserType | undefined;
     user_id: ObjectId | undefined;
     email?: string | undefined;
     phone_number?: PhoneNumber | undefined;
 }
 export interface CommunicationChannelCounts {
-    email_recipients: number;
-    sms_recipients: number;
-    phone_call_recipients: number;
+    email_recipients?: number | undefined;
+    sms_recipients?: number | undefined;
+    phone_call_recipients?: number | undefined;
 }
 export interface BroadcastList {
     broadcasts: CommunicationBroadcast[];
-    broadcasts_count: number;
+    broadcasts_count?: number | undefined;
 }
 export interface RecipientList {
     recipients: Notification[];
-    recipients_count: number;
+    recipients_count?: number | undefined;
 }
 export interface PreviewCommunicationResponse {
-    total_recipients: number;
-    email_recipients: number;
-    sms_recipients: number;
-    phone_call_recipients: number;
-    estimated_cost: number;
+    total_recipients?: number | undefined;
+    email_recipients?: number | undefined;
+    sms_recipients?: number | undefined;
+    phone_call_recipients?: number | undefined;
+    estimated_cost?: number | undefined;
 }
 export declare const CommunicationFilters: MessageFns<CommunicationFilters>;
 export declare const CommunicationBroadcast: MessageFns<CommunicationBroadcast>;

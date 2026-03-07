@@ -143,20 +143,20 @@ exports.GetAiInteractionRecordResponse = {
     },
 };
 function createBaseListAiInteractionRecordsRequest() {
-    return { context: undefined, per_page: 0, page: 0, name_search: "" };
+    return { context: undefined, per_page: undefined, page: undefined, name_search: undefined };
 }
 exports.ListAiInteractionRecordsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             writer.uint32(16).uint64(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             writer.uint32(24).uint64(message.page);
         }
-        if (message.name_search !== undefined && message.name_search !== "") {
+        if (message.name_search !== undefined) {
             writer.uint32(34).string(message.name_search);
         }
         return writer;
@@ -203,9 +203,9 @@ exports.ListAiInteractionRecordsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : undefined,
         };
     },
     toJSON(message) {
@@ -213,13 +213,13 @@ exports.ListAiInteractionRecordsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             obj.perPage = Math.round(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             obj.page = Math.round(message.page);
         }
-        if (message.name_search !== undefined && message.name_search !== "") {
+        if (message.name_search !== undefined) {
             obj.nameSearch = message.name_search;
         }
         return obj;
@@ -232,21 +232,21 @@ exports.ListAiInteractionRecordsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.per_page = object.per_page ?? 0;
-        message.page = object.page ?? 0;
-        message.name_search = object.name_search ?? "";
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
+        message.name_search = object.name_search ?? undefined;
         return message;
     },
 };
 function createBaseListAiInteractionRecordsResponse() {
-    return { ai_interaction_record: [], ai_interaction_record_count: 0 };
+    return { ai_interaction_record: [], ai_interaction_record_count: undefined };
 }
 exports.ListAiInteractionRecordsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.ai_interaction_record) {
             ai_interaction_record_1.AiInteractionRecord.encode(v, writer.uint32(10).fork()).join();
         }
-        if (message.ai_interaction_record_count !== 0) {
+        if (message.ai_interaction_record_count !== undefined) {
             writer.uint32(16).uint64(message.ai_interaction_record_count);
         }
         return writer;
@@ -285,7 +285,7 @@ exports.ListAiInteractionRecordsResponse = {
                 : [],
             ai_interaction_record_count: isSet(object.aiInteractionRecordCount)
                 ? globalThis.Number(object.aiInteractionRecordCount)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -293,7 +293,7 @@ exports.ListAiInteractionRecordsResponse = {
         if (message.ai_interaction_record?.length) {
             obj.aiInteractionRecord = message.ai_interaction_record.map((e) => ai_interaction_record_1.AiInteractionRecord.toJSON(e));
         }
-        if (message.ai_interaction_record_count !== 0) {
+        if (message.ai_interaction_record_count !== undefined) {
             obj.aiInteractionRecordCount = Math.round(message.ai_interaction_record_count);
         }
         return obj;
@@ -304,19 +304,19 @@ exports.ListAiInteractionRecordsResponse = {
     fromPartial(object) {
         const message = createBaseListAiInteractionRecordsResponse();
         message.ai_interaction_record = object.ai_interaction_record?.map((e) => ai_interaction_record_1.AiInteractionRecord.fromPartial(e)) || [];
-        message.ai_interaction_record_count = object.ai_interaction_record_count ?? 0;
+        message.ai_interaction_record_count = object.ai_interaction_record_count ?? undefined;
         return message;
     },
 };
 function createBasePreprocessingRequest() {
-    return { context: undefined, prompt: "" };
+    return { context: undefined, prompt: undefined };
 }
 exports.PreprocessingRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.prompt !== "") {
+        if (message.prompt !== undefined) {
             writer.uint32(18).string(message.prompt);
         }
         return writer;
@@ -351,7 +351,7 @@ exports.PreprocessingRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            prompt: isSet(object.prompt) ? globalThis.String(object.prompt) : "",
+            prompt: isSet(object.prompt) ? globalThis.String(object.prompt) : undefined,
         };
     },
     toJSON(message) {
@@ -359,7 +359,7 @@ exports.PreprocessingRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.prompt !== "") {
+        if (message.prompt !== undefined) {
             obj.prompt = message.prompt;
         }
         return obj;
@@ -372,7 +372,7 @@ exports.PreprocessingRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.prompt = object.prompt ?? "";
+        message.prompt = object.prompt ?? undefined;
         return message;
     },
 };
@@ -434,12 +434,7 @@ exports.PreprocessingResponse = {
     },
 };
 function createBasePostprocessingRequest() {
-    return {
-        context: undefined,
-        ai_interaction_record_id: undefined,
-        response: "",
-        status: ai_interaction_record_1.AiInteractionRecordStatus.Pending,
-    };
+    return { context: undefined, ai_interaction_record_id: undefined, response: undefined, status: undefined };
 }
 exports.PostprocessingRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -449,10 +444,10 @@ exports.PostprocessingRequest = {
         if (message.ai_interaction_record_id !== undefined) {
             object_id_1.ObjectId.encode(message.ai_interaction_record_id, writer.uint32(18).fork()).join();
         }
-        if (message.response !== "") {
+        if (message.response !== undefined) {
             writer.uint32(26).string(message.response);
         }
-        if (message.status !== ai_interaction_record_1.AiInteractionRecordStatus.Pending) {
+        if (message.status !== undefined) {
             writer.uint32(32).int32((0, ai_interaction_record_1.aiInteractionRecordStatusToNumber)(message.status));
         }
         return writer;
@@ -502,10 +497,8 @@ exports.PostprocessingRequest = {
             ai_interaction_record_id: isSet(object.aiInteractionRecordId)
                 ? object_id_1.ObjectId.fromJSON(object.aiInteractionRecordId)
                 : undefined,
-            response: isSet(object.response) ? globalThis.String(object.response) : "",
-            status: isSet(object.status)
-                ? (0, ai_interaction_record_1.aiInteractionRecordStatusFromJSON)(object.status)
-                : ai_interaction_record_1.AiInteractionRecordStatus.Pending,
+            response: isSet(object.response) ? globalThis.String(object.response) : undefined,
+            status: isSet(object.status) ? (0, ai_interaction_record_1.aiInteractionRecordStatusFromJSON)(object.status) : undefined,
         };
     },
     toJSON(message) {
@@ -516,10 +509,10 @@ exports.PostprocessingRequest = {
         if (message.ai_interaction_record_id !== undefined) {
             obj.aiInteractionRecordId = object_id_1.ObjectId.toJSON(message.ai_interaction_record_id);
         }
-        if (message.response !== "") {
+        if (message.response !== undefined) {
             obj.response = message.response;
         }
-        if (message.status !== ai_interaction_record_1.AiInteractionRecordStatus.Pending) {
+        if (message.status !== undefined) {
             obj.status = (0, ai_interaction_record_1.aiInteractionRecordStatusToJSON)(message.status);
         }
         return obj;
@@ -536,8 +529,8 @@ exports.PostprocessingRequest = {
             (object.ai_interaction_record_id !== undefined && object.ai_interaction_record_id !== null)
                 ? object_id_1.ObjectId.fromPartial(object.ai_interaction_record_id)
                 : undefined;
-        message.response = object.response ?? "";
-        message.status = object.status ?? ai_interaction_record_1.AiInteractionRecordStatus.Pending;
+        message.response = object.response ?? undefined;
+        message.status = object.status ?? undefined;
         return message;
     },
 };

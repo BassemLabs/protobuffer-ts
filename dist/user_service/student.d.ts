@@ -44,13 +44,13 @@ export interface Student {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     /** Student ID like "2024-1234" */
-    id_number: string;
-    username: string;
-    email_domain: string;
+    id_number?: string | undefined;
+    username?: string | undefined;
+    email_domain?: string | undefined;
     family_id: ObjectId | undefined;
-    first_name: string;
-    last_name: string;
-    gender: string;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
     has_waitlist_priority?: boolean | undefined;
     date_of_birth: Date | undefined;
     interview_date?: Date | undefined;
@@ -70,10 +70,10 @@ export interface Student {
 export interface SchoolYearStudent {
     id: ObjectId | undefined;
     /** Status for the query's school year (or active school year if not specified) */
-    status: StudentStatus;
-    first_name: string;
-    last_name: string;
-    gender: string;
+    status?: StudentStatus | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
     /** Grade for the query's school year (or active school year if not specified). Absent if status is NOT_ASSIGNED. */
     grade?: StudentGrade | undefined;
     family_id: ObjectId | undefined;
@@ -83,16 +83,16 @@ export interface SchoolYearStudent {
 }
 /** Student profile data for updates */
 export interface StudentProfile {
-    first_name: string;
-    last_name: string;
-    gender: string;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
     date_of_birth: Date | undefined;
     interview_date?: Date | undefined;
     has_waitlist_priority?: boolean | undefined;
 }
 /** Entry in the status history timeline */
 export interface StatusHistoryEntry {
-    status: StudentStatus;
+    status?: StudentStatus | undefined;
     changed_at: Date | undefined;
     /** User who made the status change (admin, system, etc.) */
     changed_by?: ObjectId | undefined;
@@ -103,8 +103,8 @@ export interface StudentSchoolYearInformation {
     organization: ObjectId | undefined;
     student_id: ObjectId | undefined;
     school_year_id: ObjectId | undefined;
-    status: StudentStatus;
-    grade: StudentGrade;
+    status?: StudentStatus | undefined;
+    grade?: StudentGrade | undefined;
     status_history: StatusHistoryEntry[];
 }
 export declare const Student: MessageFns<Student>;

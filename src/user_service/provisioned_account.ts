@@ -66,8 +66,8 @@ export interface ProvisionedAccount {
   organization: ObjectId | undefined;
   student_id?: ObjectId | undefined;
   teacher_id?: ObjectId | undefined;
-  provider: LmsProviderType;
-  status: ProvisionedAccountStatus;
+  provider?: LmsProviderType | undefined;
+  status?: ProvisionedAccountStatus | undefined;
   lms_user_id?: string | undefined;
 }
 
@@ -77,9 +77,9 @@ function createBaseProvisionedAccount(): ProvisionedAccount {
     organization: undefined,
     student_id: undefined,
     teacher_id: undefined,
-    provider: LmsProviderType.GOOGLE_CLASSROOM,
-    status: ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE,
-    lms_user_id: "",
+    provider: undefined,
+    status: undefined,
+    lms_user_id: undefined,
   };
 }
 
@@ -97,13 +97,13 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
     if (message.teacher_id !== undefined) {
       ObjectId.encode(message.teacher_id, writer.uint32(34).fork()).join();
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       writer.uint32(40).int32(lmsProviderTypeToNumber(message.provider));
     }
-    if (message.status !== ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE) {
+    if (message.status !== undefined) {
       writer.uint32(48).int32(provisionedAccountStatusToNumber(message.status));
     }
-    if (message.lms_user_id !== undefined && message.lms_user_id !== "") {
+    if (message.lms_user_id !== undefined) {
       writer.uint32(58).string(message.lms_user_id);
     }
     return writer;
@@ -180,11 +180,9 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
-      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
-      status: isSet(object.status)
-        ? provisionedAccountStatusFromJSON(object.status)
-        : ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE,
-      lms_user_id: isSet(object.lmsUserId) ? globalThis.String(object.lmsUserId) : "",
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+      status: isSet(object.status) ? provisionedAccountStatusFromJSON(object.status) : undefined,
+      lms_user_id: isSet(object.lmsUserId) ? globalThis.String(object.lmsUserId) : undefined,
     };
   },
 
@@ -202,13 +200,13 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
     if (message.teacher_id !== undefined) {
       obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       obj.provider = lmsProviderTypeToJSON(message.provider);
     }
-    if (message.status !== ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE) {
+    if (message.status !== undefined) {
       obj.status = provisionedAccountStatusToJSON(message.status);
     }
-    if (message.lms_user_id !== undefined && message.lms_user_id !== "") {
+    if (message.lms_user_id !== undefined) {
       obj.lmsUserId = message.lms_user_id;
     }
     return obj;
@@ -229,9 +227,9 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
     message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
       ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
-    message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
-    message.status = object.status ?? ProvisionedAccountStatus.PROVISIONED_ACCOUNT_STATUS_ACTIVE;
-    message.lms_user_id = object.lms_user_id ?? "";
+    message.provider = object.provider ?? undefined;
+    message.status = object.status ?? undefined;
+    message.lms_user_id = object.lms_user_id ?? undefined;
     return message;
   },
 };

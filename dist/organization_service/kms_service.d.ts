@@ -7,7 +7,7 @@ export declare const protobufPackage = "organization_service";
 export interface GetKmsKeyRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    key_type: KMSKeyType;
+    key_type?: KMSKeyType | undefined;
 }
 export interface GetOrganizationKmsKeysRequest {
     context: RequestContext | undefined;
@@ -19,8 +19,8 @@ export interface GetOrganizationKmsKeysResponse {
 export interface UpdateKmsKeyRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    key_type: KMSKeyType;
-    secret_material: string;
+    key_type?: KMSKeyType | undefined;
+    secret_material?: string | undefined;
 }
 export interface GetAvailableLmsProvidersRequest {
     context: RequestContext | undefined;

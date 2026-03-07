@@ -14,28 +14,28 @@ export const protobufPackage = "organization_service";
 export interface Campus {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  name: string;
-  address: string;
-  email: string;
-  phone: string;
+  name?: string | undefined;
+  address?: string | undefined;
+  email?: string | undefined;
+  phone?: string | undefined;
   logo?: AWSFile | undefined;
   principal_id: ObjectId | undefined;
   supervisor_id: ObjectId | undefined;
-  archived: boolean;
+  archived?: boolean | undefined;
 }
 
 function createBaseCampus(): Campus {
   return {
     id: undefined,
     organization: undefined,
-    name: "",
-    address: "",
-    email: "",
-    phone: "",
+    name: undefined,
+    address: undefined,
+    email: undefined,
+    phone: undefined,
     logo: undefined,
     principal_id: undefined,
     supervisor_id: undefined,
-    archived: false,
+    archived: undefined,
   };
 }
 
@@ -47,16 +47,16 @@ export const Campus: MessageFns<Campus> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
-    if (message.address !== "") {
+    if (message.address !== undefined) {
       writer.uint32(34).string(message.address);
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       writer.uint32(42).string(message.email);
     }
-    if (message.phone !== "") {
+    if (message.phone !== undefined) {
       writer.uint32(50).string(message.phone);
     }
     if (message.logo !== undefined) {
@@ -68,7 +68,7 @@ export const Campus: MessageFns<Campus> = {
     if (message.supervisor_id !== undefined) {
       ObjectId.encode(message.supervisor_id, writer.uint32(74).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(80).bool(message.archived);
     }
     return writer;
@@ -164,14 +164,14 @@ export const Campus: MessageFns<Campus> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
-      email: isSet(object.email) ? globalThis.String(object.email) : "",
-      phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      address: isSet(object.address) ? globalThis.String(object.address) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      phone: isSet(object.phone) ? globalThis.String(object.phone) : undefined,
       logo: isSet(object.logo) ? AWSFile.fromJSON(object.logo) : undefined,
       principal_id: isSet(object.principalId) ? ObjectId.fromJSON(object.principalId) : undefined,
       supervisor_id: isSet(object.supervisorId) ? ObjectId.fromJSON(object.supervisorId) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
     };
   },
 
@@ -183,16 +183,16 @@ export const Campus: MessageFns<Campus> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.address !== "") {
+    if (message.address !== undefined) {
       obj.address = message.address;
     }
-    if (message.email !== "") {
+    if (message.email !== undefined) {
       obj.email = message.email;
     }
-    if (message.phone !== "") {
+    if (message.phone !== undefined) {
       obj.phone = message.phone;
     }
     if (message.logo !== undefined) {
@@ -204,7 +204,7 @@ export const Campus: MessageFns<Campus> = {
     if (message.supervisor_id !== undefined) {
       obj.supervisorId = ObjectId.toJSON(message.supervisor_id);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
     return obj;
@@ -219,10 +219,10 @@ export const Campus: MessageFns<Campus> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.name = object.name ?? "";
-    message.address = object.address ?? "";
-    message.email = object.email ?? "";
-    message.phone = object.phone ?? "";
+    message.name = object.name ?? undefined;
+    message.address = object.address ?? undefined;
+    message.email = object.email ?? undefined;
+    message.phone = object.phone ?? undefined;
     message.logo = (object.logo !== undefined && object.logo !== null) ? AWSFile.fromPartial(object.logo) : undefined;
     message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
       ? ObjectId.fromPartial(object.principal_id)
@@ -230,7 +230,7 @@ export const Campus: MessageFns<Campus> = {
     message.supervisor_id = (object.supervisor_id !== undefined && object.supervisor_id !== null)
       ? ObjectId.fromPartial(object.supervisor_id)
       : undefined;
-    message.archived = object.archived ?? false;
+    message.archived = object.archived ?? undefined;
     return message;
   },
 };

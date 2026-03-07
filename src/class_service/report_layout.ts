@@ -17,17 +17,17 @@ export interface ReportLayout {
   comment_char_limit?: number | undefined;
   sections: ReportLayoutSection[];
   check_boxes: ReportCheckBoxLayout[];
-  credit_weight: number;
+  credit_weight?: number | undefined;
 }
 
 export interface ReportLayoutSection {
   id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
 }
 
 export interface ReportCheckBoxLayout {
   id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
 }
 
 function createBaseReportLayout(): ReportLayout {
@@ -35,10 +35,10 @@ function createBaseReportLayout(): ReportLayout {
     id: undefined,
     organization_id: undefined,
     course_id: undefined,
-    comment_char_limit: 0,
+    comment_char_limit: undefined,
     sections: [],
     check_boxes: [],
-    credit_weight: 0,
+    credit_weight: undefined,
   };
 }
 
@@ -53,7 +53,7 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     if (message.course_id !== undefined) {
       ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
     }
-    if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
+    if (message.comment_char_limit !== undefined) {
       writer.uint32(32).uint32(message.comment_char_limit);
     }
     for (const v of message.sections) {
@@ -62,7 +62,7 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     for (const v of message.check_boxes) {
       ReportCheckBoxLayout.encode(v!, writer.uint32(50).fork()).join();
     }
-    if (message.credit_weight !== 0) {
+    if (message.credit_weight !== undefined) {
       writer.uint32(61).float(message.credit_weight);
     }
     return writer;
@@ -138,14 +138,14 @@ export const ReportLayout: MessageFns<ReportLayout> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
-      comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
+      comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : undefined,
       sections: globalThis.Array.isArray(object?.sections)
         ? object.sections.map((e: any) => ReportLayoutSection.fromJSON(e))
         : [],
       check_boxes: globalThis.Array.isArray(object?.checkBoxes)
         ? object.checkBoxes.map((e: any) => ReportCheckBoxLayout.fromJSON(e))
         : [],
-      credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : 0,
+      credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : undefined,
     };
   },
 
@@ -160,7 +160,7 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     if (message.course_id !== undefined) {
       obj.courseId = ObjectId.toJSON(message.course_id);
     }
-    if (message.comment_char_limit !== undefined && message.comment_char_limit !== 0) {
+    if (message.comment_char_limit !== undefined) {
       obj.commentCharLimit = Math.round(message.comment_char_limit);
     }
     if (message.sections?.length) {
@@ -169,7 +169,7 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     if (message.check_boxes?.length) {
       obj.checkBoxes = message.check_boxes.map((e) => ReportCheckBoxLayout.toJSON(e));
     }
-    if (message.credit_weight !== 0) {
+    if (message.credit_weight !== undefined) {
       obj.creditWeight = message.credit_weight;
     }
     return obj;
@@ -187,16 +187,16 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     message.course_id = (object.course_id !== undefined && object.course_id !== null)
       ? ObjectId.fromPartial(object.course_id)
       : undefined;
-    message.comment_char_limit = object.comment_char_limit ?? 0;
+    message.comment_char_limit = object.comment_char_limit ?? undefined;
     message.sections = object.sections?.map((e) => ReportLayoutSection.fromPartial(e)) || [];
     message.check_boxes = object.check_boxes?.map((e) => ReportCheckBoxLayout.fromPartial(e)) || [];
-    message.credit_weight = object.credit_weight ?? 0;
+    message.credit_weight = object.credit_weight ?? undefined;
     return message;
   },
 };
 
 function createBaseReportLayoutSection(): ReportLayoutSection {
-  return { id: undefined, name: "" };
+  return { id: undefined, name: undefined };
 }
 
 export const ReportLayoutSection: MessageFns<ReportLayoutSection> = {
@@ -204,7 +204,7 @@ export const ReportLayoutSection: MessageFns<ReportLayoutSection> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
     return writer;
@@ -243,7 +243,7 @@ export const ReportLayoutSection: MessageFns<ReportLayoutSection> = {
   fromJSON(object: any): ReportLayoutSection {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
     };
   },
 
@@ -252,7 +252,7 @@ export const ReportLayoutSection: MessageFns<ReportLayoutSection> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     return obj;
@@ -264,13 +264,13 @@ export const ReportLayoutSection: MessageFns<ReportLayoutSection> = {
   fromPartial<I extends Exact<DeepPartial<ReportLayoutSection>, I>>(object: I): ReportLayoutSection {
     const message = createBaseReportLayoutSection();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     return message;
   },
 };
 
 function createBaseReportCheckBoxLayout(): ReportCheckBoxLayout {
-  return { id: undefined, name: "" };
+  return { id: undefined, name: undefined };
 }
 
 export const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout> = {
@@ -278,7 +278,7 @@ export const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
     return writer;
@@ -317,7 +317,7 @@ export const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout> = {
   fromJSON(object: any): ReportCheckBoxLayout {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
     };
   },
 
@@ -326,7 +326,7 @@ export const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     return obj;
@@ -338,7 +338,7 @@ export const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout> = {
   fromPartial<I extends Exact<DeepPartial<ReportCheckBoxLayout>, I>>(object: I): ReportCheckBoxLayout {
     const message = createBaseReportCheckBoxLayout();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     return message;
   },
 };

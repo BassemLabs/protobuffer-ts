@@ -91,14 +91,14 @@ function reportStatusToNumber(object) {
     }
 }
 function createBaseReportEntryCheckBox() {
-    return { check_box_id: undefined, state: false };
+    return { check_box_id: undefined, state: undefined };
 }
 exports.ReportEntryCheckBox = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.check_box_id !== undefined) {
             object_id_1.ObjectId.encode(message.check_box_id, writer.uint32(10).fork()).join();
         }
-        if (message.state !== false) {
+        if (message.state !== undefined) {
             writer.uint32(16).bool(message.state);
         }
         return writer;
@@ -133,7 +133,7 @@ exports.ReportEntryCheckBox = {
     fromJSON(object) {
         return {
             check_box_id: isSet(object.checkBoxId) ? object_id_1.ObjectId.fromJSON(object.checkBoxId) : undefined,
-            state: isSet(object.state) ? globalThis.Boolean(object.state) : false,
+            state: isSet(object.state) ? globalThis.Boolean(object.state) : undefined,
         };
     },
     toJSON(message) {
@@ -141,7 +141,7 @@ exports.ReportEntryCheckBox = {
         if (message.check_box_id !== undefined) {
             obj.checkBoxId = object_id_1.ObjectId.toJSON(message.check_box_id);
         }
-        if (message.state !== false) {
+        if (message.state !== undefined) {
             obj.state = message.state;
         }
         return obj;
@@ -154,19 +154,19 @@ exports.ReportEntryCheckBox = {
         message.check_box_id = (object.check_box_id !== undefined && object.check_box_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.check_box_id)
             : undefined;
-        message.state = object.state ?? false;
+        message.state = object.state ?? undefined;
         return message;
     },
 };
 function createBaseReportEntrySection() {
-    return { layout_id: undefined, mark: "" };
+    return { layout_id: undefined, mark: undefined };
 }
 exports.ReportEntrySection = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.layout_id !== undefined) {
             object_id_1.ObjectId.encode(message.layout_id, writer.uint32(10).fork()).join();
         }
-        if (message.mark !== "") {
+        if (message.mark !== undefined) {
             writer.uint32(18).string(message.mark);
         }
         return writer;
@@ -201,7 +201,7 @@ exports.ReportEntrySection = {
     fromJSON(object) {
         return {
             layout_id: isSet(object.layoutId) ? object_id_1.ObjectId.fromJSON(object.layoutId) : undefined,
-            mark: isSet(object.mark) ? globalThis.String(object.mark) : "",
+            mark: isSet(object.mark) ? globalThis.String(object.mark) : undefined,
         };
     },
     toJSON(message) {
@@ -209,7 +209,7 @@ exports.ReportEntrySection = {
         if (message.layout_id !== undefined) {
             obj.layoutId = object_id_1.ObjectId.toJSON(message.layout_id);
         }
-        if (message.mark !== "") {
+        if (message.mark !== undefined) {
             obj.mark = message.mark;
         }
         return obj;
@@ -222,19 +222,19 @@ exports.ReportEntrySection = {
         message.layout_id = (object.layout_id !== undefined && object.layout_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.layout_id)
             : undefined;
-        message.mark = object.mark ?? "";
+        message.mark = object.mark ?? undefined;
         return message;
     },
 };
 function createBaseReportEntryLearningSkill() {
-    return { learning_skill_id: undefined, mark: "" };
+    return { learning_skill_id: undefined, mark: undefined };
 }
 exports.ReportEntryLearningSkill = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.learning_skill_id !== undefined) {
             object_id_1.ObjectId.encode(message.learning_skill_id, writer.uint32(10).fork()).join();
         }
-        if (message.mark !== "") {
+        if (message.mark !== undefined) {
             writer.uint32(18).string(message.mark);
         }
         return writer;
@@ -269,7 +269,7 @@ exports.ReportEntryLearningSkill = {
     fromJSON(object) {
         return {
             learning_skill_id: isSet(object.learningSkillId) ? object_id_1.ObjectId.fromJSON(object.learningSkillId) : undefined,
-            mark: isSet(object.mark) ? globalThis.String(object.mark) : "",
+            mark: isSet(object.mark) ? globalThis.String(object.mark) : undefined,
         };
     },
     toJSON(message) {
@@ -277,7 +277,7 @@ exports.ReportEntryLearningSkill = {
         if (message.learning_skill_id !== undefined) {
             obj.learningSkillId = object_id_1.ObjectId.toJSON(message.learning_skill_id);
         }
-        if (message.mark !== "") {
+        if (message.mark !== undefined) {
             obj.mark = message.mark;
         }
         return obj;
@@ -290,19 +290,19 @@ exports.ReportEntryLearningSkill = {
         message.learning_skill_id = (object.learning_skill_id !== undefined && object.learning_skill_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.learning_skill_id)
             : undefined;
-        message.mark = object.mark ?? "";
+        message.mark = object.mark ?? undefined;
         return message;
     },
 };
 function createBaseGuardianSignatureHeader() {
-    return { key: "", value: "" };
+    return { key: undefined, value: undefined };
 }
 exports.GuardianSignatureHeader = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.key !== "") {
+        if (message.key !== undefined) {
             writer.uint32(10).string(message.key);
         }
-        if (message.value !== "") {
+        if (message.value !== undefined) {
             writer.uint32(18).string(message.value);
         }
         return writer;
@@ -336,16 +336,16 @@ exports.GuardianSignatureHeader = {
     },
     fromJSON(object) {
         return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? globalThis.String(object.value) : "",
+            key: isSet(object.key) ? globalThis.String(object.key) : undefined,
+            value: isSet(object.value) ? globalThis.String(object.value) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.key !== "") {
+        if (message.key !== undefined) {
             obj.key = message.key;
         }
-        if (message.value !== "") {
+        if (message.value !== undefined) {
             obj.value = message.value;
         }
         return obj;
@@ -355,23 +355,23 @@ exports.GuardianSignatureHeader = {
     },
     fromPartial(object) {
         const message = createBaseGuardianSignatureHeader();
-        message.key = object.key ?? "";
-        message.value = object.value ?? "";
+        message.key = object.key ?? undefined;
+        message.value = object.value ?? undefined;
         return message;
     },
 };
 function createBaseGuardianSignatureSessionMetadata() {
-    return { ip_address: "", peer_addr: "", scheme: "", headers: [] };
+    return { ip_address: undefined, peer_addr: undefined, scheme: undefined, headers: [] };
 }
 exports.GuardianSignatureSessionMetadata = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.ip_address !== undefined && message.ip_address !== "") {
+        if (message.ip_address !== undefined) {
             writer.uint32(10).string(message.ip_address);
         }
-        if (message.peer_addr !== undefined && message.peer_addr !== "") {
+        if (message.peer_addr !== undefined) {
             writer.uint32(18).string(message.peer_addr);
         }
-        if (message.scheme !== undefined && message.scheme !== "") {
+        if (message.scheme !== undefined) {
             writer.uint32(26).string(message.scheme);
         }
         for (const v of message.headers) {
@@ -420,9 +420,9 @@ exports.GuardianSignatureSessionMetadata = {
     },
     fromJSON(object) {
         return {
-            ip_address: isSet(object.ipAddress) ? globalThis.String(object.ipAddress) : "",
-            peer_addr: isSet(object.peerAddr) ? globalThis.String(object.peerAddr) : "",
-            scheme: isSet(object.scheme) ? globalThis.String(object.scheme) : "",
+            ip_address: isSet(object.ipAddress) ? globalThis.String(object.ipAddress) : undefined,
+            peer_addr: isSet(object.peerAddr) ? globalThis.String(object.peerAddr) : undefined,
+            scheme: isSet(object.scheme) ? globalThis.String(object.scheme) : undefined,
             headers: globalThis.Array.isArray(object?.headers)
                 ? object.headers.map((e) => exports.GuardianSignatureHeader.fromJSON(e))
                 : [],
@@ -430,13 +430,13 @@ exports.GuardianSignatureSessionMetadata = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.ip_address !== undefined && message.ip_address !== "") {
+        if (message.ip_address !== undefined) {
             obj.ipAddress = message.ip_address;
         }
-        if (message.peer_addr !== undefined && message.peer_addr !== "") {
+        if (message.peer_addr !== undefined) {
             obj.peerAddr = message.peer_addr;
         }
-        if (message.scheme !== undefined && message.scheme !== "") {
+        if (message.scheme !== undefined) {
             obj.scheme = message.scheme;
         }
         if (message.headers?.length) {
@@ -449,22 +449,27 @@ exports.GuardianSignatureSessionMetadata = {
     },
     fromPartial(object) {
         const message = createBaseGuardianSignatureSessionMetadata();
-        message.ip_address = object.ip_address ?? "";
-        message.peer_addr = object.peer_addr ?? "";
-        message.scheme = object.scheme ?? "";
+        message.ip_address = object.ip_address ?? undefined;
+        message.peer_addr = object.peer_addr ?? undefined;
+        message.scheme = object.scheme ?? undefined;
         message.headers = object.headers?.map((e) => exports.GuardianSignatureHeader.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseGuardianSignature() {
-    return { guardian_id: undefined, guardian_name: "", guardian_signed_at: undefined, session_metadata: undefined };
+    return {
+        guardian_id: undefined,
+        guardian_name: undefined,
+        guardian_signed_at: undefined,
+        session_metadata: undefined,
+    };
 }
 exports.GuardianSignature = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.guardian_id !== undefined) {
             object_id_1.ObjectId.encode(message.guardian_id, writer.uint32(10).fork()).join();
         }
-        if (message.guardian_name !== "") {
+        if (message.guardian_name !== undefined) {
             writer.uint32(18).string(message.guardian_name);
         }
         if (message.guardian_signed_at !== undefined) {
@@ -517,7 +522,7 @@ exports.GuardianSignature = {
     fromJSON(object) {
         return {
             guardian_id: isSet(object.guardianId) ? object_id_1.ObjectId.fromJSON(object.guardianId) : undefined,
-            guardian_name: isSet(object.guardianName) ? globalThis.String(object.guardianName) : "",
+            guardian_name: isSet(object.guardianName) ? globalThis.String(object.guardianName) : undefined,
             guardian_signed_at: isSet(object.guardianSignedAt) ? fromJsonTimestamp(object.guardianSignedAt) : undefined,
             session_metadata: isSet(object.sessionMetadata)
                 ? exports.GuardianSignatureSessionMetadata.fromJSON(object.sessionMetadata)
@@ -529,7 +534,7 @@ exports.GuardianSignature = {
         if (message.guardian_id !== undefined) {
             obj.guardianId = object_id_1.ObjectId.toJSON(message.guardian_id);
         }
-        if (message.guardian_name !== "") {
+        if (message.guardian_name !== undefined) {
             obj.guardianName = message.guardian_name;
         }
         if (message.guardian_signed_at !== undefined) {
@@ -548,7 +553,7 @@ exports.GuardianSignature = {
         message.guardian_id = (object.guardian_id !== undefined && object.guardian_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.guardian_id)
             : undefined;
-        message.guardian_name = object.guardian_name ?? "";
+        message.guardian_name = object.guardian_name ?? undefined;
         message.guardian_signed_at = object.guardian_signed_at ?? undefined;
         message.session_metadata = (object.session_metadata !== undefined && object.session_metadata !== null)
             ? exports.GuardianSignatureSessionMetadata.fromPartial(object.session_metadata)
@@ -563,14 +568,14 @@ function createBaseReportEntry() {
         student: undefined,
         course: undefined,
         homeroom: undefined,
-        report_type: semester_1.ReportType.Progress,
-        comment: "",
+        report_type: undefined,
+        comment: undefined,
         checkboxes: [],
         sections: [],
-        review_status: ReportStatus.NOT_FILLED,
-        requested_changes: "",
+        review_status: undefined,
+        requested_changes: undefined,
         learning_skills: [],
-        credit_earned: false,
+        credit_earned: undefined,
         guardian_signature: undefined,
     };
 }
@@ -591,10 +596,10 @@ exports.ReportEntry = {
         if (message.homeroom !== undefined) {
             object_id_1.ObjectId.encode(message.homeroom, writer.uint32(42).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(48).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             writer.uint32(58).string(message.comment);
         }
         for (const v of message.checkboxes) {
@@ -603,16 +608,16 @@ exports.ReportEntry = {
         for (const v of message.sections) {
             exports.ReportEntrySection.encode(v, writer.uint32(74).fork()).join();
         }
-        if (message.review_status !== ReportStatus.NOT_FILLED) {
+        if (message.review_status !== undefined) {
             writer.uint32(80).int32(reportStatusToNumber(message.review_status));
         }
-        if (message.requested_changes !== "") {
+        if (message.requested_changes !== undefined) {
             writer.uint32(90).string(message.requested_changes);
         }
         for (const v of message.learning_skills) {
             exports.ReportEntryLearningSkill.encode(v, writer.uint32(98).fork()).join();
         }
-        if (message.credit_earned !== false) {
+        if (message.credit_earned !== undefined) {
             writer.uint32(104).bool(message.credit_earned);
         }
         if (message.guardian_signature !== undefined) {
@@ -726,20 +731,20 @@ exports.ReportEntry = {
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             course: isSet(object.course) ? object_id_1.ObjectId.fromJSON(object.course) : undefined,
             homeroom: isSet(object.homeroom) ? object_id_1.ObjectId.fromJSON(object.homeroom) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
-            comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
             checkboxes: globalThis.Array.isArray(object?.checkboxes)
                 ? object.checkboxes.map((e) => exports.ReportEntryCheckBox.fromJSON(e))
                 : [],
             sections: globalThis.Array.isArray(object?.sections)
                 ? object.sections.map((e) => exports.ReportEntrySection.fromJSON(e))
                 : [],
-            review_status: isSet(object.reviewStatus) ? reportStatusFromJSON(object.reviewStatus) : ReportStatus.NOT_FILLED,
-            requested_changes: isSet(object.requestedChanges) ? globalThis.String(object.requestedChanges) : "",
+            review_status: isSet(object.reviewStatus) ? reportStatusFromJSON(object.reviewStatus) : undefined,
+            requested_changes: isSet(object.requestedChanges) ? globalThis.String(object.requestedChanges) : undefined,
             learning_skills: globalThis.Array.isArray(object?.learningSkills)
                 ? object.learningSkills.map((e) => exports.ReportEntryLearningSkill.fromJSON(e))
                 : [],
-            credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : false,
+            credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
             guardian_signature: isSet(object.guardianSignature)
                 ? exports.GuardianSignature.fromJSON(object.guardianSignature)
                 : undefined,
@@ -762,10 +767,10 @@ exports.ReportEntry = {
         if (message.homeroom !== undefined) {
             obj.homeroom = object_id_1.ObjectId.toJSON(message.homeroom);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             obj.comment = message.comment;
         }
         if (message.checkboxes?.length) {
@@ -774,16 +779,16 @@ exports.ReportEntry = {
         if (message.sections?.length) {
             obj.sections = message.sections.map((e) => exports.ReportEntrySection.toJSON(e));
         }
-        if (message.review_status !== ReportStatus.NOT_FILLED) {
+        if (message.review_status !== undefined) {
             obj.reviewStatus = reportStatusToJSON(message.review_status);
         }
-        if (message.requested_changes !== "") {
+        if (message.requested_changes !== undefined) {
             obj.requestedChanges = message.requested_changes;
         }
         if (message.learning_skills?.length) {
             obj.learningSkills = message.learning_skills.map((e) => exports.ReportEntryLearningSkill.toJSON(e));
         }
-        if (message.credit_earned !== false) {
+        if (message.credit_earned !== undefined) {
             obj.creditEarned = message.credit_earned;
         }
         if (message.guardian_signature !== undefined) {
@@ -809,14 +814,14 @@ exports.ReportEntry = {
         message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
             ? object_id_1.ObjectId.fromPartial(object.homeroom)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
-        message.comment = object.comment ?? "";
+        message.report_type = object.report_type ?? undefined;
+        message.comment = object.comment ?? undefined;
         message.checkboxes = object.checkboxes?.map((e) => exports.ReportEntryCheckBox.fromPartial(e)) || [];
         message.sections = object.sections?.map((e) => exports.ReportEntrySection.fromPartial(e)) || [];
-        message.review_status = object.review_status ?? ReportStatus.NOT_FILLED;
-        message.requested_changes = object.requested_changes ?? "";
+        message.review_status = object.review_status ?? undefined;
+        message.requested_changes = object.requested_changes ?? undefined;
         message.learning_skills = object.learning_skills?.map((e) => exports.ReportEntryLearningSkill.fromPartial(e)) || [];
-        message.credit_earned = object.credit_earned ?? false;
+        message.credit_earned = object.credit_earned ?? undefined;
         message.guardian_signature = (object.guardian_signature !== undefined && object.guardian_signature !== null)
             ? exports.GuardianSignature.fromPartial(object.guardian_signature)
             : undefined;
@@ -826,10 +831,10 @@ exports.ReportEntry = {
 function createBaseReportEntryView() {
     return {
         entry: undefined,
-        class_name: "",
+        class_name: undefined,
         semester: undefined,
         semester_report_layout: undefined,
-        signed_by_guardian_name: "",
+        signed_by_guardian_name: undefined,
     };
 }
 exports.ReportEntryView = {
@@ -837,7 +842,7 @@ exports.ReportEntryView = {
         if (message.entry !== undefined) {
             exports.ReportEntry.encode(message.entry, writer.uint32(10).fork()).join();
         }
-        if (message.class_name !== "") {
+        if (message.class_name !== undefined) {
             writer.uint32(18).string(message.class_name);
         }
         if (message.semester !== undefined) {
@@ -846,7 +851,7 @@ exports.ReportEntryView = {
         if (message.semester_report_layout !== undefined) {
             semester_1.SemesterReportLayout.encode(message.semester_report_layout, writer.uint32(34).fork()).join();
         }
-        if (message.signed_by_guardian_name !== undefined && message.signed_by_guardian_name !== "") {
+        if (message.signed_by_guardian_name !== undefined) {
             writer.uint32(42).string(message.signed_by_guardian_name);
         }
         return writer;
@@ -899,12 +904,14 @@ exports.ReportEntryView = {
     fromJSON(object) {
         return {
             entry: isSet(object.entry) ? exports.ReportEntry.fromJSON(object.entry) : undefined,
-            class_name: isSet(object.className) ? globalThis.String(object.className) : "",
+            class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
             semester: isSet(object.semester) ? semester_1.Semester.fromJSON(object.semester) : undefined,
             semester_report_layout: isSet(object.semesterReportLayout)
                 ? semester_1.SemesterReportLayout.fromJSON(object.semesterReportLayout)
                 : undefined,
-            signed_by_guardian_name: isSet(object.signedByGuardianName) ? globalThis.String(object.signedByGuardianName) : "",
+            signed_by_guardian_name: isSet(object.signedByGuardianName)
+                ? globalThis.String(object.signedByGuardianName)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -912,7 +919,7 @@ exports.ReportEntryView = {
         if (message.entry !== undefined) {
             obj.entry = exports.ReportEntry.toJSON(message.entry);
         }
-        if (message.class_name !== "") {
+        if (message.class_name !== undefined) {
             obj.className = message.class_name;
         }
         if (message.semester !== undefined) {
@@ -921,7 +928,7 @@ exports.ReportEntryView = {
         if (message.semester_report_layout !== undefined) {
             obj.semesterReportLayout = semester_1.SemesterReportLayout.toJSON(message.semester_report_layout);
         }
-        if (message.signed_by_guardian_name !== undefined && message.signed_by_guardian_name !== "") {
+        if (message.signed_by_guardian_name !== undefined) {
             obj.signedByGuardianName = message.signed_by_guardian_name;
         }
         return obj;
@@ -934,7 +941,7 @@ exports.ReportEntryView = {
         message.entry = (object.entry !== undefined && object.entry !== null)
             ? exports.ReportEntry.fromPartial(object.entry)
             : undefined;
-        message.class_name = object.class_name ?? "";
+        message.class_name = object.class_name ?? undefined;
         message.semester = (object.semester !== undefined && object.semester !== null)
             ? semester_1.Semester.fromPartial(object.semester)
             : undefined;
@@ -942,19 +949,19 @@ exports.ReportEntryView = {
             (object.semester_report_layout !== undefined && object.semester_report_layout !== null)
                 ? semester_1.SemesterReportLayout.fromPartial(object.semester_report_layout)
                 : undefined;
-        message.signed_by_guardian_name = object.signed_by_guardian_name ?? "";
+        message.signed_by_guardian_name = object.signed_by_guardian_name ?? undefined;
         return message;
     },
 };
 function createBaseReportEntrySectionMedian() {
-    return { section_layout_id: undefined, median_mark: "" };
+    return { section_layout_id: undefined, median_mark: undefined };
 }
 exports.ReportEntrySectionMedian = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.section_layout_id !== undefined) {
             object_id_1.ObjectId.encode(message.section_layout_id, writer.uint32(10).fork()).join();
         }
-        if (message.median_mark !== undefined && message.median_mark !== "") {
+        if (message.median_mark !== undefined) {
             writer.uint32(18).string(message.median_mark);
         }
         return writer;
@@ -989,7 +996,7 @@ exports.ReportEntrySectionMedian = {
     fromJSON(object) {
         return {
             section_layout_id: isSet(object.sectionLayoutId) ? object_id_1.ObjectId.fromJSON(object.sectionLayoutId) : undefined,
-            median_mark: isSet(object.medianMark) ? globalThis.String(object.medianMark) : "",
+            median_mark: isSet(object.medianMark) ? globalThis.String(object.medianMark) : undefined,
         };
     },
     toJSON(message) {
@@ -997,7 +1004,7 @@ exports.ReportEntrySectionMedian = {
         if (message.section_layout_id !== undefined) {
             obj.sectionLayoutId = object_id_1.ObjectId.toJSON(message.section_layout_id);
         }
-        if (message.median_mark !== undefined && message.median_mark !== "") {
+        if (message.median_mark !== undefined) {
             obj.medianMark = message.median_mark;
         }
         return obj;
@@ -1010,7 +1017,7 @@ exports.ReportEntrySectionMedian = {
         message.section_layout_id = (object.section_layout_id !== undefined && object.section_layout_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.section_layout_id)
             : undefined;
-        message.median_mark = object.median_mark ?? "";
+        message.median_mark = object.median_mark ?? undefined;
         return message;
     },
 };
@@ -1085,17 +1092,17 @@ exports.ReportEntryMedian = {
     },
 };
 function createBaseParentStudentReportSummary() {
-    return { student: undefined, total_reports: 0, unsigned_reports_count: 0 };
+    return { student: undefined, total_reports: undefined, unsigned_reports_count: undefined };
 }
 exports.ParentStudentReportSummary = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.student !== undefined) {
             student_1.Student.encode(message.student, writer.uint32(10).fork()).join();
         }
-        if (message.total_reports !== 0) {
+        if (message.total_reports !== undefined) {
             writer.uint32(16).uint32(message.total_reports);
         }
-        if (message.unsigned_reports_count !== 0) {
+        if (message.unsigned_reports_count !== undefined) {
             writer.uint32(24).uint32(message.unsigned_reports_count);
         }
         return writer;
@@ -1136,8 +1143,10 @@ exports.ParentStudentReportSummary = {
     fromJSON(object) {
         return {
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
-            total_reports: isSet(object.totalReports) ? globalThis.Number(object.totalReports) : 0,
-            unsigned_reports_count: isSet(object.unsignedReportsCount) ? globalThis.Number(object.unsignedReportsCount) : 0,
+            total_reports: isSet(object.totalReports) ? globalThis.Number(object.totalReports) : undefined,
+            unsigned_reports_count: isSet(object.unsignedReportsCount)
+                ? globalThis.Number(object.unsignedReportsCount)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -1145,10 +1154,10 @@ exports.ParentStudentReportSummary = {
         if (message.student !== undefined) {
             obj.student = student_1.Student.toJSON(message.student);
         }
-        if (message.total_reports !== 0) {
+        if (message.total_reports !== undefined) {
             obj.totalReports = Math.round(message.total_reports);
         }
-        if (message.unsigned_reports_count !== 0) {
+        if (message.unsigned_reports_count !== undefined) {
             obj.unsignedReportsCount = Math.round(message.unsigned_reports_count);
         }
         return obj;
@@ -1161,8 +1170,8 @@ exports.ParentStudentReportSummary = {
         message.student = (object.student !== undefined && object.student !== null)
             ? student_1.Student.fromPartial(object.student)
             : undefined;
-        message.total_reports = object.total_reports ?? 0;
-        message.unsigned_reports_count = object.unsigned_reports_count ?? 0;
+        message.total_reports = object.total_reports ?? undefined;
+        message.unsigned_reports_count = object.unsigned_reports_count ?? undefined;
         return message;
     },
 };

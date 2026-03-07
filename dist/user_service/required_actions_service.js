@@ -169,23 +169,29 @@ exports.GetAdmittedStudentsActionsOverviewResponse = {
     },
 };
 function createBaseStudentActionSummary() {
-    return { student_id: undefined, student_name: "", description: "", is_reregistration: false, actions_count: 0 };
+    return {
+        student_id: undefined,
+        student_name: undefined,
+        description: undefined,
+        is_reregistration: undefined,
+        actions_count: undefined,
+    };
 }
 exports.StudentActionSummary = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
         }
-        if (message.student_name !== "") {
+        if (message.student_name !== undefined) {
             writer.uint32(18).string(message.student_name);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(26).string(message.description);
         }
-        if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+        if (message.is_reregistration !== undefined) {
             writer.uint32(32).bool(message.is_reregistration);
         }
-        if (message.actions_count !== 0) {
+        if (message.actions_count !== undefined) {
             writer.uint32(40).int32(message.actions_count);
         }
         return writer;
@@ -238,10 +244,10 @@ exports.StudentActionSummary = {
     fromJSON(object) {
         return {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : false,
-            actions_count: isSet(object.actionsCount) ? globalThis.Number(object.actionsCount) : 0,
+            student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            is_reregistration: isSet(object.isReregistration) ? globalThis.Boolean(object.isReregistration) : undefined,
+            actions_count: isSet(object.actionsCount) ? globalThis.Number(object.actionsCount) : undefined,
         };
     },
     toJSON(message) {
@@ -249,16 +255,16 @@ exports.StudentActionSummary = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.student_name !== "") {
+        if (message.student_name !== undefined) {
             obj.studentName = message.student_name;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
-        if (message.is_reregistration !== undefined && message.is_reregistration !== false) {
+        if (message.is_reregistration !== undefined) {
             obj.isReregistration = message.is_reregistration;
         }
-        if (message.actions_count !== 0) {
+        if (message.actions_count !== undefined) {
             obj.actionsCount = Math.round(message.actions_count);
         }
         return obj;
@@ -271,22 +277,22 @@ exports.StudentActionSummary = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.student_name = object.student_name ?? "";
-        message.description = object.description ?? "";
-        message.is_reregistration = object.is_reregistration ?? false;
-        message.actions_count = object.actions_count ?? 0;
+        message.student_name = object.student_name ?? undefined;
+        message.description = object.description ?? undefined;
+        message.is_reregistration = object.is_reregistration ?? undefined;
+        message.actions_count = object.actions_count ?? undefined;
         return message;
     },
 };
 function createBaseFamilyActionSummary() {
-    return { family_id: undefined, description: "" };
+    return { family_id: undefined, description: undefined };
 }
 exports.FamilyActionSummary = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.family_id !== undefined) {
             object_id_1.ObjectId.encode(message.family_id, writer.uint32(10).fork()).join();
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(18).string(message.description);
         }
         return writer;
@@ -321,7 +327,7 @@ exports.FamilyActionSummary = {
     fromJSON(object) {
         return {
             family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
         };
     },
     toJSON(message) {
@@ -329,7 +335,7 @@ exports.FamilyActionSummary = {
         if (message.family_id !== undefined) {
             obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
         return obj;
@@ -342,7 +348,7 @@ exports.FamilyActionSummary = {
         message.family_id = (object.family_id !== undefined && object.family_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
-        message.description = object.description ?? "";
+        message.description = object.description ?? undefined;
         return message;
     },
 };

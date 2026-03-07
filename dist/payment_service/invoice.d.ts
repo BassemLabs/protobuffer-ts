@@ -36,34 +36,34 @@ export declare function autoPaymentStatusFromJSON(object: any): AutoPaymentStatu
 export declare function autoPaymentStatusToJSON(object: AutoPaymentStatus): string;
 export declare function autoPaymentStatusToNumber(object: AutoPaymentStatus): number;
 export interface InvoiceItem {
-    title: string;
-    description: string;
-    price: number;
-    quantity: number;
+    title?: string | undefined;
+    description?: string | undefined;
+    price?: number | undefined;
+    quantity?: number | undefined;
     is_bassem_labs_fee?: boolean | undefined;
 }
 export interface Coupon {
-    title: string;
-    value_type: DiscountValueType;
+    title?: string | undefined;
+    value_type?: DiscountValueType | undefined;
     /** percentage or amount value */
-    value: number;
+    value?: number | undefined;
 }
 export interface OrganizationInvoiceDetails {
     period_start_date: Date | undefined;
     period_end_date: Date | undefined;
-    number_of_students: number;
+    number_of_students?: number | undefined;
     payment_plan_id: ObjectId | undefined;
     payment_plan_info_id: ObjectId | undefined;
 }
 export interface Invoice {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    invoice_number: number;
-    title: string;
-    description: string;
-    show_hst: boolean;
-    disable_tax: boolean;
-    archived: boolean;
+    invoice_number?: number | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    show_hst?: boolean | undefined;
+    disable_tax?: boolean | undefined;
+    archived?: boolean | undefined;
     user?: ObjectId | undefined;
     family?: ObjectId | undefined;
     items: InvoiceItem[];
@@ -80,7 +80,7 @@ export interface Invoice {
     charge_on_date?: Date | undefined;
     auto_payment_status?: AutoPaymentStatus | undefined;
     /** determine if this invoice is a tuition invoice */
-    is_tuition: boolean;
+    is_tuition?: boolean | undefined;
     /** Organization-specific invoice details */
     organization_invoice_details?: OrganizationInvoiceDetails | undefined;
     /**
@@ -95,16 +95,16 @@ export interface InvoiceResponse {
     invoice: Invoice | undefined;
     transactions: Transaction[];
     /** Total amount of the invoice */
-    total_amount: number;
+    total_amount?: number | undefined;
     /** Total amount paid towards the invoice, excludes refunds, processing fees, (includes bassemlabs fees) */
-    gross_amount_paid: number;
-    status: InvoiceStatus;
+    gross_amount_paid?: number | undefined;
+    status?: InvoiceStatus | undefined;
     bill_to_name?: string | undefined;
     refund_transactions: RefundTransaction[];
     /** Total amount refunded */
-    total_amount_refunded: number;
+    total_amount_refunded?: number | undefined;
     /** total_amount_paid - total_amount_refunded */
-    net_amount_paid: number;
+    net_amount_paid?: number | undefined;
 }
 export interface InvoiceFilter {
     per_page?: number | undefined;
@@ -121,9 +121,9 @@ export interface AutoPaymentAttempt {
     organization: ObjectId | undefined;
     invoice_id: ObjectId | undefined;
     attempted_at: Date | undefined;
-    status: AutoPaymentStatus;
+    status?: AutoPaymentStatus | undefined;
     error_message?: string | undefined;
-    attempt_number: number;
+    attempt_number?: number | undefined;
 }
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;

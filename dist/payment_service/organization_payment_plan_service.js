@@ -122,14 +122,14 @@ exports.GetPaymentPlansResponse = {
 function createBaseCreatePaymentPlanRequest() {
     return {
         context: undefined,
-        name: "",
-        description: "",
-        currency: organization_1.Currency.USD,
-        is_public: false,
-        upfront_cost: 0,
-        upfront_cost_payment_interval: organization_payment_plan_1.PaymentInterval.Monthly,
-        per_student_cost: 0,
-        payment_processing_percentage: 0,
+        name: undefined,
+        description: undefined,
+        currency: undefined,
+        is_public: undefined,
+        upfront_cost: undefined,
+        upfront_cost_payment_interval: undefined,
+        per_student_cost: undefined,
+        payment_processing_percentage: undefined,
     };
 }
 exports.CreatePaymentPlanRequest = {
@@ -137,28 +137,28 @@ exports.CreatePaymentPlanRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(26).string(message.description);
         }
-        if (message.currency !== organization_1.Currency.USD) {
+        if (message.currency !== undefined) {
             writer.uint32(32).int32((0, organization_1.currencyToNumber)(message.currency));
         }
-        if (message.is_public !== false) {
+        if (message.is_public !== undefined) {
             writer.uint32(40).bool(message.is_public);
         }
-        if (message.upfront_cost !== 0) {
+        if (message.upfront_cost !== undefined) {
             writer.uint32(49).double(message.upfront_cost);
         }
-        if (message.upfront_cost_payment_interval !== organization_payment_plan_1.PaymentInterval.Monthly) {
+        if (message.upfront_cost_payment_interval !== undefined) {
             writer.uint32(56).int32((0, organization_payment_plan_1.paymentIntervalToNumber)(message.upfront_cost_payment_interval));
         }
-        if (message.per_student_cost !== 0) {
+        if (message.per_student_cost !== undefined) {
             writer.uint32(65).double(message.per_student_cost);
         }
-        if (message.payment_processing_percentage !== 0) {
+        if (message.payment_processing_percentage !== undefined) {
             writer.uint32(73).double(message.payment_processing_percentage);
         }
         return writer;
@@ -235,18 +235,18 @@ exports.CreatePaymentPlanRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
-            is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
-            upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : undefined,
+            is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : undefined,
+            upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : undefined,
             upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
                 ? (0, organization_payment_plan_1.paymentIntervalFromJSON)(object.upfrontCostPaymentInterval)
-                : organization_payment_plan_1.PaymentInterval.Monthly,
-            per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+                : undefined,
+            per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : undefined,
             payment_processing_percentage: isSet(object.paymentProcessingPercentage)
                 ? globalThis.Number(object.paymentProcessingPercentage)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -254,28 +254,28 @@ exports.CreatePaymentPlanRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
-        if (message.currency !== organization_1.Currency.USD) {
+        if (message.currency !== undefined) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
         }
-        if (message.is_public !== false) {
+        if (message.is_public !== undefined) {
             obj.isPublic = message.is_public;
         }
-        if (message.upfront_cost !== 0) {
+        if (message.upfront_cost !== undefined) {
             obj.upfrontCost = message.upfront_cost;
         }
-        if (message.upfront_cost_payment_interval !== organization_payment_plan_1.PaymentInterval.Monthly) {
+        if (message.upfront_cost_payment_interval !== undefined) {
             obj.upfrontCostPaymentInterval = (0, organization_payment_plan_1.paymentIntervalToJSON)(message.upfront_cost_payment_interval);
         }
-        if (message.per_student_cost !== 0) {
+        if (message.per_student_cost !== undefined) {
             obj.perStudentCost = message.per_student_cost;
         }
-        if (message.payment_processing_percentage !== 0) {
+        if (message.payment_processing_percentage !== undefined) {
             obj.paymentProcessingPercentage = message.payment_processing_percentage;
         }
         return obj;
@@ -288,14 +288,14 @@ exports.CreatePaymentPlanRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.name = object.name ?? "";
-        message.description = object.description ?? "";
-        message.currency = object.currency ?? organization_1.Currency.USD;
-        message.is_public = object.is_public ?? false;
-        message.upfront_cost = object.upfront_cost ?? 0;
-        message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? organization_payment_plan_1.PaymentInterval.Monthly;
-        message.per_student_cost = object.per_student_cost ?? 0;
-        message.payment_processing_percentage = object.payment_processing_percentage ?? 0;
+        message.name = object.name ?? undefined;
+        message.description = object.description ?? undefined;
+        message.currency = object.currency ?? undefined;
+        message.is_public = object.is_public ?? undefined;
+        message.upfront_cost = object.upfront_cost ?? undefined;
+        message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? undefined;
+        message.per_student_cost = object.per_student_cost ?? undefined;
+        message.payment_processing_percentage = object.payment_processing_percentage ?? undefined;
         return message;
     },
 };
@@ -545,7 +545,7 @@ exports.MakePaymentPlanAccessibleForOrganizationRequest = {
     },
 };
 function createBaseAssignPaymentPlanToOrganizationRequest() {
-    return { context: undefined, payment_plan_id: undefined, defer_per_student_cost_to_parent: false };
+    return { context: undefined, payment_plan_id: undefined, defer_per_student_cost_to_parent: undefined };
 }
 exports.AssignPaymentPlanToOrganizationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -555,7 +555,7 @@ exports.AssignPaymentPlanToOrganizationRequest = {
         if (message.payment_plan_id !== undefined) {
             object_id_1.ObjectId.encode(message.payment_plan_id, writer.uint32(18).fork()).join();
         }
-        if (message.defer_per_student_cost_to_parent !== false) {
+        if (message.defer_per_student_cost_to_parent !== undefined) {
             writer.uint32(24).bool(message.defer_per_student_cost_to_parent);
         }
         return writer;
@@ -599,7 +599,7 @@ exports.AssignPaymentPlanToOrganizationRequest = {
             payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
             defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
                 ? globalThis.Boolean(object.deferPerStudentCostToParent)
-                : false,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -610,7 +610,7 @@ exports.AssignPaymentPlanToOrganizationRequest = {
         if (message.payment_plan_id !== undefined) {
             obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
         }
-        if (message.defer_per_student_cost_to_parent !== false) {
+        if (message.defer_per_student_cost_to_parent !== undefined) {
             obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
         }
         return obj;
@@ -626,7 +626,7 @@ exports.AssignPaymentPlanToOrganizationRequest = {
         message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.payment_plan_id)
             : undefined;
-        message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? false;
+        message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? undefined;
         return message;
     },
 };

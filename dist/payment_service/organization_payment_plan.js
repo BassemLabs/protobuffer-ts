@@ -76,15 +76,15 @@ function paymentIntervalToNumber(object) {
 function createBaseOrganizationPaymentPlan() {
     return {
         id: undefined,
-        name: "",
-        description: "",
-        currency: organization_1.Currency.USD,
-        is_public: false,
-        is_active: false,
-        upfront_cost: 0,
-        upfront_cost_payment_interval: PaymentInterval.Monthly,
-        per_student_cost: 0,
-        payment_processing_percentage: 0,
+        name: undefined,
+        description: undefined,
+        currency: undefined,
+        is_public: undefined,
+        is_active: undefined,
+        upfront_cost: undefined,
+        upfront_cost_payment_interval: undefined,
+        per_student_cost: undefined,
+        payment_processing_percentage: undefined,
     };
 }
 exports.OrganizationPaymentPlan = {
@@ -92,31 +92,31 @@ exports.OrganizationPaymentPlan = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(26).string(message.description);
         }
-        if (message.currency !== organization_1.Currency.USD) {
+        if (message.currency !== undefined) {
             writer.uint32(32).int32((0, organization_1.currencyToNumber)(message.currency));
         }
-        if (message.is_public !== false) {
+        if (message.is_public !== undefined) {
             writer.uint32(40).bool(message.is_public);
         }
-        if (message.is_active !== false) {
+        if (message.is_active !== undefined) {
             writer.uint32(48).bool(message.is_active);
         }
-        if (message.upfront_cost !== 0) {
+        if (message.upfront_cost !== undefined) {
             writer.uint32(57).double(message.upfront_cost);
         }
-        if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
+        if (message.upfront_cost_payment_interval !== undefined) {
             writer.uint32(64).int32(paymentIntervalToNumber(message.upfront_cost_payment_interval));
         }
-        if (message.per_student_cost !== 0) {
+        if (message.per_student_cost !== undefined) {
             writer.uint32(73).double(message.per_student_cost);
         }
-        if (message.payment_processing_percentage !== 0) {
+        if (message.payment_processing_percentage !== undefined) {
             writer.uint32(81).double(message.payment_processing_percentage);
         }
         return writer;
@@ -199,19 +199,19 @@ exports.OrganizationPaymentPlan = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : organization_1.Currency.USD,
-            is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
-            is_active: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
-            upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : 0,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            currency: isSet(object.currency) ? (0, organization_1.currencyFromJSON)(object.currency) : undefined,
+            is_public: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : undefined,
+            is_active: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : undefined,
+            upfront_cost: isSet(object.upfrontCost) ? globalThis.Number(object.upfrontCost) : undefined,
             upfront_cost_payment_interval: isSet(object.upfrontCostPaymentInterval)
                 ? paymentIntervalFromJSON(object.upfrontCostPaymentInterval)
-                : PaymentInterval.Monthly,
-            per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : 0,
+                : undefined,
+            per_student_cost: isSet(object.perStudentCost) ? globalThis.Number(object.perStudentCost) : undefined,
             payment_processing_percentage: isSet(object.paymentProcessingPercentage)
                 ? globalThis.Number(object.paymentProcessingPercentage)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -219,31 +219,31 @@ exports.OrganizationPaymentPlan = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
-        if (message.currency !== organization_1.Currency.USD) {
+        if (message.currency !== undefined) {
             obj.currency = (0, organization_1.currencyToJSON)(message.currency);
         }
-        if (message.is_public !== false) {
+        if (message.is_public !== undefined) {
             obj.isPublic = message.is_public;
         }
-        if (message.is_active !== false) {
+        if (message.is_active !== undefined) {
             obj.isActive = message.is_active;
         }
-        if (message.upfront_cost !== 0) {
+        if (message.upfront_cost !== undefined) {
             obj.upfrontCost = message.upfront_cost;
         }
-        if (message.upfront_cost_payment_interval !== PaymentInterval.Monthly) {
+        if (message.upfront_cost_payment_interval !== undefined) {
             obj.upfrontCostPaymentInterval = paymentIntervalToJSON(message.upfront_cost_payment_interval);
         }
-        if (message.per_student_cost !== 0) {
+        if (message.per_student_cost !== undefined) {
             obj.perStudentCost = message.per_student_cost;
         }
-        if (message.payment_processing_percentage !== 0) {
+        if (message.payment_processing_percentage !== undefined) {
             obj.paymentProcessingPercentage = message.payment_processing_percentage;
         }
         return obj;
@@ -254,15 +254,15 @@ exports.OrganizationPaymentPlan = {
     fromPartial(object) {
         const message = createBaseOrganizationPaymentPlan();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.name = object.name ?? "";
-        message.description = object.description ?? "";
-        message.currency = object.currency ?? organization_1.Currency.USD;
-        message.is_public = object.is_public ?? false;
-        message.is_active = object.is_active ?? false;
-        message.upfront_cost = object.upfront_cost ?? 0;
-        message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? PaymentInterval.Monthly;
-        message.per_student_cost = object.per_student_cost ?? 0;
-        message.payment_processing_percentage = object.payment_processing_percentage ?? 0;
+        message.name = object.name ?? undefined;
+        message.description = object.description ?? undefined;
+        message.currency = object.currency ?? undefined;
+        message.is_public = object.is_public ?? undefined;
+        message.is_active = object.is_active ?? undefined;
+        message.upfront_cost = object.upfront_cost ?? undefined;
+        message.upfront_cost_payment_interval = object.upfront_cost_payment_interval ?? undefined;
+        message.per_student_cost = object.per_student_cost ?? undefined;
+        message.payment_processing_percentage = object.payment_processing_percentage ?? undefined;
         return message;
     },
 };
@@ -341,10 +341,10 @@ function createBaseOrganizationPaymentPlanInformation() {
         id: undefined,
         organization_id: undefined,
         payment_plan: undefined,
-        defer_per_student_cost_to_parent: false,
+        defer_per_student_cost_to_parent: undefined,
         start_date: undefined,
         end_date: undefined,
-        trial_days: 0,
+        trial_days: undefined,
     };
 }
 exports.OrganizationPaymentPlanInformation = {
@@ -358,7 +358,7 @@ exports.OrganizationPaymentPlanInformation = {
         if (message.payment_plan !== undefined) {
             object_id_1.ObjectId.encode(message.payment_plan, writer.uint32(26).fork()).join();
         }
-        if (message.defer_per_student_cost_to_parent !== false) {
+        if (message.defer_per_student_cost_to_parent !== undefined) {
             writer.uint32(32).bool(message.defer_per_student_cost_to_parent);
         }
         if (message.start_date !== undefined) {
@@ -367,7 +367,7 @@ exports.OrganizationPaymentPlanInformation = {
         if (message.end_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(50).fork()).join();
         }
-        if (message.trial_days !== 0) {
+        if (message.trial_days !== undefined) {
             writer.uint32(56).uint32(message.trial_days);
         }
         return writer;
@@ -436,10 +436,10 @@ exports.OrganizationPaymentPlanInformation = {
             payment_plan: isSet(object.paymentPlan) ? object_id_1.ObjectId.fromJSON(object.paymentPlan) : undefined,
             defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
                 ? globalThis.Boolean(object.deferPerStudentCostToParent)
-                : false,
+                : undefined,
             start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
-            trial_days: isSet(object.trialDays) ? globalThis.Number(object.trialDays) : 0,
+            trial_days: isSet(object.trialDays) ? globalThis.Number(object.trialDays) : undefined,
         };
     },
     toJSON(message) {
@@ -453,7 +453,7 @@ exports.OrganizationPaymentPlanInformation = {
         if (message.payment_plan !== undefined) {
             obj.paymentPlan = object_id_1.ObjectId.toJSON(message.payment_plan);
         }
-        if (message.defer_per_student_cost_to_parent !== false) {
+        if (message.defer_per_student_cost_to_parent !== undefined) {
             obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
         }
         if (message.start_date !== undefined) {
@@ -462,7 +462,7 @@ exports.OrganizationPaymentPlanInformation = {
         if (message.end_date !== undefined) {
             obj.endDate = message.end_date.toISOString();
         }
-        if (message.trial_days !== 0) {
+        if (message.trial_days !== undefined) {
             obj.trialDays = Math.round(message.trial_days);
         }
         return obj;
@@ -479,10 +479,10 @@ exports.OrganizationPaymentPlanInformation = {
         message.payment_plan = (object.payment_plan !== undefined && object.payment_plan !== null)
             ? object_id_1.ObjectId.fromPartial(object.payment_plan)
             : undefined;
-        message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? false;
+        message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? undefined;
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;
-        message.trial_days = object.trial_days ?? 0;
+        message.trial_days = object.trial_days ?? undefined;
         return message;
     },
 };

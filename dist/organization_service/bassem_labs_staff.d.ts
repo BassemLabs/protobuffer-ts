@@ -11,15 +11,15 @@ export declare function staffStatusToJSON(object: StaffStatus): string;
 export declare function staffStatusToNumber(object: StaffStatus): number;
 export interface BassemLabsStaff {
     id: ObjectId | undefined;
-    status: StaffStatus;
-    username: string;
-    first_name: string;
-    last_name: string;
-    gender: string;
-    email: string;
-    personal_email: string;
+    status?: StaffStatus | undefined;
+    username?: string | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
+    email?: string | undefined;
+    personal_email?: string | undefined;
     date_of_birth: Date | undefined;
-    phone_number: string;
+    phone_number?: string | undefined;
 }
 export declare const BassemLabsStaff: MessageFns<BassemLabsStaff>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

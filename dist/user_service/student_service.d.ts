@@ -25,10 +25,10 @@ export interface GetStudentWithSchoolYearInfoResponse {
 }
 export interface CreateStudentRequest {
     context: RequestContext | undefined;
-    first_name: string;
-    last_name: string;
-    gender: string;
-    grade: StudentGrade;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
+    grade?: StudentGrade | undefined;
     family_id: ObjectId | undefined;
     date_of_birth: Date | undefined;
     admission_year: ObjectId | undefined;
@@ -42,31 +42,31 @@ export interface UpdateStudentGradeRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
     school_year_id: ObjectId | undefined;
-    grade: StudentGrade;
+    grade?: StudentGrade | undefined;
 }
 export interface MoveAdmissionYearRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
     school_year: ObjectId | undefined;
-    message: string;
+    message?: string | undefined;
 }
 export interface EnrollStudentWithMessageRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    enrollment_message: string;
+    enrollment_message?: string | undefined;
     school_year: ObjectId | undefined;
 }
 export interface WithdrawStudentWithMessageRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    withdraw_message: string;
+    withdraw_message?: string | undefined;
     school_year: ObjectId | undefined;
 }
 export interface ChangeStudentPasswordRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    password: string;
-    change_password_at_next_login: boolean;
+    password?: string | undefined;
+    change_password_at_next_login?: boolean | undefined;
 }
 /** Empty response - if successful, password has been changed */
 export interface ChangeStudentPasswordResponse {
@@ -74,39 +74,39 @@ export interface ChangeStudentPasswordResponse {
 export interface RejectStudentRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    rejection_message: string;
+    rejection_message?: string | undefined;
     school_year: ObjectId | undefined;
 }
 export interface ApproveStudentRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    approval_message: string;
+    approval_message?: string | undefined;
     school_year: ObjectId | undefined;
 }
 export interface ToInterviewRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    interview_message: string;
+    interview_message?: string | undefined;
     interview_date: Date | undefined;
     school_year: ObjectId | undefined;
 }
 export interface RequireFieldsChangesFromParentsRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    message: string;
+    message?: string | undefined;
 }
 export interface UploadStudentsRequest {
     context: RequestContext | undefined;
     /** CSV file content as base64-encoded string */
-    csv_file_base64: string;
+    csv_file_base64?: string | undefined;
     /** Student status for the upload */
-    student_status: StudentStatus;
+    student_status?: StudentStatus | undefined;
     /** School year (admission year) for the students */
     school_year: ObjectId | undefined;
 }
 export interface UploadStudentsResponse {
-    success_count: number;
-    failed_count: number;
+    success_count?: number | undefined;
+    failed_count?: number | undefined;
     /** Base64 encoded CSV with errors (if any) */
     error_csv_base64?: string | undefined;
 }
@@ -129,18 +129,18 @@ export interface GetLatestStudentSchoolYearInfoRequest {
 export interface ResolveTeacherOrStudentRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    email: string;
-    username: string;
+    email?: string | undefined;
+    username?: string | undefined;
 }
 export interface ResolveTeacherOrStudentResponse {
-    user_type: UserType;
+    user_type?: UserType | undefined;
     teacher?: Teacher | undefined;
     student?: Student | undefined;
 }
 export interface AuthenticateStudentForOrgRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    username: string;
+    username?: string | undefined;
 }
 export interface AuthenticateStudentForOrgResponse {
     student: Student | undefined;
@@ -156,7 +156,7 @@ export interface HasStudentsInInterviewStatusRequest {
     context: RequestContext | undefined;
 }
 export interface HasStudentsInInterviewStatusResponse {
-    has_students_in_interview: boolean;
+    has_students_in_interview?: boolean | undefined;
 }
 export interface StartReregistrationForComingSchoolYearRequest {
     context: RequestContext | undefined;
@@ -184,7 +184,7 @@ export interface GetStudentsListWithFiltersRequest {
 }
 export interface GetStudentsListWithFiltersResponse {
     students: SchoolYearStudent[];
-    students_count: number;
+    students_count?: number | undefined;
 }
 /** Get students for a specific course or homeroom */
 export interface GetCourseOrHomeroomStudentsRequest {
@@ -197,7 +197,7 @@ export interface GetCourseOrHomeroomStudentsRequest {
 }
 export interface GetCourseOrHomeroomStudentsResponse {
     students: Student[];
-    students_count: number;
+    students_count?: number | undefined;
 }
 export interface GetStudentsByIdsWithSchoolYearRequest {
     context: RequestContext | undefined;
@@ -223,8 +223,8 @@ export interface GetStudentsStatusCountsResponse {
     status_counts: StudentStatusCount[];
 }
 export interface StudentStatusCount {
-    status: StudentStatus;
-    count: number;
+    status?: StudentStatus | undefined;
+    count?: number | undefined;
 }
 export interface GetFilteredStudentsListRequest {
     context: RequestContext | undefined;
@@ -232,7 +232,7 @@ export interface GetFilteredStudentsListRequest {
     page?: number | undefined;
     grades: StudentGrade[];
     gender?: string | undefined;
-    status: StudentStatus;
+    status?: StudentStatus | undefined;
     name?: string | undefined;
     no_nonpaid_registration?: boolean | undefined;
     no_nonpaid_reregistration?: boolean | undefined;
@@ -244,7 +244,7 @@ export interface GetFilteredStudentsListRequest {
 }
 export interface GetFilteredStudentsListResponse {
     students: SchoolYearStudent[];
-    students_count: number;
+    students_count?: number | undefined;
 }
 export interface GetStudentSchoolYearsRequest {
     context: RequestContext | undefined;
@@ -255,8 +255,8 @@ export interface GetStudentSchoolYearsResponse {
 }
 export interface StudentSchoolYear {
     school_year: SchoolYear | undefined;
-    grade: StudentGrade;
-    status: StudentStatus;
+    grade?: StudentGrade | undefined;
+    status?: StudentStatus | undefined;
 }
 export interface GetOnboardingCardInformationRequest {
     context: RequestContext | undefined;
@@ -272,7 +272,7 @@ export interface GetOnboardingCardInformationResponse {
 }
 export interface GetStudentUploadHeaderRequest {
     context: RequestContext | undefined;
-    student_status: StudentStatus;
+    student_status?: StudentStatus | undefined;
 }
 export interface GetStudentUploadHeaderResponse {
     header: string[];

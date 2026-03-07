@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "rabbitmq_schemas";
 export interface SampleEvent {
-    sample: string;
+    sample?: string | undefined;
 }
 export declare const SampleEvent: MessageFns<SampleEvent>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

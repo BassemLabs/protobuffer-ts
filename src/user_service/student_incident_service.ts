@@ -26,21 +26,21 @@ export const protobufPackage = "user_service";
 export interface CreateStudentIncidentRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
-  title: string;
+  title?: string | undefined;
   date: Date | undefined;
 }
 
 export interface UpdateStudentIncidentRequest {
   context: RequestContext | undefined;
   incident_id: ObjectId | undefined;
-  title: string;
+  title?: string | undefined;
   date: Date | undefined;
-  description: string;
-  status: StudentIncidentStatus;
-  severity: StudentIncidentSeverity;
-  police_officer_name: string;
-  police_case_id: string;
-  action_taken: string;
+  description?: string | undefined;
+  status?: StudentIncidentStatus | undefined;
+  severity?: StudentIncidentSeverity | undefined;
+  police_officer_name?: string | undefined;
+  police_case_id?: string | undefined;
+  action_taken?: string | undefined;
   police_date_contact?: Date | undefined;
   police_date_investigation?: Date | undefined;
 }
@@ -59,7 +59,7 @@ export interface GetStudentIncidentsResponse {
 }
 
 function createBaseCreateStudentIncidentRequest(): CreateStudentIncidentRequest {
-  return { context: undefined, student_id: undefined, title: "", date: undefined };
+  return { context: undefined, student_id: undefined, title: undefined, date: undefined };
 }
 
 export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentRequest> = {
@@ -70,7 +70,7 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
     if (message.date !== undefined) {
@@ -127,7 +127,7 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
     };
   },
@@ -140,7 +140,7 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
     if (message.date !== undefined) {
@@ -160,7 +160,7 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.title = object.title ?? "";
+    message.title = object.title ?? undefined;
     message.date = object.date ?? undefined;
     return message;
   },
@@ -170,14 +170,14 @@ function createBaseUpdateStudentIncidentRequest(): UpdateStudentIncidentRequest 
   return {
     context: undefined,
     incident_id: undefined,
-    title: "",
+    title: undefined,
     date: undefined,
-    description: "",
-    status: StudentIncidentStatus.IN_PROGRESS,
-    severity: StudentIncidentSeverity.LOW,
-    police_officer_name: "",
-    police_case_id: "",
-    action_taken: "",
+    description: undefined,
+    status: undefined,
+    severity: undefined,
+    police_officer_name: undefined,
+    police_case_id: undefined,
+    action_taken: undefined,
     police_date_contact: undefined,
     police_date_investigation: undefined,
   };
@@ -191,28 +191,28 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
     if (message.incident_id !== undefined) {
       ObjectId.encode(message.incident_id, writer.uint32(18).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
     if (message.date !== undefined) {
       Timestamp.encode(toTimestamp(message.date), writer.uint32(34).fork()).join();
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(42).string(message.description);
     }
-    if (message.status !== StudentIncidentStatus.IN_PROGRESS) {
+    if (message.status !== undefined) {
       writer.uint32(48).int32(studentIncidentStatusToNumber(message.status));
     }
-    if (message.severity !== StudentIncidentSeverity.LOW) {
+    if (message.severity !== undefined) {
       writer.uint32(56).int32(studentIncidentSeverityToNumber(message.severity));
     }
-    if (message.police_officer_name !== "") {
+    if (message.police_officer_name !== undefined) {
       writer.uint32(66).string(message.police_officer_name);
     }
-    if (message.police_case_id !== "") {
+    if (message.police_case_id !== undefined) {
       writer.uint32(74).string(message.police_case_id);
     }
-    if (message.action_taken !== "") {
+    if (message.action_taken !== undefined) {
       writer.uint32(82).string(message.action_taken);
     }
     if (message.police_date_contact !== undefined) {
@@ -328,14 +328,14 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       incident_id: isSet(object.incidentId) ? ObjectId.fromJSON(object.incidentId) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      status: isSet(object.status) ? studentIncidentStatusFromJSON(object.status) : StudentIncidentStatus.IN_PROGRESS,
-      severity: isSet(object.severity) ? studentIncidentSeverityFromJSON(object.severity) : StudentIncidentSeverity.LOW,
-      police_officer_name: isSet(object.policeOfficerName) ? globalThis.String(object.policeOfficerName) : "",
-      police_case_id: isSet(object.policeCaseId) ? globalThis.String(object.policeCaseId) : "",
-      action_taken: isSet(object.actionTaken) ? globalThis.String(object.actionTaken) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      status: isSet(object.status) ? studentIncidentStatusFromJSON(object.status) : undefined,
+      severity: isSet(object.severity) ? studentIncidentSeverityFromJSON(object.severity) : undefined,
+      police_officer_name: isSet(object.policeOfficerName) ? globalThis.String(object.policeOfficerName) : undefined,
+      police_case_id: isSet(object.policeCaseId) ? globalThis.String(object.policeCaseId) : undefined,
+      action_taken: isSet(object.actionTaken) ? globalThis.String(object.actionTaken) : undefined,
       police_date_contact: isSet(object.policeDateContact) ? fromJsonTimestamp(object.policeDateContact) : undefined,
       police_date_investigation: isSet(object.policeDateInvestigation)
         ? fromJsonTimestamp(object.policeDateInvestigation)
@@ -351,28 +351,28 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
     if (message.incident_id !== undefined) {
       obj.incidentId = ObjectId.toJSON(message.incident_id);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
     if (message.date !== undefined) {
       obj.date = message.date.toISOString();
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.status !== StudentIncidentStatus.IN_PROGRESS) {
+    if (message.status !== undefined) {
       obj.status = studentIncidentStatusToJSON(message.status);
     }
-    if (message.severity !== StudentIncidentSeverity.LOW) {
+    if (message.severity !== undefined) {
       obj.severity = studentIncidentSeverityToJSON(message.severity);
     }
-    if (message.police_officer_name !== "") {
+    if (message.police_officer_name !== undefined) {
       obj.policeOfficerName = message.police_officer_name;
     }
-    if (message.police_case_id !== "") {
+    if (message.police_case_id !== undefined) {
       obj.policeCaseId = message.police_case_id;
     }
-    if (message.action_taken !== "") {
+    if (message.action_taken !== undefined) {
       obj.actionTaken = message.action_taken;
     }
     if (message.police_date_contact !== undefined) {
@@ -395,14 +395,14 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
     message.incident_id = (object.incident_id !== undefined && object.incident_id !== null)
       ? ObjectId.fromPartial(object.incident_id)
       : undefined;
-    message.title = object.title ?? "";
+    message.title = object.title ?? undefined;
     message.date = object.date ?? undefined;
-    message.description = object.description ?? "";
-    message.status = object.status ?? StudentIncidentStatus.IN_PROGRESS;
-    message.severity = object.severity ?? StudentIncidentSeverity.LOW;
-    message.police_officer_name = object.police_officer_name ?? "";
-    message.police_case_id = object.police_case_id ?? "";
-    message.action_taken = object.action_taken ?? "";
+    message.description = object.description ?? undefined;
+    message.status = object.status ?? undefined;
+    message.severity = object.severity ?? undefined;
+    message.police_officer_name = object.police_officer_name ?? undefined;
+    message.police_case_id = object.police_case_id ?? undefined;
+    message.action_taken = object.action_taken ?? undefined;
     message.police_date_contact = object.police_date_contact ?? undefined;
     message.police_date_investigation = object.police_date_investigation ?? undefined;
     return message;

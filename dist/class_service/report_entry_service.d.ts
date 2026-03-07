@@ -57,36 +57,36 @@ export interface GetReportEntriesQueueRequest {
 }
 export interface ReportStatusCounters {
     /** Students with no persisted entry or a NOT_FILLED effective state. */
-    not_filled: number;
+    not_filled?: number | undefined;
     /** Students with FILLED state awaiting approval. */
-    filled: number;
+    filled?: number | undefined;
     /** Students with CHANGES_REQUESTED state. */
-    changes_requested: number;
+    changes_requested?: number | undefined;
     /** Students with APPROVED state. */
-    approved: number;
+    approved?: number | undefined;
     /** Students with already PUBLISHED state. */
-    published: number;
+    published?: number | undefined;
 }
 export interface ReportPublishQueueClass {
     /** Class scope type (course or homeroom). */
-    class_type: ReportPublishClassType;
+    class_type?: ReportPublishClassType | undefined;
     /** Class identifier for this row. */
     class_id: ObjectId | undefined;
     /** Class display name. */
-    class_name: string;
+    class_name?: string | undefined;
     /** Status counters across expected students. */
     counters: ReportStatusCounters | undefined;
     /** Number of expected students in scope. */
-    total_expected: number;
+    total_expected?: number | undefined;
     /** True only when scope is ready for atomic publish. */
-    can_publish: boolean;
+    can_publish?: boolean | undefined;
     /** Human-readable reason when can_publish is false. */
     blocking_reason?: string | undefined;
 }
 export interface GetReportPublishQueueClassesRequest {
     context: RequestContext | undefined;
     /** Queue is always computed for exactly one report type. */
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
     teacher_id?: ObjectId | undefined;
     student_id?: ObjectId | undefined;
     school_year_id?: ObjectId | undefined;
@@ -98,7 +98,7 @@ export interface GetReportPublishQueueClassesResponse {
 export interface GetHomeroomPublishBreakdownRequest {
     context: RequestContext | undefined;
     homeroom_id: ObjectId | undefined;
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
 }
 export interface GetHomeroomPublishBreakdownResponse {
     /** Overall homeroom publish summary (holistic + subjects merged). */
@@ -106,18 +106,18 @@ export interface GetHomeroomPublishBreakdownResponse {
     /** Counters for homeroom holistic entries only. */
     holistic_counters: ReportStatusCounters | undefined;
     /** Expected student count for holistic entries only. */
-    holistic_total_expected: number;
+    holistic_total_expected?: number | undefined;
     /** Per-subject counters for linked courses under the homeroom. */
     subjects: ReportPublishQueueClass[];
     /** Mirrors overall.can_publish. */
-    can_publish: boolean;
+    can_publish?: boolean | undefined;
     /** Mirrors overall.blocking_reason. */
     blocking_reason?: string | undefined;
 }
 export interface GetClassReportEntriesByTypeRequest {
     context: RequestContext | undefined;
     /** Exactly one report type per request. */
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
     /** Exactly one of course_id or homeroom_id must be set. */
     course_id?: ObjectId | undefined;
     /** Exactly one of course_id or homeroom_id must be set. */
@@ -143,7 +143,7 @@ export interface GenerateReportEntrySmartCommentRequest {
     optional_prompt?: string | undefined;
 }
 export interface GenerateReportEntrySmartCommentResponse {
-    comment: string;
+    comment?: string | undefined;
 }
 export interface UpdateReportEntryRequest {
     context: RequestContext | undefined;
@@ -151,7 +151,7 @@ export interface UpdateReportEntryRequest {
     student_id: ObjectId | undefined;
     course_id?: ObjectId | undefined;
     homeroom_id?: ObjectId | undefined;
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
     /** Updatable fields */
     comment?: string | undefined;
     checkboxes: ReportEntryCheckBox[];
@@ -171,7 +171,7 @@ export interface GetReportEntriesResponse {
 export interface RequestChangesReportEntryRequest {
     context: RequestContext | undefined;
     report_entry_id: ObjectId | undefined;
-    requested_changes: string;
+    requested_changes?: string | undefined;
 }
 export interface ApproveReportEntryRequest {
     context: RequestContext | undefined;
@@ -182,27 +182,27 @@ export interface PublishCourseReportTypeRequest {
     /** Must reference a standalone course (not linked to a homeroom). */
     course_id: ObjectId | undefined;
     /** Publish is atomic within this class/report_type scope. */
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
 }
 export interface PublishHomeroomReportTypeRequest {
     context: RequestContext | undefined;
     /** Homeroom publish includes holistic + linked subject entries. */
     homeroom_id: ObjectId | undefined;
     /** Publish is atomic within this class/report_type scope. */
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
 }
 export interface PublishClassReportTypeResponse {
     /** Fresh queue summary for the same scope after publish attempt. */
     class_summary: ReportPublishQueueClass | undefined;
     /** Number of entries transitioned APPROVED -> PUBLISHED. */
-    updated_entries: number;
+    updated_entries?: number | undefined;
     /** Number of entries that were already PUBLISHED. */
-    already_published_entries: number;
+    already_published_entries?: number | undefined;
 }
 export interface UnpublishReportEntryRequest {
     context: RequestContext | undefined;
     report_entry_id: ObjectId | undefined;
-    requested_changes: string;
+    requested_changes?: string | undefined;
 }
 export interface GuardianSignReportCardsRequest {
     context: RequestContext | undefined;

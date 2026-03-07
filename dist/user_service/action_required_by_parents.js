@@ -65,14 +65,14 @@ function actionTypeToNumber(object) {
     }
 }
 function createBaseActionRequiredByParents() {
-    return { action_type: ActionType.CUSTOM_FIELDS, title: "", invoice_id: undefined, group_id: undefined };
+    return { action_type: undefined, title: undefined, invoice_id: undefined, group_id: undefined };
 }
 exports.ActionRequiredByParents = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.action_type !== ActionType.CUSTOM_FIELDS) {
+        if (message.action_type !== undefined) {
             writer.uint32(8).int32(actionTypeToNumber(message.action_type));
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(18).string(message.title);
         }
         if (message.invoice_id !== undefined) {
@@ -124,18 +124,18 @@ exports.ActionRequiredByParents = {
     },
     fromJSON(object) {
         return {
-            action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.CUSTOM_FIELDS,
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
+            action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
             invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
             group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.action_type !== ActionType.CUSTOM_FIELDS) {
+        if (message.action_type !== undefined) {
             obj.actionType = actionTypeToJSON(message.action_type);
         }
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
         if (message.invoice_id !== undefined) {
@@ -151,8 +151,8 @@ exports.ActionRequiredByParents = {
     },
     fromPartial(object) {
         const message = createBaseActionRequiredByParents();
-        message.action_type = object.action_type ?? ActionType.CUSTOM_FIELDS;
-        message.title = object.title ?? "";
+        message.action_type = object.action_type ?? undefined;
+        message.title = object.title ?? undefined;
         message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;

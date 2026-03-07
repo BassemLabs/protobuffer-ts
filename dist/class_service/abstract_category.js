@@ -11,7 +11,13 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseAbstractCategory() {
-    return { id: undefined, organization: undefined, name: "", credits_required: 0, can_delete: false };
+    return {
+        id: undefined,
+        organization: undefined,
+        name: undefined,
+        credits_required: undefined,
+        can_delete: undefined,
+    };
 }
 exports.AbstractCategory = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -21,13 +27,13 @@ exports.AbstractCategory = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.credits_required !== 0) {
+        if (message.credits_required !== undefined) {
             writer.uint32(33).double(message.credits_required);
         }
-        if (message.can_delete !== false) {
+        if (message.can_delete !== undefined) {
             writer.uint32(40).bool(message.can_delete);
         }
         return writer;
@@ -81,9 +87,9 @@ exports.AbstractCategory = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
-            can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : false,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
+            can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
         };
     },
     toJSON(message) {
@@ -94,13 +100,13 @@ exports.AbstractCategory = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.credits_required !== 0) {
+        if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
-        if (message.can_delete !== false) {
+        if (message.can_delete !== undefined) {
             obj.canDelete = message.can_delete;
         }
         return obj;
@@ -114,9 +120,9 @@ exports.AbstractCategory = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.name = object.name ?? "";
-        message.credits_required = object.credits_required ?? 0;
-        message.can_delete = object.can_delete ?? false;
+        message.name = object.name ?? undefined;
+        message.credits_required = object.credits_required ?? undefined;
+        message.can_delete = object.can_delete ?? undefined;
         return message;
     },
 };

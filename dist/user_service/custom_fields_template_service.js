@@ -229,20 +229,20 @@ exports.GetActiveCustomFieldsTemplatesResponse = {
     },
 };
 function createBaseCreateCustomFieldsTemplateRequest() {
-    return { context: undefined, template_name: "", template_description: "", is_active: false };
+    return { context: undefined, template_name: undefined, template_description: undefined, is_active: undefined };
 }
 exports.CreateCustomFieldsTemplateRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.template_name !== "") {
+        if (message.template_name !== undefined) {
             writer.uint32(18).string(message.template_name);
         }
-        if (message.template_description !== "") {
+        if (message.template_description !== undefined) {
             writer.uint32(26).string(message.template_description);
         }
-        if (message.is_active !== false) {
+        if (message.is_active !== undefined) {
             writer.uint32(32).bool(message.is_active);
         }
         return writer;
@@ -289,9 +289,11 @@ exports.CreateCustomFieldsTemplateRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            template_name: isSet(object.templateName) ? globalThis.String(object.templateName) : "",
-            template_description: isSet(object.templateDescription) ? globalThis.String(object.templateDescription) : "",
-            is_active: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+            template_name: isSet(object.templateName) ? globalThis.String(object.templateName) : undefined,
+            template_description: isSet(object.templateDescription)
+                ? globalThis.String(object.templateDescription)
+                : undefined,
+            is_active: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : undefined,
         };
     },
     toJSON(message) {
@@ -299,13 +301,13 @@ exports.CreateCustomFieldsTemplateRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.template_name !== "") {
+        if (message.template_name !== undefined) {
             obj.templateName = message.template_name;
         }
-        if (message.template_description !== "") {
+        if (message.template_description !== undefined) {
             obj.templateDescription = message.template_description;
         }
-        if (message.is_active !== false) {
+        if (message.is_active !== undefined) {
             obj.isActive = message.is_active;
         }
         return obj;
@@ -318,9 +320,9 @@ exports.CreateCustomFieldsTemplateRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.template_name = object.template_name ?? "";
-        message.template_description = object.template_description ?? "";
-        message.is_active = object.is_active ?? false;
+        message.template_name = object.template_name ?? undefined;
+        message.template_description = object.template_description ?? undefined;
+        message.is_active = object.is_active ?? undefined;
         return message;
     },
 };
@@ -328,9 +330,9 @@ function createBaseAddGroupToTemplateRequest() {
     return {
         context: undefined,
         template_id: undefined,
-        group_name: "",
-        user_type: user_type_1.UserType.NONE,
-        profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW,
+        group_name: undefined,
+        user_type: undefined,
+        profile_section: undefined,
         hints: [],
         visible_to_parents_for_statuses: [],
         visible_to_teachers_for_statuses: [],
@@ -344,13 +346,13 @@ exports.AddGroupToTemplateRequest = {
         if (message.template_id !== undefined) {
             object_id_1.ObjectId.encode(message.template_id, writer.uint32(18).fork()).join();
         }
-        if (message.group_name !== "") {
+        if (message.group_name !== undefined) {
             writer.uint32(26).string(message.group_name);
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             writer.uint32(32).int32((0, user_type_1.userTypeToNumber)(message.user_type));
         }
-        if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.profile_section !== undefined) {
             writer.uint32(40).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.profile_section));
         }
         for (const v of message.hints) {
@@ -449,11 +451,9 @@ exports.AddGroupToTemplateRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
-            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            profile_section: isSet(object.profileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : undefined,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
+            profile_section: isSet(object.profileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection) : undefined,
             hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e) => globalThis.String(e)) : [],
             visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
                 ? object.visibleToParentsForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
@@ -471,13 +471,13 @@ exports.AddGroupToTemplateRequest = {
         if (message.template_id !== undefined) {
             obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
         }
-        if (message.group_name !== "") {
+        if (message.group_name !== undefined) {
             obj.groupName = message.group_name;
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
-        if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.profile_section !== undefined) {
             obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
         }
         if (message.hints?.length) {
@@ -502,9 +502,9 @@ exports.AddGroupToTemplateRequest = {
         message.template_id = (object.template_id !== undefined && object.template_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.template_id)
             : undefined;
-        message.group_name = object.group_name ?? "";
-        message.user_type = object.user_type ?? user_type_1.UserType.NONE;
-        message.profile_section = object.profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.group_name = object.group_name ?? undefined;
+        message.user_type = object.user_type ?? undefined;
+        message.profile_section = object.profile_section ?? undefined;
         message.hints = object.hints?.map((e) => e) || [];
         message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
         message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
@@ -516,11 +516,11 @@ function createBaseAddFieldToTemplateGroupRequest() {
         context: undefined,
         template_id: undefined,
         group_id: undefined,
-        field_name: "",
-        field_type: custom_field_1.CustomFieldType.STRING,
-        is_required: false,
-        description: "",
-        regex_pattern: "",
+        field_name: undefined,
+        field_type: undefined,
+        is_required: undefined,
+        description: undefined,
+        regex_pattern: undefined,
         options: [],
     };
 }
@@ -535,19 +535,19 @@ exports.AddFieldToTemplateGroupRequest = {
         if (message.group_id !== undefined) {
             object_id_1.ObjectId.encode(message.group_id, writer.uint32(26).fork()).join();
         }
-        if (message.field_name !== "") {
+        if (message.field_name !== undefined) {
             writer.uint32(34).string(message.field_name);
         }
-        if (message.field_type !== custom_field_1.CustomFieldType.STRING) {
+        if (message.field_type !== undefined) {
             writer.uint32(40).int32((0, custom_field_1.customFieldTypeToNumber)(message.field_type));
         }
-        if (message.is_required !== false) {
+        if (message.is_required !== undefined) {
             writer.uint32(48).bool(message.is_required);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(58).string(message.description);
         }
-        if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+        if (message.regex_pattern !== undefined) {
             writer.uint32(66).string(message.regex_pattern);
         }
         for (const v of message.options) {
@@ -629,11 +629,11 @@ exports.AddFieldToTemplateGroupRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
             group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
-            field_type: isSet(object.fieldType) ? (0, custom_field_1.customFieldTypeFromJSON)(object.fieldType) : custom_field_1.CustomFieldType.STRING,
-            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+            field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : undefined,
+            field_type: isSet(object.fieldType) ? (0, custom_field_1.customFieldTypeFromJSON)(object.fieldType) : undefined,
+            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : undefined,
             options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
         };
     },
@@ -648,19 +648,19 @@ exports.AddFieldToTemplateGroupRequest = {
         if (message.group_id !== undefined) {
             obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
         }
-        if (message.field_name !== "") {
+        if (message.field_name !== undefined) {
             obj.fieldName = message.field_name;
         }
-        if (message.field_type !== custom_field_1.CustomFieldType.STRING) {
+        if (message.field_type !== undefined) {
             obj.fieldType = (0, custom_field_1.customFieldTypeToJSON)(message.field_type);
         }
-        if (message.is_required !== false) {
+        if (message.is_required !== undefined) {
             obj.isRequired = message.is_required;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
-        if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+        if (message.regex_pattern !== undefined) {
             obj.regexPattern = message.regex_pattern;
         }
         if (message.options?.length) {
@@ -682,11 +682,11 @@ exports.AddFieldToTemplateGroupRequest = {
         message.group_id = (object.group_id !== undefined && object.group_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.group_id)
             : undefined;
-        message.field_name = object.field_name ?? "";
-        message.field_type = object.field_type ?? custom_field_1.CustomFieldType.STRING;
-        message.is_required = object.is_required ?? false;
-        message.description = object.description ?? "";
-        message.regex_pattern = object.regex_pattern ?? "";
+        message.field_name = object.field_name ?? undefined;
+        message.field_type = object.field_type ?? undefined;
+        message.is_required = object.is_required ?? undefined;
+        message.description = object.description ?? undefined;
+        message.regex_pattern = object.regex_pattern ?? undefined;
         message.options = object.options?.map((e) => e) || [];
         return message;
     },

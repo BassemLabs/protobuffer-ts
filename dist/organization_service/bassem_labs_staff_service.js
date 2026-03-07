@@ -17,12 +17,12 @@ exports.protobufPackage = "organization_service";
 function createBaseCreateUserRequest() {
     return {
         context: undefined,
-        username: "",
-        first_name: "",
-        last_name: "",
-        gender: "",
-        personal_email: "",
-        phone_number: "",
+        username: undefined,
+        first_name: undefined,
+        last_name: undefined,
+        gender: undefined,
+        personal_email: undefined,
+        phone_number: undefined,
         date_of_birth: undefined,
         roles: [],
     };
@@ -32,22 +32,22 @@ exports.CreateUserRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             writer.uint32(18).string(message.username);
         }
-        if (message.first_name !== "") {
+        if (message.first_name !== undefined) {
             writer.uint32(26).string(message.first_name);
         }
-        if (message.last_name !== "") {
+        if (message.last_name !== undefined) {
             writer.uint32(34).string(message.last_name);
         }
-        if (message.gender !== "") {
+        if (message.gender !== undefined) {
             writer.uint32(42).string(message.gender);
         }
-        if (message.personal_email !== "") {
+        if (message.personal_email !== undefined) {
             writer.uint32(50).string(message.personal_email);
         }
-        if (message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             writer.uint32(58).string(message.phone_number);
         }
         if (message.date_of_birth !== undefined) {
@@ -139,12 +139,12 @@ exports.CreateUserRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            username: isSet(object.username) ? globalThis.String(object.username) : "",
-            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-            gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
-            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
         };
@@ -154,22 +154,22 @@ exports.CreateUserRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             obj.username = message.username;
         }
-        if (message.first_name !== "") {
+        if (message.first_name !== undefined) {
             obj.firstName = message.first_name;
         }
-        if (message.last_name !== "") {
+        if (message.last_name !== undefined) {
             obj.lastName = message.last_name;
         }
-        if (message.gender !== "") {
+        if (message.gender !== undefined) {
             obj.gender = message.gender;
         }
-        if (message.personal_email !== "") {
+        if (message.personal_email !== undefined) {
             obj.personalEmail = message.personal_email;
         }
-        if (message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             obj.phoneNumber = message.phone_number;
         }
         if (message.date_of_birth !== undefined) {
@@ -188,12 +188,12 @@ exports.CreateUserRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.username = object.username ?? "";
-        message.first_name = object.first_name ?? "";
-        message.last_name = object.last_name ?? "";
-        message.gender = object.gender ?? "";
-        message.personal_email = object.personal_email ?? "";
-        message.phone_number = object.phone_number ?? "";
+        message.username = object.username ?? undefined;
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.gender = object.gender ?? undefined;
+        message.personal_email = object.personal_email ?? undefined;
+        message.phone_number = object.phone_number ?? undefined;
         message.date_of_birth = object.date_of_birth ?? undefined;
         message.roles = object.roles?.map((e) => e) || [];
         return message;
@@ -203,11 +203,11 @@ function createBaseUpdateProfileRequest() {
     return {
         context: undefined,
         id: undefined,
-        first_name: "",
-        last_name: "",
-        gender: "",
-        personal_email: "",
-        phone_number: "",
+        first_name: undefined,
+        last_name: undefined,
+        gender: undefined,
+        personal_email: undefined,
+        phone_number: undefined,
         date_of_birth: undefined,
     };
 }
@@ -219,19 +219,19 @@ exports.UpdateProfileRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
-        if (message.first_name !== undefined && message.first_name !== "") {
+        if (message.first_name !== undefined) {
             writer.uint32(26).string(message.first_name);
         }
-        if (message.last_name !== undefined && message.last_name !== "") {
+        if (message.last_name !== undefined) {
             writer.uint32(34).string(message.last_name);
         }
-        if (message.gender !== undefined && message.gender !== "") {
+        if (message.gender !== undefined) {
             writer.uint32(42).string(message.gender);
         }
-        if (message.personal_email !== undefined && message.personal_email !== "") {
+        if (message.personal_email !== undefined) {
             writer.uint32(50).string(message.personal_email);
         }
-        if (message.phone_number !== undefined && message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             writer.uint32(58).string(message.phone_number);
         }
         if (message.date_of_birth !== undefined) {
@@ -306,11 +306,11 @@ exports.UpdateProfileRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-            gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
-            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
         };
     },
@@ -322,19 +322,19 @@ exports.UpdateProfileRequest = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.first_name !== undefined && message.first_name !== "") {
+        if (message.first_name !== undefined) {
             obj.firstName = message.first_name;
         }
-        if (message.last_name !== undefined && message.last_name !== "") {
+        if (message.last_name !== undefined) {
             obj.lastName = message.last_name;
         }
-        if (message.gender !== undefined && message.gender !== "") {
+        if (message.gender !== undefined) {
             obj.gender = message.gender;
         }
-        if (message.personal_email !== undefined && message.personal_email !== "") {
+        if (message.personal_email !== undefined) {
             obj.personalEmail = message.personal_email;
         }
-        if (message.phone_number !== undefined && message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             obj.phoneNumber = message.phone_number;
         }
         if (message.date_of_birth !== undefined) {
@@ -351,17 +351,17 @@ exports.UpdateProfileRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.first_name = object.first_name ?? "";
-        message.last_name = object.last_name ?? "";
-        message.gender = object.gender ?? "";
-        message.personal_email = object.personal_email ?? "";
-        message.phone_number = object.phone_number ?? "";
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.gender = object.gender ?? undefined;
+        message.personal_email = object.personal_email ?? undefined;
+        message.phone_number = object.phone_number ?? undefined;
         message.date_of_birth = object.date_of_birth ?? undefined;
         return message;
     },
 };
 function createBaseUpdateStatusRequest() {
-    return { context: undefined, id: undefined, status: bassem_labs_staff_1.StaffStatus.ACTIVE };
+    return { context: undefined, id: undefined, status: undefined };
 }
 exports.UpdateStatusRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -371,7 +371,7 @@ exports.UpdateStatusRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
-        if (message.status !== bassem_labs_staff_1.StaffStatus.ACTIVE) {
+        if (message.status !== undefined) {
             writer.uint32(24).int32((0, bassem_labs_staff_1.staffStatusToNumber)(message.status));
         }
         return writer;
@@ -413,7 +413,7 @@ exports.UpdateStatusRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            status: isSet(object.status) ? (0, bassem_labs_staff_1.staffStatusFromJSON)(object.status) : bassem_labs_staff_1.StaffStatus.ACTIVE,
+            status: isSet(object.status) ? (0, bassem_labs_staff_1.staffStatusFromJSON)(object.status) : undefined,
         };
     },
     toJSON(message) {
@@ -424,7 +424,7 @@ exports.UpdateStatusRequest = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.status !== bassem_labs_staff_1.StaffStatus.ACTIVE) {
+        if (message.status !== undefined) {
             obj.status = (0, bassem_labs_staff_1.staffStatusToJSON)(message.status);
         }
         return obj;
@@ -438,7 +438,7 @@ exports.UpdateStatusRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.status = object.status ?? bassem_labs_staff_1.StaffStatus.ACTIVE;
+        message.status = object.status ?? undefined;
         return message;
     },
 };
@@ -511,14 +511,14 @@ exports.GetUserByIdRequest = {
     },
 };
 function createBaseGetUserByEmailRequest() {
-    return { context: undefined, email: "" };
+    return { context: undefined, email: undefined };
 }
 exports.GetUserByEmailRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(18).string(message.email);
         }
         return writer;
@@ -553,7 +553,7 @@ exports.GetUserByEmailRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
         };
     },
     toJSON(message) {
@@ -561,7 +561,7 @@ exports.GetUserByEmailRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
         return obj;
@@ -574,7 +574,7 @@ exports.GetUserByEmailRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.email = object.email ?? "";
+        message.email = object.email ?? undefined;
         return message;
     },
 };

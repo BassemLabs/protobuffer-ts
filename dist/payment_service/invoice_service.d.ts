@@ -14,7 +14,7 @@ export interface GetInvoiceRequest {
 }
 export interface GetInvoiceByNumberRequest {
     context: RequestContext | undefined;
-    invoice_number: number;
+    invoice_number?: number | undefined;
 }
 export interface GetUserInvoicesRequest {
     context: RequestContext | undefined;
@@ -38,7 +38,7 @@ export interface StudentHasNoUnpaidInvoicesRequest {
     student_id: ObjectId | undefined;
 }
 export interface StudentHasNoUnpaidInvoicesResponse {
-    has_no_unpaid_invoices: boolean;
+    has_no_unpaid_invoices?: boolean | undefined;
 }
 export interface ListInvoicesRequest {
     context: RequestContext | undefined;
@@ -46,11 +46,11 @@ export interface ListInvoicesRequest {
 }
 export interface AggregationResponse {
     invoices: Invoice[];
-    invoices_count: number;
+    invoices_count?: number | undefined;
 }
 export interface PaginatedListInvoicesResponse {
     invoices: InvoiceResponse[];
-    invoices_count: number;
+    invoices_count?: number | undefined;
 }
 export interface ListInvoicesResponse {
     invoices: InvoiceResponse[];
@@ -60,14 +60,14 @@ export interface IsInvoicePaidRequest {
     invoice_id: ObjectId | undefined;
 }
 export interface IsInvoicePaidResponse {
-    is_paid: boolean;
+    is_paid?: boolean | undefined;
 }
 export interface CreateInvoiceRequest {
     context: RequestContext | undefined;
-    title: string;
-    description: string;
-    show_hst: boolean;
-    disable_tax: boolean;
+    title?: string | undefined;
+    description?: string | undefined;
+    show_hst?: boolean | undefined;
+    disable_tax?: boolean | undefined;
     users: ObjectId[];
     families: ObjectId[];
     items: InvoiceItem[];
@@ -84,10 +84,10 @@ export interface CreateInvoicesResponse {
 }
 export interface CreateInvoiceForClassRequest {
     context: RequestContext | undefined;
-    title: string;
-    description: string;
-    show_hst: boolean;
-    disable_tax: boolean;
+    title?: string | undefined;
+    description?: string | undefined;
+    show_hst?: boolean | undefined;
+    disable_tax?: boolean | undefined;
     homerooms: ObjectId[];
     courses: ObjectId[];
     items: InvoiceItem[];
@@ -119,10 +119,10 @@ export interface CreateInvoiceForClassResponse {
 export interface UpdateInvoiceRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    title: string;
-    description: string;
-    show_hst: boolean;
-    disable_tax: boolean;
+    title?: string | undefined;
+    description?: string | undefined;
+    show_hst?: boolean | undefined;
+    disable_tax?: boolean | undefined;
     items: InvoiceItem[];
     coupons: Coupon[];
     due_date?: Date | undefined;
@@ -130,7 +130,7 @@ export interface UpdateInvoiceRequest {
 export interface UpdateInvoiceAutoPaymentRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    auto_pay_enabled: boolean;
+    auto_pay_enabled?: boolean | undefined;
     charge_on_date: Date | undefined;
 }
 export interface ArchiveInvoiceRequest {
@@ -147,7 +147,7 @@ export interface GetAutoPayInvoicesReadyToChargeRequest {
 export interface SetAutoPayInvoiceStatusRequest {
     context: RequestContext | undefined;
     invoice_id: ObjectId | undefined;
-    auto_payment_status: AutoPaymentStatus;
+    auto_payment_status?: AutoPaymentStatus | undefined;
 }
 export interface GetFamilyTuitionInvoicesRequest {
     context: RequestContext | undefined;
@@ -191,15 +191,15 @@ export interface GetOrgPaidBassemLabsFeesInPeriodRequest {
     end_date: Date | undefined;
 }
 export interface GetOrgPaidBassemLabsFeesInPeriodResponse {
-    total_amount: number;
+    total_amount?: number | undefined;
 }
 export interface UpsertOrganizationInvoiceRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
     invoice_start_date: Date | undefined;
     invoice_end_date: Date | undefined;
-    current_enrolled_students_count: number;
-    is_in_trial_period: boolean;
+    current_enrolled_students_count?: number | undefined;
+    is_in_trial_period?: boolean | undefined;
 }
 export interface GetLatestOrganizationInvoiceRequest {
     context: RequestContext | undefined;

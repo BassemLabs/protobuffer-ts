@@ -11,14 +11,14 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "template_service";
 function createBaseTestModel() {
-    return { id: undefined, name: "" };
+    return { id: undefined, name: undefined };
 }
 exports.TestModel = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
         return writer;
@@ -53,7 +53,7 @@ exports.TestModel = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
         };
     },
     toJSON(message) {
@@ -61,7 +61,7 @@ exports.TestModel = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
         return obj;
@@ -72,7 +72,7 @@ exports.TestModel = {
     fromPartial(object) {
         const message = createBaseTestModel();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.name = object.name ?? "";
+        message.name = object.name ?? undefined;
         return message;
     },
 };

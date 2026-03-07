@@ -17,7 +17,7 @@ export interface GetParentsByIdsResponse {
 }
 export interface GetParentsByEmailRequest {
     context: RequestContext | undefined;
-    email: string;
+    email?: string | undefined;
 }
 export interface GetParentsByEmailResponse {
     /** All parent accounts with this email (one per organization) */
@@ -51,8 +51,8 @@ export interface GetContextActiveSchoolYearEnrolledStudentIdsResponse {
 }
 export interface AddNewGuardianToFamilyRequest {
     context: RequestContext | undefined;
-    name: string;
-    email: string;
+    name?: string | undefined;
+    email?: string | undefined;
     family_id: ObjectId | undefined;
 }
 export interface UpdateParentProfileRequest {
@@ -63,9 +63,9 @@ export interface UpdateParentProfileRequest {
 export interface AuthenticateParentForOrgRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    firebase_user_id: string;
-    display_name: string;
-    email: string;
+    firebase_user_id?: string | undefined;
+    display_name?: string | undefined;
+    email?: string | undefined;
 }
 export interface AuthenticateParentForOrgResponse {
     parent: Parent | undefined;
@@ -74,8 +74,8 @@ export interface AuthenticateParentForOrgResponse {
 }
 export interface UpdateParentPaymentMethodFromSetupIntentRequest {
     context: RequestContext | undefined;
-    stripe_customer_id: string;
-    default_payment_method_id: string;
+    stripe_customer_id?: string | undefined;
+    default_payment_method_id?: string | undefined;
     default_payment_method_type?: string | undefined;
     payment_method_brand?: string | undefined;
     payment_method_last4?: string | undefined;
@@ -84,18 +84,18 @@ export interface UpdateParentPaymentMethodFromSetupIntentRequest {
 }
 export interface SetParentSetupIntentRequiresActionRequest {
     context: RequestContext | undefined;
-    stripe_customer_id: string;
-    setup_intent_id: string;
+    stripe_customer_id?: string | undefined;
+    setup_intent_id?: string | undefined;
 }
 export interface SetParentSetupIntentFailureRequest {
     context: RequestContext | undefined;
-    stripe_customer_id: string;
-    failure_reason: string;
+    stripe_customer_id?: string | undefined;
+    failure_reason?: string | undefined;
 }
 export interface SetParentStripeCustomerIdRequest {
     context: RequestContext | undefined;
     parent_id: ObjectId | undefined;
-    stripe_customer_id: string;
+    stripe_customer_id?: string | undefined;
 }
 export interface GetAllParentsForStagingRequest {
     context: RequestContext | undefined;

@@ -166,14 +166,14 @@ function createBaseCustomField() {
         id: undefined,
         organization: undefined,
         group_id: undefined,
-        name: "",
-        field_type: CustomFieldType.STRING,
-        user_type: user_type_1.UserType.NONE,
-        is_required: false,
-        description: "",
-        regex_pattern: "",
+        name: undefined,
+        field_type: undefined,
+        user_type: undefined,
+        is_required: undefined,
+        description: undefined,
+        regex_pattern: undefined,
         options: [],
-        is_archived: false,
+        is_archived: undefined,
     };
 }
 exports.CustomField = {
@@ -187,28 +187,28 @@ exports.CustomField = {
         if (message.group_id !== undefined) {
             object_id_1.ObjectId.encode(message.group_id, writer.uint32(26).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(34).string(message.name);
         }
-        if (message.field_type !== CustomFieldType.STRING) {
+        if (message.field_type !== undefined) {
             writer.uint32(40).int32(customFieldTypeToNumber(message.field_type));
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             writer.uint32(48).int32((0, user_type_1.userTypeToNumber)(message.user_type));
         }
-        if (message.is_required !== false) {
+        if (message.is_required !== undefined) {
             writer.uint32(56).bool(message.is_required);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(66).string(message.description);
         }
-        if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+        if (message.regex_pattern !== undefined) {
             writer.uint32(74).string(message.regex_pattern);
         }
         for (const v of message.options) {
             writer.uint32(82).string(v);
         }
-        if (message.is_archived !== false) {
+        if (message.is_archived !== undefined) {
             writer.uint32(88).bool(message.is_archived);
         }
         return writer;
@@ -299,14 +299,14 @@ exports.CustomField = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : CustomFieldType.STRING,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : false,
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            field_type: isSet(object.fieldType) ? customFieldTypeFromJSON(object.fieldType) : undefined,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
+            is_required: isSet(object.isRequired) ? globalThis.Boolean(object.isRequired) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : undefined,
             options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
-            is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : false,
+            is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : undefined,
         };
     },
     toJSON(message) {
@@ -320,28 +320,28 @@ exports.CustomField = {
         if (message.group_id !== undefined) {
             obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.field_type !== CustomFieldType.STRING) {
+        if (message.field_type !== undefined) {
             obj.fieldType = customFieldTypeToJSON(message.field_type);
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
-        if (message.is_required !== false) {
+        if (message.is_required !== undefined) {
             obj.isRequired = message.is_required;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
-        if (message.regex_pattern !== undefined && message.regex_pattern !== "") {
+        if (message.regex_pattern !== undefined) {
             obj.regexPattern = message.regex_pattern;
         }
         if (message.options?.length) {
             obj.options = message.options;
         }
-        if (message.is_archived !== false) {
+        if (message.is_archived !== undefined) {
             obj.isArchived = message.is_archived;
         }
         return obj;
@@ -358,14 +358,14 @@ exports.CustomField = {
         message.group_id = (object.group_id !== undefined && object.group_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.group_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.field_type = object.field_type ?? CustomFieldType.STRING;
-        message.user_type = object.user_type ?? user_type_1.UserType.NONE;
-        message.is_required = object.is_required ?? false;
-        message.description = object.description ?? "";
-        message.regex_pattern = object.regex_pattern ?? "";
+        message.name = object.name ?? undefined;
+        message.field_type = object.field_type ?? undefined;
+        message.user_type = object.user_type ?? undefined;
+        message.is_required = object.is_required ?? undefined;
+        message.description = object.description ?? undefined;
+        message.regex_pattern = object.regex_pattern ?? undefined;
         message.options = object.options?.map((e) => e) || [];
-        message.is_archived = object.is_archived ?? false;
+        message.is_archived = object.is_archived ?? undefined;
         return message;
     },
 };
@@ -373,9 +373,9 @@ function createBaseCustomFieldsGroup() {
     return {
         id: undefined,
         organization: undefined,
-        group_name: "",
-        user_type: user_type_1.UserType.NONE,
-        profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW,
+        group_name: undefined,
+        user_type: undefined,
+        profile_section: undefined,
         hints: [],
         group_access_settings: undefined,
         entries_access_settings: undefined,
@@ -391,13 +391,13 @@ exports.CustomFieldsGroup = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.group_name !== "") {
+        if (message.group_name !== undefined) {
             writer.uint32(26).string(message.group_name);
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             writer.uint32(32).int32((0, user_type_1.userTypeToNumber)(message.user_type));
         }
-        if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.profile_section !== undefined) {
             writer.uint32(40).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.profile_section));
         }
         for (const v of message.hints) {
@@ -514,11 +514,9 @@ exports.CustomFieldsGroup = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
-            profile_section: isSet(object.profileSection)
-                ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+            group_name: isSet(object.groupName) ? globalThis.String(object.groupName) : undefined,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
+            profile_section: isSet(object.profileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection) : undefined,
             hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e) => globalThis.String(e)) : [],
             group_access_settings: isSet(object.groupAccessSettings)
                 ? object_id_1.ObjectId.fromJSON(object.groupAccessSettings)
@@ -542,13 +540,13 @@ exports.CustomFieldsGroup = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.group_name !== "") {
+        if (message.group_name !== undefined) {
             obj.groupName = message.group_name;
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
-        if (message.profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.profile_section !== undefined) {
             obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
         }
         if (message.hints?.length) {
@@ -577,9 +575,9 @@ exports.CustomFieldsGroup = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.group_name = object.group_name ?? "";
-        message.user_type = object.user_type ?? user_type_1.UserType.NONE;
-        message.profile_section = object.profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.group_name = object.group_name ?? undefined;
+        message.user_type = object.user_type ?? undefined;
+        message.profile_section = object.profile_section ?? undefined;
         message.hints = object.hints?.map((e) => e) || [];
         message.group_access_settings =
             (object.group_access_settings !== undefined && object.group_access_settings !== null)
@@ -600,8 +598,8 @@ function createBaseGroupApprovalStatus() {
         organization: undefined,
         group_id: undefined,
         user_id: undefined,
-        status: ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL,
-        rejection_message: "",
+        status: undefined,
+        rejection_message: undefined,
     };
 }
 exports.GroupApprovalStatus = {
@@ -618,10 +616,10 @@ exports.GroupApprovalStatus = {
         if (message.user_id !== undefined) {
             object_id_1.ObjectId.encode(message.user_id, writer.uint32(34).fork()).join();
         }
-        if (message.status !== ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL) {
+        if (message.status !== undefined) {
             writer.uint32(40).int32(approvalStatusToNumber(message.status));
         }
-        if (message.rejection_message !== undefined && message.rejection_message !== "") {
+        if (message.rejection_message !== undefined) {
             writer.uint32(50).string(message.rejection_message);
         }
         return writer;
@@ -683,10 +681,8 @@ exports.GroupApprovalStatus = {
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
             user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            status: isSet(object.status)
-                ? approvalStatusFromJSON(object.status)
-                : ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL,
-            rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+            status: isSet(object.status) ? approvalStatusFromJSON(object.status) : undefined,
+            rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
         };
     },
     toJSON(message) {
@@ -703,10 +699,10 @@ exports.GroupApprovalStatus = {
         if (message.user_id !== undefined) {
             obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
         }
-        if (message.status !== ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL) {
+        if (message.status !== undefined) {
             obj.status = approvalStatusToJSON(message.status);
         }
-        if (message.rejection_message !== undefined && message.rejection_message !== "") {
+        if (message.rejection_message !== undefined) {
             obj.rejectionMessage = message.rejection_message;
         }
         return obj;
@@ -726,20 +722,20 @@ exports.GroupApprovalStatus = {
         message.user_id = (object.user_id !== undefined && object.user_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.user_id)
             : undefined;
-        message.status = object.status ?? ApprovalStatus.APPROVAL_STATUS_REQUIRED_TO_FILL;
-        message.rejection_message = object.rejection_message ?? "";
+        message.status = object.status ?? undefined;
+        message.rejection_message = object.rejection_message ?? undefined;
         return message;
     },
 };
 function createBaseStudentPrimaryIdField() {
-    return { field_name: "", value: "" };
+    return { field_name: undefined, value: undefined };
 }
 exports.StudentPrimaryIdField = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.field_name !== "") {
+        if (message.field_name !== undefined) {
             writer.uint32(10).string(message.field_name);
         }
-        if (message.value !== "") {
+        if (message.value !== undefined) {
             writer.uint32(18).string(message.value);
         }
         return writer;
@@ -773,16 +769,16 @@ exports.StudentPrimaryIdField = {
     },
     fromJSON(object) {
         return {
-            field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : "",
-            value: isSet(object.value) ? globalThis.String(object.value) : "",
+            field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : undefined,
+            value: isSet(object.value) ? globalThis.String(object.value) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.field_name !== "") {
+        if (message.field_name !== undefined) {
             obj.fieldName = message.field_name;
         }
-        if (message.value !== "") {
+        if (message.value !== undefined) {
             obj.value = message.value;
         }
         return obj;
@@ -792,8 +788,8 @@ exports.StudentPrimaryIdField = {
     },
     fromPartial(object) {
         const message = createBaseStudentPrimaryIdField();
-        message.field_name = object.field_name ?? "";
-        message.value = object.value ?? "";
+        message.field_name = object.field_name ?? undefined;
+        message.value = object.value ?? undefined;
         return message;
     },
 };

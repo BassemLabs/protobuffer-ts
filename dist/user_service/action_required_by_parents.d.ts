@@ -12,8 +12,8 @@ export declare function actionTypeFromJSON(object: any): ActionType;
 export declare function actionTypeToJSON(object: ActionType): string;
 export declare function actionTypeToNumber(object: ActionType): number;
 export interface ActionRequiredByParents {
-    action_type: ActionType;
-    title: string;
+    action_type?: ActionType | undefined;
+    title?: string | undefined;
     invoice_id?: ObjectId | undefined;
     group_id?: ObjectId | undefined;
 }

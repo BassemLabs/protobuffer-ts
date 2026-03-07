@@ -263,13 +263,13 @@ export interface Student {
     | ObjectId
     | undefined;
   /** Student ID like "2024-1234" */
-  id_number: string;
-  username: string;
-  email_domain: string;
+  id_number?: string | undefined;
+  username?: string | undefined;
+  email_domain?: string | undefined;
   family_id: ObjectId | undefined;
-  first_name: string;
-  last_name: string;
-  gender: string;
+  first_name?: string | undefined;
+  last_name?: string | undefined;
+  gender?: string | undefined;
   has_waitlist_priority?: boolean | undefined;
   date_of_birth: Date | undefined;
   interview_date?: Date | undefined;
@@ -292,10 +292,12 @@ export interface SchoolYearStudent {
     | ObjectId
     | undefined;
   /** Status for the query's school year (or active school year if not specified) */
-  status: StudentStatus;
-  first_name: string;
-  last_name: string;
-  gender: string;
+  status?: StudentStatus | undefined;
+  first_name?: string | undefined;
+  last_name?: string | undefined;
+  gender?:
+    | string
+    | undefined;
   /** Grade for the query's school year (or active school year if not specified). Absent if status is NOT_ASSIGNED. */
   grade?: StudentGrade | undefined;
   family_id: ObjectId | undefined;
@@ -306,9 +308,9 @@ export interface SchoolYearStudent {
 
 /** Student profile data for updates */
 export interface StudentProfile {
-  first_name: string;
-  last_name: string;
-  gender: string;
+  first_name?: string | undefined;
+  last_name?: string | undefined;
+  gender?: string | undefined;
   date_of_birth: Date | undefined;
   interview_date?: Date | undefined;
   has_waitlist_priority?: boolean | undefined;
@@ -316,7 +318,7 @@ export interface StudentProfile {
 
 /** Entry in the status history timeline */
 export interface StatusHistoryEntry {
-  status: StudentStatus;
+  status?: StudentStatus | undefined;
   changed_at:
     | Date
     | undefined;
@@ -330,8 +332,8 @@ export interface StudentSchoolYearInformation {
   organization: ObjectId | undefined;
   student_id: ObjectId | undefined;
   school_year_id: ObjectId | undefined;
-  status: StudentStatus;
-  grade: StudentGrade;
+  status?: StudentStatus | undefined;
+  grade?: StudentGrade | undefined;
   status_history: StatusHistoryEntry[];
 }
 
@@ -339,14 +341,14 @@ function createBaseStudent(): Student {
   return {
     id: undefined,
     organization: undefined,
-    id_number: "",
-    username: "",
-    email_domain: "",
+    id_number: undefined,
+    username: undefined,
+    email_domain: undefined,
     family_id: undefined,
-    first_name: "",
-    last_name: "",
-    gender: "",
-    has_waitlist_priority: false,
+    first_name: undefined,
+    last_name: undefined,
+    gender: undefined,
+    has_waitlist_priority: undefined,
     date_of_birth: undefined,
     interview_date: undefined,
   };
@@ -360,28 +362,28 @@ export const Student: MessageFns<Student> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.id_number !== "") {
+    if (message.id_number !== undefined) {
       writer.uint32(26).string(message.id_number);
     }
-    if (message.username !== "") {
+    if (message.username !== undefined) {
       writer.uint32(34).string(message.username);
     }
-    if (message.email_domain !== "") {
+    if (message.email_domain !== undefined) {
       writer.uint32(42).string(message.email_domain);
     }
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(50).fork()).join();
     }
-    if (message.first_name !== "") {
+    if (message.first_name !== undefined) {
       writer.uint32(58).string(message.first_name);
     }
-    if (message.last_name !== "") {
+    if (message.last_name !== undefined) {
       writer.uint32(66).string(message.last_name);
     }
-    if (message.gender !== "") {
+    if (message.gender !== undefined) {
       writer.uint32(74).string(message.gender);
     }
-    if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+    if (message.has_waitlist_priority !== undefined) {
       writer.uint32(80).bool(message.has_waitlist_priority);
     }
     if (message.date_of_birth !== undefined) {
@@ -497,14 +499,16 @@ export const Student: MessageFns<Student> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      id_number: isSet(object.idNumber) ? globalThis.String(object.idNumber) : "",
-      username: isSet(object.username) ? globalThis.String(object.username) : "",
-      email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : "",
+      id_number: isSet(object.idNumber) ? globalThis.String(object.idNumber) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-      has_waitlist_priority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+      gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+      has_waitlist_priority: isSet(object.hasWaitlistPriority)
+        ? globalThis.Boolean(object.hasWaitlistPriority)
+        : undefined,
       date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
       interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
     };
@@ -518,28 +522,28 @@ export const Student: MessageFns<Student> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.id_number !== "") {
+    if (message.id_number !== undefined) {
       obj.idNumber = message.id_number;
     }
-    if (message.username !== "") {
+    if (message.username !== undefined) {
       obj.username = message.username;
     }
-    if (message.email_domain !== "") {
+    if (message.email_domain !== undefined) {
       obj.emailDomain = message.email_domain;
     }
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
-    if (message.first_name !== "") {
+    if (message.first_name !== undefined) {
       obj.firstName = message.first_name;
     }
-    if (message.last_name !== "") {
+    if (message.last_name !== undefined) {
       obj.lastName = message.last_name;
     }
-    if (message.gender !== "") {
+    if (message.gender !== undefined) {
       obj.gender = message.gender;
     }
-    if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+    if (message.has_waitlist_priority !== undefined) {
       obj.hasWaitlistPriority = message.has_waitlist_priority;
     }
     if (message.date_of_birth !== undefined) {
@@ -560,16 +564,16 @@ export const Student: MessageFns<Student> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.id_number = object.id_number ?? "";
-    message.username = object.username ?? "";
-    message.email_domain = object.email_domain ?? "";
+    message.id_number = object.id_number ?? undefined;
+    message.username = object.username ?? undefined;
+    message.email_domain = object.email_domain ?? undefined;
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
-    message.first_name = object.first_name ?? "";
-    message.last_name = object.last_name ?? "";
-    message.gender = object.gender ?? "";
-    message.has_waitlist_priority = object.has_waitlist_priority ?? false;
+    message.first_name = object.first_name ?? undefined;
+    message.last_name = object.last_name ?? undefined;
+    message.gender = object.gender ?? undefined;
+    message.has_waitlist_priority = object.has_waitlist_priority ?? undefined;
     message.date_of_birth = object.date_of_birth ?? undefined;
     message.interview_date = object.interview_date ?? undefined;
     return message;
@@ -579,13 +583,13 @@ export const Student: MessageFns<Student> = {
 function createBaseSchoolYearStudent(): SchoolYearStudent {
   return {
     id: undefined,
-    status: StudentStatus.WAITLIST,
-    first_name: "",
-    last_name: "",
-    gender: "",
-    grade: StudentGrade.PRE_K,
+    status: undefined,
+    first_name: undefined,
+    last_name: undefined,
+    gender: undefined,
+    grade: undefined,
     family_id: undefined,
-    has_non_paid_invoices: false,
+    has_non_paid_invoices: undefined,
     date_of_birth: undefined,
     interview_date: undefined,
   };
@@ -596,25 +600,25 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.status !== StudentStatus.WAITLIST) {
+    if (message.status !== undefined) {
       writer.uint32(16).int32(studentStatusToNumber(message.status));
     }
-    if (message.first_name !== "") {
+    if (message.first_name !== undefined) {
       writer.uint32(26).string(message.first_name);
     }
-    if (message.last_name !== "") {
+    if (message.last_name !== undefined) {
       writer.uint32(34).string(message.last_name);
     }
-    if (message.gender !== "") {
+    if (message.gender !== undefined) {
       writer.uint32(42).string(message.gender);
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
+    if (message.grade !== undefined) {
       writer.uint32(48).int32(studentGradeToNumber(message.grade));
     }
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(58).fork()).join();
     }
-    if (message.has_non_paid_invoices !== undefined && message.has_non_paid_invoices !== false) {
+    if (message.has_non_paid_invoices !== undefined) {
       writer.uint32(64).bool(message.has_non_paid_invoices);
     }
     if (message.date_of_birth !== undefined) {
@@ -715,13 +719,15 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
   fromJSON(object: any): SchoolYearStudent {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
-      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+      gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      has_non_paid_invoices: isSet(object.hasNonPaidInvoices) ? globalThis.Boolean(object.hasNonPaidInvoices) : false,
+      has_non_paid_invoices: isSet(object.hasNonPaidInvoices)
+        ? globalThis.Boolean(object.hasNonPaidInvoices)
+        : undefined,
       date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
       interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
     };
@@ -732,25 +738,25 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.status !== StudentStatus.WAITLIST) {
+    if (message.status !== undefined) {
       obj.status = studentStatusToJSON(message.status);
     }
-    if (message.first_name !== "") {
+    if (message.first_name !== undefined) {
       obj.firstName = message.first_name;
     }
-    if (message.last_name !== "") {
+    if (message.last_name !== undefined) {
       obj.lastName = message.last_name;
     }
-    if (message.gender !== "") {
+    if (message.gender !== undefined) {
       obj.gender = message.gender;
     }
-    if (message.grade !== undefined && message.grade !== StudentGrade.PRE_K) {
+    if (message.grade !== undefined) {
       obj.grade = studentGradeToJSON(message.grade);
     }
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
-    if (message.has_non_paid_invoices !== undefined && message.has_non_paid_invoices !== false) {
+    if (message.has_non_paid_invoices !== undefined) {
       obj.hasNonPaidInvoices = message.has_non_paid_invoices;
     }
     if (message.date_of_birth !== undefined) {
@@ -768,15 +774,15 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
   fromPartial<I extends Exact<DeepPartial<SchoolYearStudent>, I>>(object: I): SchoolYearStudent {
     const message = createBaseSchoolYearStudent();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.status = object.status ?? StudentStatus.WAITLIST;
-    message.first_name = object.first_name ?? "";
-    message.last_name = object.last_name ?? "";
-    message.gender = object.gender ?? "";
-    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.status = object.status ?? undefined;
+    message.first_name = object.first_name ?? undefined;
+    message.last_name = object.last_name ?? undefined;
+    message.gender = object.gender ?? undefined;
+    message.grade = object.grade ?? undefined;
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
       : undefined;
-    message.has_non_paid_invoices = object.has_non_paid_invoices ?? false;
+    message.has_non_paid_invoices = object.has_non_paid_invoices ?? undefined;
     message.date_of_birth = object.date_of_birth ?? undefined;
     message.interview_date = object.interview_date ?? undefined;
     return message;
@@ -785,24 +791,24 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
 
 function createBaseStudentProfile(): StudentProfile {
   return {
-    first_name: "",
-    last_name: "",
-    gender: "",
+    first_name: undefined,
+    last_name: undefined,
+    gender: undefined,
     date_of_birth: undefined,
     interview_date: undefined,
-    has_waitlist_priority: false,
+    has_waitlist_priority: undefined,
   };
 }
 
 export const StudentProfile: MessageFns<StudentProfile> = {
   encode(message: StudentProfile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.first_name !== "") {
+    if (message.first_name !== undefined) {
       writer.uint32(10).string(message.first_name);
     }
-    if (message.last_name !== "") {
+    if (message.last_name !== undefined) {
       writer.uint32(18).string(message.last_name);
     }
-    if (message.gender !== "") {
+    if (message.gender !== undefined) {
       writer.uint32(26).string(message.gender);
     }
     if (message.date_of_birth !== undefined) {
@@ -811,7 +817,7 @@ export const StudentProfile: MessageFns<StudentProfile> = {
     if (message.interview_date !== undefined) {
       Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(42).fork()).join();
     }
-    if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+    if (message.has_waitlist_priority !== undefined) {
       writer.uint32(48).bool(message.has_waitlist_priority);
     }
     return writer;
@@ -877,24 +883,26 @@ export const StudentProfile: MessageFns<StudentProfile> = {
 
   fromJSON(object: any): StudentProfile {
     return {
-      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+      gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
       date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
       interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
-      has_waitlist_priority: isSet(object.hasWaitlistPriority) ? globalThis.Boolean(object.hasWaitlistPriority) : false,
+      has_waitlist_priority: isSet(object.hasWaitlistPriority)
+        ? globalThis.Boolean(object.hasWaitlistPriority)
+        : undefined,
     };
   },
 
   toJSON(message: StudentProfile): unknown {
     const obj: any = {};
-    if (message.first_name !== "") {
+    if (message.first_name !== undefined) {
       obj.firstName = message.first_name;
     }
-    if (message.last_name !== "") {
+    if (message.last_name !== undefined) {
       obj.lastName = message.last_name;
     }
-    if (message.gender !== "") {
+    if (message.gender !== undefined) {
       obj.gender = message.gender;
     }
     if (message.date_of_birth !== undefined) {
@@ -903,7 +911,7 @@ export const StudentProfile: MessageFns<StudentProfile> = {
     if (message.interview_date !== undefined) {
       obj.interviewDate = message.interview_date.toISOString();
     }
-    if (message.has_waitlist_priority !== undefined && message.has_waitlist_priority !== false) {
+    if (message.has_waitlist_priority !== undefined) {
       obj.hasWaitlistPriority = message.has_waitlist_priority;
     }
     return obj;
@@ -914,23 +922,23 @@ export const StudentProfile: MessageFns<StudentProfile> = {
   },
   fromPartial<I extends Exact<DeepPartial<StudentProfile>, I>>(object: I): StudentProfile {
     const message = createBaseStudentProfile();
-    message.first_name = object.first_name ?? "";
-    message.last_name = object.last_name ?? "";
-    message.gender = object.gender ?? "";
+    message.first_name = object.first_name ?? undefined;
+    message.last_name = object.last_name ?? undefined;
+    message.gender = object.gender ?? undefined;
     message.date_of_birth = object.date_of_birth ?? undefined;
     message.interview_date = object.interview_date ?? undefined;
-    message.has_waitlist_priority = object.has_waitlist_priority ?? false;
+    message.has_waitlist_priority = object.has_waitlist_priority ?? undefined;
     return message;
   },
 };
 
 function createBaseStatusHistoryEntry(): StatusHistoryEntry {
-  return { status: StudentStatus.WAITLIST, changed_at: undefined, changed_by: undefined };
+  return { status: undefined, changed_at: undefined, changed_by: undefined };
 }
 
 export const StatusHistoryEntry: MessageFns<StatusHistoryEntry> = {
   encode(message: StatusHistoryEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.status !== StudentStatus.WAITLIST) {
+    if (message.status !== undefined) {
       writer.uint32(8).int32(studentStatusToNumber(message.status));
     }
     if (message.changed_at !== undefined) {
@@ -981,7 +989,7 @@ export const StatusHistoryEntry: MessageFns<StatusHistoryEntry> = {
 
   fromJSON(object: any): StatusHistoryEntry {
     return {
-      status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
       changed_at: isSet(object.changedAt) ? fromJsonTimestamp(object.changedAt) : undefined,
       changed_by: isSet(object.changedBy) ? ObjectId.fromJSON(object.changedBy) : undefined,
     };
@@ -989,7 +997,7 @@ export const StatusHistoryEntry: MessageFns<StatusHistoryEntry> = {
 
   toJSON(message: StatusHistoryEntry): unknown {
     const obj: any = {};
-    if (message.status !== StudentStatus.WAITLIST) {
+    if (message.status !== undefined) {
       obj.status = studentStatusToJSON(message.status);
     }
     if (message.changed_at !== undefined) {
@@ -1006,7 +1014,7 @@ export const StatusHistoryEntry: MessageFns<StatusHistoryEntry> = {
   },
   fromPartial<I extends Exact<DeepPartial<StatusHistoryEntry>, I>>(object: I): StatusHistoryEntry {
     const message = createBaseStatusHistoryEntry();
-    message.status = object.status ?? StudentStatus.WAITLIST;
+    message.status = object.status ?? undefined;
     message.changed_at = object.changed_at ?? undefined;
     message.changed_by = (object.changed_by !== undefined && object.changed_by !== null)
       ? ObjectId.fromPartial(object.changed_by)
@@ -1021,8 +1029,8 @@ function createBaseStudentSchoolYearInformation(): StudentSchoolYearInformation 
     organization: undefined,
     student_id: undefined,
     school_year_id: undefined,
-    status: StudentStatus.WAITLIST,
-    grade: StudentGrade.PRE_K,
+    status: undefined,
+    grade: undefined,
     status_history: [],
   };
 }
@@ -1041,10 +1049,10 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     if (message.school_year_id !== undefined) {
       ObjectId.encode(message.school_year_id, writer.uint32(34).fork()).join();
     }
-    if (message.status !== StudentStatus.WAITLIST) {
+    if (message.status !== undefined) {
       writer.uint32(40).int32(studentStatusToNumber(message.status));
     }
-    if (message.grade !== StudentGrade.PRE_K) {
+    if (message.grade !== undefined) {
       writer.uint32(48).int32(studentGradeToNumber(message.grade));
     }
     for (const v of message.status_history) {
@@ -1124,8 +1132,8 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
-      status: isSet(object.status) ? studentStatusFromJSON(object.status) : StudentStatus.WAITLIST,
-      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : StudentGrade.PRE_K,
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       status_history: globalThis.Array.isArray(object?.statusHistory)
         ? object.statusHistory.map((e: any) => StatusHistoryEntry.fromJSON(e))
         : [],
@@ -1146,10 +1154,10 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     if (message.school_year_id !== undefined) {
       obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
-    if (message.status !== StudentStatus.WAITLIST) {
+    if (message.status !== undefined) {
       obj.status = studentStatusToJSON(message.status);
     }
-    if (message.grade !== StudentGrade.PRE_K) {
+    if (message.grade !== undefined) {
       obj.grade = studentGradeToJSON(message.grade);
     }
     if (message.status_history?.length) {
@@ -1173,8 +1181,8 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
-    message.status = object.status ?? StudentStatus.WAITLIST;
-    message.grade = object.grade ?? StudentGrade.PRE_K;
+    message.status = object.status ?? undefined;
+    message.grade = object.grade ?? undefined;
     message.status_history = object.status_history?.map((e) => StatusHistoryEntry.fromPartial(e)) || [];
     return message;
   },

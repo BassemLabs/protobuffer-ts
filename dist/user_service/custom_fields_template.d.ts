@@ -8,19 +8,19 @@ export declare const protobufPackage = "user_service";
 /** Template field definition (field within a template group) */
 export interface TemplateFieldDefinition {
     field_id: ObjectId | undefined;
-    field_name: string;
-    field_type: CustomFieldType;
-    field_is_required: boolean;
-    field_description: string;
+    field_name?: string | undefined;
+    field_type?: CustomFieldType | undefined;
+    field_is_required?: boolean | undefined;
+    field_description?: string | undefined;
     field_regex_pattern?: string | undefined;
     field_options: string[];
 }
 /** Template group definition (group within a template) */
 export interface TemplateGroupDefinition {
     group_id: ObjectId | undefined;
-    group_name: string;
-    group_user_type: UserType;
-    group_profile_section: ProfileSection;
+    group_name?: string | undefined;
+    group_user_type?: UserType | undefined;
+    group_profile_section?: ProfileSection | undefined;
     group_hints: string[];
     group_field_definitions: TemplateFieldDefinition[];
     group_visible_to_parents_for_statuses: StudentStatus[];
@@ -29,9 +29,9 @@ export interface TemplateGroupDefinition {
 /** Custom fields template (global template not tied to organization) */
 export interface CustomFieldsTemplate {
     template_id: ObjectId | undefined;
-    template_name: string;
-    template_description: string;
-    template_is_active: boolean;
+    template_name?: string | undefined;
+    template_description?: string | undefined;
+    template_is_active?: boolean | undefined;
     template_groups: TemplateGroupDefinition[];
 }
 /** Organization used templates (tracks which templates an organization uses) */

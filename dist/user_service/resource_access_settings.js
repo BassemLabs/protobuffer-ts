@@ -236,9 +236,9 @@ function createBaseResourceAccessSettings() {
     return {
         id: undefined,
         organization: undefined,
-        name: "",
-        ownership_kind: OwnershipKind.OWNED,
-        user_type: user_type_1.UserType.NONE,
+        name: undefined,
+        ownership_kind: undefined,
+        user_type: undefined,
         access_rules: [],
     };
 }
@@ -250,13 +250,13 @@ exports.ResourceAccessSettings = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.ownership_kind !== OwnershipKind.OWNED) {
+        if (message.ownership_kind !== undefined) {
             writer.uint32(32).int32(ownershipKindToNumber(message.ownership_kind));
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             writer.uint32(40).int32((0, user_type_1.userTypeToNumber)(message.user_type));
         }
         for (const v of message.access_rules) {
@@ -319,9 +319,9 @@ exports.ResourceAccessSettings = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : OwnershipKind.OWNED,
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : undefined,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
             access_rules: globalThis.Array.isArray(object?.accessRules)
                 ? object.accessRules.map((e) => exports.AccessRule.fromJSON(e))
                 : [],
@@ -335,13 +335,13 @@ exports.ResourceAccessSettings = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.ownership_kind !== OwnershipKind.OWNED) {
+        if (message.ownership_kind !== undefined) {
             obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
         }
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.access_rules?.length) {
@@ -358,22 +358,22 @@ exports.ResourceAccessSettings = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.name = object.name ?? "";
-        message.ownership_kind = object.ownership_kind ?? OwnershipKind.OWNED;
-        message.user_type = object.user_type ?? user_type_1.UserType.NONE;
+        message.name = object.name ?? undefined;
+        message.ownership_kind = object.ownership_kind ?? undefined;
+        message.user_type = object.user_type ?? undefined;
         message.access_rules = object.access_rules?.map((e) => exports.AccessRule.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseAccessRule() {
-    return { permission_type: AccessPermissionType.ALLOW_READ, principal: PrincipalType.USER, wildcard: undefined };
+    return { permission_type: undefined, principal: undefined, wildcard: undefined };
 }
 exports.AccessRule = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.permission_type !== AccessPermissionType.ALLOW_READ) {
+        if (message.permission_type !== undefined) {
             writer.uint32(8).int32(accessPermissionTypeToNumber(message.permission_type));
         }
-        if (message.principal !== undefined && message.principal !== PrincipalType.USER) {
+        if (message.principal !== undefined) {
             writer.uint32(16).int32(principalTypeToNumber(message.principal));
         }
         if (message.wildcard !== undefined) {
@@ -416,19 +416,17 @@ exports.AccessRule = {
     },
     fromJSON(object) {
         return {
-            permission_type: isSet(object.permissionType)
-                ? accessPermissionTypeFromJSON(object.permissionType)
-                : AccessPermissionType.ALLOW_READ,
-            principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : PrincipalType.USER,
+            permission_type: isSet(object.permissionType) ? accessPermissionTypeFromJSON(object.permissionType) : undefined,
+            principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : undefined,
             wildcard: isSet(object.wildcard) ? exports.WildcardAccess.fromJSON(object.wildcard) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.permission_type !== AccessPermissionType.ALLOW_READ) {
+        if (message.permission_type !== undefined) {
             obj.permissionType = accessPermissionTypeToJSON(message.permission_type);
         }
-        if (message.principal !== undefined && message.principal !== PrincipalType.USER) {
+        if (message.principal !== undefined) {
             obj.principal = principalTypeToJSON(message.principal);
         }
         if (message.wildcard !== undefined) {
@@ -441,8 +439,8 @@ exports.AccessRule = {
     },
     fromPartial(object) {
         const message = createBaseAccessRule();
-        message.permission_type = object.permission_type ?? AccessPermissionType.ALLOW_READ;
-        message.principal = object.principal ?? PrincipalType.USER;
+        message.permission_type = object.permission_type ?? undefined;
+        message.principal = object.principal ?? undefined;
         message.wildcard = (object.wildcard !== undefined && object.wildcard !== null)
             ? exports.WildcardAccess.fromPartial(object.wildcard)
             : undefined;
@@ -450,14 +448,14 @@ exports.AccessRule = {
     },
 };
 function createBaseWildcardAccess() {
-    return { type: WildcardAccessType.ALL_PRINCIPALS, role: user_role_1.UserRole.DEVELOPER };
+    return { type: undefined, role: undefined };
 }
 exports.WildcardAccess = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.type !== WildcardAccessType.ALL_PRINCIPALS) {
+        if (message.type !== undefined) {
             writer.uint32(8).int32(wildcardAccessTypeToNumber(message.type));
         }
-        if (message.role !== undefined && message.role !== user_role_1.UserRole.DEVELOPER) {
+        if (message.role !== undefined) {
             writer.uint32(16).int32((0, user_role_1.userRoleToNumber)(message.role));
         }
         return writer;
@@ -491,16 +489,16 @@ exports.WildcardAccess = {
     },
     fromJSON(object) {
         return {
-            type: isSet(object.type) ? wildcardAccessTypeFromJSON(object.type) : WildcardAccessType.ALL_PRINCIPALS,
-            role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : user_role_1.UserRole.DEVELOPER,
+            type: isSet(object.type) ? wildcardAccessTypeFromJSON(object.type) : undefined,
+            role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.type !== WildcardAccessType.ALL_PRINCIPALS) {
+        if (message.type !== undefined) {
             obj.type = wildcardAccessTypeToJSON(message.type);
         }
-        if (message.role !== undefined && message.role !== user_role_1.UserRole.DEVELOPER) {
+        if (message.role !== undefined) {
             obj.role = (0, user_role_1.userRoleToJSON)(message.role);
         }
         return obj;
@@ -510,8 +508,8 @@ exports.WildcardAccess = {
     },
     fromPartial(object) {
         const message = createBaseWildcardAccess();
-        message.type = object.type ?? WildcardAccessType.ALL_PRINCIPALS;
-        message.role = object.role ?? user_role_1.UserRole.DEVELOPER;
+        message.type = object.type ?? undefined;
+        message.role = object.role ?? undefined;
         return message;
     },
 };

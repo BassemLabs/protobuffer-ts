@@ -15,12 +15,12 @@ export interface EvaluationEntry {
   id: ObjectId | undefined;
   evaluation_id: ObjectId | undefined;
   student: ObjectId | undefined;
-  mark: number;
+  mark?: number | undefined;
   last_published_at?: Date | undefined;
 }
 
 function createBaseEvaluationEntry(): EvaluationEntry {
-  return { id: undefined, evaluation_id: undefined, student: undefined, mark: 0, last_published_at: undefined };
+  return { id: undefined, evaluation_id: undefined, student: undefined, mark: undefined, last_published_at: undefined };
 }
 
 export const EvaluationEntry: MessageFns<EvaluationEntry> = {
@@ -34,7 +34,7 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     if (message.student !== undefined) {
       ObjectId.encode(message.student, writer.uint32(26).fork()).join();
     }
-    if (message.mark !== 0) {
+    if (message.mark !== undefined) {
       writer.uint32(33).double(message.mark);
     }
     if (message.last_published_at !== undefined) {
@@ -99,7 +99,7 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       evaluation_id: isSet(object.evaluationId) ? ObjectId.fromJSON(object.evaluationId) : undefined,
       student: isSet(object.student) ? ObjectId.fromJSON(object.student) : undefined,
-      mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
+      mark: isSet(object.mark) ? globalThis.Number(object.mark) : undefined,
       last_published_at: isSet(object.lastPublishedAt) ? fromJsonTimestamp(object.lastPublishedAt) : undefined,
     };
   },
@@ -115,7 +115,7 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     if (message.student !== undefined) {
       obj.student = ObjectId.toJSON(message.student);
     }
-    if (message.mark !== 0) {
+    if (message.mark !== undefined) {
       obj.mark = message.mark;
     }
     if (message.last_published_at !== undefined) {
@@ -136,7 +136,7 @@ export const EvaluationEntry: MessageFns<EvaluationEntry> = {
     message.student = (object.student !== undefined && object.student !== null)
       ? ObjectId.fromPartial(object.student)
       : undefined;
-    message.mark = object.mark ?? 0;
+    message.mark = object.mark ?? undefined;
     message.last_published_at = object.last_published_at ?? undefined;
     return message;
   },

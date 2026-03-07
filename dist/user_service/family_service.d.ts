@@ -80,7 +80,7 @@ export interface GetFamiliesByStudentStatusRequest {
 /** Family with student count (used in bulk queries) */
 export interface FamilyWithStudentCount {
     family: Family | undefined;
-    student_count: number;
+    student_count?: number | undefined;
 }
 export interface GetFamiliesByStudentStatusResponse {
     /** Families with their student counts */
@@ -88,7 +88,7 @@ export interface GetFamiliesByStudentStatusResponse {
 }
 export interface CreateFamilyRequest {
     context: RequestContext | undefined;
-    name: string;
+    name?: string | undefined;
     /** Parent ObjectIds */
     guardians: ObjectId[];
     information: FamilyInformation | undefined;
@@ -96,7 +96,7 @@ export interface CreateFamilyRequest {
 export interface UpdateFamilyRequest {
     context: RequestContext | undefined;
     family_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     guardians: ObjectId[];
     guardians_to_not_contact: ObjectId[];
     information: FamilyInformation | undefined;
@@ -104,22 +104,22 @@ export interface UpdateFamilyRequest {
 export interface UpdateFamilyNameRequest {
     context: RequestContext | undefined;
     family_id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
 }
 export interface UpdateFamilyAutoPayRequest {
     context: RequestContext | undefined;
     family_id: ObjectId | undefined;
-    auto_pay_disabled: boolean;
+    auto_pay_disabled?: boolean | undefined;
 }
 /** Request for creating a family with a guardian and sending invitation email (CRM onboarding) */
 export interface CreateFamilyWithGuardianAndInviteRequest {
     context: RequestContext | undefined;
     /** Guardian info */
-    guardian_name: string;
-    guardian_email: string;
+    guardian_name?: string | undefined;
+    guardian_email?: string | undefined;
     guardian_phone: PhoneNumber | undefined;
     /** Family info */
-    family_name: string;
+    family_name?: string | undefined;
     family_information: FamilyInformation | undefined;
 }
 export interface CreateFamilyWithGuardianAndInviteResponse {

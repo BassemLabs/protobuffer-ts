@@ -3,28 +3,28 @@ import { StudentGrade } from "../user_service/student";
 import { AWSFile } from "../utils/aws_file";
 export declare const protobufPackage = "organization_service";
 export interface OnboardingSettings {
-    has_interview_for_newcomers: boolean;
-    enable_group_approval_system: boolean;
-    waitlist_fee: number;
+    has_interview_for_newcomers?: boolean | undefined;
+    enable_group_approval_system?: boolean | undefined;
+    waitlist_fee?: number | undefined;
     registration_fees: GradeFeeMapping[];
     reregistration_fees: GradeFeeMapping[];
     school_handbook: AWSFile[];
-    interview_fee: number;
+    interview_fee?: number | undefined;
 }
 export interface GradeFeeMapping {
-    grade: StudentGrade;
+    grade?: StudentGrade | undefined;
     fee: ItemizedFee | undefined;
 }
 export interface ItemizedFee {
-    title: string;
-    description: string;
+    title?: string | undefined;
+    description?: string | undefined;
     items: FeeItem[];
 }
 export interface FeeItem {
-    title: string;
-    description: string;
-    price: number;
-    quantity: number;
+    title?: string | undefined;
+    description?: string | undefined;
+    price?: number | undefined;
+    quantity?: number | undefined;
 }
 export declare const OnboardingSettings: MessageFns<OnboardingSettings>;
 export declare const GradeFeeMapping: MessageFns<GradeFeeMapping>;

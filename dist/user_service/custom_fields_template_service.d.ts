@@ -21,16 +21,16 @@ export interface GetActiveCustomFieldsTemplatesResponse {
 }
 export interface CreateCustomFieldsTemplateRequest {
     context: RequestContext | undefined;
-    template_name: string;
-    template_description: string;
-    is_active: boolean;
+    template_name?: string | undefined;
+    template_description?: string | undefined;
+    is_active?: boolean | undefined;
 }
 export interface AddGroupToTemplateRequest {
     context: RequestContext | undefined;
     template_id: ObjectId | undefined;
-    group_name: string;
-    user_type: UserType;
-    profile_section: ProfileSection;
+    group_name?: string | undefined;
+    user_type?: UserType | undefined;
+    profile_section?: ProfileSection | undefined;
     hints: string[];
     visible_to_parents_for_statuses: StudentStatus[];
     visible_to_teachers_for_statuses: StudentStatus[];
@@ -39,10 +39,10 @@ export interface AddFieldToTemplateGroupRequest {
     context: RequestContext | undefined;
     template_id: ObjectId | undefined;
     group_id: ObjectId | undefined;
-    field_name: string;
-    field_type: CustomFieldType;
-    is_required: boolean;
-    description: string;
+    field_name?: string | undefined;
+    field_type?: CustomFieldType | undefined;
+    is_required?: boolean | undefined;
+    description?: string | undefined;
     regex_pattern?: string | undefined;
     options: string[];
 }

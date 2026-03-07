@@ -18,12 +18,12 @@ export interface ListProvisionedAccountsResponse {
 export interface CreateProvisionedAccountForStudentRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    provider: LmsProviderType;
+    provider?: LmsProviderType | undefined;
 }
 export interface CreateProvisionedAccountForTeacherRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
-    provider: LmsProviderType;
+    provider?: LmsProviderType | undefined;
 }
 export interface ActivateProvisionedAccountForStudentRequest {
     context: RequestContext | undefined;

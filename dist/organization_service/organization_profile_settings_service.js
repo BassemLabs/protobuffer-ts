@@ -83,7 +83,7 @@ exports.GetOrganizationProfileSettingsRequest = {
     },
 };
 function createBaseAddParentProfileSectionRequest() {
-    return { context: undefined, organization_id: undefined, new_profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW };
+    return { context: undefined, organization_id: undefined, new_profile_section: undefined };
 }
 exports.AddParentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -93,7 +93,7 @@ exports.AddParentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.new_profile_section !== undefined) {
             writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.new_profile_section));
         }
         return writer;
@@ -137,7 +137,7 @@ exports.AddParentProfileSectionRequest = {
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             new_profile_section: isSet(object.newProfileSection)
                 ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -148,7 +148,7 @@ exports.AddParentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.new_profile_section !== undefined) {
             obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
         }
         return obj;
@@ -164,12 +164,12 @@ exports.AddParentProfileSectionRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.new_profile_section = object.new_profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.new_profile_section = object.new_profile_section ?? undefined;
         return message;
     },
 };
 function createBaseRemoveParentProfileSectionRequest() {
-    return { context: undefined, organization_id: undefined, remove_profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW };
+    return { context: undefined, organization_id: undefined, remove_profile_section: undefined };
 }
 exports.RemoveParentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -179,7 +179,7 @@ exports.RemoveParentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.remove_profile_section !== undefined) {
             writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.remove_profile_section));
         }
         return writer;
@@ -223,7 +223,7 @@ exports.RemoveParentProfileSectionRequest = {
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             remove_profile_section: isSet(object.removeProfileSection)
                 ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -234,7 +234,7 @@ exports.RemoveParentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.remove_profile_section !== undefined) {
             obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
         }
         return obj;
@@ -250,12 +250,12 @@ exports.RemoveParentProfileSectionRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.remove_profile_section = object.remove_profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.remove_profile_section = object.remove_profile_section ?? undefined;
         return message;
     },
 };
 function createBaseAddTeacherProfileSectionRequest() {
-    return { context: undefined, organization_id: undefined, new_profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW };
+    return { context: undefined, organization_id: undefined, new_profile_section: undefined };
 }
 exports.AddTeacherProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -265,7 +265,7 @@ exports.AddTeacherProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.new_profile_section !== undefined) {
             writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.new_profile_section));
         }
         return writer;
@@ -309,7 +309,7 @@ exports.AddTeacherProfileSectionRequest = {
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             new_profile_section: isSet(object.newProfileSection)
                 ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -320,7 +320,7 @@ exports.AddTeacherProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.new_profile_section !== undefined) {
             obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
         }
         return obj;
@@ -336,12 +336,12 @@ exports.AddTeacherProfileSectionRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.new_profile_section = object.new_profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.new_profile_section = object.new_profile_section ?? undefined;
         return message;
     },
 };
 function createBaseRemoveTeacherProfileSectionRequest() {
-    return { context: undefined, organization_id: undefined, remove_profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW };
+    return { context: undefined, organization_id: undefined, remove_profile_section: undefined };
 }
 exports.RemoveTeacherProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -351,7 +351,7 @@ exports.RemoveTeacherProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.remove_profile_section !== undefined) {
             writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.remove_profile_section));
         }
         return writer;
@@ -395,7 +395,7 @@ exports.RemoveTeacherProfileSectionRequest = {
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             remove_profile_section: isSet(object.removeProfileSection)
                 ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -406,7 +406,7 @@ exports.RemoveTeacherProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.remove_profile_section !== undefined) {
             obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
         }
         return obj;
@@ -422,12 +422,12 @@ exports.RemoveTeacherProfileSectionRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.remove_profile_section = object.remove_profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.remove_profile_section = object.remove_profile_section ?? undefined;
         return message;
     },
 };
 function createBaseAddStudentProfileSectionRequest() {
-    return { context: undefined, organization_id: undefined, new_profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW };
+    return { context: undefined, organization_id: undefined, new_profile_section: undefined };
 }
 exports.AddStudentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -437,7 +437,7 @@ exports.AddStudentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.new_profile_section !== undefined) {
             writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.new_profile_section));
         }
         return writer;
@@ -481,7 +481,7 @@ exports.AddStudentProfileSectionRequest = {
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             new_profile_section: isSet(object.newProfileSection)
                 ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.newProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -492,7 +492,7 @@ exports.AddStudentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.new_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.new_profile_section !== undefined) {
             obj.newProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.new_profile_section);
         }
         return obj;
@@ -508,12 +508,12 @@ exports.AddStudentProfileSectionRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.new_profile_section = object.new_profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.new_profile_section = object.new_profile_section ?? undefined;
         return message;
     },
 };
 function createBaseRemoveStudentProfileSectionRequest() {
-    return { context: undefined, organization_id: undefined, remove_profile_section: organization_profile_settings_1.ProfileSection.OVERVIEW };
+    return { context: undefined, organization_id: undefined, remove_profile_section: undefined };
 }
 exports.RemoveStudentProfileSectionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -523,7 +523,7 @@ exports.RemoveStudentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.remove_profile_section !== undefined) {
             writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.remove_profile_section));
         }
         return writer;
@@ -567,7 +567,7 @@ exports.RemoveStudentProfileSectionRequest = {
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
             remove_profile_section: isSet(object.removeProfileSection)
                 ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.removeProfileSection)
-                : organization_profile_settings_1.ProfileSection.OVERVIEW,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -578,7 +578,7 @@ exports.RemoveStudentProfileSectionRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.remove_profile_section !== organization_profile_settings_1.ProfileSection.OVERVIEW) {
+        if (message.remove_profile_section !== undefined) {
             obj.removeProfileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.remove_profile_section);
         }
         return obj;
@@ -594,7 +594,7 @@ exports.RemoveStudentProfileSectionRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.remove_profile_section = object.remove_profile_section ?? organization_profile_settings_1.ProfileSection.OVERVIEW;
+        message.remove_profile_section = object.remove_profile_section ?? undefined;
         return message;
     },
 };

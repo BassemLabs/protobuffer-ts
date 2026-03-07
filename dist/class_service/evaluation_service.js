@@ -18,10 +18,10 @@ function createBaseCreateEvaluationRequest() {
     return {
         context: undefined,
         course_id: undefined,
-        name: "",
-        total: 0,
-        weight: 0,
-        date: "",
+        name: undefined,
+        total: undefined,
+        weight: undefined,
+        date: undefined,
         mark_category: undefined,
     };
 }
@@ -33,16 +33,16 @@ exports.CreateEvaluationRequest = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             writer.uint32(32).uint32(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             writer.uint32(40).uint32(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             writer.uint32(50).string(message.date);
         }
         if (message.mark_category !== undefined) {
@@ -111,10 +111,10 @@ exports.CreateEvaluationRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
-            weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
-            date: isSet(object.date) ? globalThis.String(object.date) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+            weight: isSet(object.weight) ? globalThis.Number(object.weight) : undefined,
+            date: isSet(object.date) ? globalThis.String(object.date) : undefined,
             mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
         };
     },
@@ -126,16 +126,16 @@ exports.CreateEvaluationRequest = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             obj.total = Math.round(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             obj.weight = Math.round(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
@@ -154,10 +154,10 @@ exports.CreateEvaluationRequest = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.total = object.total ?? 0;
-        message.weight = object.weight ?? 0;
-        message.date = object.date ?? "";
+        message.name = object.name ?? undefined;
+        message.total = object.total ?? undefined;
+        message.weight = object.weight ?? undefined;
+        message.date = object.date ?? undefined;
         message.mark_category = (object.mark_category !== undefined && object.mark_category !== null)
             ? object_id_1.ObjectId.fromPartial(object.mark_category)
             : undefined;
@@ -168,10 +168,10 @@ function createBaseUpdateEvaluationRequest() {
     return {
         context: undefined,
         evaluation_id: undefined,
-        name: "",
-        total: 0,
-        weight: 0,
-        date: "",
+        name: undefined,
+        total: undefined,
+        weight: undefined,
+        date: undefined,
         mark_category: undefined,
     };
 }
@@ -183,16 +183,16 @@ exports.UpdateEvaluationRequest = {
         if (message.evaluation_id !== undefined) {
             object_id_1.ObjectId.encode(message.evaluation_id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             writer.uint32(32).uint32(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             writer.uint32(40).uint32(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             writer.uint32(50).string(message.date);
         }
         if (message.mark_category !== undefined) {
@@ -261,10 +261,10 @@ exports.UpdateEvaluationRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             evaluation_id: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
-            weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
-            date: isSet(object.date) ? globalThis.String(object.date) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+            weight: isSet(object.weight) ? globalThis.Number(object.weight) : undefined,
+            date: isSet(object.date) ? globalThis.String(object.date) : undefined,
             mark_category: isSet(object.markCategory) ? object_id_1.ObjectId.fromJSON(object.markCategory) : undefined,
         };
     },
@@ -276,16 +276,16 @@ exports.UpdateEvaluationRequest = {
         if (message.evaluation_id !== undefined) {
             obj.evaluationId = object_id_1.ObjectId.toJSON(message.evaluation_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.total !== 0) {
+        if (message.total !== undefined) {
             obj.total = Math.round(message.total);
         }
-        if (message.weight !== 0) {
+        if (message.weight !== undefined) {
             obj.weight = Math.round(message.weight);
         }
-        if (message.date !== "") {
+        if (message.date !== undefined) {
             obj.date = message.date;
         }
         if (message.mark_category !== undefined) {
@@ -304,10 +304,10 @@ exports.UpdateEvaluationRequest = {
         message.evaluation_id = (object.evaluation_id !== undefined && object.evaluation_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.evaluation_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.total = object.total ?? 0;
-        message.weight = object.weight ?? 0;
-        message.date = object.date ?? "";
+        message.name = object.name ?? undefined;
+        message.total = object.total ?? undefined;
+        message.weight = object.weight ?? undefined;
+        message.date = object.date ?? undefined;
         message.mark_category = (object.mark_category !== undefined && object.mark_category !== null)
             ? object_id_1.ObjectId.fromPartial(object.mark_category)
             : undefined;
@@ -929,14 +929,14 @@ exports.GetEvaluationEntriesFillCountsRequest = {
     },
 };
 function createBaseEvaluationEntryFillCount() {
-    return { evaluation_id: undefined, filled_count: 0 };
+    return { evaluation_id: undefined, filled_count: undefined };
 }
 exports.EvaluationEntryFillCount = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.evaluation_id !== undefined) {
             object_id_1.ObjectId.encode(message.evaluation_id, writer.uint32(10).fork()).join();
         }
-        if (message.filled_count !== 0) {
+        if (message.filled_count !== undefined) {
             writer.uint32(16).uint32(message.filled_count);
         }
         return writer;
@@ -971,7 +971,7 @@ exports.EvaluationEntryFillCount = {
     fromJSON(object) {
         return {
             evaluation_id: isSet(object.evaluationId) ? object_id_1.ObjectId.fromJSON(object.evaluationId) : undefined,
-            filled_count: isSet(object.filledCount) ? globalThis.Number(object.filledCount) : 0,
+            filled_count: isSet(object.filledCount) ? globalThis.Number(object.filledCount) : undefined,
         };
     },
     toJSON(message) {
@@ -979,7 +979,7 @@ exports.EvaluationEntryFillCount = {
         if (message.evaluation_id !== undefined) {
             obj.evaluationId = object_id_1.ObjectId.toJSON(message.evaluation_id);
         }
-        if (message.filled_count !== 0) {
+        if (message.filled_count !== undefined) {
             obj.filledCount = Math.round(message.filled_count);
         }
         return obj;
@@ -992,7 +992,7 @@ exports.EvaluationEntryFillCount = {
         message.evaluation_id = (object.evaluation_id !== undefined && object.evaluation_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.evaluation_id)
             : undefined;
-        message.filled_count = object.filled_count ?? 0;
+        message.filled_count = object.filled_count ?? undefined;
         return message;
     },
 };
@@ -1051,14 +1051,14 @@ exports.GetEvaluationEntriesFillCountsResponse = {
     },
 };
 function createBaseStudentMarkUpdate() {
-    return { student_id: undefined, mark: 0 };
+    return { student_id: undefined, mark: undefined };
 }
 exports.StudentMarkUpdate = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
         }
-        if (message.mark !== 0) {
+        if (message.mark !== undefined) {
             writer.uint32(17).double(message.mark);
         }
         return writer;
@@ -1093,7 +1093,7 @@ exports.StudentMarkUpdate = {
     fromJSON(object) {
         return {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            mark: isSet(object.mark) ? globalThis.Number(object.mark) : 0,
+            mark: isSet(object.mark) ? globalThis.Number(object.mark) : undefined,
         };
     },
     toJSON(message) {
@@ -1101,7 +1101,7 @@ exports.StudentMarkUpdate = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.mark !== 0) {
+        if (message.mark !== undefined) {
             obj.mark = message.mark;
         }
         return obj;
@@ -1114,7 +1114,7 @@ exports.StudentMarkUpdate = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.mark = object.mark ?? 0;
+        message.mark = object.mark ?? undefined;
         return message;
     },
 };
@@ -1205,7 +1205,7 @@ exports.UpdateEvaluationMarksRequest = {
     },
 };
 function createBaseCreateMarkCategoryRequest() {
-    return { context: undefined, course_id: undefined, name: "", percentage: 0 };
+    return { context: undefined, course_id: undefined, name: undefined, percentage: undefined };
 }
 exports.CreateMarkCategoryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1215,10 +1215,10 @@ exports.CreateMarkCategoryRequest = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.percentage !== 0) {
+        if (message.percentage !== undefined) {
             writer.uint32(32).uint32(message.percentage);
         }
         return writer;
@@ -1266,8 +1266,8 @@ exports.CreateMarkCategoryRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : undefined,
         };
     },
     toJSON(message) {
@@ -1278,10 +1278,10 @@ exports.CreateMarkCategoryRequest = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.percentage !== 0) {
+        if (message.percentage !== undefined) {
             obj.percentage = Math.round(message.percentage);
         }
         return obj;
@@ -1297,13 +1297,13 @@ exports.CreateMarkCategoryRequest = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.percentage = object.percentage ?? 0;
+        message.name = object.name ?? undefined;
+        message.percentage = object.percentage ?? undefined;
         return message;
     },
 };
 function createBaseUpdateMarkCategoryRequest() {
-    return { context: undefined, mark_category_id: undefined, name: "", percentage: 0 };
+    return { context: undefined, mark_category_id: undefined, name: undefined, percentage: undefined };
 }
 exports.UpdateMarkCategoryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1313,10 +1313,10 @@ exports.UpdateMarkCategoryRequest = {
         if (message.mark_category_id !== undefined) {
             object_id_1.ObjectId.encode(message.mark_category_id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.percentage !== 0) {
+        if (message.percentage !== undefined) {
             writer.uint32(32).uint32(message.percentage);
         }
         return writer;
@@ -1364,8 +1364,8 @@ exports.UpdateMarkCategoryRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             mark_category_id: isSet(object.markCategoryId) ? object_id_1.ObjectId.fromJSON(object.markCategoryId) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : undefined,
         };
     },
     toJSON(message) {
@@ -1376,10 +1376,10 @@ exports.UpdateMarkCategoryRequest = {
         if (message.mark_category_id !== undefined) {
             obj.markCategoryId = object_id_1.ObjectId.toJSON(message.mark_category_id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.percentage !== 0) {
+        if (message.percentage !== undefined) {
             obj.percentage = Math.round(message.percentage);
         }
         return obj;
@@ -1395,8 +1395,8 @@ exports.UpdateMarkCategoryRequest = {
         message.mark_category_id = (object.mark_category_id !== undefined && object.mark_category_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.mark_category_id)
             : undefined;
-        message.name = object.name ?? "";
-        message.percentage = object.percentage ?? 0;
+        message.name = object.name ?? undefined;
+        message.percentage = object.percentage ?? undefined;
         return message;
     },
 };
@@ -1893,8 +1893,8 @@ exports.GetStudentCoursePerformanceRequest = {
 function createBaseStudentCoursePerformance() {
     return {
         student: undefined,
-        final_mark: 0,
-        maximum_potential_mark: 0,
+        final_mark: undefined,
+        maximum_potential_mark: undefined,
         evaluations: [],
         mark_categories: [],
         student_evaluation_entries: [],
@@ -1905,10 +1905,10 @@ exports.StudentCoursePerformance = {
         if (message.student !== undefined) {
             object_id_1.ObjectId.encode(message.student, writer.uint32(10).fork()).join();
         }
-        if (message.final_mark !== undefined && message.final_mark !== 0) {
+        if (message.final_mark !== undefined) {
             writer.uint32(17).double(message.final_mark);
         }
-        if (message.maximum_potential_mark !== 0) {
+        if (message.maximum_potential_mark !== undefined) {
             writer.uint32(25).double(message.maximum_potential_mark);
         }
         for (const v of message.evaluations) {
@@ -1976,8 +1976,10 @@ exports.StudentCoursePerformance = {
     fromJSON(object) {
         return {
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            final_mark: isSet(object.finalMark) ? globalThis.Number(object.finalMark) : 0,
-            maximum_potential_mark: isSet(object.maximumPotentialMark) ? globalThis.Number(object.maximumPotentialMark) : 0,
+            final_mark: isSet(object.finalMark) ? globalThis.Number(object.finalMark) : undefined,
+            maximum_potential_mark: isSet(object.maximumPotentialMark)
+                ? globalThis.Number(object.maximumPotentialMark)
+                : undefined,
             evaluations: globalThis.Array.isArray(object?.evaluations)
                 ? object.evaluations.map((e) => evaluation_1.PersonalizedEvaluation.fromJSON(e))
                 : [],
@@ -1994,10 +1996,10 @@ exports.StudentCoursePerformance = {
         if (message.student !== undefined) {
             obj.student = object_id_1.ObjectId.toJSON(message.student);
         }
-        if (message.final_mark !== undefined && message.final_mark !== 0) {
+        if (message.final_mark !== undefined) {
             obj.finalMark = message.final_mark;
         }
-        if (message.maximum_potential_mark !== 0) {
+        if (message.maximum_potential_mark !== undefined) {
             obj.maximumPotentialMark = message.maximum_potential_mark;
         }
         if (message.evaluations?.length) {
@@ -2019,8 +2021,8 @@ exports.StudentCoursePerformance = {
         message.student = (object.student !== undefined && object.student !== null)
             ? object_id_1.ObjectId.fromPartial(object.student)
             : undefined;
-        message.final_mark = object.final_mark ?? 0;
-        message.maximum_potential_mark = object.maximum_potential_mark ?? 0;
+        message.final_mark = object.final_mark ?? undefined;
+        message.maximum_potential_mark = object.maximum_potential_mark ?? undefined;
         message.evaluations = object.evaluations?.map((e) => evaluation_1.PersonalizedEvaluation.fromPartial(e)) || [];
         message.mark_categories = object.mark_categories?.map((e) => mark_category_1.PersonalizedMarkCategory.fromPartial(e)) || [];
         message.student_evaluation_entries =
@@ -2171,11 +2173,11 @@ exports.GetStudentCoursesMarkOverviewResponse = {
 function createBaseStudentCourseMarkOverview() {
     return {
         course_id: undefined,
-        course_name: "",
-        course_code: "",
+        course_name: undefined,
+        course_code: undefined,
         semester_id: undefined,
-        student_mark: 0,
-        maximum_potential_mark: 0,
+        student_mark: undefined,
+        maximum_potential_mark: undefined,
     };
 }
 exports.StudentCourseMarkOverview = {
@@ -2183,19 +2185,19 @@ exports.StudentCourseMarkOverview = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
         }
-        if (message.course_name !== "") {
+        if (message.course_name !== undefined) {
             writer.uint32(18).string(message.course_name);
         }
-        if (message.course_code !== "") {
+        if (message.course_code !== undefined) {
             writer.uint32(26).string(message.course_code);
         }
         if (message.semester_id !== undefined) {
             object_id_1.ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
         }
-        if (message.student_mark !== undefined && message.student_mark !== 0) {
+        if (message.student_mark !== undefined) {
             writer.uint32(41).double(message.student_mark);
         }
-        if (message.maximum_potential_mark !== 0) {
+        if (message.maximum_potential_mark !== undefined) {
             writer.uint32(49).double(message.maximum_potential_mark);
         }
         return writer;
@@ -2254,11 +2256,13 @@ exports.StudentCourseMarkOverview = {
     fromJSON(object) {
         return {
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : "",
-            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
+            course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
-            student_mark: isSet(object.studentMark) ? globalThis.Number(object.studentMark) : 0,
-            maximum_potential_mark: isSet(object.maximumPotentialMark) ? globalThis.Number(object.maximumPotentialMark) : 0,
+            student_mark: isSet(object.studentMark) ? globalThis.Number(object.studentMark) : undefined,
+            maximum_potential_mark: isSet(object.maximumPotentialMark)
+                ? globalThis.Number(object.maximumPotentialMark)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2266,19 +2270,19 @@ exports.StudentCourseMarkOverview = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.course_name !== "") {
+        if (message.course_name !== undefined) {
             obj.courseName = message.course_name;
         }
-        if (message.course_code !== "") {
+        if (message.course_code !== undefined) {
             obj.courseCode = message.course_code;
         }
         if (message.semester_id !== undefined) {
             obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
         }
-        if (message.student_mark !== undefined && message.student_mark !== 0) {
+        if (message.student_mark !== undefined) {
             obj.studentMark = message.student_mark;
         }
-        if (message.maximum_potential_mark !== 0) {
+        if (message.maximum_potential_mark !== undefined) {
             obj.maximumPotentialMark = message.maximum_potential_mark;
         }
         return obj;
@@ -2291,13 +2295,13 @@ exports.StudentCourseMarkOverview = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.course_name = object.course_name ?? "";
-        message.course_code = object.course_code ?? "";
+        message.course_name = object.course_name ?? undefined;
+        message.course_code = object.course_code ?? undefined;
         message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
-        message.student_mark = object.student_mark ?? 0;
-        message.maximum_potential_mark = object.maximum_potential_mark ?? 0;
+        message.student_mark = object.student_mark ?? undefined;
+        message.maximum_potential_mark = object.maximum_potential_mark ?? undefined;
         return message;
     },
 };
@@ -2372,14 +2376,14 @@ exports.ExportMarkbookExcelRequest = {
     },
 };
 function createBaseExportMarkbookExcelResponse() {
-    return { excel_data: "", course_name: "" };
+    return { excel_data: undefined, course_name: undefined };
 }
 exports.ExportMarkbookExcelResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.excel_data !== "") {
+        if (message.excel_data !== undefined) {
             writer.uint32(10).string(message.excel_data);
         }
-        if (message.course_name !== "") {
+        if (message.course_name !== undefined) {
             writer.uint32(18).string(message.course_name);
         }
         return writer;
@@ -2413,16 +2417,16 @@ exports.ExportMarkbookExcelResponse = {
     },
     fromJSON(object) {
         return {
-            excel_data: isSet(object.excelData) ? globalThis.String(object.excelData) : "",
-            course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : "",
+            excel_data: isSet(object.excelData) ? globalThis.String(object.excelData) : undefined,
+            course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.excel_data !== "") {
+        if (message.excel_data !== undefined) {
             obj.excelData = message.excel_data;
         }
-        if (message.course_name !== "") {
+        if (message.course_name !== undefined) {
             obj.courseName = message.course_name;
         }
         return obj;
@@ -2432,8 +2436,8 @@ exports.ExportMarkbookExcelResponse = {
     },
     fromPartial(object) {
         const message = createBaseExportMarkbookExcelResponse();
-        message.excel_data = object.excel_data ?? "";
-        message.course_name = object.course_name ?? "";
+        message.excel_data = object.excel_data ?? undefined;
+        message.course_name = object.course_name ?? undefined;
         return message;
     },
 };

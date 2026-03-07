@@ -223,17 +223,19 @@ export function lmsSubmissionStateToNumber(object: LmsSubmissionState): number {
 }
 
 export interface LmsCourse {
-  id: string;
-  name: string;
-  section: string;
-  url: string;
-  provider: LmsProviderType;
+  id?: string | undefined;
+  name?: string | undefined;
+  section?: string | undefined;
+  url?: string | undefined;
+  provider?: LmsProviderType | undefined;
 }
 
 export interface LmsCourseWork {
-  lms_course_work_id: string;
+  lms_course_work_id?:
+    | string
+    | undefined;
   /** Provider course id */
-  lms_course_id: string;
+  lms_course_id?: string | undefined;
   title?: string | undefined;
   description?: string | undefined;
   link?: string | undefined;
@@ -245,13 +247,15 @@ export interface LmsCourseWork {
   /** Classroom: maxPoints, Canvas: points_possible */
   max_points?: number | undefined;
   work_type?: LmsWorkType | undefined;
-  provider: LmsProviderType;
+  provider?:
+    | LmsProviderType
+    | undefined;
   /** Store original LMS JSON */
   raw_json?: string | undefined;
 }
 
 export interface Attachment {
-  url: string;
+  url?: string | undefined;
 }
 
 export interface LmsSubmission {
@@ -264,9 +268,11 @@ export interface LmsSubmission {
    *     "canvas_{assignmentId}_{studentId}"
    *   Store provider raw_json so you can re-hydrate provider-specific identifiers if needed.
    */
-  lms_submission_id: string;
-  lms_course_work_id: string;
-  lms_course_id: string;
+  lms_submission_id?: string | undefined;
+  lms_course_work_id?: string | undefined;
+  lms_course_id?:
+    | string
+    | undefined;
   /** Local user id (in BassemLabs) */
   student_id:
     | ObjectId
@@ -276,8 +282,8 @@ export interface LmsSubmission {
    * - Google Classroom: maps to StudentSubmission.alternateLink.
    * - Canvas: maps to Submission.preview_url or html_url.
    */
-  submission_url: string;
-  state: LmsSubmissionState;
+  submission_url?: string | undefined;
+  state?: LmsSubmissionState | undefined;
   submitted_at?:
     | Date
     | undefined;
@@ -294,16 +300,20 @@ export interface LmsSubmission {
     | undefined;
   /** Grade/state history (normalized) */
   history: LmsHistory[];
-  provider: LmsProviderType;
+  provider?:
+    | LmsProviderType
+    | undefined;
   /** Provider raw JSON (always keep for edge cases) */
   raw_json?: string | undefined;
 }
 
 export interface LmsHistory {
   /** Who made the change (provider user id) */
-  actor_id: string;
+  actor_id?:
+    | string
+    | undefined;
   /** grade_change, state_change, comment, etc. */
-  type: string;
+  type?: string | undefined;
   old_value?: string | undefined;
   new_value?: string | undefined;
   timestamp?:
@@ -314,24 +324,24 @@ export interface LmsHistory {
 }
 
 function createBaseLmsCourse(): LmsCourse {
-  return { id: "", name: "", section: "", url: "", provider: LmsProviderType.GOOGLE_CLASSROOM };
+  return { id: undefined, name: undefined, section: undefined, url: undefined, provider: undefined };
 }
 
 export const LmsCourse: MessageFns<LmsCourse> = {
   encode(message: LmsCourse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
+    if (message.id !== undefined) {
       writer.uint32(10).string(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.section !== "") {
+    if (message.section !== undefined) {
       writer.uint32(26).string(message.section);
     }
-    if (message.url !== "") {
+    if (message.url !== undefined) {
       writer.uint32(34).string(message.url);
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       writer.uint32(40).int32(lmsProviderTypeToNumber(message.provider));
     }
     return writer;
@@ -390,29 +400,29 @@ export const LmsCourse: MessageFns<LmsCourse> = {
 
   fromJSON(object: any): LmsCourse {
     return {
-      id: isSet(object.id) ? globalThis.String(object.id) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      section: isSet(object.section) ? globalThis.String(object.section) : "",
-      url: isSet(object.url) ? globalThis.String(object.url) : "",
-      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
+      id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      section: isSet(object.section) ? globalThis.String(object.section) : undefined,
+      url: isSet(object.url) ? globalThis.String(object.url) : undefined,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
     };
   },
 
   toJSON(message: LmsCourse): unknown {
     const obj: any = {};
-    if (message.id !== "") {
+    if (message.id !== undefined) {
       obj.id = message.id;
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.section !== "") {
+    if (message.section !== undefined) {
       obj.section = message.section;
     }
-    if (message.url !== "") {
+    if (message.url !== undefined) {
       obj.url = message.url;
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       obj.provider = lmsProviderTypeToJSON(message.provider);
     }
     return obj;
@@ -423,47 +433,47 @@ export const LmsCourse: MessageFns<LmsCourse> = {
   },
   fromPartial<I extends Exact<DeepPartial<LmsCourse>, I>>(object: I): LmsCourse {
     const message = createBaseLmsCourse();
-    message.id = object.id ?? "";
-    message.name = object.name ?? "";
-    message.section = object.section ?? "";
-    message.url = object.url ?? "";
-    message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
+    message.id = object.id ?? undefined;
+    message.name = object.name ?? undefined;
+    message.section = object.section ?? undefined;
+    message.url = object.url ?? undefined;
+    message.provider = object.provider ?? undefined;
     return message;
   },
 };
 
 function createBaseLmsCourseWork(): LmsCourseWork {
   return {
-    lms_course_work_id: "",
-    lms_course_id: "",
-    title: "",
-    description: "",
-    link: "",
+    lms_course_work_id: undefined,
+    lms_course_id: undefined,
+    title: undefined,
+    description: undefined,
+    link: undefined,
     attachments: [],
     creation_time: undefined,
     due_date: undefined,
-    max_points: 0,
-    work_type: LmsWorkType.ASSIGNMENT,
-    provider: LmsProviderType.GOOGLE_CLASSROOM,
-    raw_json: "",
+    max_points: undefined,
+    work_type: undefined,
+    provider: undefined,
+    raw_json: undefined,
   };
 }
 
 export const LmsCourseWork: MessageFns<LmsCourseWork> = {
   encode(message: LmsCourseWork, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.lms_course_work_id !== "") {
+    if (message.lms_course_work_id !== undefined) {
       writer.uint32(10).string(message.lms_course_work_id);
     }
-    if (message.lms_course_id !== "") {
+    if (message.lms_course_id !== undefined) {
       writer.uint32(18).string(message.lms_course_id);
     }
-    if (message.title !== undefined && message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
-    if (message.description !== undefined && message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(34).string(message.description);
     }
-    if (message.link !== undefined && message.link !== "") {
+    if (message.link !== undefined) {
       writer.uint32(42).string(message.link);
     }
     for (const v of message.attachments) {
@@ -475,16 +485,16 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
     if (message.due_date !== undefined) {
       Timestamp.encode(toTimestamp(message.due_date), writer.uint32(66).fork()).join();
     }
-    if (message.max_points !== undefined && message.max_points !== 0) {
+    if (message.max_points !== undefined) {
       writer.uint32(73).double(message.max_points);
     }
-    if (message.work_type !== undefined && message.work_type !== LmsWorkType.ASSIGNMENT) {
+    if (message.work_type !== undefined) {
       writer.uint32(80).int32(lmsWorkTypeToNumber(message.work_type));
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       writer.uint32(88).int32(lmsProviderTypeToNumber(message.provider));
     }
-    if (message.raw_json !== undefined && message.raw_json !== "") {
+    if (message.raw_json !== undefined) {
       writer.uint32(98).string(message.raw_json);
     }
     return writer;
@@ -592,38 +602,38 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
 
   fromJSON(object: any): LmsCourseWork {
     return {
-      lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : "",
-      lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : "",
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      link: isSet(object.link) ? globalThis.String(object.link) : "",
+      lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : undefined,
+      lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : undefined,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      link: isSet(object.link) ? globalThis.String(object.link) : undefined,
       attachments: globalThis.Array.isArray(object?.attachments)
         ? object.attachments.map((e: any) => Attachment.fromJSON(e))
         : [],
       creation_time: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
       due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
-      max_points: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : 0,
-      work_type: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : LmsWorkType.ASSIGNMENT,
-      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
-      raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : "",
+      max_points: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : undefined,
+      work_type: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : undefined,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+      raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : undefined,
     };
   },
 
   toJSON(message: LmsCourseWork): unknown {
     const obj: any = {};
-    if (message.lms_course_work_id !== "") {
+    if (message.lms_course_work_id !== undefined) {
       obj.lmsCourseWorkId = message.lms_course_work_id;
     }
-    if (message.lms_course_id !== "") {
+    if (message.lms_course_id !== undefined) {
       obj.lmsCourseId = message.lms_course_id;
     }
-    if (message.title !== undefined && message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.description !== undefined && message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.link !== undefined && message.link !== "") {
+    if (message.link !== undefined) {
       obj.link = message.link;
     }
     if (message.attachments?.length) {
@@ -635,16 +645,16 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
     if (message.due_date !== undefined) {
       obj.dueDate = message.due_date.toISOString();
     }
-    if (message.max_points !== undefined && message.max_points !== 0) {
+    if (message.max_points !== undefined) {
       obj.maxPoints = message.max_points;
     }
-    if (message.work_type !== undefined && message.work_type !== LmsWorkType.ASSIGNMENT) {
+    if (message.work_type !== undefined) {
       obj.workType = lmsWorkTypeToJSON(message.work_type);
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       obj.provider = lmsProviderTypeToJSON(message.provider);
     }
-    if (message.raw_json !== undefined && message.raw_json !== "") {
+    if (message.raw_json !== undefined) {
       obj.rawJson = message.raw_json;
     }
     return obj;
@@ -655,29 +665,29 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
   },
   fromPartial<I extends Exact<DeepPartial<LmsCourseWork>, I>>(object: I): LmsCourseWork {
     const message = createBaseLmsCourseWork();
-    message.lms_course_work_id = object.lms_course_work_id ?? "";
-    message.lms_course_id = object.lms_course_id ?? "";
-    message.title = object.title ?? "";
-    message.description = object.description ?? "";
-    message.link = object.link ?? "";
+    message.lms_course_work_id = object.lms_course_work_id ?? undefined;
+    message.lms_course_id = object.lms_course_id ?? undefined;
+    message.title = object.title ?? undefined;
+    message.description = object.description ?? undefined;
+    message.link = object.link ?? undefined;
     message.attachments = object.attachments?.map((e) => Attachment.fromPartial(e)) || [];
     message.creation_time = object.creation_time ?? undefined;
     message.due_date = object.due_date ?? undefined;
-    message.max_points = object.max_points ?? 0;
-    message.work_type = object.work_type ?? LmsWorkType.ASSIGNMENT;
-    message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
-    message.raw_json = object.raw_json ?? "";
+    message.max_points = object.max_points ?? undefined;
+    message.work_type = object.work_type ?? undefined;
+    message.provider = object.provider ?? undefined;
+    message.raw_json = object.raw_json ?? undefined;
     return message;
   },
 };
 
 function createBaseAttachment(): Attachment {
-  return { url: "" };
+  return { url: undefined };
 }
 
 export const Attachment: MessageFns<Attachment> = {
   encode(message: Attachment, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.url !== "") {
+    if (message.url !== undefined) {
       writer.uint32(10).string(message.url);
     }
     return writer;
@@ -707,12 +717,12 @@ export const Attachment: MessageFns<Attachment> = {
   },
 
   fromJSON(object: any): Attachment {
-    return { url: isSet(object.url) ? globalThis.String(object.url) : "" };
+    return { url: isSet(object.url) ? globalThis.String(object.url) : undefined };
   },
 
   toJSON(message: Attachment): unknown {
     const obj: any = {};
-    if (message.url !== "") {
+    if (message.url !== undefined) {
       obj.url = message.url;
     }
     return obj;
@@ -723,64 +733,64 @@ export const Attachment: MessageFns<Attachment> = {
   },
   fromPartial<I extends Exact<DeepPartial<Attachment>, I>>(object: I): Attachment {
     const message = createBaseAttachment();
-    message.url = object.url ?? "";
+    message.url = object.url ?? undefined;
     return message;
   },
 };
 
 function createBaseLmsSubmission(): LmsSubmission {
   return {
-    lms_submission_id: "",
-    lms_course_work_id: "",
-    lms_course_id: "",
+    lms_submission_id: undefined,
+    lms_course_work_id: undefined,
+    lms_course_id: undefined,
     student_id: undefined,
-    submission_url: "",
-    state: LmsSubmissionState.UNSUBMITTED,
+    submission_url: undefined,
+    state: undefined,
     submitted_at: undefined,
-    late: false,
-    grade: 0,
+    late: undefined,
+    grade: undefined,
     history: [],
-    provider: LmsProviderType.GOOGLE_CLASSROOM,
-    raw_json: "",
+    provider: undefined,
+    raw_json: undefined,
   };
 }
 
 export const LmsSubmission: MessageFns<LmsSubmission> = {
   encode(message: LmsSubmission, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.lms_submission_id !== "") {
+    if (message.lms_submission_id !== undefined) {
       writer.uint32(10).string(message.lms_submission_id);
     }
-    if (message.lms_course_work_id !== "") {
+    if (message.lms_course_work_id !== undefined) {
       writer.uint32(18).string(message.lms_course_work_id);
     }
-    if (message.lms_course_id !== "") {
+    if (message.lms_course_id !== undefined) {
       writer.uint32(26).string(message.lms_course_id);
     }
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(34).fork()).join();
     }
-    if (message.submission_url !== "") {
+    if (message.submission_url !== undefined) {
       writer.uint32(42).string(message.submission_url);
     }
-    if (message.state !== LmsSubmissionState.UNSUBMITTED) {
+    if (message.state !== undefined) {
       writer.uint32(48).int32(lmsSubmissionStateToNumber(message.state));
     }
     if (message.submitted_at !== undefined) {
       Timestamp.encode(toTimestamp(message.submitted_at), writer.uint32(58).fork()).join();
     }
-    if (message.late !== undefined && message.late !== false) {
+    if (message.late !== undefined) {
       writer.uint32(64).bool(message.late);
     }
-    if (message.grade !== undefined && message.grade !== 0) {
+    if (message.grade !== undefined) {
       writer.uint32(73).double(message.grade);
     }
     for (const v of message.history) {
       LmsHistory.encode(v!, writer.uint32(82).fork()).join();
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       writer.uint32(88).int32(lmsProviderTypeToNumber(message.provider));
     }
-    if (message.raw_json !== undefined && message.raw_json !== "") {
+    if (message.raw_json !== undefined) {
       writer.uint32(98).string(message.raw_json);
     }
     return writer;
@@ -888,57 +898,57 @@ export const LmsSubmission: MessageFns<LmsSubmission> = {
 
   fromJSON(object: any): LmsSubmission {
     return {
-      lms_submission_id: isSet(object.lmsSubmissionId) ? globalThis.String(object.lmsSubmissionId) : "",
-      lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : "",
-      lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : "",
+      lms_submission_id: isSet(object.lmsSubmissionId) ? globalThis.String(object.lmsSubmissionId) : undefined,
+      lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : undefined,
+      lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      submission_url: isSet(object.submissionUrl) ? globalThis.String(object.submissionUrl) : "",
-      state: isSet(object.state) ? lmsSubmissionStateFromJSON(object.state) : LmsSubmissionState.UNSUBMITTED,
+      submission_url: isSet(object.submissionUrl) ? globalThis.String(object.submissionUrl) : undefined,
+      state: isSet(object.state) ? lmsSubmissionStateFromJSON(object.state) : undefined,
       submitted_at: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
-      late: isSet(object.late) ? globalThis.Boolean(object.late) : false,
-      grade: isSet(object.grade) ? globalThis.Number(object.grade) : 0,
+      late: isSet(object.late) ? globalThis.Boolean(object.late) : undefined,
+      grade: isSet(object.grade) ? globalThis.Number(object.grade) : undefined,
       history: globalThis.Array.isArray(object?.history) ? object.history.map((e: any) => LmsHistory.fromJSON(e)) : [],
-      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
-      raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : "",
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+      raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : undefined,
     };
   },
 
   toJSON(message: LmsSubmission): unknown {
     const obj: any = {};
-    if (message.lms_submission_id !== "") {
+    if (message.lms_submission_id !== undefined) {
       obj.lmsSubmissionId = message.lms_submission_id;
     }
-    if (message.lms_course_work_id !== "") {
+    if (message.lms_course_work_id !== undefined) {
       obj.lmsCourseWorkId = message.lms_course_work_id;
     }
-    if (message.lms_course_id !== "") {
+    if (message.lms_course_id !== undefined) {
       obj.lmsCourseId = message.lms_course_id;
     }
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.submission_url !== "") {
+    if (message.submission_url !== undefined) {
       obj.submissionUrl = message.submission_url;
     }
-    if (message.state !== LmsSubmissionState.UNSUBMITTED) {
+    if (message.state !== undefined) {
       obj.state = lmsSubmissionStateToJSON(message.state);
     }
     if (message.submitted_at !== undefined) {
       obj.submittedAt = message.submitted_at.toISOString();
     }
-    if (message.late !== undefined && message.late !== false) {
+    if (message.late !== undefined) {
       obj.late = message.late;
     }
-    if (message.grade !== undefined && message.grade !== 0) {
+    if (message.grade !== undefined) {
       obj.grade = message.grade;
     }
     if (message.history?.length) {
       obj.history = message.history.map((e) => LmsHistory.toJSON(e));
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       obj.provider = lmsProviderTypeToJSON(message.provider);
     }
-    if (message.raw_json !== undefined && message.raw_json !== "") {
+    if (message.raw_json !== undefined) {
       obj.rawJson = message.raw_json;
     }
     return obj;
@@ -949,46 +959,53 @@ export const LmsSubmission: MessageFns<LmsSubmission> = {
   },
   fromPartial<I extends Exact<DeepPartial<LmsSubmission>, I>>(object: I): LmsSubmission {
     const message = createBaseLmsSubmission();
-    message.lms_submission_id = object.lms_submission_id ?? "";
-    message.lms_course_work_id = object.lms_course_work_id ?? "";
-    message.lms_course_id = object.lms_course_id ?? "";
+    message.lms_submission_id = object.lms_submission_id ?? undefined;
+    message.lms_course_work_id = object.lms_course_work_id ?? undefined;
+    message.lms_course_id = object.lms_course_id ?? undefined;
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.submission_url = object.submission_url ?? "";
-    message.state = object.state ?? LmsSubmissionState.UNSUBMITTED;
+    message.submission_url = object.submission_url ?? undefined;
+    message.state = object.state ?? undefined;
     message.submitted_at = object.submitted_at ?? undefined;
-    message.late = object.late ?? false;
-    message.grade = object.grade ?? 0;
+    message.late = object.late ?? undefined;
+    message.grade = object.grade ?? undefined;
     message.history = object.history?.map((e) => LmsHistory.fromPartial(e)) || [];
-    message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
-    message.raw_json = object.raw_json ?? "";
+    message.provider = object.provider ?? undefined;
+    message.raw_json = object.raw_json ?? undefined;
     return message;
   },
 };
 
 function createBaseLmsHistory(): LmsHistory {
-  return { actor_id: "", type: "", old_value: "", new_value: "", timestamp: undefined, raw_entry: "" };
+  return {
+    actor_id: undefined,
+    type: undefined,
+    old_value: undefined,
+    new_value: undefined,
+    timestamp: undefined,
+    raw_entry: undefined,
+  };
 }
 
 export const LmsHistory: MessageFns<LmsHistory> = {
   encode(message: LmsHistory, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.actor_id !== "") {
+    if (message.actor_id !== undefined) {
       writer.uint32(10).string(message.actor_id);
     }
-    if (message.type !== "") {
+    if (message.type !== undefined) {
       writer.uint32(18).string(message.type);
     }
-    if (message.old_value !== undefined && message.old_value !== "") {
+    if (message.old_value !== undefined) {
       writer.uint32(26).string(message.old_value);
     }
-    if (message.new_value !== undefined && message.new_value !== "") {
+    if (message.new_value !== undefined) {
       writer.uint32(34).string(message.new_value);
     }
     if (message.timestamp !== undefined) {
       Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(42).fork()).join();
     }
-    if (message.raw_entry !== undefined && message.raw_entry !== "") {
+    if (message.raw_entry !== undefined) {
       writer.uint32(50).string(message.raw_entry);
     }
     return writer;
@@ -1054,33 +1071,33 @@ export const LmsHistory: MessageFns<LmsHistory> = {
 
   fromJSON(object: any): LmsHistory {
     return {
-      actor_id: isSet(object.actorId) ? globalThis.String(object.actorId) : "",
-      type: isSet(object.type) ? globalThis.String(object.type) : "",
-      old_value: isSet(object.oldValue) ? globalThis.String(object.oldValue) : "",
-      new_value: isSet(object.newValue) ? globalThis.String(object.newValue) : "",
+      actor_id: isSet(object.actorId) ? globalThis.String(object.actorId) : undefined,
+      type: isSet(object.type) ? globalThis.String(object.type) : undefined,
+      old_value: isSet(object.oldValue) ? globalThis.String(object.oldValue) : undefined,
+      new_value: isSet(object.newValue) ? globalThis.String(object.newValue) : undefined,
       timestamp: isSet(object.timestamp) ? fromJsonTimestamp(object.timestamp) : undefined,
-      raw_entry: isSet(object.rawEntry) ? globalThis.String(object.rawEntry) : "",
+      raw_entry: isSet(object.rawEntry) ? globalThis.String(object.rawEntry) : undefined,
     };
   },
 
   toJSON(message: LmsHistory): unknown {
     const obj: any = {};
-    if (message.actor_id !== "") {
+    if (message.actor_id !== undefined) {
       obj.actorId = message.actor_id;
     }
-    if (message.type !== "") {
+    if (message.type !== undefined) {
       obj.type = message.type;
     }
-    if (message.old_value !== undefined && message.old_value !== "") {
+    if (message.old_value !== undefined) {
       obj.oldValue = message.old_value;
     }
-    if (message.new_value !== undefined && message.new_value !== "") {
+    if (message.new_value !== undefined) {
       obj.newValue = message.new_value;
     }
     if (message.timestamp !== undefined) {
       obj.timestamp = message.timestamp.toISOString();
     }
-    if (message.raw_entry !== undefined && message.raw_entry !== "") {
+    if (message.raw_entry !== undefined) {
       obj.rawEntry = message.raw_entry;
     }
     return obj;
@@ -1091,12 +1108,12 @@ export const LmsHistory: MessageFns<LmsHistory> = {
   },
   fromPartial<I extends Exact<DeepPartial<LmsHistory>, I>>(object: I): LmsHistory {
     const message = createBaseLmsHistory();
-    message.actor_id = object.actor_id ?? "";
-    message.type = object.type ?? "";
-    message.old_value = object.old_value ?? "";
-    message.new_value = object.new_value ?? "";
+    message.actor_id = object.actor_id ?? undefined;
+    message.type = object.type ?? undefined;
+    message.old_value = object.old_value ?? undefined;
+    message.new_value = object.new_value ?? undefined;
     message.timestamp = object.timestamp ?? undefined;
-    message.raw_entry = object.raw_entry ?? "";
+    message.raw_entry = object.raw_entry ?? undefined;
     return message;
   },
 };

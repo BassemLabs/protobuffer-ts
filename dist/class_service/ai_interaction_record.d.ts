@@ -14,9 +14,9 @@ export interface AiInteractionRecord {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     user_id: ObjectId | undefined;
-    prompt: string;
-    response: string;
-    status: AiInteractionRecordStatus;
+    prompt?: string | undefined;
+    response?: string | undefined;
+    status?: AiInteractionRecordStatus | undefined;
 }
 export declare const AiInteractionRecord: MessageFns<AiInteractionRecord>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

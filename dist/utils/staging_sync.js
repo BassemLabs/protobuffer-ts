@@ -63,11 +63,11 @@ exports.SyncAllForStagingRequest = {
     },
 };
 function createBaseSyncAllForStagingResponse() {
-    return { result: "" };
+    return { result: undefined };
 }
 exports.SyncAllForStagingResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.result !== "") {
+        if (message.result !== undefined) {
             writer.uint32(10).string(message.result);
         }
         return writer;
@@ -94,11 +94,11 @@ exports.SyncAllForStagingResponse = {
         return message;
     },
     fromJSON(object) {
-        return { result: isSet(object.result) ? globalThis.String(object.result) : "" };
+        return { result: isSet(object.result) ? globalThis.String(object.result) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.result !== "") {
+        if (message.result !== undefined) {
             obj.result = message.result;
         }
         return obj;
@@ -108,7 +108,7 @@ exports.SyncAllForStagingResponse = {
     },
     fromPartial(object) {
         const message = createBaseSyncAllForStagingResponse();
-        message.result = object.result ?? "";
+        message.result = object.result ?? undefined;
         return message;
     },
 };

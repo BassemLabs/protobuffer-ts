@@ -15,10 +15,10 @@ exports.protobufPackage = "organization_service";
 function createBaseCreateCampusRequest() {
     return {
         context: undefined,
-        name: "",
-        address: "",
-        email: "",
-        phone: "",
+        name: undefined,
+        address: undefined,
+        email: undefined,
+        phone: undefined,
         principal_id: undefined,
         supervisor_id: undefined,
     };
@@ -28,16 +28,16 @@ exports.CreateCampusRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        if (message.address !== "") {
+        if (message.address !== undefined) {
             writer.uint32(26).string(message.address);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(34).string(message.email);
         }
-        if (message.phone !== "") {
+        if (message.phone !== undefined) {
             writer.uint32(42).string(message.phone);
         }
         if (message.principal_id !== undefined) {
@@ -108,10 +108,10 @@ exports.CreateCampusRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            address: isSet(object.address) ? globalThis.String(object.address) : "",
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
-            phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            address: isSet(object.address) ? globalThis.String(object.address) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            phone: isSet(object.phone) ? globalThis.String(object.phone) : undefined,
             principal_id: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
             supervisor_id: isSet(object.supervisorId) ? object_id_1.ObjectId.fromJSON(object.supervisorId) : undefined,
         };
@@ -121,16 +121,16 @@ exports.CreateCampusRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.address !== "") {
+        if (message.address !== undefined) {
             obj.address = message.address;
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
-        if (message.phone !== "") {
+        if (message.phone !== undefined) {
             obj.phone = message.phone;
         }
         if (message.principal_id !== undefined) {
@@ -149,10 +149,10 @@ exports.CreateCampusRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.name = object.name ?? "";
-        message.address = object.address ?? "";
-        message.email = object.email ?? "";
-        message.phone = object.phone ?? "";
+        message.name = object.name ?? undefined;
+        message.address = object.address ?? undefined;
+        message.email = object.email ?? undefined;
+        message.phone = object.phone ?? undefined;
         message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.principal_id)
             : undefined;
@@ -166,10 +166,10 @@ function createBaseUpdateCampusRequest() {
     return {
         context: undefined,
         id: undefined,
-        name: "",
-        address: "",
-        email: "",
-        phone: "",
+        name: undefined,
+        address: undefined,
+        email: undefined,
+        phone: undefined,
         principal_id: undefined,
         supervisor_id: undefined,
     };
@@ -182,16 +182,16 @@ exports.UpdateCampusRequest = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
         }
-        if (message.address !== "") {
+        if (message.address !== undefined) {
             writer.uint32(34).string(message.address);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(42).string(message.email);
         }
-        if (message.phone !== "") {
+        if (message.phone !== undefined) {
             writer.uint32(50).string(message.phone);
         }
         if (message.principal_id !== undefined) {
@@ -269,10 +269,10 @@ exports.UpdateCampusRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            address: isSet(object.address) ? globalThis.String(object.address) : "",
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
-            phone: isSet(object.phone) ? globalThis.String(object.phone) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            address: isSet(object.address) ? globalThis.String(object.address) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            phone: isSet(object.phone) ? globalThis.String(object.phone) : undefined,
             principal_id: isSet(object.principalId) ? object_id_1.ObjectId.fromJSON(object.principalId) : undefined,
             supervisor_id: isSet(object.supervisorId) ? object_id_1.ObjectId.fromJSON(object.supervisorId) : undefined,
         };
@@ -285,16 +285,16 @@ exports.UpdateCampusRequest = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.address !== "") {
+        if (message.address !== undefined) {
             obj.address = message.address;
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
-        if (message.phone !== "") {
+        if (message.phone !== undefined) {
             obj.phone = message.phone;
         }
         if (message.principal_id !== undefined) {
@@ -314,10 +314,10 @@ exports.UpdateCampusRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.name = object.name ?? "";
-        message.address = object.address ?? "";
-        message.email = object.email ?? "";
-        message.phone = object.phone ?? "";
+        message.name = object.name ?? undefined;
+        message.address = object.address ?? undefined;
+        message.email = object.email ?? undefined;
+        message.phone = object.phone ?? undefined;
         message.principal_id = (object.principal_id !== undefined && object.principal_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.principal_id)
             : undefined;
@@ -328,7 +328,7 @@ exports.UpdateCampusRequest = {
     },
 };
 function createBaseUpdateLogoRequest() {
-    return { context: undefined, campus_id: undefined, file_name: "", aws_s3_file_location: "" };
+    return { context: undefined, campus_id: undefined, file_name: undefined, aws_s3_file_location: undefined };
 }
 exports.UpdateLogoRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -338,10 +338,10 @@ exports.UpdateLogoRequest = {
         if (message.campus_id !== undefined) {
             object_id_1.ObjectId.encode(message.campus_id, writer.uint32(18).fork()).join();
         }
-        if (message.file_name !== "") {
+        if (message.file_name !== undefined) {
             writer.uint32(26).string(message.file_name);
         }
-        if (message.aws_s3_file_location !== "") {
+        if (message.aws_s3_file_location !== undefined) {
             writer.uint32(34).string(message.aws_s3_file_location);
         }
         return writer;
@@ -389,8 +389,8 @@ exports.UpdateLogoRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
-            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-            aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : "",
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+            aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : undefined,
         };
     },
     toJSON(message) {
@@ -401,10 +401,10 @@ exports.UpdateLogoRequest = {
         if (message.campus_id !== undefined) {
             obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
-        if (message.file_name !== "") {
+        if (message.file_name !== undefined) {
             obj.fileName = message.file_name;
         }
-        if (message.aws_s3_file_location !== "") {
+        if (message.aws_s3_file_location !== undefined) {
             obj.awsS3FileLocation = message.aws_s3_file_location;
         }
         return obj;
@@ -420,8 +420,8 @@ exports.UpdateLogoRequest = {
         message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.campus_id)
             : undefined;
-        message.file_name = object.file_name ?? "";
-        message.aws_s3_file_location = object.aws_s3_file_location ?? "";
+        message.file_name = object.file_name ?? undefined;
+        message.aws_s3_file_location = object.aws_s3_file_location ?? undefined;
         return message;
     },
 };

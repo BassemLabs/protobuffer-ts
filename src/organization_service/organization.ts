@@ -115,28 +115,28 @@ export function directoryProviderTypeToNumber(object: DirectoryProviderType): nu
 
 export interface Organization {
   id: ObjectId | undefined;
-  name: string;
-  default_domain: string;
+  name?: string | undefined;
+  default_domain?: string | undefined;
   domains: string[];
   organization_profile_settings: OrganizationProfileSettings | undefined;
   onboarding_settings: OnboardingSettings | undefined;
   active_school_year: SchoolYear | undefined;
   coming_school_year?: SchoolYear | undefined;
-  opened_reregistration_for_coming_school_year: boolean;
+  opened_reregistration_for_coming_school_year?: boolean | undefined;
   country_code?: string | undefined;
   payment_information: PaymentInformation | undefined;
   invoice_settings: InvoiceSettings | undefined;
-  login_id: string;
-  main_address: string;
+  login_id?: string | undefined;
+  main_address?: string | undefined;
   weekend_days: DayOfWeek[];
-  timezone: string;
+  timezone?: string | undefined;
   directory_provider?: DirectoryProviderType | undefined;
 }
 
 export interface SchoolYear {
   id: ObjectId | undefined;
   organization_id: ObjectId | undefined;
-  name: string;
+  name?: string | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
   is_open_for_registration?: boolean | undefined;
@@ -145,9 +145,11 @@ export interface SchoolYear {
 export interface PaymentInformation {
   stripe_account_id?: string | undefined;
   account_currency?: Currency | undefined;
-  stripe_payouts_enabled: boolean;
-  stripe_details_submitted: boolean;
-  stripe_charges_enabled: boolean;
+  stripe_payouts_enabled?: boolean | undefined;
+  stripe_details_submitted?: boolean | undefined;
+  stripe_charges_enabled?:
+    | boolean
+    | undefined;
   /** If true, autopay is disabled organization-wide (will override family & invoice auto pay settings) */
   auto_pay_disabled?:
     | boolean
@@ -159,30 +161,32 @@ export interface PaymentInformation {
 /** Configuration for auto-payment retry behavior */
 export interface AutoPayRetryConfig {
   /** Maximum number of retry attempts (default: 3, max: 10) */
-  max_retries: number;
+  max_retries?:
+    | number
+    | undefined;
   /** Retry interval in hours - retries every N hours until max_retries (default: 24) */
-  retry_interval_hours: number;
+  retry_interval_hours?: number | undefined;
 }
 
 function createBaseOrganization(): Organization {
   return {
     id: undefined,
-    name: "",
-    default_domain: "",
+    name: undefined,
+    default_domain: undefined,
     domains: [],
     organization_profile_settings: undefined,
     onboarding_settings: undefined,
     active_school_year: undefined,
     coming_school_year: undefined,
-    opened_reregistration_for_coming_school_year: false,
-    country_code: "",
+    opened_reregistration_for_coming_school_year: undefined,
+    country_code: undefined,
     payment_information: undefined,
     invoice_settings: undefined,
-    login_id: "",
-    main_address: "",
+    login_id: undefined,
+    main_address: undefined,
     weekend_days: [],
-    timezone: "",
-    directory_provider: DirectoryProviderType.GOOGLE_WORKSPACE,
+    timezone: undefined,
+    directory_provider: undefined,
   };
 }
 
@@ -191,10 +195,10 @@ export const Organization: MessageFns<Organization> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.default_domain !== "") {
+    if (message.default_domain !== undefined) {
       writer.uint32(26).string(message.default_domain);
     }
     for (const v of message.domains) {
@@ -212,10 +216,10 @@ export const Organization: MessageFns<Organization> = {
     if (message.coming_school_year !== undefined) {
       SchoolYear.encode(message.coming_school_year, writer.uint32(66).fork()).join();
     }
-    if (message.opened_reregistration_for_coming_school_year !== false) {
+    if (message.opened_reregistration_for_coming_school_year !== undefined) {
       writer.uint32(72).bool(message.opened_reregistration_for_coming_school_year);
     }
-    if (message.country_code !== undefined && message.country_code !== "") {
+    if (message.country_code !== undefined) {
       writer.uint32(82).string(message.country_code);
     }
     if (message.payment_information !== undefined) {
@@ -224,10 +228,10 @@ export const Organization: MessageFns<Organization> = {
     if (message.invoice_settings !== undefined) {
       InvoiceSettings.encode(message.invoice_settings, writer.uint32(98).fork()).join();
     }
-    if (message.login_id !== "") {
+    if (message.login_id !== undefined) {
       writer.uint32(106).string(message.login_id);
     }
-    if (message.main_address !== "") {
+    if (message.main_address !== undefined) {
       writer.uint32(114).string(message.main_address);
     }
     writer.uint32(122).fork();
@@ -235,12 +239,10 @@ export const Organization: MessageFns<Organization> = {
       writer.int32(dayOfWeekToNumber(v));
     }
     writer.join();
-    if (message.timezone !== "") {
+    if (message.timezone !== undefined) {
       writer.uint32(130).string(message.timezone);
     }
-    if (
-      message.directory_provider !== undefined && message.directory_provider !== DirectoryProviderType.GOOGLE_WORKSPACE
-    ) {
+    if (message.directory_provider !== undefined) {
       writer.uint32(136).int32(directoryProviderTypeToNumber(message.directory_provider));
     }
     return writer;
@@ -394,8 +396,8 @@ export const Organization: MessageFns<Organization> = {
   fromJSON(object: any): Organization {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : undefined,
       domains: globalThis.Array.isArray(object?.domains) ? object.domains.map((e: any) => globalThis.String(e)) : [],
       organization_profile_settings: isSet(object.organizationProfileSettings)
         ? OrganizationProfileSettings.fromJSON(object.organizationProfileSettings)
@@ -407,21 +409,21 @@ export const Organization: MessageFns<Organization> = {
       coming_school_year: isSet(object.comingSchoolYear) ? SchoolYear.fromJSON(object.comingSchoolYear) : undefined,
       opened_reregistration_for_coming_school_year: isSet(object.openedReregistrationForComingSchoolYear)
         ? globalThis.Boolean(object.openedReregistrationForComingSchoolYear)
-        : false,
-      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : "",
+        : undefined,
+      country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : undefined,
       payment_information: isSet(object.paymentInformation)
         ? PaymentInformation.fromJSON(object.paymentInformation)
         : undefined,
       invoice_settings: isSet(object.invoiceSettings) ? InvoiceSettings.fromJSON(object.invoiceSettings) : undefined,
-      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : "",
-      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+      main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : undefined,
       weekend_days: globalThis.Array.isArray(object?.weekendDays)
         ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
         : [],
-      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : "",
+      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : undefined,
       directory_provider: isSet(object.directoryProvider)
         ? directoryProviderTypeFromJSON(object.directoryProvider)
-        : DirectoryProviderType.GOOGLE_WORKSPACE,
+        : undefined,
     };
   },
 
@@ -430,10 +432,10 @@ export const Organization: MessageFns<Organization> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.default_domain !== "") {
+    if (message.default_domain !== undefined) {
       obj.defaultDomain = message.default_domain;
     }
     if (message.domains?.length) {
@@ -451,10 +453,10 @@ export const Organization: MessageFns<Organization> = {
     if (message.coming_school_year !== undefined) {
       obj.comingSchoolYear = SchoolYear.toJSON(message.coming_school_year);
     }
-    if (message.opened_reregistration_for_coming_school_year !== false) {
+    if (message.opened_reregistration_for_coming_school_year !== undefined) {
       obj.openedReregistrationForComingSchoolYear = message.opened_reregistration_for_coming_school_year;
     }
-    if (message.country_code !== undefined && message.country_code !== "") {
+    if (message.country_code !== undefined) {
       obj.countryCode = message.country_code;
     }
     if (message.payment_information !== undefined) {
@@ -463,21 +465,19 @@ export const Organization: MessageFns<Organization> = {
     if (message.invoice_settings !== undefined) {
       obj.invoiceSettings = InvoiceSettings.toJSON(message.invoice_settings);
     }
-    if (message.login_id !== "") {
+    if (message.login_id !== undefined) {
       obj.loginId = message.login_id;
     }
-    if (message.main_address !== "") {
+    if (message.main_address !== undefined) {
       obj.mainAddress = message.main_address;
     }
     if (message.weekend_days?.length) {
       obj.weekendDays = message.weekend_days.map((e) => dayOfWeekToJSON(e));
     }
-    if (message.timezone !== "") {
+    if (message.timezone !== undefined) {
       obj.timezone = message.timezone;
     }
-    if (
-      message.directory_provider !== undefined && message.directory_provider !== DirectoryProviderType.GOOGLE_WORKSPACE
-    ) {
+    if (message.directory_provider !== undefined) {
       obj.directoryProvider = directoryProviderTypeToJSON(message.directory_provider);
     }
     return obj;
@@ -489,8 +489,8 @@ export const Organization: MessageFns<Organization> = {
   fromPartial<I extends Exact<DeepPartial<Organization>, I>>(object: I): Organization {
     const message = createBaseOrganization();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.name = object.name ?? "";
-    message.default_domain = object.default_domain ?? "";
+    message.name = object.name ?? undefined;
+    message.default_domain = object.default_domain ?? undefined;
     message.domains = object.domains?.map((e) => e) || [];
     message.organization_profile_settings =
       (object.organization_profile_settings !== undefined && object.organization_profile_settings !== null)
@@ -505,19 +505,20 @@ export const Organization: MessageFns<Organization> = {
     message.coming_school_year = (object.coming_school_year !== undefined && object.coming_school_year !== null)
       ? SchoolYear.fromPartial(object.coming_school_year)
       : undefined;
-    message.opened_reregistration_for_coming_school_year = object.opened_reregistration_for_coming_school_year ?? false;
-    message.country_code = object.country_code ?? "";
+    message.opened_reregistration_for_coming_school_year = object.opened_reregistration_for_coming_school_year ??
+      undefined;
+    message.country_code = object.country_code ?? undefined;
     message.payment_information = (object.payment_information !== undefined && object.payment_information !== null)
       ? PaymentInformation.fromPartial(object.payment_information)
       : undefined;
     message.invoice_settings = (object.invoice_settings !== undefined && object.invoice_settings !== null)
       ? InvoiceSettings.fromPartial(object.invoice_settings)
       : undefined;
-    message.login_id = object.login_id ?? "";
-    message.main_address = object.main_address ?? "";
+    message.login_id = object.login_id ?? undefined;
+    message.main_address = object.main_address ?? undefined;
     message.weekend_days = object.weekend_days?.map((e) => e) || [];
-    message.timezone = object.timezone ?? "";
-    message.directory_provider = object.directory_provider ?? DirectoryProviderType.GOOGLE_WORKSPACE;
+    message.timezone = object.timezone ?? undefined;
+    message.directory_provider = object.directory_provider ?? undefined;
     return message;
   },
 };
@@ -526,10 +527,10 @@ function createBaseSchoolYear(): SchoolYear {
   return {
     id: undefined,
     organization_id: undefined,
-    name: "",
+    name: undefined,
     start_date: undefined,
     end_date: undefined,
-    is_open_for_registration: false,
+    is_open_for_registration: undefined,
   };
 }
 
@@ -541,7 +542,7 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     if (message.start_date !== undefined) {
@@ -550,7 +551,7 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     if (message.end_date !== undefined) {
       Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
     }
-    if (message.is_open_for_registration !== undefined && message.is_open_for_registration !== false) {
+    if (message.is_open_for_registration !== undefined) {
       writer.uint32(48).bool(message.is_open_for_registration);
     }
     return writer;
@@ -618,12 +619,12 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       is_open_for_registration: isSet(object.isOpenForRegistration)
         ? globalThis.Boolean(object.isOpenForRegistration)
-        : false,
+        : undefined,
     };
   },
 
@@ -635,7 +636,7 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
@@ -644,7 +645,7 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     if (message.end_date !== undefined) {
       obj.endDate = message.end_date.toISOString();
     }
-    if (message.is_open_for_registration !== undefined && message.is_open_for_registration !== false) {
+    if (message.is_open_for_registration !== undefined) {
       obj.isOpenForRegistration = message.is_open_for_registration;
     }
     return obj;
@@ -659,44 +660,44 @@ export const SchoolYear: MessageFns<SchoolYear> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.start_date = object.start_date ?? undefined;
     message.end_date = object.end_date ?? undefined;
-    message.is_open_for_registration = object.is_open_for_registration ?? false;
+    message.is_open_for_registration = object.is_open_for_registration ?? undefined;
     return message;
   },
 };
 
 function createBasePaymentInformation(): PaymentInformation {
   return {
-    stripe_account_id: "",
-    account_currency: Currency.USD,
-    stripe_payouts_enabled: false,
-    stripe_details_submitted: false,
-    stripe_charges_enabled: false,
-    auto_pay_disabled: false,
+    stripe_account_id: undefined,
+    account_currency: undefined,
+    stripe_payouts_enabled: undefined,
+    stripe_details_submitted: undefined,
+    stripe_charges_enabled: undefined,
+    auto_pay_disabled: undefined,
     auto_pay_retry_config: undefined,
   };
 }
 
 export const PaymentInformation: MessageFns<PaymentInformation> = {
   encode(message: PaymentInformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.stripe_account_id !== undefined && message.stripe_account_id !== "") {
+    if (message.stripe_account_id !== undefined) {
       writer.uint32(10).string(message.stripe_account_id);
     }
-    if (message.account_currency !== undefined && message.account_currency !== Currency.USD) {
+    if (message.account_currency !== undefined) {
       writer.uint32(16).int32(currencyToNumber(message.account_currency));
     }
-    if (message.stripe_payouts_enabled !== false) {
+    if (message.stripe_payouts_enabled !== undefined) {
       writer.uint32(24).bool(message.stripe_payouts_enabled);
     }
-    if (message.stripe_details_submitted !== false) {
+    if (message.stripe_details_submitted !== undefined) {
       writer.uint32(32).bool(message.stripe_details_submitted);
     }
-    if (message.stripe_charges_enabled !== false) {
+    if (message.stripe_charges_enabled !== undefined) {
       writer.uint32(40).bool(message.stripe_charges_enabled);
     }
-    if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       writer.uint32(48).bool(message.auto_pay_disabled);
     }
     if (message.auto_pay_retry_config !== undefined) {
@@ -772,18 +773,18 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
 
   fromJSON(object: any): PaymentInformation {
     return {
-      stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : "",
-      account_currency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : Currency.USD,
+      stripe_account_id: isSet(object.stripeAccountId) ? globalThis.String(object.stripeAccountId) : undefined,
+      account_currency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : undefined,
       stripe_payouts_enabled: isSet(object.stripePayoutsEnabled)
         ? globalThis.Boolean(object.stripePayoutsEnabled)
-        : false,
+        : undefined,
       stripe_details_submitted: isSet(object.stripeDetailsSubmitted)
         ? globalThis.Boolean(object.stripeDetailsSubmitted)
-        : false,
+        : undefined,
       stripe_charges_enabled: isSet(object.stripeChargesEnabled)
         ? globalThis.Boolean(object.stripeChargesEnabled)
-        : false,
-      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : false,
+        : undefined,
+      auto_pay_disabled: isSet(object.autoPayDisabled) ? globalThis.Boolean(object.autoPayDisabled) : undefined,
       auto_pay_retry_config: isSet(object.autoPayRetryConfig)
         ? AutoPayRetryConfig.fromJSON(object.autoPayRetryConfig)
         : undefined,
@@ -792,22 +793,22 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
 
   toJSON(message: PaymentInformation): unknown {
     const obj: any = {};
-    if (message.stripe_account_id !== undefined && message.stripe_account_id !== "") {
+    if (message.stripe_account_id !== undefined) {
       obj.stripeAccountId = message.stripe_account_id;
     }
-    if (message.account_currency !== undefined && message.account_currency !== Currency.USD) {
+    if (message.account_currency !== undefined) {
       obj.accountCurrency = currencyToJSON(message.account_currency);
     }
-    if (message.stripe_payouts_enabled !== false) {
+    if (message.stripe_payouts_enabled !== undefined) {
       obj.stripePayoutsEnabled = message.stripe_payouts_enabled;
     }
-    if (message.stripe_details_submitted !== false) {
+    if (message.stripe_details_submitted !== undefined) {
       obj.stripeDetailsSubmitted = message.stripe_details_submitted;
     }
-    if (message.stripe_charges_enabled !== false) {
+    if (message.stripe_charges_enabled !== undefined) {
       obj.stripeChargesEnabled = message.stripe_charges_enabled;
     }
-    if (message.auto_pay_disabled !== undefined && message.auto_pay_disabled !== false) {
+    if (message.auto_pay_disabled !== undefined) {
       obj.autoPayDisabled = message.auto_pay_disabled;
     }
     if (message.auto_pay_retry_config !== undefined) {
@@ -821,12 +822,12 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
   },
   fromPartial<I extends Exact<DeepPartial<PaymentInformation>, I>>(object: I): PaymentInformation {
     const message = createBasePaymentInformation();
-    message.stripe_account_id = object.stripe_account_id ?? "";
-    message.account_currency = object.account_currency ?? Currency.USD;
-    message.stripe_payouts_enabled = object.stripe_payouts_enabled ?? false;
-    message.stripe_details_submitted = object.stripe_details_submitted ?? false;
-    message.stripe_charges_enabled = object.stripe_charges_enabled ?? false;
-    message.auto_pay_disabled = object.auto_pay_disabled ?? false;
+    message.stripe_account_id = object.stripe_account_id ?? undefined;
+    message.account_currency = object.account_currency ?? undefined;
+    message.stripe_payouts_enabled = object.stripe_payouts_enabled ?? undefined;
+    message.stripe_details_submitted = object.stripe_details_submitted ?? undefined;
+    message.stripe_charges_enabled = object.stripe_charges_enabled ?? undefined;
+    message.auto_pay_disabled = object.auto_pay_disabled ?? undefined;
     message.auto_pay_retry_config =
       (object.auto_pay_retry_config !== undefined && object.auto_pay_retry_config !== null)
         ? AutoPayRetryConfig.fromPartial(object.auto_pay_retry_config)
@@ -836,15 +837,15 @@ export const PaymentInformation: MessageFns<PaymentInformation> = {
 };
 
 function createBaseAutoPayRetryConfig(): AutoPayRetryConfig {
-  return { max_retries: 0, retry_interval_hours: 0 };
+  return { max_retries: undefined, retry_interval_hours: undefined };
 }
 
 export const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig> = {
   encode(message: AutoPayRetryConfig, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.max_retries !== 0) {
+    if (message.max_retries !== undefined) {
       writer.uint32(8).int32(message.max_retries);
     }
-    if (message.retry_interval_hours !== 0) {
+    if (message.retry_interval_hours !== undefined) {
       writer.uint32(16).int32(message.retry_interval_hours);
     }
     return writer;
@@ -882,17 +883,17 @@ export const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig> = {
 
   fromJSON(object: any): AutoPayRetryConfig {
     return {
-      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : 0,
-      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : 0,
+      max_retries: isSet(object.maxRetries) ? globalThis.Number(object.maxRetries) : undefined,
+      retry_interval_hours: isSet(object.retryIntervalHours) ? globalThis.Number(object.retryIntervalHours) : undefined,
     };
   },
 
   toJSON(message: AutoPayRetryConfig): unknown {
     const obj: any = {};
-    if (message.max_retries !== 0) {
+    if (message.max_retries !== undefined) {
       obj.maxRetries = Math.round(message.max_retries);
     }
-    if (message.retry_interval_hours !== 0) {
+    if (message.retry_interval_hours !== undefined) {
       obj.retryIntervalHours = Math.round(message.retry_interval_hours);
     }
     return obj;
@@ -903,8 +904,8 @@ export const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig> = {
   },
   fromPartial<I extends Exact<DeepPartial<AutoPayRetryConfig>, I>>(object: I): AutoPayRetryConfig {
     const message = createBaseAutoPayRetryConfig();
-    message.max_retries = object.max_retries ?? 0;
-    message.retry_interval_hours = object.retry_interval_hours ?? 0;
+    message.max_retries = object.max_retries ?? undefined;
+    message.retry_interval_hours = object.retry_interval_hours ?? undefined;
     return message;
   },
 };

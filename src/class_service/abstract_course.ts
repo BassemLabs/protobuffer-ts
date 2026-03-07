@@ -13,24 +13,24 @@ export const protobufPackage = "class_service";
 export interface AbstractCourse {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  course_code: string;
-  official_name: string;
-  credit: number;
-  mandatory: boolean;
+  course_code?: string | undefined;
+  official_name?: string | undefined;
+  credit?: number | undefined;
+  mandatory?: boolean | undefined;
   category_ids: ObjectId[];
-  can_delete: boolean;
+  can_delete?: boolean | undefined;
 }
 
 function createBaseAbstractCourse(): AbstractCourse {
   return {
     id: undefined,
     organization: undefined,
-    course_code: "",
-    official_name: "",
-    credit: 0,
-    mandatory: false,
+    course_code: undefined,
+    official_name: undefined,
+    credit: undefined,
+    mandatory: undefined,
     category_ids: [],
-    can_delete: false,
+    can_delete: undefined,
   };
 }
 
@@ -42,22 +42,22 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.course_code !== "") {
+    if (message.course_code !== undefined) {
       writer.uint32(26).string(message.course_code);
     }
-    if (message.official_name !== "") {
+    if (message.official_name !== undefined) {
       writer.uint32(34).string(message.official_name);
     }
-    if (message.credit !== 0) {
+    if (message.credit !== undefined) {
       writer.uint32(41).double(message.credit);
     }
-    if (message.mandatory !== false) {
+    if (message.mandatory !== undefined) {
       writer.uint32(48).bool(message.mandatory);
     }
     for (const v of message.category_ids) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
     }
-    if (message.can_delete !== false) {
+    if (message.can_delete !== undefined) {
       writer.uint32(64).bool(message.can_delete);
     }
     return writer;
@@ -139,14 +139,14 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : "",
-      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : "",
-      credit: isSet(object.credit) ? globalThis.Number(object.credit) : 0,
-      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : false,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : undefined,
+      credit: isSet(object.credit) ? globalThis.Number(object.credit) : undefined,
+      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : undefined,
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : false,
+      can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
     };
   },
 
@@ -158,22 +158,22 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.course_code !== "") {
+    if (message.course_code !== undefined) {
       obj.courseCode = message.course_code;
     }
-    if (message.official_name !== "") {
+    if (message.official_name !== undefined) {
       obj.officialName = message.official_name;
     }
-    if (message.credit !== 0) {
+    if (message.credit !== undefined) {
       obj.credit = message.credit;
     }
-    if (message.mandatory !== false) {
+    if (message.mandatory !== undefined) {
       obj.mandatory = message.mandatory;
     }
     if (message.category_ids?.length) {
       obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
     }
-    if (message.can_delete !== false) {
+    if (message.can_delete !== undefined) {
       obj.canDelete = message.can_delete;
     }
     return obj;
@@ -188,12 +188,12 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.course_code = object.course_code ?? "";
-    message.official_name = object.official_name ?? "";
-    message.credit = object.credit ?? 0;
-    message.mandatory = object.mandatory ?? false;
+    message.course_code = object.course_code ?? undefined;
+    message.official_name = object.official_name ?? undefined;
+    message.credit = object.credit ?? undefined;
+    message.mandatory = object.mandatory ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.can_delete = object.can_delete ?? false;
+    message.can_delete = object.can_delete ?? undefined;
     return message;
   },
 };

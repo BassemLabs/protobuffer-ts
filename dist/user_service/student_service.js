@@ -237,10 +237,10 @@ exports.GetStudentWithSchoolYearInfoResponse = {
 function createBaseCreateStudentRequest() {
     return {
         context: undefined,
-        first_name: "",
-        last_name: "",
-        gender: "",
-        grade: student_1.StudentGrade.PRE_K,
+        first_name: undefined,
+        last_name: undefined,
+        gender: undefined,
+        grade: undefined,
         family_id: undefined,
         date_of_birth: undefined,
         admission_year: undefined,
@@ -251,16 +251,16 @@ exports.CreateStudentRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.first_name !== "") {
+        if (message.first_name !== undefined) {
             writer.uint32(18).string(message.first_name);
         }
-        if (message.last_name !== "") {
+        if (message.last_name !== undefined) {
             writer.uint32(26).string(message.last_name);
         }
-        if (message.gender !== "") {
+        if (message.gender !== undefined) {
             writer.uint32(34).string(message.gender);
         }
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             writer.uint32(40).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         if (message.family_id !== undefined) {
@@ -340,10 +340,10 @@ exports.CreateStudentRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-            gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
             family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             admission_year: isSet(object.admissionYear) ? object_id_1.ObjectId.fromJSON(object.admissionYear) : undefined,
@@ -354,16 +354,16 @@ exports.CreateStudentRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.first_name !== "") {
+        if (message.first_name !== undefined) {
             obj.firstName = message.first_name;
         }
-        if (message.last_name !== "") {
+        if (message.last_name !== undefined) {
             obj.lastName = message.last_name;
         }
-        if (message.gender !== "") {
+        if (message.gender !== undefined) {
             obj.gender = message.gender;
         }
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.family_id !== undefined) {
@@ -385,10 +385,10 @@ exports.CreateStudentRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.first_name = object.first_name ?? "";
-        message.last_name = object.last_name ?? "";
-        message.gender = object.gender ?? "";
-        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.gender = object.gender ?? undefined;
+        message.grade = object.grade ?? undefined;
         message.family_id = (object.family_id !== undefined && object.family_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;
@@ -486,7 +486,7 @@ exports.UpdateStudentProfileRequest = {
     },
 };
 function createBaseUpdateStudentGradeRequest() {
-    return { context: undefined, student_id: undefined, school_year_id: undefined, grade: student_1.StudentGrade.PRE_K };
+    return { context: undefined, student_id: undefined, school_year_id: undefined, grade: undefined };
 }
 exports.UpdateStudentGradeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -499,7 +499,7 @@ exports.UpdateStudentGradeRequest = {
         if (message.school_year_id !== undefined) {
             object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
         }
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             writer.uint32(32).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
@@ -548,7 +548,7 @@ exports.UpdateStudentGradeRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
-            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
         };
     },
     toJSON(message) {
@@ -562,7 +562,7 @@ exports.UpdateStudentGradeRequest = {
         if (message.school_year_id !== undefined) {
             obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
         }
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         return obj;
@@ -581,12 +581,12 @@ exports.UpdateStudentGradeRequest = {
         message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
-        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
+        message.grade = object.grade ?? undefined;
         return message;
     },
 };
 function createBaseMoveAdmissionYearRequest() {
-    return { context: undefined, student_id: undefined, school_year: undefined, message: "" };
+    return { context: undefined, student_id: undefined, school_year: undefined, message: undefined };
 }
 exports.MoveAdmissionYearRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -599,7 +599,7 @@ exports.MoveAdmissionYearRequest = {
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
-        if (message.message !== "") {
+        if (message.message !== undefined) {
             writer.uint32(34).string(message.message);
         }
         return writer;
@@ -648,7 +648,7 @@ exports.MoveAdmissionYearRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            message: isSet(object.message) ? globalThis.String(object.message) : "",
+            message: isSet(object.message) ? globalThis.String(object.message) : undefined,
         };
     },
     toJSON(message) {
@@ -662,7 +662,7 @@ exports.MoveAdmissionYearRequest = {
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
-        if (message.message !== "") {
+        if (message.message !== undefined) {
             obj.message = message.message;
         }
         return obj;
@@ -681,12 +681,12 @@ exports.MoveAdmissionYearRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
-        message.message = object.message ?? "";
+        message.message = object.message ?? undefined;
         return message;
     },
 };
 function createBaseEnrollStudentWithMessageRequest() {
-    return { context: undefined, student_id: undefined, enrollment_message: "", school_year: undefined };
+    return { context: undefined, student_id: undefined, enrollment_message: undefined, school_year: undefined };
 }
 exports.EnrollStudentWithMessageRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -696,7 +696,7 @@ exports.EnrollStudentWithMessageRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.enrollment_message !== "") {
+        if (message.enrollment_message !== undefined) {
             writer.uint32(26).string(message.enrollment_message);
         }
         if (message.school_year !== undefined) {
@@ -747,7 +747,7 @@ exports.EnrollStudentWithMessageRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : "",
+            enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -759,7 +759,7 @@ exports.EnrollStudentWithMessageRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.enrollment_message !== "") {
+        if (message.enrollment_message !== undefined) {
             obj.enrollmentMessage = message.enrollment_message;
         }
         if (message.school_year !== undefined) {
@@ -778,7 +778,7 @@ exports.EnrollStudentWithMessageRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.enrollment_message = object.enrollment_message ?? "";
+        message.enrollment_message = object.enrollment_message ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -786,7 +786,7 @@ exports.EnrollStudentWithMessageRequest = {
     },
 };
 function createBaseWithdrawStudentWithMessageRequest() {
-    return { context: undefined, student_id: undefined, withdraw_message: "", school_year: undefined };
+    return { context: undefined, student_id: undefined, withdraw_message: undefined, school_year: undefined };
 }
 exports.WithdrawStudentWithMessageRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -796,7 +796,7 @@ exports.WithdrawStudentWithMessageRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.withdraw_message !== "") {
+        if (message.withdraw_message !== undefined) {
             writer.uint32(26).string(message.withdraw_message);
         }
         if (message.school_year !== undefined) {
@@ -847,7 +847,7 @@ exports.WithdrawStudentWithMessageRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            withdraw_message: isSet(object.withdrawMessage) ? globalThis.String(object.withdrawMessage) : "",
+            withdraw_message: isSet(object.withdrawMessage) ? globalThis.String(object.withdrawMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -859,7 +859,7 @@ exports.WithdrawStudentWithMessageRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.withdraw_message !== "") {
+        if (message.withdraw_message !== undefined) {
             obj.withdrawMessage = message.withdraw_message;
         }
         if (message.school_year !== undefined) {
@@ -878,7 +878,7 @@ exports.WithdrawStudentWithMessageRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.withdraw_message = object.withdraw_message ?? "";
+        message.withdraw_message = object.withdraw_message ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -886,7 +886,7 @@ exports.WithdrawStudentWithMessageRequest = {
     },
 };
 function createBaseChangeStudentPasswordRequest() {
-    return { context: undefined, student_id: undefined, password: "", change_password_at_next_login: false };
+    return { context: undefined, student_id: undefined, password: undefined, change_password_at_next_login: undefined };
 }
 exports.ChangeStudentPasswordRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -896,10 +896,10 @@ exports.ChangeStudentPasswordRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.password !== "") {
+        if (message.password !== undefined) {
             writer.uint32(26).string(message.password);
         }
-        if (message.change_password_at_next_login !== false) {
+        if (message.change_password_at_next_login !== undefined) {
             writer.uint32(32).bool(message.change_password_at_next_login);
         }
         return writer;
@@ -947,10 +947,10 @@ exports.ChangeStudentPasswordRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            password: isSet(object.password) ? globalThis.String(object.password) : "",
+            password: isSet(object.password) ? globalThis.String(object.password) : undefined,
             change_password_at_next_login: isSet(object.changePasswordAtNextLogin)
                 ? globalThis.Boolean(object.changePasswordAtNextLogin)
-                : false,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -961,10 +961,10 @@ exports.ChangeStudentPasswordRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.password !== "") {
+        if (message.password !== undefined) {
             obj.password = message.password;
         }
-        if (message.change_password_at_next_login !== false) {
+        if (message.change_password_at_next_login !== undefined) {
             obj.changePasswordAtNextLogin = message.change_password_at_next_login;
         }
         return obj;
@@ -980,8 +980,8 @@ exports.ChangeStudentPasswordRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.password = object.password ?? "";
-        message.change_password_at_next_login = object.change_password_at_next_login ?? false;
+        message.password = object.password ?? undefined;
+        message.change_password_at_next_login = object.change_password_at_next_login ?? undefined;
         return message;
     },
 };
@@ -1023,7 +1023,7 @@ exports.ChangeStudentPasswordResponse = {
     },
 };
 function createBaseRejectStudentRequest() {
-    return { context: undefined, student_id: undefined, rejection_message: "", school_year: undefined };
+    return { context: undefined, student_id: undefined, rejection_message: undefined, school_year: undefined };
 }
 exports.RejectStudentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1033,7 +1033,7 @@ exports.RejectStudentRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.rejection_message !== "") {
+        if (message.rejection_message !== undefined) {
             writer.uint32(26).string(message.rejection_message);
         }
         if (message.school_year !== undefined) {
@@ -1084,7 +1084,7 @@ exports.RejectStudentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : "",
+            rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -1096,7 +1096,7 @@ exports.RejectStudentRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.rejection_message !== "") {
+        if (message.rejection_message !== undefined) {
             obj.rejectionMessage = message.rejection_message;
         }
         if (message.school_year !== undefined) {
@@ -1115,7 +1115,7 @@ exports.RejectStudentRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.rejection_message = object.rejection_message ?? "";
+        message.rejection_message = object.rejection_message ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -1123,7 +1123,7 @@ exports.RejectStudentRequest = {
     },
 };
 function createBaseApproveStudentRequest() {
-    return { context: undefined, student_id: undefined, approval_message: "", school_year: undefined };
+    return { context: undefined, student_id: undefined, approval_message: undefined, school_year: undefined };
 }
 exports.ApproveStudentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1133,7 +1133,7 @@ exports.ApproveStudentRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.approval_message !== "") {
+        if (message.approval_message !== undefined) {
             writer.uint32(26).string(message.approval_message);
         }
         if (message.school_year !== undefined) {
@@ -1184,7 +1184,7 @@ exports.ApproveStudentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            approval_message: isSet(object.approvalMessage) ? globalThis.String(object.approvalMessage) : "",
+            approval_message: isSet(object.approvalMessage) ? globalThis.String(object.approvalMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -1196,7 +1196,7 @@ exports.ApproveStudentRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.approval_message !== "") {
+        if (message.approval_message !== undefined) {
             obj.approvalMessage = message.approval_message;
         }
         if (message.school_year !== undefined) {
@@ -1215,7 +1215,7 @@ exports.ApproveStudentRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.approval_message = object.approval_message ?? "";
+        message.approval_message = object.approval_message ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -1226,7 +1226,7 @@ function createBaseToInterviewRequest() {
     return {
         context: undefined,
         student_id: undefined,
-        interview_message: "",
+        interview_message: undefined,
         interview_date: undefined,
         school_year: undefined,
     };
@@ -1239,7 +1239,7 @@ exports.ToInterviewRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.interview_message !== "") {
+        if (message.interview_message !== undefined) {
             writer.uint32(26).string(message.interview_message);
         }
         if (message.interview_date !== undefined) {
@@ -1299,7 +1299,7 @@ exports.ToInterviewRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            interview_message: isSet(object.interviewMessage) ? globalThis.String(object.interviewMessage) : "",
+            interview_message: isSet(object.interviewMessage) ? globalThis.String(object.interviewMessage) : undefined,
             interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
@@ -1312,7 +1312,7 @@ exports.ToInterviewRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.interview_message !== "") {
+        if (message.interview_message !== undefined) {
             obj.interviewMessage = message.interview_message;
         }
         if (message.interview_date !== undefined) {
@@ -1334,7 +1334,7 @@ exports.ToInterviewRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.interview_message = object.interview_message ?? "";
+        message.interview_message = object.interview_message ?? undefined;
         message.interview_date = object.interview_date ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
@@ -1343,7 +1343,7 @@ exports.ToInterviewRequest = {
     },
 };
 function createBaseRequireFieldsChangesFromParentsRequest() {
-    return { context: undefined, student_id: undefined, message: "" };
+    return { context: undefined, student_id: undefined, message: undefined };
 }
 exports.RequireFieldsChangesFromParentsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1353,7 +1353,7 @@ exports.RequireFieldsChangesFromParentsRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.message !== "") {
+        if (message.message !== undefined) {
             writer.uint32(26).string(message.message);
         }
         return writer;
@@ -1395,7 +1395,7 @@ exports.RequireFieldsChangesFromParentsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            message: isSet(object.message) ? globalThis.String(object.message) : "",
+            message: isSet(object.message) ? globalThis.String(object.message) : undefined,
         };
     },
     toJSON(message) {
@@ -1406,7 +1406,7 @@ exports.RequireFieldsChangesFromParentsRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.message !== "") {
+        if (message.message !== undefined) {
             obj.message = message.message;
         }
         return obj;
@@ -1422,22 +1422,22 @@ exports.RequireFieldsChangesFromParentsRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.message = object.message ?? "";
+        message.message = object.message ?? undefined;
         return message;
     },
 };
 function createBaseUploadStudentsRequest() {
-    return { context: undefined, csv_file_base64: "", student_status: student_1.StudentStatus.WAITLIST, school_year: undefined };
+    return { context: undefined, csv_file_base64: undefined, student_status: undefined, school_year: undefined };
 }
 exports.UploadStudentsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.csv_file_base64 !== "") {
+        if (message.csv_file_base64 !== undefined) {
             writer.uint32(18).string(message.csv_file_base64);
         }
-        if (message.student_status !== student_1.StudentStatus.WAITLIST) {
+        if (message.student_status !== undefined) {
             writer.uint32(24).int32((0, student_1.studentStatusToNumber)(message.student_status));
         }
         if (message.school_year !== undefined) {
@@ -1487,10 +1487,8 @@ exports.UploadStudentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            csv_file_base64: isSet(object.csvFileBase64) ? globalThis.String(object.csvFileBase64) : "",
-            student_status: isSet(object.studentStatus)
-                ? (0, student_1.studentStatusFromJSON)(object.studentStatus)
-                : student_1.StudentStatus.WAITLIST,
+            csv_file_base64: isSet(object.csvFileBase64) ? globalThis.String(object.csvFileBase64) : undefined,
+            student_status: isSet(object.studentStatus) ? (0, student_1.studentStatusFromJSON)(object.studentStatus) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -1499,10 +1497,10 @@ exports.UploadStudentsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.csv_file_base64 !== "") {
+        if (message.csv_file_base64 !== undefined) {
             obj.csvFileBase64 = message.csv_file_base64;
         }
-        if (message.student_status !== student_1.StudentStatus.WAITLIST) {
+        if (message.student_status !== undefined) {
             obj.studentStatus = (0, student_1.studentStatusToJSON)(message.student_status);
         }
         if (message.school_year !== undefined) {
@@ -1518,8 +1516,8 @@ exports.UploadStudentsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.csv_file_base64 = object.csv_file_base64 ?? "";
-        message.student_status = object.student_status ?? student_1.StudentStatus.WAITLIST;
+        message.csv_file_base64 = object.csv_file_base64 ?? undefined;
+        message.student_status = object.student_status ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -1527,17 +1525,17 @@ exports.UploadStudentsRequest = {
     },
 };
 function createBaseUploadStudentsResponse() {
-    return { success_count: 0, failed_count: 0, error_csv_base64: "" };
+    return { success_count: undefined, failed_count: undefined, error_csv_base64: undefined };
 }
 exports.UploadStudentsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success_count !== 0) {
+        if (message.success_count !== undefined) {
             writer.uint32(8).uint64(message.success_count);
         }
-        if (message.failed_count !== 0) {
+        if (message.failed_count !== undefined) {
             writer.uint32(16).uint64(message.failed_count);
         }
-        if (message.error_csv_base64 !== undefined && message.error_csv_base64 !== "") {
+        if (message.error_csv_base64 !== undefined) {
             writer.uint32(26).string(message.error_csv_base64);
         }
         return writer;
@@ -1577,20 +1575,20 @@ exports.UploadStudentsResponse = {
     },
     fromJSON(object) {
         return {
-            success_count: isSet(object.successCount) ? globalThis.Number(object.successCount) : 0,
-            failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : 0,
-            error_csv_base64: isSet(object.errorCsvBase64) ? globalThis.String(object.errorCsvBase64) : "",
+            success_count: isSet(object.successCount) ? globalThis.Number(object.successCount) : undefined,
+            failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : undefined,
+            error_csv_base64: isSet(object.errorCsvBase64) ? globalThis.String(object.errorCsvBase64) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.success_count !== 0) {
+        if (message.success_count !== undefined) {
             obj.successCount = Math.round(message.success_count);
         }
-        if (message.failed_count !== 0) {
+        if (message.failed_count !== undefined) {
             obj.failedCount = Math.round(message.failed_count);
         }
-        if (message.error_csv_base64 !== undefined && message.error_csv_base64 !== "") {
+        if (message.error_csv_base64 !== undefined) {
             obj.errorCsvBase64 = message.error_csv_base64;
         }
         return obj;
@@ -1600,9 +1598,9 @@ exports.UploadStudentsResponse = {
     },
     fromPartial(object) {
         const message = createBaseUploadStudentsResponse();
-        message.success_count = object.success_count ?? 0;
-        message.failed_count = object.failed_count ?? 0;
-        message.error_csv_base64 = object.error_csv_base64 ?? "";
+        message.success_count = object.success_count ?? undefined;
+        message.failed_count = object.failed_count ?? undefined;
+        message.error_csv_base64 = object.error_csv_base64 ?? undefined;
         return message;
     },
 };
@@ -1887,7 +1885,7 @@ exports.GetLatestStudentSchoolYearInfoRequest = {
     },
 };
 function createBaseResolveTeacherOrStudentRequest() {
-    return { context: undefined, organization_id: undefined, email: "", username: "" };
+    return { context: undefined, organization_id: undefined, email: undefined, username: undefined };
 }
 exports.ResolveTeacherOrStudentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1897,10 +1895,10 @@ exports.ResolveTeacherOrStudentRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(26).string(message.email);
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             writer.uint32(34).string(message.username);
         }
         return writer;
@@ -1948,8 +1946,8 @@ exports.ResolveTeacherOrStudentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
-            username: isSet(object.username) ? globalThis.String(object.username) : "",
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
         };
     },
     toJSON(message) {
@@ -1960,10 +1958,10 @@ exports.ResolveTeacherOrStudentRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             obj.username = message.username;
         }
         return obj;
@@ -1979,17 +1977,17 @@ exports.ResolveTeacherOrStudentRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.email = object.email ?? "";
-        message.username = object.username ?? "";
+        message.email = object.email ?? undefined;
+        message.username = object.username ?? undefined;
         return message;
     },
 };
 function createBaseResolveTeacherOrStudentResponse() {
-    return { user_type: user_type_1.UserType.NONE, teacher: undefined, student: undefined };
+    return { user_type: undefined, teacher: undefined, student: undefined };
 }
 exports.ResolveTeacherOrStudentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             writer.uint32(8).int32((0, user_type_1.userTypeToNumber)(message.user_type));
         }
         if (message.teacher !== undefined) {
@@ -2035,14 +2033,14 @@ exports.ResolveTeacherOrStudentResponse = {
     },
     fromJSON(object) {
         return {
-            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : user_type_1.UserType.NONE,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
             teacher: isSet(object.teacher) ? teacher_1.Teacher.fromJSON(object.teacher) : undefined,
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.user_type !== user_type_1.UserType.NONE) {
+        if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
         }
         if (message.teacher !== undefined) {
@@ -2058,7 +2056,7 @@ exports.ResolveTeacherOrStudentResponse = {
     },
     fromPartial(object) {
         const message = createBaseResolveTeacherOrStudentResponse();
-        message.user_type = object.user_type ?? user_type_1.UserType.NONE;
+        message.user_type = object.user_type ?? undefined;
         message.teacher = (object.teacher !== undefined && object.teacher !== null)
             ? teacher_1.Teacher.fromPartial(object.teacher)
             : undefined;
@@ -2069,7 +2067,7 @@ exports.ResolveTeacherOrStudentResponse = {
     },
 };
 function createBaseAuthenticateStudentForOrgRequest() {
-    return { context: undefined, organization_id: undefined, username: "" };
+    return { context: undefined, organization_id: undefined, username: undefined };
 }
 exports.AuthenticateStudentForOrgRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2079,7 +2077,7 @@ exports.AuthenticateStudentForOrgRequest = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             writer.uint32(26).string(message.username);
         }
         return writer;
@@ -2121,7 +2119,7 @@ exports.AuthenticateStudentForOrgRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            username: isSet(object.username) ? globalThis.String(object.username) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
         };
     },
     toJSON(message) {
@@ -2132,7 +2130,7 @@ exports.AuthenticateStudentForOrgRequest = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             obj.username = message.username;
         }
         return obj;
@@ -2148,7 +2146,7 @@ exports.AuthenticateStudentForOrgRequest = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.username = object.username ?? "";
+        message.username = object.username ?? undefined;
         return message;
     },
 };
@@ -2364,11 +2362,11 @@ exports.HasStudentsInInterviewStatusRequest = {
     },
 };
 function createBaseHasStudentsInInterviewStatusResponse() {
-    return { has_students_in_interview: false };
+    return { has_students_in_interview: undefined };
 }
 exports.HasStudentsInInterviewStatusResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.has_students_in_interview !== false) {
+        if (message.has_students_in_interview !== undefined) {
             writer.uint32(8).bool(message.has_students_in_interview);
         }
         return writer;
@@ -2398,12 +2396,12 @@ exports.HasStudentsInInterviewStatusResponse = {
         return {
             has_students_in_interview: isSet(object.hasStudentsInInterview)
                 ? globalThis.Boolean(object.hasStudentsInInterview)
-                : false,
+                : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.has_students_in_interview !== false) {
+        if (message.has_students_in_interview !== undefined) {
             obj.hasStudentsInInterview = message.has_students_in_interview;
         }
         return obj;
@@ -2413,7 +2411,7 @@ exports.HasStudentsInInterviewStatusResponse = {
     },
     fromPartial(object) {
         const message = createBaseHasStudentsInInterviewStatusResponse();
-        message.has_students_in_interview = object.has_students_in_interview ?? false;
+        message.has_students_in_interview = object.has_students_in_interview ?? undefined;
         return message;
     },
 };
@@ -2616,12 +2614,12 @@ exports.CreateDefaultResourceAccessSettingsForOrgResponse = {
 function createBaseGetStudentsListWithFiltersRequest() {
     return {
         context: undefined,
-        per_page: 0,
-        page: 0,
-        name_search: "",
+        per_page: undefined,
+        page: undefined,
+        name_search: undefined,
         grades: [],
-        gender: "",
-        status: student_1.StudentStatus.WAITLIST,
+        gender: undefined,
+        status: undefined,
         school_year: undefined,
     };
 }
@@ -2630,13 +2628,13 @@ exports.GetStudentsListWithFiltersRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             writer.uint32(16).uint64(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             writer.uint32(24).uint64(message.page);
         }
-        if (message.name_search !== undefined && message.name_search !== "") {
+        if (message.name_search !== undefined) {
             writer.uint32(34).string(message.name_search);
         }
         writer.uint32(42).fork();
@@ -2644,10 +2642,10 @@ exports.GetStudentsListWithFiltersRequest = {
             writer.int32((0, student_1.studentGradeToNumber)(v));
         }
         writer.join();
-        if (message.gender !== undefined && message.gender !== "") {
+        if (message.gender !== undefined) {
             writer.uint32(50).string(message.gender);
         }
-        if (message.status !== undefined && message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             writer.uint32(56).int32((0, student_1.studentStatusToNumber)(message.status));
         }
         if (message.school_year !== undefined) {
@@ -2728,12 +2726,12 @@ exports.GetStudentsListWithFiltersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : undefined,
             grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => (0, student_1.studentGradeFromJSON)(e)) : [],
-            gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : student_1.StudentStatus.WAITLIST,
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
@@ -2742,22 +2740,22 @@ exports.GetStudentsListWithFiltersRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             obj.perPage = Math.round(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             obj.page = Math.round(message.page);
         }
-        if (message.name_search !== undefined && message.name_search !== "") {
+        if (message.name_search !== undefined) {
             obj.nameSearch = message.name_search;
         }
         if (message.grades?.length) {
             obj.grades = message.grades.map((e) => (0, student_1.studentGradeToJSON)(e));
         }
-        if (message.gender !== undefined && message.gender !== "") {
+        if (message.gender !== undefined) {
             obj.gender = message.gender;
         }
-        if (message.status !== undefined && message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             obj.status = (0, student_1.studentStatusToJSON)(message.status);
         }
         if (message.school_year !== undefined) {
@@ -2773,12 +2771,12 @@ exports.GetStudentsListWithFiltersRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.per_page = object.per_page ?? 0;
-        message.page = object.page ?? 0;
-        message.name_search = object.name_search ?? "";
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
+        message.name_search = object.name_search ?? undefined;
         message.grades = object.grades?.map((e) => e) || [];
-        message.gender = object.gender ?? "";
-        message.status = object.status ?? student_1.StudentStatus.WAITLIST;
+        message.gender = object.gender ?? undefined;
+        message.status = object.status ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -2786,14 +2784,14 @@ exports.GetStudentsListWithFiltersRequest = {
     },
 };
 function createBaseGetStudentsListWithFiltersResponse() {
-    return { students: [], students_count: 0 };
+    return { students: [], students_count: undefined };
 }
 exports.GetStudentsListWithFiltersResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.students) {
             student_1.SchoolYearStudent.encode(v, writer.uint32(10).fork()).join();
         }
-        if (message.students_count !== 0) {
+        if (message.students_count !== undefined) {
             writer.uint32(16).uint64(message.students_count);
         }
         return writer;
@@ -2830,7 +2828,7 @@ exports.GetStudentsListWithFiltersResponse = {
             students: globalThis.Array.isArray(object?.students)
                 ? object.students.map((e) => student_1.SchoolYearStudent.fromJSON(e))
                 : [],
-            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
+            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : undefined,
         };
     },
     toJSON(message) {
@@ -2838,7 +2836,7 @@ exports.GetStudentsListWithFiltersResponse = {
         if (message.students?.length) {
             obj.students = message.students.map((e) => student_1.SchoolYearStudent.toJSON(e));
         }
-        if (message.students_count !== 0) {
+        if (message.students_count !== undefined) {
             obj.studentsCount = Math.round(message.students_count);
         }
         return obj;
@@ -2849,25 +2847,32 @@ exports.GetStudentsListWithFiltersResponse = {
     fromPartial(object) {
         const message = createBaseGetStudentsListWithFiltersResponse();
         message.students = object.students?.map((e) => student_1.SchoolYearStudent.fromPartial(e)) || [];
-        message.students_count = object.students_count ?? 0;
+        message.students_count = object.students_count ?? undefined;
         return message;
     },
 };
 function createBaseGetCourseOrHomeroomStudentsRequest() {
-    return { context: undefined, per_page: 0, page: 0, name_search: "", course_id: undefined, homeroom_id: undefined };
+    return {
+        context: undefined,
+        per_page: undefined,
+        page: undefined,
+        name_search: undefined,
+        course_id: undefined,
+        homeroom_id: undefined,
+    };
 }
 exports.GetCourseOrHomeroomStudentsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             writer.uint32(16).uint64(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             writer.uint32(24).uint64(message.page);
         }
-        if (message.name_search !== undefined && message.name_search !== "") {
+        if (message.name_search !== undefined) {
             writer.uint32(34).string(message.name_search);
         }
         if (message.course_id !== undefined) {
@@ -2932,9 +2937,9 @@ exports.GetCourseOrHomeroomStudentsRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : "",
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
         };
@@ -2944,13 +2949,13 @@ exports.GetCourseOrHomeroomStudentsRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             obj.perPage = Math.round(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             obj.page = Math.round(message.page);
         }
-        if (message.name_search !== undefined && message.name_search !== "") {
+        if (message.name_search !== undefined) {
             obj.nameSearch = message.name_search;
         }
         if (message.course_id !== undefined) {
@@ -2969,9 +2974,9 @@ exports.GetCourseOrHomeroomStudentsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.per_page = object.per_page ?? 0;
-        message.page = object.page ?? 0;
-        message.name_search = object.name_search ?? "";
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
+        message.name_search = object.name_search ?? undefined;
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
@@ -2982,14 +2987,14 @@ exports.GetCourseOrHomeroomStudentsRequest = {
     },
 };
 function createBaseGetCourseOrHomeroomStudentsResponse() {
-    return { students: [], students_count: 0 };
+    return { students: [], students_count: undefined };
 }
 exports.GetCourseOrHomeroomStudentsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.students) {
             student_1.Student.encode(v, writer.uint32(10).fork()).join();
         }
-        if (message.students_count !== 0) {
+        if (message.students_count !== undefined) {
             writer.uint32(16).uint64(message.students_count);
         }
         return writer;
@@ -3024,7 +3029,7 @@ exports.GetCourseOrHomeroomStudentsResponse = {
     fromJSON(object) {
         return {
             students: globalThis.Array.isArray(object?.students) ? object.students.map((e) => student_1.Student.fromJSON(e)) : [],
-            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
+            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : undefined,
         };
     },
     toJSON(message) {
@@ -3032,7 +3037,7 @@ exports.GetCourseOrHomeroomStudentsResponse = {
         if (message.students?.length) {
             obj.students = message.students.map((e) => student_1.Student.toJSON(e));
         }
-        if (message.students_count !== 0) {
+        if (message.students_count !== undefined) {
             obj.studentsCount = Math.round(message.students_count);
         }
         return obj;
@@ -3043,7 +3048,7 @@ exports.GetCourseOrHomeroomStudentsResponse = {
     fromPartial(object) {
         const message = createBaseGetCourseOrHomeroomStudentsResponse();
         message.students = object.students?.map((e) => student_1.Student.fromPartial(e)) || [];
-        message.students_count = object.students_count ?? 0;
+        message.students_count = object.students_count ?? undefined;
         return message;
     },
 };
@@ -3459,14 +3464,14 @@ exports.GetStudentsStatusCountsResponse = {
     },
 };
 function createBaseStudentStatusCount() {
-    return { status: student_1.StudentStatus.WAITLIST, count: 0 };
+    return { status: undefined, count: undefined };
 }
 exports.StudentStatusCount = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             writer.uint32(8).int32((0, student_1.studentStatusToNumber)(message.status));
         }
-        if (message.count !== 0) {
+        if (message.count !== undefined) {
             writer.uint32(16).uint64(message.count);
         }
         return writer;
@@ -3500,16 +3505,16 @@ exports.StudentStatusCount = {
     },
     fromJSON(object) {
         return {
-            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : student_1.StudentStatus.WAITLIST,
-            count: isSet(object.count) ? globalThis.Number(object.count) : 0,
+            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
+            count: isSet(object.count) ? globalThis.Number(object.count) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             obj.status = (0, student_1.studentStatusToJSON)(message.status);
         }
-        if (message.count !== 0) {
+        if (message.count !== undefined) {
             obj.count = Math.round(message.count);
         }
         return obj;
@@ -3519,26 +3524,26 @@ exports.StudentStatusCount = {
     },
     fromPartial(object) {
         const message = createBaseStudentStatusCount();
-        message.status = object.status ?? student_1.StudentStatus.WAITLIST;
-        message.count = object.count ?? 0;
+        message.status = object.status ?? undefined;
+        message.count = object.count ?? undefined;
         return message;
     },
 };
 function createBaseGetFilteredStudentsListRequest() {
     return {
         context: undefined,
-        per_page: 0,
-        page: 0,
+        per_page: undefined,
+        page: undefined,
         grades: [],
-        gender: "",
-        status: student_1.StudentStatus.WAITLIST,
-        name: "",
-        no_nonpaid_registration: false,
-        no_nonpaid_reregistration: false,
-        sort_enrolled_family_first: false,
+        gender: undefined,
+        status: undefined,
+        name: undefined,
+        no_nonpaid_registration: undefined,
+        no_nonpaid_reregistration: undefined,
+        sort_enrolled_family_first: undefined,
         school_year: undefined,
-        has_priority_first: false,
-        completed_only: false,
+        has_priority_first: undefined,
+        completed_only: undefined,
     };
 }
 exports.GetFilteredStudentsListRequest = {
@@ -3546,10 +3551,10 @@ exports.GetFilteredStudentsListRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             writer.uint32(16).uint64(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             writer.uint32(24).uint64(message.page);
         }
         writer.uint32(34).fork();
@@ -3557,31 +3562,31 @@ exports.GetFilteredStudentsListRequest = {
             writer.int32((0, student_1.studentGradeToNumber)(v));
         }
         writer.join();
-        if (message.gender !== undefined && message.gender !== "") {
+        if (message.gender !== undefined) {
             writer.uint32(42).string(message.gender);
         }
-        if (message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             writer.uint32(48).int32((0, student_1.studentStatusToNumber)(message.status));
         }
-        if (message.name !== undefined && message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(58).string(message.name);
         }
-        if (message.no_nonpaid_registration !== undefined && message.no_nonpaid_registration !== false) {
+        if (message.no_nonpaid_registration !== undefined) {
             writer.uint32(64).bool(message.no_nonpaid_registration);
         }
-        if (message.no_nonpaid_reregistration !== undefined && message.no_nonpaid_reregistration !== false) {
+        if (message.no_nonpaid_reregistration !== undefined) {
             writer.uint32(72).bool(message.no_nonpaid_reregistration);
         }
-        if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
+        if (message.sort_enrolled_family_first !== undefined) {
             writer.uint32(80).bool(message.sort_enrolled_family_first);
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
         }
-        if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
+        if (message.has_priority_first !== undefined) {
             writer.uint32(96).bool(message.has_priority_first);
         }
-        if (message.completed_only !== undefined && message.completed_only !== false) {
+        if (message.completed_only !== undefined) {
             writer.uint32(104).bool(message.completed_only);
         }
         return writer;
@@ -3689,24 +3694,24 @@ exports.GetFilteredStudentsListRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
-            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
             grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => (0, student_1.studentGradeFromJSON)(e)) : [],
-            gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : student_1.StudentStatus.WAITLIST,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             no_nonpaid_registration: isSet(object.noNonpaidRegistration)
                 ? globalThis.Boolean(object.noNonpaidRegistration)
-                : false,
+                : undefined,
             no_nonpaid_reregistration: isSet(object.noNonpaidReregistration)
                 ? globalThis.Boolean(object.noNonpaidReregistration)
-                : false,
+                : undefined,
             sort_enrolled_family_first: isSet(object.sortEnrolledFamilyFirst)
                 ? globalThis.Boolean(object.sortEnrolledFamilyFirst)
-                : false,
+                : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            has_priority_first: isSet(object.hasPriorityFirst) ? globalThis.Boolean(object.hasPriorityFirst) : false,
-            completed_only: isSet(object.completedOnly) ? globalThis.Boolean(object.completedOnly) : false,
+            has_priority_first: isSet(object.hasPriorityFirst) ? globalThis.Boolean(object.hasPriorityFirst) : undefined,
+            completed_only: isSet(object.completedOnly) ? globalThis.Boolean(object.completedOnly) : undefined,
         };
     },
     toJSON(message) {
@@ -3714,40 +3719,40 @@ exports.GetFilteredStudentsListRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.per_page !== undefined && message.per_page !== 0) {
+        if (message.per_page !== undefined) {
             obj.perPage = Math.round(message.per_page);
         }
-        if (message.page !== undefined && message.page !== 0) {
+        if (message.page !== undefined) {
             obj.page = Math.round(message.page);
         }
         if (message.grades?.length) {
             obj.grades = message.grades.map((e) => (0, student_1.studentGradeToJSON)(e));
         }
-        if (message.gender !== undefined && message.gender !== "") {
+        if (message.gender !== undefined) {
             obj.gender = message.gender;
         }
-        if (message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             obj.status = (0, student_1.studentStatusToJSON)(message.status);
         }
-        if (message.name !== undefined && message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.no_nonpaid_registration !== undefined && message.no_nonpaid_registration !== false) {
+        if (message.no_nonpaid_registration !== undefined) {
             obj.noNonpaidRegistration = message.no_nonpaid_registration;
         }
-        if (message.no_nonpaid_reregistration !== undefined && message.no_nonpaid_reregistration !== false) {
+        if (message.no_nonpaid_reregistration !== undefined) {
             obj.noNonpaidReregistration = message.no_nonpaid_reregistration;
         }
-        if (message.sort_enrolled_family_first !== undefined && message.sort_enrolled_family_first !== false) {
+        if (message.sort_enrolled_family_first !== undefined) {
             obj.sortEnrolledFamilyFirst = message.sort_enrolled_family_first;
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
-        if (message.has_priority_first !== undefined && message.has_priority_first !== false) {
+        if (message.has_priority_first !== undefined) {
             obj.hasPriorityFirst = message.has_priority_first;
         }
-        if (message.completed_only !== undefined && message.completed_only !== false) {
+        if (message.completed_only !== undefined) {
             obj.completedOnly = message.completed_only;
         }
         return obj;
@@ -3760,32 +3765,32 @@ exports.GetFilteredStudentsListRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.per_page = object.per_page ?? 0;
-        message.page = object.page ?? 0;
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
         message.grades = object.grades?.map((e) => e) || [];
-        message.gender = object.gender ?? "";
-        message.status = object.status ?? student_1.StudentStatus.WAITLIST;
-        message.name = object.name ?? "";
-        message.no_nonpaid_registration = object.no_nonpaid_registration ?? false;
-        message.no_nonpaid_reregistration = object.no_nonpaid_reregistration ?? false;
-        message.sort_enrolled_family_first = object.sort_enrolled_family_first ?? false;
+        message.gender = object.gender ?? undefined;
+        message.status = object.status ?? undefined;
+        message.name = object.name ?? undefined;
+        message.no_nonpaid_registration = object.no_nonpaid_registration ?? undefined;
+        message.no_nonpaid_reregistration = object.no_nonpaid_reregistration ?? undefined;
+        message.sort_enrolled_family_first = object.sort_enrolled_family_first ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
-        message.has_priority_first = object.has_priority_first ?? false;
-        message.completed_only = object.completed_only ?? false;
+        message.has_priority_first = object.has_priority_first ?? undefined;
+        message.completed_only = object.completed_only ?? undefined;
         return message;
     },
 };
 function createBaseGetFilteredStudentsListResponse() {
-    return { students: [], students_count: 0 };
+    return { students: [], students_count: undefined };
 }
 exports.GetFilteredStudentsListResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.students) {
             student_1.SchoolYearStudent.encode(v, writer.uint32(10).fork()).join();
         }
-        if (message.students_count !== 0) {
+        if (message.students_count !== undefined) {
             writer.uint32(16).uint64(message.students_count);
         }
         return writer;
@@ -3822,7 +3827,7 @@ exports.GetFilteredStudentsListResponse = {
             students: globalThis.Array.isArray(object?.students)
                 ? object.students.map((e) => student_1.SchoolYearStudent.fromJSON(e))
                 : [],
-            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : 0,
+            students_count: isSet(object.studentsCount) ? globalThis.Number(object.studentsCount) : undefined,
         };
     },
     toJSON(message) {
@@ -3830,7 +3835,7 @@ exports.GetFilteredStudentsListResponse = {
         if (message.students?.length) {
             obj.students = message.students.map((e) => student_1.SchoolYearStudent.toJSON(e));
         }
-        if (message.students_count !== 0) {
+        if (message.students_count !== undefined) {
             obj.studentsCount = Math.round(message.students_count);
         }
         return obj;
@@ -3841,7 +3846,7 @@ exports.GetFilteredStudentsListResponse = {
     fromPartial(object) {
         const message = createBaseGetFilteredStudentsListResponse();
         message.students = object.students?.map((e) => student_1.SchoolYearStudent.fromPartial(e)) || [];
-        message.students_count = object.students_count ?? 0;
+        message.students_count = object.students_count ?? undefined;
         return message;
     },
 };
@@ -3970,17 +3975,17 @@ exports.GetStudentSchoolYearsResponse = {
     },
 };
 function createBaseStudentSchoolYear() {
-    return { school_year: undefined, grade: student_1.StudentGrade.PRE_K, status: student_1.StudentStatus.WAITLIST };
+    return { school_year: undefined, grade: undefined, status: undefined };
 }
 exports.StudentSchoolYear = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.school_year !== undefined) {
             organization_1.SchoolYear.encode(message.school_year, writer.uint32(10).fork()).join();
         }
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             writer.uint32(16).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
-        if (message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             writer.uint32(24).int32((0, student_1.studentStatusToNumber)(message.status));
         }
         return writer;
@@ -4021,8 +4026,8 @@ exports.StudentSchoolYear = {
     fromJSON(object) {
         return {
             school_year: isSet(object.schoolYear) ? organization_1.SchoolYear.fromJSON(object.schoolYear) : undefined,
-            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
-            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : student_1.StudentStatus.WAITLIST,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
         };
     },
     toJSON(message) {
@@ -4030,10 +4035,10 @@ exports.StudentSchoolYear = {
         if (message.school_year !== undefined) {
             obj.schoolYear = organization_1.SchoolYear.toJSON(message.school_year);
         }
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
-        if (message.status !== student_1.StudentStatus.WAITLIST) {
+        if (message.status !== undefined) {
             obj.status = (0, student_1.studentStatusToJSON)(message.status);
         }
         return obj;
@@ -4046,8 +4051,8 @@ exports.StudentSchoolYear = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? organization_1.SchoolYear.fromPartial(object.school_year)
             : undefined;
-        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
-        message.status = object.status ?? student_1.StudentStatus.WAITLIST;
+        message.grade = object.grade ?? undefined;
+        message.status = object.status ?? undefined;
         return message;
     },
 };
@@ -4263,14 +4268,14 @@ exports.GetOnboardingCardInformationResponse = {
     },
 };
 function createBaseGetStudentUploadHeaderRequest() {
-    return { context: undefined, student_status: student_1.StudentStatus.WAITLIST };
+    return { context: undefined, student_status: undefined };
 }
 exports.GetStudentUploadHeaderRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.student_status !== student_1.StudentStatus.WAITLIST) {
+        if (message.student_status !== undefined) {
             writer.uint32(16).int32((0, student_1.studentStatusToNumber)(message.student_status));
         }
         return writer;
@@ -4305,9 +4310,7 @@ exports.GetStudentUploadHeaderRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            student_status: isSet(object.studentStatus)
-                ? (0, student_1.studentStatusFromJSON)(object.studentStatus)
-                : student_1.StudentStatus.WAITLIST,
+            student_status: isSet(object.studentStatus) ? (0, student_1.studentStatusFromJSON)(object.studentStatus) : undefined,
         };
     },
     toJSON(message) {
@@ -4315,7 +4318,7 @@ exports.GetStudentUploadHeaderRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.student_status !== student_1.StudentStatus.WAITLIST) {
+        if (message.student_status !== undefined) {
             obj.studentStatus = (0, student_1.studentStatusToJSON)(message.student_status);
         }
         return obj;
@@ -4328,7 +4331,7 @@ exports.GetStudentUploadHeaderRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.student_status = object.student_status ?? student_1.StudentStatus.WAITLIST;
+        message.student_status = object.student_status ?? undefined;
         return message;
     },
 };

@@ -16,21 +16,21 @@ export declare function serviceContextToJSON(object: ServiceContext): string;
 export declare function serviceContextToNumber(object: ServiceContext): number;
 export interface RequestContext {
     user_context: UserContext | undefined;
-    is_testing: boolean;
+    is_testing?: boolean | undefined;
     service_based_context_name?: ServiceContext | undefined;
 }
 export interface UserContext {
     user_id: ObjectId | undefined;
-    user_type: UserType;
-    user_auth_token: string;
+    user_type?: UserType | undefined;
+    user_auth_token?: string | undefined;
     organization_id?: ObjectId | undefined;
     roles: UserRole[];
     parent_family_ids: ObjectId[];
     parent_student_ids: ObjectId[];
-    full_name: string;
-    firebase_token: string;
-    exp: number;
-    trace_id: string;
+    full_name?: string | undefined;
+    firebase_token?: string | undefined;
+    exp?: number | undefined;
+    trace_id?: string | undefined;
 }
 export declare const RequestContext: MessageFns<RequestContext>;
 export declare const UserContext: MessageFns<UserContext>;

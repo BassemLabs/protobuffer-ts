@@ -12,37 +12,37 @@ export interface GetOrganizationProfileSettingsRequest {
 export interface AddParentProfileSectionRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    new_profile_section: ProfileSection;
+    new_profile_section?: ProfileSection | undefined;
 }
 /** Request to remove a "parent" profile section */
 export interface RemoveParentProfileSectionRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    remove_profile_section: ProfileSection;
+    remove_profile_section?: ProfileSection | undefined;
 }
 /** Request to add a "teacher" profile section */
 export interface AddTeacherProfileSectionRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    new_profile_section: ProfileSection;
+    new_profile_section?: ProfileSection | undefined;
 }
 /** Request to remove a "teacher" profile section */
 export interface RemoveTeacherProfileSectionRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    remove_profile_section: ProfileSection;
+    remove_profile_section?: ProfileSection | undefined;
 }
 /** Request to add a "student" profile section */
 export interface AddStudentProfileSectionRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    new_profile_section: ProfileSection;
+    new_profile_section?: ProfileSection | undefined;
 }
 /** Request to remove a "student" profile section */
 export interface RemoveStudentProfileSectionRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    remove_profile_section: ProfileSection;
+    remove_profile_section?: ProfileSection | undefined;
 }
 /** Request to set student_primary_id_custom_field */
 export interface SetStudentPrimaryIdCustomFieldRequest {

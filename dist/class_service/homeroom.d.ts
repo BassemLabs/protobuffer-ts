@@ -6,9 +6,9 @@ import { ListSemester, Semester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Homeroom {
     id: ObjectId | undefined;
-    archived: boolean;
+    archived?: boolean | undefined;
     semester: Semester | undefined;
-    name: string;
+    name?: string | undefined;
     grades: StudentGrade[];
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];
@@ -16,8 +16,8 @@ export interface Homeroom {
 }
 export interface ListHomeroom {
     id: ObjectId | undefined;
-    archived: boolean;
-    name: string;
+    archived?: boolean | undefined;
+    name?: string | undefined;
     grades: string[];
     semester: ListSemester | undefined;
     teacher_ids: ObjectId[];
@@ -25,7 +25,7 @@ export interface ListHomeroom {
 }
 export interface HomeroomList {
     homerooms: ListHomeroom[];
-    homerooms_count: number;
+    homerooms_count?: number | undefined;
 }
 export declare const Homeroom: MessageFns<Homeroom>;
 export declare const ListHomeroom: MessageFns<ListHomeroom>;

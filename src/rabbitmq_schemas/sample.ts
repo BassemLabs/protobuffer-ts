@@ -10,16 +10,16 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "rabbitmq_schemas";
 
 export interface SampleEvent {
-  sample: string;
+  sample?: string | undefined;
 }
 
 function createBaseSampleEvent(): SampleEvent {
-  return { sample: "" };
+  return { sample: undefined };
 }
 
 export const SampleEvent: MessageFns<SampleEvent> = {
   encode(message: SampleEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.sample !== "") {
+    if (message.sample !== undefined) {
       writer.uint32(10).string(message.sample);
     }
     return writer;
@@ -49,12 +49,12 @@ export const SampleEvent: MessageFns<SampleEvent> = {
   },
 
   fromJSON(object: any): SampleEvent {
-    return { sample: isSet(object.sample) ? globalThis.String(object.sample) : "" };
+    return { sample: isSet(object.sample) ? globalThis.String(object.sample) : undefined };
   },
 
   toJSON(message: SampleEvent): unknown {
     const obj: any = {};
-    if (message.sample !== "") {
+    if (message.sample !== undefined) {
       obj.sample = message.sample;
     }
     return obj;
@@ -65,7 +65,7 @@ export const SampleEvent: MessageFns<SampleEvent> = {
   },
   fromPartial<I extends Exact<DeepPartial<SampleEvent>, I>>(object: I): SampleEvent {
     const message = createBaseSampleEvent();
-    message.sample = object.sample ?? "";
+    message.sample = object.sample ?? undefined;
     return message;
   },
 };

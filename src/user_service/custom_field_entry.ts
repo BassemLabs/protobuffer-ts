@@ -16,7 +16,7 @@ export interface CustomFieldEntry {
   custom_field_id: ObjectId | undefined;
   group_id: ObjectId | undefined;
   user_id: ObjectId | undefined;
-  value: string;
+  value?: string | undefined;
 }
 
 function createBaseCustomFieldEntry(): CustomFieldEntry {
@@ -26,7 +26,7 @@ function createBaseCustomFieldEntry(): CustomFieldEntry {
     custom_field_id: undefined,
     group_id: undefined,
     user_id: undefined,
-    value: "",
+    value: undefined,
   };
 }
 
@@ -47,7 +47,7 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(42).fork()).join();
     }
-    if (message.value !== "") {
+    if (message.value !== undefined) {
       writer.uint32(50).string(message.value);
     }
     return writer;
@@ -118,7 +118,7 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
       custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
       group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      value: isSet(object.value) ? globalThis.String(object.value) : undefined,
     };
   },
 
@@ -139,7 +139,7 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.value !== "") {
+    if (message.value !== undefined) {
       obj.value = message.value;
     }
     return obj;
@@ -163,7 +163,7 @@ export const CustomFieldEntry: MessageFns<CustomFieldEntry> = {
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.value = object.value ?? "";
+    message.value = object.value ?? undefined;
     return message;
   },
 };

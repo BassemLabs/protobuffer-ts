@@ -16,8 +16,8 @@ export interface GetAnnouncementRequest {
 }
 export interface CreateAnnouncementRequest {
     context: RequestContext | undefined;
-    title: string;
-    body: string;
+    title?: string | undefined;
+    body?: string | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
     link?: string | undefined;
@@ -26,8 +26,8 @@ export interface CreateAnnouncementRequest {
 export interface UpdateAnnouncementRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    title: string;
-    body: string;
+    title?: string | undefined;
+    body?: string | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
     link?: string | undefined;
@@ -38,7 +38,7 @@ export interface DeleteAnnouncementRequest {
     id: ObjectId | undefined;
 }
 export interface DeleteAnnouncementResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export declare const ListAnnouncementsRequest: MessageFns<ListAnnouncementsRequest>;
 export declare const ListAnnouncementsResponse: MessageFns<ListAnnouncementsResponse>;

@@ -13,29 +13,23 @@ const request_context_1 = require("../utils/request_context");
 const device_token_1 = require("./device_token");
 exports.protobufPackage = "user_service";
 function createBaseRefreshDeviceTokenRequest() {
-    return {
-        context: undefined,
-        token: "",
-        platform: device_token_1.DevicePlatform.DEVICE_PLATFORM_UNKNOWN,
-        device_id: "",
-        app_version: "",
-    };
+    return { context: undefined, token: undefined, platform: undefined, device_id: undefined, app_version: undefined };
 }
 exports.RefreshDeviceTokenRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.token !== "") {
+        if (message.token !== undefined) {
             writer.uint32(18).string(message.token);
         }
-        if (message.platform !== device_token_1.DevicePlatform.DEVICE_PLATFORM_UNKNOWN) {
+        if (message.platform !== undefined) {
             writer.uint32(24).int32((0, device_token_1.devicePlatformToNumber)(message.platform));
         }
-        if (message.device_id !== "") {
+        if (message.device_id !== undefined) {
             writer.uint32(34).string(message.device_id);
         }
-        if (message.app_version !== "") {
+        if (message.app_version !== undefined) {
             writer.uint32(42).string(message.app_version);
         }
         return writer;
@@ -88,12 +82,10 @@ exports.RefreshDeviceTokenRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            token: isSet(object.token) ? globalThis.String(object.token) : "",
-            platform: isSet(object.platform)
-                ? (0, device_token_1.devicePlatformFromJSON)(object.platform)
-                : device_token_1.DevicePlatform.DEVICE_PLATFORM_UNKNOWN,
-            device_id: isSet(object.deviceId) ? globalThis.String(object.deviceId) : "",
-            app_version: isSet(object.appVersion) ? globalThis.String(object.appVersion) : "",
+            token: isSet(object.token) ? globalThis.String(object.token) : undefined,
+            platform: isSet(object.platform) ? (0, device_token_1.devicePlatformFromJSON)(object.platform) : undefined,
+            device_id: isSet(object.deviceId) ? globalThis.String(object.deviceId) : undefined,
+            app_version: isSet(object.appVersion) ? globalThis.String(object.appVersion) : undefined,
         };
     },
     toJSON(message) {
@@ -101,16 +93,16 @@ exports.RefreshDeviceTokenRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.token !== "") {
+        if (message.token !== undefined) {
             obj.token = message.token;
         }
-        if (message.platform !== device_token_1.DevicePlatform.DEVICE_PLATFORM_UNKNOWN) {
+        if (message.platform !== undefined) {
             obj.platform = (0, device_token_1.devicePlatformToJSON)(message.platform);
         }
-        if (message.device_id !== "") {
+        if (message.device_id !== undefined) {
             obj.deviceId = message.device_id;
         }
-        if (message.app_version !== "") {
+        if (message.app_version !== undefined) {
             obj.appVersion = message.app_version;
         }
         return obj;
@@ -123,22 +115,22 @@ exports.RefreshDeviceTokenRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.token = object.token ?? "";
-        message.platform = object.platform ?? device_token_1.DevicePlatform.DEVICE_PLATFORM_UNKNOWN;
-        message.device_id = object.device_id ?? "";
-        message.app_version = object.app_version ?? "";
+        message.token = object.token ?? undefined;
+        message.platform = object.platform ?? undefined;
+        message.device_id = object.device_id ?? undefined;
+        message.app_version = object.app_version ?? undefined;
         return message;
     },
 };
 function createBaseDisableDeviceTokenRequest() {
-    return { context: undefined, token: "", user_id: undefined };
+    return { context: undefined, token: undefined, user_id: undefined };
 }
 exports.DisableDeviceTokenRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.token !== "") {
+        if (message.token !== undefined) {
             writer.uint32(18).string(message.token);
         }
         if (message.user_id !== undefined) {
@@ -182,7 +174,7 @@ exports.DisableDeviceTokenRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            token: isSet(object.token) ? globalThis.String(object.token) : "",
+            token: isSet(object.token) ? globalThis.String(object.token) : undefined,
             user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
         };
     },
@@ -191,7 +183,7 @@ exports.DisableDeviceTokenRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.token !== "") {
+        if (message.token !== undefined) {
             obj.token = message.token;
         }
         if (message.user_id !== undefined) {
@@ -207,7 +199,7 @@ exports.DisableDeviceTokenRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.token = object.token ?? "";
+        message.token = object.token ?? undefined;
         message.user_id = (object.user_id !== undefined && object.user_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.user_id)
             : undefined;
@@ -215,14 +207,14 @@ exports.DisableDeviceTokenRequest = {
     },
 };
 function createBaseDisableDeviceTokenResponse() {
-    return { success: false, disabled_count: 0 };
+    return { success: undefined, disabled_count: undefined };
 }
 exports.DisableDeviceTokenResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             writer.uint32(8).bool(message.success);
         }
-        if (message.disabled_count !== undefined && message.disabled_count !== 0) {
+        if (message.disabled_count !== undefined) {
             writer.uint32(16).uint64(message.disabled_count);
         }
         return writer;
@@ -256,16 +248,16 @@ exports.DisableDeviceTokenResponse = {
     },
     fromJSON(object) {
         return {
-            success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
-            disabled_count: isSet(object.disabledCount) ? globalThis.Number(object.disabledCount) : 0,
+            success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined,
+            disabled_count: isSet(object.disabledCount) ? globalThis.Number(object.disabledCount) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             obj.success = message.success;
         }
-        if (message.disabled_count !== undefined && message.disabled_count !== 0) {
+        if (message.disabled_count !== undefined) {
             obj.disabledCount = Math.round(message.disabled_count);
         }
         return obj;
@@ -275,8 +267,8 @@ exports.DisableDeviceTokenResponse = {
     },
     fromPartial(object) {
         const message = createBaseDisableDeviceTokenResponse();
-        message.success = object.success ?? false;
-        message.disabled_count = object.disabled_count ?? 0;
+        message.success = object.success ?? undefined;
+        message.disabled_count = object.disabled_count ?? undefined;
         return message;
     },
 };
@@ -351,14 +343,14 @@ exports.ListDeviceTokensRequest = {
     },
 };
 function createBaseDeviceTokenList() {
-    return { tokens: [], tokens_count: 0 };
+    return { tokens: [], tokens_count: undefined };
 }
 exports.DeviceTokenList = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.tokens) {
             device_token_1.DeviceToken.encode(v, writer.uint32(10).fork()).join();
         }
-        if (message.tokens_count !== 0) {
+        if (message.tokens_count !== undefined) {
             writer.uint32(16).uint64(message.tokens_count);
         }
         return writer;
@@ -393,7 +385,7 @@ exports.DeviceTokenList = {
     fromJSON(object) {
         return {
             tokens: globalThis.Array.isArray(object?.tokens) ? object.tokens.map((e) => device_token_1.DeviceToken.fromJSON(e)) : [],
-            tokens_count: isSet(object.tokensCount) ? globalThis.Number(object.tokensCount) : 0,
+            tokens_count: isSet(object.tokensCount) ? globalThis.Number(object.tokensCount) : undefined,
         };
     },
     toJSON(message) {
@@ -401,7 +393,7 @@ exports.DeviceTokenList = {
         if (message.tokens?.length) {
             obj.tokens = message.tokens.map((e) => device_token_1.DeviceToken.toJSON(e));
         }
-        if (message.tokens_count !== 0) {
+        if (message.tokens_count !== undefined) {
             obj.tokensCount = Math.round(message.tokens_count);
         }
         return obj;
@@ -412,7 +404,7 @@ exports.DeviceTokenList = {
     fromPartial(object) {
         const message = createBaseDeviceTokenList();
         message.tokens = object.tokens?.map((e) => device_token_1.DeviceToken.fromPartial(e)) || [];
-        message.tokens_count = object.tokens_count ?? 0;
+        message.tokens_count = object.tokens_count ?? undefined;
         return message;
     },
 };

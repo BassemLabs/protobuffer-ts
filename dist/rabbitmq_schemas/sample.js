@@ -10,11 +10,11 @@ exports.SampleEvent = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "rabbitmq_schemas";
 function createBaseSampleEvent() {
-    return { sample: "" };
+    return { sample: undefined };
 }
 exports.SampleEvent = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.sample !== "") {
+        if (message.sample !== undefined) {
             writer.uint32(10).string(message.sample);
         }
         return writer;
@@ -41,11 +41,11 @@ exports.SampleEvent = {
         return message;
     },
     fromJSON(object) {
-        return { sample: isSet(object.sample) ? globalThis.String(object.sample) : "" };
+        return { sample: isSet(object.sample) ? globalThis.String(object.sample) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.sample !== "") {
+        if (message.sample !== undefined) {
             obj.sample = message.sample;
         }
         return obj;
@@ -55,7 +55,7 @@ exports.SampleEvent = {
     },
     fromPartial(object) {
         const message = createBaseSampleEvent();
-        message.sample = object.sample ?? "";
+        message.sample = object.sample ?? undefined;
         return message;
     },
 };

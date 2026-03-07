@@ -20,20 +20,20 @@ export const protobufPackage = "user_service";
 
 export interface RefreshDeviceTokenRequest {
   context: RequestContext | undefined;
-  token: string;
-  platform: DevicePlatform;
-  device_id: string;
-  app_version: string;
+  token?: string | undefined;
+  platform?: DevicePlatform | undefined;
+  device_id?: string | undefined;
+  app_version?: string | undefined;
 }
 
 export interface DisableDeviceTokenRequest {
   context: RequestContext | undefined;
-  token: string;
+  token?: string | undefined;
   user_id: ObjectId | undefined;
 }
 
 export interface DisableDeviceTokenResponse {
-  success: boolean;
+  success?: boolean | undefined;
   disabled_count?: number | undefined;
 }
 
@@ -44,17 +44,11 @@ export interface ListDeviceTokensRequest {
 
 export interface DeviceTokenList {
   tokens: DeviceToken[];
-  tokens_count: number;
+  tokens_count?: number | undefined;
 }
 
 function createBaseRefreshDeviceTokenRequest(): RefreshDeviceTokenRequest {
-  return {
-    context: undefined,
-    token: "",
-    platform: DevicePlatform.DEVICE_PLATFORM_UNKNOWN,
-    device_id: "",
-    app_version: "",
-  };
+  return { context: undefined, token: undefined, platform: undefined, device_id: undefined, app_version: undefined };
 }
 
 export const RefreshDeviceTokenRequest: MessageFns<RefreshDeviceTokenRequest> = {
@@ -62,16 +56,16 @@ export const RefreshDeviceTokenRequest: MessageFns<RefreshDeviceTokenRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.token !== "") {
+    if (message.token !== undefined) {
       writer.uint32(18).string(message.token);
     }
-    if (message.platform !== DevicePlatform.DEVICE_PLATFORM_UNKNOWN) {
+    if (message.platform !== undefined) {
       writer.uint32(24).int32(devicePlatformToNumber(message.platform));
     }
-    if (message.device_id !== "") {
+    if (message.device_id !== undefined) {
       writer.uint32(34).string(message.device_id);
     }
-    if (message.app_version !== "") {
+    if (message.app_version !== undefined) {
       writer.uint32(42).string(message.app_version);
     }
     return writer;
@@ -131,12 +125,10 @@ export const RefreshDeviceTokenRequest: MessageFns<RefreshDeviceTokenRequest> = 
   fromJSON(object: any): RefreshDeviceTokenRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      token: isSet(object.token) ? globalThis.String(object.token) : "",
-      platform: isSet(object.platform)
-        ? devicePlatformFromJSON(object.platform)
-        : DevicePlatform.DEVICE_PLATFORM_UNKNOWN,
-      device_id: isSet(object.deviceId) ? globalThis.String(object.deviceId) : "",
-      app_version: isSet(object.appVersion) ? globalThis.String(object.appVersion) : "",
+      token: isSet(object.token) ? globalThis.String(object.token) : undefined,
+      platform: isSet(object.platform) ? devicePlatformFromJSON(object.platform) : undefined,
+      device_id: isSet(object.deviceId) ? globalThis.String(object.deviceId) : undefined,
+      app_version: isSet(object.appVersion) ? globalThis.String(object.appVersion) : undefined,
     };
   },
 
@@ -145,16 +137,16 @@ export const RefreshDeviceTokenRequest: MessageFns<RefreshDeviceTokenRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.token !== "") {
+    if (message.token !== undefined) {
       obj.token = message.token;
     }
-    if (message.platform !== DevicePlatform.DEVICE_PLATFORM_UNKNOWN) {
+    if (message.platform !== undefined) {
       obj.platform = devicePlatformToJSON(message.platform);
     }
-    if (message.device_id !== "") {
+    if (message.device_id !== undefined) {
       obj.deviceId = message.device_id;
     }
-    if (message.app_version !== "") {
+    if (message.app_version !== undefined) {
       obj.appVersion = message.app_version;
     }
     return obj;
@@ -168,16 +160,16 @@ export const RefreshDeviceTokenRequest: MessageFns<RefreshDeviceTokenRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.token = object.token ?? "";
-    message.platform = object.platform ?? DevicePlatform.DEVICE_PLATFORM_UNKNOWN;
-    message.device_id = object.device_id ?? "";
-    message.app_version = object.app_version ?? "";
+    message.token = object.token ?? undefined;
+    message.platform = object.platform ?? undefined;
+    message.device_id = object.device_id ?? undefined;
+    message.app_version = object.app_version ?? undefined;
     return message;
   },
 };
 
 function createBaseDisableDeviceTokenRequest(): DisableDeviceTokenRequest {
-  return { context: undefined, token: "", user_id: undefined };
+  return { context: undefined, token: undefined, user_id: undefined };
 }
 
 export const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest> = {
@@ -185,7 +177,7 @@ export const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.token !== "") {
+    if (message.token !== undefined) {
       writer.uint32(18).string(message.token);
     }
     if (message.user_id !== undefined) {
@@ -234,7 +226,7 @@ export const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest> = 
   fromJSON(object: any): DisableDeviceTokenRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      token: isSet(object.token) ? globalThis.String(object.token) : "",
+      token: isSet(object.token) ? globalThis.String(object.token) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
     };
   },
@@ -244,7 +236,7 @@ export const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.token !== "") {
+    if (message.token !== undefined) {
       obj.token = message.token;
     }
     if (message.user_id !== undefined) {
@@ -261,7 +253,7 @@ export const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.token = object.token ?? "";
+    message.token = object.token ?? undefined;
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
@@ -270,15 +262,15 @@ export const DisableDeviceTokenRequest: MessageFns<DisableDeviceTokenRequest> = 
 };
 
 function createBaseDisableDeviceTokenResponse(): DisableDeviceTokenResponse {
-  return { success: false, disabled_count: 0 };
+  return { success: undefined, disabled_count: undefined };
 }
 
 export const DisableDeviceTokenResponse: MessageFns<DisableDeviceTokenResponse> = {
   encode(message: DisableDeviceTokenResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
-    if (message.disabled_count !== undefined && message.disabled_count !== 0) {
+    if (message.disabled_count !== undefined) {
       writer.uint32(16).uint64(message.disabled_count);
     }
     return writer;
@@ -316,17 +308,17 @@ export const DisableDeviceTokenResponse: MessageFns<DisableDeviceTokenResponse> 
 
   fromJSON(object: any): DisableDeviceTokenResponse {
     return {
-      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
-      disabled_count: isSet(object.disabledCount) ? globalThis.Number(object.disabledCount) : 0,
+      success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined,
+      disabled_count: isSet(object.disabledCount) ? globalThis.Number(object.disabledCount) : undefined,
     };
   },
 
   toJSON(message: DisableDeviceTokenResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
-    if (message.disabled_count !== undefined && message.disabled_count !== 0) {
+    if (message.disabled_count !== undefined) {
       obj.disabledCount = Math.round(message.disabled_count);
     }
     return obj;
@@ -337,8 +329,8 @@ export const DisableDeviceTokenResponse: MessageFns<DisableDeviceTokenResponse> 
   },
   fromPartial<I extends Exact<DeepPartial<DisableDeviceTokenResponse>, I>>(object: I): DisableDeviceTokenResponse {
     const message = createBaseDisableDeviceTokenResponse();
-    message.success = object.success ?? false;
-    message.disabled_count = object.disabled_count ?? 0;
+    message.success = object.success ?? undefined;
+    message.disabled_count = object.disabled_count ?? undefined;
     return message;
   },
 };
@@ -422,7 +414,7 @@ export const ListDeviceTokensRequest: MessageFns<ListDeviceTokensRequest> = {
 };
 
 function createBaseDeviceTokenList(): DeviceTokenList {
-  return { tokens: [], tokens_count: 0 };
+  return { tokens: [], tokens_count: undefined };
 }
 
 export const DeviceTokenList: MessageFns<DeviceTokenList> = {
@@ -430,7 +422,7 @@ export const DeviceTokenList: MessageFns<DeviceTokenList> = {
     for (const v of message.tokens) {
       DeviceToken.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.tokens_count !== 0) {
+    if (message.tokens_count !== undefined) {
       writer.uint32(16).uint64(message.tokens_count);
     }
     return writer;
@@ -469,7 +461,7 @@ export const DeviceTokenList: MessageFns<DeviceTokenList> = {
   fromJSON(object: any): DeviceTokenList {
     return {
       tokens: globalThis.Array.isArray(object?.tokens) ? object.tokens.map((e: any) => DeviceToken.fromJSON(e)) : [],
-      tokens_count: isSet(object.tokensCount) ? globalThis.Number(object.tokensCount) : 0,
+      tokens_count: isSet(object.tokensCount) ? globalThis.Number(object.tokensCount) : undefined,
     };
   },
 
@@ -478,7 +470,7 @@ export const DeviceTokenList: MessageFns<DeviceTokenList> = {
     if (message.tokens?.length) {
       obj.tokens = message.tokens.map((e) => DeviceToken.toJSON(e));
     }
-    if (message.tokens_count !== 0) {
+    if (message.tokens_count !== undefined) {
       obj.tokensCount = Math.round(message.tokens_count);
     }
     return obj;
@@ -490,7 +482,7 @@ export const DeviceTokenList: MessageFns<DeviceTokenList> = {
   fromPartial<I extends Exact<DeepPartial<DeviceTokenList>, I>>(object: I): DeviceTokenList {
     const message = createBaseDeviceTokenList();
     message.tokens = object.tokens?.map((e) => DeviceToken.fromPartial(e)) || [];
-    message.tokens_count = object.tokens_count ?? 0;
+    message.tokens_count = object.tokens_count ?? undefined;
     return message;
   },
 };

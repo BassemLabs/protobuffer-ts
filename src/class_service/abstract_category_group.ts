@@ -13,13 +13,13 @@ export const protobufPackage = "class_service";
 export interface AbstractCategoryGroup {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
-  name: string;
-  credits_required: number;
+  name?: string | undefined;
+  credits_required?: number | undefined;
   category_ids: ObjectId[];
 }
 
 function createBaseAbstractCategoryGroup(): AbstractCategoryGroup {
-  return { id: undefined, organization: undefined, name: "", credits_required: 0, category_ids: [] };
+  return { id: undefined, organization: undefined, name: undefined, credits_required: undefined, category_ids: [] };
 }
 
 export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
@@ -30,10 +30,10 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       writer.uint32(33).double(message.credits_required);
     }
     for (const v of message.category_ids) {
@@ -97,8 +97,8 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -113,10 +113,10 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.credits_required !== 0) {
+    if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
     }
     if (message.category_ids?.length) {
@@ -134,8 +134,8 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.name = object.name ?? "";
-    message.credits_required = object.credits_required ?? 0;
+    message.name = object.name ?? undefined;
+    message.credits_required = object.credits_required ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },

@@ -1,9 +1,9 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "utils";
 export interface PhoneNumber {
-    country_code: string;
-    number: string;
-    country: string;
+    country_code?: string | undefined;
+    number?: string | undefined;
+    country?: string | undefined;
 }
 export declare const PhoneNumber: MessageFns<PhoneNumber>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

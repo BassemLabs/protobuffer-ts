@@ -26,7 +26,7 @@ export interface GetActiveCustomFieldsByGroupResponse {
 }
 export interface GetCustomFieldsByUserTypeRequest {
     context: RequestContext | undefined;
-    user_type: UserType;
+    user_type?: UserType | undefined;
     /** Default false */
     include_archived?: boolean | undefined;
 }
@@ -36,22 +36,22 @@ export interface GetCustomFieldsByUserTypeResponse {
 export interface CreateCustomFieldRequest {
     context: RequestContext | undefined;
     group_id: ObjectId | undefined;
-    name: string;
-    field_type: CustomFieldType;
-    is_required: boolean;
-    description: string;
-    is_archived: boolean;
+    name?: string | undefined;
+    field_type?: CustomFieldType | undefined;
+    is_required?: boolean | undefined;
+    description?: string | undefined;
+    is_archived?: boolean | undefined;
     regex_pattern?: string | undefined;
     options: string[];
 }
 export interface UpdateCustomFieldRequest {
     context: RequestContext | undefined;
     custom_field_id: ObjectId | undefined;
-    name: string;
-    field_type: CustomFieldType;
-    description: string;
-    is_required: boolean;
-    is_archived: boolean;
+    name?: string | undefined;
+    field_type?: CustomFieldType | undefined;
+    description?: string | undefined;
+    is_required?: boolean | undefined;
+    is_archived?: boolean | undefined;
     regex_pattern?: string | undefined;
     options: string[];
 }
@@ -97,7 +97,7 @@ export interface UpdateCustomFieldsForGroupRequest {
 }
 export interface CustomFieldEntryUpdate {
     custom_field_id: ObjectId | undefined;
-    value: string;
+    value?: string | undefined;
 }
 export interface UpdateCustomFieldsForGroupResponse {
     entries: CustomFieldEntry[];
@@ -106,16 +106,16 @@ export interface UploadDocumentToCustomFieldEntryRequest {
     context: RequestContext | undefined;
     user_id: ObjectId | undefined;
     custom_field_id: ObjectId | undefined;
-    document_name: string;
+    document_name?: string | undefined;
     /** Base64-encoded file content */
-    file_content: string;
-    file_name: string;
+    file_content?: string | undefined;
+    file_name?: string | undefined;
 }
 export interface RemoveDocumentFromCustomFieldEntryRequest {
     context: RequestContext | undefined;
     user_id: ObjectId | undefined;
     custom_field_id: ObjectId | undefined;
-    document_index: number;
+    document_index?: number | undefined;
 }
 /** Unified response for all endpoints that return a list of CustomFieldsGroup */
 export interface GetCustomFieldsGroupsResponse {
@@ -123,9 +123,9 @@ export interface GetCustomFieldsGroupsResponse {
 }
 export interface CreateCustomFieldsGroupRequest {
     context: RequestContext | undefined;
-    group_name: string;
-    user_type: UserType;
-    profile_section: ProfileSection;
+    group_name?: string | undefined;
+    user_type?: UserType | undefined;
+    profile_section?: ProfileSection | undefined;
     hints: string[];
     group_access_settings: ObjectId | undefined;
     entries_access_settings: ObjectId | undefined;
@@ -136,8 +136,8 @@ export interface CreateCustomFieldsGroupRequest {
 export interface UpdateCustomFieldsGroupRequest {
     context: RequestContext | undefined;
     group_id: ObjectId | undefined;
-    group_name: string;
-    profile_section: ProfileSection;
+    group_name?: string | undefined;
+    profile_section?: ProfileSection | undefined;
     hints: string[];
     /** these fields are only for custom field groups for user type: Student */
     visible_to_parents_for_statuses: StudentStatus[];
@@ -154,16 +154,16 @@ export interface GetAllCustomFieldsGroupsRequest {
 }
 export interface GetAccessibleCustomFieldsGroupsRequest {
     context: RequestContext | undefined;
-    user_type: UserType;
+    user_type?: UserType | undefined;
 }
 export interface GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest {
     context: RequestContext | undefined;
-    user_type: UserType;
-    profile_section: ProfileSection;
+    user_type?: UserType | undefined;
+    profile_section?: ProfileSection | undefined;
 }
 export interface GetStudentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
-    student_status: StudentStatus;
+    student_status?: StudentStatus | undefined;
 }
 export interface GetParentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
@@ -186,7 +186,7 @@ export interface RejectGroupRequest {
     context: RequestContext | undefined;
     group_id: ObjectId | undefined;
     user_id: ObjectId | undefined;
-    rejection_message: string;
+    rejection_message?: string | undefined;
 }
 export interface GetResourceAccessSettingsRequest {
     context: RequestContext | undefined;
@@ -196,9 +196,9 @@ export interface GetResourceAccessSettingsResponse {
 }
 export interface CreateResourceAccessSettingsRequest {
     context: RequestContext | undefined;
-    name: string;
-    ownership_kind: OwnershipKind;
-    user_type: UserType;
+    name?: string | undefined;
+    ownership_kind?: OwnershipKind | undefined;
+    user_type?: UserType | undefined;
     access_rules: AccessRule[];
 }
 export declare const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupRequest>;

@@ -15,9 +15,9 @@ export const protobufPackage = "class_service";
 
 export interface Homeroom {
   id: ObjectId | undefined;
-  archived: boolean;
+  archived?: boolean | undefined;
   semester: Semester | undefined;
-  name: string;
+  name?: string | undefined;
   grades: StudentGrade[];
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
@@ -26,8 +26,8 @@ export interface Homeroom {
 
 export interface ListHomeroom {
   id: ObjectId | undefined;
-  archived: boolean;
-  name: string;
+  archived?: boolean | undefined;
+  name?: string | undefined;
   grades: string[];
   semester: ListSemester | undefined;
   teacher_ids: ObjectId[];
@@ -36,15 +36,15 @@ export interface ListHomeroom {
 
 export interface HomeroomList {
   homerooms: ListHomeroom[];
-  homerooms_count: number;
+  homerooms_count?: number | undefined;
 }
 
 function createBaseHomeroom(): Homeroom {
   return {
     id: undefined,
-    archived: false,
+    archived: undefined,
     semester: undefined,
-    name: "",
+    name: undefined,
     grades: [],
     teacher_ids: [],
     student_ids: [],
@@ -57,13 +57,13 @@ export const Homeroom: MessageFns<Homeroom> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(16).bool(message.archived);
     }
     if (message.semester !== undefined) {
       Semester.encode(message.semester, writer.uint32(26).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(34).string(message.name);
     }
     writer.uint32(42).fork();
@@ -168,9 +168,9 @@ export const Homeroom: MessageFns<Homeroom> = {
   fromJSON(object: any): Homeroom {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
       semester: isSet(object.semester) ? Semester.fromJSON(object.semester) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => studentGradeFromJSON(e)) : [],
       teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
@@ -187,13 +187,13 @@ export const Homeroom: MessageFns<Homeroom> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
     if (message.semester !== undefined) {
       obj.semester = Semester.toJSON(message.semester);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.grades?.length) {
@@ -217,11 +217,11 @@ export const Homeroom: MessageFns<Homeroom> = {
   fromPartial<I extends Exact<DeepPartial<Homeroom>, I>>(object: I): Homeroom {
     const message = createBaseHomeroom();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.archived = object.archived ?? false;
+    message.archived = object.archived ?? undefined;
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? Semester.fromPartial(object.semester)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.grades = object.grades?.map((e) => e) || [];
     message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
@@ -235,8 +235,8 @@ export const Homeroom: MessageFns<Homeroom> = {
 function createBaseListHomeroom(): ListHomeroom {
   return {
     id: undefined,
-    archived: false,
-    name: "",
+    archived: undefined,
+    name: undefined,
     grades: [],
     semester: undefined,
     teacher_ids: [],
@@ -249,10 +249,10 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(16).bool(message.archived);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     for (const v of message.grades) {
@@ -338,8 +338,8 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
   fromJSON(object: any): ListHomeroom {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => globalThis.String(e)) : [],
       semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
       teacher_ids: globalThis.Array.isArray(object?.teacherIds)
@@ -356,10 +356,10 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.grades?.length) {
@@ -383,8 +383,8 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
   fromPartial<I extends Exact<DeepPartial<ListHomeroom>, I>>(object: I): ListHomeroom {
     const message = createBaseListHomeroom();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.archived = object.archived ?? false;
-    message.name = object.name ?? "";
+    message.archived = object.archived ?? undefined;
+    message.name = object.name ?? undefined;
     message.grades = object.grades?.map((e) => e) || [];
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? ListSemester.fromPartial(object.semester)
@@ -396,7 +396,7 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
 };
 
 function createBaseHomeroomList(): HomeroomList {
-  return { homerooms: [], homerooms_count: 0 };
+  return { homerooms: [], homerooms_count: undefined };
 }
 
 export const HomeroomList: MessageFns<HomeroomList> = {
@@ -404,7 +404,7 @@ export const HomeroomList: MessageFns<HomeroomList> = {
     for (const v of message.homerooms) {
       ListHomeroom.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.homerooms_count !== 0) {
+    if (message.homerooms_count !== undefined) {
       writer.uint32(16).uint64(message.homerooms_count);
     }
     return writer;
@@ -445,7 +445,7 @@ export const HomeroomList: MessageFns<HomeroomList> = {
       homerooms: globalThis.Array.isArray(object?.homerooms)
         ? object.homerooms.map((e: any) => ListHomeroom.fromJSON(e))
         : [],
-      homerooms_count: isSet(object.homeroomsCount) ? globalThis.Number(object.homeroomsCount) : 0,
+      homerooms_count: isSet(object.homeroomsCount) ? globalThis.Number(object.homeroomsCount) : undefined,
     };
   },
 
@@ -454,7 +454,7 @@ export const HomeroomList: MessageFns<HomeroomList> = {
     if (message.homerooms?.length) {
       obj.homerooms = message.homerooms.map((e) => ListHomeroom.toJSON(e));
     }
-    if (message.homerooms_count !== 0) {
+    if (message.homerooms_count !== undefined) {
       obj.homeroomsCount = Math.round(message.homerooms_count);
     }
     return obj;
@@ -466,7 +466,7 @@ export const HomeroomList: MessageFns<HomeroomList> = {
   fromPartial<I extends Exact<DeepPartial<HomeroomList>, I>>(object: I): HomeroomList {
     const message = createBaseHomeroomList();
     message.homerooms = object.homerooms?.map((e) => ListHomeroom.fromPartial(e)) || [];
-    message.homerooms_count = object.homerooms_count ?? 0;
+    message.homerooms_count = object.homerooms_count ?? undefined;
     return message;
   },
 };

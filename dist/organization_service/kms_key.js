@@ -168,9 +168,9 @@ function createBaseKMSKey() {
     return {
         id: undefined,
         organization: undefined,
-        status: KMSKeyStatus.Active,
-        key_type: KMSKeyType.GoogelAdminEmail,
-        decrypted_key_material: "",
+        status: undefined,
+        key_type: undefined,
+        decrypted_key_material: undefined,
     };
 }
 exports.KMSKey = {
@@ -181,13 +181,13 @@ exports.KMSKey = {
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
         }
-        if (message.status !== KMSKeyStatus.Active) {
+        if (message.status !== undefined) {
             writer.uint32(24).int32(kMSKeyStatusToNumber(message.status));
         }
-        if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+        if (message.key_type !== undefined) {
             writer.uint32(32).int32(kMSKeyTypeToNumber(message.key_type));
         }
-        if (message.decrypted_key_material !== "") {
+        if (message.decrypted_key_material !== undefined) {
             writer.uint32(42).string(message.decrypted_key_material);
         }
         return writer;
@@ -241,9 +241,11 @@ exports.KMSKey = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            status: isSet(object.status) ? kMSKeyStatusFromJSON(object.status) : KMSKeyStatus.Active,
-            key_type: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : KMSKeyType.GoogelAdminEmail,
-            decrypted_key_material: isSet(object.decryptedKeyMaterial) ? globalThis.String(object.decryptedKeyMaterial) : "",
+            status: isSet(object.status) ? kMSKeyStatusFromJSON(object.status) : undefined,
+            key_type: isSet(object.keyType) ? kMSKeyTypeFromJSON(object.keyType) : undefined,
+            decrypted_key_material: isSet(object.decryptedKeyMaterial)
+                ? globalThis.String(object.decryptedKeyMaterial)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -254,13 +256,13 @@ exports.KMSKey = {
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
         }
-        if (message.status !== KMSKeyStatus.Active) {
+        if (message.status !== undefined) {
             obj.status = kMSKeyStatusToJSON(message.status);
         }
-        if (message.key_type !== KMSKeyType.GoogelAdminEmail) {
+        if (message.key_type !== undefined) {
             obj.keyType = kMSKeyTypeToJSON(message.key_type);
         }
-        if (message.decrypted_key_material !== "") {
+        if (message.decrypted_key_material !== undefined) {
             obj.decryptedKeyMaterial = message.decrypted_key_material;
         }
         return obj;
@@ -274,9 +276,9 @@ exports.KMSKey = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.status = object.status ?? KMSKeyStatus.Active;
-        message.key_type = object.key_type ?? KMSKeyType.GoogelAdminEmail;
-        message.decrypted_key_material = object.decrypted_key_material ?? "";
+        message.status = object.status ?? undefined;
+        message.key_type = object.key_type ?? undefined;
+        message.decrypted_key_material = object.decrypted_key_material ?? undefined;
         return message;
     },
 };

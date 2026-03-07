@@ -65,22 +65,22 @@ export function actionTypeToNumber(object: ActionType): number {
 }
 
 export interface ActionRequiredByParents {
-  action_type: ActionType;
-  title: string;
+  action_type?: ActionType | undefined;
+  title?: string | undefined;
   invoice_id?: ObjectId | undefined;
   group_id?: ObjectId | undefined;
 }
 
 function createBaseActionRequiredByParents(): ActionRequiredByParents {
-  return { action_type: ActionType.CUSTOM_FIELDS, title: "", invoice_id: undefined, group_id: undefined };
+  return { action_type: undefined, title: undefined, invoice_id: undefined, group_id: undefined };
 }
 
 export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
   encode(message: ActionRequiredByParents, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.action_type !== ActionType.CUSTOM_FIELDS) {
+    if (message.action_type !== undefined) {
       writer.uint32(8).int32(actionTypeToNumber(message.action_type));
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(18).string(message.title);
     }
     if (message.invoice_id !== undefined) {
@@ -138,8 +138,8 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
 
   fromJSON(object: any): ActionRequiredByParents {
     return {
-      action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : ActionType.CUSTOM_FIELDS,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      action_type: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : undefined,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
       invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
       group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
     };
@@ -147,10 +147,10 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
 
   toJSON(message: ActionRequiredByParents): unknown {
     const obj: any = {};
-    if (message.action_type !== ActionType.CUSTOM_FIELDS) {
+    if (message.action_type !== undefined) {
       obj.actionType = actionTypeToJSON(message.action_type);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
     if (message.invoice_id !== undefined) {
@@ -167,8 +167,8 @@ export const ActionRequiredByParents: MessageFns<ActionRequiredByParents> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActionRequiredByParents>, I>>(object: I): ActionRequiredByParents {
     const message = createBaseActionRequiredByParents();
-    message.action_type = object.action_type ?? ActionType.CUSTOM_FIELDS;
-    message.title = object.title ?? "";
+    message.action_type = object.action_type ?? undefined;
+    message.title = object.title ?? undefined;
     message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
       ? ObjectId.fromPartial(object.invoice_id)
       : undefined;

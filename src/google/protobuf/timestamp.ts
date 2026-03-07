@@ -106,26 +106,28 @@ export interface Timestamp {
    * 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
    * 9999-12-31T23:59:59Z inclusive.
    */
-  seconds: number;
+  seconds?:
+    | number
+    | undefined;
   /**
    * Non-negative fractions of a second at nanosecond resolution. Negative
    * second values with fractions must still have non-negative nanos values
    * that count forward in time. Must be from 0 to 999,999,999
    * inclusive.
    */
-  nanos: number;
+  nanos?: number | undefined;
 }
 
 function createBaseTimestamp(): Timestamp {
-  return { seconds: 0, nanos: 0 };
+  return { seconds: undefined, nanos: undefined };
 }
 
 export const Timestamp: MessageFns<Timestamp> = {
   encode(message: Timestamp, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.seconds !== 0) {
+    if (message.seconds !== undefined) {
       writer.uint32(8).int64(message.seconds);
     }
-    if (message.nanos !== 0) {
+    if (message.nanos !== undefined) {
       writer.uint32(16).int32(message.nanos);
     }
     return writer;
@@ -163,17 +165,17 @@ export const Timestamp: MessageFns<Timestamp> = {
 
   fromJSON(object: any): Timestamp {
     return {
-      seconds: isSet(object.seconds) ? globalThis.Number(object.seconds) : 0,
-      nanos: isSet(object.nanos) ? globalThis.Number(object.nanos) : 0,
+      seconds: isSet(object.seconds) ? globalThis.Number(object.seconds) : undefined,
+      nanos: isSet(object.nanos) ? globalThis.Number(object.nanos) : undefined,
     };
   },
 
   toJSON(message: Timestamp): unknown {
     const obj: any = {};
-    if (message.seconds !== 0) {
+    if (message.seconds !== undefined) {
       obj.seconds = Math.round(message.seconds);
     }
-    if (message.nanos !== 0) {
+    if (message.nanos !== undefined) {
       obj.nanos = Math.round(message.nanos);
     }
     return obj;
@@ -184,8 +186,8 @@ export const Timestamp: MessageFns<Timestamp> = {
   },
   fromPartial<I extends Exact<DeepPartial<Timestamp>, I>>(object: I): Timestamp {
     const message = createBaseTimestamp();
-    message.seconds = object.seconds ?? 0;
-    message.nanos = object.nanos ?? 0;
+    message.seconds = object.seconds ?? undefined;
+    message.nanos = object.nanos ?? undefined;
     return message;
   },
 };

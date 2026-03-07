@@ -5,28 +5,28 @@ import { Campus } from "./campus";
 export declare const protobufPackage = "organization_service";
 export interface CreateCampusRequest {
     context: RequestContext | undefined;
-    name: string;
-    address: string;
-    email: string;
-    phone: string;
+    name?: string | undefined;
+    address?: string | undefined;
+    email?: string | undefined;
+    phone?: string | undefined;
     principal_id: ObjectId | undefined;
     supervisor_id: ObjectId | undefined;
 }
 export interface UpdateCampusRequest {
     context: RequestContext | undefined;
     id: ObjectId | undefined;
-    name: string;
-    address: string;
-    email: string;
-    phone: string;
+    name?: string | undefined;
+    address?: string | undefined;
+    email?: string | undefined;
+    phone?: string | undefined;
     principal_id: ObjectId | undefined;
     supervisor_id: ObjectId | undefined;
 }
 export interface UpdateLogoRequest {
     context: RequestContext | undefined;
     campus_id: ObjectId | undefined;
-    file_name: string;
-    aws_s3_file_location: string;
+    file_name?: string | undefined;
+    aws_s3_file_location?: string | undefined;
 }
 export interface GetCampusRequest {
     context: RequestContext | undefined;

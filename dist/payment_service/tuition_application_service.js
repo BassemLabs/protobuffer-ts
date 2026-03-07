@@ -183,11 +183,11 @@ exports.RemoveDiscountRequest = {
     },
 };
 function createBaseRemoveDiscountResponse() {
-    return { success: false };
+    return { success: undefined };
 }
 exports.RemoveDiscountResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             writer.uint32(8).bool(message.success);
         }
         return writer;
@@ -214,11 +214,11 @@ exports.RemoveDiscountResponse = {
         return message;
     },
     fromJSON(object) {
-        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             obj.success = message.success;
         }
         return obj;
@@ -228,7 +228,7 @@ exports.RemoveDiscountResponse = {
     },
     fromPartial(object) {
         const message = createBaseRemoveDiscountResponse();
-        message.success = object.success ?? false;
+        message.success = object.success ?? undefined;
         return message;
     },
 };
@@ -683,11 +683,11 @@ exports.RemoveAdditionalFeeRequest = {
     },
 };
 function createBaseRemoveAdditionalFeeResponse() {
-    return { success: false };
+    return { success: undefined };
 }
 exports.RemoveAdditionalFeeResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             writer.uint32(8).bool(message.success);
         }
         return writer;
@@ -714,11 +714,11 @@ exports.RemoveAdditionalFeeResponse = {
         return message;
     },
     fromJSON(object) {
-        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.success !== false) {
+        if (message.success !== undefined) {
             obj.success = message.success;
         }
         return obj;
@@ -728,7 +728,7 @@ exports.RemoveAdditionalFeeResponse = {
     },
     fromPartial(object) {
         const message = createBaseRemoveAdditionalFeeResponse();
-        message.success = object.success ?? false;
+        message.success = object.success ?? undefined;
         return message;
     },
 };

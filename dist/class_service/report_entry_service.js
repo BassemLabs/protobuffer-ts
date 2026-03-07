@@ -777,23 +777,29 @@ exports.GetReportEntriesQueueRequest = {
     },
 };
 function createBaseReportStatusCounters() {
-    return { not_filled: 0, filled: 0, changes_requested: 0, approved: 0, published: 0 };
+    return {
+        not_filled: undefined,
+        filled: undefined,
+        changes_requested: undefined,
+        approved: undefined,
+        published: undefined,
+    };
 }
 exports.ReportStatusCounters = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.not_filled !== 0) {
+        if (message.not_filled !== undefined) {
             writer.uint32(8).uint32(message.not_filled);
         }
-        if (message.filled !== 0) {
+        if (message.filled !== undefined) {
             writer.uint32(16).uint32(message.filled);
         }
-        if (message.changes_requested !== 0) {
+        if (message.changes_requested !== undefined) {
             writer.uint32(24).uint32(message.changes_requested);
         }
-        if (message.approved !== 0) {
+        if (message.approved !== undefined) {
             writer.uint32(32).uint32(message.approved);
         }
-        if (message.published !== 0) {
+        if (message.published !== undefined) {
             writer.uint32(40).uint32(message.published);
         }
         return writer;
@@ -845,28 +851,28 @@ exports.ReportStatusCounters = {
     },
     fromJSON(object) {
         return {
-            not_filled: isSet(object.notFilled) ? globalThis.Number(object.notFilled) : 0,
-            filled: isSet(object.filled) ? globalThis.Number(object.filled) : 0,
-            changes_requested: isSet(object.changesRequested) ? globalThis.Number(object.changesRequested) : 0,
-            approved: isSet(object.approved) ? globalThis.Number(object.approved) : 0,
-            published: isSet(object.published) ? globalThis.Number(object.published) : 0,
+            not_filled: isSet(object.notFilled) ? globalThis.Number(object.notFilled) : undefined,
+            filled: isSet(object.filled) ? globalThis.Number(object.filled) : undefined,
+            changes_requested: isSet(object.changesRequested) ? globalThis.Number(object.changesRequested) : undefined,
+            approved: isSet(object.approved) ? globalThis.Number(object.approved) : undefined,
+            published: isSet(object.published) ? globalThis.Number(object.published) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.not_filled !== 0) {
+        if (message.not_filled !== undefined) {
             obj.notFilled = Math.round(message.not_filled);
         }
-        if (message.filled !== 0) {
+        if (message.filled !== undefined) {
             obj.filled = Math.round(message.filled);
         }
-        if (message.changes_requested !== 0) {
+        if (message.changes_requested !== undefined) {
             obj.changesRequested = Math.round(message.changes_requested);
         }
-        if (message.approved !== 0) {
+        if (message.approved !== undefined) {
             obj.approved = Math.round(message.approved);
         }
-        if (message.published !== 0) {
+        if (message.published !== undefined) {
             obj.published = Math.round(message.published);
         }
         return obj;
@@ -876,46 +882,46 @@ exports.ReportStatusCounters = {
     },
     fromPartial(object) {
         const message = createBaseReportStatusCounters();
-        message.not_filled = object.not_filled ?? 0;
-        message.filled = object.filled ?? 0;
-        message.changes_requested = object.changes_requested ?? 0;
-        message.approved = object.approved ?? 0;
-        message.published = object.published ?? 0;
+        message.not_filled = object.not_filled ?? undefined;
+        message.filled = object.filled ?? undefined;
+        message.changes_requested = object.changes_requested ?? undefined;
+        message.approved = object.approved ?? undefined;
+        message.published = object.published ?? undefined;
         return message;
     },
 };
 function createBaseReportPublishQueueClass() {
     return {
-        class_type: ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE,
+        class_type: undefined,
         class_id: undefined,
-        class_name: "",
+        class_name: undefined,
         counters: undefined,
-        total_expected: 0,
-        can_publish: false,
-        blocking_reason: "",
+        total_expected: undefined,
+        can_publish: undefined,
+        blocking_reason: undefined,
     };
 }
 exports.ReportPublishQueueClass = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.class_type !== ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE) {
+        if (message.class_type !== undefined) {
             writer.uint32(8).int32(reportPublishClassTypeToNumber(message.class_type));
         }
         if (message.class_id !== undefined) {
             object_id_1.ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
         }
-        if (message.class_name !== "") {
+        if (message.class_name !== undefined) {
             writer.uint32(26).string(message.class_name);
         }
         if (message.counters !== undefined) {
             exports.ReportStatusCounters.encode(message.counters, writer.uint32(34).fork()).join();
         }
-        if (message.total_expected !== 0) {
+        if (message.total_expected !== undefined) {
             writer.uint32(40).uint32(message.total_expected);
         }
-        if (message.can_publish !== false) {
+        if (message.can_publish !== undefined) {
             writer.uint32(48).bool(message.can_publish);
         }
-        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+        if (message.blocking_reason !== undefined) {
             writer.uint32(58).string(message.blocking_reason);
         }
         return writer;
@@ -979,38 +985,36 @@ exports.ReportPublishQueueClass = {
     },
     fromJSON(object) {
         return {
-            class_type: isSet(object.classType)
-                ? reportPublishClassTypeFromJSON(object.classType)
-                : ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE,
+            class_type: isSet(object.classType) ? reportPublishClassTypeFromJSON(object.classType) : undefined,
             class_id: isSet(object.classId) ? object_id_1.ObjectId.fromJSON(object.classId) : undefined,
-            class_name: isSet(object.className) ? globalThis.String(object.className) : "",
+            class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
             counters: isSet(object.counters) ? exports.ReportStatusCounters.fromJSON(object.counters) : undefined,
-            total_expected: isSet(object.totalExpected) ? globalThis.Number(object.totalExpected) : 0,
-            can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : false,
-            blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : "",
+            total_expected: isSet(object.totalExpected) ? globalThis.Number(object.totalExpected) : undefined,
+            can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : undefined,
+            blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.class_type !== ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE) {
+        if (message.class_type !== undefined) {
             obj.classType = reportPublishClassTypeToJSON(message.class_type);
         }
         if (message.class_id !== undefined) {
             obj.classId = object_id_1.ObjectId.toJSON(message.class_id);
         }
-        if (message.class_name !== "") {
+        if (message.class_name !== undefined) {
             obj.className = message.class_name;
         }
         if (message.counters !== undefined) {
             obj.counters = exports.ReportStatusCounters.toJSON(message.counters);
         }
-        if (message.total_expected !== 0) {
+        if (message.total_expected !== undefined) {
             obj.totalExpected = Math.round(message.total_expected);
         }
-        if (message.can_publish !== false) {
+        if (message.can_publish !== undefined) {
             obj.canPublish = message.can_publish;
         }
-        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+        if (message.blocking_reason !== undefined) {
             obj.blockingReason = message.blocking_reason;
         }
         return obj;
@@ -1020,24 +1024,24 @@ exports.ReportPublishQueueClass = {
     },
     fromPartial(object) {
         const message = createBaseReportPublishQueueClass();
-        message.class_type = object.class_type ?? ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_COURSE;
+        message.class_type = object.class_type ?? undefined;
         message.class_id = (object.class_id !== undefined && object.class_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.class_id)
             : undefined;
-        message.class_name = object.class_name ?? "";
+        message.class_name = object.class_name ?? undefined;
         message.counters = (object.counters !== undefined && object.counters !== null)
             ? exports.ReportStatusCounters.fromPartial(object.counters)
             : undefined;
-        message.total_expected = object.total_expected ?? 0;
-        message.can_publish = object.can_publish ?? false;
-        message.blocking_reason = object.blocking_reason ?? "";
+        message.total_expected = object.total_expected ?? undefined;
+        message.can_publish = object.can_publish ?? undefined;
+        message.blocking_reason = object.blocking_reason ?? undefined;
         return message;
     },
 };
 function createBaseGetReportPublishQueueClassesRequest() {
     return {
         context: undefined,
-        report_type: semester_1.ReportType.Progress,
+        report_type: undefined,
         teacher_id: undefined,
         student_id: undefined,
         school_year_id: undefined,
@@ -1049,7 +1053,7 @@ exports.GetReportPublishQueueClassesRequest = {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(16).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
         if (message.teacher_id !== undefined) {
@@ -1120,7 +1124,7 @@ exports.GetReportPublishQueueClassesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
             teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
@@ -1132,7 +1136,7 @@ exports.GetReportPublishQueueClassesRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
         if (message.teacher_id !== undefined) {
@@ -1157,7 +1161,7 @@ exports.GetReportPublishQueueClassesRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.report_type = object.report_type ?? undefined;
         message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
@@ -1228,7 +1232,7 @@ exports.GetReportPublishQueueClassesResponse = {
     },
 };
 function createBaseGetHomeroomPublishBreakdownRequest() {
-    return { context: undefined, homeroom_id: undefined, report_type: semester_1.ReportType.Progress };
+    return { context: undefined, homeroom_id: undefined, report_type: undefined };
 }
 exports.GetHomeroomPublishBreakdownRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1238,7 +1242,7 @@ exports.GetHomeroomPublishBreakdownRequest = {
         if (message.homeroom_id !== undefined) {
             object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
         return writer;
@@ -1280,7 +1284,7 @@ exports.GetHomeroomPublishBreakdownRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
         };
     },
     toJSON(message) {
@@ -1291,7 +1295,7 @@ exports.GetHomeroomPublishBreakdownRequest = {
         if (message.homeroom_id !== undefined) {
             obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
         return obj;
@@ -1307,7 +1311,7 @@ exports.GetHomeroomPublishBreakdownRequest = {
         message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.report_type = object.report_type ?? undefined;
         return message;
     },
 };
@@ -1315,10 +1319,10 @@ function createBaseGetHomeroomPublishBreakdownResponse() {
     return {
         overall: undefined,
         holistic_counters: undefined,
-        holistic_total_expected: 0,
+        holistic_total_expected: undefined,
         subjects: [],
-        can_publish: false,
-        blocking_reason: "",
+        can_publish: undefined,
+        blocking_reason: undefined,
     };
 }
 exports.GetHomeroomPublishBreakdownResponse = {
@@ -1329,16 +1333,16 @@ exports.GetHomeroomPublishBreakdownResponse = {
         if (message.holistic_counters !== undefined) {
             exports.ReportStatusCounters.encode(message.holistic_counters, writer.uint32(18).fork()).join();
         }
-        if (message.holistic_total_expected !== 0) {
+        if (message.holistic_total_expected !== undefined) {
             writer.uint32(24).uint32(message.holistic_total_expected);
         }
         for (const v of message.subjects) {
             exports.ReportPublishQueueClass.encode(v, writer.uint32(34).fork()).join();
         }
-        if (message.can_publish !== false) {
+        if (message.can_publish !== undefined) {
             writer.uint32(40).bool(message.can_publish);
         }
-        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+        if (message.blocking_reason !== undefined) {
             writer.uint32(50).string(message.blocking_reason);
         }
         return writer;
@@ -1402,12 +1406,12 @@ exports.GetHomeroomPublishBreakdownResponse = {
                 : undefined,
             holistic_total_expected: isSet(object.holisticTotalExpected)
                 ? globalThis.Number(object.holisticTotalExpected)
-                : 0,
+                : undefined,
             subjects: globalThis.Array.isArray(object?.subjects)
                 ? object.subjects.map((e) => exports.ReportPublishQueueClass.fromJSON(e))
                 : [],
-            can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : false,
-            blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : "",
+            can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : undefined,
+            blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : undefined,
         };
     },
     toJSON(message) {
@@ -1418,16 +1422,16 @@ exports.GetHomeroomPublishBreakdownResponse = {
         if (message.holistic_counters !== undefined) {
             obj.holisticCounters = exports.ReportStatusCounters.toJSON(message.holistic_counters);
         }
-        if (message.holistic_total_expected !== 0) {
+        if (message.holistic_total_expected !== undefined) {
             obj.holisticTotalExpected = Math.round(message.holistic_total_expected);
         }
         if (message.subjects?.length) {
             obj.subjects = message.subjects.map((e) => exports.ReportPublishQueueClass.toJSON(e));
         }
-        if (message.can_publish !== false) {
+        if (message.can_publish !== undefined) {
             obj.canPublish = message.can_publish;
         }
-        if (message.blocking_reason !== undefined && message.blocking_reason !== "") {
+        if (message.blocking_reason !== undefined) {
             obj.blockingReason = message.blocking_reason;
         }
         return obj;
@@ -1443,22 +1447,22 @@ exports.GetHomeroomPublishBreakdownResponse = {
         message.holistic_counters = (object.holistic_counters !== undefined && object.holistic_counters !== null)
             ? exports.ReportStatusCounters.fromPartial(object.holistic_counters)
             : undefined;
-        message.holistic_total_expected = object.holistic_total_expected ?? 0;
+        message.holistic_total_expected = object.holistic_total_expected ?? undefined;
         message.subjects = object.subjects?.map((e) => exports.ReportPublishQueueClass.fromPartial(e)) || [];
-        message.can_publish = object.can_publish ?? false;
-        message.blocking_reason = object.blocking_reason ?? "";
+        message.can_publish = object.can_publish ?? undefined;
+        message.blocking_reason = object.blocking_reason ?? undefined;
         return message;
     },
 };
 function createBaseGetClassReportEntriesByTypeRequest() {
-    return { context: undefined, report_type: semester_1.ReportType.Progress, course_id: undefined, homeroom_id: undefined };
+    return { context: undefined, report_type: undefined, course_id: undefined, homeroom_id: undefined };
 }
 exports.GetClassReportEntriesByTypeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(16).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
         if (message.course_id !== undefined) {
@@ -1511,7 +1515,7 @@ exports.GetClassReportEntriesByTypeRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
         };
@@ -1521,7 +1525,7 @@ exports.GetClassReportEntriesByTypeRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
         if (message.course_id !== undefined) {
@@ -1540,7 +1544,7 @@ exports.GetClassReportEntriesByTypeRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.report_type = object.report_type ?? undefined;
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
@@ -1799,7 +1803,7 @@ exports.GetReportEntryMedianResponse = {
     },
 };
 function createBaseGenerateReportEntrySmartCommentRequest() {
-    return { context: undefined, report_entry_id: undefined, optional_prompt: "" };
+    return { context: undefined, report_entry_id: undefined, optional_prompt: undefined };
 }
 exports.GenerateReportEntrySmartCommentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1809,7 +1813,7 @@ exports.GenerateReportEntrySmartCommentRequest = {
         if (message.report_entry_id !== undefined) {
             object_id_1.ObjectId.encode(message.report_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.optional_prompt !== undefined && message.optional_prompt !== "") {
+        if (message.optional_prompt !== undefined) {
             writer.uint32(26).string(message.optional_prompt);
         }
         return writer;
@@ -1851,7 +1855,7 @@ exports.GenerateReportEntrySmartCommentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
-            optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : "",
+            optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : undefined,
         };
     },
     toJSON(message) {
@@ -1862,7 +1866,7 @@ exports.GenerateReportEntrySmartCommentRequest = {
         if (message.report_entry_id !== undefined) {
             obj.reportEntryId = object_id_1.ObjectId.toJSON(message.report_entry_id);
         }
-        if (message.optional_prompt !== undefined && message.optional_prompt !== "") {
+        if (message.optional_prompt !== undefined) {
             obj.optionalPrompt = message.optional_prompt;
         }
         return obj;
@@ -1878,16 +1882,16 @@ exports.GenerateReportEntrySmartCommentRequest = {
         message.report_entry_id = (object.report_entry_id !== undefined && object.report_entry_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.report_entry_id)
             : undefined;
-        message.optional_prompt = object.optional_prompt ?? "";
+        message.optional_prompt = object.optional_prompt ?? undefined;
         return message;
     },
 };
 function createBaseGenerateReportEntrySmartCommentResponse() {
-    return { comment: "" };
+    return { comment: undefined };
 }
 exports.GenerateReportEntrySmartCommentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             writer.uint32(10).string(message.comment);
         }
         return writer;
@@ -1914,11 +1918,11 @@ exports.GenerateReportEntrySmartCommentResponse = {
         return message;
     },
     fromJSON(object) {
-        return { comment: isSet(object.comment) ? globalThis.String(object.comment) : "" };
+        return { comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.comment !== "") {
+        if (message.comment !== undefined) {
             obj.comment = message.comment;
         }
         return obj;
@@ -1928,7 +1932,7 @@ exports.GenerateReportEntrySmartCommentResponse = {
     },
     fromPartial(object) {
         const message = createBaseGenerateReportEntrySmartCommentResponse();
-        message.comment = object.comment ?? "";
+        message.comment = object.comment ?? undefined;
         return message;
     },
 };
@@ -1938,12 +1942,12 @@ function createBaseUpdateReportEntryRequest() {
         student_id: undefined,
         course_id: undefined,
         homeroom_id: undefined,
-        report_type: semester_1.ReportType.Progress,
-        comment: "",
+        report_type: undefined,
+        comment: undefined,
         checkboxes: [],
         sections: [],
         learning_skills: [],
-        credit_earned: false,
+        credit_earned: undefined,
     };
 }
 exports.UpdateReportEntryRequest = {
@@ -1960,10 +1964,10 @@ exports.UpdateReportEntryRequest = {
         if (message.homeroom_id !== undefined) {
             object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(34).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(40).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
-        if (message.comment !== undefined && message.comment !== "") {
+        if (message.comment !== undefined) {
             writer.uint32(50).string(message.comment);
         }
         for (const v of message.checkboxes) {
@@ -1975,7 +1979,7 @@ exports.UpdateReportEntryRequest = {
         for (const v of message.learning_skills) {
             report_entry_1.ReportEntryLearningSkill.encode(v, writer.uint32(74).fork()).join();
         }
-        if (message.credit_earned !== undefined && message.credit_earned !== false) {
+        if (message.credit_earned !== undefined) {
             writer.uint32(80).bool(message.credit_earned);
         }
         return writer;
@@ -2061,8 +2065,8 @@ exports.UpdateReportEntryRequest = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
-            comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
             checkboxes: globalThis.Array.isArray(object?.checkboxes)
                 ? object.checkboxes.map((e) => report_entry_1.ReportEntryCheckBox.fromJSON(e))
                 : [],
@@ -2072,7 +2076,7 @@ exports.UpdateReportEntryRequest = {
             learning_skills: globalThis.Array.isArray(object?.learningSkills)
                 ? object.learningSkills.map((e) => report_entry_1.ReportEntryLearningSkill.fromJSON(e))
                 : [],
-            credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : false,
+            credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
         };
     },
     toJSON(message) {
@@ -2089,10 +2093,10 @@ exports.UpdateReportEntryRequest = {
         if (message.homeroom_id !== undefined) {
             obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
-        if (message.comment !== undefined && message.comment !== "") {
+        if (message.comment !== undefined) {
             obj.comment = message.comment;
         }
         if (message.checkboxes?.length) {
@@ -2104,7 +2108,7 @@ exports.UpdateReportEntryRequest = {
         if (message.learning_skills?.length) {
             obj.learningSkills = message.learning_skills.map((e) => report_entry_1.ReportEntryLearningSkill.toJSON(e));
         }
-        if (message.credit_earned !== undefined && message.credit_earned !== false) {
+        if (message.credit_earned !== undefined) {
             obj.creditEarned = message.credit_earned;
         }
         return obj;
@@ -2126,12 +2130,12 @@ exports.UpdateReportEntryRequest = {
         message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
-        message.comment = object.comment ?? "";
+        message.report_type = object.report_type ?? undefined;
+        message.comment = object.comment ?? undefined;
         message.checkboxes = object.checkboxes?.map((e) => report_entry_1.ReportEntryCheckBox.fromPartial(e)) || [];
         message.sections = object.sections?.map((e) => report_entry_1.ReportEntrySection.fromPartial(e)) || [];
         message.learning_skills = object.learning_skills?.map((e) => report_entry_1.ReportEntryLearningSkill.fromPartial(e)) || [];
-        message.credit_earned = object.credit_earned ?? false;
+        message.credit_earned = object.credit_earned ?? undefined;
         return message;
     },
 };
@@ -2296,7 +2300,7 @@ exports.GetReportEntriesResponse = {
     },
 };
 function createBaseRequestChangesReportEntryRequest() {
-    return { context: undefined, report_entry_id: undefined, requested_changes: "" };
+    return { context: undefined, report_entry_id: undefined, requested_changes: undefined };
 }
 exports.RequestChangesReportEntryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2306,7 +2310,7 @@ exports.RequestChangesReportEntryRequest = {
         if (message.report_entry_id !== undefined) {
             object_id_1.ObjectId.encode(message.report_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.requested_changes !== "") {
+        if (message.requested_changes !== undefined) {
             writer.uint32(26).string(message.requested_changes);
         }
         return writer;
@@ -2348,7 +2352,7 @@ exports.RequestChangesReportEntryRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
-            requested_changes: isSet(object.requestedChanges) ? globalThis.String(object.requestedChanges) : "",
+            requested_changes: isSet(object.requestedChanges) ? globalThis.String(object.requestedChanges) : undefined,
         };
     },
     toJSON(message) {
@@ -2359,7 +2363,7 @@ exports.RequestChangesReportEntryRequest = {
         if (message.report_entry_id !== undefined) {
             obj.reportEntryId = object_id_1.ObjectId.toJSON(message.report_entry_id);
         }
-        if (message.requested_changes !== "") {
+        if (message.requested_changes !== undefined) {
             obj.requestedChanges = message.requested_changes;
         }
         return obj;
@@ -2375,7 +2379,7 @@ exports.RequestChangesReportEntryRequest = {
         message.report_entry_id = (object.report_entry_id !== undefined && object.report_entry_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.report_entry_id)
             : undefined;
-        message.requested_changes = object.requested_changes ?? "";
+        message.requested_changes = object.requested_changes ?? undefined;
         return message;
     },
 };
@@ -2450,7 +2454,7 @@ exports.ApproveReportEntryRequest = {
     },
 };
 function createBasePublishCourseReportTypeRequest() {
-    return { context: undefined, course_id: undefined, report_type: semester_1.ReportType.Progress };
+    return { context: undefined, course_id: undefined, report_type: undefined };
 }
 exports.PublishCourseReportTypeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2460,7 +2464,7 @@ exports.PublishCourseReportTypeRequest = {
         if (message.course_id !== undefined) {
             object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
         return writer;
@@ -2502,7 +2506,7 @@ exports.PublishCourseReportTypeRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
         };
     },
     toJSON(message) {
@@ -2513,7 +2517,7 @@ exports.PublishCourseReportTypeRequest = {
         if (message.course_id !== undefined) {
             obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
         return obj;
@@ -2529,12 +2533,12 @@ exports.PublishCourseReportTypeRequest = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.report_type = object.report_type ?? undefined;
         return message;
     },
 };
 function createBasePublishHomeroomReportTypeRequest() {
-    return { context: undefined, homeroom_id: undefined, report_type: semester_1.ReportType.Progress };
+    return { context: undefined, homeroom_id: undefined, report_type: undefined };
 }
 exports.PublishHomeroomReportTypeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2544,7 +2548,7 @@ exports.PublishHomeroomReportTypeRequest = {
         if (message.homeroom_id !== undefined) {
             object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
         }
         return writer;
@@ -2586,7 +2590,7 @@ exports.PublishHomeroomReportTypeRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : semester_1.ReportType.Progress,
+            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
         };
     },
     toJSON(message) {
@@ -2597,7 +2601,7 @@ exports.PublishHomeroomReportTypeRequest = {
         if (message.homeroom_id !== undefined) {
             obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
         }
-        if (message.report_type !== semester_1.ReportType.Progress) {
+        if (message.report_type !== undefined) {
             obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
         }
         return obj;
@@ -2613,22 +2617,22 @@ exports.PublishHomeroomReportTypeRequest = {
         message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
             : undefined;
-        message.report_type = object.report_type ?? semester_1.ReportType.Progress;
+        message.report_type = object.report_type ?? undefined;
         return message;
     },
 };
 function createBasePublishClassReportTypeResponse() {
-    return { class_summary: undefined, updated_entries: 0, already_published_entries: 0 };
+    return { class_summary: undefined, updated_entries: undefined, already_published_entries: undefined };
 }
 exports.PublishClassReportTypeResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.class_summary !== undefined) {
             exports.ReportPublishQueueClass.encode(message.class_summary, writer.uint32(10).fork()).join();
         }
-        if (message.updated_entries !== 0) {
+        if (message.updated_entries !== undefined) {
             writer.uint32(16).uint32(message.updated_entries);
         }
-        if (message.already_published_entries !== 0) {
+        if (message.already_published_entries !== undefined) {
             writer.uint32(24).uint32(message.already_published_entries);
         }
         return writer;
@@ -2669,10 +2673,10 @@ exports.PublishClassReportTypeResponse = {
     fromJSON(object) {
         return {
             class_summary: isSet(object.classSummary) ? exports.ReportPublishQueueClass.fromJSON(object.classSummary) : undefined,
-            updated_entries: isSet(object.updatedEntries) ? globalThis.Number(object.updatedEntries) : 0,
+            updated_entries: isSet(object.updatedEntries) ? globalThis.Number(object.updatedEntries) : undefined,
             already_published_entries: isSet(object.alreadyPublishedEntries)
                 ? globalThis.Number(object.alreadyPublishedEntries)
-                : 0,
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2680,10 +2684,10 @@ exports.PublishClassReportTypeResponse = {
         if (message.class_summary !== undefined) {
             obj.classSummary = exports.ReportPublishQueueClass.toJSON(message.class_summary);
         }
-        if (message.updated_entries !== 0) {
+        if (message.updated_entries !== undefined) {
             obj.updatedEntries = Math.round(message.updated_entries);
         }
-        if (message.already_published_entries !== 0) {
+        if (message.already_published_entries !== undefined) {
             obj.alreadyPublishedEntries = Math.round(message.already_published_entries);
         }
         return obj;
@@ -2696,13 +2700,13 @@ exports.PublishClassReportTypeResponse = {
         message.class_summary = (object.class_summary !== undefined && object.class_summary !== null)
             ? exports.ReportPublishQueueClass.fromPartial(object.class_summary)
             : undefined;
-        message.updated_entries = object.updated_entries ?? 0;
-        message.already_published_entries = object.already_published_entries ?? 0;
+        message.updated_entries = object.updated_entries ?? undefined;
+        message.already_published_entries = object.already_published_entries ?? undefined;
         return message;
     },
 };
 function createBaseUnpublishReportEntryRequest() {
-    return { context: undefined, report_entry_id: undefined, requested_changes: "" };
+    return { context: undefined, report_entry_id: undefined, requested_changes: undefined };
 }
 exports.UnpublishReportEntryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2712,7 +2716,7 @@ exports.UnpublishReportEntryRequest = {
         if (message.report_entry_id !== undefined) {
             object_id_1.ObjectId.encode(message.report_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.requested_changes !== "") {
+        if (message.requested_changes !== undefined) {
             writer.uint32(26).string(message.requested_changes);
         }
         return writer;
@@ -2754,7 +2758,7 @@ exports.UnpublishReportEntryRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
-            requested_changes: isSet(object.requestedChanges) ? globalThis.String(object.requestedChanges) : "",
+            requested_changes: isSet(object.requestedChanges) ? globalThis.String(object.requestedChanges) : undefined,
         };
     },
     toJSON(message) {
@@ -2765,7 +2769,7 @@ exports.UnpublishReportEntryRequest = {
         if (message.report_entry_id !== undefined) {
             obj.reportEntryId = object_id_1.ObjectId.toJSON(message.report_entry_id);
         }
-        if (message.requested_changes !== "") {
+        if (message.requested_changes !== undefined) {
             obj.requestedChanges = message.requested_changes;
         }
         return obj;
@@ -2781,7 +2785,7 @@ exports.UnpublishReportEntryRequest = {
         message.report_entry_id = (object.report_entry_id !== undefined && object.report_entry_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.report_entry_id)
             : undefined;
-        message.requested_changes = object.requested_changes ?? "";
+        message.requested_changes = object.requested_changes ?? undefined;
         return message;
     },
 };

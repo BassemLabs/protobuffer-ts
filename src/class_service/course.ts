@@ -17,10 +17,10 @@ export const protobufPackage = "class_service";
 
 export interface Course {
   id: ObjectId | undefined;
-  archived: boolean;
+  archived?: boolean | undefined;
   semester: Semester | undefined;
   homeroom?: Homeroom | undefined;
-  name: string;
+  name?: string | undefined;
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
   lms_course?: LmsCourse | undefined;
@@ -31,8 +31,8 @@ export interface Course {
 
 export interface ListCourse {
   id: ObjectId | undefined;
-  archived: boolean;
-  name: string;
+  archived?: boolean | undefined;
+  name?: string | undefined;
   semester: ListSemester | undefined;
   homeroom?: ListHomeroom | undefined;
   teachers: ObjectId[];
@@ -42,16 +42,16 @@ export interface ListCourse {
 
 export interface CourseList {
   courses: ListCourse[];
-  courses_count: number;
+  courses_count?: number | undefined;
 }
 
 function createBaseCourse(): Course {
   return {
     id: undefined,
-    archived: false,
+    archived: undefined,
     semester: undefined,
     homeroom: undefined,
-    name: "",
+    name: undefined,
     teacher_ids: [],
     student_ids: [],
     lms_course: undefined,
@@ -66,7 +66,7 @@ export const Course: MessageFns<Course> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(16).bool(message.archived);
     }
     if (message.semester !== undefined) {
@@ -75,7 +75,7 @@ export const Course: MessageFns<Course> = {
     if (message.homeroom !== undefined) {
       Homeroom.encode(message.homeroom, writer.uint32(34).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(42).string(message.name);
     }
     for (const v of message.teacher_ids) {
@@ -195,10 +195,10 @@ export const Course: MessageFns<Course> = {
   fromJSON(object: any): Course {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
       semester: isSet(object.semester) ? Semester.fromJSON(object.semester) : undefined,
       homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       teacher_ids: globalThis.Array.isArray(object?.teacherIds)
         ? object.teacherIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -217,7 +217,7 @@ export const Course: MessageFns<Course> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
     if (message.semester !== undefined) {
@@ -226,7 +226,7 @@ export const Course: MessageFns<Course> = {
     if (message.homeroom !== undefined) {
       obj.homeroom = Homeroom.toJSON(message.homeroom);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.teacher_ids?.length) {
@@ -256,14 +256,14 @@ export const Course: MessageFns<Course> = {
   fromPartial<I extends Exact<DeepPartial<Course>, I>>(object: I): Course {
     const message = createBaseCourse();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.archived = object.archived ?? false;
+    message.archived = object.archived ?? undefined;
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? Semester.fromPartial(object.semester)
       : undefined;
     message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
       ? Homeroom.fromPartial(object.homeroom)
       : undefined;
-    message.name = object.name ?? "";
+    message.name = object.name ?? undefined;
     message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.lms_course = (object.lms_course !== undefined && object.lms_course !== null)
@@ -285,8 +285,8 @@ export const Course: MessageFns<Course> = {
 function createBaseListCourse(): ListCourse {
   return {
     id: undefined,
-    archived: false,
-    name: "",
+    archived: undefined,
+    name: undefined,
     semester: undefined,
     homeroom: undefined,
     teachers: [],
@@ -300,10 +300,10 @@ export const ListCourse: MessageFns<ListCourse> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(16).bool(message.archived);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     if (message.semester !== undefined) {
@@ -399,8 +399,8 @@ export const ListCourse: MessageFns<ListCourse> = {
   fromJSON(object: any): ListCourse {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       semester: isSet(object.semester) ? ListSemester.fromJSON(object.semester) : undefined,
       homeroom: isSet(object.homeroom) ? ListHomeroom.fromJSON(object.homeroom) : undefined,
       teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e: any) => ObjectId.fromJSON(e)) : [],
@@ -414,10 +414,10 @@ export const ListCourse: MessageFns<ListCourse> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.semester !== undefined) {
@@ -444,8 +444,8 @@ export const ListCourse: MessageFns<ListCourse> = {
   fromPartial<I extends Exact<DeepPartial<ListCourse>, I>>(object: I): ListCourse {
     const message = createBaseListCourse();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.archived = object.archived ?? false;
-    message.name = object.name ?? "";
+    message.archived = object.archived ?? undefined;
+    message.name = object.name ?? undefined;
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? ListSemester.fromPartial(object.semester)
       : undefined;
@@ -464,7 +464,7 @@ export const ListCourse: MessageFns<ListCourse> = {
 };
 
 function createBaseCourseList(): CourseList {
-  return { courses: [], courses_count: 0 };
+  return { courses: [], courses_count: undefined };
 }
 
 export const CourseList: MessageFns<CourseList> = {
@@ -472,7 +472,7 @@ export const CourseList: MessageFns<CourseList> = {
     for (const v of message.courses) {
       ListCourse.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.courses_count !== 0) {
+    if (message.courses_count !== undefined) {
       writer.uint32(16).uint64(message.courses_count);
     }
     return writer;
@@ -511,7 +511,7 @@ export const CourseList: MessageFns<CourseList> = {
   fromJSON(object: any): CourseList {
     return {
       courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => ListCourse.fromJSON(e)) : [],
-      courses_count: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : 0,
+      courses_count: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : undefined,
     };
   },
 
@@ -520,7 +520,7 @@ export const CourseList: MessageFns<CourseList> = {
     if (message.courses?.length) {
       obj.courses = message.courses.map((e) => ListCourse.toJSON(e));
     }
-    if (message.courses_count !== 0) {
+    if (message.courses_count !== undefined) {
       obj.coursesCount = Math.round(message.courses_count);
     }
     return obj;
@@ -532,7 +532,7 @@ export const CourseList: MessageFns<CourseList> = {
   fromPartial<I extends Exact<DeepPartial<CourseList>, I>>(object: I): CourseList {
     const message = createBaseCourseList();
     message.courses = object.courses?.map((e) => ListCourse.fromPartial(e)) || [];
-    message.courses_count = object.courses_count ?? 0;
+    message.courses_count = object.courses_count ?? undefined;
     return message;
   },
 };

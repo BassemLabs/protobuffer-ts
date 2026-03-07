@@ -22,19 +22,19 @@ export declare function invoiceTypeToNumber(object: InvoiceType): number;
 export interface ProcessingFee {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    invoice_type: InvoiceType;
-    fee_type: FeeType;
-    value_type: DiscountValueType;
-    value: number;
+    invoice_type?: InvoiceType | undefined;
+    fee_type?: FeeType | undefined;
+    value_type?: DiscountValueType | undefined;
+    value?: number | undefined;
     cap_amount?: number | undefined;
-    archived: boolean;
+    archived?: boolean | undefined;
 }
 /** Organization-level processing fees configuration */
 export interface OrganizationProcessingFee {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    tuition_invoice_fees_enabled: boolean;
-    non_tuition_invoice_fees_enabled: boolean;
+    tuition_invoice_fees_enabled?: boolean | undefined;
+    non_tuition_invoice_fees_enabled?: boolean | undefined;
 }
 export declare const ProcessingFee: MessageFns<ProcessingFee>;
 export declare const OrganizationProcessingFee: MessageFns<OrganizationProcessingFee>;

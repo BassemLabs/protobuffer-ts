@@ -4,8 +4,8 @@ export declare const protobufPackage = "class_service";
 export interface AbstractCategoryGroup {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    name: string;
-    credits_required: number;
+    name?: string | undefined;
+    credits_required?: number | undefined;
     category_ids: ObjectId[];
 }
 export declare const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup>;

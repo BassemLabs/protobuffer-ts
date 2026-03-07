@@ -4,7 +4,7 @@ import { PhoneNumber } from "../utils/phone_number";
 export declare const protobufPackage = "user_service";
 /** Parent payment information structure */
 export interface ParentPaymentInformation {
-    enable_auto_pay: boolean;
+    enable_auto_pay?: boolean | undefined;
     /** Setup Intent ID - this is only set when an action is required */
     setup_intent_requires_action?: string | undefined;
     setup_intent_failure?: string | undefined;
@@ -23,16 +23,16 @@ export interface Parent {
     organization: ObjectId | undefined;
     /** If this is null, it means that the parent never signed-in */
     firebase_user_id?: string | undefined;
-    name: string;
-    email: string;
+    name?: string | undefined;
+    email?: string | undefined;
     phone?: PhoneNumber | undefined;
     stripe_customer_id?: string | undefined;
     payment_information: ParentPaymentInformation | undefined;
 }
 /** Parent profile data for updates */
 export interface ParentProfile {
-    name: string;
-    email: string;
+    name?: string | undefined;
+    email?: string | undefined;
     phone?: PhoneNumber | undefined;
 }
 export declare const ParentPaymentInformation: MessageFns<ParentPaymentInformation>;

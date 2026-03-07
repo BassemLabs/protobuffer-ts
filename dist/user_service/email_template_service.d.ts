@@ -6,7 +6,7 @@ import { EmailTemplate, EmailTemplateKey } from "./email_template";
 export declare const protobufPackage = "user_service";
 export interface GetByTemplateKeyRequest {
     context: RequestContext | undefined;
-    template_key: EmailTemplateKey;
+    template_key?: EmailTemplateKey | undefined;
 }
 export interface ListTemplatesRequest {
     context: RequestContext | undefined;
@@ -16,22 +16,22 @@ export interface ListTemplatesResponse {
 }
 export interface UpdateOrCreateRequest {
     context: RequestContext | undefined;
-    template_key: EmailTemplateKey;
-    title: string;
-    header: string;
-    body: string;
-    footer: string;
+    template_key?: EmailTemplateKey | undefined;
+    title?: string | undefined;
+    header?: string | undefined;
+    body?: string | undefined;
+    footer?: string | undefined;
 }
 export interface CreateDefaultTemplatesForOrganizationRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
 }
 export interface CreateDefaultTemplatesForOrganizationResponse {
-    success: boolean;
+    success?: boolean | undefined;
 }
 export interface GetSupportedPlaceholdersRequest {
     context: RequestContext | undefined;
-    template_key: EmailTemplateKey;
+    template_key?: EmailTemplateKey | undefined;
 }
 export interface GetSupportedPlaceholdersResponse {
     placeholders: string[];
@@ -43,36 +43,36 @@ export interface GetAllStaticTemplateBodiesResponse {
     static_bodies: StaticTemplateBodyEntry[];
 }
 export interface StaticTemplateBodyEntry {
-    template_key: EmailTemplateKey;
-    body: string;
+    template_key?: EmailTemplateKey | undefined;
+    body?: string | undefined;
 }
 export interface Replacement {
-    placeholder: string;
-    value: string;
+    placeholder?: string | undefined;
+    value?: string | undefined;
 }
 export interface SendEmailByTemplateKeyRequest {
     context: RequestContext | undefined;
-    template_key: EmailTemplateKey;
+    template_key?: EmailTemplateKey | undefined;
     replacements: Replacement[];
-    recipient_user_type: UserType;
+    recipient_user_type?: UserType | undefined;
     recipient_user_id: ObjectId | undefined;
-    recipient_email: string;
+    recipient_email?: string | undefined;
     date_to_send?: number | undefined;
 }
 export interface SendEmailWithTemplateRequest {
     context: RequestContext | undefined;
-    title: string;
-    header: string;
-    body: string;
-    footer: string;
+    title?: string | undefined;
+    header?: string | undefined;
+    body?: string | undefined;
+    footer?: string | undefined;
     replacements: Replacement[];
-    recipient_user_type: UserType;
+    recipient_user_type?: UserType | undefined;
     recipient_user_id: ObjectId | undefined;
-    recipient_email: string;
+    recipient_email?: string | undefined;
     date_to_send?: number | undefined;
 }
 export interface SendEmailResponse {
-    success: boolean;
+    success?: boolean | undefined;
     error_message?: string | undefined;
 }
 export declare const GetByTemplateKeyRequest: MessageFns<GetByTemplateKeyRequest>;

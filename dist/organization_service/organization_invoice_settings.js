@@ -10,14 +10,14 @@ exports.InvoiceSettings = exports.protobufPackage = void 0;
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "organization_service";
 function createBaseInvoiceSettings() {
-    return { disable_tax: false, hst_number: "" };
+    return { disable_tax: undefined, hst_number: undefined };
 }
 exports.InvoiceSettings = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.disable_tax !== false) {
+        if (message.disable_tax !== undefined) {
             writer.uint32(8).bool(message.disable_tax);
         }
-        if (message.hst_number !== undefined && message.hst_number !== "") {
+        if (message.hst_number !== undefined) {
             writer.uint32(18).string(message.hst_number);
         }
         return writer;
@@ -51,16 +51,16 @@ exports.InvoiceSettings = {
     },
     fromJSON(object) {
         return {
-            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
-            hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : "",
+            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
+            hst_number: isSet(object.hstNumber) ? globalThis.String(object.hstNumber) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.disable_tax !== false) {
+        if (message.disable_tax !== undefined) {
             obj.disableTax = message.disable_tax;
         }
-        if (message.hst_number !== undefined && message.hst_number !== "") {
+        if (message.hst_number !== undefined) {
             obj.hstNumber = message.hst_number;
         }
         return obj;
@@ -70,8 +70,8 @@ exports.InvoiceSettings = {
     },
     fromPartial(object) {
         const message = createBaseInvoiceSettings();
-        message.disable_tax = object.disable_tax ?? false;
-        message.hst_number = object.hst_number ?? "";
+        message.disable_tax = object.disable_tax ?? undefined;
+        message.hst_number = object.hst_number ?? undefined;
         return message;
     },
 };

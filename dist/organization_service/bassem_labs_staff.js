@@ -59,15 +59,15 @@ function staffStatusToNumber(object) {
 function createBaseBassemLabsStaff() {
     return {
         id: undefined,
-        status: StaffStatus.ACTIVE,
-        username: "",
-        first_name: "",
-        last_name: "",
-        gender: "",
-        email: "",
-        personal_email: "",
+        status: undefined,
+        username: undefined,
+        first_name: undefined,
+        last_name: undefined,
+        gender: undefined,
+        email: undefined,
+        personal_email: undefined,
         date_of_birth: undefined,
-        phone_number: "",
+        phone_number: undefined,
     };
 }
 exports.BassemLabsStaff = {
@@ -75,31 +75,31 @@ exports.BassemLabsStaff = {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.status !== StaffStatus.ACTIVE) {
+        if (message.status !== undefined) {
             writer.uint32(16).int32(staffStatusToNumber(message.status));
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             writer.uint32(26).string(message.username);
         }
-        if (message.first_name !== "") {
+        if (message.first_name !== undefined) {
             writer.uint32(34).string(message.first_name);
         }
-        if (message.last_name !== "") {
+        if (message.last_name !== undefined) {
             writer.uint32(42).string(message.last_name);
         }
-        if (message.gender !== "") {
+        if (message.gender !== undefined) {
             writer.uint32(50).string(message.gender);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(58).string(message.email);
         }
-        if (message.personal_email !== "") {
+        if (message.personal_email !== undefined) {
             writer.uint32(66).string(message.personal_email);
         }
         if (message.date_of_birth !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(74).fork()).join();
         }
-        if (message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             writer.uint32(82).string(message.phone_number);
         }
         return writer;
@@ -182,15 +182,15 @@ exports.BassemLabsStaff = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            status: isSet(object.status) ? staffStatusFromJSON(object.status) : StaffStatus.ACTIVE,
-            username: isSet(object.username) ? globalThis.String(object.username) : "",
-            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
-            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-            gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
-            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : "",
+            status: isSet(object.status) ? staffStatusFromJSON(object.status) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : undefined,
         };
     },
     toJSON(message) {
@@ -198,31 +198,31 @@ exports.BassemLabsStaff = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.status !== StaffStatus.ACTIVE) {
+        if (message.status !== undefined) {
             obj.status = staffStatusToJSON(message.status);
         }
-        if (message.username !== "") {
+        if (message.username !== undefined) {
             obj.username = message.username;
         }
-        if (message.first_name !== "") {
+        if (message.first_name !== undefined) {
             obj.firstName = message.first_name;
         }
-        if (message.last_name !== "") {
+        if (message.last_name !== undefined) {
             obj.lastName = message.last_name;
         }
-        if (message.gender !== "") {
+        if (message.gender !== undefined) {
             obj.gender = message.gender;
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
-        if (message.personal_email !== "") {
+        if (message.personal_email !== undefined) {
             obj.personalEmail = message.personal_email;
         }
         if (message.date_of_birth !== undefined) {
             obj.dateOfBirth = message.date_of_birth.toISOString();
         }
-        if (message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             obj.phoneNumber = message.phone_number;
         }
         return obj;
@@ -233,15 +233,15 @@ exports.BassemLabsStaff = {
     fromPartial(object) {
         const message = createBaseBassemLabsStaff();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.status = object.status ?? StaffStatus.ACTIVE;
-        message.username = object.username ?? "";
-        message.first_name = object.first_name ?? "";
-        message.last_name = object.last_name ?? "";
-        message.gender = object.gender ?? "";
-        message.email = object.email ?? "";
-        message.personal_email = object.personal_email ?? "";
+        message.status = object.status ?? undefined;
+        message.username = object.username ?? undefined;
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.gender = object.gender ?? undefined;
+        message.email = object.email ?? undefined;
+        message.personal_email = object.personal_email ?? undefined;
         message.date_of_birth = object.date_of_birth ?? undefined;
-        message.phone_number = object.phone_number ?? "";
+        message.phone_number = object.phone_number ?? undefined;
         return message;
     },
 };

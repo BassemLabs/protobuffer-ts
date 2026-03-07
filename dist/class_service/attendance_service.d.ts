@@ -40,9 +40,9 @@ export interface GetStudentEntriesRequest {
     class_ref?: ClassRef | undefined;
     student_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    start_date: string;
+    start_date?: string | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    end_date: string;
+    end_date?: string | undefined;
 }
 export interface GetStudentsEntriesCountRequest {
     context: RequestContext | undefined;
@@ -50,26 +50,26 @@ export interface GetStudentsEntriesCountRequest {
     class_ref?: ClassRef | undefined;
     student_ids: ObjectId[];
     /** YYYY-MM-DD format for NaiveDate */
-    start_date: string;
+    start_date?: string | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    end_date: string;
+    end_date?: string | undefined;
 }
 /** Updates */
 export interface UpdateStatusRequest {
     context: RequestContext | undefined;
     attendance_entry_id: ObjectId | undefined;
-    status: AttendanceStatus;
+    status?: AttendanceStatus | undefined;
 }
 export interface UpdateTimeRequest {
     context: RequestContext | undefined;
     attendance_entry_id: ObjectId | undefined;
-    time_type: TimeType;
+    time_type?: TimeType | undefined;
     time: Date | undefined;
 }
 export interface UpdateReasonRequest {
     context: RequestContext | undefined;
     attendance_entry_id: ObjectId | undefined;
-    reason: string;
+    reason?: string | undefined;
 }
 export interface UpdateLateDismissalDateRequest {
     context: RequestContext | undefined;
@@ -79,18 +79,18 @@ export interface UpdateLateDismissalDateRequest {
 export interface UpdateExcuseStudentRequest {
     context: RequestContext | undefined;
     attendance_entry_id: ObjectId | undefined;
-    reason: string;
+    reason?: string | undefined;
     student_excused_by: ObjectId | undefined;
-    student_excused_by_user_type: UserType;
+    student_excused_by_user_type?: UserType | undefined;
 }
 /** Aggregations */
 export interface AttendanceCounts {
-    none: number;
-    present: number;
-    late: number;
-    absent: number;
-    excused_absent: number;
-    non_excused_absent: number;
+    none?: number | undefined;
+    present?: number | undefined;
+    late?: number | undefined;
+    absent?: number | undefined;
+    excused_absent?: number | undefined;
+    non_excused_absent?: number | undefined;
 }
 export interface StudentAttendanceCounts {
     student: Student | undefined;
@@ -102,8 +102,8 @@ export interface StudentsAttendanceCountsResponse {
 export interface GetCoursesAttendanceOverviewRequest {
     context: RequestContext | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    show_all_classes: boolean;
+    date?: string | undefined;
+    show_all_classes?: boolean | undefined;
     semester_id?: ObjectId | undefined;
     show_archived_only?: boolean | undefined;
 }
@@ -114,13 +114,13 @@ export interface GetCoursesAttendanceOverviewResponse {
 }
 export interface CourseEntryStatus {
     course_id: ObjectId | undefined;
-    is_complete: boolean;
+    is_complete?: boolean | undefined;
 }
 export interface GetHomeroomsAttendanceOverviewRequest {
     context: RequestContext | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    show_all_classes: boolean;
+    date?: string | undefined;
+    show_all_classes?: boolean | undefined;
     semester_id?: ObjectId | undefined;
     show_archived_only?: boolean | undefined;
 }
@@ -131,14 +131,14 @@ export interface GetHomeroomsAttendanceOverviewResponse {
 }
 export interface HomeroomEntryStatus {
     homeroom_id: ObjectId | undefined;
-    is_complete: boolean;
+    is_complete?: boolean | undefined;
 }
 export interface GetHomeroomAttendanceDetailsRequest {
     context: RequestContext | undefined;
     homeroom_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    period_number: number;
+    date?: string | undefined;
+    period_number?: number | undefined;
 }
 export interface GetHomeroomAttendanceDetailsResponse {
     homeroom: Homeroom | undefined;
@@ -150,7 +150,7 @@ export interface GetSingleStudentHomeroomAttendanceEntryRequest {
     student_id: ObjectId | undefined;
     homeroom_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
+    date?: string | undefined;
 }
 export interface GetSingleStudentHomeroomAttendanceEntryResponse {
     student: Student | undefined;
@@ -161,36 +161,36 @@ export interface GetAttendanceDateMapRequest {
     context: RequestContext | undefined;
     class_ref: ClassRef | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    start_date: string;
+    start_date?: string | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    end_date: string;
+    end_date?: string | undefined;
 }
 export interface GetAttendanceDateMapResponse {
     entries: AttendanceDateMapEntry[];
 }
 export interface AttendanceDateMapEntry {
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    completion_status: AttendanceCompletionStatus;
+    date?: string | undefined;
+    completion_status?: AttendanceCompletionStatus | undefined;
 }
 export interface GetAttendanceCsvDataRequest {
     context: RequestContext | undefined;
     class_ref: ClassRef | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    start_date: string;
+    start_date?: string | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    end_date: string;
+    end_date?: string | undefined;
 }
 export interface GetAttendanceCsvDataResponse {
-    csv_data: string;
-    filename: string;
+    csv_data?: string | undefined;
+    filename?: string | undefined;
 }
 export interface GetCourseAttendanceDetailsRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    period_number: number;
+    date?: string | undefined;
+    period_number?: number | undefined;
 }
 export interface GetCourseAttendanceDetailsResponse {
     course: Course | undefined;
@@ -202,8 +202,8 @@ export interface GetSingleStudentCourseAttendanceEntryRequest {
     student_id: ObjectId | undefined;
     course_id: ObjectId | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
-    period_number: number;
+    date?: string | undefined;
+    period_number?: number | undefined;
 }
 export interface GetSingleStudentCourseAttendanceEntryResponse {
     student: Student | undefined;

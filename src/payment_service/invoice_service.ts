@@ -42,7 +42,7 @@ export interface GetInvoiceRequest {
 
 export interface GetInvoiceByNumberRequest {
   context: RequestContext | undefined;
-  invoice_number: number;
+  invoice_number?: number | undefined;
 }
 
 export interface GetUserInvoicesRequest {
@@ -72,7 +72,7 @@ export interface StudentHasNoUnpaidInvoicesRequest {
 }
 
 export interface StudentHasNoUnpaidInvoicesResponse {
-  has_no_unpaid_invoices: boolean;
+  has_no_unpaid_invoices?: boolean | undefined;
 }
 
 export interface ListInvoicesRequest {
@@ -82,12 +82,12 @@ export interface ListInvoicesRequest {
 
 export interface AggregationResponse {
   invoices: Invoice[];
-  invoices_count: number;
+  invoices_count?: number | undefined;
 }
 
 export interface PaginatedListInvoicesResponse {
   invoices: InvoiceResponse[];
-  invoices_count: number;
+  invoices_count?: number | undefined;
 }
 
 export interface ListInvoicesResponse {
@@ -100,15 +100,15 @@ export interface IsInvoicePaidRequest {
 }
 
 export interface IsInvoicePaidResponse {
-  is_paid: boolean;
+  is_paid?: boolean | undefined;
 }
 
 export interface CreateInvoiceRequest {
   context: RequestContext | undefined;
-  title: string;
-  description: string;
-  show_hst: boolean;
-  disable_tax: boolean;
+  title?: string | undefined;
+  description?: string | undefined;
+  show_hst?: boolean | undefined;
+  disable_tax?: boolean | undefined;
   users: ObjectId[];
   families: ObjectId[];
   items: InvoiceItem[];
@@ -127,10 +127,10 @@ export interface CreateInvoicesResponse {
 
 export interface CreateInvoiceForClassRequest {
   context: RequestContext | undefined;
-  title: string;
-  description: string;
-  show_hst: boolean;
-  disable_tax: boolean;
+  title?: string | undefined;
+  description?: string | undefined;
+  show_hst?: boolean | undefined;
+  disable_tax?: boolean | undefined;
   homerooms: ObjectId[];
   courses: ObjectId[];
   items: InvoiceItem[];
@@ -167,10 +167,10 @@ export interface CreateInvoiceForClassResponse {
 export interface UpdateInvoiceRequest {
   context: RequestContext | undefined;
   id: ObjectId | undefined;
-  title: string;
-  description: string;
-  show_hst: boolean;
-  disable_tax: boolean;
+  title?: string | undefined;
+  description?: string | undefined;
+  show_hst?: boolean | undefined;
+  disable_tax?: boolean | undefined;
   items: InvoiceItem[];
   coupons: Coupon[];
   due_date?: Date | undefined;
@@ -179,7 +179,7 @@ export interface UpdateInvoiceRequest {
 export interface UpdateInvoiceAutoPaymentRequest {
   context: RequestContext | undefined;
   id: ObjectId | undefined;
-  auto_pay_enabled: boolean;
+  auto_pay_enabled?: boolean | undefined;
   charge_on_date: Date | undefined;
 }
 
@@ -200,7 +200,7 @@ export interface GetAutoPayInvoicesReadyToChargeRequest {
 export interface SetAutoPayInvoiceStatusRequest {
   context: RequestContext | undefined;
   invoice_id: ObjectId | undefined;
-  auto_payment_status: AutoPaymentStatus;
+  auto_payment_status?: AutoPaymentStatus | undefined;
 }
 
 export interface GetFamilyTuitionInvoicesRequest {
@@ -254,7 +254,7 @@ export interface GetOrgPaidBassemLabsFeesInPeriodRequest {
 }
 
 export interface GetOrgPaidBassemLabsFeesInPeriodResponse {
-  total_amount: number;
+  total_amount?: number | undefined;
 }
 
 export interface UpsertOrganizationInvoiceRequest {
@@ -262,8 +262,8 @@ export interface UpsertOrganizationInvoiceRequest {
   organization_id: ObjectId | undefined;
   invoice_start_date: Date | undefined;
   invoice_end_date: Date | undefined;
-  current_enrolled_students_count: number;
-  is_in_trial_period: boolean;
+  current_enrolled_students_count?: number | undefined;
+  is_in_trial_period?: boolean | undefined;
 }
 
 export interface GetLatestOrganizationInvoiceRequest {
@@ -435,7 +435,7 @@ export const GetInvoiceRequest: MessageFns<GetInvoiceRequest> = {
 };
 
 function createBaseGetInvoiceByNumberRequest(): GetInvoiceByNumberRequest {
-  return { context: undefined, invoice_number: 0 };
+  return { context: undefined, invoice_number: undefined };
 }
 
 export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = {
@@ -443,7 +443,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.invoice_number !== 0) {
+    if (message.invoice_number !== undefined) {
       writer.uint32(16).int32(message.invoice_number);
     }
     return writer;
@@ -482,7 +482,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
   fromJSON(object: any): GetInvoiceByNumberRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      invoice_number: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : 0,
+      invoice_number: isSet(object.invoiceNumber) ? globalThis.Number(object.invoiceNumber) : undefined,
     };
   },
 
@@ -491,7 +491,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.invoice_number !== 0) {
+    if (message.invoice_number !== undefined) {
       obj.invoiceNumber = Math.round(message.invoice_number);
     }
     return obj;
@@ -505,7 +505,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.invoice_number = object.invoice_number ?? 0;
+    message.invoice_number = object.invoice_number ?? undefined;
     return message;
   },
 };
@@ -728,7 +728,7 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
 };
 
 function createBaseGetParentInvoicesRequest(): GetParentInvoicesRequest {
-  return { context: undefined, parent_id: undefined, school_year: undefined, title: "" };
+  return { context: undefined, parent_id: undefined, school_year: undefined, title: undefined };
 }
 
 export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
@@ -742,7 +742,7 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
     }
-    if (message.title !== undefined && message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(34).string(message.title);
     }
     return writer;
@@ -797,7 +797,7 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       parent_id: isSet(object.parentId) ? ObjectId.fromJSON(object.parentId) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
     };
   },
 
@@ -812,7 +812,7 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
-    if (message.title !== undefined && message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
     return obj;
@@ -832,7 +832,7 @@ export const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
-    message.title = object.title ?? "";
+    message.title = object.title ?? undefined;
     return message;
   },
 };
@@ -920,12 +920,12 @@ export const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInv
 };
 
 function createBaseStudentHasNoUnpaidInvoicesResponse(): StudentHasNoUnpaidInvoicesResponse {
-  return { has_no_unpaid_invoices: false };
+  return { has_no_unpaid_invoices: undefined };
 }
 
 export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidInvoicesResponse> = {
   encode(message: StudentHasNoUnpaidInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.has_no_unpaid_invoices !== false) {
+    if (message.has_no_unpaid_invoices !== undefined) {
       writer.uint32(8).bool(message.has_no_unpaid_invoices);
     }
     return writer;
@@ -958,13 +958,13 @@ export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidIn
     return {
       has_no_unpaid_invoices: isSet(object.hasNoUnpaidInvoices)
         ? globalThis.Boolean(object.hasNoUnpaidInvoices)
-        : false,
+        : undefined,
     };
   },
 
   toJSON(message: StudentHasNoUnpaidInvoicesResponse): unknown {
     const obj: any = {};
-    if (message.has_no_unpaid_invoices !== false) {
+    if (message.has_no_unpaid_invoices !== undefined) {
       obj.hasNoUnpaidInvoices = message.has_no_unpaid_invoices;
     }
     return obj;
@@ -979,7 +979,7 @@ export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidIn
     object: I,
   ): StudentHasNoUnpaidInvoicesResponse {
     const message = createBaseStudentHasNoUnpaidInvoicesResponse();
-    message.has_no_unpaid_invoices = object.has_no_unpaid_invoices ?? false;
+    message.has_no_unpaid_invoices = object.has_no_unpaid_invoices ?? undefined;
     return message;
   },
 };
@@ -1063,7 +1063,7 @@ export const ListInvoicesRequest: MessageFns<ListInvoicesRequest> = {
 };
 
 function createBaseAggregationResponse(): AggregationResponse {
-  return { invoices: [], invoices_count: 0 };
+  return { invoices: [], invoices_count: undefined };
 }
 
 export const AggregationResponse: MessageFns<AggregationResponse> = {
@@ -1071,7 +1071,7 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
     for (const v of message.invoices) {
       Invoice.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.invoices_count !== 0) {
+    if (message.invoices_count !== undefined) {
       writer.uint32(16).int32(message.invoices_count);
     }
     return writer;
@@ -1110,7 +1110,7 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
   fromJSON(object: any): AggregationResponse {
     return {
       invoices: globalThis.Array.isArray(object?.invoices) ? object.invoices.map((e: any) => Invoice.fromJSON(e)) : [],
-      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : 0,
+      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : undefined,
     };
   },
 
@@ -1119,7 +1119,7 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
     if (message.invoices?.length) {
       obj.invoices = message.invoices.map((e) => Invoice.toJSON(e));
     }
-    if (message.invoices_count !== 0) {
+    if (message.invoices_count !== undefined) {
       obj.invoicesCount = Math.round(message.invoices_count);
     }
     return obj;
@@ -1131,13 +1131,13 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
   fromPartial<I extends Exact<DeepPartial<AggregationResponse>, I>>(object: I): AggregationResponse {
     const message = createBaseAggregationResponse();
     message.invoices = object.invoices?.map((e) => Invoice.fromPartial(e)) || [];
-    message.invoices_count = object.invoices_count ?? 0;
+    message.invoices_count = object.invoices_count ?? undefined;
     return message;
   },
 };
 
 function createBasePaginatedListInvoicesResponse(): PaginatedListInvoicesResponse {
-  return { invoices: [], invoices_count: 0 };
+  return { invoices: [], invoices_count: undefined };
 }
 
 export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResponse> = {
@@ -1145,7 +1145,7 @@ export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResp
     for (const v of message.invoices) {
       InvoiceResponse.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.invoices_count !== 0) {
+    if (message.invoices_count !== undefined) {
       writer.uint32(16).int32(message.invoices_count);
     }
     return writer;
@@ -1186,7 +1186,7 @@ export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResp
       invoices: globalThis.Array.isArray(object?.invoices)
         ? object.invoices.map((e: any) => InvoiceResponse.fromJSON(e))
         : [],
-      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : 0,
+      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : undefined,
     };
   },
 
@@ -1195,7 +1195,7 @@ export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResp
     if (message.invoices?.length) {
       obj.invoices = message.invoices.map((e) => InvoiceResponse.toJSON(e));
     }
-    if (message.invoices_count !== 0) {
+    if (message.invoices_count !== undefined) {
       obj.invoicesCount = Math.round(message.invoices_count);
     }
     return obj;
@@ -1209,7 +1209,7 @@ export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResp
   ): PaginatedListInvoicesResponse {
     const message = createBasePaginatedListInvoicesResponse();
     message.invoices = object.invoices?.map((e) => InvoiceResponse.fromPartial(e)) || [];
-    message.invoices_count = object.invoices_count ?? 0;
+    message.invoices_count = object.invoices_count ?? undefined;
     return message;
   },
 };
@@ -1354,12 +1354,12 @@ export const IsInvoicePaidRequest: MessageFns<IsInvoicePaidRequest> = {
 };
 
 function createBaseIsInvoicePaidResponse(): IsInvoicePaidResponse {
-  return { is_paid: false };
+  return { is_paid: undefined };
 }
 
 export const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse> = {
   encode(message: IsInvoicePaidResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.is_paid !== false) {
+    if (message.is_paid !== undefined) {
       writer.uint32(8).bool(message.is_paid);
     }
     return writer;
@@ -1389,12 +1389,12 @@ export const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse> = {
   },
 
   fromJSON(object: any): IsInvoicePaidResponse {
-    return { is_paid: isSet(object.isPaid) ? globalThis.Boolean(object.isPaid) : false };
+    return { is_paid: isSet(object.isPaid) ? globalThis.Boolean(object.isPaid) : undefined };
   },
 
   toJSON(message: IsInvoicePaidResponse): unknown {
     const obj: any = {};
-    if (message.is_paid !== false) {
+    if (message.is_paid !== undefined) {
       obj.isPaid = message.is_paid;
     }
     return obj;
@@ -1405,7 +1405,7 @@ export const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<IsInvoicePaidResponse>, I>>(object: I): IsInvoicePaidResponse {
     const message = createBaseIsInvoicePaidResponse();
-    message.is_paid = object.is_paid ?? false;
+    message.is_paid = object.is_paid ?? undefined;
     return message;
   },
 };
@@ -1413,20 +1413,20 @@ export const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse> = {
 function createBaseCreateInvoiceRequest(): CreateInvoiceRequest {
   return {
     context: undefined,
-    title: "",
-    description: "",
-    show_hst: false,
-    disable_tax: false,
+    title: undefined,
+    description: undefined,
+    show_hst: undefined,
+    disable_tax: undefined,
     users: [],
     families: [],
     items: [],
     coupons: [],
     due_date: undefined,
     school_year: undefined,
-    auto_pay_enabled: false,
+    auto_pay_enabled: undefined,
     charge_on_date: undefined,
-    auto_payment_status: AutoPaymentStatus.AutoPayPending,
-    is_tuition: false,
+    auto_payment_status: undefined,
+    is_tuition: undefined,
   };
 }
 
@@ -1435,16 +1435,16 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(18).string(message.title);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(26).string(message.description);
     }
-    if (message.show_hst !== false) {
+    if (message.show_hst !== undefined) {
       writer.uint32(32).bool(message.show_hst);
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       writer.uint32(40).bool(message.disable_tax);
     }
     for (const v of message.users) {
@@ -1465,16 +1465,16 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
     }
-    if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
+    if (message.auto_pay_enabled !== undefined) {
       writer.uint32(96).bool(message.auto_pay_enabled);
     }
     if (message.charge_on_date !== undefined) {
       Timestamp.encode(toTimestamp(message.charge_on_date), writer.uint32(106).fork()).join();
     }
-    if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+    if (message.auto_payment_status !== undefined) {
       writer.uint32(112).int32(autoPaymentStatusToNumber(message.auto_payment_status));
     }
-    if (message.is_tuition !== undefined && message.is_tuition !== false) {
+    if (message.is_tuition !== undefined) {
       writer.uint32(120).bool(message.is_tuition);
     }
     return writer;
@@ -1604,22 +1604,22 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
   fromJSON(object: any): CreateInvoiceRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : undefined,
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
       users: globalThis.Array.isArray(object?.users) ? object.users.map((e: any) => ObjectId.fromJSON(e)) : [],
       families: globalThis.Array.isArray(object?.families) ? object.families.map((e: any) => ObjectId.fromJSON(e)) : [],
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : undefined,
       charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
       auto_payment_status: isSet(object.autoPaymentStatus)
         ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
-        : AutoPaymentStatus.AutoPayPending,
-      is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : false,
+        : undefined,
+      is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : undefined,
     };
   },
 
@@ -1628,16 +1628,16 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.show_hst !== false) {
+    if (message.show_hst !== undefined) {
       obj.showHst = message.show_hst;
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       obj.disableTax = message.disable_tax;
     }
     if (message.users?.length) {
@@ -1658,16 +1658,16 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
-    if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
+    if (message.auto_pay_enabled !== undefined) {
       obj.autoPayEnabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
       obj.chargeOnDate = message.charge_on_date.toISOString();
     }
-    if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+    if (message.auto_payment_status !== undefined) {
       obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
     }
-    if (message.is_tuition !== undefined && message.is_tuition !== false) {
+    if (message.is_tuition !== undefined) {
       obj.isTuition = message.is_tuition;
     }
     return obj;
@@ -1681,10 +1681,10 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.title = object.title ?? "";
-    message.description = object.description ?? "";
-    message.show_hst = object.show_hst ?? false;
-    message.disable_tax = object.disable_tax ?? false;
+    message.title = object.title ?? undefined;
+    message.description = object.description ?? undefined;
+    message.show_hst = object.show_hst ?? undefined;
+    message.disable_tax = object.disable_tax ?? undefined;
     message.users = object.users?.map((e) => ObjectId.fromPartial(e)) || [];
     message.families = object.families?.map((e) => ObjectId.fromPartial(e)) || [];
     message.items = object.items?.map((e) => InvoiceItem.fromPartial(e)) || [];
@@ -1693,10 +1693,10 @@ export const CreateInvoiceRequest: MessageFns<CreateInvoiceRequest> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
-    message.auto_pay_enabled = object.auto_pay_enabled ?? false;
+    message.auto_pay_enabled = object.auto_pay_enabled ?? undefined;
     message.charge_on_date = object.charge_on_date ?? undefined;
-    message.auto_payment_status = object.auto_payment_status ?? AutoPaymentStatus.AutoPayPending;
-    message.is_tuition = object.is_tuition ?? false;
+    message.auto_payment_status = object.auto_payment_status ?? undefined;
+    message.is_tuition = object.is_tuition ?? undefined;
     return message;
   },
 };
@@ -1765,19 +1765,19 @@ export const CreateInvoicesResponse: MessageFns<CreateInvoicesResponse> = {
 function createBaseCreateInvoiceForClassRequest(): CreateInvoiceForClassRequest {
   return {
     context: undefined,
-    title: "",
-    description: "",
-    show_hst: false,
-    disable_tax: false,
+    title: undefined,
+    description: undefined,
+    show_hst: undefined,
+    disable_tax: undefined,
     homerooms: [],
     courses: [],
     items: [],
     coupons: [],
     due_date: undefined,
     school_year: undefined,
-    auto_pay_enabled: false,
+    auto_pay_enabled: undefined,
     charge_on_date: undefined,
-    auto_payment_status: AutoPaymentStatus.AutoPayPending,
+    auto_payment_status: undefined,
   };
 }
 
@@ -1786,16 +1786,16 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(18).string(message.title);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(26).string(message.description);
     }
-    if (message.show_hst !== false) {
+    if (message.show_hst !== undefined) {
       writer.uint32(32).bool(message.show_hst);
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       writer.uint32(40).bool(message.disable_tax);
     }
     for (const v of message.homerooms) {
@@ -1816,13 +1816,13 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
     }
-    if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
+    if (message.auto_pay_enabled !== undefined) {
       writer.uint32(96).bool(message.auto_pay_enabled);
     }
     if (message.charge_on_date !== undefined) {
       Timestamp.encode(toTimestamp(message.charge_on_date), writer.uint32(106).fork()).join();
     }
-    if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+    if (message.auto_payment_status !== undefined) {
       writer.uint32(112).int32(autoPaymentStatusToNumber(message.auto_payment_status));
     }
     return writer;
@@ -1945,10 +1945,10 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
   fromJSON(object: any): CreateInvoiceForClassRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : undefined,
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
       homerooms: globalThis.Array.isArray(object?.homerooms)
         ? object.homerooms.map((e: any) => ObjectId.fromJSON(e))
         : [],
@@ -1957,11 +1957,11 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : undefined,
       charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
       auto_payment_status: isSet(object.autoPaymentStatus)
         ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
-        : AutoPaymentStatus.AutoPayPending,
+        : undefined,
     };
   },
 
@@ -1970,16 +1970,16 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.show_hst !== false) {
+    if (message.show_hst !== undefined) {
       obj.showHst = message.show_hst;
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       obj.disableTax = message.disable_tax;
     }
     if (message.homerooms?.length) {
@@ -2000,13 +2000,13 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
-    if (message.auto_pay_enabled !== undefined && message.auto_pay_enabled !== false) {
+    if (message.auto_pay_enabled !== undefined) {
       obj.autoPayEnabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
       obj.chargeOnDate = message.charge_on_date.toISOString();
     }
-    if (message.auto_payment_status !== undefined && message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+    if (message.auto_payment_status !== undefined) {
       obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
     }
     return obj;
@@ -2020,10 +2020,10 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.title = object.title ?? "";
-    message.description = object.description ?? "";
-    message.show_hst = object.show_hst ?? false;
-    message.disable_tax = object.disable_tax ?? false;
+    message.title = object.title ?? undefined;
+    message.description = object.description ?? undefined;
+    message.show_hst = object.show_hst ?? undefined;
+    message.disable_tax = object.disable_tax ?? undefined;
     message.homerooms = object.homerooms?.map((e) => ObjectId.fromPartial(e)) || [];
     message.courses = object.courses?.map((e) => ObjectId.fromPartial(e)) || [];
     message.items = object.items?.map((e) => InvoiceItem.fromPartial(e)) || [];
@@ -2032,9 +2032,9 @@ export const CreateInvoiceForClassRequest: MessageFns<CreateInvoiceForClassReque
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
-    message.auto_pay_enabled = object.auto_pay_enabled ?? false;
+    message.auto_pay_enabled = object.auto_pay_enabled ?? undefined;
     message.charge_on_date = object.charge_on_date ?? undefined;
-    message.auto_payment_status = object.auto_payment_status ?? AutoPaymentStatus.AutoPayPending;
+    message.auto_payment_status = object.auto_payment_status ?? undefined;
     return message;
   },
 };
@@ -2403,10 +2403,10 @@ function createBaseUpdateInvoiceRequest(): UpdateInvoiceRequest {
   return {
     context: undefined,
     id: undefined,
-    title: "",
-    description: "",
-    show_hst: false,
-    disable_tax: false,
+    title: undefined,
+    description: undefined,
+    show_hst: undefined,
+    disable_tax: undefined,
     items: [],
     coupons: [],
     due_date: undefined,
@@ -2421,16 +2421,16 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(18).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(34).string(message.description);
     }
-    if (message.show_hst !== false) {
+    if (message.show_hst !== undefined) {
       writer.uint32(40).bool(message.show_hst);
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       writer.uint32(48).bool(message.disable_tax);
     }
     for (const v of message.items) {
@@ -2528,10 +2528,10 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
-      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : false,
-      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : false,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : undefined,
+      disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
       items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => InvoiceItem.fromJSON(e)) : [],
       coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e: any) => Coupon.fromJSON(e)) : [],
       due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
@@ -2546,16 +2546,16 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.show_hst !== false) {
+    if (message.show_hst !== undefined) {
       obj.showHst = message.show_hst;
     }
-    if (message.disable_tax !== false) {
+    if (message.disable_tax !== undefined) {
       obj.disableTax = message.disable_tax;
     }
     if (message.items?.length) {
@@ -2579,10 +2579,10 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.title = object.title ?? "";
-    message.description = object.description ?? "";
-    message.show_hst = object.show_hst ?? false;
-    message.disable_tax = object.disable_tax ?? false;
+    message.title = object.title ?? undefined;
+    message.description = object.description ?? undefined;
+    message.show_hst = object.show_hst ?? undefined;
+    message.disable_tax = object.disable_tax ?? undefined;
     message.items = object.items?.map((e) => InvoiceItem.fromPartial(e)) || [];
     message.coupons = object.coupons?.map((e) => Coupon.fromPartial(e)) || [];
     message.due_date = object.due_date ?? undefined;
@@ -2591,7 +2591,7 @@ export const UpdateInvoiceRequest: MessageFns<UpdateInvoiceRequest> = {
 };
 
 function createBaseUpdateInvoiceAutoPaymentRequest(): UpdateInvoiceAutoPaymentRequest {
-  return { context: undefined, id: undefined, auto_pay_enabled: false, charge_on_date: undefined };
+  return { context: undefined, id: undefined, auto_pay_enabled: undefined, charge_on_date: undefined };
 }
 
 export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymentRequest> = {
@@ -2602,7 +2602,7 @@ export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymen
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(18).fork()).join();
     }
-    if (message.auto_pay_enabled !== false) {
+    if (message.auto_pay_enabled !== undefined) {
       writer.uint32(24).bool(message.auto_pay_enabled);
     }
     if (message.charge_on_date !== undefined) {
@@ -2659,7 +2659,7 @@ export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymen
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : false,
+      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : undefined,
       charge_on_date: isSet(object.chargeOnDate) ? fromJsonTimestamp(object.chargeOnDate) : undefined,
     };
   },
@@ -2672,7 +2672,7 @@ export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymen
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.auto_pay_enabled !== false) {
+    if (message.auto_pay_enabled !== undefined) {
       obj.autoPayEnabled = message.auto_pay_enabled;
     }
     if (message.charge_on_date !== undefined) {
@@ -2692,7 +2692,7 @@ export const UpdateInvoiceAutoPaymentRequest: MessageFns<UpdateInvoiceAutoPaymen
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.auto_pay_enabled = object.auto_pay_enabled ?? false;
+    message.auto_pay_enabled = object.auto_pay_enabled ?? undefined;
     message.charge_on_date = object.charge_on_date ?? undefined;
     return message;
   },
@@ -2918,7 +2918,7 @@ export const GetAutoPayInvoicesReadyToChargeRequest: MessageFns<GetAutoPayInvoic
 };
 
 function createBaseSetAutoPayInvoiceStatusRequest(): SetAutoPayInvoiceStatusRequest {
-  return { context: undefined, invoice_id: undefined, auto_payment_status: AutoPaymentStatus.AutoPayPending };
+  return { context: undefined, invoice_id: undefined, auto_payment_status: undefined };
 }
 
 export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusRequest> = {
@@ -2929,7 +2929,7 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
     if (message.invoice_id !== undefined) {
       ObjectId.encode(message.invoice_id, writer.uint32(18).fork()).join();
     }
-    if (message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+    if (message.auto_payment_status !== undefined) {
       writer.uint32(24).int32(autoPaymentStatusToNumber(message.auto_payment_status));
     }
     return writer;
@@ -2978,7 +2978,7 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
       invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
       auto_payment_status: isSet(object.autoPaymentStatus)
         ? autoPaymentStatusFromJSON(object.autoPaymentStatus)
-        : AutoPaymentStatus.AutoPayPending,
+        : undefined,
     };
   },
 
@@ -2990,7 +2990,7 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
     if (message.invoice_id !== undefined) {
       obj.invoiceId = ObjectId.toJSON(message.invoice_id);
     }
-    if (message.auto_payment_status !== AutoPaymentStatus.AutoPayPending) {
+    if (message.auto_payment_status !== undefined) {
       obj.autoPaymentStatus = autoPaymentStatusToJSON(message.auto_payment_status);
     }
     return obj;
@@ -3009,7 +3009,7 @@ export const SetAutoPayInvoiceStatusRequest: MessageFns<SetAutoPayInvoiceStatusR
     message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
       ? ObjectId.fromPartial(object.invoice_id)
       : undefined;
-    message.auto_payment_status = object.auto_payment_status ?? AutoPaymentStatus.AutoPayPending;
+    message.auto_payment_status = object.auto_payment_status ?? undefined;
     return message;
   },
 };
@@ -3871,12 +3871,12 @@ export const GetOrgPaidBassemLabsFeesInPeriodRequest: MessageFns<GetOrgPaidBasse
 };
 
 function createBaseGetOrgPaidBassemLabsFeesInPeriodResponse(): GetOrgPaidBassemLabsFeesInPeriodResponse {
-  return { total_amount: 0 };
+  return { total_amount: undefined };
 }
 
 export const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBassemLabsFeesInPeriodResponse> = {
   encode(message: GetOrgPaidBassemLabsFeesInPeriodResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.total_amount !== 0) {
+    if (message.total_amount !== undefined) {
       writer.uint32(9).double(message.total_amount);
     }
     return writer;
@@ -3906,12 +3906,12 @@ export const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBass
   },
 
   fromJSON(object: any): GetOrgPaidBassemLabsFeesInPeriodResponse {
-    return { total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : 0 };
+    return { total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : undefined };
   },
 
   toJSON(message: GetOrgPaidBassemLabsFeesInPeriodResponse): unknown {
     const obj: any = {};
-    if (message.total_amount !== 0) {
+    if (message.total_amount !== undefined) {
       obj.totalAmount = message.total_amount;
     }
     return obj;
@@ -3926,7 +3926,7 @@ export const GetOrgPaidBassemLabsFeesInPeriodResponse: MessageFns<GetOrgPaidBass
     object: I,
   ): GetOrgPaidBassemLabsFeesInPeriodResponse {
     const message = createBaseGetOrgPaidBassemLabsFeesInPeriodResponse();
-    message.total_amount = object.total_amount ?? 0;
+    message.total_amount = object.total_amount ?? undefined;
     return message;
   },
 };
@@ -3937,8 +3937,8 @@ function createBaseUpsertOrganizationInvoiceRequest(): UpsertOrganizationInvoice
     organization_id: undefined,
     invoice_start_date: undefined,
     invoice_end_date: undefined,
-    current_enrolled_students_count: 0,
-    is_in_trial_period: false,
+    current_enrolled_students_count: undefined,
+    is_in_trial_period: undefined,
   };
 }
 
@@ -3956,10 +3956,10 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
     if (message.invoice_end_date !== undefined) {
       Timestamp.encode(toTimestamp(message.invoice_end_date), writer.uint32(34).fork()).join();
     }
-    if (message.current_enrolled_students_count !== 0) {
+    if (message.current_enrolled_students_count !== undefined) {
       writer.uint32(40).uint32(message.current_enrolled_students_count);
     }
-    if (message.is_in_trial_period !== false) {
+    if (message.is_in_trial_period !== undefined) {
       writer.uint32(48).bool(message.is_in_trial_period);
     }
     return writer;
@@ -4031,8 +4031,8 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
       invoice_end_date: isSet(object.invoiceEndDate) ? fromJsonTimestamp(object.invoiceEndDate) : undefined,
       current_enrolled_students_count: isSet(object.currentEnrolledStudentsCount)
         ? globalThis.Number(object.currentEnrolledStudentsCount)
-        : 0,
-      is_in_trial_period: isSet(object.isInTrialPeriod) ? globalThis.Boolean(object.isInTrialPeriod) : false,
+        : undefined,
+      is_in_trial_period: isSet(object.isInTrialPeriod) ? globalThis.Boolean(object.isInTrialPeriod) : undefined,
     };
   },
 
@@ -4050,10 +4050,10 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
     if (message.invoice_end_date !== undefined) {
       obj.invoiceEndDate = message.invoice_end_date.toISOString();
     }
-    if (message.current_enrolled_students_count !== 0) {
+    if (message.current_enrolled_students_count !== undefined) {
       obj.currentEnrolledStudentsCount = Math.round(message.current_enrolled_students_count);
     }
-    if (message.is_in_trial_period !== false) {
+    if (message.is_in_trial_period !== undefined) {
       obj.isInTrialPeriod = message.is_in_trial_period;
     }
     return obj;
@@ -4076,8 +4076,8 @@ export const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganizationInvo
       : undefined;
     message.invoice_start_date = object.invoice_start_date ?? undefined;
     message.invoice_end_date = object.invoice_end_date ?? undefined;
-    message.current_enrolled_students_count = object.current_enrolled_students_count ?? 0;
-    message.is_in_trial_period = object.is_in_trial_period ?? false;
+    message.current_enrolled_students_count = object.current_enrolled_students_count ?? undefined;
+    message.is_in_trial_period = object.is_in_trial_period ?? undefined;
     return message;
   },
 };

@@ -3,7 +3,7 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "template_service";
 export interface TestModel {
     id: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
 }
 export declare const TestModel: MessageFns<TestModel>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

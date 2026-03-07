@@ -3,13 +3,13 @@ import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 export declare const protobufPackage = "user_service";
 export interface FamilyContact {
-    name: string;
+    name?: string | undefined;
     phone: PhoneNumber | undefined;
-    email: string;
+    email?: string | undefined;
 }
 export interface FamilyInformation {
-    student_living: string;
-    language_spoken: string;
+    student_living?: string | undefined;
+    language_spoken?: string | undefined;
     preferred_contact?: ObjectId | undefined;
     emergency_contact: FamilyContact | undefined;
     primary_payer?: ObjectId | undefined;
@@ -19,7 +19,7 @@ export interface FamilyInformation {
 export interface Family {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    name: string;
+    name?: string | undefined;
     guardians: ObjectId[];
     guardians_to_not_contact: ObjectId[];
     information: FamilyInformation | undefined;

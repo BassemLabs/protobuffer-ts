@@ -10,20 +10,20 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "utils";
 
 export interface AWSFile {
-  file_name: string;
-  pre_signed_url: string;
+  file_name?: string | undefined;
+  pre_signed_url?: string | undefined;
 }
 
 function createBaseAWSFile(): AWSFile {
-  return { file_name: "", pre_signed_url: "" };
+  return { file_name: undefined, pre_signed_url: undefined };
 }
 
 export const AWSFile: MessageFns<AWSFile> = {
   encode(message: AWSFile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.file_name !== "") {
+    if (message.file_name !== undefined) {
       writer.uint32(10).string(message.file_name);
     }
-    if (message.pre_signed_url !== "") {
+    if (message.pre_signed_url !== undefined) {
       writer.uint32(18).string(message.pre_signed_url);
     }
     return writer;
@@ -61,17 +61,17 @@ export const AWSFile: MessageFns<AWSFile> = {
 
   fromJSON(object: any): AWSFile {
     return {
-      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
-      pre_signed_url: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : "",
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+      pre_signed_url: isSet(object.preSignedUrl) ? globalThis.String(object.preSignedUrl) : undefined,
     };
   },
 
   toJSON(message: AWSFile): unknown {
     const obj: any = {};
-    if (message.file_name !== "") {
+    if (message.file_name !== undefined) {
       obj.fileName = message.file_name;
     }
-    if (message.pre_signed_url !== "") {
+    if (message.pre_signed_url !== undefined) {
       obj.preSignedUrl = message.pre_signed_url;
     }
     return obj;
@@ -82,8 +82,8 @@ export const AWSFile: MessageFns<AWSFile> = {
   },
   fromPartial<I extends Exact<DeepPartial<AWSFile>, I>>(object: I): AWSFile {
     const message = createBaseAWSFile();
-    message.file_name = object.file_name ?? "";
-    message.pre_signed_url = object.pre_signed_url ?? "";
+    message.file_name = object.file_name ?? undefined;
+    message.pre_signed_url = object.pre_signed_url ?? undefined;
     return message;
   },
 };

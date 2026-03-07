@@ -26,7 +26,7 @@ export interface RemoveDiscountRequest {
 }
 
 export interface RemoveDiscountResponse {
-  success: boolean;
+  success?: boolean | undefined;
 }
 
 export interface ListStudentDiscountsRequest {
@@ -63,7 +63,7 @@ export interface RemoveAdditionalFeeRequest {
 }
 
 export interface RemoveAdditionalFeeResponse {
-  success: boolean;
+  success?: boolean | undefined;
 }
 
 export interface ListStudentAdditionalFeesRequest {
@@ -275,12 +275,12 @@ export const RemoveDiscountRequest: MessageFns<RemoveDiscountRequest> = {
 };
 
 function createBaseRemoveDiscountResponse(): RemoveDiscountResponse {
-  return { success: false };
+  return { success: undefined };
 }
 
 export const RemoveDiscountResponse: MessageFns<RemoveDiscountResponse> = {
   encode(message: RemoveDiscountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
@@ -310,12 +310,12 @@ export const RemoveDiscountResponse: MessageFns<RemoveDiscountResponse> = {
   },
 
   fromJSON(object: any): RemoveDiscountResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
   },
 
   toJSON(message: RemoveDiscountResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
     return obj;
@@ -326,7 +326,7 @@ export const RemoveDiscountResponse: MessageFns<RemoveDiscountResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<RemoveDiscountResponse>, I>>(object: I): RemoveDiscountResponse {
     const message = createBaseRemoveDiscountResponse();
-    message.success = object.success ?? false;
+    message.success = object.success ?? undefined;
     return message;
   },
 };
@@ -832,12 +832,12 @@ export const RemoveAdditionalFeeRequest: MessageFns<RemoveAdditionalFeeRequest> 
 };
 
 function createBaseRemoveAdditionalFeeResponse(): RemoveAdditionalFeeResponse {
-  return { success: false };
+  return { success: undefined };
 }
 
 export const RemoveAdditionalFeeResponse: MessageFns<RemoveAdditionalFeeResponse> = {
   encode(message: RemoveAdditionalFeeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
@@ -867,12 +867,12 @@ export const RemoveAdditionalFeeResponse: MessageFns<RemoveAdditionalFeeResponse
   },
 
   fromJSON(object: any): RemoveAdditionalFeeResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
   },
 
   toJSON(message: RemoveAdditionalFeeResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
     return obj;
@@ -883,7 +883,7 @@ export const RemoveAdditionalFeeResponse: MessageFns<RemoveAdditionalFeeResponse
   },
   fromPartial<I extends Exact<DeepPartial<RemoveAdditionalFeeResponse>, I>>(object: I): RemoveAdditionalFeeResponse {
     const message = createBaseRemoveAdditionalFeeResponse();
-    message.success = object.success ?? false;
+    message.success = object.success ?? undefined;
     return message;
   },
 };

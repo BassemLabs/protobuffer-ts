@@ -4,9 +4,9 @@ export declare const protobufPackage = "class_service";
 export interface AbstractCategory {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    name: string;
-    credits_required: number;
-    can_delete: boolean;
+    name?: string | undefined;
+    credits_required?: number | undefined;
+    can_delete?: boolean | undefined;
 }
 export declare const AbstractCategory: MessageFns<AbstractCategory>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

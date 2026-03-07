@@ -12,17 +12,17 @@ const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 exports.protobufPackage = "organization_service";
 function createBaseCreateOwnerRequest() {
-    return { context: undefined, name: "", email: "" };
+    return { context: undefined, name: undefined, email: undefined };
 }
 exports.CreateOwnerRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(26).string(message.email);
         }
         return writer;
@@ -63,8 +63,8 @@ exports.CreateOwnerRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
         };
     },
     toJSON(message) {
@@ -72,10 +72,10 @@ exports.CreateOwnerRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
         return obj;
@@ -88,20 +88,20 @@ exports.CreateOwnerRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.name = object.name ?? "";
-        message.email = object.email ?? "";
+        message.name = object.name ?? undefined;
+        message.email = object.email ?? undefined;
         return message;
     },
 };
 function createBaseGetOwnerByEmailRequest() {
-    return { context: undefined, email: "" };
+    return { context: undefined, email: undefined };
 }
 exports.GetOwnerByEmailRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             writer.uint32(18).string(message.email);
         }
         return writer;
@@ -136,7 +136,7 @@ exports.GetOwnerByEmailRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            email: isSet(object.email) ? globalThis.String(object.email) : "",
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
         };
     },
     toJSON(message) {
@@ -144,7 +144,7 @@ exports.GetOwnerByEmailRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.email !== "") {
+        if (message.email !== undefined) {
             obj.email = message.email;
         }
         return obj;
@@ -157,7 +157,7 @@ exports.GetOwnerByEmailRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.email = object.email ?? "";
+        message.email = object.email ?? undefined;
         return message;
     },
 };
@@ -284,20 +284,20 @@ exports.GetOrganizationOwnerRequest = {
     },
 };
 function createBaseUpdateOwnerProfileRequest() {
-    return { context: undefined, name: "", main_address: "", phone_number: "" };
+    return { context: undefined, name: undefined, main_address: undefined, phone_number: undefined };
 }
 exports.UpdateOwnerProfileRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
-        if (message.name !== undefined && message.name !== "") {
+        if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        if (message.main_address !== undefined && message.main_address !== "") {
+        if (message.main_address !== undefined) {
             writer.uint32(26).string(message.main_address);
         }
-        if (message.phone_number !== undefined && message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             writer.uint32(34).string(message.phone_number);
         }
         return writer;
@@ -344,9 +344,9 @@ exports.UpdateOwnerProfileRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : "",
-            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : undefined,
+            phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : undefined,
         };
     },
     toJSON(message) {
@@ -354,13 +354,13 @@ exports.UpdateOwnerProfileRequest = {
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
-        if (message.name !== undefined && message.name !== "") {
+        if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.main_address !== undefined && message.main_address !== "") {
+        if (message.main_address !== undefined) {
             obj.mainAddress = message.main_address;
         }
-        if (message.phone_number !== undefined && message.phone_number !== "") {
+        if (message.phone_number !== undefined) {
             obj.phoneNumber = message.phone_number;
         }
         return obj;
@@ -373,9 +373,9 @@ exports.UpdateOwnerProfileRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.name = object.name ?? "";
-        message.main_address = object.main_address ?? "";
-        message.phone_number = object.phone_number ?? "";
+        message.name = object.name ?? undefined;
+        message.main_address = object.main_address ?? undefined;
+        message.phone_number = object.phone_number ?? undefined;
         return message;
     },
 };

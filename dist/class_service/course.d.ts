@@ -8,10 +8,10 @@ import { ListSemester, Semester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Course {
     id: ObjectId | undefined;
-    archived: boolean;
+    archived?: boolean | undefined;
     semester: Semester | undefined;
     homeroom?: Homeroom | undefined;
-    name: string;
+    name?: string | undefined;
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];
     lms_course?: LmsCourse | undefined;
@@ -21,8 +21,8 @@ export interface Course {
 }
 export interface ListCourse {
     id: ObjectId | undefined;
-    archived: boolean;
-    name: string;
+    archived?: boolean | undefined;
+    name?: string | undefined;
     semester: ListSemester | undefined;
     homeroom?: ListHomeroom | undefined;
     teachers: ObjectId[];
@@ -31,7 +31,7 @@ export interface ListCourse {
 }
 export interface CourseList {
     courses: ListCourse[];
-    courses_count: number;
+    courses_count?: number | undefined;
 }
 export declare const Course: MessageFns<Course>;
 export declare const ListCourse: MessageFns<ListCourse>;

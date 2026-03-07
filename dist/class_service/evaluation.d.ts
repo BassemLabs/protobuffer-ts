@@ -4,40 +4,40 @@ export declare const protobufPackage = "class_service";
 export interface Evaluation {
     id: ObjectId | undefined;
     course_id: ObjectId | undefined;
-    name: string;
-    total: number;
-    weight: number;
+    name?: string | undefined;
+    total?: number | undefined;
+    weight?: number | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
+    date?: string | undefined;
     mark_category: ObjectId | undefined;
-    visible_to_parents_and_students: boolean;
+    visible_to_parents_and_students?: boolean | undefined;
 }
 export interface DetailedEvaluation {
     id: ObjectId | undefined;
     course_id: ObjectId | undefined;
-    name: string;
-    total: number;
-    weight: number;
+    name?: string | undefined;
+    total?: number | undefined;
+    weight?: number | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
+    date?: string | undefined;
     mark_category: ObjectId | undefined;
-    visible_to_parents_and_students: boolean;
+    visible_to_parents_and_students?: boolean | undefined;
     /** Percentage contribution of this evaluation to the final course mark (0-100) */
-    evaluation_contribution_to_final_mark: number;
+    evaluation_contribution_to_final_mark?: number | undefined;
 }
 export interface PersonalizedEvaluation {
     id: ObjectId | undefined;
     student_id: ObjectId | undefined;
     course_id: ObjectId | undefined;
-    name: string;
-    total: number;
-    weight: number;
+    name?: string | undefined;
+    total?: number | undefined;
+    weight?: number | undefined;
     /** YYYY-MM-DD format for NaiveDate */
-    date: string;
+    date?: string | undefined;
     mark_category: ObjectId | undefined;
-    visible_to_parents_and_students: boolean;
+    visible_to_parents_and_students?: boolean | undefined;
     /** calculated based on the student's marked evaluations */
-    evaluation_contribution_to_student_final_mark: number;
+    evaluation_contribution_to_student_final_mark?: number | undefined;
 }
 export declare const Evaluation: MessageFns<Evaluation>;
 export declare const DetailedEvaluation: MessageFns<DetailedEvaluation>;

@@ -83,30 +83,26 @@ export function serviceContextToNumber(object: ServiceContext): number {
 
 export interface RequestContext {
   user_context: UserContext | undefined;
-  is_testing: boolean;
+  is_testing?: boolean | undefined;
   service_based_context_name?: ServiceContext | undefined;
 }
 
 export interface UserContext {
   user_id: ObjectId | undefined;
-  user_type: UserType;
-  user_auth_token: string;
+  user_type?: UserType | undefined;
+  user_auth_token?: string | undefined;
   organization_id?: ObjectId | undefined;
   roles: UserRole[];
   parent_family_ids: ObjectId[];
   parent_student_ids: ObjectId[];
-  full_name: string;
-  firebase_token: string;
-  exp: number;
-  trace_id: string;
+  full_name?: string | undefined;
+  firebase_token?: string | undefined;
+  exp?: number | undefined;
+  trace_id?: string | undefined;
 }
 
 function createBaseRequestContext(): RequestContext {
-  return {
-    user_context: undefined,
-    is_testing: false,
-    service_based_context_name: ServiceContext.AutoPaymentScheduling,
-  };
+  return { user_context: undefined, is_testing: undefined, service_based_context_name: undefined };
 }
 
 export const RequestContext: MessageFns<RequestContext> = {
@@ -114,13 +110,10 @@ export const RequestContext: MessageFns<RequestContext> = {
     if (message.user_context !== undefined) {
       UserContext.encode(message.user_context, writer.uint32(10).fork()).join();
     }
-    if (message.is_testing !== false) {
+    if (message.is_testing !== undefined) {
       writer.uint32(16).bool(message.is_testing);
     }
-    if (
-      message.service_based_context_name !== undefined &&
-      message.service_based_context_name !== ServiceContext.AutoPaymentScheduling
-    ) {
+    if (message.service_based_context_name !== undefined) {
       writer.uint32(24).int32(serviceContextToNumber(message.service_based_context_name));
     }
     return writer;
@@ -166,10 +159,10 @@ export const RequestContext: MessageFns<RequestContext> = {
   fromJSON(object: any): RequestContext {
     return {
       user_context: isSet(object.userContext) ? UserContext.fromJSON(object.userContext) : undefined,
-      is_testing: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : false,
+      is_testing: isSet(object.isTesting) ? globalThis.Boolean(object.isTesting) : undefined,
       service_based_context_name: isSet(object.serviceBasedContextName)
         ? serviceContextFromJSON(object.serviceBasedContextName)
-        : ServiceContext.AutoPaymentScheduling,
+        : undefined,
     };
   },
 
@@ -178,13 +171,10 @@ export const RequestContext: MessageFns<RequestContext> = {
     if (message.user_context !== undefined) {
       obj.userContext = UserContext.toJSON(message.user_context);
     }
-    if (message.is_testing !== false) {
+    if (message.is_testing !== undefined) {
       obj.isTesting = message.is_testing;
     }
-    if (
-      message.service_based_context_name !== undefined &&
-      message.service_based_context_name !== ServiceContext.AutoPaymentScheduling
-    ) {
+    if (message.service_based_context_name !== undefined) {
       obj.serviceBasedContextName = serviceContextToJSON(message.service_based_context_name);
     }
     return obj;
@@ -198,8 +188,8 @@ export const RequestContext: MessageFns<RequestContext> = {
     message.user_context = (object.user_context !== undefined && object.user_context !== null)
       ? UserContext.fromPartial(object.user_context)
       : undefined;
-    message.is_testing = object.is_testing ?? false;
-    message.service_based_context_name = object.service_based_context_name ?? ServiceContext.AutoPaymentScheduling;
+    message.is_testing = object.is_testing ?? undefined;
+    message.service_based_context_name = object.service_based_context_name ?? undefined;
     return message;
   },
 };
@@ -207,16 +197,16 @@ export const RequestContext: MessageFns<RequestContext> = {
 function createBaseUserContext(): UserContext {
   return {
     user_id: undefined,
-    user_type: UserType.NONE,
-    user_auth_token: "",
+    user_type: undefined,
+    user_auth_token: undefined,
     organization_id: undefined,
     roles: [],
     parent_family_ids: [],
     parent_student_ids: [],
-    full_name: "",
-    firebase_token: "",
-    exp: 0,
-    trace_id: "",
+    full_name: undefined,
+    firebase_token: undefined,
+    exp: undefined,
+    trace_id: undefined,
   };
 }
 
@@ -225,10 +215,10 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(10).fork()).join();
     }
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       writer.uint32(16).int32(userTypeToNumber(message.user_type));
     }
-    if (message.user_auth_token !== "") {
+    if (message.user_auth_token !== undefined) {
       writer.uint32(26).string(message.user_auth_token);
     }
     if (message.organization_id !== undefined) {
@@ -245,16 +235,16 @@ export const UserContext: MessageFns<UserContext> = {
     for (const v of message.parent_student_ids) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
     }
-    if (message.full_name !== "") {
+    if (message.full_name !== undefined) {
       writer.uint32(66).string(message.full_name);
     }
-    if (message.firebase_token !== "") {
+    if (message.firebase_token !== undefined) {
       writer.uint32(74).string(message.firebase_token);
     }
-    if (message.exp !== 0) {
+    if (message.exp !== undefined) {
       writer.uint32(80).uint64(message.exp);
     }
-    if (message.trace_id !== "") {
+    if (message.trace_id !== undefined) {
       writer.uint32(90).string(message.trace_id);
     }
     return writer;
@@ -366,8 +356,8 @@ export const UserContext: MessageFns<UserContext> = {
   fromJSON(object: any): UserContext {
     return {
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
-      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : UserType.NONE,
-      user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : "",
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
+      user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
       parent_family_ids: globalThis.Array.isArray(object?.parentFamilyIds)
@@ -376,10 +366,10 @@ export const UserContext: MessageFns<UserContext> = {
       parent_student_ids: globalThis.Array.isArray(object?.parentStudentIds)
         ? object.parentStudentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
-      full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : "",
-      firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : "",
-      exp: isSet(object.exp) ? globalThis.Number(object.exp) : 0,
-      trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : "",
+      full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : undefined,
+      firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : undefined,
+      exp: isSet(object.exp) ? globalThis.Number(object.exp) : undefined,
+      trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : undefined,
     };
   },
 
@@ -388,10 +378,10 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
     }
-    if (message.user_type !== UserType.NONE) {
+    if (message.user_type !== undefined) {
       obj.userType = userTypeToJSON(message.user_type);
     }
-    if (message.user_auth_token !== "") {
+    if (message.user_auth_token !== undefined) {
       obj.userAuthToken = message.user_auth_token;
     }
     if (message.organization_id !== undefined) {
@@ -406,16 +396,16 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.parent_student_ids?.length) {
       obj.parentStudentIds = message.parent_student_ids.map((e) => ObjectId.toJSON(e));
     }
-    if (message.full_name !== "") {
+    if (message.full_name !== undefined) {
       obj.fullName = message.full_name;
     }
-    if (message.firebase_token !== "") {
+    if (message.firebase_token !== undefined) {
       obj.firebaseToken = message.firebase_token;
     }
-    if (message.exp !== 0) {
+    if (message.exp !== undefined) {
       obj.exp = Math.round(message.exp);
     }
-    if (message.trace_id !== "") {
+    if (message.trace_id !== undefined) {
       obj.traceId = message.trace_id;
     }
     return obj;
@@ -429,18 +419,18 @@ export const UserContext: MessageFns<UserContext> = {
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
       : undefined;
-    message.user_type = object.user_type ?? UserType.NONE;
-    message.user_auth_token = object.user_auth_token ?? "";
+    message.user_type = object.user_type ?? undefined;
+    message.user_auth_token = object.user_auth_token ?? undefined;
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.roles = object.roles?.map((e) => e) || [];
     message.parent_family_ids = object.parent_family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.parent_student_ids = object.parent_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.full_name = object.full_name ?? "";
-    message.firebase_token = object.firebase_token ?? "";
-    message.exp = object.exp ?? 0;
-    message.trace_id = object.trace_id ?? "";
+    message.full_name = object.full_name ?? undefined;
+    message.firebase_token = object.firebase_token ?? undefined;
+    message.exp = object.exp ?? undefined;
+    message.trace_id = object.trace_id ?? undefined;
     return message;
   },
 };

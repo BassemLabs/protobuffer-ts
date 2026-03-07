@@ -12,14 +12,14 @@ export interface GetPaymentPlansResponse {
 }
 export interface CreatePaymentPlanRequest {
     context: RequestContext | undefined;
-    name: string;
-    description: string;
-    currency: Currency;
-    is_public: boolean;
-    upfront_cost: number;
-    upfront_cost_payment_interval: PaymentInterval;
-    per_student_cost: number;
-    payment_processing_percentage: number;
+    name?: string | undefined;
+    description?: string | undefined;
+    currency?: Currency | undefined;
+    is_public?: boolean | undefined;
+    upfront_cost?: number | undefined;
+    upfront_cost_payment_interval?: PaymentInterval | undefined;
+    per_student_cost?: number | undefined;
+    payment_processing_percentage?: number | undefined;
 }
 export interface GetOrganizationVisiblePlansRequest {
     context: RequestContext | undefined;
@@ -38,7 +38,7 @@ export interface MakePaymentPlanAccessibleForOrganizationRequest {
 export interface AssignPaymentPlanToOrganizationRequest {
     context: RequestContext | undefined;
     payment_plan_id: ObjectId | undefined;
-    defer_per_student_cost_to_parent: boolean;
+    defer_per_student_cost_to_parent?: boolean | undefined;
 }
 export interface GetOrganizationActiveOrgPaymentPlanInfoRequest {
     context: RequestContext | undefined;

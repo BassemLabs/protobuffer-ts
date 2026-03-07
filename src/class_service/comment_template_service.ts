@@ -27,15 +27,15 @@ export interface ListCommentTemplatesResponse {
 
 export interface CreateCommentTemplateRequest {
   context: RequestContext | undefined;
-  title: string;
-  comment: string;
+  title?: string | undefined;
+  comment?: string | undefined;
 }
 
 export interface UpdateCommentTemplateRequest {
   context: RequestContext | undefined;
   comment_template_id: ObjectId | undefined;
-  title: string;
-  comment: string;
+  title?: string | undefined;
+  comment?: string | undefined;
 }
 
 export interface DeleteCommentTemplateRequest {
@@ -44,7 +44,7 @@ export interface DeleteCommentTemplateRequest {
 }
 
 export interface DeleteCommentTemplateResponse {
-  success: boolean;
+  success?: boolean | undefined;
 }
 
 function createBaseGetCommentTemplateRequest(): GetCommentTemplateRequest {
@@ -246,7 +246,7 @@ export const ListCommentTemplatesResponse: MessageFns<ListCommentTemplatesRespon
 };
 
 function createBaseCreateCommentTemplateRequest(): CreateCommentTemplateRequest {
-  return { context: undefined, title: "", comment: "" };
+  return { context: undefined, title: undefined, comment: undefined };
 }
 
 export const CreateCommentTemplateRequest: MessageFns<CreateCommentTemplateRequest> = {
@@ -254,10 +254,10 @@ export const CreateCommentTemplateRequest: MessageFns<CreateCommentTemplateReque
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(18).string(message.title);
     }
-    if (message.comment !== "") {
+    if (message.comment !== undefined) {
       writer.uint32(26).string(message.comment);
     }
     return writer;
@@ -303,8 +303,8 @@ export const CreateCommentTemplateRequest: MessageFns<CreateCommentTemplateReque
   fromJSON(object: any): CreateCommentTemplateRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
     };
   },
 
@@ -313,10 +313,10 @@ export const CreateCommentTemplateRequest: MessageFns<CreateCommentTemplateReque
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.comment !== "") {
+    if (message.comment !== undefined) {
       obj.comment = message.comment;
     }
     return obj;
@@ -330,14 +330,14 @@ export const CreateCommentTemplateRequest: MessageFns<CreateCommentTemplateReque
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.title = object.title ?? "";
-    message.comment = object.comment ?? "";
+    message.title = object.title ?? undefined;
+    message.comment = object.comment ?? undefined;
     return message;
   },
 };
 
 function createBaseUpdateCommentTemplateRequest(): UpdateCommentTemplateRequest {
-  return { context: undefined, comment_template_id: undefined, title: "", comment: "" };
+  return { context: undefined, comment_template_id: undefined, title: undefined, comment: undefined };
 }
 
 export const UpdateCommentTemplateRequest: MessageFns<UpdateCommentTemplateRequest> = {
@@ -348,10 +348,10 @@ export const UpdateCommentTemplateRequest: MessageFns<UpdateCommentTemplateReque
     if (message.comment_template_id !== undefined) {
       ObjectId.encode(message.comment_template_id, writer.uint32(18).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(26).string(message.title);
     }
-    if (message.comment !== "") {
+    if (message.comment !== undefined) {
       writer.uint32(34).string(message.comment);
     }
     return writer;
@@ -405,8 +405,8 @@ export const UpdateCommentTemplateRequest: MessageFns<UpdateCommentTemplateReque
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       comment_template_id: isSet(object.commentTemplateId) ? ObjectId.fromJSON(object.commentTemplateId) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
     };
   },
 
@@ -418,10 +418,10 @@ export const UpdateCommentTemplateRequest: MessageFns<UpdateCommentTemplateReque
     if (message.comment_template_id !== undefined) {
       obj.commentTemplateId = ObjectId.toJSON(message.comment_template_id);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.comment !== "") {
+    if (message.comment !== undefined) {
       obj.comment = message.comment;
     }
     return obj;
@@ -438,8 +438,8 @@ export const UpdateCommentTemplateRequest: MessageFns<UpdateCommentTemplateReque
     message.comment_template_id = (object.comment_template_id !== undefined && object.comment_template_id !== null)
       ? ObjectId.fromPartial(object.comment_template_id)
       : undefined;
-    message.title = object.title ?? "";
-    message.comment = object.comment ?? "";
+    message.title = object.title ?? undefined;
+    message.comment = object.comment ?? undefined;
     return message;
   },
 };
@@ -523,12 +523,12 @@ export const DeleteCommentTemplateRequest: MessageFns<DeleteCommentTemplateReque
 };
 
 function createBaseDeleteCommentTemplateResponse(): DeleteCommentTemplateResponse {
-  return { success: false };
+  return { success: undefined };
 }
 
 export const DeleteCommentTemplateResponse: MessageFns<DeleteCommentTemplateResponse> = {
   encode(message: DeleteCommentTemplateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
@@ -558,12 +558,12 @@ export const DeleteCommentTemplateResponse: MessageFns<DeleteCommentTemplateResp
   },
 
   fromJSON(object: any): DeleteCommentTemplateResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
   },
 
   toJSON(message: DeleteCommentTemplateResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
     return obj;
@@ -576,7 +576,7 @@ export const DeleteCommentTemplateResponse: MessageFns<DeleteCommentTemplateResp
     object: I,
   ): DeleteCommentTemplateResponse {
     const message = createBaseDeleteCommentTemplateResponse();
-    message.success = object.success ?? false;
+    message.success = object.success ?? undefined;
     return message;
   },
 };

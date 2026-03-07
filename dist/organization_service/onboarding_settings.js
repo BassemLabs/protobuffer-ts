@@ -13,24 +13,24 @@ const aws_file_1 = require("../utils/aws_file");
 exports.protobufPackage = "organization_service";
 function createBaseOnboardingSettings() {
     return {
-        has_interview_for_newcomers: false,
-        enable_group_approval_system: false,
-        waitlist_fee: 0,
+        has_interview_for_newcomers: undefined,
+        enable_group_approval_system: undefined,
+        waitlist_fee: undefined,
         registration_fees: [],
         reregistration_fees: [],
         school_handbook: [],
-        interview_fee: 0,
+        interview_fee: undefined,
     };
 }
 exports.OnboardingSettings = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.has_interview_for_newcomers !== false) {
+        if (message.has_interview_for_newcomers !== undefined) {
             writer.uint32(8).bool(message.has_interview_for_newcomers);
         }
-        if (message.enable_group_approval_system !== false) {
+        if (message.enable_group_approval_system !== undefined) {
             writer.uint32(16).bool(message.enable_group_approval_system);
         }
-        if (message.waitlist_fee !== 0) {
+        if (message.waitlist_fee !== undefined) {
             writer.uint32(29).float(message.waitlist_fee);
         }
         for (const v of message.registration_fees) {
@@ -42,7 +42,7 @@ exports.OnboardingSettings = {
         for (const v of message.school_handbook) {
             aws_file_1.AWSFile.encode(v, writer.uint32(50).fork()).join();
         }
-        if (message.interview_fee !== 0) {
+        if (message.interview_fee !== undefined) {
             writer.uint32(61).float(message.interview_fee);
         }
         return writer;
@@ -108,11 +108,11 @@ exports.OnboardingSettings = {
         return {
             has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
                 ? globalThis.Boolean(object.hasInterviewForNewcomers)
-                : false,
+                : undefined,
             enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
                 ? globalThis.Boolean(object.enableGroupApprovalSystem)
-                : false,
-            waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : 0,
+                : undefined,
+            waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : undefined,
             registration_fees: globalThis.Array.isArray(object?.registrationFees)
                 ? object.registrationFees.map((e) => exports.GradeFeeMapping.fromJSON(e))
                 : [],
@@ -122,18 +122,18 @@ exports.OnboardingSettings = {
             school_handbook: globalThis.Array.isArray(object?.schoolHandbook)
                 ? object.schoolHandbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
                 : [],
-            interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : 0,
+            interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.has_interview_for_newcomers !== false) {
+        if (message.has_interview_for_newcomers !== undefined) {
             obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
         }
-        if (message.enable_group_approval_system !== false) {
+        if (message.enable_group_approval_system !== undefined) {
             obj.enableGroupApprovalSystem = message.enable_group_approval_system;
         }
-        if (message.waitlist_fee !== 0) {
+        if (message.waitlist_fee !== undefined) {
             obj.waitlistFee = message.waitlist_fee;
         }
         if (message.registration_fees?.length) {
@@ -145,7 +145,7 @@ exports.OnboardingSettings = {
         if (message.school_handbook?.length) {
             obj.schoolHandbook = message.school_handbook.map((e) => aws_file_1.AWSFile.toJSON(e));
         }
-        if (message.interview_fee !== 0) {
+        if (message.interview_fee !== undefined) {
             obj.interviewFee = message.interview_fee;
         }
         return obj;
@@ -155,22 +155,22 @@ exports.OnboardingSettings = {
     },
     fromPartial(object) {
         const message = createBaseOnboardingSettings();
-        message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? false;
-        message.enable_group_approval_system = object.enable_group_approval_system ?? false;
-        message.waitlist_fee = object.waitlist_fee ?? 0;
+        message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? undefined;
+        message.enable_group_approval_system = object.enable_group_approval_system ?? undefined;
+        message.waitlist_fee = object.waitlist_fee ?? undefined;
         message.registration_fees = object.registration_fees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];
         message.reregistration_fees = object.reregistration_fees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];
         message.school_handbook = object.school_handbook?.map((e) => aws_file_1.AWSFile.fromPartial(e)) || [];
-        message.interview_fee = object.interview_fee ?? 0;
+        message.interview_fee = object.interview_fee ?? undefined;
         return message;
     },
 };
 function createBaseGradeFeeMapping() {
-    return { grade: student_1.StudentGrade.PRE_K, fee: undefined };
+    return { grade: undefined, fee: undefined };
 }
 exports.GradeFeeMapping = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             writer.uint32(8).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         if (message.fee !== undefined) {
@@ -207,13 +207,13 @@ exports.GradeFeeMapping = {
     },
     fromJSON(object) {
         return {
-            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : student_1.StudentGrade.PRE_K,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
             fee: isSet(object.fee) ? exports.ItemizedFee.fromJSON(object.fee) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.grade !== student_1.StudentGrade.PRE_K) {
+        if (message.grade !== undefined) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
         if (message.fee !== undefined) {
@@ -226,20 +226,20 @@ exports.GradeFeeMapping = {
     },
     fromPartial(object) {
         const message = createBaseGradeFeeMapping();
-        message.grade = object.grade ?? student_1.StudentGrade.PRE_K;
+        message.grade = object.grade ?? undefined;
         message.fee = (object.fee !== undefined && object.fee !== null) ? exports.ItemizedFee.fromPartial(object.fee) : undefined;
         return message;
     },
 };
 function createBaseItemizedFee() {
-    return { title: "", description: "", items: [] };
+    return { title: undefined, description: undefined, items: [] };
 }
 exports.ItemizedFee = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(10).string(message.title);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(18).string(message.description);
         }
         for (const v of message.items) {
@@ -282,17 +282,17 @@ exports.ItemizedFee = {
     },
     fromJSON(object) {
         return {
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
             items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => exports.FeeItem.fromJSON(e)) : [],
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
         if (message.items?.length) {
@@ -305,27 +305,27 @@ exports.ItemizedFee = {
     },
     fromPartial(object) {
         const message = createBaseItemizedFee();
-        message.title = object.title ?? "";
-        message.description = object.description ?? "";
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
         message.items = object.items?.map((e) => exports.FeeItem.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseFeeItem() {
-    return { title: "", description: "", price: 0, quantity: 0 };
+    return { title: undefined, description: undefined, price: undefined, quantity: undefined };
 }
 exports.FeeItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             writer.uint32(10).string(message.title);
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             writer.uint32(18).string(message.description);
         }
-        if (message.price !== 0) {
+        if (message.price !== undefined) {
             writer.uint32(29).float(message.price);
         }
-        if (message.quantity !== 0) {
+        if (message.quantity !== undefined) {
             writer.uint32(32).uint32(message.quantity);
         }
         return writer;
@@ -371,24 +371,24 @@ exports.FeeItem = {
     },
     fromJSON(object) {
         return {
-            title: isSet(object.title) ? globalThis.String(object.title) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            price: isSet(object.price) ? globalThis.Number(object.price) : 0,
-            quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            price: isSet(object.price) ? globalThis.Number(object.price) : undefined,
+            quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.title !== "") {
+        if (message.title !== undefined) {
             obj.title = message.title;
         }
-        if (message.description !== "") {
+        if (message.description !== undefined) {
             obj.description = message.description;
         }
-        if (message.price !== 0) {
+        if (message.price !== undefined) {
             obj.price = message.price;
         }
-        if (message.quantity !== 0) {
+        if (message.quantity !== undefined) {
             obj.quantity = Math.round(message.quantity);
         }
         return obj;
@@ -398,10 +398,10 @@ exports.FeeItem = {
     },
     fromPartial(object) {
         const message = createBaseFeeItem();
-        message.title = object.title ?? "";
-        message.description = object.description ?? "";
-        message.price = object.price ?? 0;
-        message.quantity = object.quantity ?? 0;
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
+        message.price = object.price ?? undefined;
+        message.quantity = object.quantity ?? undefined;
         return message;
     },
 };

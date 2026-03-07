@@ -17,7 +17,7 @@ function createBaseCustomFieldEntry() {
         custom_field_id: undefined,
         group_id: undefined,
         user_id: undefined,
-        value: "",
+        value: undefined,
     };
 }
 exports.CustomFieldEntry = {
@@ -37,7 +37,7 @@ exports.CustomFieldEntry = {
         if (message.user_id !== undefined) {
             object_id_1.ObjectId.encode(message.user_id, writer.uint32(42).fork()).join();
         }
-        if (message.value !== "") {
+        if (message.value !== undefined) {
             writer.uint32(50).string(message.value);
         }
         return writer;
@@ -100,7 +100,7 @@ exports.CustomFieldEntry = {
             custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
             group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
             user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
-            value: isSet(object.value) ? globalThis.String(object.value) : "",
+            value: isSet(object.value) ? globalThis.String(object.value) : undefined,
         };
     },
     toJSON(message) {
@@ -120,7 +120,7 @@ exports.CustomFieldEntry = {
         if (message.user_id !== undefined) {
             obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
         }
-        if (message.value !== "") {
+        if (message.value !== undefined) {
             obj.value = message.value;
         }
         return obj;
@@ -143,7 +143,7 @@ exports.CustomFieldEntry = {
         message.user_id = (object.user_id !== undefined && object.user_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.user_id)
             : undefined;
-        message.value = object.value ?? "";
+        message.value = object.value ?? undefined;
         return message;
     },
 };

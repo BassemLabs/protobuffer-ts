@@ -6,7 +6,7 @@ export declare const protobufPackage = "payment_service_transaction";
 export interface GetPaidTransactionRequest {
     context: RequestContext | undefined;
     user: ObjectId | undefined;
-    description: string;
+    description?: string | undefined;
 }
 export interface GetTransactionsRequest {
     context: RequestContext | undefined;
@@ -17,15 +17,15 @@ export interface GetTransactionsResponse {
 }
 export interface CreateManualTransactionRequest {
     context: RequestContext | undefined;
-    payment_type: PaymentType;
+    payment_type?: PaymentType | undefined;
     invoice_id: ObjectId | undefined;
-    amount: number;
+    amount?: number | undefined;
 }
 export interface IssueRefundRequest {
     context: RequestContext | undefined;
     transaction_id: ObjectId | undefined;
-    payment_type: PaymentType;
-    amount: number;
+    payment_type?: PaymentType | undefined;
+    amount?: number | undefined;
     reason?: string | undefined;
 }
 export declare const GetPaidTransactionRequest: MessageFns<GetPaidTransactionRequest>;

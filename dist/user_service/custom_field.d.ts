@@ -34,22 +34,22 @@ export interface CustomField {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     group_id: ObjectId | undefined;
-    name: string;
-    field_type: CustomFieldType;
-    user_type: UserType;
-    is_required: boolean;
-    description: string;
+    name?: string | undefined;
+    field_type?: CustomFieldType | undefined;
+    user_type?: UserType | undefined;
+    is_required?: boolean | undefined;
+    description?: string | undefined;
     regex_pattern?: string | undefined;
     options: string[];
-    is_archived: boolean;
+    is_archived?: boolean | undefined;
 }
 /** Custom fields group */
 export interface CustomFieldsGroup {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    group_name: string;
-    user_type: UserType;
-    profile_section: ProfileSection;
+    group_name?: string | undefined;
+    user_type?: UserType | undefined;
+    profile_section?: ProfileSection | undefined;
     hints: string[];
     group_access_settings: ObjectId | undefined;
     entries_access_settings: ObjectId | undefined;
@@ -63,12 +63,12 @@ export interface GroupApprovalStatus {
     organization: ObjectId | undefined;
     group_id: ObjectId | undefined;
     user_id: ObjectId | undefined;
-    status: ApprovalStatus;
+    status?: ApprovalStatus | undefined;
     rejection_message?: string | undefined;
 }
 export interface StudentPrimaryIdField {
-    field_name: string;
-    value: string;
+    field_name?: string | undefined;
+    value?: string | undefined;
 }
 /** Custom fields group with its associated custom fields */
 export interface CustomFieldsGroupWithFields {

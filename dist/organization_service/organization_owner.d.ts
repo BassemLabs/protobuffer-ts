@@ -3,8 +3,8 @@ import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "organization_service";
 export interface OrganizationOwner {
     id: ObjectId | undefined;
-    name: string;
-    email: string;
+    name?: string | undefined;
+    email?: string | undefined;
     organization: ObjectId | undefined;
     main_address?: string | undefined;
     phone_number?: string | undefined;

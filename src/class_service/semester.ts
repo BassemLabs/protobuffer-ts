@@ -66,8 +66,8 @@ export function reportTypeToNumber(object: ReportType): number {
 
 export interface Semester {
   id: ObjectId | undefined;
-  name: string;
-  archived: boolean;
+  name?: string | undefined;
+  archived?: boolean | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
   report_layout?: SemesterReportLayout | undefined;
@@ -76,45 +76,45 @@ export interface Semester {
 }
 
 export interface SemesterReportLayout {
-  comment_char_limit: number;
-  include_progress_report_cards: boolean;
-  show_credits_earned_entry: boolean;
+  comment_char_limit?: number | undefined;
+  include_progress_report_cards?: boolean | undefined;
+  show_credits_earned_entry?: boolean | undefined;
   learning_skills: SemesterLearningSkill[];
   report_dates: ReportDates[];
-  hide_learning_skills_from_homerooms: boolean;
-  hide_learning_skills_from_courses: boolean;
+  hide_learning_skills_from_homerooms?: boolean | undefined;
+  hide_learning_skills_from_courses?: boolean | undefined;
 }
 
 export interface ReportDates {
-  report_type: ReportType;
+  report_type?: ReportType | undefined;
   due_date?: Date | undefined;
   distribution_date?: Date | undefined;
 }
 
 export interface SemesterLearningSkill {
   id: ObjectId | undefined;
-  title: string;
-  description: string;
+  title?: string | undefined;
+  description?: string | undefined;
 }
 
 export interface ListSemester {
   id: ObjectId | undefined;
-  archived: boolean;
-  name: string;
+  archived?: boolean | undefined;
+  name?: string | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
 }
 
 export interface SemesterList {
   semesters: ListSemester[];
-  semesters_count: number;
+  semesters_count?: number | undefined;
 }
 
 function createBaseSemester(): Semester {
   return {
     id: undefined,
-    name: "",
-    archived: false,
+    name: undefined,
+    archived: undefined,
     start_date: undefined,
     end_date: undefined,
     report_layout: undefined,
@@ -128,10 +128,10 @@ export const Semester: MessageFns<Semester> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(24).bool(message.archived);
     }
     if (message.start_date !== undefined) {
@@ -227,8 +227,8 @@ export const Semester: MessageFns<Semester> = {
   fromJSON(object: any): Semester {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
       start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       report_layout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
@@ -242,10 +242,10 @@ export const Semester: MessageFns<Semester> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
     if (message.start_date !== undefined) {
@@ -272,8 +272,8 @@ export const Semester: MessageFns<Semester> = {
   fromPartial<I extends Exact<DeepPartial<Semester>, I>>(object: I): Semester {
     const message = createBaseSemester();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.name = object.name ?? "";
-    message.archived = object.archived ?? false;
+    message.name = object.name ?? undefined;
+    message.archived = object.archived ?? undefined;
     message.start_date = object.start_date ?? undefined;
     message.end_date = object.end_date ?? undefined;
     message.report_layout = (object.report_layout !== undefined && object.report_layout !== null)
@@ -291,25 +291,25 @@ export const Semester: MessageFns<Semester> = {
 
 function createBaseSemesterReportLayout(): SemesterReportLayout {
   return {
-    comment_char_limit: 0,
-    include_progress_report_cards: false,
-    show_credits_earned_entry: false,
+    comment_char_limit: undefined,
+    include_progress_report_cards: undefined,
+    show_credits_earned_entry: undefined,
     learning_skills: [],
     report_dates: [],
-    hide_learning_skills_from_homerooms: false,
-    hide_learning_skills_from_courses: false,
+    hide_learning_skills_from_homerooms: undefined,
+    hide_learning_skills_from_courses: undefined,
   };
 }
 
 export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
   encode(message: SemesterReportLayout, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.comment_char_limit !== 0) {
+    if (message.comment_char_limit !== undefined) {
       writer.uint32(8).uint32(message.comment_char_limit);
     }
-    if (message.include_progress_report_cards !== false) {
+    if (message.include_progress_report_cards !== undefined) {
       writer.uint32(16).bool(message.include_progress_report_cards);
     }
-    if (message.show_credits_earned_entry !== false) {
+    if (message.show_credits_earned_entry !== undefined) {
       writer.uint32(24).bool(message.show_credits_earned_entry);
     }
     for (const v of message.learning_skills) {
@@ -318,10 +318,10 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
     for (const v of message.report_dates) {
       ReportDates.encode(v!, writer.uint32(42).fork()).join();
     }
-    if (message.hide_learning_skills_from_homerooms !== false) {
+    if (message.hide_learning_skills_from_homerooms !== undefined) {
       writer.uint32(48).bool(message.hide_learning_skills_from_homerooms);
     }
-    if (message.hide_learning_skills_from_courses !== false) {
+    if (message.hide_learning_skills_from_courses !== undefined) {
       writer.uint32(56).bool(message.hide_learning_skills_from_courses);
     }
     return writer;
@@ -394,13 +394,13 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
 
   fromJSON(object: any): SemesterReportLayout {
     return {
-      comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : 0,
+      comment_char_limit: isSet(object.commentCharLimit) ? globalThis.Number(object.commentCharLimit) : undefined,
       include_progress_report_cards: isSet(object.includeProgressReportCards)
         ? globalThis.Boolean(object.includeProgressReportCards)
-        : false,
+        : undefined,
       show_credits_earned_entry: isSet(object.showCreditsEarnedEntry)
         ? globalThis.Boolean(object.showCreditsEarnedEntry)
-        : false,
+        : undefined,
       learning_skills: globalThis.Array.isArray(object?.learningSkills)
         ? object.learningSkills.map((e: any) => SemesterLearningSkill.fromJSON(e))
         : [],
@@ -409,22 +409,22 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
         : [],
       hide_learning_skills_from_homerooms: isSet(object.hideLearningSkillsFromHomerooms)
         ? globalThis.Boolean(object.hideLearningSkillsFromHomerooms)
-        : false,
+        : undefined,
       hide_learning_skills_from_courses: isSet(object.hideLearningSkillsFromCourses)
         ? globalThis.Boolean(object.hideLearningSkillsFromCourses)
-        : false,
+        : undefined,
     };
   },
 
   toJSON(message: SemesterReportLayout): unknown {
     const obj: any = {};
-    if (message.comment_char_limit !== 0) {
+    if (message.comment_char_limit !== undefined) {
       obj.commentCharLimit = Math.round(message.comment_char_limit);
     }
-    if (message.include_progress_report_cards !== false) {
+    if (message.include_progress_report_cards !== undefined) {
       obj.includeProgressReportCards = message.include_progress_report_cards;
     }
-    if (message.show_credits_earned_entry !== false) {
+    if (message.show_credits_earned_entry !== undefined) {
       obj.showCreditsEarnedEntry = message.show_credits_earned_entry;
     }
     if (message.learning_skills?.length) {
@@ -433,10 +433,10 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
     if (message.report_dates?.length) {
       obj.reportDates = message.report_dates.map((e) => ReportDates.toJSON(e));
     }
-    if (message.hide_learning_skills_from_homerooms !== false) {
+    if (message.hide_learning_skills_from_homerooms !== undefined) {
       obj.hideLearningSkillsFromHomerooms = message.hide_learning_skills_from_homerooms;
     }
-    if (message.hide_learning_skills_from_courses !== false) {
+    if (message.hide_learning_skills_from_courses !== undefined) {
       obj.hideLearningSkillsFromCourses = message.hide_learning_skills_from_courses;
     }
     return obj;
@@ -447,24 +447,24 @@ export const SemesterReportLayout: MessageFns<SemesterReportLayout> = {
   },
   fromPartial<I extends Exact<DeepPartial<SemesterReportLayout>, I>>(object: I): SemesterReportLayout {
     const message = createBaseSemesterReportLayout();
-    message.comment_char_limit = object.comment_char_limit ?? 0;
-    message.include_progress_report_cards = object.include_progress_report_cards ?? false;
-    message.show_credits_earned_entry = object.show_credits_earned_entry ?? false;
+    message.comment_char_limit = object.comment_char_limit ?? undefined;
+    message.include_progress_report_cards = object.include_progress_report_cards ?? undefined;
+    message.show_credits_earned_entry = object.show_credits_earned_entry ?? undefined;
     message.learning_skills = object.learning_skills?.map((e) => SemesterLearningSkill.fromPartial(e)) || [];
     message.report_dates = object.report_dates?.map((e) => ReportDates.fromPartial(e)) || [];
-    message.hide_learning_skills_from_homerooms = object.hide_learning_skills_from_homerooms ?? false;
-    message.hide_learning_skills_from_courses = object.hide_learning_skills_from_courses ?? false;
+    message.hide_learning_skills_from_homerooms = object.hide_learning_skills_from_homerooms ?? undefined;
+    message.hide_learning_skills_from_courses = object.hide_learning_skills_from_courses ?? undefined;
     return message;
   },
 };
 
 function createBaseReportDates(): ReportDates {
-  return { report_type: ReportType.Progress, due_date: undefined, distribution_date: undefined };
+  return { report_type: undefined, due_date: undefined, distribution_date: undefined };
 }
 
 export const ReportDates: MessageFns<ReportDates> = {
   encode(message: ReportDates, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.report_type !== ReportType.Progress) {
+    if (message.report_type !== undefined) {
       writer.uint32(8).int32(reportTypeToNumber(message.report_type));
     }
     if (message.due_date !== undefined) {
@@ -515,7 +515,7 @@ export const ReportDates: MessageFns<ReportDates> = {
 
   fromJSON(object: any): ReportDates {
     return {
-      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : ReportType.Progress,
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
       due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
       distribution_date: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
     };
@@ -523,7 +523,7 @@ export const ReportDates: MessageFns<ReportDates> = {
 
   toJSON(message: ReportDates): unknown {
     const obj: any = {};
-    if (message.report_type !== ReportType.Progress) {
+    if (message.report_type !== undefined) {
       obj.reportType = reportTypeToJSON(message.report_type);
     }
     if (message.due_date !== undefined) {
@@ -540,7 +540,7 @@ export const ReportDates: MessageFns<ReportDates> = {
   },
   fromPartial<I extends Exact<DeepPartial<ReportDates>, I>>(object: I): ReportDates {
     const message = createBaseReportDates();
-    message.report_type = object.report_type ?? ReportType.Progress;
+    message.report_type = object.report_type ?? undefined;
     message.due_date = object.due_date ?? undefined;
     message.distribution_date = object.distribution_date ?? undefined;
     return message;
@@ -548,7 +548,7 @@ export const ReportDates: MessageFns<ReportDates> = {
 };
 
 function createBaseSemesterLearningSkill(): SemesterLearningSkill {
-  return { id: undefined, title: "", description: "" };
+  return { id: undefined, title: undefined, description: undefined };
 }
 
 export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
@@ -556,10 +556,10 @@ export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       writer.uint32(18).string(message.title);
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       writer.uint32(26).string(message.description);
     }
     return writer;
@@ -605,8 +605,8 @@ export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
   fromJSON(object: any): SemesterLearningSkill {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
     };
   },
 
@@ -615,10 +615,10 @@ export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.title !== "") {
+    if (message.title !== undefined) {
       obj.title = message.title;
     }
-    if (message.description !== "") {
+    if (message.description !== undefined) {
       obj.description = message.description;
     }
     return obj;
@@ -630,14 +630,14 @@ export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
   fromPartial<I extends Exact<DeepPartial<SemesterLearningSkill>, I>>(object: I): SemesterLearningSkill {
     const message = createBaseSemesterLearningSkill();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.title = object.title ?? "";
-    message.description = object.description ?? "";
+    message.title = object.title ?? undefined;
+    message.description = object.description ?? undefined;
     return message;
   },
 };
 
 function createBaseListSemester(): ListSemester {
-  return { id: undefined, archived: false, name: "", start_date: undefined, end_date: undefined };
+  return { id: undefined, archived: undefined, name: undefined, start_date: undefined, end_date: undefined };
 }
 
 export const ListSemester: MessageFns<ListSemester> = {
@@ -645,10 +645,10 @@ export const ListSemester: MessageFns<ListSemester> = {
     if (message.id !== undefined) {
       ObjectId.encode(message.id, writer.uint32(10).fork()).join();
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       writer.uint32(16).bool(message.archived);
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       writer.uint32(26).string(message.name);
     }
     if (message.start_date !== undefined) {
@@ -714,8 +714,8 @@ export const ListSemester: MessageFns<ListSemester> = {
   fromJSON(object: any): ListSemester {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : false,
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
@@ -726,10 +726,10 @@ export const ListSemester: MessageFns<ListSemester> = {
     if (message.id !== undefined) {
       obj.id = ObjectId.toJSON(message.id);
     }
-    if (message.archived !== false) {
+    if (message.archived !== undefined) {
       obj.archived = message.archived;
     }
-    if (message.name !== "") {
+    if (message.name !== undefined) {
       obj.name = message.name;
     }
     if (message.start_date !== undefined) {
@@ -747,8 +747,8 @@ export const ListSemester: MessageFns<ListSemester> = {
   fromPartial<I extends Exact<DeepPartial<ListSemester>, I>>(object: I): ListSemester {
     const message = createBaseListSemester();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
-    message.archived = object.archived ?? false;
-    message.name = object.name ?? "";
+    message.archived = object.archived ?? undefined;
+    message.name = object.name ?? undefined;
     message.start_date = object.start_date ?? undefined;
     message.end_date = object.end_date ?? undefined;
     return message;
@@ -756,7 +756,7 @@ export const ListSemester: MessageFns<ListSemester> = {
 };
 
 function createBaseSemesterList(): SemesterList {
-  return { semesters: [], semesters_count: 0 };
+  return { semesters: [], semesters_count: undefined };
 }
 
 export const SemesterList: MessageFns<SemesterList> = {
@@ -764,7 +764,7 @@ export const SemesterList: MessageFns<SemesterList> = {
     for (const v of message.semesters) {
       ListSemester.encode(v!, writer.uint32(10).fork()).join();
     }
-    if (message.semesters_count !== 0) {
+    if (message.semesters_count !== undefined) {
       writer.uint32(16).uint64(message.semesters_count);
     }
     return writer;
@@ -805,7 +805,7 @@ export const SemesterList: MessageFns<SemesterList> = {
       semesters: globalThis.Array.isArray(object?.semesters)
         ? object.semesters.map((e: any) => ListSemester.fromJSON(e))
         : [],
-      semesters_count: isSet(object.semestersCount) ? globalThis.Number(object.semestersCount) : 0,
+      semesters_count: isSet(object.semestersCount) ? globalThis.Number(object.semestersCount) : undefined,
     };
   },
 
@@ -814,7 +814,7 @@ export const SemesterList: MessageFns<SemesterList> = {
     if (message.semesters?.length) {
       obj.semesters = message.semesters.map((e) => ListSemester.toJSON(e));
     }
-    if (message.semesters_count !== 0) {
+    if (message.semesters_count !== undefined) {
       obj.semestersCount = Math.round(message.semesters_count);
     }
     return obj;
@@ -826,7 +826,7 @@ export const SemesterList: MessageFns<SemesterList> = {
   fromPartial<I extends Exact<DeepPartial<SemesterList>, I>>(object: I): SemesterList {
     const message = createBaseSemesterList();
     message.semesters = object.semesters?.map((e) => ListSemester.fromPartial(e)) || [];
-    message.semesters_count = object.semesters_count ?? 0;
+    message.semesters_count = object.semesters_count ?? undefined;
     return message;
   },
 };

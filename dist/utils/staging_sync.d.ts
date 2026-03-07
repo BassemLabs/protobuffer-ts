@@ -5,7 +5,7 @@ export interface SyncAllForStagingRequest {
     context: RequestContext | undefined;
 }
 export interface SyncAllForStagingResponse {
-    result: string;
+    result?: string | undefined;
 }
 export declare const SyncAllForStagingRequest: MessageFns<SyncAllForStagingRequest>;
 export declare const SyncAllForStagingResponse: MessageFns<SyncAllForStagingResponse>;

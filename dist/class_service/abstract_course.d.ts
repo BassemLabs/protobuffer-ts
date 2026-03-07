@@ -4,12 +4,12 @@ export declare const protobufPackage = "class_service";
 export interface AbstractCourse {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    course_code: string;
-    official_name: string;
-    credit: number;
-    mandatory: boolean;
+    course_code?: string | undefined;
+    official_name?: string | undefined;
+    credit?: number | undefined;
+    mandatory?: boolean | undefined;
     category_ids: ObjectId[];
-    can_delete: boolean;
+    can_delete?: boolean | undefined;
 }
 export declare const AbstractCourse: MessageFns<AbstractCourse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

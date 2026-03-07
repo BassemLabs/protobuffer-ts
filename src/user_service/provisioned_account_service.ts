@@ -35,13 +35,13 @@ export interface ListProvisionedAccountsResponse {
 export interface CreateProvisionedAccountForStudentRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
-  provider: LmsProviderType;
+  provider?: LmsProviderType | undefined;
 }
 
 export interface CreateProvisionedAccountForTeacherRequest {
   context: RequestContext | undefined;
   teacher_id: ObjectId | undefined;
-  provider: LmsProviderType;
+  provider?: LmsProviderType | undefined;
 }
 
 export interface ActivateProvisionedAccountForStudentRequest {
@@ -292,7 +292,7 @@ export const ListProvisionedAccountsResponse: MessageFns<ListProvisionedAccounts
 };
 
 function createBaseCreateProvisionedAccountForStudentRequest(): CreateProvisionedAccountForStudentRequest {
-  return { context: undefined, student_id: undefined, provider: LmsProviderType.GOOGLE_CLASSROOM };
+  return { context: undefined, student_id: undefined, provider: undefined };
 }
 
 export const CreateProvisionedAccountForStudentRequest: MessageFns<CreateProvisionedAccountForStudentRequest> = {
@@ -303,7 +303,7 @@ export const CreateProvisionedAccountForStudentRequest: MessageFns<CreateProvisi
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       writer.uint32(24).int32(lmsProviderTypeToNumber(message.provider));
     }
     return writer;
@@ -350,7 +350,7 @@ export const CreateProvisionedAccountForStudentRequest: MessageFns<CreateProvisi
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
     };
   },
 
@@ -362,7 +362,7 @@ export const CreateProvisionedAccountForStudentRequest: MessageFns<CreateProvisi
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       obj.provider = lmsProviderTypeToJSON(message.provider);
     }
     return obj;
@@ -383,13 +383,13 @@ export const CreateProvisionedAccountForStudentRequest: MessageFns<CreateProvisi
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
+    message.provider = object.provider ?? undefined;
     return message;
   },
 };
 
 function createBaseCreateProvisionedAccountForTeacherRequest(): CreateProvisionedAccountForTeacherRequest {
-  return { context: undefined, teacher_id: undefined, provider: LmsProviderType.GOOGLE_CLASSROOM };
+  return { context: undefined, teacher_id: undefined, provider: undefined };
 }
 
 export const CreateProvisionedAccountForTeacherRequest: MessageFns<CreateProvisionedAccountForTeacherRequest> = {
@@ -400,7 +400,7 @@ export const CreateProvisionedAccountForTeacherRequest: MessageFns<CreateProvisi
     if (message.teacher_id !== undefined) {
       ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       writer.uint32(24).int32(lmsProviderTypeToNumber(message.provider));
     }
     return writer;
@@ -447,7 +447,7 @@ export const CreateProvisionedAccountForTeacherRequest: MessageFns<CreateProvisi
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
-      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : LmsProviderType.GOOGLE_CLASSROOM,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
     };
   },
 
@@ -459,7 +459,7 @@ export const CreateProvisionedAccountForTeacherRequest: MessageFns<CreateProvisi
     if (message.teacher_id !== undefined) {
       obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
-    if (message.provider !== LmsProviderType.GOOGLE_CLASSROOM) {
+    if (message.provider !== undefined) {
       obj.provider = lmsProviderTypeToJSON(message.provider);
     }
     return obj;
@@ -480,7 +480,7 @@ export const CreateProvisionedAccountForTeacherRequest: MessageFns<CreateProvisi
     message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
       ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
-    message.provider = object.provider ?? LmsProviderType.GOOGLE_CLASSROOM;
+    message.provider = object.provider ?? undefined;
     return message;
   },
 };

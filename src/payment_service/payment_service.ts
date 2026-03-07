@@ -13,12 +13,12 @@ import { PaymentType, paymentTypeFromJSON, paymentTypeToJSON, paymentTypeToNumbe
 export const protobufPackage = "payment_service";
 
 export interface HandleWebhookRequest {
-  payload: string;
-  stripe_signature: string;
+  payload?: string | undefined;
+  stripe_signature?: string | undefined;
 }
 
 export interface HandleWebhookResponse {
-  success: boolean;
+  success?: boolean | undefined;
 }
 
 export interface GetSetupAutoIntentRequest {
@@ -26,49 +26,49 @@ export interface GetSetupAutoIntentRequest {
 }
 
 export interface GetSetupAutoIntentResponse {
-  setup_auto_intent_secret: string;
+  setup_auto_intent_secret?: string | undefined;
 }
 
 export interface VerifyMicroDepositsRequest {
   context: RequestContext | undefined;
-  first: number;
-  second: number;
+  first?: number | undefined;
+  second?: number | undefined;
 }
 
 export interface VerifyMicroDepositsResponse {
-  success: boolean;
+  success?: boolean | undefined;
 }
 
 export interface CreatePaymentIntentRequest {
   context: RequestContext | undefined;
-  payment_type: PaymentType;
+  payment_type?: PaymentType | undefined;
   invoice_id: ObjectId | undefined;
-  amount: number;
+  amount?: number | undefined;
 }
 
 export interface CreatePaymentIntentResponse {
-  client_secret: string;
+  client_secret?: string | undefined;
 }
 
 export interface OnboardOrganizationStripeAccountRequest {
   context: RequestContext | undefined;
-  frontend_url: string;
+  frontend_url?: string | undefined;
 }
 
 export interface OnboardOrganizationStripeAccountResponse {
-  account_link_url: string;
+  account_link_url?: string | undefined;
 }
 
 function createBaseHandleWebhookRequest(): HandleWebhookRequest {
-  return { payload: "", stripe_signature: "" };
+  return { payload: undefined, stripe_signature: undefined };
 }
 
 export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
   encode(message: HandleWebhookRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.payload !== "") {
+    if (message.payload !== undefined) {
       writer.uint32(10).string(message.payload);
     }
-    if (message.stripe_signature !== "") {
+    if (message.stripe_signature !== undefined) {
       writer.uint32(18).string(message.stripe_signature);
     }
     return writer;
@@ -106,17 +106,17 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
 
   fromJSON(object: any): HandleWebhookRequest {
     return {
-      payload: isSet(object.payload) ? globalThis.String(object.payload) : "",
-      stripe_signature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : "",
+      payload: isSet(object.payload) ? globalThis.String(object.payload) : undefined,
+      stripe_signature: isSet(object.stripeSignature) ? globalThis.String(object.stripeSignature) : undefined,
     };
   },
 
   toJSON(message: HandleWebhookRequest): unknown {
     const obj: any = {};
-    if (message.payload !== "") {
+    if (message.payload !== undefined) {
       obj.payload = message.payload;
     }
-    if (message.stripe_signature !== "") {
+    if (message.stripe_signature !== undefined) {
       obj.stripeSignature = message.stripe_signature;
     }
     return obj;
@@ -127,19 +127,19 @@ export const HandleWebhookRequest: MessageFns<HandleWebhookRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<HandleWebhookRequest>, I>>(object: I): HandleWebhookRequest {
     const message = createBaseHandleWebhookRequest();
-    message.payload = object.payload ?? "";
-    message.stripe_signature = object.stripe_signature ?? "";
+    message.payload = object.payload ?? undefined;
+    message.stripe_signature = object.stripe_signature ?? undefined;
     return message;
   },
 };
 
 function createBaseHandleWebhookResponse(): HandleWebhookResponse {
-  return { success: false };
+  return { success: undefined };
 }
 
 export const HandleWebhookResponse: MessageFns<HandleWebhookResponse> = {
   encode(message: HandleWebhookResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
@@ -169,12 +169,12 @@ export const HandleWebhookResponse: MessageFns<HandleWebhookResponse> = {
   },
 
   fromJSON(object: any): HandleWebhookResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
   },
 
   toJSON(message: HandleWebhookResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
     return obj;
@@ -185,7 +185,7 @@ export const HandleWebhookResponse: MessageFns<HandleWebhookResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<HandleWebhookResponse>, I>>(object: I): HandleWebhookResponse {
     const message = createBaseHandleWebhookResponse();
-    message.success = object.success ?? false;
+    message.success = object.success ?? undefined;
     return message;
   },
 };
@@ -250,12 +250,12 @@ export const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest> = 
 };
 
 function createBaseGetSetupAutoIntentResponse(): GetSetupAutoIntentResponse {
-  return { setup_auto_intent_secret: "" };
+  return { setup_auto_intent_secret: undefined };
 }
 
 export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> = {
   encode(message: GetSetupAutoIntentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.setup_auto_intent_secret !== "") {
+    if (message.setup_auto_intent_secret !== undefined) {
       writer.uint32(10).string(message.setup_auto_intent_secret);
     }
     return writer;
@@ -288,13 +288,13 @@ export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> 
     return {
       setup_auto_intent_secret: isSet(object.setupAutoIntentSecret)
         ? globalThis.String(object.setupAutoIntentSecret)
-        : "",
+        : undefined,
     };
   },
 
   toJSON(message: GetSetupAutoIntentResponse): unknown {
     const obj: any = {};
-    if (message.setup_auto_intent_secret !== "") {
+    if (message.setup_auto_intent_secret !== undefined) {
       obj.setupAutoIntentSecret = message.setup_auto_intent_secret;
     }
     return obj;
@@ -305,13 +305,13 @@ export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> 
   },
   fromPartial<I extends Exact<DeepPartial<GetSetupAutoIntentResponse>, I>>(object: I): GetSetupAutoIntentResponse {
     const message = createBaseGetSetupAutoIntentResponse();
-    message.setup_auto_intent_secret = object.setup_auto_intent_secret ?? "";
+    message.setup_auto_intent_secret = object.setup_auto_intent_secret ?? undefined;
     return message;
   },
 };
 
 function createBaseVerifyMicroDepositsRequest(): VerifyMicroDepositsRequest {
-  return { context: undefined, first: 0, second: 0 };
+  return { context: undefined, first: undefined, second: undefined };
 }
 
 export const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest> = {
@@ -319,10 +319,10 @@ export const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.first !== 0) {
+    if (message.first !== undefined) {
       writer.uint32(16).uint32(message.first);
     }
-    if (message.second !== 0) {
+    if (message.second !== undefined) {
       writer.uint32(24).uint32(message.second);
     }
     return writer;
@@ -368,8 +368,8 @@ export const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest> 
   fromJSON(object: any): VerifyMicroDepositsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      first: isSet(object.first) ? globalThis.Number(object.first) : 0,
-      second: isSet(object.second) ? globalThis.Number(object.second) : 0,
+      first: isSet(object.first) ? globalThis.Number(object.first) : undefined,
+      second: isSet(object.second) ? globalThis.Number(object.second) : undefined,
     };
   },
 
@@ -378,10 +378,10 @@ export const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.first !== 0) {
+    if (message.first !== undefined) {
       obj.first = Math.round(message.first);
     }
-    if (message.second !== 0) {
+    if (message.second !== undefined) {
       obj.second = Math.round(message.second);
     }
     return obj;
@@ -395,19 +395,19 @@ export const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.first = object.first ?? 0;
-    message.second = object.second ?? 0;
+    message.first = object.first ?? undefined;
+    message.second = object.second ?? undefined;
     return message;
   },
 };
 
 function createBaseVerifyMicroDepositsResponse(): VerifyMicroDepositsResponse {
-  return { success: false };
+  return { success: undefined };
 }
 
 export const VerifyMicroDepositsResponse: MessageFns<VerifyMicroDepositsResponse> = {
   encode(message: VerifyMicroDepositsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
@@ -437,12 +437,12 @@ export const VerifyMicroDepositsResponse: MessageFns<VerifyMicroDepositsResponse
   },
 
   fromJSON(object: any): VerifyMicroDepositsResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
   },
 
   toJSON(message: VerifyMicroDepositsResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
+    if (message.success !== undefined) {
       obj.success = message.success;
     }
     return obj;
@@ -453,13 +453,13 @@ export const VerifyMicroDepositsResponse: MessageFns<VerifyMicroDepositsResponse
   },
   fromPartial<I extends Exact<DeepPartial<VerifyMicroDepositsResponse>, I>>(object: I): VerifyMicroDepositsResponse {
     const message = createBaseVerifyMicroDepositsResponse();
-    message.success = object.success ?? false;
+    message.success = object.success ?? undefined;
     return message;
   },
 };
 
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
-  return { context: undefined, payment_type: PaymentType.Stripe, invoice_id: undefined, amount: 0 };
+  return { context: undefined, payment_type: undefined, invoice_id: undefined, amount: undefined };
 }
 
 export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> = {
@@ -467,13 +467,13 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.payment_type !== PaymentType.Stripe) {
+    if (message.payment_type !== undefined) {
       writer.uint32(16).int32(paymentTypeToNumber(message.payment_type));
     }
     if (message.invoice_id !== undefined) {
       ObjectId.encode(message.invoice_id, writer.uint32(26).fork()).join();
     }
-    if (message.amount !== 0) {
+    if (message.amount !== undefined) {
       writer.uint32(33).double(message.amount);
     }
     return writer;
@@ -526,9 +526,9 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
   fromJSON(object: any): CreatePaymentIntentRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : PaymentType.Stripe,
+      payment_type: isSet(object.paymentType) ? paymentTypeFromJSON(object.paymentType) : undefined,
       invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
-      amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0,
+      amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
     };
   },
 
@@ -537,13 +537,13 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.payment_type !== PaymentType.Stripe) {
+    if (message.payment_type !== undefined) {
       obj.paymentType = paymentTypeToJSON(message.payment_type);
     }
     if (message.invoice_id !== undefined) {
       obj.invoiceId = ObjectId.toJSON(message.invoice_id);
     }
-    if (message.amount !== 0) {
+    if (message.amount !== undefined) {
       obj.amount = message.amount;
     }
     return obj;
@@ -557,22 +557,22 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.payment_type = object.payment_type ?? PaymentType.Stripe;
+    message.payment_type = object.payment_type ?? undefined;
     message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
       ? ObjectId.fromPartial(object.invoice_id)
       : undefined;
-    message.amount = object.amount ?? 0;
+    message.amount = object.amount ?? undefined;
     return message;
   },
 };
 
 function createBaseCreatePaymentIntentResponse(): CreatePaymentIntentResponse {
-  return { client_secret: "" };
+  return { client_secret: undefined };
 }
 
 export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse> = {
   encode(message: CreatePaymentIntentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.client_secret !== "") {
+    if (message.client_secret !== undefined) {
       writer.uint32(10).string(message.client_secret);
     }
     return writer;
@@ -602,12 +602,12 @@ export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse
   },
 
   fromJSON(object: any): CreatePaymentIntentResponse {
-    return { client_secret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : "" };
+    return { client_secret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : undefined };
   },
 
   toJSON(message: CreatePaymentIntentResponse): unknown {
     const obj: any = {};
-    if (message.client_secret !== "") {
+    if (message.client_secret !== undefined) {
       obj.clientSecret = message.client_secret;
     }
     return obj;
@@ -618,13 +618,13 @@ export const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse
   },
   fromPartial<I extends Exact<DeepPartial<CreatePaymentIntentResponse>, I>>(object: I): CreatePaymentIntentResponse {
     const message = createBaseCreatePaymentIntentResponse();
-    message.client_secret = object.client_secret ?? "";
+    message.client_secret = object.client_secret ?? undefined;
     return message;
   },
 };
 
 function createBaseOnboardOrganizationStripeAccountRequest(): OnboardOrganizationStripeAccountRequest {
-  return { context: undefined, frontend_url: "" };
+  return { context: undefined, frontend_url: undefined };
 }
 
 export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganizationStripeAccountRequest> = {
@@ -632,7 +632,7 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
-    if (message.frontend_url !== "") {
+    if (message.frontend_url !== undefined) {
       writer.uint32(18).string(message.frontend_url);
     }
     return writer;
@@ -671,7 +671,7 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
   fromJSON(object: any): OnboardOrganizationStripeAccountRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      frontend_url: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : "",
+      frontend_url: isSet(object.frontendUrl) ? globalThis.String(object.frontendUrl) : undefined,
     };
   },
 
@@ -680,7 +680,7 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
-    if (message.frontend_url !== "") {
+    if (message.frontend_url !== undefined) {
       obj.frontendUrl = message.frontend_url;
     }
     return obj;
@@ -698,18 +698,18 @@ export const OnboardOrganizationStripeAccountRequest: MessageFns<OnboardOrganiza
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
-    message.frontend_url = object.frontend_url ?? "";
+    message.frontend_url = object.frontend_url ?? undefined;
     return message;
   },
 };
 
 function createBaseOnboardOrganizationStripeAccountResponse(): OnboardOrganizationStripeAccountResponse {
-  return { account_link_url: "" };
+  return { account_link_url: undefined };
 }
 
 export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganizationStripeAccountResponse> = {
   encode(message: OnboardOrganizationStripeAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.account_link_url !== "") {
+    if (message.account_link_url !== undefined) {
       writer.uint32(10).string(message.account_link_url);
     }
     return writer;
@@ -739,12 +739,12 @@ export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganiz
   },
 
   fromJSON(object: any): OnboardOrganizationStripeAccountResponse {
-    return { account_link_url: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : "" };
+    return { account_link_url: isSet(object.accountLinkUrl) ? globalThis.String(object.accountLinkUrl) : undefined };
   },
 
   toJSON(message: OnboardOrganizationStripeAccountResponse): unknown {
     const obj: any = {};
-    if (message.account_link_url !== "") {
+    if (message.account_link_url !== undefined) {
       obj.accountLinkUrl = message.account_link_url;
     }
     return obj;
@@ -759,7 +759,7 @@ export const OnboardOrganizationStripeAccountResponse: MessageFns<OnboardOrganiz
     object: I,
   ): OnboardOrganizationStripeAccountResponse {
     const message = createBaseOnboardOrganizationStripeAccountResponse();
-    message.account_link_url = object.account_link_url ?? "";
+    message.account_link_url = object.account_link_url ?? undefined;
     return message;
   },
 };

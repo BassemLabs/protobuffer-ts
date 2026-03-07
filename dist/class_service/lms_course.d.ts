@@ -53,16 +53,16 @@ export declare function lmsSubmissionStateFromJSON(object: any): LmsSubmissionSt
 export declare function lmsSubmissionStateToJSON(object: LmsSubmissionState): string;
 export declare function lmsSubmissionStateToNumber(object: LmsSubmissionState): number;
 export interface LmsCourse {
-    id: string;
-    name: string;
-    section: string;
-    url: string;
-    provider: LmsProviderType;
+    id?: string | undefined;
+    name?: string | undefined;
+    section?: string | undefined;
+    url?: string | undefined;
+    provider?: LmsProviderType | undefined;
 }
 export interface LmsCourseWork {
-    lms_course_work_id: string;
+    lms_course_work_id?: string | undefined;
     /** Provider course id */
-    lms_course_id: string;
+    lms_course_id?: string | undefined;
     title?: string | undefined;
     description?: string | undefined;
     link?: string | undefined;
@@ -72,12 +72,12 @@ export interface LmsCourseWork {
     /** Classroom: maxPoints, Canvas: points_possible */
     max_points?: number | undefined;
     work_type?: LmsWorkType | undefined;
-    provider: LmsProviderType;
+    provider?: LmsProviderType | undefined;
     /** Store original LMS JSON */
     raw_json?: string | undefined;
 }
 export interface Attachment {
-    url: string;
+    url?: string | undefined;
 }
 export interface LmsSubmission {
     /**
@@ -89,9 +89,9 @@ export interface LmsSubmission {
      *     "canvas_{assignmentId}_{studentId}"
      *   Store provider raw_json so you can re-hydrate provider-specific identifiers if needed.
      */
-    lms_submission_id: string;
-    lms_course_work_id: string;
-    lms_course_id: string;
+    lms_submission_id?: string | undefined;
+    lms_course_work_id?: string | undefined;
+    lms_course_id?: string | undefined;
     /** Local user id (in BassemLabs) */
     student_id: ObjectId | undefined;
     /**
@@ -99,8 +99,8 @@ export interface LmsSubmission {
      * - Google Classroom: maps to StudentSubmission.alternateLink.
      * - Canvas: maps to Submission.preview_url or html_url.
      */
-    submission_url: string;
-    state: LmsSubmissionState;
+    submission_url?: string | undefined;
+    state?: LmsSubmissionState | undefined;
     submitted_at?: Date | undefined;
     /**
      * - Google Classroom: inferred if submitted after dueDate.
@@ -111,15 +111,15 @@ export interface LmsSubmission {
     grade?: number | undefined;
     /** Grade/state history (normalized) */
     history: LmsHistory[];
-    provider: LmsProviderType;
+    provider?: LmsProviderType | undefined;
     /** Provider raw JSON (always keep for edge cases) */
     raw_json?: string | undefined;
 }
 export interface LmsHistory {
     /** Who made the change (provider user id) */
-    actor_id: string;
+    actor_id?: string | undefined;
     /** grade_change, state_change, comment, etc. */
-    type: string;
+    type?: string | undefined;
     old_value?: string | undefined;
     new_value?: string | undefined;
     timestamp?: Date | undefined;

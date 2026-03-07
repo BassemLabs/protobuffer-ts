@@ -12,8 +12,8 @@ export declare function reportTypeToJSON(object: ReportType): string;
 export declare function reportTypeToNumber(object: ReportType): number;
 export interface Semester {
     id: ObjectId | undefined;
-    name: string;
-    archived: boolean;
+    name?: string | undefined;
+    archived?: boolean | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
     report_layout?: SemesterReportLayout | undefined;
@@ -21,34 +21,34 @@ export interface Semester {
     school_year: ObjectId | undefined;
 }
 export interface SemesterReportLayout {
-    comment_char_limit: number;
-    include_progress_report_cards: boolean;
-    show_credits_earned_entry: boolean;
+    comment_char_limit?: number | undefined;
+    include_progress_report_cards?: boolean | undefined;
+    show_credits_earned_entry?: boolean | undefined;
     learning_skills: SemesterLearningSkill[];
     report_dates: ReportDates[];
-    hide_learning_skills_from_homerooms: boolean;
-    hide_learning_skills_from_courses: boolean;
+    hide_learning_skills_from_homerooms?: boolean | undefined;
+    hide_learning_skills_from_courses?: boolean | undefined;
 }
 export interface ReportDates {
-    report_type: ReportType;
+    report_type?: ReportType | undefined;
     due_date?: Date | undefined;
     distribution_date?: Date | undefined;
 }
 export interface SemesterLearningSkill {
     id: ObjectId | undefined;
-    title: string;
-    description: string;
+    title?: string | undefined;
+    description?: string | undefined;
 }
 export interface ListSemester {
     id: ObjectId | undefined;
-    archived: boolean;
-    name: string;
+    archived?: boolean | undefined;
+    name?: string | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
 }
 export interface SemesterList {
     semesters: ListSemester[];
-    semesters_count: number;
+    semesters_count?: number | undefined;
 }
 export declare const Semester: MessageFns<Semester>;
 export declare const SemesterReportLayout: MessageFns<SemesterReportLayout>;
