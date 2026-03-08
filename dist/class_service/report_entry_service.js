@@ -899,6 +899,9 @@ function createBaseReportPublishQueueClass() {
         total_expected: undefined,
         can_publish: undefined,
         blocking_reason: undefined,
+        semester_name: undefined,
+        course_code: undefined,
+        grades: [],
     };
 }
 exports.ReportPublishQueueClass = {
@@ -923,6 +926,15 @@ exports.ReportPublishQueueClass = {
         }
         if (message.blocking_reason !== undefined) {
             writer.uint32(58).string(message.blocking_reason);
+        }
+        if (message.semester_name !== undefined) {
+            writer.uint32(66).string(message.semester_name);
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(74).string(message.course_code);
+        }
+        for (const v of message.grades) {
+            writer.uint32(82).string(v);
         }
         return writer;
     },
@@ -975,6 +987,24 @@ exports.ReportPublishQueueClass = {
                     }
                     message.blocking_reason = reader.string();
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.semester_name = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.grades.push(reader.string());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -992,6 +1022,9 @@ exports.ReportPublishQueueClass = {
             total_expected: isSet(object.totalExpected) ? globalThis.Number(object.totalExpected) : undefined,
             can_publish: isSet(object.canPublish) ? globalThis.Boolean(object.canPublish) : undefined,
             blocking_reason: isSet(object.blockingReason) ? globalThis.String(object.blockingReason) : undefined,
+            semester_name: isSet(object.semesterName) ? globalThis.String(object.semesterName) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+            grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => globalThis.String(e)) : [],
         };
     },
     toJSON(message) {
@@ -1017,6 +1050,15 @@ exports.ReportPublishQueueClass = {
         if (message.blocking_reason !== undefined) {
             obj.blockingReason = message.blocking_reason;
         }
+        if (message.semester_name !== undefined) {
+            obj.semesterName = message.semester_name;
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        if (message.grades?.length) {
+            obj.grades = message.grades;
+        }
         return obj;
     },
     create(base) {
@@ -1035,6 +1077,9 @@ exports.ReportPublishQueueClass = {
         message.total_expected = object.total_expected ?? undefined;
         message.can_publish = object.can_publish ?? undefined;
         message.blocking_reason = object.blocking_reason ?? undefined;
+        message.semester_name = object.semester_name ?? undefined;
+        message.course_code = object.course_code ?? undefined;
+        message.grades = object.grades?.map((e) => e) || [];
         return message;
     },
 };

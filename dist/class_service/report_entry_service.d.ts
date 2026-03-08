@@ -82,6 +82,12 @@ export interface ReportPublishQueueClass {
     can_publish?: boolean | undefined;
     /** Human-readable reason when can_publish is false. */
     blocking_reason?: string | undefined;
+    /** Semester display name for this class scope. */
+    semester_name?: string | undefined;
+    /** Course code when this row represents a standalone/subject course. */
+    course_code?: string | undefined;
+    /** Homeroom grades when this row represents a homeroom scope. */
+    grades: string[];
 }
 export interface GetReportPublishQueueClassesRequest {
     context: RequestContext | undefined;
