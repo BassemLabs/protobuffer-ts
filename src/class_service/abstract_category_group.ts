@@ -15,11 +15,17 @@ export interface AbstractCategoryGroup {
   organization: ObjectId | undefined;
   name?: string | undefined;
   credits_required?: number | undefined;
-  category_ids: ObjectId[];
+  linked_categories_count?: number | undefined;
 }
 
 function createBaseAbstractCategoryGroup(): AbstractCategoryGroup {
-  return { id: undefined, organization: undefined, name: undefined, credits_required: undefined, category_ids: [] };
+  return {
+    id: undefined,
+    organization: undefined,
+    name: undefined,
+    credits_required: undefined,
+    linked_categories_count: undefined,
+  };
 }
 
 export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
@@ -36,8 +42,8 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
     if (message.credits_required !== undefined) {
       writer.uint32(33).double(message.credits_required);
     }
-    for (const v of message.category_ids) {
-      ObjectId.encode(v!, writer.uint32(42).fork()).join();
+    if (message.linked_categories_count !== undefined) {
+      writer.uint32(40).uint64(message.linked_categories_count);
     }
     return writer;
   },
@@ -78,11 +84,11 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
           message.credits_required = reader.double();
           continue;
         case 5:
-          if (tag !== 42) {
+          if (tag !== 40) {
             break;
           }
 
-          message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
+          message.linked_categories_count = longToNumber(reader.uint64());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -99,9 +105,9 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-      category_ids: globalThis.Array.isArray(object?.categoryIds)
-        ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
-        : [],
+      linked_categories_count: isSet(object.linkedCategoriesCount)
+        ? globalThis.Number(object.linkedCategoriesCount)
+        : undefined,
     };
   },
 
@@ -119,8 +125,8 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
     if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
     }
-    if (message.category_ids?.length) {
-      obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
+    if (message.linked_categories_count !== undefined) {
+      obj.linkedCategoriesCount = Math.round(message.linked_categories_count);
     }
     return obj;
   },
@@ -136,7 +142,7 @@ export const AbstractCategoryGroup: MessageFns<AbstractCategoryGroup> = {
       : undefined;
     message.name = object.name ?? undefined;
     message.credits_required = object.credits_required ?? undefined;
-    message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.linked_categories_count = object.linked_categories_count ?? undefined;
     return message;
   },
 };
@@ -152,6 +158,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

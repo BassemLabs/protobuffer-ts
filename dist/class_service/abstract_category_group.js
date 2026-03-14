@@ -11,7 +11,13 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseAbstractCategoryGroup() {
-    return { id: undefined, organization: undefined, name: undefined, credits_required: undefined, category_ids: [] };
+    return {
+        id: undefined,
+        organization: undefined,
+        name: undefined,
+        credits_required: undefined,
+        linked_categories_count: undefined,
+    };
 }
 exports.AbstractCategoryGroup = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -27,8 +33,8 @@ exports.AbstractCategoryGroup = {
         if (message.credits_required !== undefined) {
             writer.uint32(33).double(message.credits_required);
         }
-        for (const v of message.category_ids) {
-            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
+        if (message.linked_categories_count !== undefined) {
+            writer.uint32(40).uint64(message.linked_categories_count);
         }
         return writer;
     },
@@ -64,10 +70,10 @@ exports.AbstractCategoryGroup = {
                     message.credits_required = reader.double();
                     continue;
                 case 5:
-                    if (tag !== 42) {
+                    if (tag !== 40) {
                         break;
                     }
-                    message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.linked_categories_count = longToNumber(reader.uint64());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -83,9 +89,9 @@ exports.AbstractCategoryGroup = {
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-            category_ids: globalThis.Array.isArray(object?.categoryIds)
-                ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
+            linked_categories_count: isSet(object.linkedCategoriesCount)
+                ? globalThis.Number(object.linkedCategoriesCount)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -102,8 +108,8 @@ exports.AbstractCategoryGroup = {
         if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
-        if (message.category_ids?.length) {
-            obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.linked_categories_count !== undefined) {
+            obj.linkedCategoriesCount = Math.round(message.linked_categories_count);
         }
         return obj;
     },
@@ -118,10 +124,20 @@ exports.AbstractCategoryGroup = {
             : undefined;
         message.name = object.name ?? undefined;
         message.credits_required = object.credits_required ?? undefined;
-        message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.linked_categories_count = object.linked_categories_count ?? undefined;
         return message;
     },
 };
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

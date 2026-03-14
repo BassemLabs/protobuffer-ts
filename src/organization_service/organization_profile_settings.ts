@@ -172,6 +172,13 @@ export interface OrganizationProfileSettings {
   parent_profile_sections: ProfileSection[];
   teacher_profile_sections: ProfileSection[];
   student_primary_id_custom_field?: ObjectId | undefined;
+  graduation_settings: GraduationSettings | undefined;
+}
+
+export interface GraduationSettings {
+  community_involvement_hours_required?: number | undefined;
+  optional_credits_required?: number | undefined;
+  online_learning_credits_required?: number | undefined;
 }
 
 function createBaseOrganizationProfileSettings(): OrganizationProfileSettings {
@@ -180,6 +187,7 @@ function createBaseOrganizationProfileSettings(): OrganizationProfileSettings {
     parent_profile_sections: [],
     teacher_profile_sections: [],
     student_primary_id_custom_field: undefined,
+    graduation_settings: undefined,
   };
 }
 
@@ -202,6 +210,9 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
     writer.join();
     if (message.student_primary_id_custom_field !== undefined) {
       ObjectId.encode(message.student_primary_id_custom_field, writer.uint32(34).fork()).join();
+    }
+    if (message.graduation_settings !== undefined) {
+      GraduationSettings.encode(message.graduation_settings, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -271,6 +282,13 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
 
           message.student_primary_id_custom_field = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.graduation_settings = GraduationSettings.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -294,6 +312,9 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
       student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
         ? ObjectId.fromJSON(object.studentPrimaryIdCustomField)
         : undefined,
+      graduation_settings: isSet(object.graduationSettings)
+        ? GraduationSettings.fromJSON(object.graduationSettings)
+        : undefined,
     };
   },
 
@@ -311,6 +332,9 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
     if (message.student_primary_id_custom_field !== undefined) {
       obj.studentPrimaryIdCustomField = ObjectId.toJSON(message.student_primary_id_custom_field);
     }
+    if (message.graduation_settings !== undefined) {
+      obj.graduationSettings = GraduationSettings.toJSON(message.graduation_settings);
+    }
     return obj;
   },
 
@@ -326,6 +350,108 @@ export const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings
       (object.student_primary_id_custom_field !== undefined && object.student_primary_id_custom_field !== null)
         ? ObjectId.fromPartial(object.student_primary_id_custom_field)
         : undefined;
+    message.graduation_settings = (object.graduation_settings !== undefined && object.graduation_settings !== null)
+      ? GraduationSettings.fromPartial(object.graduation_settings)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGraduationSettings(): GraduationSettings {
+  return {
+    community_involvement_hours_required: undefined,
+    optional_credits_required: undefined,
+    online_learning_credits_required: undefined,
+  };
+}
+
+export const GraduationSettings: MessageFns<GraduationSettings> = {
+  encode(message: GraduationSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.community_involvement_hours_required !== undefined) {
+      writer.uint32(9).double(message.community_involvement_hours_required);
+    }
+    if (message.optional_credits_required !== undefined) {
+      writer.uint32(17).double(message.optional_credits_required);
+    }
+    if (message.online_learning_credits_required !== undefined) {
+      writer.uint32(25).double(message.online_learning_credits_required);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GraduationSettings {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGraduationSettings();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 9) {
+            break;
+          }
+
+          message.community_involvement_hours_required = reader.double();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.optional_credits_required = reader.double();
+          continue;
+        case 3:
+          if (tag !== 25) {
+            break;
+          }
+
+          message.online_learning_credits_required = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GraduationSettings {
+    return {
+      community_involvement_hours_required: isSet(object.communityInvolvementHoursRequired)
+        ? globalThis.Number(object.communityInvolvementHoursRequired)
+        : undefined,
+      optional_credits_required: isSet(object.optionalCreditsRequired)
+        ? globalThis.Number(object.optionalCreditsRequired)
+        : undefined,
+      online_learning_credits_required: isSet(object.onlineLearningCreditsRequired)
+        ? globalThis.Number(object.onlineLearningCreditsRequired)
+        : undefined,
+    };
+  },
+
+  toJSON(message: GraduationSettings): unknown {
+    const obj: any = {};
+    if (message.community_involvement_hours_required !== undefined) {
+      obj.communityInvolvementHoursRequired = message.community_involvement_hours_required;
+    }
+    if (message.optional_credits_required !== undefined) {
+      obj.optionalCreditsRequired = message.optional_credits_required;
+    }
+    if (message.online_learning_credits_required !== undefined) {
+      obj.onlineLearningCreditsRequired = message.online_learning_credits_required;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GraduationSettings>, I>>(base?: I): GraduationSettings {
+    return GraduationSettings.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GraduationSettings>, I>>(object: I): GraduationSettings {
+    const message = createBaseGraduationSettings();
+    message.community_involvement_hours_required = object.community_involvement_hours_required ?? undefined;
+    message.optional_credits_required = object.optional_credits_required ?? undefined;
+    message.online_learning_credits_required = object.online_learning_credits_required ?? undefined;
     return message;
   },
 };

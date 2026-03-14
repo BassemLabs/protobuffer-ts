@@ -16,7 +16,9 @@ function createBaseAbstractCategory() {
         organization: undefined,
         name: undefined,
         credits_required: undefined,
-        can_delete: undefined,
+        linked_courses_count: undefined,
+        category_group_id: undefined,
+        linked_course_ids: [],
     };
 }
 exports.AbstractCategory = {
@@ -33,8 +35,14 @@ exports.AbstractCategory = {
         if (message.credits_required !== undefined) {
             writer.uint32(33).double(message.credits_required);
         }
-        if (message.can_delete !== undefined) {
-            writer.uint32(40).bool(message.can_delete);
+        if (message.linked_courses_count !== undefined) {
+            writer.uint32(40).uint64(message.linked_courses_count);
+        }
+        if (message.category_group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.category_group_id, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.linked_course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -73,7 +81,19 @@ exports.AbstractCategory = {
                     if (tag !== 40) {
                         break;
                     }
-                    message.can_delete = reader.bool();
+                    message.linked_courses_count = longToNumber(reader.uint64());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.category_group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.linked_course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -89,7 +109,11 @@ exports.AbstractCategory = {
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-            can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
+            linked_courses_count: isSet(object.linkedCoursesCount) ? globalThis.Number(object.linkedCoursesCount) : undefined,
+            category_group_id: isSet(object.categoryGroupId) ? object_id_1.ObjectId.fromJSON(object.categoryGroupId) : undefined,
+            linked_course_ids: globalThis.Array.isArray(object?.linkedCourseIds)
+                ? object.linkedCourseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -106,8 +130,14 @@ exports.AbstractCategory = {
         if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
-        if (message.can_delete !== undefined) {
-            obj.canDelete = message.can_delete;
+        if (message.linked_courses_count !== undefined) {
+            obj.linkedCoursesCount = Math.round(message.linked_courses_count);
+        }
+        if (message.category_group_id !== undefined) {
+            obj.categoryGroupId = object_id_1.ObjectId.toJSON(message.category_group_id);
+        }
+        if (message.linked_course_ids?.length) {
+            obj.linkedCourseIds = message.linked_course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -122,10 +152,24 @@ exports.AbstractCategory = {
             : undefined;
         message.name = object.name ?? undefined;
         message.credits_required = object.credits_required ?? undefined;
-        message.can_delete = object.can_delete ?? undefined;
+        message.linked_courses_count = object.linked_courses_count ?? undefined;
+        message.category_group_id = (object.category_group_id !== undefined && object.category_group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.category_group_id)
+            : undefined;
+        message.linked_course_ids = object.linked_course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

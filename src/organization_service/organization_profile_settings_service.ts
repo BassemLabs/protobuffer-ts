@@ -72,6 +72,14 @@ export interface SetStudentPrimaryIdCustomFieldRequest {
   student_primary_id_custom_field: ObjectId | undefined;
 }
 
+export interface UpdateGraduationSettingsRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  community_involvement_hours_required?: number | undefined;
+  optional_credits_required?: number | undefined;
+  online_learning_credits_required?: number | undefined;
+}
+
 function createBaseGetOrganizationProfileSettingsRequest(): GetOrganizationProfileSettingsRequest {
   return { context: undefined, organization_id: undefined };
 }
@@ -840,6 +848,143 @@ export const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimary
       (object.student_primary_id_custom_field !== undefined && object.student_primary_id_custom_field !== null)
         ? ObjectId.fromPartial(object.student_primary_id_custom_field)
         : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateGraduationSettingsRequest(): UpdateGraduationSettingsRequest {
+  return {
+    context: undefined,
+    organization_id: undefined,
+    community_involvement_hours_required: undefined,
+    optional_credits_required: undefined,
+    online_learning_credits_required: undefined,
+  };
+}
+
+export const UpdateGraduationSettingsRequest: MessageFns<UpdateGraduationSettingsRequest> = {
+  encode(message: UpdateGraduationSettingsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.community_involvement_hours_required !== undefined) {
+      writer.uint32(25).double(message.community_involvement_hours_required);
+    }
+    if (message.optional_credits_required !== undefined) {
+      writer.uint32(33).double(message.optional_credits_required);
+    }
+    if (message.online_learning_credits_required !== undefined) {
+      writer.uint32(41).double(message.online_learning_credits_required);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateGraduationSettingsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateGraduationSettingsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 25) {
+            break;
+          }
+
+          message.community_involvement_hours_required = reader.double();
+          continue;
+        case 4:
+          if (tag !== 33) {
+            break;
+          }
+
+          message.optional_credits_required = reader.double();
+          continue;
+        case 5:
+          if (tag !== 41) {
+            break;
+          }
+
+          message.online_learning_credits_required = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateGraduationSettingsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      community_involvement_hours_required: isSet(object.communityInvolvementHoursRequired)
+        ? globalThis.Number(object.communityInvolvementHoursRequired)
+        : undefined,
+      optional_credits_required: isSet(object.optionalCreditsRequired)
+        ? globalThis.Number(object.optionalCreditsRequired)
+        : undefined,
+      online_learning_credits_required: isSet(object.onlineLearningCreditsRequired)
+        ? globalThis.Number(object.onlineLearningCreditsRequired)
+        : undefined,
+    };
+  },
+
+  toJSON(message: UpdateGraduationSettingsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.community_involvement_hours_required !== undefined) {
+      obj.communityInvolvementHoursRequired = message.community_involvement_hours_required;
+    }
+    if (message.optional_credits_required !== undefined) {
+      obj.optionalCreditsRequired = message.optional_credits_required;
+    }
+    if (message.online_learning_credits_required !== undefined) {
+      obj.onlineLearningCreditsRequired = message.online_learning_credits_required;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateGraduationSettingsRequest>, I>>(base?: I): UpdateGraduationSettingsRequest {
+    return UpdateGraduationSettingsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateGraduationSettingsRequest>, I>>(
+    object: I,
+  ): UpdateGraduationSettingsRequest {
+    const message = createBaseUpdateGraduationSettingsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.community_involvement_hours_required = object.community_involvement_hours_required ?? undefined;
+    message.optional_credits_required = object.optional_credits_required ?? undefined;
+    message.online_learning_credits_required = object.online_learning_credits_required ?? undefined;
     return message;
   },
 };

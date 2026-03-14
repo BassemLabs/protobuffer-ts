@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/abstract_catalog_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteAbstractCourseRequest = exports.UpdateAbstractCourseRequest = exports.CreateAbstractCourseRequest = exports.UpdateAbstractCategoryGroupRequest = exports.CreateAbstractCategoryGroupRequest = exports.DeleteAbstractCategoryRequest = exports.UpdateAbstractCategoryRequest = exports.CreateAbstractCategoryRequest = exports.GetAbstractCourseRequest = exports.ListAbstractCoursesResponse = exports.ListAbstractCoursesRequest = exports.ListAbstractCategoryGroupsResponse = exports.ListAbstractCategoryGroupsRequest = exports.ListAbstractCategoriesResponse = exports.ListAbstractCategoriesRequest = exports.protobufPackage = void 0;
+exports.DeleteAbstractCourseRequest = exports.UpdateAbstractCourseRequest = exports.CreateAbstractCourseRequest = exports.DeleteAbstractCategoryGroupRequest = exports.UpdateAbstractCategoryGroupRequest = exports.CreateAbstractCategoryGroupRequest = exports.DeleteAbstractCategoryRequest = exports.UpdateAbstractCategoryRequest = exports.CreateAbstractCategoryRequest = exports.GetAbstractCourseRequest = exports.ListAbstractCoursesResponse = exports.ListAbstractCoursesRequest = exports.ListAbstractCategoryGroupsResponse = exports.ListAbstractCategoryGroupsRequest = exports.ListAbstractCategoriesResponse = exports.ListAbstractCategoriesRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -462,7 +462,7 @@ exports.GetAbstractCourseRequest = {
     },
 };
 function createBaseCreateAbstractCategoryRequest() {
-    return { context: undefined, name: undefined, credits_required: undefined };
+    return { context: undefined, name: undefined, credits_required: undefined, category_group_id: undefined };
 }
 exports.CreateAbstractCategoryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -474,6 +474,9 @@ exports.CreateAbstractCategoryRequest = {
         }
         if (message.credits_required !== undefined) {
             writer.uint32(25).double(message.credits_required);
+        }
+        if (message.category_group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.category_group_id, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -502,6 +505,12 @@ exports.CreateAbstractCategoryRequest = {
                     }
                     message.credits_required = reader.double();
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.category_group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -515,6 +524,7 @@ exports.CreateAbstractCategoryRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
+            category_group_id: isSet(object.categoryGroupId) ? object_id_1.ObjectId.fromJSON(object.categoryGroupId) : undefined,
         };
     },
     toJSON(message) {
@@ -528,6 +538,9 @@ exports.CreateAbstractCategoryRequest = {
         if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
+        if (message.category_group_id !== undefined) {
+            obj.categoryGroupId = object_id_1.ObjectId.toJSON(message.category_group_id);
+        }
         return obj;
     },
     create(base) {
@@ -540,11 +553,21 @@ exports.CreateAbstractCategoryRequest = {
             : undefined;
         message.name = object.name ?? undefined;
         message.credits_required = object.credits_required ?? undefined;
+        message.category_group_id = (object.category_group_id !== undefined && object.category_group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.category_group_id)
+            : undefined;
         return message;
     },
 };
 function createBaseUpdateAbstractCategoryRequest() {
-    return { context: undefined, abstract_category_id: undefined, name: undefined, credits_required: undefined };
+    return {
+        context: undefined,
+        abstract_category_id: undefined,
+        name: undefined,
+        credits_required: undefined,
+        category_group_id: undefined,
+        linked_course_ids: [],
+    };
 }
 exports.UpdateAbstractCategoryRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -559,6 +582,12 @@ exports.UpdateAbstractCategoryRequest = {
         }
         if (message.credits_required !== undefined) {
             writer.uint32(33).double(message.credits_required);
+        }
+        if (message.category_group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.category_group_id, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.linked_course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -593,6 +622,18 @@ exports.UpdateAbstractCategoryRequest = {
                     }
                     message.credits_required = reader.double();
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.category_group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.linked_course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -607,6 +648,10 @@ exports.UpdateAbstractCategoryRequest = {
             abstract_category_id: isSet(object.abstractCategoryId) ? object_id_1.ObjectId.fromJSON(object.abstractCategoryId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
+            category_group_id: isSet(object.categoryGroupId) ? object_id_1.ObjectId.fromJSON(object.categoryGroupId) : undefined,
+            linked_course_ids: globalThis.Array.isArray(object?.linkedCourseIds)
+                ? object.linkedCourseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -623,6 +668,12 @@ exports.UpdateAbstractCategoryRequest = {
         if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
+        if (message.category_group_id !== undefined) {
+            obj.categoryGroupId = object_id_1.ObjectId.toJSON(message.category_group_id);
+        }
+        if (message.linked_course_ids?.length) {
+            obj.linkedCourseIds = message.linked_course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -638,6 +689,10 @@ exports.UpdateAbstractCategoryRequest = {
             : undefined;
         message.name = object.name ?? undefined;
         message.credits_required = object.credits_required ?? undefined;
+        message.category_group_id = (object.category_group_id !== undefined && object.category_group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.category_group_id)
+            : undefined;
+        message.linked_course_ids = object.linked_course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -712,7 +767,7 @@ exports.DeleteAbstractCategoryRequest = {
     },
 };
 function createBaseCreateAbstractCategoryGroupRequest() {
-    return { context: undefined, name: undefined, credits_required: undefined, category_ids: [] };
+    return { context: undefined, name: undefined, credits_required: undefined };
 }
 exports.CreateAbstractCategoryGroupRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -724,9 +779,6 @@ exports.CreateAbstractCategoryGroupRequest = {
         }
         if (message.credits_required !== undefined) {
             writer.uint32(25).double(message.credits_required);
-        }
-        for (const v of message.category_ids) {
-            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -755,12 +807,6 @@ exports.CreateAbstractCategoryGroupRequest = {
                     }
                     message.credits_required = reader.double();
                     continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -774,9 +820,6 @@ exports.CreateAbstractCategoryGroupRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-            category_ids: globalThis.Array.isArray(object?.categoryIds)
-                ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
         };
     },
     toJSON(message) {
@@ -790,9 +833,6 @@ exports.CreateAbstractCategoryGroupRequest = {
         if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
         }
-        if (message.category_ids?.length) {
-            obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
-        }
         return obj;
     },
     create(base) {
@@ -805,18 +845,11 @@ exports.CreateAbstractCategoryGroupRequest = {
             : undefined;
         message.name = object.name ?? undefined;
         message.credits_required = object.credits_required ?? undefined;
-        message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseUpdateAbstractCategoryGroupRequest() {
-    return {
-        context: undefined,
-        abstract_category_group_id: undefined,
-        name: undefined,
-        credits_required: undefined,
-        category_ids: [],
-    };
+    return { context: undefined, abstract_category_group_id: undefined, name: undefined, credits_required: undefined };
 }
 exports.UpdateAbstractCategoryGroupRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -831,9 +864,6 @@ exports.UpdateAbstractCategoryGroupRequest = {
         }
         if (message.credits_required !== undefined) {
             writer.uint32(33).double(message.credits_required);
-        }
-        for (const v of message.category_ids) {
-            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -868,12 +898,6 @@ exports.UpdateAbstractCategoryGroupRequest = {
                     }
                     message.credits_required = reader.double();
                     continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -890,9 +914,6 @@ exports.UpdateAbstractCategoryGroupRequest = {
                 : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-            category_ids: globalThis.Array.isArray(object?.categoryIds)
-                ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
         };
     },
     toJSON(message) {
@@ -908,9 +929,6 @@ exports.UpdateAbstractCategoryGroupRequest = {
         }
         if (message.credits_required !== undefined) {
             obj.creditsRequired = message.credits_required;
-        }
-        if (message.category_ids?.length) {
-            obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -928,7 +946,79 @@ exports.UpdateAbstractCategoryGroupRequest = {
                 : undefined;
         message.name = object.name ?? undefined;
         message.credits_required = object.credits_required ?? undefined;
-        message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseDeleteAbstractCategoryGroupRequest() {
+    return { context: undefined, abstract_category_group_id: undefined };
+}
+exports.DeleteAbstractCategoryGroupRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.abstract_category_group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_category_group_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeleteAbstractCategoryGroupRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.abstract_category_group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            abstract_category_group_id: isSet(object.abstractCategoryGroupId)
+                ? object_id_1.ObjectId.fromJSON(object.abstractCategoryGroupId)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.abstract_category_group_id !== undefined) {
+            obj.abstractCategoryGroupId = object_id_1.ObjectId.toJSON(message.abstract_category_group_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeleteAbstractCategoryGroupRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeleteAbstractCategoryGroupRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.abstract_category_group_id =
+            (object.abstract_category_group_id !== undefined && object.abstract_category_group_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.abstract_category_group_id)
+                : undefined;
         return message;
     },
 };

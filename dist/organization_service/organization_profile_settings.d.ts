@@ -28,8 +28,15 @@ export interface OrganizationProfileSettings {
     parent_profile_sections: ProfileSection[];
     teacher_profile_sections: ProfileSection[];
     student_primary_id_custom_field?: ObjectId | undefined;
+    graduation_settings: GraduationSettings | undefined;
+}
+export interface GraduationSettings {
+    community_involvement_hours_required?: number | undefined;
+    optional_credits_required?: number | undefined;
+    online_learning_credits_required?: number | undefined;
 }
 export declare const OrganizationProfileSettings: MessageFns<OrganizationProfileSettings>;
+export declare const GraduationSettings: MessageFns<GraduationSettings>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

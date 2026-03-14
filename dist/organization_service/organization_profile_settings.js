@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_profile_settings.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrganizationProfileSettings = exports.ProfileSection = exports.protobufPackage = void 0;
+exports.GraduationSettings = exports.OrganizationProfileSettings = exports.ProfileSection = exports.protobufPackage = void 0;
 exports.profileSectionFromJSON = profileSectionFromJSON;
 exports.profileSectionToJSON = profileSectionToJSON;
 exports.profileSectionToNumber = profileSectionToNumber;
@@ -173,6 +173,7 @@ function createBaseOrganizationProfileSettings() {
         parent_profile_sections: [],
         teacher_profile_sections: [],
         student_primary_id_custom_field: undefined,
+        graduation_settings: undefined,
     };
 }
 exports.OrganizationProfileSettings = {
@@ -194,6 +195,9 @@ exports.OrganizationProfileSettings = {
         writer.join();
         if (message.student_primary_id_custom_field !== undefined) {
             object_id_1.ObjectId.encode(message.student_primary_id_custom_field, writer.uint32(34).fork()).join();
+        }
+        if (message.graduation_settings !== undefined) {
+            exports.GraduationSettings.encode(message.graduation_settings, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -249,6 +253,12 @@ exports.OrganizationProfileSettings = {
                     }
                     message.student_primary_id_custom_field = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.graduation_settings = exports.GraduationSettings.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -271,6 +281,9 @@ exports.OrganizationProfileSettings = {
             student_primary_id_custom_field: isSet(object.studentPrimaryIdCustomField)
                 ? object_id_1.ObjectId.fromJSON(object.studentPrimaryIdCustomField)
                 : undefined,
+            graduation_settings: isSet(object.graduationSettings)
+                ? exports.GraduationSettings.fromJSON(object.graduationSettings)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -287,6 +300,9 @@ exports.OrganizationProfileSettings = {
         if (message.student_primary_id_custom_field !== undefined) {
             obj.studentPrimaryIdCustomField = object_id_1.ObjectId.toJSON(message.student_primary_id_custom_field);
         }
+        if (message.graduation_settings !== undefined) {
+            obj.graduationSettings = exports.GraduationSettings.toJSON(message.graduation_settings);
+        }
         return obj;
     },
     create(base) {
@@ -301,6 +317,99 @@ exports.OrganizationProfileSettings = {
             (object.student_primary_id_custom_field !== undefined && object.student_primary_id_custom_field !== null)
                 ? object_id_1.ObjectId.fromPartial(object.student_primary_id_custom_field)
                 : undefined;
+        message.graduation_settings = (object.graduation_settings !== undefined && object.graduation_settings !== null)
+            ? exports.GraduationSettings.fromPartial(object.graduation_settings)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGraduationSettings() {
+    return {
+        community_involvement_hours_required: undefined,
+        optional_credits_required: undefined,
+        online_learning_credits_required: undefined,
+    };
+}
+exports.GraduationSettings = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.community_involvement_hours_required !== undefined) {
+            writer.uint32(9).double(message.community_involvement_hours_required);
+        }
+        if (message.optional_credits_required !== undefined) {
+            writer.uint32(17).double(message.optional_credits_required);
+        }
+        if (message.online_learning_credits_required !== undefined) {
+            writer.uint32(25).double(message.online_learning_credits_required);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGraduationSettings();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 9) {
+                        break;
+                    }
+                    message.community_involvement_hours_required = reader.double();
+                    continue;
+                case 2:
+                    if (tag !== 17) {
+                        break;
+                    }
+                    message.optional_credits_required = reader.double();
+                    continue;
+                case 3:
+                    if (tag !== 25) {
+                        break;
+                    }
+                    message.online_learning_credits_required = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            community_involvement_hours_required: isSet(object.communityInvolvementHoursRequired)
+                ? globalThis.Number(object.communityInvolvementHoursRequired)
+                : undefined,
+            optional_credits_required: isSet(object.optionalCreditsRequired)
+                ? globalThis.Number(object.optionalCreditsRequired)
+                : undefined,
+            online_learning_credits_required: isSet(object.onlineLearningCreditsRequired)
+                ? globalThis.Number(object.onlineLearningCreditsRequired)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.community_involvement_hours_required !== undefined) {
+            obj.communityInvolvementHoursRequired = message.community_involvement_hours_required;
+        }
+        if (message.optional_credits_required !== undefined) {
+            obj.optionalCreditsRequired = message.optional_credits_required;
+        }
+        if (message.online_learning_credits_required !== undefined) {
+            obj.onlineLearningCreditsRequired = message.online_learning_credits_required;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GraduationSettings.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGraduationSettings();
+        message.community_involvement_hours_required = object.community_involvement_hours_required ?? undefined;
+        message.optional_credits_required = object.optional_credits_required ?? undefined;
+        message.online_learning_credits_required = object.online_learning_credits_required ?? undefined;
         return message;
     },
 };

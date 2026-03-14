@@ -17,6 +17,8 @@ import * as Evaluation from './class_service/evaluation';
 export { Evaluation };
 import * as Report_entry from './class_service/report_entry';
 export { Report_entry };
+import * as Transcript_service from './class_service/transcript_service';
+export { Transcript_service };
 import * as Report_entry_service from './class_service/report_entry_service';
 export { Report_entry_service };
 import * as Semester from './class_service/semester';

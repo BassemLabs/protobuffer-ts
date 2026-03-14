@@ -6,7 +6,9 @@ export interface AbstractCategory {
     organization: ObjectId | undefined;
     name?: string | undefined;
     credits_required?: number | undefined;
-    can_delete?: boolean | undefined;
+    linked_courses_count?: number | undefined;
+    category_group_id?: ObjectId | undefined;
+    linked_course_ids: ObjectId[];
 }
 export declare const AbstractCategory: MessageFns<AbstractCategory>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -35,12 +35,15 @@ export interface CreateAbstractCategoryRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
     credits_required?: number | undefined;
+    category_group_id?: ObjectId | undefined;
 }
 export interface UpdateAbstractCategoryRequest {
     context: RequestContext | undefined;
     abstract_category_id: ObjectId | undefined;
     name?: string | undefined;
     credits_required?: number | undefined;
+    category_group_id?: ObjectId | undefined;
+    linked_course_ids: ObjectId[];
 }
 export interface DeleteAbstractCategoryRequest {
     context: RequestContext | undefined;
@@ -50,14 +53,16 @@ export interface CreateAbstractCategoryGroupRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
     credits_required?: number | undefined;
-    category_ids: ObjectId[];
 }
 export interface UpdateAbstractCategoryGroupRequest {
     context: RequestContext | undefined;
     abstract_category_group_id: ObjectId | undefined;
     name?: string | undefined;
     credits_required?: number | undefined;
-    category_ids: ObjectId[];
+}
+export interface DeleteAbstractCategoryGroupRequest {
+    context: RequestContext | undefined;
+    abstract_category_group_id: ObjectId | undefined;
 }
 export interface CreateAbstractCourseRequest {
     context: RequestContext | undefined;
@@ -92,6 +97,7 @@ export declare const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCat
 export declare const DeleteAbstractCategoryRequest: MessageFns<DeleteAbstractCategoryRequest>;
 export declare const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCategoryGroupRequest>;
 export declare const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCategoryGroupRequest>;
+export declare const DeleteAbstractCategoryGroupRequest: MessageFns<DeleteAbstractCategoryGroupRequest>;
 export declare const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest>;
 export declare const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest>;
 export declare const DeleteAbstractCourseRequest: MessageFns<DeleteAbstractCourseRequest>;

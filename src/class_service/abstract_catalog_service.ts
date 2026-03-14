@@ -51,6 +51,7 @@ export interface CreateAbstractCategoryRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
   credits_required?: number | undefined;
+  category_group_id?: ObjectId | undefined;
 }
 
 export interface UpdateAbstractCategoryRequest {
@@ -58,6 +59,8 @@ export interface UpdateAbstractCategoryRequest {
   abstract_category_id: ObjectId | undefined;
   name?: string | undefined;
   credits_required?: number | undefined;
+  category_group_id?: ObjectId | undefined;
+  linked_course_ids: ObjectId[];
 }
 
 export interface DeleteAbstractCategoryRequest {
@@ -69,7 +72,6 @@ export interface CreateAbstractCategoryGroupRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
   credits_required?: number | undefined;
-  category_ids: ObjectId[];
 }
 
 export interface UpdateAbstractCategoryGroupRequest {
@@ -77,7 +79,11 @@ export interface UpdateAbstractCategoryGroupRequest {
   abstract_category_group_id: ObjectId | undefined;
   name?: string | undefined;
   credits_required?: number | undefined;
-  category_ids: ObjectId[];
+}
+
+export interface DeleteAbstractCategoryGroupRequest {
+  context: RequestContext | undefined;
+  abstract_category_group_id: ObjectId | undefined;
 }
 
 export interface CreateAbstractCourseRequest {
@@ -618,7 +624,7 @@ export const GetAbstractCourseRequest: MessageFns<GetAbstractCourseRequest> = {
 };
 
 function createBaseCreateAbstractCategoryRequest(): CreateAbstractCategoryRequest {
-  return { context: undefined, name: undefined, credits_required: undefined };
+  return { context: undefined, name: undefined, credits_required: undefined, category_group_id: undefined };
 }
 
 export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryRequest> = {
@@ -631,6 +637,9 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
     }
     if (message.credits_required !== undefined) {
       writer.uint32(25).double(message.credits_required);
+    }
+    if (message.category_group_id !== undefined) {
+      ObjectId.encode(message.category_group_id, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -663,6 +672,13 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
 
           message.credits_required = reader.double();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.category_group_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -677,6 +693,7 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
+      category_group_id: isSet(object.categoryGroupId) ? ObjectId.fromJSON(object.categoryGroupId) : undefined,
     };
   },
 
@@ -690,6 +707,9 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
     }
     if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
+    }
+    if (message.category_group_id !== undefined) {
+      obj.categoryGroupId = ObjectId.toJSON(message.category_group_id);
     }
     return obj;
   },
@@ -706,12 +726,22 @@ export const CreateAbstractCategoryRequest: MessageFns<CreateAbstractCategoryReq
       : undefined;
     message.name = object.name ?? undefined;
     message.credits_required = object.credits_required ?? undefined;
+    message.category_group_id = (object.category_group_id !== undefined && object.category_group_id !== null)
+      ? ObjectId.fromPartial(object.category_group_id)
+      : undefined;
     return message;
   },
 };
 
 function createBaseUpdateAbstractCategoryRequest(): UpdateAbstractCategoryRequest {
-  return { context: undefined, abstract_category_id: undefined, name: undefined, credits_required: undefined };
+  return {
+    context: undefined,
+    abstract_category_id: undefined,
+    name: undefined,
+    credits_required: undefined,
+    category_group_id: undefined,
+    linked_course_ids: [],
+  };
 }
 
 export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryRequest> = {
@@ -727,6 +757,12 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
     }
     if (message.credits_required !== undefined) {
       writer.uint32(33).double(message.credits_required);
+    }
+    if (message.category_group_id !== undefined) {
+      ObjectId.encode(message.category_group_id, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.linked_course_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -766,6 +802,20 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
 
           message.credits_required = reader.double();
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.category_group_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.linked_course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -781,6 +831,10 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
       abstract_category_id: isSet(object.abstractCategoryId) ? ObjectId.fromJSON(object.abstractCategoryId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
+      category_group_id: isSet(object.categoryGroupId) ? ObjectId.fromJSON(object.categoryGroupId) : undefined,
+      linked_course_ids: globalThis.Array.isArray(object?.linkedCourseIds)
+        ? object.linkedCourseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -797,6 +851,12 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
     }
     if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
+    }
+    if (message.category_group_id !== undefined) {
+      obj.categoryGroupId = ObjectId.toJSON(message.category_group_id);
+    }
+    if (message.linked_course_ids?.length) {
+      obj.linkedCourseIds = message.linked_course_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -816,6 +876,10 @@ export const UpdateAbstractCategoryRequest: MessageFns<UpdateAbstractCategoryReq
       : undefined;
     message.name = object.name ?? undefined;
     message.credits_required = object.credits_required ?? undefined;
+    message.category_group_id = (object.category_group_id !== undefined && object.category_group_id !== null)
+      ? ObjectId.fromPartial(object.category_group_id)
+      : undefined;
+    message.linked_course_ids = object.linked_course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -901,7 +965,7 @@ export const DeleteAbstractCategoryRequest: MessageFns<DeleteAbstractCategoryReq
 };
 
 function createBaseCreateAbstractCategoryGroupRequest(): CreateAbstractCategoryGroupRequest {
-  return { context: undefined, name: undefined, credits_required: undefined, category_ids: [] };
+  return { context: undefined, name: undefined, credits_required: undefined };
 }
 
 export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCategoryGroupRequest> = {
@@ -914,9 +978,6 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
     }
     if (message.credits_required !== undefined) {
       writer.uint32(25).double(message.credits_required);
-    }
-    for (const v of message.category_ids) {
-      ObjectId.encode(v!, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -949,13 +1010,6 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
 
           message.credits_required = reader.double();
           continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -970,9 +1024,6 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-      category_ids: globalThis.Array.isArray(object?.categoryIds)
-        ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
-        : [],
     };
   },
 
@@ -986,9 +1037,6 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
     }
     if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
-    }
-    if (message.category_ids?.length) {
-      obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1007,19 +1055,12 @@ export const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstractCatego
       : undefined;
     message.name = object.name ?? undefined;
     message.credits_required = object.credits_required ?? undefined;
-    message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseUpdateAbstractCategoryGroupRequest(): UpdateAbstractCategoryGroupRequest {
-  return {
-    context: undefined,
-    abstract_category_group_id: undefined,
-    name: undefined,
-    credits_required: undefined,
-    category_ids: [],
-  };
+  return { context: undefined, abstract_category_group_id: undefined, name: undefined, credits_required: undefined };
 }
 
 export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCategoryGroupRequest> = {
@@ -1035,9 +1076,6 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
     }
     if (message.credits_required !== undefined) {
       writer.uint32(33).double(message.credits_required);
-    }
-    for (const v of message.category_ids) {
-      ObjectId.encode(v!, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -1077,13 +1115,6 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
 
           message.credits_required = reader.double();
           continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1101,9 +1132,6 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
         : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       credits_required: isSet(object.creditsRequired) ? globalThis.Number(object.creditsRequired) : undefined,
-      category_ids: globalThis.Array.isArray(object?.categoryIds)
-        ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
-        : [],
     };
   },
 
@@ -1120,9 +1148,6 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
     }
     if (message.credits_required !== undefined) {
       obj.creditsRequired = message.credits_required;
-    }
-    if (message.category_ids?.length) {
-      obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -1145,7 +1170,91 @@ export const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCatego
         : undefined;
     message.name = object.name ?? undefined;
     message.credits_required = object.credits_required ?? undefined;
-    message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteAbstractCategoryGroupRequest(): DeleteAbstractCategoryGroupRequest {
+  return { context: undefined, abstract_category_group_id: undefined };
+}
+
+export const DeleteAbstractCategoryGroupRequest: MessageFns<DeleteAbstractCategoryGroupRequest> = {
+  encode(message: DeleteAbstractCategoryGroupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.abstract_category_group_id !== undefined) {
+      ObjectId.encode(message.abstract_category_group_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteAbstractCategoryGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteAbstractCategoryGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.abstract_category_group_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteAbstractCategoryGroupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      abstract_category_group_id: isSet(object.abstractCategoryGroupId)
+        ? ObjectId.fromJSON(object.abstractCategoryGroupId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: DeleteAbstractCategoryGroupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.abstract_category_group_id !== undefined) {
+      obj.abstractCategoryGroupId = ObjectId.toJSON(message.abstract_category_group_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteAbstractCategoryGroupRequest>, I>>(
+    base?: I,
+  ): DeleteAbstractCategoryGroupRequest {
+    return DeleteAbstractCategoryGroupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteAbstractCategoryGroupRequest>, I>>(
+    object: I,
+  ): DeleteAbstractCategoryGroupRequest {
+    const message = createBaseDeleteAbstractCategoryGroupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.abstract_category_group_id =
+      (object.abstract_category_group_id !== undefined && object.abstract_category_group_id !== null)
+        ? ObjectId.fromPartial(object.abstract_category_group_id)
+        : undefined;
     return message;
   },
 };
