@@ -278,6 +278,26 @@ export interface GetAllOrganizationInvoicesRequest {
   context: RequestContext | undefined;
 }
 
+export interface GetPrincipalDashboardFinanceSummaryRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  as_of_date?: Date | undefined;
+}
+
+export interface GetPrincipalDashboardFinanceSummaryResponse {
+  unpaid_invoice_count?: number | undefined;
+  unpaid_outstanding_total?: number | undefined;
+  overdue_30_plus_count?: number | undefined;
+  paid_invoice_count?: number | undefined;
+  unpaid_invoice_breakdown_count?: number | undefined;
+  overdue_invoice_count?: number | undefined;
+  revenue_this_month_total?: number | undefined;
+  autopay_enabled_families?: number | undefined;
+  autopay_total_families?: number | undefined;
+  currency_code?: string | undefined;
+  overdue_outstanding_total?: number | undefined;
+}
+
 /** Auto payment retry messages */
 export interface GetFailedAutoPayInvoicesRequest {
   context: RequestContext | undefined;
@@ -4265,6 +4285,347 @@ export const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInv
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardFinanceSummaryRequest(): GetPrincipalDashboardFinanceSummaryRequest {
+  return { context: undefined, school_year_id: undefined, as_of_date: undefined };
+}
+
+export const GetPrincipalDashboardFinanceSummaryRequest: MessageFns<GetPrincipalDashboardFinanceSummaryRequest> = {
+  encode(message: GetPrincipalDashboardFinanceSummaryRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.as_of_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.as_of_date), writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardFinanceSummaryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardFinanceSummaryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.as_of_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardFinanceSummaryRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      as_of_date: isSet(object.asOfDate) ? fromJsonTimestamp(object.asOfDate) : undefined,
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardFinanceSummaryRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.as_of_date !== undefined) {
+      obj.asOfDate = message.as_of_date.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardFinanceSummaryRequest>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardFinanceSummaryRequest {
+    return GetPrincipalDashboardFinanceSummaryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardFinanceSummaryRequest>, I>>(
+    object: I,
+  ): GetPrincipalDashboardFinanceSummaryRequest {
+    const message = createBaseGetPrincipalDashboardFinanceSummaryRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.as_of_date = object.as_of_date ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardFinanceSummaryResponse(): GetPrincipalDashboardFinanceSummaryResponse {
+  return {
+    unpaid_invoice_count: undefined,
+    unpaid_outstanding_total: undefined,
+    overdue_30_plus_count: undefined,
+    paid_invoice_count: undefined,
+    unpaid_invoice_breakdown_count: undefined,
+    overdue_invoice_count: undefined,
+    revenue_this_month_total: undefined,
+    autopay_enabled_families: undefined,
+    autopay_total_families: undefined,
+    currency_code: undefined,
+    overdue_outstanding_total: undefined,
+  };
+}
+
+export const GetPrincipalDashboardFinanceSummaryResponse: MessageFns<GetPrincipalDashboardFinanceSummaryResponse> = {
+  encode(
+    message: GetPrincipalDashboardFinanceSummaryResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.unpaid_invoice_count !== undefined) {
+      writer.uint32(8).uint32(message.unpaid_invoice_count);
+    }
+    if (message.unpaid_outstanding_total !== undefined) {
+      writer.uint32(17).double(message.unpaid_outstanding_total);
+    }
+    if (message.overdue_30_plus_count !== undefined) {
+      writer.uint32(24).uint32(message.overdue_30_plus_count);
+    }
+    if (message.paid_invoice_count !== undefined) {
+      writer.uint32(32).uint32(message.paid_invoice_count);
+    }
+    if (message.unpaid_invoice_breakdown_count !== undefined) {
+      writer.uint32(40).uint32(message.unpaid_invoice_breakdown_count);
+    }
+    if (message.overdue_invoice_count !== undefined) {
+      writer.uint32(48).uint32(message.overdue_invoice_count);
+    }
+    if (message.revenue_this_month_total !== undefined) {
+      writer.uint32(57).double(message.revenue_this_month_total);
+    }
+    if (message.autopay_enabled_families !== undefined) {
+      writer.uint32(64).uint32(message.autopay_enabled_families);
+    }
+    if (message.autopay_total_families !== undefined) {
+      writer.uint32(72).uint32(message.autopay_total_families);
+    }
+    if (message.currency_code !== undefined) {
+      writer.uint32(82).string(message.currency_code);
+    }
+    if (message.overdue_outstanding_total !== undefined) {
+      writer.uint32(89).double(message.overdue_outstanding_total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardFinanceSummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardFinanceSummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.unpaid_invoice_count = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.unpaid_outstanding_total = reader.double();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.overdue_30_plus_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.paid_invoice_count = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.unpaid_invoice_breakdown_count = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.overdue_invoice_count = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 57) {
+            break;
+          }
+
+          message.revenue_this_month_total = reader.double();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.autopay_enabled_families = reader.uint32();
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.autopay_total_families = reader.uint32();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.currency_code = reader.string();
+          continue;
+        case 11:
+          if (tag !== 89) {
+            break;
+          }
+
+          message.overdue_outstanding_total = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardFinanceSummaryResponse {
+    return {
+      unpaid_invoice_count: isSet(object.unpaidInvoiceCount) ? globalThis.Number(object.unpaidInvoiceCount) : undefined,
+      unpaid_outstanding_total: isSet(object.unpaidOutstandingTotal)
+        ? globalThis.Number(object.unpaidOutstandingTotal)
+        : undefined,
+      overdue_30_plus_count: isSet(object.overdue30PlusCount)
+        ? globalThis.Number(object.overdue30PlusCount)
+        : undefined,
+      paid_invoice_count: isSet(object.paidInvoiceCount) ? globalThis.Number(object.paidInvoiceCount) : undefined,
+      unpaid_invoice_breakdown_count: isSet(object.unpaidInvoiceBreakdownCount)
+        ? globalThis.Number(object.unpaidInvoiceBreakdownCount)
+        : undefined,
+      overdue_invoice_count: isSet(object.overdueInvoiceCount)
+        ? globalThis.Number(object.overdueInvoiceCount)
+        : undefined,
+      revenue_this_month_total: isSet(object.revenueThisMonthTotal)
+        ? globalThis.Number(object.revenueThisMonthTotal)
+        : undefined,
+      autopay_enabled_families: isSet(object.autopayEnabledFamilies)
+        ? globalThis.Number(object.autopayEnabledFamilies)
+        : undefined,
+      autopay_total_families: isSet(object.autopayTotalFamilies)
+        ? globalThis.Number(object.autopayTotalFamilies)
+        : undefined,
+      currency_code: isSet(object.currencyCode) ? globalThis.String(object.currencyCode) : undefined,
+      overdue_outstanding_total: isSet(object.overdueOutstandingTotal)
+        ? globalThis.Number(object.overdueOutstandingTotal)
+        : undefined,
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardFinanceSummaryResponse): unknown {
+    const obj: any = {};
+    if (message.unpaid_invoice_count !== undefined) {
+      obj.unpaidInvoiceCount = Math.round(message.unpaid_invoice_count);
+    }
+    if (message.unpaid_outstanding_total !== undefined) {
+      obj.unpaidOutstandingTotal = message.unpaid_outstanding_total;
+    }
+    if (message.overdue_30_plus_count !== undefined) {
+      obj.overdue30PlusCount = Math.round(message.overdue_30_plus_count);
+    }
+    if (message.paid_invoice_count !== undefined) {
+      obj.paidInvoiceCount = Math.round(message.paid_invoice_count);
+    }
+    if (message.unpaid_invoice_breakdown_count !== undefined) {
+      obj.unpaidInvoiceBreakdownCount = Math.round(message.unpaid_invoice_breakdown_count);
+    }
+    if (message.overdue_invoice_count !== undefined) {
+      obj.overdueInvoiceCount = Math.round(message.overdue_invoice_count);
+    }
+    if (message.revenue_this_month_total !== undefined) {
+      obj.revenueThisMonthTotal = message.revenue_this_month_total;
+    }
+    if (message.autopay_enabled_families !== undefined) {
+      obj.autopayEnabledFamilies = Math.round(message.autopay_enabled_families);
+    }
+    if (message.autopay_total_families !== undefined) {
+      obj.autopayTotalFamilies = Math.round(message.autopay_total_families);
+    }
+    if (message.currency_code !== undefined) {
+      obj.currencyCode = message.currency_code;
+    }
+    if (message.overdue_outstanding_total !== undefined) {
+      obj.overdueOutstandingTotal = message.overdue_outstanding_total;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardFinanceSummaryResponse>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardFinanceSummaryResponse {
+    return GetPrincipalDashboardFinanceSummaryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardFinanceSummaryResponse>, I>>(
+    object: I,
+  ): GetPrincipalDashboardFinanceSummaryResponse {
+    const message = createBaseGetPrincipalDashboardFinanceSummaryResponse();
+    message.unpaid_invoice_count = object.unpaid_invoice_count ?? undefined;
+    message.unpaid_outstanding_total = object.unpaid_outstanding_total ?? undefined;
+    message.overdue_30_plus_count = object.overdue_30_plus_count ?? undefined;
+    message.paid_invoice_count = object.paid_invoice_count ?? undefined;
+    message.unpaid_invoice_breakdown_count = object.unpaid_invoice_breakdown_count ?? undefined;
+    message.overdue_invoice_count = object.overdue_invoice_count ?? undefined;
+    message.revenue_this_month_total = object.revenue_this_month_total ?? undefined;
+    message.autopay_enabled_families = object.autopay_enabled_families ?? undefined;
+    message.autopay_total_families = object.autopay_total_families ?? undefined;
+    message.currency_code = object.currency_code ?? undefined;
+    message.overdue_outstanding_total = object.overdue_outstanding_total ?? undefined;
     return message;
   },
 };

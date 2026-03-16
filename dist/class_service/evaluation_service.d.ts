@@ -166,6 +166,35 @@ export interface ExportMarkbookExcelResponse {
     excel_data?: string | undefined;
     course_name?: string | undefined;
 }
+export interface GetPrincipalDashboardAcademicSummaryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    semester_id?: ObjectId | undefined;
+}
+export interface PrincipalDashboardGradeDistributionBucket {
+    bucket?: string | undefined;
+    count?: number | undefined;
+}
+export interface PrincipalDashboardLowMarkCourse {
+    course_id: ObjectId | undefined;
+    course_name?: string | undefined;
+    course_code?: string | undefined;
+    teacher_names: string[];
+    average_mark?: number | undefined;
+}
+export interface PrincipalDashboardLowestMark {
+    student_id: ObjectId | undefined;
+    student_name?: string | undefined;
+    course_id: ObjectId | undefined;
+    course_name?: string | undefined;
+    mark?: number | undefined;
+    course_code?: string | undefined;
+}
+export interface GetPrincipalDashboardAcademicSummaryResponse {
+    grade_distribution: PrincipalDashboardGradeDistributionBucket[];
+    low_mark_courses: PrincipalDashboardLowMarkCourse[];
+    lowest_marks: PrincipalDashboardLowestMark[];
+}
 export declare const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest>;
 export declare const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest>;
 export declare const DeleteEvaluationRequest: MessageFns<DeleteEvaluationRequest>;
@@ -196,6 +225,11 @@ export declare const GetStudentCoursesMarkOverviewResponse: MessageFns<GetStuden
 export declare const StudentCourseMarkOverview: MessageFns<StudentCourseMarkOverview>;
 export declare const ExportMarkbookExcelRequest: MessageFns<ExportMarkbookExcelRequest>;
 export declare const ExportMarkbookExcelResponse: MessageFns<ExportMarkbookExcelResponse>;
+export declare const GetPrincipalDashboardAcademicSummaryRequest: MessageFns<GetPrincipalDashboardAcademicSummaryRequest>;
+export declare const PrincipalDashboardGradeDistributionBucket: MessageFns<PrincipalDashboardGradeDistributionBucket>;
+export declare const PrincipalDashboardLowMarkCourse: MessageFns<PrincipalDashboardLowMarkCourse>;
+export declare const PrincipalDashboardLowestMark: MessageFns<PrincipalDashboardLowestMark>;
+export declare const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincipalDashboardAcademicSummaryResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

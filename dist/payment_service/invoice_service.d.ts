@@ -210,6 +210,24 @@ export interface GetOrganizationInvoicesRequest {
 export interface GetAllOrganizationInvoicesRequest {
     context: RequestContext | undefined;
 }
+export interface GetPrincipalDashboardFinanceSummaryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    as_of_date?: Date | undefined;
+}
+export interface GetPrincipalDashboardFinanceSummaryResponse {
+    unpaid_invoice_count?: number | undefined;
+    unpaid_outstanding_total?: number | undefined;
+    overdue_30_plus_count?: number | undefined;
+    paid_invoice_count?: number | undefined;
+    unpaid_invoice_breakdown_count?: number | undefined;
+    overdue_invoice_count?: number | undefined;
+    revenue_this_month_total?: number | undefined;
+    autopay_enabled_families?: number | undefined;
+    autopay_total_families?: number | undefined;
+    currency_code?: string | undefined;
+    overdue_outstanding_total?: number | undefined;
+}
 /** Auto payment retry messages */
 export interface GetFailedAutoPayInvoicesRequest {
     context: RequestContext | undefined;
@@ -267,6 +285,8 @@ export declare const UpsertOrganizationInvoiceRequest: MessageFns<UpsertOrganiza
 export declare const GetLatestOrganizationInvoiceRequest: MessageFns<GetLatestOrganizationInvoiceRequest>;
 export declare const GetOrganizationInvoicesRequest: MessageFns<GetOrganizationInvoicesRequest>;
 export declare const GetAllOrganizationInvoicesRequest: MessageFns<GetAllOrganizationInvoicesRequest>;
+export declare const GetPrincipalDashboardFinanceSummaryRequest: MessageFns<GetPrincipalDashboardFinanceSummaryRequest>;
+export declare const GetPrincipalDashboardFinanceSummaryResponse: MessageFns<GetPrincipalDashboardFinanceSummaryResponse>;
 export declare const GetFailedAutoPayInvoicesRequest: MessageFns<GetFailedAutoPayInvoicesRequest>;
 export declare const GetAutoPaymentAttemptsRequest: MessageFns<GetAutoPaymentAttemptsRequest>;
 export declare const GetAutoPaymentAttemptsResponse: MessageFns<GetAutoPaymentAttemptsResponse>;
