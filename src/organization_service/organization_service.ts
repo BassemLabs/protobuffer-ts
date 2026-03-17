@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON, dayOfWeekToNumber } from "../google/type/dayofweek";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
@@ -152,7 +153,20 @@ export interface UpdateSchoolYearRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
   name?: string | undefined;
-  is_open_for_registration?: boolean | undefined;
+  is_open_for_registration?:
+    | boolean
+    | undefined;
+  /** Grades that are open for registration in this school year. */
+  open_grades: StudentGrade[];
+}
+
+export interface GetSchoolYearOpenGradesRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface GetSchoolYearOpenGradesResponse {
+  open_grades: StudentGrade[];
 }
 
 export interface CreateSchoolYearResponse {
@@ -1901,7 +1915,13 @@ export const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolY
 };
 
 function createBaseUpdateSchoolYearRequest(): UpdateSchoolYearRequest {
-  return { context: undefined, school_year_id: undefined, name: undefined, is_open_for_registration: undefined };
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    name: undefined,
+    is_open_for_registration: undefined,
+    open_grades: [],
+  };
 }
 
 export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
@@ -1918,6 +1938,11 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.is_open_for_registration !== undefined) {
       writer.uint32(32).bool(message.is_open_for_registration);
     }
+    writer.uint32(42).fork();
+    for (const v of message.open_grades) {
+      writer.int32(studentGradeToNumber(v));
+    }
+    writer.join();
     return writer;
   },
 
@@ -1956,6 +1981,23 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
 
           message.is_open_for_registration = reader.bool();
           continue;
+        case 5:
+          if (tag === 40) {
+            message.open_grades.push(studentGradeFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.open_grades.push(studentGradeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1973,6 +2015,9 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
       is_open_for_registration: isSet(object.isOpenForRegistration)
         ? globalThis.Boolean(object.isOpenForRegistration)
         : undefined,
+      open_grades: globalThis.Array.isArray(object?.openGrades)
+        ? object.openGrades.map((e: any) => studentGradeFromJSON(e))
+        : [],
     };
   },
 
@@ -1990,6 +2035,9 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.is_open_for_registration !== undefined) {
       obj.isOpenForRegistration = message.is_open_for_registration;
     }
+    if (message.open_grades?.length) {
+      obj.openGrades = message.open_grades.map((e) => studentGradeToJSON(e));
+    }
     return obj;
   },
 
@@ -2006,6 +2054,162 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
       : undefined;
     message.name = object.name ?? undefined;
     message.is_open_for_registration = object.is_open_for_registration ?? undefined;
+    message.open_grades = object.open_grades?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseGetSchoolYearOpenGradesRequest(): GetSchoolYearOpenGradesRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetSchoolYearOpenGradesRequest: MessageFns<GetSchoolYearOpenGradesRequest> = {
+  encode(message: GetSchoolYearOpenGradesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchoolYearOpenGradesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchoolYearOpenGradesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchoolYearOpenGradesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchoolYearOpenGradesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchoolYearOpenGradesRequest>, I>>(base?: I): GetSchoolYearOpenGradesRequest {
+    return GetSchoolYearOpenGradesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchoolYearOpenGradesRequest>, I>>(
+    object: I,
+  ): GetSchoolYearOpenGradesRequest {
+    const message = createBaseGetSchoolYearOpenGradesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchoolYearOpenGradesResponse(): GetSchoolYearOpenGradesResponse {
+  return { open_grades: [] };
+}
+
+export const GetSchoolYearOpenGradesResponse: MessageFns<GetSchoolYearOpenGradesResponse> = {
+  encode(message: GetSchoolYearOpenGradesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    writer.uint32(10).fork();
+    for (const v of message.open_grades) {
+      writer.int32(studentGradeToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchoolYearOpenGradesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchoolYearOpenGradesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag === 8) {
+            message.open_grades.push(studentGradeFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.open_grades.push(studentGradeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchoolYearOpenGradesResponse {
+    return {
+      open_grades: globalThis.Array.isArray(object?.openGrades)
+        ? object.openGrades.map((e: any) => studentGradeFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetSchoolYearOpenGradesResponse): unknown {
+    const obj: any = {};
+    if (message.open_grades?.length) {
+      obj.openGrades = message.open_grades.map((e) => studentGradeToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchoolYearOpenGradesResponse>, I>>(base?: I): GetSchoolYearOpenGradesResponse {
+    return GetSchoolYearOpenGradesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchoolYearOpenGradesResponse>, I>>(
+    object: I,
+  ): GetSchoolYearOpenGradesResponse {
+    const message = createBaseGetSchoolYearOpenGradesResponse();
+    message.open_grades = object.open_grades?.map((e) => e) || [];
     return message;
   },
 };

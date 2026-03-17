@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { DayOfWeek } from "../google/type/dayofweek";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
@@ -108,6 +109,15 @@ export interface UpdateSchoolYearRequest {
     school_year_id: ObjectId | undefined;
     name?: string | undefined;
     is_open_for_registration?: boolean | undefined;
+    /** Grades that are open for registration in this school year. */
+    open_grades: StudentGrade[];
+}
+export interface GetSchoolYearOpenGradesRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetSchoolYearOpenGradesResponse {
+    open_grades: StudentGrade[];
 }
 export interface CreateSchoolYearResponse {
     school_years: SchoolYear[];
@@ -188,6 +198,8 @@ export declare const GetSchoolYearsResponse: MessageFns<GetSchoolYearsResponse>;
 export declare const CreateSchoolYearRequest: MessageFns<CreateSchoolYearRequest>;
 export declare const UpdateSchoolYearRegistrationStatusRequest: MessageFns<UpdateSchoolYearRegistrationStatusRequest>;
 export declare const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest>;
+export declare const GetSchoolYearOpenGradesRequest: MessageFns<GetSchoolYearOpenGradesRequest>;
+export declare const GetSchoolYearOpenGradesResponse: MessageFns<GetSchoolYearOpenGradesResponse>;
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
 export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
 export declare const StartReregistrationRequest: MessageFns<StartReregistrationRequest>;

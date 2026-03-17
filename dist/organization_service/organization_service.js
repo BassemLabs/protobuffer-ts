@@ -5,11 +5,12 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const dayofweek_1 = require("../google/type/dayofweek");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const onboarding_steps_1 = require("./onboarding_steps");
@@ -1497,7 +1498,13 @@ exports.UpdateSchoolYearRegistrationStatusRequest = {
     },
 };
 function createBaseUpdateSchoolYearRequest() {
-    return { context: undefined, school_year_id: undefined, name: undefined, is_open_for_registration: undefined };
+    return {
+        context: undefined,
+        school_year_id: undefined,
+        name: undefined,
+        is_open_for_registration: undefined,
+        open_grades: [],
+    };
 }
 exports.UpdateSchoolYearRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1513,6 +1520,11 @@ exports.UpdateSchoolYearRequest = {
         if (message.is_open_for_registration !== undefined) {
             writer.uint32(32).bool(message.is_open_for_registration);
         }
+        writer.uint32(42).fork();
+        for (const v of message.open_grades) {
+            writer.int32((0, student_1.studentGradeToNumber)(v));
+        }
+        writer.join();
         return writer;
     },
     decode(input, length) {
@@ -1546,6 +1558,19 @@ exports.UpdateSchoolYearRequest = {
                     }
                     message.is_open_for_registration = reader.bool();
                     continue;
+                case 5:
+                    if (tag === 40) {
+                        message.open_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 42) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.open_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1562,6 +1587,9 @@ exports.UpdateSchoolYearRequest = {
             is_open_for_registration: isSet(object.isOpenForRegistration)
                 ? globalThis.Boolean(object.isOpenForRegistration)
                 : undefined,
+            open_grades: globalThis.Array.isArray(object?.openGrades)
+                ? object.openGrades.map((e) => (0, student_1.studentGradeFromJSON)(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -1578,6 +1606,9 @@ exports.UpdateSchoolYearRequest = {
         if (message.is_open_for_registration !== undefined) {
             obj.isOpenForRegistration = message.is_open_for_registration;
         }
+        if (message.open_grades?.length) {
+            obj.openGrades = message.open_grades.map((e) => (0, student_1.studentGradeToJSON)(e));
+        }
         return obj;
     },
     create(base) {
@@ -1593,6 +1624,140 @@ exports.UpdateSchoolYearRequest = {
             : undefined;
         message.name = object.name ?? undefined;
         message.is_open_for_registration = object.is_open_for_registration ?? undefined;
+        message.open_grades = object.open_grades?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseGetSchoolYearOpenGradesRequest() {
+    return { context: undefined, school_year_id: undefined };
+}
+exports.GetSchoolYearOpenGradesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetSchoolYearOpenGradesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetSchoolYearOpenGradesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetSchoolYearOpenGradesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetSchoolYearOpenGradesResponse() {
+    return { open_grades: [] };
+}
+exports.GetSchoolYearOpenGradesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        writer.uint32(10).fork();
+        for (const v of message.open_grades) {
+            writer.int32((0, student_1.studentGradeToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetSchoolYearOpenGradesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag === 8) {
+                        message.open_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 10) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.open_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            open_grades: globalThis.Array.isArray(object?.openGrades)
+                ? object.openGrades.map((e) => (0, student_1.studentGradeFromJSON)(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.open_grades?.length) {
+            obj.openGrades = message.open_grades.map((e) => (0, student_1.studentGradeToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetSchoolYearOpenGradesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetSchoolYearOpenGradesResponse();
+        message.open_grades = object.open_grades?.map((e) => e) || [];
         return message;
     },
 };
