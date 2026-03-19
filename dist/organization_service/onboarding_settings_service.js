@@ -83,12 +83,7 @@ exports.GetOnboardingSettingsRequest = {
     },
 };
 function createBaseUpdateEnrollmentConfigurationRequest() {
-    return {
-        context: undefined,
-        organization_id: undefined,
-        has_interview_for_newcomers: undefined,
-        enable_group_approval_system: undefined,
-    };
+    return { context: undefined, organization_id: undefined, has_interview_for_newcomers: undefined };
 }
 exports.UpdateEnrollmentConfigurationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -100,9 +95,6 @@ exports.UpdateEnrollmentConfigurationRequest = {
         }
         if (message.has_interview_for_newcomers !== undefined) {
             writer.uint32(24).bool(message.has_interview_for_newcomers);
-        }
-        if (message.enable_group_approval_system !== undefined) {
-            writer.uint32(32).bool(message.enable_group_approval_system);
         }
         return writer;
     },
@@ -131,12 +123,6 @@ exports.UpdateEnrollmentConfigurationRequest = {
                     }
                     message.has_interview_for_newcomers = reader.bool();
                     continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.enable_group_approval_system = reader.bool();
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -152,9 +138,6 @@ exports.UpdateEnrollmentConfigurationRequest = {
             has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
                 ? globalThis.Boolean(object.hasInterviewForNewcomers)
                 : undefined,
-            enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
-                ? globalThis.Boolean(object.enableGroupApprovalSystem)
-                : undefined,
         };
     },
     toJSON(message) {
@@ -167,9 +150,6 @@ exports.UpdateEnrollmentConfigurationRequest = {
         }
         if (message.has_interview_for_newcomers !== undefined) {
             obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
-        }
-        if (message.enable_group_approval_system !== undefined) {
-            obj.enableGroupApprovalSystem = message.enable_group_approval_system;
         }
         return obj;
     },
@@ -185,7 +165,6 @@ exports.UpdateEnrollmentConfigurationRequest = {
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? undefined;
-        message.enable_group_approval_system = object.enable_group_approval_system ?? undefined;
         return message;
     },
 };

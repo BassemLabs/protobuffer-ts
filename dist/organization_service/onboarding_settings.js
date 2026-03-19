@@ -14,7 +14,6 @@ exports.protobufPackage = "organization_service";
 function createBaseOnboardingSettings() {
     return {
         has_interview_for_newcomers: undefined,
-        enable_group_approval_system: undefined,
         waitlist_fee: undefined,
         registration_fees: [],
         reregistration_fees: [],
@@ -26,9 +25,6 @@ exports.OnboardingSettings = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.has_interview_for_newcomers !== undefined) {
             writer.uint32(8).bool(message.has_interview_for_newcomers);
-        }
-        if (message.enable_group_approval_system !== undefined) {
-            writer.uint32(16).bool(message.enable_group_approval_system);
         }
         if (message.waitlist_fee !== undefined) {
             writer.uint32(29).float(message.waitlist_fee);
@@ -59,12 +55,6 @@ exports.OnboardingSettings = {
                         break;
                     }
                     message.has_interview_for_newcomers = reader.bool();
-                    continue;
-                case 2:
-                    if (tag !== 16) {
-                        break;
-                    }
-                    message.enable_group_approval_system = reader.bool();
                     continue;
                 case 3:
                     if (tag !== 29) {
@@ -109,9 +99,6 @@ exports.OnboardingSettings = {
             has_interview_for_newcomers: isSet(object.hasInterviewForNewcomers)
                 ? globalThis.Boolean(object.hasInterviewForNewcomers)
                 : undefined,
-            enable_group_approval_system: isSet(object.enableGroupApprovalSystem)
-                ? globalThis.Boolean(object.enableGroupApprovalSystem)
-                : undefined,
             waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : undefined,
             registration_fees: globalThis.Array.isArray(object?.registrationFees)
                 ? object.registrationFees.map((e) => exports.GradeFeeMapping.fromJSON(e))
@@ -129,9 +116,6 @@ exports.OnboardingSettings = {
         const obj = {};
         if (message.has_interview_for_newcomers !== undefined) {
             obj.hasInterviewForNewcomers = message.has_interview_for_newcomers;
-        }
-        if (message.enable_group_approval_system !== undefined) {
-            obj.enableGroupApprovalSystem = message.enable_group_approval_system;
         }
         if (message.waitlist_fee !== undefined) {
             obj.waitlistFee = message.waitlist_fee;
@@ -156,7 +140,6 @@ exports.OnboardingSettings = {
     fromPartial(object) {
         const message = createBaseOnboardingSettings();
         message.has_interview_for_newcomers = object.has_interview_for_newcomers ?? undefined;
-        message.enable_group_approval_system = object.enable_group_approval_system ?? undefined;
         message.waitlist_fee = object.waitlist_fee ?? undefined;
         message.registration_fees = object.registration_fees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];
         message.reregistration_fees = object.reregistration_fees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];

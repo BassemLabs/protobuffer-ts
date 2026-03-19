@@ -4,7 +4,6 @@ import { AWSFile } from "../utils/aws_file";
 export declare const protobufPackage = "organization_service";
 export interface OnboardingSettings {
     has_interview_for_newcomers?: boolean | undefined;
-    enable_group_approval_system?: boolean | undefined;
     waitlist_fee?: number | undefined;
     registration_fees: GradeFeeMapping[];
     reregistration_fees: GradeFeeMapping[];

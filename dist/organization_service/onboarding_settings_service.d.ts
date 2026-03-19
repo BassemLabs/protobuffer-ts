@@ -11,7 +11,6 @@ export interface UpdateEnrollmentConfigurationRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
     has_interview_for_newcomers?: boolean | undefined;
-    enable_group_approval_system?: boolean | undefined;
 }
 export interface AddSchoolHandbookFileRequest {
     context: RequestContext | undefined;
