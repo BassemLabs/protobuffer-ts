@@ -84,7 +84,15 @@ export function serviceContextToNumber(object: ServiceContext): number {
 export interface RequestContext {
   user_context: UserContext | undefined;
   is_testing?: boolean | undefined;
-  service_based_context_name?: ServiceContext | undefined;
+  service_based_context_name?:
+    | ServiceContext
+    | undefined;
+  /** bypass permissions within the organization in the context */
+  org_super_permission?:
+    | boolean
+    | undefined;
+  /** bypass permissions across organizations (dangerous; use sparingly) */
+  global_super_permission?: boolean | undefined;
 }
 
 export interface UserContext {
@@ -92,17 +100,66 @@ export interface UserContext {
   user_type?: UserType | undefined;
   user_auth_token?: string | undefined;
   organization_id?: ObjectId | undefined;
-  roles: UserRole[];
-  parent_family_ids: ObjectId[];
-  parent_student_ids: ObjectId[];
   full_name?: string | undefined;
   firebase_token?: string | undefined;
   exp?: number | undefined;
-  trace_id?: string | undefined;
+  trace_id?:
+    | string
+    | undefined;
+  /** Exactly one of these contexts should be set based on user_type. */
+  parent_context?: ParentContext | undefined;
+  student_context?: StudentContext | undefined;
+  teacher_context?: TeacherContext | undefined;
+}
+
+/**
+ * A homeroom-subject relationship for teacher context.
+ * `subject_id` is the class identifier for the linked subject scope (typically a course id).
+ */
+export interface HomeroomSubjectId {
+  homeroom_id: ObjectId | undefined;
+  subject_id: ObjectId | undefined;
+}
+
+export interface TeacherContext {
+  /** Cached org active school year to avoid repeated org fetches. */
+  active_school_year_id: ObjectId | undefined;
+  student_ids: ObjectId[];
+  course_ids: ObjectId[];
+  homeroom_ids: ObjectId[];
+  homerooms_subject_ids: HomeroomSubjectId[];
+  roles: UserRole[];
+}
+
+export interface StudentContext {
+  /** Cached org active school year to avoid repeated org fetches. */
+  active_school_year_id: ObjectId | undefined;
+  parent_ids: ObjectId[];
+  family_ids: ObjectId[];
+  course_ids: ObjectId[];
+  homeroom_ids: ObjectId[];
+  teacher_basic_info_ids: ObjectId[];
+}
+
+export interface ParentContext {
+  /** Cached org active school year to avoid repeated org fetches. */
+  active_school_year_id: ObjectId | undefined;
+  student_ids: ObjectId[];
+  parent_ids: ObjectId[];
+  family_ids: ObjectId[];
+  course_ids: ObjectId[];
+  homeroom_ids: ObjectId[];
+  teacher_basic_info_ids: ObjectId[];
 }
 
 function createBaseRequestContext(): RequestContext {
-  return { user_context: undefined, is_testing: undefined, service_based_context_name: undefined };
+  return {
+    user_context: undefined,
+    is_testing: undefined,
+    service_based_context_name: undefined,
+    org_super_permission: undefined,
+    global_super_permission: undefined,
+  };
 }
 
 export const RequestContext: MessageFns<RequestContext> = {
@@ -115,6 +172,12 @@ export const RequestContext: MessageFns<RequestContext> = {
     }
     if (message.service_based_context_name !== undefined) {
       writer.uint32(24).int32(serviceContextToNumber(message.service_based_context_name));
+    }
+    if (message.org_super_permission !== undefined) {
+      writer.uint32(32).bool(message.org_super_permission);
+    }
+    if (message.global_super_permission !== undefined) {
+      writer.uint32(40).bool(message.global_super_permission);
     }
     return writer;
   },
@@ -147,6 +210,20 @@ export const RequestContext: MessageFns<RequestContext> = {
 
           message.service_based_context_name = serviceContextFromJSON(reader.int32());
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.org_super_permission = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.global_super_permission = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -163,6 +240,12 @@ export const RequestContext: MessageFns<RequestContext> = {
       service_based_context_name: isSet(object.serviceBasedContextName)
         ? serviceContextFromJSON(object.serviceBasedContextName)
         : undefined,
+      org_super_permission: isSet(object.orgSuperPermission)
+        ? globalThis.Boolean(object.orgSuperPermission)
+        : undefined,
+      global_super_permission: isSet(object.globalSuperPermission)
+        ? globalThis.Boolean(object.globalSuperPermission)
+        : undefined,
     };
   },
 
@@ -177,6 +260,12 @@ export const RequestContext: MessageFns<RequestContext> = {
     if (message.service_based_context_name !== undefined) {
       obj.serviceBasedContextName = serviceContextToJSON(message.service_based_context_name);
     }
+    if (message.org_super_permission !== undefined) {
+      obj.orgSuperPermission = message.org_super_permission;
+    }
+    if (message.global_super_permission !== undefined) {
+      obj.globalSuperPermission = message.global_super_permission;
+    }
     return obj;
   },
 
@@ -190,6 +279,8 @@ export const RequestContext: MessageFns<RequestContext> = {
       : undefined;
     message.is_testing = object.is_testing ?? undefined;
     message.service_based_context_name = object.service_based_context_name ?? undefined;
+    message.org_super_permission = object.org_super_permission ?? undefined;
+    message.global_super_permission = object.global_super_permission ?? undefined;
     return message;
   },
 };
@@ -200,13 +291,13 @@ function createBaseUserContext(): UserContext {
     user_type: undefined,
     user_auth_token: undefined,
     organization_id: undefined,
-    roles: [],
-    parent_family_ids: [],
-    parent_student_ids: [],
     full_name: undefined,
     firebase_token: undefined,
     exp: undefined,
     trace_id: undefined,
+    parent_context: undefined,
+    student_context: undefined,
+    teacher_context: undefined,
   };
 }
 
@@ -224,17 +315,6 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.organization_id !== undefined) {
       ObjectId.encode(message.organization_id, writer.uint32(34).fork()).join();
     }
-    writer.uint32(42).fork();
-    for (const v of message.roles) {
-      writer.int32(userRoleToNumber(v));
-    }
-    writer.join();
-    for (const v of message.parent_family_ids) {
-      ObjectId.encode(v!, writer.uint32(50).fork()).join();
-    }
-    for (const v of message.parent_student_ids) {
-      ObjectId.encode(v!, writer.uint32(58).fork()).join();
-    }
     if (message.full_name !== undefined) {
       writer.uint32(66).string(message.full_name);
     }
@@ -246,6 +326,15 @@ export const UserContext: MessageFns<UserContext> = {
     }
     if (message.trace_id !== undefined) {
       writer.uint32(90).string(message.trace_id);
+    }
+    if (message.parent_context !== undefined) {
+      ParentContext.encode(message.parent_context, writer.uint32(162).fork()).join();
+    }
+    if (message.student_context !== undefined) {
+      StudentContext.encode(message.student_context, writer.uint32(170).fork()).join();
+    }
+    if (message.teacher_context !== undefined) {
+      TeacherContext.encode(message.teacher_context, writer.uint32(178).fork()).join();
     }
     return writer;
   },
@@ -285,37 +374,6 @@ export const UserContext: MessageFns<UserContext> = {
 
           message.organization_id = ObjectId.decode(reader, reader.uint32());
           continue;
-        case 5:
-          if (tag === 40) {
-            message.roles.push(userRoleFromJSON(reader.int32()));
-
-            continue;
-          }
-
-          if (tag === 42) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.roles.push(userRoleFromJSON(reader.int32()));
-            }
-
-            continue;
-          }
-
-          break;
-        case 6:
-          if (tag !== 50) {
-            break;
-          }
-
-          message.parent_family_ids.push(ObjectId.decode(reader, reader.uint32()));
-          continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.parent_student_ids.push(ObjectId.decode(reader, reader.uint32()));
-          continue;
         case 8:
           if (tag !== 66) {
             break;
@@ -344,6 +402,27 @@ export const UserContext: MessageFns<UserContext> = {
 
           message.trace_id = reader.string();
           continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.parent_context = ParentContext.decode(reader, reader.uint32());
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.student_context = StudentContext.decode(reader, reader.uint32());
+          continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.teacher_context = TeacherContext.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -359,17 +438,13 @@ export const UserContext: MessageFns<UserContext> = {
       user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
       user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
-      parent_family_ids: globalThis.Array.isArray(object?.parentFamilyIds)
-        ? object.parentFamilyIds.map((e: any) => ObjectId.fromJSON(e))
-        : [],
-      parent_student_ids: globalThis.Array.isArray(object?.parentStudentIds)
-        ? object.parentStudentIds.map((e: any) => ObjectId.fromJSON(e))
-        : [],
       full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : undefined,
       firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : undefined,
       exp: isSet(object.exp) ? globalThis.Number(object.exp) : undefined,
       trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : undefined,
+      parent_context: isSet(object.parentContext) ? ParentContext.fromJSON(object.parentContext) : undefined,
+      student_context: isSet(object.studentContext) ? StudentContext.fromJSON(object.studentContext) : undefined,
+      teacher_context: isSet(object.teacherContext) ? TeacherContext.fromJSON(object.teacherContext) : undefined,
     };
   },
 
@@ -387,15 +462,6 @@ export const UserContext: MessageFns<UserContext> = {
     if (message.organization_id !== undefined) {
       obj.organizationId = ObjectId.toJSON(message.organization_id);
     }
-    if (message.roles?.length) {
-      obj.roles = message.roles.map((e) => userRoleToJSON(e));
-    }
-    if (message.parent_family_ids?.length) {
-      obj.parentFamilyIds = message.parent_family_ids.map((e) => ObjectId.toJSON(e));
-    }
-    if (message.parent_student_ids?.length) {
-      obj.parentStudentIds = message.parent_student_ids.map((e) => ObjectId.toJSON(e));
-    }
     if (message.full_name !== undefined) {
       obj.fullName = message.full_name;
     }
@@ -407,6 +473,15 @@ export const UserContext: MessageFns<UserContext> = {
     }
     if (message.trace_id !== undefined) {
       obj.traceId = message.trace_id;
+    }
+    if (message.parent_context !== undefined) {
+      obj.parentContext = ParentContext.toJSON(message.parent_context);
+    }
+    if (message.student_context !== undefined) {
+      obj.studentContext = StudentContext.toJSON(message.student_context);
+    }
+    if (message.teacher_context !== undefined) {
+      obj.teacherContext = TeacherContext.toJSON(message.teacher_context);
     }
     return obj;
   },
@@ -424,13 +499,593 @@ export const UserContext: MessageFns<UserContext> = {
     message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
-    message.roles = object.roles?.map((e) => e) || [];
-    message.parent_family_ids = object.parent_family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
-    message.parent_student_ids = object.parent_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.full_name = object.full_name ?? undefined;
     message.firebase_token = object.firebase_token ?? undefined;
     message.exp = object.exp ?? undefined;
     message.trace_id = object.trace_id ?? undefined;
+    message.parent_context = (object.parent_context !== undefined && object.parent_context !== null)
+      ? ParentContext.fromPartial(object.parent_context)
+      : undefined;
+    message.student_context = (object.student_context !== undefined && object.student_context !== null)
+      ? StudentContext.fromPartial(object.student_context)
+      : undefined;
+    message.teacher_context = (object.teacher_context !== undefined && object.teacher_context !== null)
+      ? TeacherContext.fromPartial(object.teacher_context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseHomeroomSubjectId(): HomeroomSubjectId {
+  return { homeroom_id: undefined, subject_id: undefined };
+}
+
+export const HomeroomSubjectId: MessageFns<HomeroomSubjectId> = {
+  encode(message: HomeroomSubjectId, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(10).fork()).join();
+    }
+    if (message.subject_id !== undefined) {
+      ObjectId.encode(message.subject_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HomeroomSubjectId {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHomeroomSubjectId();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.subject_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HomeroomSubjectId {
+    return {
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      subject_id: isSet(object.subjectId) ? ObjectId.fromJSON(object.subjectId) : undefined,
+    };
+  },
+
+  toJSON(message: HomeroomSubjectId): unknown {
+    const obj: any = {};
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
+    }
+    if (message.subject_id !== undefined) {
+      obj.subjectId = ObjectId.toJSON(message.subject_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HomeroomSubjectId>, I>>(base?: I): HomeroomSubjectId {
+    return HomeroomSubjectId.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HomeroomSubjectId>, I>>(object: I): HomeroomSubjectId {
+    const message = createBaseHomeroomSubjectId();
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
+      : undefined;
+    message.subject_id = (object.subject_id !== undefined && object.subject_id !== null)
+      ? ObjectId.fromPartial(object.subject_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseTeacherContext(): TeacherContext {
+  return {
+    active_school_year_id: undefined,
+    student_ids: [],
+    course_ids: [],
+    homeroom_ids: [],
+    homerooms_subject_ids: [],
+    roles: [],
+  };
+}
+
+export const TeacherContext: MessageFns<TeacherContext> = {
+  encode(message: TeacherContext, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.course_ids) {
+      ObjectId.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.homeroom_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.homerooms_subject_ids) {
+      HomeroomSubjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    writer.uint32(50).fork();
+    for (const v of message.roles) {
+      writer.int32(userRoleToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TeacherContext {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTeacherContext();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.homeroom_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.homerooms_subject_ids.push(HomeroomSubjectId.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag === 48) {
+            message.roles.push(userRoleFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 50) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.roles.push(userRoleFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TeacherContext {
+    return {
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      course_ids: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+        ? object.homeroomIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      homerooms_subject_ids: globalThis.Array.isArray(object?.homeroomsSubjectIds)
+        ? object.homeroomsSubjectIds.map((e: any) => HomeroomSubjectId.fromJSON(e))
+        : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: TeacherContext): unknown {
+    const obj: any = {};
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.course_ids?.length) {
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.homeroom_ids?.length) {
+      obj.homeroomIds = message.homeroom_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.homerooms_subject_ids?.length) {
+      obj.homeroomsSubjectIds = message.homerooms_subject_ids.map((e) => HomeroomSubjectId.toJSON(e));
+    }
+    if (message.roles?.length) {
+      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TeacherContext>, I>>(base?: I): TeacherContext {
+    return TeacherContext.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TeacherContext>, I>>(object: I): TeacherContext {
+    const message = createBaseTeacherContext();
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.homerooms_subject_ids = object.homerooms_subject_ids?.map((e) => HomeroomSubjectId.fromPartial(e)) || [];
+    message.roles = object.roles?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseStudentContext(): StudentContext {
+  return {
+    active_school_year_id: undefined,
+    parent_ids: [],
+    family_ids: [],
+    course_ids: [],
+    homeroom_ids: [],
+    teacher_basic_info_ids: [],
+  };
+}
+
+export const StudentContext: MessageFns<StudentContext> = {
+  encode(message: StudentContext, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.parent_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.family_ids) {
+      ObjectId.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.course_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.homeroom_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.teacher_basic_info_ids) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StudentContext {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStudentContext();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.parent_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.family_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.homeroom_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.teacher_basic_info_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StudentContext {
+    return {
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      parent_ids: globalThis.Array.isArray(object?.parentIds)
+        ? object.parentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      family_ids: globalThis.Array.isArray(object?.familyIds)
+        ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      course_ids: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+        ? object.homeroomIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
+        ? object.teacherBasicInfoIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StudentContext): unknown {
+    const obj: any = {};
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.parent_ids?.length) {
+      obj.parentIds = message.parent_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.family_ids?.length) {
+      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.course_ids?.length) {
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.homeroom_ids?.length) {
+      obj.homeroomIds = message.homeroom_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.teacher_basic_info_ids?.length) {
+      obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StudentContext>, I>>(base?: I): StudentContext {
+    return StudentContext.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StudentContext>, I>>(object: I): StudentContext {
+    const message = createBaseStudentContext();
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.parent_ids = object.parent_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.family_ids = object.family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseParentContext(): ParentContext {
+  return {
+    active_school_year_id: undefined,
+    student_ids: [],
+    parent_ids: [],
+    family_ids: [],
+    course_ids: [],
+    homeroom_ids: [],
+    teacher_basic_info_ids: [],
+  };
+}
+
+export const ParentContext: MessageFns<ParentContext> = {
+  encode(message: ParentContext, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.parent_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.family_ids) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.course_ids) {
+      ObjectId.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.homeroom_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.teacher_basic_info_ids) {
+      ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ParentContext {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParentContext();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.parent_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.family_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.homeroom_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.teacher_basic_info_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ParentContext {
+    return {
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      parent_ids: globalThis.Array.isArray(object?.parentIds)
+        ? object.parentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      family_ids: globalThis.Array.isArray(object?.familyIds)
+        ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      course_ids: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+        ? object.homeroomIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
+        ? object.teacherBasicInfoIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ParentContext): unknown {
+    const obj: any = {};
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.parent_ids?.length) {
+      obj.parentIds = message.parent_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.family_ids?.length) {
+      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.course_ids?.length) {
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.homeroom_ids?.length) {
+      obj.homeroomIds = message.homeroom_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.teacher_basic_info_ids?.length) {
+      obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ParentContext>, I>>(base?: I): ParentContext {
+    return ParentContext.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ParentContext>, I>>(object: I): ParentContext {
+    const message = createBaseParentContext();
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.parent_ids = object.parent_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.family_ids = object.family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

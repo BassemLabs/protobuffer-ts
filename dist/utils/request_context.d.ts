@@ -18,22 +18,67 @@ export interface RequestContext {
     user_context: UserContext | undefined;
     is_testing?: boolean | undefined;
     service_based_context_name?: ServiceContext | undefined;
+    /** bypass permissions within the organization in the context */
+    org_super_permission?: boolean | undefined;
+    /** bypass permissions across organizations (dangerous; use sparingly) */
+    global_super_permission?: boolean | undefined;
 }
 export interface UserContext {
     user_id: ObjectId | undefined;
     user_type?: UserType | undefined;
     user_auth_token?: string | undefined;
     organization_id?: ObjectId | undefined;
-    roles: UserRole[];
-    parent_family_ids: ObjectId[];
-    parent_student_ids: ObjectId[];
     full_name?: string | undefined;
     firebase_token?: string | undefined;
     exp?: number | undefined;
     trace_id?: string | undefined;
+    /** Exactly one of these contexts should be set based on user_type. */
+    parent_context?: ParentContext | undefined;
+    student_context?: StudentContext | undefined;
+    teacher_context?: TeacherContext | undefined;
+}
+/**
+ * A homeroom-subject relationship for teacher context.
+ * `subject_id` is the class identifier for the linked subject scope (typically a course id).
+ */
+export interface HomeroomSubjectId {
+    homeroom_id: ObjectId | undefined;
+    subject_id: ObjectId | undefined;
+}
+export interface TeacherContext {
+    /** Cached org active school year to avoid repeated org fetches. */
+    active_school_year_id: ObjectId | undefined;
+    student_ids: ObjectId[];
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
+    homerooms_subject_ids: HomeroomSubjectId[];
+    roles: UserRole[];
+}
+export interface StudentContext {
+    /** Cached org active school year to avoid repeated org fetches. */
+    active_school_year_id: ObjectId | undefined;
+    parent_ids: ObjectId[];
+    family_ids: ObjectId[];
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
+    teacher_basic_info_ids: ObjectId[];
+}
+export interface ParentContext {
+    /** Cached org active school year to avoid repeated org fetches. */
+    active_school_year_id: ObjectId | undefined;
+    student_ids: ObjectId[];
+    parent_ids: ObjectId[];
+    family_ids: ObjectId[];
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
+    teacher_basic_info_ids: ObjectId[];
 }
 export declare const RequestContext: MessageFns<RequestContext>;
 export declare const UserContext: MessageFns<UserContext>;
+export declare const HomeroomSubjectId: MessageFns<HomeroomSubjectId>;
+export declare const TeacherContext: MessageFns<TeacherContext>;
+export declare const StudentContext: MessageFns<StudentContext>;
+export declare const ParentContext: MessageFns<ParentContext>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

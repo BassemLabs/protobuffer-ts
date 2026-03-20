@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: utils/request_context.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserContext = exports.RequestContext = exports.ServiceContext = exports.protobufPackage = void 0;
+exports.ParentContext = exports.StudentContext = exports.TeacherContext = exports.HomeroomSubjectId = exports.UserContext = exports.RequestContext = exports.ServiceContext = exports.protobufPackage = void 0;
 exports.serviceContextFromJSON = serviceContextFromJSON;
 exports.serviceContextToJSON = serviceContextToJSON;
 exports.serviceContextToNumber = serviceContextToNumber;
@@ -82,7 +82,13 @@ function serviceContextToNumber(object) {
     }
 }
 function createBaseRequestContext() {
-    return { user_context: undefined, is_testing: undefined, service_based_context_name: undefined };
+    return {
+        user_context: undefined,
+        is_testing: undefined,
+        service_based_context_name: undefined,
+        org_super_permission: undefined,
+        global_super_permission: undefined,
+    };
 }
 exports.RequestContext = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -94,6 +100,12 @@ exports.RequestContext = {
         }
         if (message.service_based_context_name !== undefined) {
             writer.uint32(24).int32(serviceContextToNumber(message.service_based_context_name));
+        }
+        if (message.org_super_permission !== undefined) {
+            writer.uint32(32).bool(message.org_super_permission);
+        }
+        if (message.global_super_permission !== undefined) {
+            writer.uint32(40).bool(message.global_super_permission);
         }
         return writer;
     },
@@ -122,6 +134,18 @@ exports.RequestContext = {
                     }
                     message.service_based_context_name = serviceContextFromJSON(reader.int32());
                     continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.org_super_permission = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.global_super_permission = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -137,6 +161,12 @@ exports.RequestContext = {
             service_based_context_name: isSet(object.serviceBasedContextName)
                 ? serviceContextFromJSON(object.serviceBasedContextName)
                 : undefined,
+            org_super_permission: isSet(object.orgSuperPermission)
+                ? globalThis.Boolean(object.orgSuperPermission)
+                : undefined,
+            global_super_permission: isSet(object.globalSuperPermission)
+                ? globalThis.Boolean(object.globalSuperPermission)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -150,6 +180,12 @@ exports.RequestContext = {
         if (message.service_based_context_name !== undefined) {
             obj.serviceBasedContextName = serviceContextToJSON(message.service_based_context_name);
         }
+        if (message.org_super_permission !== undefined) {
+            obj.orgSuperPermission = message.org_super_permission;
+        }
+        if (message.global_super_permission !== undefined) {
+            obj.globalSuperPermission = message.global_super_permission;
+        }
         return obj;
     },
     create(base) {
@@ -162,6 +198,8 @@ exports.RequestContext = {
             : undefined;
         message.is_testing = object.is_testing ?? undefined;
         message.service_based_context_name = object.service_based_context_name ?? undefined;
+        message.org_super_permission = object.org_super_permission ?? undefined;
+        message.global_super_permission = object.global_super_permission ?? undefined;
         return message;
     },
 };
@@ -171,13 +209,13 @@ function createBaseUserContext() {
         user_type: undefined,
         user_auth_token: undefined,
         organization_id: undefined,
-        roles: [],
-        parent_family_ids: [],
-        parent_student_ids: [],
         full_name: undefined,
         firebase_token: undefined,
         exp: undefined,
         trace_id: undefined,
+        parent_context: undefined,
+        student_context: undefined,
+        teacher_context: undefined,
     };
 }
 exports.UserContext = {
@@ -194,17 +232,6 @@ exports.UserContext = {
         if (message.organization_id !== undefined) {
             object_id_1.ObjectId.encode(message.organization_id, writer.uint32(34).fork()).join();
         }
-        writer.uint32(42).fork();
-        for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
-        }
-        writer.join();
-        for (const v of message.parent_family_ids) {
-            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
-        }
-        for (const v of message.parent_student_ids) {
-            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
-        }
         if (message.full_name !== undefined) {
             writer.uint32(66).string(message.full_name);
         }
@@ -216,6 +243,15 @@ exports.UserContext = {
         }
         if (message.trace_id !== undefined) {
             writer.uint32(90).string(message.trace_id);
+        }
+        if (message.parent_context !== undefined) {
+            exports.ParentContext.encode(message.parent_context, writer.uint32(162).fork()).join();
+        }
+        if (message.student_context !== undefined) {
+            exports.StudentContext.encode(message.student_context, writer.uint32(170).fork()).join();
+        }
+        if (message.teacher_context !== undefined) {
+            exports.TeacherContext.encode(message.teacher_context, writer.uint32(178).fork()).join();
         }
         return writer;
     },
@@ -250,31 +286,6 @@ exports.UserContext = {
                     }
                     message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
-                case 5:
-                    if (tag === 40) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
-                        continue;
-                    }
-                    if (tag === 42) {
-                        const end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
-                        }
-                        continue;
-                    }
-                    break;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.parent_family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
-                    continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.parent_student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
-                    continue;
                 case 8:
                     if (tag !== 66) {
                         break;
@@ -299,6 +310,24 @@ exports.UserContext = {
                     }
                     message.trace_id = reader.string();
                     continue;
+                case 20:
+                    if (tag !== 162) {
+                        break;
+                    }
+                    message.parent_context = exports.ParentContext.decode(reader, reader.uint32());
+                    continue;
+                case 21:
+                    if (tag !== 170) {
+                        break;
+                    }
+                    message.student_context = exports.StudentContext.decode(reader, reader.uint32());
+                    continue;
+                case 22:
+                    if (tag !== 178) {
+                        break;
+                    }
+                    message.teacher_context = exports.TeacherContext.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -313,17 +342,13 @@ exports.UserContext = {
             user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
             user_auth_token: isSet(object.userAuthToken) ? globalThis.String(object.userAuthToken) : undefined,
             organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
-            parent_family_ids: globalThis.Array.isArray(object?.parentFamilyIds)
-                ? object.parentFamilyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
-            parent_student_ids: globalThis.Array.isArray(object?.parentStudentIds)
-                ? object.parentStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
             full_name: isSet(object.fullName) ? globalThis.String(object.fullName) : undefined,
             firebase_token: isSet(object.firebaseToken) ? globalThis.String(object.firebaseToken) : undefined,
             exp: isSet(object.exp) ? globalThis.Number(object.exp) : undefined,
             trace_id: isSet(object.traceId) ? globalThis.String(object.traceId) : undefined,
+            parent_context: isSet(object.parentContext) ? exports.ParentContext.fromJSON(object.parentContext) : undefined,
+            student_context: isSet(object.studentContext) ? exports.StudentContext.fromJSON(object.studentContext) : undefined,
+            teacher_context: isSet(object.teacherContext) ? exports.TeacherContext.fromJSON(object.teacherContext) : undefined,
         };
     },
     toJSON(message) {
@@ -340,15 +365,6 @@ exports.UserContext = {
         if (message.organization_id !== undefined) {
             obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
         }
-        if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
-        }
-        if (message.parent_family_ids?.length) {
-            obj.parentFamilyIds = message.parent_family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
-        }
-        if (message.parent_student_ids?.length) {
-            obj.parentStudentIds = message.parent_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
-        }
         if (message.full_name !== undefined) {
             obj.fullName = message.full_name;
         }
@@ -360,6 +376,15 @@ exports.UserContext = {
         }
         if (message.trace_id !== undefined) {
             obj.traceId = message.trace_id;
+        }
+        if (message.parent_context !== undefined) {
+            obj.parentContext = exports.ParentContext.toJSON(message.parent_context);
+        }
+        if (message.student_context !== undefined) {
+            obj.studentContext = exports.StudentContext.toJSON(message.student_context);
+        }
+        if (message.teacher_context !== undefined) {
+            obj.teacherContext = exports.TeacherContext.toJSON(message.teacher_context);
         }
         return obj;
     },
@@ -376,13 +401,545 @@ exports.UserContext = {
         message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
-        message.roles = object.roles?.map((e) => e) || [];
-        message.parent_family_ids = object.parent_family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
-        message.parent_student_ids = object.parent_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.full_name = object.full_name ?? undefined;
         message.firebase_token = object.firebase_token ?? undefined;
         message.exp = object.exp ?? undefined;
         message.trace_id = object.trace_id ?? undefined;
+        message.parent_context = (object.parent_context !== undefined && object.parent_context !== null)
+            ? exports.ParentContext.fromPartial(object.parent_context)
+            : undefined;
+        message.student_context = (object.student_context !== undefined && object.student_context !== null)
+            ? exports.StudentContext.fromPartial(object.student_context)
+            : undefined;
+        message.teacher_context = (object.teacher_context !== undefined && object.teacher_context !== null)
+            ? exports.TeacherContext.fromPartial(object.teacher_context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseHomeroomSubjectId() {
+    return { homeroom_id: undefined, subject_id: undefined };
+}
+exports.HomeroomSubjectId = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(10).fork()).join();
+        }
+        if (message.subject_id !== undefined) {
+            object_id_1.ObjectId.encode(message.subject_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseHomeroomSubjectId();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.subject_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            subject_id: isSet(object.subjectId) ? object_id_1.ObjectId.fromJSON(object.subjectId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        if (message.subject_id !== undefined) {
+            obj.subjectId = object_id_1.ObjectId.toJSON(message.subject_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.HomeroomSubjectId.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseHomeroomSubjectId();
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
+            : undefined;
+        message.subject_id = (object.subject_id !== undefined && object.subject_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.subject_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseTeacherContext() {
+    return {
+        active_school_year_id: undefined,
+        student_ids: [],
+        course_ids: [],
+        homeroom_ids: [],
+        homerooms_subject_ids: [],
+        roles: [],
+    };
+}
+exports.TeacherContext = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.active_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.active_school_year_id, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.homerooms_subject_ids) {
+            exports.HomeroomSubjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        writer.uint32(50).fork();
+        for (const v of message.roles) {
+            writer.int32((0, user_role_1.userRoleToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTeacherContext();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.active_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.homerooms_subject_ids.push(exports.HomeroomSubjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag === 48) {
+                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 50) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            active_school_year_id: isSet(object.activeSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.activeSchoolYearId)
+                : undefined,
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homerooms_subject_ids: globalThis.Array.isArray(object?.homeroomsSubjectIds)
+                ? object.homeroomsSubjectIds.map((e) => exports.HomeroomSubjectId.fromJSON(e))
+                : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.active_school_year_id !== undefined) {
+            obj.activeSchoolYearId = object_id_1.ObjectId.toJSON(message.active_school_year_id);
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homerooms_subject_ids?.length) {
+            obj.homeroomsSubjectIds = message.homerooms_subject_ids.map((e) => exports.HomeroomSubjectId.toJSON(e));
+        }
+        if (message.roles?.length) {
+            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TeacherContext.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTeacherContext();
+        message.active_school_year_id =
+            (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.active_school_year_id)
+                : undefined;
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homerooms_subject_ids = object.homerooms_subject_ids?.map((e) => exports.HomeroomSubjectId.fromPartial(e)) || [];
+        message.roles = object.roles?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseStudentContext() {
+    return {
+        active_school_year_id: undefined,
+        parent_ids: [],
+        family_ids: [],
+        course_ids: [],
+        homeroom_ids: [],
+        teacher_basic_info_ids: [],
+    };
+}
+exports.StudentContext = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.active_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.active_school_year_id, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.parent_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.family_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.teacher_basic_info_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStudentContext();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.active_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.parent_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.teacher_basic_info_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            active_school_year_id: isSet(object.activeSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.activeSchoolYearId)
+                : undefined,
+            parent_ids: globalThis.Array.isArray(object?.parentIds)
+                ? object.parentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            family_ids: globalThis.Array.isArray(object?.familyIds)
+                ? object.familyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
+                ? object.teacherBasicInfoIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.active_school_year_id !== undefined) {
+            obj.activeSchoolYearId = object_id_1.ObjectId.toJSON(message.active_school_year_id);
+        }
+        if (message.parent_ids?.length) {
+            obj.parentIds = message.parent_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.family_ids?.length) {
+            obj.familyIds = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.teacher_basic_info_ids?.length) {
+            obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StudentContext.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStudentContext();
+        message.active_school_year_id =
+            (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.active_school_year_id)
+                : undefined;
+        message.parent_ids = object.parent_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.family_ids = object.family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseParentContext() {
+    return {
+        active_school_year_id: undefined,
+        student_ids: [],
+        parent_ids: [],
+        family_ids: [],
+        course_ids: [],
+        homeroom_ids: [],
+        teacher_basic_info_ids: [],
+    };
+}
+exports.ParentContext = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.active_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.active_school_year_id, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.parent_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.family_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.teacher_basic_info_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentContext();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.active_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.parent_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.teacher_basic_info_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            active_school_year_id: isSet(object.activeSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.activeSchoolYearId)
+                : undefined,
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            parent_ids: globalThis.Array.isArray(object?.parentIds)
+                ? object.parentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            family_ids: globalThis.Array.isArray(object?.familyIds)
+                ? object.familyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
+                ? object.teacherBasicInfoIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.active_school_year_id !== undefined) {
+            obj.activeSchoolYearId = object_id_1.ObjectId.toJSON(message.active_school_year_id);
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.parent_ids?.length) {
+            obj.parentIds = message.parent_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.family_ids?.length) {
+            obj.familyIds = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.teacher_basic_info_ids?.length) {
+            obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentContext.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentContext();
+        message.active_school_year_id =
+            (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.active_school_year_id)
+                : undefined;
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.parent_ids = object.parent_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.family_ids = object.family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
