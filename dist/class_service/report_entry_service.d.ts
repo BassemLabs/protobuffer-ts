@@ -48,6 +48,30 @@ export interface GetParentPublishedReportSummariesRequest {
 export interface GetParentPublishedReportSummariesResponse {
     summaries: ParentStudentReportSummary[];
 }
+export interface GetPrincipalDashboardTeacherActivitySummaryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    semester_id?: ObjectId | undefined;
+    report_type?: ReportType | undefined;
+}
+export interface PrincipalDashboardTeacherPendingClass {
+    class_type?: ReportPublishClassType | undefined;
+    class_id: ObjectId | undefined;
+    class_name?: string | undefined;
+    course_code?: string | undefined;
+    grades: string[];
+}
+export interface PrincipalDashboardTeacherActivityRow {
+    teacher_id: ObjectId | undefined;
+    teacher_name?: string | undefined;
+    markbook_complete?: boolean | undefined;
+    reports_submitted?: boolean | undefined;
+    pending_markbook_classes: PrincipalDashboardTeacherPendingClass[];
+    pending_report_classes: PrincipalDashboardTeacherPendingClass[];
+}
+export interface GetPrincipalDashboardTeacherActivitySummaryResponse {
+    teachers: PrincipalDashboardTeacherActivityRow[];
+}
 export interface GetReportEntriesQueueRequest {
     context: RequestContext | undefined;
     teacher_id?: ObjectId | undefined;
@@ -223,6 +247,10 @@ export declare const GetStudentReportEntriesForHomeroomRequest: MessageFns<GetSt
 export declare const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPublishedReportEntriesRequest>;
 export declare const GetParentPublishedReportSummariesRequest: MessageFns<GetParentPublishedReportSummariesRequest>;
 export declare const GetParentPublishedReportSummariesResponse: MessageFns<GetParentPublishedReportSummariesResponse>;
+export declare const GetPrincipalDashboardTeacherActivitySummaryRequest: MessageFns<GetPrincipalDashboardTeacherActivitySummaryRequest>;
+export declare const PrincipalDashboardTeacherPendingClass: MessageFns<PrincipalDashboardTeacherPendingClass>;
+export declare const PrincipalDashboardTeacherActivityRow: MessageFns<PrincipalDashboardTeacherActivityRow>;
+export declare const GetPrincipalDashboardTeacherActivitySummaryResponse: MessageFns<GetPrincipalDashboardTeacherActivitySummaryResponse>;
 export declare const GetReportEntriesQueueRequest: MessageFns<GetReportEntriesQueueRequest>;
 export declare const ReportStatusCounters: MessageFns<ReportStatusCounters>;
 export declare const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass>;

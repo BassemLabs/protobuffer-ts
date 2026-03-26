@@ -226,6 +226,13 @@ export interface StudentStatusCount {
     status?: StudentStatus | undefined;
     count?: number | undefined;
 }
+export interface GetNewStudentsThisYearCountRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetNewStudentsThisYearCountResponse {
+    count?: number | undefined;
+}
 export interface GetFilteredStudentsListRequest {
     context: RequestContext | undefined;
     per_page?: number | undefined;
@@ -327,6 +334,8 @@ export declare const GetStudentsByIdsResponse: MessageFns<GetStudentsByIdsRespon
 export declare const GetStudentsStatusCountsRequest: MessageFns<GetStudentsStatusCountsRequest>;
 export declare const GetStudentsStatusCountsResponse: MessageFns<GetStudentsStatusCountsResponse>;
 export declare const StudentStatusCount: MessageFns<StudentStatusCount>;
+export declare const GetNewStudentsThisYearCountRequest: MessageFns<GetNewStudentsThisYearCountRequest>;
+export declare const GetNewStudentsThisYearCountResponse: MessageFns<GetNewStudentsThisYearCountResponse>;
 export declare const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListRequest>;
 export declare const GetFilteredStudentsListResponse: MessageFns<GetFilteredStudentsListResponse>;
 export declare const GetStudentSchoolYearsRequest: MessageFns<GetStudentSchoolYearsRequest>;

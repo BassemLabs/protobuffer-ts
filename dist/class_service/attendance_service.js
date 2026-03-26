@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: class_service/attendance_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateLateDismissalDateRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.ClassRef = exports.AttendanceResponse = exports.AttendanceCompletionStatus = exports.TimeType = exports.protobufPackage = void 0;
+exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateLateDismissalDateRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.ClassRef = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
+exports.principalDashboardAttendanceScopeTypeFromJSON = principalDashboardAttendanceScopeTypeFromJSON;
+exports.principalDashboardAttendanceScopeTypeToJSON = principalDashboardAttendanceScopeTypeToJSON;
+exports.principalDashboardAttendanceScopeTypeToNumber = principalDashboardAttendanceScopeTypeToNumber;
 exports.timeTypeFromJSON = timeTypeFromJSON;
 exports.timeTypeToJSON = timeTypeToJSON;
 exports.timeTypeToNumber = timeTypeToNumber;
@@ -24,6 +27,48 @@ const attendance_1 = require("./attendance");
 const course_1 = require("./course");
 const homeroom_1 = require("./homeroom");
 exports.protobufPackage = "class_service.attendance_service";
+var PrincipalDashboardAttendanceScopeType;
+(function (PrincipalDashboardAttendanceScopeType) {
+    PrincipalDashboardAttendanceScopeType["PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM"] = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM";
+    PrincipalDashboardAttendanceScopeType["PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE"] = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE";
+    PrincipalDashboardAttendanceScopeType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(PrincipalDashboardAttendanceScopeType || (exports.PrincipalDashboardAttendanceScopeType = PrincipalDashboardAttendanceScopeType = {}));
+function principalDashboardAttendanceScopeTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM":
+            return PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM;
+        case 1:
+        case "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE":
+            return PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return PrincipalDashboardAttendanceScopeType.UNRECOGNIZED;
+    }
+}
+function principalDashboardAttendanceScopeTypeToJSON(object) {
+    switch (object) {
+        case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM:
+            return "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM";
+        case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE:
+            return "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE";
+        case PrincipalDashboardAttendanceScopeType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function principalDashboardAttendanceScopeTypeToNumber(object) {
+    switch (object) {
+        case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM:
+            return 0;
+        case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE:
+            return 1;
+        case PrincipalDashboardAttendanceScopeType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 var TimeType;
 (function (TimeType) {
     TimeType["SignIn"] = "SignIn";
@@ -116,6 +161,638 @@ function attendanceCompletionStatusToNumber(object) {
             return -1;
     }
 }
+function createBaseGetPrincipalDashboardAttendanceSummaryRequest() {
+    return { context: undefined, school_year_id: undefined, as_of_date: undefined, semester_id: undefined };
+}
+exports.GetPrincipalDashboardAttendanceSummaryRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.as_of_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.as_of_date), writer.uint32(26).fork()).join();
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPrincipalDashboardAttendanceSummaryRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.as_of_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            as_of_date: isSet(object.asOfDate) ? fromJsonTimestamp(object.asOfDate) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.as_of_date !== undefined) {
+            obj.asOfDate = message.as_of_date.toISOString();
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPrincipalDashboardAttendanceSummaryRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPrincipalDashboardAttendanceSummaryRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.as_of_date = object.as_of_date ?? undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        return message;
+    },
+};
+function createBasePrincipalDashboardAttendanceTrendPoint() {
+    return { week_start_date: undefined, attendance_pct: undefined };
+}
+exports.PrincipalDashboardAttendanceTrendPoint = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.week_start_date !== undefined) {
+            writer.uint32(10).string(message.week_start_date);
+        }
+        if (message.attendance_pct !== undefined) {
+            writer.uint32(17).double(message.attendance_pct);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePrincipalDashboardAttendanceTrendPoint();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.week_start_date = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 17) {
+                        break;
+                    }
+                    message.attendance_pct = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            week_start_date: isSet(object.weekStartDate) ? globalThis.String(object.weekStartDate) : undefined,
+            attendance_pct: isSet(object.attendancePct) ? globalThis.Number(object.attendancePct) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.week_start_date !== undefined) {
+            obj.weekStartDate = message.week_start_date;
+        }
+        if (message.attendance_pct !== undefined) {
+            obj.attendancePct = message.attendance_pct;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PrincipalDashboardAttendanceTrendPoint.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePrincipalDashboardAttendanceTrendPoint();
+        message.week_start_date = object.week_start_date ?? undefined;
+        message.attendance_pct = object.attendance_pct ?? undefined;
+        return message;
+    },
+};
+function createBasePrincipalDashboardAttendanceTodayRow() {
+    return {
+        row_type: undefined,
+        class_id: undefined,
+        class_name: undefined,
+        course_code: undefined,
+        teacher_names: [],
+        expected_count: undefined,
+        marked_count: undefined,
+    };
+}
+exports.PrincipalDashboardAttendanceTodayRow = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.row_type !== undefined) {
+            writer.uint32(8).int32(principalDashboardAttendanceScopeTypeToNumber(message.row_type));
+        }
+        if (message.class_id !== undefined) {
+            object_id_1.ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
+        }
+        if (message.class_name !== undefined) {
+            writer.uint32(26).string(message.class_name);
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(34).string(message.course_code);
+        }
+        for (const v of message.teacher_names) {
+            writer.uint32(42).string(v);
+        }
+        if (message.expected_count !== undefined) {
+            writer.uint32(48).uint32(message.expected_count);
+        }
+        if (message.marked_count !== undefined) {
+            writer.uint32(56).uint32(message.marked_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePrincipalDashboardAttendanceTodayRow();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.row_type = principalDashboardAttendanceScopeTypeFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.class_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.class_name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.teacher_names.push(reader.string());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.expected_count = reader.uint32();
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.marked_count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            row_type: isSet(object.rowType) ? principalDashboardAttendanceScopeTypeFromJSON(object.rowType) : undefined,
+            class_id: isSet(object.classId) ? object_id_1.ObjectId.fromJSON(object.classId) : undefined,
+            class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+            teacher_names: globalThis.Array.isArray(object?.teacherNames)
+                ? object.teacherNames.map((e) => globalThis.String(e))
+                : [],
+            expected_count: isSet(object.expectedCount) ? globalThis.Number(object.expectedCount) : undefined,
+            marked_count: isSet(object.markedCount) ? globalThis.Number(object.markedCount) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.row_type !== undefined) {
+            obj.rowType = principalDashboardAttendanceScopeTypeToJSON(message.row_type);
+        }
+        if (message.class_id !== undefined) {
+            obj.classId = object_id_1.ObjectId.toJSON(message.class_id);
+        }
+        if (message.class_name !== undefined) {
+            obj.className = message.class_name;
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        if (message.teacher_names?.length) {
+            obj.teacherNames = message.teacher_names;
+        }
+        if (message.expected_count !== undefined) {
+            obj.expectedCount = Math.round(message.expected_count);
+        }
+        if (message.marked_count !== undefined) {
+            obj.markedCount = Math.round(message.marked_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PrincipalDashboardAttendanceTodayRow.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePrincipalDashboardAttendanceTodayRow();
+        message.row_type = object.row_type ?? undefined;
+        message.class_id = (object.class_id !== undefined && object.class_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.class_id)
+            : undefined;
+        message.class_name = object.class_name ?? undefined;
+        message.course_code = object.course_code ?? undefined;
+        message.teacher_names = object.teacher_names?.map((e) => e) || [];
+        message.expected_count = object.expected_count ?? undefined;
+        message.marked_count = object.marked_count ?? undefined;
+        return message;
+    },
+};
+function createBasePrincipalDashboardChronicAbsentee() {
+    return {
+        student_id: undefined,
+        student_name: undefined,
+        homeroom_id: undefined,
+        homeroom_name: undefined,
+        absences: undefined,
+        absence_pct: undefined,
+    };
+}
+exports.PrincipalDashboardChronicAbsentee = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+        }
+        if (message.student_name !== undefined) {
+            writer.uint32(18).string(message.student_name);
+        }
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(26).fork()).join();
+        }
+        if (message.homeroom_name !== undefined) {
+            writer.uint32(34).string(message.homeroom_name);
+        }
+        if (message.absences !== undefined) {
+            writer.uint32(40).uint32(message.absences);
+        }
+        if (message.absence_pct !== undefined) {
+            writer.uint32(49).double(message.absence_pct);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePrincipalDashboardChronicAbsentee();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.homeroom_name = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.absences = reader.uint32();
+                    continue;
+                case 6:
+                    if (tag !== 49) {
+                        break;
+                    }
+                    message.absence_pct = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            homeroom_name: isSet(object.homeroomName) ? globalThis.String(object.homeroomName) : undefined,
+            absences: isSet(object.absences) ? globalThis.Number(object.absences) : undefined,
+            absence_pct: isSet(object.absencePct) ? globalThis.Number(object.absencePct) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.student_name !== undefined) {
+            obj.studentName = message.student_name;
+        }
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        if (message.homeroom_name !== undefined) {
+            obj.homeroomName = message.homeroom_name;
+        }
+        if (message.absences !== undefined) {
+            obj.absences = Math.round(message.absences);
+        }
+        if (message.absence_pct !== undefined) {
+            obj.absencePct = message.absence_pct;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PrincipalDashboardChronicAbsentee.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePrincipalDashboardChronicAbsentee();
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.student_name = object.student_name ?? undefined;
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
+            : undefined;
+        message.homeroom_name = object.homeroom_name ?? undefined;
+        message.absences = object.absences ?? undefined;
+        message.absence_pct = object.absence_pct ?? undefined;
+        return message;
+    },
+};
+function createBaseGetPrincipalDashboardAttendanceSummaryResponse() {
+    return {
+        weekly_trend: [],
+        today_rows: [],
+        chronic_absentees: [],
+        completion_today_pct: undefined,
+        homerooms_total_today: undefined,
+        homerooms_filled_today: undefined,
+        courses_total_today: undefined,
+        courses_filled_today: undefined,
+        is_school_day_today: undefined,
+    };
+}
+exports.GetPrincipalDashboardAttendanceSummaryResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.weekly_trend) {
+            exports.PrincipalDashboardAttendanceTrendPoint.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.today_rows) {
+            exports.PrincipalDashboardAttendanceTodayRow.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.chronic_absentees) {
+            exports.PrincipalDashboardChronicAbsentee.encode(v, writer.uint32(26).fork()).join();
+        }
+        if (message.completion_today_pct !== undefined) {
+            writer.uint32(33).double(message.completion_today_pct);
+        }
+        if (message.homerooms_total_today !== undefined) {
+            writer.uint32(40).uint32(message.homerooms_total_today);
+        }
+        if (message.homerooms_filled_today !== undefined) {
+            writer.uint32(48).uint32(message.homerooms_filled_today);
+        }
+        if (message.courses_total_today !== undefined) {
+            writer.uint32(56).uint32(message.courses_total_today);
+        }
+        if (message.courses_filled_today !== undefined) {
+            writer.uint32(64).uint32(message.courses_filled_today);
+        }
+        if (message.is_school_day_today !== undefined) {
+            writer.uint32(72).bool(message.is_school_day_today);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPrincipalDashboardAttendanceSummaryResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.weekly_trend.push(exports.PrincipalDashboardAttendanceTrendPoint.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.today_rows.push(exports.PrincipalDashboardAttendanceTodayRow.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.chronic_absentees.push(exports.PrincipalDashboardChronicAbsentee.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 33) {
+                        break;
+                    }
+                    message.completion_today_pct = reader.double();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.homerooms_total_today = reader.uint32();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.homerooms_filled_today = reader.uint32();
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.courses_total_today = reader.uint32();
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.courses_filled_today = reader.uint32();
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.is_school_day_today = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            weekly_trend: globalThis.Array.isArray(object?.weeklyTrend)
+                ? object.weeklyTrend.map((e) => exports.PrincipalDashboardAttendanceTrendPoint.fromJSON(e))
+                : [],
+            today_rows: globalThis.Array.isArray(object?.todayRows)
+                ? object.todayRows.map((e) => exports.PrincipalDashboardAttendanceTodayRow.fromJSON(e))
+                : [],
+            chronic_absentees: globalThis.Array.isArray(object?.chronicAbsentees)
+                ? object.chronicAbsentees.map((e) => exports.PrincipalDashboardChronicAbsentee.fromJSON(e))
+                : [],
+            completion_today_pct: isSet(object.completionTodayPct) ? globalThis.Number(object.completionTodayPct) : undefined,
+            homerooms_total_today: isSet(object.homeroomsTotalToday)
+                ? globalThis.Number(object.homeroomsTotalToday)
+                : undefined,
+            homerooms_filled_today: isSet(object.homeroomsFilledToday)
+                ? globalThis.Number(object.homeroomsFilledToday)
+                : undefined,
+            courses_total_today: isSet(object.coursesTotalToday) ? globalThis.Number(object.coursesTotalToday) : undefined,
+            courses_filled_today: isSet(object.coursesFilledToday) ? globalThis.Number(object.coursesFilledToday) : undefined,
+            is_school_day_today: isSet(object.isSchoolDayToday) ? globalThis.Boolean(object.isSchoolDayToday) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.weekly_trend?.length) {
+            obj.weeklyTrend = message.weekly_trend.map((e) => exports.PrincipalDashboardAttendanceTrendPoint.toJSON(e));
+        }
+        if (message.today_rows?.length) {
+            obj.todayRows = message.today_rows.map((e) => exports.PrincipalDashboardAttendanceTodayRow.toJSON(e));
+        }
+        if (message.chronic_absentees?.length) {
+            obj.chronicAbsentees = message.chronic_absentees.map((e) => exports.PrincipalDashboardChronicAbsentee.toJSON(e));
+        }
+        if (message.completion_today_pct !== undefined) {
+            obj.completionTodayPct = message.completion_today_pct;
+        }
+        if (message.homerooms_total_today !== undefined) {
+            obj.homeroomsTotalToday = Math.round(message.homerooms_total_today);
+        }
+        if (message.homerooms_filled_today !== undefined) {
+            obj.homeroomsFilledToday = Math.round(message.homerooms_filled_today);
+        }
+        if (message.courses_total_today !== undefined) {
+            obj.coursesTotalToday = Math.round(message.courses_total_today);
+        }
+        if (message.courses_filled_today !== undefined) {
+            obj.coursesFilledToday = Math.round(message.courses_filled_today);
+        }
+        if (message.is_school_day_today !== undefined) {
+            obj.isSchoolDayToday = message.is_school_day_today;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPrincipalDashboardAttendanceSummaryResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPrincipalDashboardAttendanceSummaryResponse();
+        message.weekly_trend = object.weekly_trend?.map((e) => exports.PrincipalDashboardAttendanceTrendPoint.fromPartial(e)) || [];
+        message.today_rows = object.today_rows?.map((e) => exports.PrincipalDashboardAttendanceTodayRow.fromPartial(e)) || [];
+        message.chronic_absentees =
+            object.chronic_absentees?.map((e) => exports.PrincipalDashboardChronicAbsentee.fromPartial(e)) || [];
+        message.completion_today_pct = object.completion_today_pct ?? undefined;
+        message.homerooms_total_today = object.homerooms_total_today ?? undefined;
+        message.homerooms_filled_today = object.homerooms_filled_today ?? undefined;
+        message.courses_total_today = object.courses_total_today ?? undefined;
+        message.courses_filled_today = object.courses_filled_today ?? undefined;
+        message.is_school_day_today = object.is_school_day_today ?? undefined;
+        return message;
+    },
+};
 function createBaseAttendanceResponse() {
     return { attendance: [] };
 }

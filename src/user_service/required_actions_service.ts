@@ -9,6 +9,16 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { ActionRequiredByParents } from "./action_required_by_parents";
+import {
+  StudentGrade,
+  studentGradeFromJSON,
+  studentGradeToJSON,
+  studentGradeToNumber,
+  StudentStatus,
+  studentStatusFromJSON,
+  studentStatusToJSON,
+  studentStatusToNumber,
+} from "./student";
 
 export const protobufPackage = "user_service";
 
@@ -71,6 +81,23 @@ export interface WithdrawReregistrationStudentRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
   school_year_id: ObjectId | undefined;
+}
+
+export interface GetAdminActionableOnboardingStudentsRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface AdminActionableOnboardingStudent {
+  student_id: ObjectId | undefined;
+  student_name?: string | undefined;
+  status?: StudentStatus | undefined;
+  grade?: StudentGrade | undefined;
+  family_id?: ObjectId | undefined;
+}
+
+export interface GetAdminActionableOnboardingStudentsResponse {
+  students: AdminActionableOnboardingStudent[];
 }
 
 function createBaseGetAdmittedStudentsActionsOverviewRequest(): GetAdmittedStudentsActionsOverviewRequest {
@@ -1029,6 +1056,286 @@ export const WithdrawReregistrationStudentRequest: MessageFns<WithdrawReregistra
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAdminActionableOnboardingStudentsRequest(): GetAdminActionableOnboardingStudentsRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetAdminActionableOnboardingStudentsRequest: MessageFns<GetAdminActionableOnboardingStudentsRequest> = {
+  encode(
+    message: GetAdminActionableOnboardingStudentsRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAdminActionableOnboardingStudentsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAdminActionableOnboardingStudentsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAdminActionableOnboardingStudentsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetAdminActionableOnboardingStudentsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAdminActionableOnboardingStudentsRequest>, I>>(
+    base?: I,
+  ): GetAdminActionableOnboardingStudentsRequest {
+    return GetAdminActionableOnboardingStudentsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAdminActionableOnboardingStudentsRequest>, I>>(
+    object: I,
+  ): GetAdminActionableOnboardingStudentsRequest {
+    const message = createBaseGetAdminActionableOnboardingStudentsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseAdminActionableOnboardingStudent(): AdminActionableOnboardingStudent {
+  return { student_id: undefined, student_name: undefined, status: undefined, grade: undefined, family_id: undefined };
+}
+
+export const AdminActionableOnboardingStudent: MessageFns<AdminActionableOnboardingStudent> = {
+  encode(message: AdminActionableOnboardingStudent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.student_name !== undefined) {
+      writer.uint32(18).string(message.student_name);
+    }
+    if (message.status !== undefined) {
+      writer.uint32(24).int32(studentStatusToNumber(message.status));
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.family_id !== undefined) {
+      ObjectId.encode(message.family_id, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AdminActionableOnboardingStudent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAdminActionableOnboardingStudent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.status = studentStatusFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.family_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AdminActionableOnboardingStudent {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+      status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+    };
+  },
+
+  toJSON(message: AdminActionableOnboardingStudent): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.student_name !== undefined) {
+      obj.studentName = message.student_name;
+    }
+    if (message.status !== undefined) {
+      obj.status = studentStatusToJSON(message.status);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.family_id !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AdminActionableOnboardingStudent>, I>>(
+    base?: I,
+  ): AdminActionableOnboardingStudent {
+    return AdminActionableOnboardingStudent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AdminActionableOnboardingStudent>, I>>(
+    object: I,
+  ): AdminActionableOnboardingStudent {
+    const message = createBaseAdminActionableOnboardingStudent();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.student_name = object.student_name ?? undefined;
+    message.status = object.status ?? undefined;
+    message.grade = object.grade ?? undefined;
+    message.family_id = (object.family_id !== undefined && object.family_id !== null)
+      ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAdminActionableOnboardingStudentsResponse(): GetAdminActionableOnboardingStudentsResponse {
+  return { students: [] };
+}
+
+export const GetAdminActionableOnboardingStudentsResponse: MessageFns<GetAdminActionableOnboardingStudentsResponse> = {
+  encode(
+    message: GetAdminActionableOnboardingStudentsResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.students) {
+      AdminActionableOnboardingStudent.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAdminActionableOnboardingStudentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAdminActionableOnboardingStudentsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.students.push(AdminActionableOnboardingStudent.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAdminActionableOnboardingStudentsResponse {
+    return {
+      students: globalThis.Array.isArray(object?.students)
+        ? object.students.map((e: any) => AdminActionableOnboardingStudent.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetAdminActionableOnboardingStudentsResponse): unknown {
+    const obj: any = {};
+    if (message.students?.length) {
+      obj.students = message.students.map((e) => AdminActionableOnboardingStudent.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAdminActionableOnboardingStudentsResponse>, I>>(
+    base?: I,
+  ): GetAdminActionableOnboardingStudentsResponse {
+    return GetAdminActionableOnboardingStudentsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAdminActionableOnboardingStudentsResponse>, I>>(
+    object: I,
+  ): GetAdminActionableOnboardingStudentsResponse {
+    const message = createBaseGetAdminActionableOnboardingStudentsResponse();
+    message.students = object.students?.map((e) => AdminActionableOnboardingStudent.fromPartial(e)) || [];
     return message;
   },
 };

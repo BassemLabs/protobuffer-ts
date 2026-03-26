@@ -303,6 +303,15 @@ export interface StudentStatusCount {
   count?: number | undefined;
 }
 
+export interface GetNewStudentsThisYearCountRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface GetNewStudentsThisYearCountResponse {
+  count?: number | undefined;
+}
+
 export interface GetFilteredStudentsListRequest {
   context: RequestContext | undefined;
   per_page?: number | undefined;
@@ -4382,6 +4391,149 @@ export const StudentStatusCount: MessageFns<StudentStatusCount> = {
   fromPartial<I extends Exact<DeepPartial<StudentStatusCount>, I>>(object: I): StudentStatusCount {
     const message = createBaseStudentStatusCount();
     message.status = object.status ?? undefined;
+    message.count = object.count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetNewStudentsThisYearCountRequest(): GetNewStudentsThisYearCountRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetNewStudentsThisYearCountRequest: MessageFns<GetNewStudentsThisYearCountRequest> = {
+  encode(message: GetNewStudentsThisYearCountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetNewStudentsThisYearCountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetNewStudentsThisYearCountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetNewStudentsThisYearCountRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetNewStudentsThisYearCountRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetNewStudentsThisYearCountRequest>, I>>(
+    base?: I,
+  ): GetNewStudentsThisYearCountRequest {
+    return GetNewStudentsThisYearCountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetNewStudentsThisYearCountRequest>, I>>(
+    object: I,
+  ): GetNewStudentsThisYearCountRequest {
+    const message = createBaseGetNewStudentsThisYearCountRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetNewStudentsThisYearCountResponse(): GetNewStudentsThisYearCountResponse {
+  return { count: undefined };
+}
+
+export const GetNewStudentsThisYearCountResponse: MessageFns<GetNewStudentsThisYearCountResponse> = {
+  encode(message: GetNewStudentsThisYearCountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.count !== undefined) {
+      writer.uint32(8).uint32(message.count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetNewStudentsThisYearCountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetNewStudentsThisYearCountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetNewStudentsThisYearCountResponse {
+    return { count: isSet(object.count) ? globalThis.Number(object.count) : undefined };
+  },
+
+  toJSON(message: GetNewStudentsThisYearCountResponse): unknown {
+    const obj: any = {};
+    if (message.count !== undefined) {
+      obj.count = Math.round(message.count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetNewStudentsThisYearCountResponse>, I>>(
+    base?: I,
+  ): GetNewStudentsThisYearCountResponse {
+    return GetNewStudentsThisYearCountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetNewStudentsThisYearCountResponse>, I>>(
+    object: I,
+  ): GetNewStudentsThisYearCountResponse {
+    const message = createBaseGetNewStudentsThisYearCountResponse();
     message.count = object.count ?? undefined;
     return message;
   },

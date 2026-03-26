@@ -5,6 +5,18 @@ import { DetailedEvaluation, Evaluation, PersonalizedEvaluation } from "./evalua
 import { EvaluationEntry } from "./evaluation_entry";
 import { DetailedMarkCategory, PersonalizedMarkCategory } from "./mark_category";
 export declare const protobufPackage = "class_service.evaluation_service";
+export declare enum PrincipalDashboardGradeBucket {
+    UNSPECIFIED = "UNSPECIFIED",
+    RANGE_90_100 = "RANGE_90_100",
+    RANGE_80_89 = "RANGE_80_89",
+    RANGE_70_79 = "RANGE_70_79",
+    RANGE_60_69 = "RANGE_60_69",
+    BELOW_60 = "BELOW_60",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function principalDashboardGradeBucketFromJSON(object: any): PrincipalDashboardGradeBucket;
+export declare function principalDashboardGradeBucketToJSON(object: PrincipalDashboardGradeBucket): string;
+export declare function principalDashboardGradeBucketToNumber(object: PrincipalDashboardGradeBucket): number;
 /** Create Evaluation */
 export interface CreateEvaluationRequest {
     context: RequestContext | undefined;
@@ -166,6 +178,45 @@ export interface ExportMarkbookExcelResponse {
     excel_data?: string | undefined;
     course_name?: string | undefined;
 }
+export interface GetPrincipalDashboardAcademicSummaryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    semester_id?: ObjectId | undefined;
+}
+/** One bucket in the dashboard grade distribution summary. */
+export interface PrincipalDashboardGradeDistributionBucket {
+    /** Stable bucket identifier for frontend label mapping. */
+    bucket?: PrincipalDashboardGradeBucket | undefined;
+    /** Number of marks that fall into this bucket. */
+    count?: number | undefined;
+}
+/** One low-performing course row shown in the dashboard course averages list. */
+export interface PrincipalDashboardLowMarkCourse {
+    course_id: ObjectId | undefined;
+    course_name?: string | undefined;
+    course_code?: string | undefined;
+    teacher_names: string[];
+    /** Average final mark for the course in the selected dashboard scope. */
+    average_mark?: number | undefined;
+}
+/** One low student mark row shown in the dashboard lowest-marks list. */
+export interface PrincipalDashboardLowestMark {
+    student_id: ObjectId | undefined;
+    student_name?: string | undefined;
+    course_id: ObjectId | undefined;
+    course_name?: string | undefined;
+    /** Final mark value used to rank the lowest student marks. */
+    mark?: number | undefined;
+    course_code?: string | undefined;
+}
+export interface GetPrincipalDashboardAcademicSummaryResponse {
+    /** Distribution of marks across human-readable grade buckets. */
+    grade_distribution: PrincipalDashboardGradeDistributionBucket[];
+    /** Worst class averages shown in the dashboard. */
+    low_mark_courses: PrincipalDashboardLowMarkCourse[];
+    /** Lowest student marks shown in the dashboard. */
+    lowest_marks: PrincipalDashboardLowestMark[];
+}
 export declare const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest>;
 export declare const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest>;
 export declare const DeleteEvaluationRequest: MessageFns<DeleteEvaluationRequest>;
@@ -196,6 +247,11 @@ export declare const GetStudentCoursesMarkOverviewResponse: MessageFns<GetStuden
 export declare const StudentCourseMarkOverview: MessageFns<StudentCourseMarkOverview>;
 export declare const ExportMarkbookExcelRequest: MessageFns<ExportMarkbookExcelRequest>;
 export declare const ExportMarkbookExcelResponse: MessageFns<ExportMarkbookExcelResponse>;
+export declare const GetPrincipalDashboardAcademicSummaryRequest: MessageFns<GetPrincipalDashboardAcademicSummaryRequest>;
+export declare const PrincipalDashboardGradeDistributionBucket: MessageFns<PrincipalDashboardGradeDistributionBucket>;
+export declare const PrincipalDashboardLowMarkCourse: MessageFns<PrincipalDashboardLowMarkCourse>;
+export declare const PrincipalDashboardLowestMark: MessageFns<PrincipalDashboardLowestMark>;
+export declare const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincipalDashboardAcademicSummaryResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

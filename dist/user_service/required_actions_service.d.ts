@@ -2,6 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { ActionRequiredByParents } from "./action_required_by_parents";
+import { StudentGrade, StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
 export interface GetAdmittedStudentsActionsOverviewRequest {
     context: RequestContext | undefined;
@@ -53,6 +54,20 @@ export interface WithdrawReregistrationStudentRequest {
     student_id: ObjectId | undefined;
     school_year_id: ObjectId | undefined;
 }
+export interface GetAdminActionableOnboardingStudentsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface AdminActionableOnboardingStudent {
+    student_id: ObjectId | undefined;
+    student_name?: string | undefined;
+    status?: StudentStatus | undefined;
+    grade?: StudentGrade | undefined;
+    family_id?: ObjectId | undefined;
+}
+export interface GetAdminActionableOnboardingStudentsResponse {
+    students: AdminActionableOnboardingStudent[];
+}
 export declare const GetAdmittedStudentsActionsOverviewRequest: MessageFns<GetAdmittedStudentsActionsOverviewRequest>;
 export declare const GetAdmittedStudentsActionsOverviewResponse: MessageFns<GetAdmittedStudentsActionsOverviewResponse>;
 export declare const StudentActionSummary: MessageFns<StudentActionSummary>;
@@ -64,6 +79,9 @@ export declare const GetFamilyAdmittedActionResponse: MessageFns<GetFamilyAdmitt
 export declare const GetFamilyRelevantSchoolYearsRequest: MessageFns<GetFamilyRelevantSchoolYearsRequest>;
 export declare const GetFamilyRelevantSchoolYearsResponse: MessageFns<GetFamilyRelevantSchoolYearsResponse>;
 export declare const WithdrawReregistrationStudentRequest: MessageFns<WithdrawReregistrationStudentRequest>;
+export declare const GetAdminActionableOnboardingStudentsRequest: MessageFns<GetAdminActionableOnboardingStudentsRequest>;
+export declare const AdminActionableOnboardingStudent: MessageFns<AdminActionableOnboardingStudent>;
+export declare const GetAdminActionableOnboardingStudentsResponse: MessageFns<GetAdminActionableOnboardingStudentsResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

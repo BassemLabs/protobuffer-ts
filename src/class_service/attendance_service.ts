@@ -24,6 +24,51 @@ import { Homeroom } from "./homeroom";
 
 export const protobufPackage = "class_service.attendance_service";
 
+export enum PrincipalDashboardAttendanceScopeType {
+  PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM",
+  PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function principalDashboardAttendanceScopeTypeFromJSON(object: any): PrincipalDashboardAttendanceScopeType {
+  switch (object) {
+    case 0:
+    case "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM":
+      return PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM;
+    case 1:
+    case "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE":
+      return PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PrincipalDashboardAttendanceScopeType.UNRECOGNIZED;
+  }
+}
+
+export function principalDashboardAttendanceScopeTypeToJSON(object: PrincipalDashboardAttendanceScopeType): string {
+  switch (object) {
+    case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM:
+      return "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM";
+    case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE:
+      return "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE";
+    case PrincipalDashboardAttendanceScopeType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function principalDashboardAttendanceScopeTypeToNumber(object: PrincipalDashboardAttendanceScopeType): number {
+  switch (object) {
+    case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM:
+      return 0;
+    case PrincipalDashboardAttendanceScopeType.PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE:
+      return 1;
+    case PrincipalDashboardAttendanceScopeType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export enum TimeType {
   SignIn = "SignIn",
   SignOut = "SignOut",
@@ -120,6 +165,58 @@ export function attendanceCompletionStatusToNumber(object: AttendanceCompletionS
     default:
       return -1;
   }
+}
+
+export interface GetPrincipalDashboardAttendanceSummaryRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  as_of_date?: Date | undefined;
+  semester_id?: ObjectId | undefined;
+}
+
+/**
+ * One point in the weekly attendance trend chart shown on the dashboard.
+ * Example: week_start_date = "2026-03-02", attendance_pct = 91.4
+ */
+export interface PrincipalDashboardAttendanceTrendPoint {
+  /** ISO date string for the first day of the represented week in org-local time. */
+  week_start_date?:
+    | string
+    | undefined;
+  /** Attendance percentage for that week. */
+  attendance_pct?: number | undefined;
+}
+
+/** One row in the "Attendance Needed Today" list on the dashboard. */
+export interface PrincipalDashboardAttendanceTodayRow {
+  row_type?: PrincipalDashboardAttendanceScopeType | undefined;
+  class_id: ObjectId | undefined;
+  class_name?: string | undefined;
+  course_code?: string | undefined;
+  teacher_names: string[];
+  expected_count?: number | undefined;
+  marked_count?: number | undefined;
+}
+
+export interface PrincipalDashboardChronicAbsentee {
+  student_id: ObjectId | undefined;
+  student_name?: string | undefined;
+  homeroom_id?: ObjectId | undefined;
+  homeroom_name?: string | undefined;
+  absences?: number | undefined;
+  absence_pct?: number | undefined;
+}
+
+export interface GetPrincipalDashboardAttendanceSummaryResponse {
+  weekly_trend: PrincipalDashboardAttendanceTrendPoint[];
+  today_rows: PrincipalDashboardAttendanceTodayRow[];
+  chronic_absentees: PrincipalDashboardChronicAbsentee[];
+  completion_today_pct?: number | undefined;
+  homerooms_total_today?: number | undefined;
+  homerooms_filled_today?: number | undefined;
+  courses_total_today?: number | undefined;
+  courses_filled_today?: number | undefined;
+  is_school_day_today?: boolean | undefined;
 }
 
 export interface AttendanceResponse {
@@ -367,6 +464,725 @@ export interface GetSingleStudentCourseAttendanceEntryResponse {
   attendance_entry: Attendance | undefined;
   course: Course | undefined;
 }
+
+function createBaseGetPrincipalDashboardAttendanceSummaryRequest(): GetPrincipalDashboardAttendanceSummaryRequest {
+  return { context: undefined, school_year_id: undefined, as_of_date: undefined, semester_id: undefined };
+}
+
+export const GetPrincipalDashboardAttendanceSummaryRequest: MessageFns<GetPrincipalDashboardAttendanceSummaryRequest> =
+  {
+    encode(
+      message: GetPrincipalDashboardAttendanceSummaryRequest,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.context !== undefined) {
+        RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+      }
+      if (message.school_year_id !== undefined) {
+        ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+      }
+      if (message.as_of_date !== undefined) {
+        Timestamp.encode(toTimestamp(message.as_of_date), writer.uint32(26).fork()).join();
+      }
+      if (message.semester_id !== undefined) {
+        ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+      }
+      return writer;
+    },
+
+    decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardAttendanceSummaryRequest {
+      const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+      let end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseGetPrincipalDashboardAttendanceSummaryRequest();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            if (tag !== 10) {
+              break;
+            }
+
+            message.context = RequestContext.decode(reader, reader.uint32());
+            continue;
+          case 2:
+            if (tag !== 18) {
+              break;
+            }
+
+            message.school_year_id = ObjectId.decode(reader, reader.uint32());
+            continue;
+          case 3:
+            if (tag !== 26) {
+              break;
+            }
+
+            message.as_of_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+            continue;
+          case 4:
+            if (tag !== 34) {
+              break;
+            }
+
+            message.semester_id = ObjectId.decode(reader, reader.uint32());
+            continue;
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): GetPrincipalDashboardAttendanceSummaryRequest {
+      return {
+        context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+        school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+        as_of_date: isSet(object.asOfDate) ? fromJsonTimestamp(object.asOfDate) : undefined,
+        semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      };
+    },
+
+    toJSON(message: GetPrincipalDashboardAttendanceSummaryRequest): unknown {
+      const obj: any = {};
+      if (message.context !== undefined) {
+        obj.context = RequestContext.toJSON(message.context);
+      }
+      if (message.school_year_id !== undefined) {
+        obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      }
+      if (message.as_of_date !== undefined) {
+        obj.asOfDate = message.as_of_date.toISOString();
+      }
+      if (message.semester_id !== undefined) {
+        obj.semesterId = ObjectId.toJSON(message.semester_id);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<GetPrincipalDashboardAttendanceSummaryRequest>, I>>(
+      base?: I,
+    ): GetPrincipalDashboardAttendanceSummaryRequest {
+      return GetPrincipalDashboardAttendanceSummaryRequest.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardAttendanceSummaryRequest>, I>>(
+      object: I,
+    ): GetPrincipalDashboardAttendanceSummaryRequest {
+      const message = createBaseGetPrincipalDashboardAttendanceSummaryRequest();
+      message.context = (object.context !== undefined && object.context !== null)
+        ? RequestContext.fromPartial(object.context)
+        : undefined;
+      message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+        ? ObjectId.fromPartial(object.school_year_id)
+        : undefined;
+      message.as_of_date = object.as_of_date ?? undefined;
+      message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+        ? ObjectId.fromPartial(object.semester_id)
+        : undefined;
+      return message;
+    },
+  };
+
+function createBasePrincipalDashboardAttendanceTrendPoint(): PrincipalDashboardAttendanceTrendPoint {
+  return { week_start_date: undefined, attendance_pct: undefined };
+}
+
+export const PrincipalDashboardAttendanceTrendPoint: MessageFns<PrincipalDashboardAttendanceTrendPoint> = {
+  encode(message: PrincipalDashboardAttendanceTrendPoint, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.week_start_date !== undefined) {
+      writer.uint32(10).string(message.week_start_date);
+    }
+    if (message.attendance_pct !== undefined) {
+      writer.uint32(17).double(message.attendance_pct);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardAttendanceTrendPoint {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardAttendanceTrendPoint();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.week_start_date = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.attendance_pct = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardAttendanceTrendPoint {
+    return {
+      week_start_date: isSet(object.weekStartDate) ? globalThis.String(object.weekStartDate) : undefined,
+      attendance_pct: isSet(object.attendancePct) ? globalThis.Number(object.attendancePct) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardAttendanceTrendPoint): unknown {
+    const obj: any = {};
+    if (message.week_start_date !== undefined) {
+      obj.weekStartDate = message.week_start_date;
+    }
+    if (message.attendance_pct !== undefined) {
+      obj.attendancePct = message.attendance_pct;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardAttendanceTrendPoint>, I>>(
+    base?: I,
+  ): PrincipalDashboardAttendanceTrendPoint {
+    return PrincipalDashboardAttendanceTrendPoint.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardAttendanceTrendPoint>, I>>(
+    object: I,
+  ): PrincipalDashboardAttendanceTrendPoint {
+    const message = createBasePrincipalDashboardAttendanceTrendPoint();
+    message.week_start_date = object.week_start_date ?? undefined;
+    message.attendance_pct = object.attendance_pct ?? undefined;
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardAttendanceTodayRow(): PrincipalDashboardAttendanceTodayRow {
+  return {
+    row_type: undefined,
+    class_id: undefined,
+    class_name: undefined,
+    course_code: undefined,
+    teacher_names: [],
+    expected_count: undefined,
+    marked_count: undefined,
+  };
+}
+
+export const PrincipalDashboardAttendanceTodayRow: MessageFns<PrincipalDashboardAttendanceTodayRow> = {
+  encode(message: PrincipalDashboardAttendanceTodayRow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.row_type !== undefined) {
+      writer.uint32(8).int32(principalDashboardAttendanceScopeTypeToNumber(message.row_type));
+    }
+    if (message.class_id !== undefined) {
+      ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
+    }
+    if (message.class_name !== undefined) {
+      writer.uint32(26).string(message.class_name);
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(34).string(message.course_code);
+    }
+    for (const v of message.teacher_names) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.expected_count !== undefined) {
+      writer.uint32(48).uint32(message.expected_count);
+    }
+    if (message.marked_count !== undefined) {
+      writer.uint32(56).uint32(message.marked_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardAttendanceTodayRow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardAttendanceTodayRow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.row_type = principalDashboardAttendanceScopeTypeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.class_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.teacher_names.push(reader.string());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.expected_count = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.marked_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardAttendanceTodayRow {
+    return {
+      row_type: isSet(object.rowType) ? principalDashboardAttendanceScopeTypeFromJSON(object.rowType) : undefined,
+      class_id: isSet(object.classId) ? ObjectId.fromJSON(object.classId) : undefined,
+      class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      teacher_names: globalThis.Array.isArray(object?.teacherNames)
+        ? object.teacherNames.map((e: any) => globalThis.String(e))
+        : [],
+      expected_count: isSet(object.expectedCount) ? globalThis.Number(object.expectedCount) : undefined,
+      marked_count: isSet(object.markedCount) ? globalThis.Number(object.markedCount) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardAttendanceTodayRow): unknown {
+    const obj: any = {};
+    if (message.row_type !== undefined) {
+      obj.rowType = principalDashboardAttendanceScopeTypeToJSON(message.row_type);
+    }
+    if (message.class_id !== undefined) {
+      obj.classId = ObjectId.toJSON(message.class_id);
+    }
+    if (message.class_name !== undefined) {
+      obj.className = message.class_name;
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    if (message.teacher_names?.length) {
+      obj.teacherNames = message.teacher_names;
+    }
+    if (message.expected_count !== undefined) {
+      obj.expectedCount = Math.round(message.expected_count);
+    }
+    if (message.marked_count !== undefined) {
+      obj.markedCount = Math.round(message.marked_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardAttendanceTodayRow>, I>>(
+    base?: I,
+  ): PrincipalDashboardAttendanceTodayRow {
+    return PrincipalDashboardAttendanceTodayRow.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardAttendanceTodayRow>, I>>(
+    object: I,
+  ): PrincipalDashboardAttendanceTodayRow {
+    const message = createBasePrincipalDashboardAttendanceTodayRow();
+    message.row_type = object.row_type ?? undefined;
+    message.class_id = (object.class_id !== undefined && object.class_id !== null)
+      ? ObjectId.fromPartial(object.class_id)
+      : undefined;
+    message.class_name = object.class_name ?? undefined;
+    message.course_code = object.course_code ?? undefined;
+    message.teacher_names = object.teacher_names?.map((e) => e) || [];
+    message.expected_count = object.expected_count ?? undefined;
+    message.marked_count = object.marked_count ?? undefined;
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardChronicAbsentee(): PrincipalDashboardChronicAbsentee {
+  return {
+    student_id: undefined,
+    student_name: undefined,
+    homeroom_id: undefined,
+    homeroom_name: undefined,
+    absences: undefined,
+    absence_pct: undefined,
+  };
+}
+
+export const PrincipalDashboardChronicAbsentee: MessageFns<PrincipalDashboardChronicAbsentee> = {
+  encode(message: PrincipalDashboardChronicAbsentee, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.student_name !== undefined) {
+      writer.uint32(18).string(message.student_name);
+    }
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(26).fork()).join();
+    }
+    if (message.homeroom_name !== undefined) {
+      writer.uint32(34).string(message.homeroom_name);
+    }
+    if (message.absences !== undefined) {
+      writer.uint32(40).uint32(message.absences);
+    }
+    if (message.absence_pct !== undefined) {
+      writer.uint32(49).double(message.absence_pct);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardChronicAbsentee {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardChronicAbsentee();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.homeroom_name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.absences = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 49) {
+            break;
+          }
+
+          message.absence_pct = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardChronicAbsentee {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      homeroom_name: isSet(object.homeroomName) ? globalThis.String(object.homeroomName) : undefined,
+      absences: isSet(object.absences) ? globalThis.Number(object.absences) : undefined,
+      absence_pct: isSet(object.absencePct) ? globalThis.Number(object.absencePct) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardChronicAbsentee): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.student_name !== undefined) {
+      obj.studentName = message.student_name;
+    }
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
+    }
+    if (message.homeroom_name !== undefined) {
+      obj.homeroomName = message.homeroom_name;
+    }
+    if (message.absences !== undefined) {
+      obj.absences = Math.round(message.absences);
+    }
+    if (message.absence_pct !== undefined) {
+      obj.absencePct = message.absence_pct;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardChronicAbsentee>, I>>(
+    base?: I,
+  ): PrincipalDashboardChronicAbsentee {
+    return PrincipalDashboardChronicAbsentee.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardChronicAbsentee>, I>>(
+    object: I,
+  ): PrincipalDashboardChronicAbsentee {
+    const message = createBasePrincipalDashboardChronicAbsentee();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.student_name = object.student_name ?? undefined;
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
+      : undefined;
+    message.homeroom_name = object.homeroom_name ?? undefined;
+    message.absences = object.absences ?? undefined;
+    message.absence_pct = object.absence_pct ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardAttendanceSummaryResponse(): GetPrincipalDashboardAttendanceSummaryResponse {
+  return {
+    weekly_trend: [],
+    today_rows: [],
+    chronic_absentees: [],
+    completion_today_pct: undefined,
+    homerooms_total_today: undefined,
+    homerooms_filled_today: undefined,
+    courses_total_today: undefined,
+    courses_filled_today: undefined,
+    is_school_day_today: undefined,
+  };
+}
+
+export const GetPrincipalDashboardAttendanceSummaryResponse: MessageFns<
+  GetPrincipalDashboardAttendanceSummaryResponse
+> = {
+  encode(
+    message: GetPrincipalDashboardAttendanceSummaryResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.weekly_trend) {
+      PrincipalDashboardAttendanceTrendPoint.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.today_rows) {
+      PrincipalDashboardAttendanceTodayRow.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.chronic_absentees) {
+      PrincipalDashboardChronicAbsentee.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.completion_today_pct !== undefined) {
+      writer.uint32(33).double(message.completion_today_pct);
+    }
+    if (message.homerooms_total_today !== undefined) {
+      writer.uint32(40).uint32(message.homerooms_total_today);
+    }
+    if (message.homerooms_filled_today !== undefined) {
+      writer.uint32(48).uint32(message.homerooms_filled_today);
+    }
+    if (message.courses_total_today !== undefined) {
+      writer.uint32(56).uint32(message.courses_total_today);
+    }
+    if (message.courses_filled_today !== undefined) {
+      writer.uint32(64).uint32(message.courses_filled_today);
+    }
+    if (message.is_school_day_today !== undefined) {
+      writer.uint32(72).bool(message.is_school_day_today);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardAttendanceSummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardAttendanceSummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.weekly_trend.push(PrincipalDashboardAttendanceTrendPoint.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.today_rows.push(PrincipalDashboardAttendanceTodayRow.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.chronic_absentees.push(PrincipalDashboardChronicAbsentee.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 33) {
+            break;
+          }
+
+          message.completion_today_pct = reader.double();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.homerooms_total_today = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.homerooms_filled_today = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.courses_total_today = reader.uint32();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.courses_filled_today = reader.uint32();
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.is_school_day_today = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardAttendanceSummaryResponse {
+    return {
+      weekly_trend: globalThis.Array.isArray(object?.weeklyTrend)
+        ? object.weeklyTrend.map((e: any) => PrincipalDashboardAttendanceTrendPoint.fromJSON(e))
+        : [],
+      today_rows: globalThis.Array.isArray(object?.todayRows)
+        ? object.todayRows.map((e: any) => PrincipalDashboardAttendanceTodayRow.fromJSON(e))
+        : [],
+      chronic_absentees: globalThis.Array.isArray(object?.chronicAbsentees)
+        ? object.chronicAbsentees.map((e: any) => PrincipalDashboardChronicAbsentee.fromJSON(e))
+        : [],
+      completion_today_pct: isSet(object.completionTodayPct) ? globalThis.Number(object.completionTodayPct) : undefined,
+      homerooms_total_today: isSet(object.homeroomsTotalToday)
+        ? globalThis.Number(object.homeroomsTotalToday)
+        : undefined,
+      homerooms_filled_today: isSet(object.homeroomsFilledToday)
+        ? globalThis.Number(object.homeroomsFilledToday)
+        : undefined,
+      courses_total_today: isSet(object.coursesTotalToday) ? globalThis.Number(object.coursesTotalToday) : undefined,
+      courses_filled_today: isSet(object.coursesFilledToday) ? globalThis.Number(object.coursesFilledToday) : undefined,
+      is_school_day_today: isSet(object.isSchoolDayToday) ? globalThis.Boolean(object.isSchoolDayToday) : undefined,
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardAttendanceSummaryResponse): unknown {
+    const obj: any = {};
+    if (message.weekly_trend?.length) {
+      obj.weeklyTrend = message.weekly_trend.map((e) => PrincipalDashboardAttendanceTrendPoint.toJSON(e));
+    }
+    if (message.today_rows?.length) {
+      obj.todayRows = message.today_rows.map((e) => PrincipalDashboardAttendanceTodayRow.toJSON(e));
+    }
+    if (message.chronic_absentees?.length) {
+      obj.chronicAbsentees = message.chronic_absentees.map((e) => PrincipalDashboardChronicAbsentee.toJSON(e));
+    }
+    if (message.completion_today_pct !== undefined) {
+      obj.completionTodayPct = message.completion_today_pct;
+    }
+    if (message.homerooms_total_today !== undefined) {
+      obj.homeroomsTotalToday = Math.round(message.homerooms_total_today);
+    }
+    if (message.homerooms_filled_today !== undefined) {
+      obj.homeroomsFilledToday = Math.round(message.homerooms_filled_today);
+    }
+    if (message.courses_total_today !== undefined) {
+      obj.coursesTotalToday = Math.round(message.courses_total_today);
+    }
+    if (message.courses_filled_today !== undefined) {
+      obj.coursesFilledToday = Math.round(message.courses_filled_today);
+    }
+    if (message.is_school_day_today !== undefined) {
+      obj.isSchoolDayToday = message.is_school_day_today;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardAttendanceSummaryResponse>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardAttendanceSummaryResponse {
+    return GetPrincipalDashboardAttendanceSummaryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardAttendanceSummaryResponse>, I>>(
+    object: I,
+  ): GetPrincipalDashboardAttendanceSummaryResponse {
+    const message = createBaseGetPrincipalDashboardAttendanceSummaryResponse();
+    message.weekly_trend = object.weekly_trend?.map((e) => PrincipalDashboardAttendanceTrendPoint.fromPartial(e)) || [];
+    message.today_rows = object.today_rows?.map((e) => PrincipalDashboardAttendanceTodayRow.fromPartial(e)) || [];
+    message.chronic_absentees =
+      object.chronic_absentees?.map((e) => PrincipalDashboardChronicAbsentee.fromPartial(e)) || [];
+    message.completion_today_pct = object.completion_today_pct ?? undefined;
+    message.homerooms_total_today = object.homerooms_total_today ?? undefined;
+    message.homerooms_filled_today = object.homerooms_filled_today ?? undefined;
+    message.courses_total_today = object.courses_total_today ?? undefined;
+    message.courses_filled_today = object.courses_filled_today ?? undefined;
+    message.is_school_day_today = object.is_school_day_today ?? undefined;
+    return message;
+  },
+};
 
 function createBaseAttendanceResponse(): AttendanceResponse {
   return { attendance: [] };

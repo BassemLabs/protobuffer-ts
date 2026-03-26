@@ -14,6 +14,83 @@ import { DetailedMarkCategory, PersonalizedMarkCategory } from "./mark_category"
 
 export const protobufPackage = "class_service.evaluation_service";
 
+export enum PrincipalDashboardGradeBucket {
+  UNSPECIFIED = "UNSPECIFIED",
+  RANGE_90_100 = "RANGE_90_100",
+  RANGE_80_89 = "RANGE_80_89",
+  RANGE_70_79 = "RANGE_70_79",
+  RANGE_60_69 = "RANGE_60_69",
+  BELOW_60 = "BELOW_60",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function principalDashboardGradeBucketFromJSON(object: any): PrincipalDashboardGradeBucket {
+  switch (object) {
+    case 0:
+    case "UNSPECIFIED":
+      return PrincipalDashboardGradeBucket.UNSPECIFIED;
+    case 1:
+    case "RANGE_90_100":
+      return PrincipalDashboardGradeBucket.RANGE_90_100;
+    case 2:
+    case "RANGE_80_89":
+      return PrincipalDashboardGradeBucket.RANGE_80_89;
+    case 3:
+    case "RANGE_70_79":
+      return PrincipalDashboardGradeBucket.RANGE_70_79;
+    case 4:
+    case "RANGE_60_69":
+      return PrincipalDashboardGradeBucket.RANGE_60_69;
+    case 5:
+    case "BELOW_60":
+      return PrincipalDashboardGradeBucket.BELOW_60;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PrincipalDashboardGradeBucket.UNRECOGNIZED;
+  }
+}
+
+export function principalDashboardGradeBucketToJSON(object: PrincipalDashboardGradeBucket): string {
+  switch (object) {
+    case PrincipalDashboardGradeBucket.UNSPECIFIED:
+      return "UNSPECIFIED";
+    case PrincipalDashboardGradeBucket.RANGE_90_100:
+      return "RANGE_90_100";
+    case PrincipalDashboardGradeBucket.RANGE_80_89:
+      return "RANGE_80_89";
+    case PrincipalDashboardGradeBucket.RANGE_70_79:
+      return "RANGE_70_79";
+    case PrincipalDashboardGradeBucket.RANGE_60_69:
+      return "RANGE_60_69";
+    case PrincipalDashboardGradeBucket.BELOW_60:
+      return "BELOW_60";
+    case PrincipalDashboardGradeBucket.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function principalDashboardGradeBucketToNumber(object: PrincipalDashboardGradeBucket): number {
+  switch (object) {
+    case PrincipalDashboardGradeBucket.UNSPECIFIED:
+      return 0;
+    case PrincipalDashboardGradeBucket.RANGE_90_100:
+      return 1;
+    case PrincipalDashboardGradeBucket.RANGE_80_89:
+      return 2;
+    case PrincipalDashboardGradeBucket.RANGE_70_79:
+      return 3;
+    case PrincipalDashboardGradeBucket.RANGE_60_69:
+      return 4;
+    case PrincipalDashboardGradeBucket.BELOW_60:
+      return 5;
+    case PrincipalDashboardGradeBucket.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 /** Create Evaluation */
 export interface CreateEvaluationRequest {
   context: RequestContext | undefined;
@@ -211,6 +288,54 @@ export interface ExportMarkbookExcelResponse {
   /** base64 encoded excel file */
   excel_data?: string | undefined;
   course_name?: string | undefined;
+}
+
+export interface GetPrincipalDashboardAcademicSummaryRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  semester_id?: ObjectId | undefined;
+}
+
+/** One bucket in the dashboard grade distribution summary. */
+export interface PrincipalDashboardGradeDistributionBucket {
+  /** Stable bucket identifier for frontend label mapping. */
+  bucket?:
+    | PrincipalDashboardGradeBucket
+    | undefined;
+  /** Number of marks that fall into this bucket. */
+  count?: number | undefined;
+}
+
+/** One low-performing course row shown in the dashboard course averages list. */
+export interface PrincipalDashboardLowMarkCourse {
+  course_id: ObjectId | undefined;
+  course_name?: string | undefined;
+  course_code?: string | undefined;
+  teacher_names: string[];
+  /** Average final mark for the course in the selected dashboard scope. */
+  average_mark?: number | undefined;
+}
+
+/** One low student mark row shown in the dashboard lowest-marks list. */
+export interface PrincipalDashboardLowestMark {
+  student_id: ObjectId | undefined;
+  student_name?: string | undefined;
+  course_id: ObjectId | undefined;
+  course_name?:
+    | string
+    | undefined;
+  /** Final mark value used to rank the lowest student marks. */
+  mark?: number | undefined;
+  course_code?: string | undefined;
+}
+
+export interface GetPrincipalDashboardAcademicSummaryResponse {
+  /** Distribution of marks across human-readable grade buckets. */
+  grade_distribution: PrincipalDashboardGradeDistributionBucket[];
+  /** Worst class averages shown in the dashboard. */
+  low_mark_courses: PrincipalDashboardLowMarkCourse[];
+  /** Lowest student marks shown in the dashboard. */
+  lowest_marks: PrincipalDashboardLowestMark[];
 }
 
 function createBaseCreateEvaluationRequest(): CreateEvaluationRequest {
@@ -2951,6 +3076,568 @@ export const ExportMarkbookExcelResponse: MessageFns<ExportMarkbookExcelResponse
     const message = createBaseExportMarkbookExcelResponse();
     message.excel_data = object.excel_data ?? undefined;
     message.course_name = object.course_name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardAcademicSummaryRequest(): GetPrincipalDashboardAcademicSummaryRequest {
+  return { context: undefined, school_year_id: undefined, semester_id: undefined };
+}
+
+export const GetPrincipalDashboardAcademicSummaryRequest: MessageFns<GetPrincipalDashboardAcademicSummaryRequest> = {
+  encode(
+    message: GetPrincipalDashboardAcademicSummaryRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardAcademicSummaryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardAcademicSummaryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardAcademicSummaryRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardAcademicSummaryRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardAcademicSummaryRequest>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardAcademicSummaryRequest {
+    return GetPrincipalDashboardAcademicSummaryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardAcademicSummaryRequest>, I>>(
+    object: I,
+  ): GetPrincipalDashboardAcademicSummaryRequest {
+    const message = createBaseGetPrincipalDashboardAcademicSummaryRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardGradeDistributionBucket(): PrincipalDashboardGradeDistributionBucket {
+  return { bucket: undefined, count: undefined };
+}
+
+export const PrincipalDashboardGradeDistributionBucket: MessageFns<PrincipalDashboardGradeDistributionBucket> = {
+  encode(message: PrincipalDashboardGradeDistributionBucket, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.bucket !== undefined) {
+      writer.uint32(8).int32(principalDashboardGradeBucketToNumber(message.bucket));
+    }
+    if (message.count !== undefined) {
+      writer.uint32(16).uint32(message.count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardGradeDistributionBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardGradeDistributionBucket();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.bucket = principalDashboardGradeBucketFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardGradeDistributionBucket {
+    return {
+      bucket: isSet(object.bucket) ? principalDashboardGradeBucketFromJSON(object.bucket) : undefined,
+      count: isSet(object.count) ? globalThis.Number(object.count) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardGradeDistributionBucket): unknown {
+    const obj: any = {};
+    if (message.bucket !== undefined) {
+      obj.bucket = principalDashboardGradeBucketToJSON(message.bucket);
+    }
+    if (message.count !== undefined) {
+      obj.count = Math.round(message.count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardGradeDistributionBucket>, I>>(
+    base?: I,
+  ): PrincipalDashboardGradeDistributionBucket {
+    return PrincipalDashboardGradeDistributionBucket.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardGradeDistributionBucket>, I>>(
+    object: I,
+  ): PrincipalDashboardGradeDistributionBucket {
+    const message = createBasePrincipalDashboardGradeDistributionBucket();
+    message.bucket = object.bucket ?? undefined;
+    message.count = object.count ?? undefined;
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardLowMarkCourse(): PrincipalDashboardLowMarkCourse {
+  return {
+    course_id: undefined,
+    course_name: undefined,
+    course_code: undefined,
+    teacher_names: [],
+    average_mark: undefined,
+  };
+}
+
+export const PrincipalDashboardLowMarkCourse: MessageFns<PrincipalDashboardLowMarkCourse> = {
+  encode(message: PrincipalDashboardLowMarkCourse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
+    }
+    if (message.course_name !== undefined) {
+      writer.uint32(18).string(message.course_name);
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(26).string(message.course_code);
+    }
+    for (const v of message.teacher_names) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.average_mark !== undefined) {
+      writer.uint32(41).double(message.average_mark);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardLowMarkCourse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardLowMarkCourse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.course_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.teacher_names.push(reader.string());
+          continue;
+        case 5:
+          if (tag !== 41) {
+            break;
+          }
+
+          message.average_mark = reader.double();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardLowMarkCourse {
+    return {
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      teacher_names: globalThis.Array.isArray(object?.teacherNames)
+        ? object.teacherNames.map((e: any) => globalThis.String(e))
+        : [],
+      average_mark: isSet(object.averageMark) ? globalThis.Number(object.averageMark) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardLowMarkCourse): unknown {
+    const obj: any = {};
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
+    }
+    if (message.course_name !== undefined) {
+      obj.courseName = message.course_name;
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    if (message.teacher_names?.length) {
+      obj.teacherNames = message.teacher_names;
+    }
+    if (message.average_mark !== undefined) {
+      obj.averageMark = message.average_mark;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardLowMarkCourse>, I>>(base?: I): PrincipalDashboardLowMarkCourse {
+    return PrincipalDashboardLowMarkCourse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardLowMarkCourse>, I>>(
+    object: I,
+  ): PrincipalDashboardLowMarkCourse {
+    const message = createBasePrincipalDashboardLowMarkCourse();
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
+      : undefined;
+    message.course_name = object.course_name ?? undefined;
+    message.course_code = object.course_code ?? undefined;
+    message.teacher_names = object.teacher_names?.map((e) => e) || [];
+    message.average_mark = object.average_mark ?? undefined;
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardLowestMark(): PrincipalDashboardLowestMark {
+  return {
+    student_id: undefined,
+    student_name: undefined,
+    course_id: undefined,
+    course_name: undefined,
+    mark: undefined,
+    course_code: undefined,
+  };
+}
+
+export const PrincipalDashboardLowestMark: MessageFns<PrincipalDashboardLowestMark> = {
+  encode(message: PrincipalDashboardLowestMark, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.student_name !== undefined) {
+      writer.uint32(18).string(message.student_name);
+    }
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
+    }
+    if (message.course_name !== undefined) {
+      writer.uint32(34).string(message.course_name);
+    }
+    if (message.mark !== undefined) {
+      writer.uint32(41).double(message.mark);
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(50).string(message.course_code);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardLowestMark {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardLowestMark();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.course_name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 41) {
+            break;
+          }
+
+          message.mark = reader.double();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardLowestMark {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : undefined,
+      mark: isSet(object.mark) ? globalThis.Number(object.mark) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardLowestMark): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.student_name !== undefined) {
+      obj.studentName = message.student_name;
+    }
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
+    }
+    if (message.course_name !== undefined) {
+      obj.courseName = message.course_name;
+    }
+    if (message.mark !== undefined) {
+      obj.mark = message.mark;
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardLowestMark>, I>>(base?: I): PrincipalDashboardLowestMark {
+    return PrincipalDashboardLowestMark.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardLowestMark>, I>>(object: I): PrincipalDashboardLowestMark {
+    const message = createBasePrincipalDashboardLowestMark();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.student_name = object.student_name ?? undefined;
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
+      : undefined;
+    message.course_name = object.course_name ?? undefined;
+    message.mark = object.mark ?? undefined;
+    message.course_code = object.course_code ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardAcademicSummaryResponse(): GetPrincipalDashboardAcademicSummaryResponse {
+  return { grade_distribution: [], low_mark_courses: [], lowest_marks: [] };
+}
+
+export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincipalDashboardAcademicSummaryResponse> = {
+  encode(
+    message: GetPrincipalDashboardAcademicSummaryResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.grade_distribution) {
+      PrincipalDashboardGradeDistributionBucket.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.low_mark_courses) {
+      PrincipalDashboardLowMarkCourse.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.lowest_marks) {
+      PrincipalDashboardLowestMark.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardAcademicSummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardAcademicSummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.grade_distribution.push(PrincipalDashboardGradeDistributionBucket.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.low_mark_courses.push(PrincipalDashboardLowMarkCourse.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.lowest_marks.push(PrincipalDashboardLowestMark.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardAcademicSummaryResponse {
+    return {
+      grade_distribution: globalThis.Array.isArray(object?.gradeDistribution)
+        ? object.gradeDistribution.map((e: any) => PrincipalDashboardGradeDistributionBucket.fromJSON(e))
+        : [],
+      low_mark_courses: globalThis.Array.isArray(object?.lowMarkCourses)
+        ? object.lowMarkCourses.map((e: any) => PrincipalDashboardLowMarkCourse.fromJSON(e))
+        : [],
+      lowest_marks: globalThis.Array.isArray(object?.lowestMarks)
+        ? object.lowestMarks.map((e: any) => PrincipalDashboardLowestMark.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardAcademicSummaryResponse): unknown {
+    const obj: any = {};
+    if (message.grade_distribution?.length) {
+      obj.gradeDistribution = message.grade_distribution.map((e) =>
+        PrincipalDashboardGradeDistributionBucket.toJSON(e)
+      );
+    }
+    if (message.low_mark_courses?.length) {
+      obj.lowMarkCourses = message.low_mark_courses.map((e) => PrincipalDashboardLowMarkCourse.toJSON(e));
+    }
+    if (message.lowest_marks?.length) {
+      obj.lowestMarks = message.lowest_marks.map((e) => PrincipalDashboardLowestMark.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardAcademicSummaryResponse>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardAcademicSummaryResponse {
+    return GetPrincipalDashboardAcademicSummaryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardAcademicSummaryResponse>, I>>(
+    object: I,
+  ): GetPrincipalDashboardAcademicSummaryResponse {
+    const message = createBaseGetPrincipalDashboardAcademicSummaryResponse();
+    message.grade_distribution =
+      object.grade_distribution?.map((e) => PrincipalDashboardGradeDistributionBucket.fromPartial(e)) || [];
+    message.low_mark_courses = object.low_mark_courses?.map((e) => PrincipalDashboardLowMarkCourse.fromPartial(e)) ||
+      [];
+    message.lowest_marks = object.lowest_marks?.map((e) => PrincipalDashboardLowestMark.fromPartial(e)) || [];
     return message;
   },
 };

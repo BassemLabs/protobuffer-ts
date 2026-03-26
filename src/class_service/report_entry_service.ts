@@ -111,6 +111,34 @@ export interface GetParentPublishedReportSummariesResponse {
   summaries: ParentStudentReportSummary[];
 }
 
+export interface GetPrincipalDashboardTeacherActivitySummaryRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  semester_id?: ObjectId | undefined;
+  report_type?: ReportType | undefined;
+}
+
+export interface PrincipalDashboardTeacherPendingClass {
+  class_type?: ReportPublishClassType | undefined;
+  class_id: ObjectId | undefined;
+  class_name?: string | undefined;
+  course_code?: string | undefined;
+  grades: string[];
+}
+
+export interface PrincipalDashboardTeacherActivityRow {
+  teacher_id: ObjectId | undefined;
+  teacher_name?: string | undefined;
+  markbook_complete?: boolean | undefined;
+  reports_submitted?: boolean | undefined;
+  pending_markbook_classes: PrincipalDashboardTeacherPendingClass[];
+  pending_report_classes: PrincipalDashboardTeacherPendingClass[];
+}
+
+export interface GetPrincipalDashboardTeacherActivitySummaryResponse {
+  teachers: PrincipalDashboardTeacherActivityRow[];
+}
+
 export interface GetReportEntriesQueueRequest {
   context: RequestContext | undefined;
   teacher_id?: ObjectId | undefined;
@@ -1041,6 +1069,477 @@ export const GetParentPublishedReportSummariesResponse: MessageFns<GetParentPubl
   ): GetParentPublishedReportSummariesResponse {
     const message = createBaseGetParentPublishedReportSummariesResponse();
     message.summaries = object.summaries?.map((e) => ParentStudentReportSummary.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardTeacherActivitySummaryRequest(): GetPrincipalDashboardTeacherActivitySummaryRequest {
+  return { context: undefined, school_year_id: undefined, semester_id: undefined, report_type: undefined };
+}
+
+export const GetPrincipalDashboardTeacherActivitySummaryRequest: MessageFns<
+  GetPrincipalDashboardTeacherActivitySummaryRequest
+> = {
+  encode(
+    message: GetPrincipalDashboardTeacherActivitySummaryRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+    }
+    if (message.report_type !== undefined) {
+      writer.uint32(32).int32(reportTypeToNumber(message.report_type));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardTeacherActivitySummaryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardTeacherActivitySummaryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardTeacherActivitySummaryRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardTeacherActivitySummaryRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardTeacherActivitySummaryRequest>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardTeacherActivitySummaryRequest {
+    return GetPrincipalDashboardTeacherActivitySummaryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardTeacherActivitySummaryRequest>, I>>(
+    object: I,
+  ): GetPrincipalDashboardTeacherActivitySummaryRequest {
+    const message = createBaseGetPrincipalDashboardTeacherActivitySummaryRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.report_type = object.report_type ?? undefined;
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardTeacherPendingClass(): PrincipalDashboardTeacherPendingClass {
+  return { class_type: undefined, class_id: undefined, class_name: undefined, course_code: undefined, grades: [] };
+}
+
+export const PrincipalDashboardTeacherPendingClass: MessageFns<PrincipalDashboardTeacherPendingClass> = {
+  encode(message: PrincipalDashboardTeacherPendingClass, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.class_type !== undefined) {
+      writer.uint32(8).int32(reportPublishClassTypeToNumber(message.class_type));
+    }
+    if (message.class_id !== undefined) {
+      ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
+    }
+    if (message.class_name !== undefined) {
+      writer.uint32(26).string(message.class_name);
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(34).string(message.course_code);
+    }
+    for (const v of message.grades) {
+      writer.uint32(42).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardTeacherPendingClass {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardTeacherPendingClass();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.class_type = reportPublishClassTypeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.class_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.grades.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardTeacherPendingClass {
+    return {
+      class_type: isSet(object.classType) ? reportPublishClassTypeFromJSON(object.classType) : undefined,
+      class_id: isSet(object.classId) ? ObjectId.fromJSON(object.classId) : undefined,
+      class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => globalThis.String(e)) : [],
+    };
+  },
+
+  toJSON(message: PrincipalDashboardTeacherPendingClass): unknown {
+    const obj: any = {};
+    if (message.class_type !== undefined) {
+      obj.classType = reportPublishClassTypeToJSON(message.class_type);
+    }
+    if (message.class_id !== undefined) {
+      obj.classId = ObjectId.toJSON(message.class_id);
+    }
+    if (message.class_name !== undefined) {
+      obj.className = message.class_name;
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    if (message.grades?.length) {
+      obj.grades = message.grades;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardTeacherPendingClass>, I>>(
+    base?: I,
+  ): PrincipalDashboardTeacherPendingClass {
+    return PrincipalDashboardTeacherPendingClass.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardTeacherPendingClass>, I>>(
+    object: I,
+  ): PrincipalDashboardTeacherPendingClass {
+    const message = createBasePrincipalDashboardTeacherPendingClass();
+    message.class_type = object.class_type ?? undefined;
+    message.class_id = (object.class_id !== undefined && object.class_id !== null)
+      ? ObjectId.fromPartial(object.class_id)
+      : undefined;
+    message.class_name = object.class_name ?? undefined;
+    message.course_code = object.course_code ?? undefined;
+    message.grades = object.grades?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBasePrincipalDashboardTeacherActivityRow(): PrincipalDashboardTeacherActivityRow {
+  return {
+    teacher_id: undefined,
+    teacher_name: undefined,
+    markbook_complete: undefined,
+    reports_submitted: undefined,
+    pending_markbook_classes: [],
+    pending_report_classes: [],
+  };
+}
+
+export const PrincipalDashboardTeacherActivityRow: MessageFns<PrincipalDashboardTeacherActivityRow> = {
+  encode(message: PrincipalDashboardTeacherActivityRow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(10).fork()).join();
+    }
+    if (message.teacher_name !== undefined) {
+      writer.uint32(18).string(message.teacher_name);
+    }
+    if (message.markbook_complete !== undefined) {
+      writer.uint32(24).bool(message.markbook_complete);
+    }
+    if (message.reports_submitted !== undefined) {
+      writer.uint32(32).bool(message.reports_submitted);
+    }
+    for (const v of message.pending_markbook_classes) {
+      PrincipalDashboardTeacherPendingClass.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.pending_report_classes) {
+      PrincipalDashboardTeacherPendingClass.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardTeacherActivityRow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardTeacherActivityRow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teacher_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.markbook_complete = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.reports_submitted = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.pending_markbook_classes.push(PrincipalDashboardTeacherPendingClass.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.pending_report_classes.push(PrincipalDashboardTeacherPendingClass.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardTeacherActivityRow {
+    return {
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      teacher_name: isSet(object.teacherName) ? globalThis.String(object.teacherName) : undefined,
+      markbook_complete: isSet(object.markbookComplete) ? globalThis.Boolean(object.markbookComplete) : undefined,
+      reports_submitted: isSet(object.reportsSubmitted) ? globalThis.Boolean(object.reportsSubmitted) : undefined,
+      pending_markbook_classes: globalThis.Array.isArray(object?.pendingMarkbookClasses)
+        ? object.pendingMarkbookClasses.map((e: any) => PrincipalDashboardTeacherPendingClass.fromJSON(e))
+        : [],
+      pending_report_classes: globalThis.Array.isArray(object?.pendingReportClasses)
+        ? object.pendingReportClasses.map((e: any) => PrincipalDashboardTeacherPendingClass.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: PrincipalDashboardTeacherActivityRow): unknown {
+    const obj: any = {};
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.teacher_name !== undefined) {
+      obj.teacherName = message.teacher_name;
+    }
+    if (message.markbook_complete !== undefined) {
+      obj.markbookComplete = message.markbook_complete;
+    }
+    if (message.reports_submitted !== undefined) {
+      obj.reportsSubmitted = message.reports_submitted;
+    }
+    if (message.pending_markbook_classes?.length) {
+      obj.pendingMarkbookClasses = message.pending_markbook_classes.map((e) =>
+        PrincipalDashboardTeacherPendingClass.toJSON(e)
+      );
+    }
+    if (message.pending_report_classes?.length) {
+      obj.pendingReportClasses = message.pending_report_classes.map((e) =>
+        PrincipalDashboardTeacherPendingClass.toJSON(e)
+      );
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardTeacherActivityRow>, I>>(
+    base?: I,
+  ): PrincipalDashboardTeacherActivityRow {
+    return PrincipalDashboardTeacherActivityRow.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardTeacherActivityRow>, I>>(
+    object: I,
+  ): PrincipalDashboardTeacherActivityRow {
+    const message = createBasePrincipalDashboardTeacherActivityRow();
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.teacher_name = object.teacher_name ?? undefined;
+    message.markbook_complete = object.markbook_complete ?? undefined;
+    message.reports_submitted = object.reports_submitted ?? undefined;
+    message.pending_markbook_classes =
+      object.pending_markbook_classes?.map((e) => PrincipalDashboardTeacherPendingClass.fromPartial(e)) || [];
+    message.pending_report_classes =
+      object.pending_report_classes?.map((e) => PrincipalDashboardTeacherPendingClass.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetPrincipalDashboardTeacherActivitySummaryResponse(): GetPrincipalDashboardTeacherActivitySummaryResponse {
+  return { teachers: [] };
+}
+
+export const GetPrincipalDashboardTeacherActivitySummaryResponse: MessageFns<
+  GetPrincipalDashboardTeacherActivitySummaryResponse
+> = {
+  encode(
+    message: GetPrincipalDashboardTeacherActivitySummaryResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.teachers) {
+      PrincipalDashboardTeacherActivityRow.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPrincipalDashboardTeacherActivitySummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrincipalDashboardTeacherActivitySummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teachers.push(PrincipalDashboardTeacherActivityRow.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrincipalDashboardTeacherActivitySummaryResponse {
+    return {
+      teachers: globalThis.Array.isArray(object?.teachers)
+        ? object.teachers.map((e: any) => PrincipalDashboardTeacherActivityRow.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetPrincipalDashboardTeacherActivitySummaryResponse): unknown {
+    const obj: any = {};
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => PrincipalDashboardTeacherActivityRow.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrincipalDashboardTeacherActivitySummaryResponse>, I>>(
+    base?: I,
+  ): GetPrincipalDashboardTeacherActivitySummaryResponse {
+    return GetPrincipalDashboardTeacherActivitySummaryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrincipalDashboardTeacherActivitySummaryResponse>, I>>(
+    object: I,
+  ): GetPrincipalDashboardTeacherActivitySummaryResponse {
+    const message = createBaseGetPrincipalDashboardTeacherActivitySummaryResponse();
+    message.teachers = object.teachers?.map((e) => PrincipalDashboardTeacherActivityRow.fromPartial(e)) || [];
     return message;
   },
 };

@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: class_service/evaluation_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExportMarkbookExcelResponse = exports.ExportMarkbookExcelRequest = exports.StudentCourseMarkOverview = exports.GetStudentCoursesMarkOverviewResponse = exports.GetStudentCoursesMarkOverviewRequest = exports.StudentCoursePerformance = exports.GetStudentCoursePerformanceRequest = exports.GetStudentsCoursePerformanceResponse = exports.GetStudentsCoursePerformanceRequest = exports.GetCourseDetailedMarkCategoriesAndEvaluationsRequest = exports.DetailedMarkCategoriesAndEvaluationsResponse = exports.GetCourseMarkCategoriesRequest = exports.DeleteMarkCategoryRequest = exports.UpdateMarkCategoryRequest = exports.CreateMarkCategoryRequest = exports.UpdateEvaluationMarksRequest = exports.StudentMarkUpdate = exports.GetEvaluationEntriesFillCountsResponse = exports.EvaluationEntryFillCount = exports.GetEvaluationEntriesFillCountsRequest = exports.GetStudentCourseEvaluationEntriesRequest = exports.GetEvaluationEntriesResponse = exports.GetEvaluationEntriesRequest = exports.UnpublishEvaluationRequest = exports.PublishEvaluationRequest = exports.GetCourseEvaluationsResponse = exports.GetCourseDetailedEvaluationsResponse = exports.DeleteEvaluationRequest = exports.UpdateEvaluationRequest = exports.CreateEvaluationRequest = exports.protobufPackage = void 0;
+exports.GetPrincipalDashboardAcademicSummaryResponse = exports.PrincipalDashboardLowestMark = exports.PrincipalDashboardLowMarkCourse = exports.PrincipalDashboardGradeDistributionBucket = exports.GetPrincipalDashboardAcademicSummaryRequest = exports.ExportMarkbookExcelResponse = exports.ExportMarkbookExcelRequest = exports.StudentCourseMarkOverview = exports.GetStudentCoursesMarkOverviewResponse = exports.GetStudentCoursesMarkOverviewRequest = exports.StudentCoursePerformance = exports.GetStudentCoursePerformanceRequest = exports.GetStudentsCoursePerformanceResponse = exports.GetStudentsCoursePerformanceRequest = exports.GetCourseDetailedMarkCategoriesAndEvaluationsRequest = exports.DetailedMarkCategoriesAndEvaluationsResponse = exports.GetCourseMarkCategoriesRequest = exports.DeleteMarkCategoryRequest = exports.UpdateMarkCategoryRequest = exports.CreateMarkCategoryRequest = exports.UpdateEvaluationMarksRequest = exports.StudentMarkUpdate = exports.GetEvaluationEntriesFillCountsResponse = exports.EvaluationEntryFillCount = exports.GetEvaluationEntriesFillCountsRequest = exports.GetStudentCourseEvaluationEntriesRequest = exports.GetEvaluationEntriesResponse = exports.GetEvaluationEntriesRequest = exports.UnpublishEvaluationRequest = exports.PublishEvaluationRequest = exports.GetCourseEvaluationsResponse = exports.GetCourseDetailedEvaluationsResponse = exports.DeleteEvaluationRequest = exports.UpdateEvaluationRequest = exports.CreateEvaluationRequest = exports.PrincipalDashboardGradeBucket = exports.protobufPackage = void 0;
+exports.principalDashboardGradeBucketFromJSON = principalDashboardGradeBucketFromJSON;
+exports.principalDashboardGradeBucketToJSON = principalDashboardGradeBucketToJSON;
+exports.principalDashboardGradeBucketToNumber = principalDashboardGradeBucketToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -14,6 +17,80 @@ const evaluation_1 = require("./evaluation");
 const evaluation_entry_1 = require("./evaluation_entry");
 const mark_category_1 = require("./mark_category");
 exports.protobufPackage = "class_service.evaluation_service";
+var PrincipalDashboardGradeBucket;
+(function (PrincipalDashboardGradeBucket) {
+    PrincipalDashboardGradeBucket["UNSPECIFIED"] = "UNSPECIFIED";
+    PrincipalDashboardGradeBucket["RANGE_90_100"] = "RANGE_90_100";
+    PrincipalDashboardGradeBucket["RANGE_80_89"] = "RANGE_80_89";
+    PrincipalDashboardGradeBucket["RANGE_70_79"] = "RANGE_70_79";
+    PrincipalDashboardGradeBucket["RANGE_60_69"] = "RANGE_60_69";
+    PrincipalDashboardGradeBucket["BELOW_60"] = "BELOW_60";
+    PrincipalDashboardGradeBucket["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(PrincipalDashboardGradeBucket || (exports.PrincipalDashboardGradeBucket = PrincipalDashboardGradeBucket = {}));
+function principalDashboardGradeBucketFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "UNSPECIFIED":
+            return PrincipalDashboardGradeBucket.UNSPECIFIED;
+        case 1:
+        case "RANGE_90_100":
+            return PrincipalDashboardGradeBucket.RANGE_90_100;
+        case 2:
+        case "RANGE_80_89":
+            return PrincipalDashboardGradeBucket.RANGE_80_89;
+        case 3:
+        case "RANGE_70_79":
+            return PrincipalDashboardGradeBucket.RANGE_70_79;
+        case 4:
+        case "RANGE_60_69":
+            return PrincipalDashboardGradeBucket.RANGE_60_69;
+        case 5:
+        case "BELOW_60":
+            return PrincipalDashboardGradeBucket.BELOW_60;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return PrincipalDashboardGradeBucket.UNRECOGNIZED;
+    }
+}
+function principalDashboardGradeBucketToJSON(object) {
+    switch (object) {
+        case PrincipalDashboardGradeBucket.UNSPECIFIED:
+            return "UNSPECIFIED";
+        case PrincipalDashboardGradeBucket.RANGE_90_100:
+            return "RANGE_90_100";
+        case PrincipalDashboardGradeBucket.RANGE_80_89:
+            return "RANGE_80_89";
+        case PrincipalDashboardGradeBucket.RANGE_70_79:
+            return "RANGE_70_79";
+        case PrincipalDashboardGradeBucket.RANGE_60_69:
+            return "RANGE_60_69";
+        case PrincipalDashboardGradeBucket.BELOW_60:
+            return "BELOW_60";
+        case PrincipalDashboardGradeBucket.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function principalDashboardGradeBucketToNumber(object) {
+    switch (object) {
+        case PrincipalDashboardGradeBucket.UNSPECIFIED:
+            return 0;
+        case PrincipalDashboardGradeBucket.RANGE_90_100:
+            return 1;
+        case PrincipalDashboardGradeBucket.RANGE_80_89:
+            return 2;
+        case PrincipalDashboardGradeBucket.RANGE_70_79:
+            return 3;
+        case PrincipalDashboardGradeBucket.RANGE_60_69:
+            return 4;
+        case PrincipalDashboardGradeBucket.BELOW_60:
+            return 5;
+        case PrincipalDashboardGradeBucket.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseCreateEvaluationRequest() {
     return {
         context: undefined,
@@ -2438,6 +2515,497 @@ exports.ExportMarkbookExcelResponse = {
         const message = createBaseExportMarkbookExcelResponse();
         message.excel_data = object.excel_data ?? undefined;
         message.course_name = object.course_name ?? undefined;
+        return message;
+    },
+};
+function createBaseGetPrincipalDashboardAcademicSummaryRequest() {
+    return { context: undefined, school_year_id: undefined, semester_id: undefined };
+}
+exports.GetPrincipalDashboardAcademicSummaryRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPrincipalDashboardAcademicSummaryRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPrincipalDashboardAcademicSummaryRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPrincipalDashboardAcademicSummaryRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        return message;
+    },
+};
+function createBasePrincipalDashboardGradeDistributionBucket() {
+    return { bucket: undefined, count: undefined };
+}
+exports.PrincipalDashboardGradeDistributionBucket = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.bucket !== undefined) {
+            writer.uint32(8).int32(principalDashboardGradeBucketToNumber(message.bucket));
+        }
+        if (message.count !== undefined) {
+            writer.uint32(16).uint32(message.count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePrincipalDashboardGradeDistributionBucket();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.bucket = principalDashboardGradeBucketFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            bucket: isSet(object.bucket) ? principalDashboardGradeBucketFromJSON(object.bucket) : undefined,
+            count: isSet(object.count) ? globalThis.Number(object.count) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.bucket !== undefined) {
+            obj.bucket = principalDashboardGradeBucketToJSON(message.bucket);
+        }
+        if (message.count !== undefined) {
+            obj.count = Math.round(message.count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PrincipalDashboardGradeDistributionBucket.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePrincipalDashboardGradeDistributionBucket();
+        message.bucket = object.bucket ?? undefined;
+        message.count = object.count ?? undefined;
+        return message;
+    },
+};
+function createBasePrincipalDashboardLowMarkCourse() {
+    return {
+        course_id: undefined,
+        course_name: undefined,
+        course_code: undefined,
+        teacher_names: [],
+        average_mark: undefined,
+    };
+}
+exports.PrincipalDashboardLowMarkCourse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
+        }
+        if (message.course_name !== undefined) {
+            writer.uint32(18).string(message.course_name);
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(26).string(message.course_code);
+        }
+        for (const v of message.teacher_names) {
+            writer.uint32(34).string(v);
+        }
+        if (message.average_mark !== undefined) {
+            writer.uint32(41).double(message.average_mark);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePrincipalDashboardLowMarkCourse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.course_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.teacher_names.push(reader.string());
+                    continue;
+                case 5:
+                    if (tag !== 41) {
+                        break;
+                    }
+                    message.average_mark = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+            teacher_names: globalThis.Array.isArray(object?.teacherNames)
+                ? object.teacherNames.map((e) => globalThis.String(e))
+                : [],
+            average_mark: isSet(object.averageMark) ? globalThis.Number(object.averageMark) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+        }
+        if (message.course_name !== undefined) {
+            obj.courseName = message.course_name;
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        if (message.teacher_names?.length) {
+            obj.teacherNames = message.teacher_names;
+        }
+        if (message.average_mark !== undefined) {
+            obj.averageMark = message.average_mark;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PrincipalDashboardLowMarkCourse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePrincipalDashboardLowMarkCourse();
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
+            : undefined;
+        message.course_name = object.course_name ?? undefined;
+        message.course_code = object.course_code ?? undefined;
+        message.teacher_names = object.teacher_names?.map((e) => e) || [];
+        message.average_mark = object.average_mark ?? undefined;
+        return message;
+    },
+};
+function createBasePrincipalDashboardLowestMark() {
+    return {
+        student_id: undefined,
+        student_name: undefined,
+        course_id: undefined,
+        course_name: undefined,
+        mark: undefined,
+        course_code: undefined,
+    };
+}
+exports.PrincipalDashboardLowestMark = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+        }
+        if (message.student_name !== undefined) {
+            writer.uint32(18).string(message.student_name);
+        }
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(26).fork()).join();
+        }
+        if (message.course_name !== undefined) {
+            writer.uint32(34).string(message.course_name);
+        }
+        if (message.mark !== undefined) {
+            writer.uint32(41).double(message.mark);
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(50).string(message.course_code);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePrincipalDashboardLowestMark();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.course_name = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 41) {
+                        break;
+                    }
+                    message.mark = reader.double();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            course_name: isSet(object.courseName) ? globalThis.String(object.courseName) : undefined,
+            mark: isSet(object.mark) ? globalThis.Number(object.mark) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.student_name !== undefined) {
+            obj.studentName = message.student_name;
+        }
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+        }
+        if (message.course_name !== undefined) {
+            obj.courseName = message.course_name;
+        }
+        if (message.mark !== undefined) {
+            obj.mark = message.mark;
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PrincipalDashboardLowestMark.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePrincipalDashboardLowestMark();
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.student_name = object.student_name ?? undefined;
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
+            : undefined;
+        message.course_name = object.course_name ?? undefined;
+        message.mark = object.mark ?? undefined;
+        message.course_code = object.course_code ?? undefined;
+        return message;
+    },
+};
+function createBaseGetPrincipalDashboardAcademicSummaryResponse() {
+    return { grade_distribution: [], low_mark_courses: [], lowest_marks: [] };
+}
+exports.GetPrincipalDashboardAcademicSummaryResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.grade_distribution) {
+            exports.PrincipalDashboardGradeDistributionBucket.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.low_mark_courses) {
+            exports.PrincipalDashboardLowMarkCourse.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.lowest_marks) {
+            exports.PrincipalDashboardLowestMark.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPrincipalDashboardAcademicSummaryResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.grade_distribution.push(exports.PrincipalDashboardGradeDistributionBucket.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.low_mark_courses.push(exports.PrincipalDashboardLowMarkCourse.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.lowest_marks.push(exports.PrincipalDashboardLowestMark.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            grade_distribution: globalThis.Array.isArray(object?.gradeDistribution)
+                ? object.gradeDistribution.map((e) => exports.PrincipalDashboardGradeDistributionBucket.fromJSON(e))
+                : [],
+            low_mark_courses: globalThis.Array.isArray(object?.lowMarkCourses)
+                ? object.lowMarkCourses.map((e) => exports.PrincipalDashboardLowMarkCourse.fromJSON(e))
+                : [],
+            lowest_marks: globalThis.Array.isArray(object?.lowestMarks)
+                ? object.lowestMarks.map((e) => exports.PrincipalDashboardLowestMark.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.grade_distribution?.length) {
+            obj.gradeDistribution = message.grade_distribution.map((e) => exports.PrincipalDashboardGradeDistributionBucket.toJSON(e));
+        }
+        if (message.low_mark_courses?.length) {
+            obj.lowMarkCourses = message.low_mark_courses.map((e) => exports.PrincipalDashboardLowMarkCourse.toJSON(e));
+        }
+        if (message.lowest_marks?.length) {
+            obj.lowestMarks = message.lowest_marks.map((e) => exports.PrincipalDashboardLowestMark.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPrincipalDashboardAcademicSummaryResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPrincipalDashboardAcademicSummaryResponse();
+        message.grade_distribution =
+            object.grade_distribution?.map((e) => exports.PrincipalDashboardGradeDistributionBucket.fromPartial(e)) || [];
+        message.low_mark_courses = object.low_mark_courses?.map((e) => exports.PrincipalDashboardLowMarkCourse.fromPartial(e)) ||
+            [];
+        message.lowest_marks = object.lowest_marks?.map((e) => exports.PrincipalDashboardLowestMark.fromPartial(e)) || [];
         return message;
     },
 };

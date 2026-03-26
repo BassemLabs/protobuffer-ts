@@ -5,12 +5,13 @@
 //   protoc               unknown
 // source: user_service/required_actions_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WithdrawReregistrationStudentRequest = exports.GetFamilyRelevantSchoolYearsResponse = exports.GetFamilyRelevantSchoolYearsRequest = exports.GetFamilyAdmittedActionResponse = exports.GetFamilyAdmittedActionRequest = exports.GetStudentFirstOnboardingRequiredActionResponse = exports.GetStudentFirstOnboardingRequiredActionRequest = exports.FamilyActionSummary = exports.StudentActionSummary = exports.GetAdmittedStudentsActionsOverviewResponse = exports.GetAdmittedStudentsActionsOverviewRequest = exports.protobufPackage = void 0;
+exports.GetAdminActionableOnboardingStudentsResponse = exports.AdminActionableOnboardingStudent = exports.GetAdminActionableOnboardingStudentsRequest = exports.WithdrawReregistrationStudentRequest = exports.GetFamilyRelevantSchoolYearsResponse = exports.GetFamilyRelevantSchoolYearsRequest = exports.GetFamilyAdmittedActionResponse = exports.GetFamilyAdmittedActionRequest = exports.GetStudentFirstOnboardingRequiredActionResponse = exports.GetStudentFirstOnboardingRequiredActionRequest = exports.FamilyActionSummary = exports.StudentActionSummary = exports.GetAdmittedStudentsActionsOverviewResponse = exports.GetAdmittedStudentsActionsOverviewRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const action_required_by_parents_1 = require("./action_required_by_parents");
+const student_1 = require("./student");
 exports.protobufPackage = "user_service";
 function createBaseGetAdmittedStudentsActionsOverviewRequest() {
     return { context: undefined, family_id: undefined, school_year_id: undefined };
@@ -835,6 +836,242 @@ exports.WithdrawReregistrationStudentRequest = {
         message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetAdminActionableOnboardingStudentsRequest() {
+    return { context: undefined, school_year_id: undefined };
+}
+exports.GetAdminActionableOnboardingStudentsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAdminActionableOnboardingStudentsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAdminActionableOnboardingStudentsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAdminActionableOnboardingStudentsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseAdminActionableOnboardingStudent() {
+    return { student_id: undefined, student_name: undefined, status: undefined, grade: undefined, family_id: undefined };
+}
+exports.AdminActionableOnboardingStudent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+        }
+        if (message.student_name !== undefined) {
+            writer.uint32(18).string(message.student_name);
+        }
+        if (message.status !== undefined) {
+            writer.uint32(24).int32((0, student_1.studentStatusToNumber)(message.status));
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(32).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseAdminActionableOnboardingStudent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.status = (0, student_1.studentStatusFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+            status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.student_name !== undefined) {
+            obj.studentName = message.student_name;
+        }
+        if (message.status !== undefined) {
+            obj.status = (0, student_1.studentStatusToJSON)(message.status);
+        }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.AdminActionableOnboardingStudent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseAdminActionableOnboardingStudent();
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.student_name = object.student_name ?? undefined;
+        message.status = object.status ?? undefined;
+        message.grade = object.grade ?? undefined;
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAdminActionableOnboardingStudentsResponse() {
+    return { students: [] };
+}
+exports.GetAdminActionableOnboardingStudentsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.students) {
+            exports.AdminActionableOnboardingStudent.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAdminActionableOnboardingStudentsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.students.push(exports.AdminActionableOnboardingStudent.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            students: globalThis.Array.isArray(object?.students)
+                ? object.students.map((e) => exports.AdminActionableOnboardingStudent.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.students?.length) {
+            obj.students = message.students.map((e) => exports.AdminActionableOnboardingStudent.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAdminActionableOnboardingStudentsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAdminActionableOnboardingStudentsResponse();
+        message.students = object.students?.map((e) => exports.AdminActionableOnboardingStudent.fromPartial(e)) || [];
         return message;
     },
 };

@@ -8,6 +8,14 @@ import { Attendance, AttendanceStatus } from "./attendance";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
 export declare const protobufPackage = "class_service.attendance_service";
+export declare enum PrincipalDashboardAttendanceScopeType {
+    PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM",
+    PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_COURSE",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function principalDashboardAttendanceScopeTypeFromJSON(object: any): PrincipalDashboardAttendanceScopeType;
+export declare function principalDashboardAttendanceScopeTypeToJSON(object: PrincipalDashboardAttendanceScopeType): string;
+export declare function principalDashboardAttendanceScopeTypeToNumber(object: PrincipalDashboardAttendanceScopeType): number;
 export declare enum TimeType {
     SignIn = "SignIn",
     SignOut = "SignOut",
@@ -25,6 +33,51 @@ export declare enum AttendanceCompletionStatus {
 export declare function attendanceCompletionStatusFromJSON(object: any): AttendanceCompletionStatus;
 export declare function attendanceCompletionStatusToJSON(object: AttendanceCompletionStatus): string;
 export declare function attendanceCompletionStatusToNumber(object: AttendanceCompletionStatus): number;
+export interface GetPrincipalDashboardAttendanceSummaryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    as_of_date?: Date | undefined;
+    semester_id?: ObjectId | undefined;
+}
+/**
+ * One point in the weekly attendance trend chart shown on the dashboard.
+ * Example: week_start_date = "2026-03-02", attendance_pct = 91.4
+ */
+export interface PrincipalDashboardAttendanceTrendPoint {
+    /** ISO date string for the first day of the represented week in org-local time. */
+    week_start_date?: string | undefined;
+    /** Attendance percentage for that week. */
+    attendance_pct?: number | undefined;
+}
+/** One row in the "Attendance Needed Today" list on the dashboard. */
+export interface PrincipalDashboardAttendanceTodayRow {
+    row_type?: PrincipalDashboardAttendanceScopeType | undefined;
+    class_id: ObjectId | undefined;
+    class_name?: string | undefined;
+    course_code?: string | undefined;
+    teacher_names: string[];
+    expected_count?: number | undefined;
+    marked_count?: number | undefined;
+}
+export interface PrincipalDashboardChronicAbsentee {
+    student_id: ObjectId | undefined;
+    student_name?: string | undefined;
+    homeroom_id?: ObjectId | undefined;
+    homeroom_name?: string | undefined;
+    absences?: number | undefined;
+    absence_pct?: number | undefined;
+}
+export interface GetPrincipalDashboardAttendanceSummaryResponse {
+    weekly_trend: PrincipalDashboardAttendanceTrendPoint[];
+    today_rows: PrincipalDashboardAttendanceTodayRow[];
+    chronic_absentees: PrincipalDashboardChronicAbsentee[];
+    completion_today_pct?: number | undefined;
+    homerooms_total_today?: number | undefined;
+    homerooms_filled_today?: number | undefined;
+    courses_total_today?: number | undefined;
+    courses_filled_today?: number | undefined;
+    is_school_day_today?: boolean | undefined;
+}
 export interface AttendanceResponse {
     attendance: Attendance[];
 }
@@ -210,6 +263,11 @@ export interface GetSingleStudentCourseAttendanceEntryResponse {
     attendance_entry: Attendance | undefined;
     course: Course | undefined;
 }
+export declare const GetPrincipalDashboardAttendanceSummaryRequest: MessageFns<GetPrincipalDashboardAttendanceSummaryRequest>;
+export declare const PrincipalDashboardAttendanceTrendPoint: MessageFns<PrincipalDashboardAttendanceTrendPoint>;
+export declare const PrincipalDashboardAttendanceTodayRow: MessageFns<PrincipalDashboardAttendanceTodayRow>;
+export declare const PrincipalDashboardChronicAbsentee: MessageFns<PrincipalDashboardChronicAbsentee>;
+export declare const GetPrincipalDashboardAttendanceSummaryResponse: MessageFns<GetPrincipalDashboardAttendanceSummaryResponse>;
 export declare const AttendanceResponse: MessageFns<AttendanceResponse>;
 export declare const ClassRef: MessageFns<ClassRef>;
 export declare const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest>;
