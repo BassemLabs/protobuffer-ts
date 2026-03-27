@@ -3,7 +3,6 @@ import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Teacher, TeacherBasic, TeacherProfile, TeacherStatus } from "./teacher";
-import { UserRole } from "./user_role";
 export declare const protobufPackage = "user_service";
 export interface GetTeacherRequest {
     context: RequestContext | undefined;
@@ -88,16 +87,6 @@ export interface ReactivateTeacherRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
 }
-export interface AddTeacherRoleRequest {
-    context: RequestContext | undefined;
-    teacher_id: ObjectId | undefined;
-    role?: UserRole | undefined;
-}
-export interface RemoveTeacherRoleRequest {
-    context: RequestContext | undefined;
-    teacher_id: ObjectId | undefined;
-    role?: UserRole | undefined;
-}
 export interface UploadTeachersRequest {
     context: RequestContext | undefined;
     /** CSV file content as base64-encoded string */
@@ -137,8 +126,6 @@ export declare const ChangeTeacherPasswordRequest: MessageFns<ChangeTeacherPassw
 export declare const CreateTeacherRequest: MessageFns<CreateTeacherRequest>;
 export declare const WithdrawTeacherRequest: MessageFns<WithdrawTeacherRequest>;
 export declare const ReactivateTeacherRequest: MessageFns<ReactivateTeacherRequest>;
-export declare const AddTeacherRoleRequest: MessageFns<AddTeacherRoleRequest>;
-export declare const RemoveTeacherRoleRequest: MessageFns<RemoveTeacherRoleRequest>;
 export declare const UploadTeachersRequest: MessageFns<UploadTeachersRequest>;
 export declare const UploadTeachersResponse: MessageFns<UploadTeachersResponse>;
 export declare const CheckCanRemoveOrgDomainRequest: MessageFns<CheckCanRemoveOrgDomainRequest>;

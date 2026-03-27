@@ -9,219 +9,287 @@
 export const protobufPackage = "user_service";
 
 export enum UserRole {
-  DEVELOPER = "DEVELOPER",
-  BASSEM_LABS_ADMIN = "BASSEM_LABS_ADMIN",
   ORGANIZATION_SUPER_ADMIN = "ORGANIZATION_SUPER_ADMIN",
-  CAN_ACCESS_STUDENT = "CAN_ACCESS_STUDENT",
-  CAN_MODIFY_STUDENT = "CAN_MODIFY_STUDENT",
-  CAN_ACCESS_ALL_STUDENT = "CAN_ACCESS_ALL_STUDENT",
-  CAN_MODIFY_ALL_STUDENT = "CAN_MODIFY_ALL_STUDENT",
-  CAN_ACCESS_STUDENT_DOCUMENTS = "CAN_ACCESS_STUDENT_DOCUMENTS",
-  CAN_MODIFY_STUDENT_DOCUMENTS = "CAN_MODIFY_STUDENT_DOCUMENTS",
-  CAN_ACCESS_SENSITIVE_STUDENT = "CAN_ACCESS_SENSITIVE_STUDENT",
-  CAN_MODIFY_SENSITIVE_STUDENT = "CAN_MODIFY_SENSITIVE_STUDENT",
-  CAN_ENROLL_STUDENT = "CAN_ENROLL_STUDENT",
-  CAN_ACCESS_TEACHER = "CAN_ACCESS_TEACHER",
-  CAN_MODIFY_TEACHER = "CAN_MODIFY_TEACHER",
-  CAN_CREATE_TEACHER = "CAN_CREATE_TEACHER",
-  CAN_ACCESS_PARENT = "CAN_ACCESS_PARENT",
-  CAN_MODIFY_PARENT = "CAN_MODIFY_PARENT",
-  CAN_ACCESS_ALL_TEACHER = "CAN_ACCESS_ALL_TEACHER",
-  CAN_ACCESS_HOMEROOM = "CAN_ACCESS_HOMEROOM",
-  CAN_MODIFY_HOMEROOM = "CAN_MODIFY_HOMEROOM",
-  CAN_CREATE_HOMEROOM = "CAN_CREATE_HOMEROOM",
-  CAN_ACCESS_COURSE = "CAN_ACCESS_COURSE",
-  CAN_MODIFY_COURSE = "CAN_MODIFY_COURSE",
-  CAN_CREATE_COURSE = "CAN_CREATE_COURSE",
-  CAN_ACCESS_ALL_HOMEROOM = "CAN_ACCESS_ALL_HOMEROOM",
-  CAN_MODIFY_ALL_HOMEROOM = "CAN_MODIFY_ALL_HOMEROOM",
-  CAN_ACCESS_ALL_COURSE = "CAN_ACCESS_ALL_COURSE",
-  CAN_MODIFY_ALL_COURSE = "CAN_MODIFY_ALL_COURSE",
-  CAN_ACCESS_ALL_ATTENDANCE = "CAN_ACCESS_ALL_ATTENDANCE",
-  CAN_ACCESS_ATTENDANCE = "CAN_ACCESS_ATTENDANCE",
-  CAN_ACCESS_INVOICE_MANAGER = "CAN_ACCESS_INVOICE_MANAGER",
-  CAN_MODIFY_INVOICE_MANAGER = "CAN_MODIFY_INVOICE_MANAGER",
-  CAN_ACCESS_TRANSACTION = "CAN_ACCESS_TRANSACTION",
-  CAN_MODIFY_TRANSACTION = "CAN_MODIFY_TRANSACTION",
-  CAN_ACCESS_TUITION_MANAGER = "CAN_ACCESS_TUITION_MANAGER",
-  CAN_MODIFY_TUITION_MANAGER = "CAN_MODIFY_TUITION_MANAGER",
-  CAN_ACCESS_VIOLATION = "CAN_ACCESS_VIOLATION",
-  CAN_ACCESS_REPORT_ENTRY = "CAN_ACCESS_REPORT_ENTRY",
-  CAN_APPROVE_REPORT_ENTRY = "CAN_APPROVE_REPORT_ENTRY",
-  CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY = "CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY",
-  CAN_ACCESS_MARK_BOOK = "CAN_ACCESS_MARK_BOOK",
-  CAN_MODIFY_MARK_BOOK = "CAN_MODIFY_MARK_BOOK",
-  CAN_ACCESS_STUDENT_INCIDENT = "CAN_ACCESS_STUDENT_INCIDENT",
-  CAN_MODIFY_STUDENT_INCIDENT = "CAN_MODIFY_STUDENT_INCIDENT",
-  REPORT_CARD_ADMIN = "REPORT_CARD_ADMIN",
-  CAN_ACCESS_SCHEDULING = "CAN_ACCESS_SCHEDULING",
-  CAN_MODIFY_SCHEDULING = "CAN_MODIFY_SCHEDULING",
-  CAN_SEE_ALL_REPORTS = "CAN_SEE_ALL_REPORTS",
-  CAN_ACCESS_FAMILY_MANAGER = "CAN_ACCESS_FAMILY_MANAGER",
-  CAN_ACCESS_SEMESTER = "CAN_ACCESS_SEMESTER",
-  CAN_MODIFY_SEMESTER = "CAN_MODIFY_SEMESTER",
-  CAN_MODIFY_ANNOUNCEMENT = "CAN_MODIFY_ANNOUNCEMENT",
+  MARKBOOK_VIEW_OWN = "MARKBOOK_VIEW_OWN",
+  MARKBOOK_VIEW_ALL = "MARKBOOK_VIEW_ALL",
+  MARKBOOK_EDIT_OWN = "MARKBOOK_EDIT_OWN",
+  MARKBOOK_EDIT_ALL = "MARKBOOK_EDIT_ALL",
+  ATTENDANCE_VIEW_OWN = "ATTENDANCE_VIEW_OWN",
+  ATTENDANCE_VIEW_ALL = "ATTENDANCE_VIEW_ALL",
+  ATTENDANCE_EDIT_OWN = "ATTENDANCE_EDIT_OWN",
+  ATTENDANCE_EDIT_ALL = "ATTENDANCE_EDIT_ALL",
+  REPORT_CARDS_VIEW_OWN = "REPORT_CARDS_VIEW_OWN",
+  REPORT_CARDS_VIEW_ALL = "REPORT_CARDS_VIEW_ALL",
+  REPORT_CARDS_EDIT_OWN = "REPORT_CARDS_EDIT_OWN",
+  REPORT_CARDS_EDIT_ALL = "REPORT_CARDS_EDIT_ALL",
+  REPORT_CARDS_REVIEW = "REPORT_CARDS_REVIEW",
+  REPORT_CARDS_PUBLISH = "REPORT_CARDS_PUBLISH",
+  REPORT_CARDS_EDIT_AFTER_DUE_DATE = "REPORT_CARDS_EDIT_AFTER_DUE_DATE",
+  ANNOUNCEMENTS_CREATE_OWN = "ANNOUNCEMENTS_CREATE_OWN",
+  ANNOUNCEMENTS_CREATE_ALL = "ANNOUNCEMENTS_CREATE_ALL",
+  COMMUNICATION_CREATE_OWN = "COMMUNICATION_CREATE_OWN",
+  COMMUNICATION_CREATE_ALL = "COMMUNICATION_CREATE_ALL",
+  INVOICES_VIEW_OWN = "INVOICES_VIEW_OWN",
+  INVOICES_VIEW_ALL = "INVOICES_VIEW_ALL",
+  INVOICES_EDIT_OWN = "INVOICES_EDIT_OWN",
+  INVOICES_EDIT_ALL = "INVOICES_EDIT_ALL",
+  TRANSACTIONS_EDIT_OWN = "TRANSACTIONS_EDIT_OWN",
+  TRANSACTIONS_EDIT_ALL = "TRANSACTIONS_EDIT_ALL",
+  TUITION_VIEW = "TUITION_VIEW",
+  TUITION_SETTINGS = "TUITION_SETTINGS",
+  TUITION_GENERATION = "TUITION_GENERATION",
+  WAITLIST_ADD = "WAITLIST_ADD",
+  WAITLIST_VIEW = "WAITLIST_VIEW",
+  WAITLIST_ACCEPT = "WAITLIST_ACCEPT",
+  INTERVIEW_VIEW = "INTERVIEW_VIEW",
+  INTERVIEW_EDIT = "INTERVIEW_EDIT",
+  INTERVIEW_DECIDE = "INTERVIEW_DECIDE",
+  APPLICANTS_VIEW = "APPLICANTS_VIEW",
+  APPLICANTS_REVIEW_INFO = "APPLICANTS_REVIEW_INFO",
+  APPLICANTS_DECIDE = "APPLICANTS_DECIDE",
+  FAMILIES_VIEW_OWN = "FAMILIES_VIEW_OWN",
+  FAMILIES_VIEW_ALL = "FAMILIES_VIEW_ALL",
+  FAMILIES_MODIFY_OWN = "FAMILIES_MODIFY_OWN",
+  FAMILIES_MODIFY_ALL = "FAMILIES_MODIFY_ALL",
+  FAMILIES_CREATE = "FAMILIES_CREATE",
+  STUDENTS_VIEW_OWN = "STUDENTS_VIEW_OWN",
+  STUDENTS_VIEW_ALL = "STUDENTS_VIEW_ALL",
+  STUDENTS_MODIFY_OWN = "STUDENTS_MODIFY_OWN",
+  STUDENTS_MODIFY_ALL = "STUDENTS_MODIFY_ALL",
+  STUDENT_PROFILE_FULL_VIEW_OWN = "STUDENT_PROFILE_FULL_VIEW_OWN",
+  STUDENT_PROFILE_FULL_VIEW_ALL = "STUDENT_PROFILE_FULL_VIEW_ALL",
+  STUDENTS_CHANGE_PASSWORD = "STUDENTS_CHANGE_PASSWORD",
+  STUDENTS_UPLOAD = "STUDENTS_UPLOAD",
+  STUDENT_INCIDENTS_VIEW_OWN = "STUDENT_INCIDENTS_VIEW_OWN",
+  STUDENT_INCIDENTS_VIEW_ALL = "STUDENT_INCIDENTS_VIEW_ALL",
+  STUDENT_INCIDENTS_CREATE_OWN = "STUDENT_INCIDENTS_CREATE_OWN",
+  STUDENT_INCIDENTS_CREATE_ALL = "STUDENT_INCIDENTS_CREATE_ALL",
+  STUDENT_INCIDENTS_EDIT_OWN = "STUDENT_INCIDENTS_EDIT_OWN",
+  STUDENT_INCIDENTS_EDIT_ALL = "STUDENT_INCIDENTS_EDIT_ALL",
+  TEACHERS_VIEW = "TEACHERS_VIEW",
+  TEACHERS_CREATE = "TEACHERS_CREATE",
+  TEACHERS_MODIFY = "TEACHERS_MODIFY",
+  TEACHERS_CHANGE_PASSWORD = "TEACHERS_CHANGE_PASSWORD",
+  TEACHERS_ASSIGN_ROLES = "TEACHERS_ASSIGN_ROLES",
+  TEACHERS_UPLOAD = "TEACHERS_UPLOAD",
+  CLASSES_VIEW_OWN = "CLASSES_VIEW_OWN",
+  CLASSES_VIEW_ALL = "CLASSES_VIEW_ALL",
+  CLASSES_MODIFY_OWN = "CLASSES_MODIFY_OWN",
+  CLASSES_MODIFY_ALL = "CLASSES_MODIFY_ALL",
+  CLASSES_CREATE = "CLASSES_CREATE",
+  ORG_SETTINGS_FULL_ACCESS = "ORG_SETTINGS_FULL_ACCESS",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 export function userRoleFromJSON(object: any): UserRole {
   switch (object) {
     case 0:
-    case "DEVELOPER":
-      return UserRole.DEVELOPER;
-    case 1:
-    case "BASSEM_LABS_ADMIN":
-      return UserRole.BASSEM_LABS_ADMIN;
-    case 2:
     case "ORGANIZATION_SUPER_ADMIN":
       return UserRole.ORGANIZATION_SUPER_ADMIN;
+    case 1:
+    case "MARKBOOK_VIEW_OWN":
+      return UserRole.MARKBOOK_VIEW_OWN;
+    case 2:
+    case "MARKBOOK_VIEW_ALL":
+      return UserRole.MARKBOOK_VIEW_ALL;
     case 3:
-    case "CAN_ACCESS_STUDENT":
-      return UserRole.CAN_ACCESS_STUDENT;
+    case "MARKBOOK_EDIT_OWN":
+      return UserRole.MARKBOOK_EDIT_OWN;
     case 4:
-    case "CAN_MODIFY_STUDENT":
-      return UserRole.CAN_MODIFY_STUDENT;
+    case "MARKBOOK_EDIT_ALL":
+      return UserRole.MARKBOOK_EDIT_ALL;
     case 5:
-    case "CAN_ACCESS_ALL_STUDENT":
-      return UserRole.CAN_ACCESS_ALL_STUDENT;
+    case "ATTENDANCE_VIEW_OWN":
+      return UserRole.ATTENDANCE_VIEW_OWN;
     case 6:
-    case "CAN_MODIFY_ALL_STUDENT":
-      return UserRole.CAN_MODIFY_ALL_STUDENT;
+    case "ATTENDANCE_VIEW_ALL":
+      return UserRole.ATTENDANCE_VIEW_ALL;
     case 7:
-    case "CAN_ACCESS_STUDENT_DOCUMENTS":
-      return UserRole.CAN_ACCESS_STUDENT_DOCUMENTS;
+    case "ATTENDANCE_EDIT_OWN":
+      return UserRole.ATTENDANCE_EDIT_OWN;
     case 8:
-    case "CAN_MODIFY_STUDENT_DOCUMENTS":
-      return UserRole.CAN_MODIFY_STUDENT_DOCUMENTS;
+    case "ATTENDANCE_EDIT_ALL":
+      return UserRole.ATTENDANCE_EDIT_ALL;
     case 9:
-    case "CAN_ACCESS_SENSITIVE_STUDENT":
-      return UserRole.CAN_ACCESS_SENSITIVE_STUDENT;
+    case "REPORT_CARDS_VIEW_OWN":
+      return UserRole.REPORT_CARDS_VIEW_OWN;
     case 10:
-    case "CAN_MODIFY_SENSITIVE_STUDENT":
-      return UserRole.CAN_MODIFY_SENSITIVE_STUDENT;
+    case "REPORT_CARDS_VIEW_ALL":
+      return UserRole.REPORT_CARDS_VIEW_ALL;
     case 11:
-    case "CAN_ENROLL_STUDENT":
-      return UserRole.CAN_ENROLL_STUDENT;
+    case "REPORT_CARDS_EDIT_OWN":
+      return UserRole.REPORT_CARDS_EDIT_OWN;
     case 12:
-    case "CAN_ACCESS_TEACHER":
-      return UserRole.CAN_ACCESS_TEACHER;
+    case "REPORT_CARDS_EDIT_ALL":
+      return UserRole.REPORT_CARDS_EDIT_ALL;
     case 13:
-    case "CAN_MODIFY_TEACHER":
-      return UserRole.CAN_MODIFY_TEACHER;
+    case "REPORT_CARDS_REVIEW":
+      return UserRole.REPORT_CARDS_REVIEW;
     case 14:
-    case "CAN_CREATE_TEACHER":
-      return UserRole.CAN_CREATE_TEACHER;
+    case "REPORT_CARDS_PUBLISH":
+      return UserRole.REPORT_CARDS_PUBLISH;
     case 15:
-    case "CAN_ACCESS_PARENT":
-      return UserRole.CAN_ACCESS_PARENT;
+    case "REPORT_CARDS_EDIT_AFTER_DUE_DATE":
+      return UserRole.REPORT_CARDS_EDIT_AFTER_DUE_DATE;
     case 16:
-    case "CAN_MODIFY_PARENT":
-      return UserRole.CAN_MODIFY_PARENT;
+    case "ANNOUNCEMENTS_CREATE_OWN":
+      return UserRole.ANNOUNCEMENTS_CREATE_OWN;
     case 17:
-    case "CAN_ACCESS_ALL_TEACHER":
-      return UserRole.CAN_ACCESS_ALL_TEACHER;
+    case "ANNOUNCEMENTS_CREATE_ALL":
+      return UserRole.ANNOUNCEMENTS_CREATE_ALL;
     case 18:
-    case "CAN_ACCESS_HOMEROOM":
-      return UserRole.CAN_ACCESS_HOMEROOM;
+    case "COMMUNICATION_CREATE_OWN":
+      return UserRole.COMMUNICATION_CREATE_OWN;
     case 19:
-    case "CAN_MODIFY_HOMEROOM":
-      return UserRole.CAN_MODIFY_HOMEROOM;
+    case "COMMUNICATION_CREATE_ALL":
+      return UserRole.COMMUNICATION_CREATE_ALL;
     case 20:
-    case "CAN_CREATE_HOMEROOM":
-      return UserRole.CAN_CREATE_HOMEROOM;
+    case "INVOICES_VIEW_OWN":
+      return UserRole.INVOICES_VIEW_OWN;
     case 21:
-    case "CAN_ACCESS_COURSE":
-      return UserRole.CAN_ACCESS_COURSE;
+    case "INVOICES_VIEW_ALL":
+      return UserRole.INVOICES_VIEW_ALL;
     case 22:
-    case "CAN_MODIFY_COURSE":
-      return UserRole.CAN_MODIFY_COURSE;
+    case "INVOICES_EDIT_OWN":
+      return UserRole.INVOICES_EDIT_OWN;
     case 23:
-    case "CAN_CREATE_COURSE":
-      return UserRole.CAN_CREATE_COURSE;
+    case "INVOICES_EDIT_ALL":
+      return UserRole.INVOICES_EDIT_ALL;
     case 24:
-    case "CAN_ACCESS_ALL_HOMEROOM":
-      return UserRole.CAN_ACCESS_ALL_HOMEROOM;
+    case "TRANSACTIONS_EDIT_OWN":
+      return UserRole.TRANSACTIONS_EDIT_OWN;
     case 25:
-    case "CAN_MODIFY_ALL_HOMEROOM":
-      return UserRole.CAN_MODIFY_ALL_HOMEROOM;
+    case "TRANSACTIONS_EDIT_ALL":
+      return UserRole.TRANSACTIONS_EDIT_ALL;
     case 26:
-    case "CAN_ACCESS_ALL_COURSE":
-      return UserRole.CAN_ACCESS_ALL_COURSE;
+    case "TUITION_VIEW":
+      return UserRole.TUITION_VIEW;
     case 27:
-    case "CAN_MODIFY_ALL_COURSE":
-      return UserRole.CAN_MODIFY_ALL_COURSE;
+    case "TUITION_SETTINGS":
+      return UserRole.TUITION_SETTINGS;
     case 28:
-    case "CAN_ACCESS_ALL_ATTENDANCE":
-      return UserRole.CAN_ACCESS_ALL_ATTENDANCE;
+    case "TUITION_GENERATION":
+      return UserRole.TUITION_GENERATION;
     case 29:
-    case "CAN_ACCESS_ATTENDANCE":
-      return UserRole.CAN_ACCESS_ATTENDANCE;
+    case "WAITLIST_ADD":
+      return UserRole.WAITLIST_ADD;
     case 30:
-    case "CAN_ACCESS_INVOICE_MANAGER":
-      return UserRole.CAN_ACCESS_INVOICE_MANAGER;
+    case "WAITLIST_VIEW":
+      return UserRole.WAITLIST_VIEW;
     case 31:
-    case "CAN_MODIFY_INVOICE_MANAGER":
-      return UserRole.CAN_MODIFY_INVOICE_MANAGER;
+    case "WAITLIST_ACCEPT":
+      return UserRole.WAITLIST_ACCEPT;
     case 32:
-    case "CAN_ACCESS_TRANSACTION":
-      return UserRole.CAN_ACCESS_TRANSACTION;
+    case "INTERVIEW_VIEW":
+      return UserRole.INTERVIEW_VIEW;
     case 33:
-    case "CAN_MODIFY_TRANSACTION":
-      return UserRole.CAN_MODIFY_TRANSACTION;
+    case "INTERVIEW_EDIT":
+      return UserRole.INTERVIEW_EDIT;
     case 34:
-    case "CAN_ACCESS_TUITION_MANAGER":
-      return UserRole.CAN_ACCESS_TUITION_MANAGER;
+    case "INTERVIEW_DECIDE":
+      return UserRole.INTERVIEW_DECIDE;
     case 35:
-    case "CAN_MODIFY_TUITION_MANAGER":
-      return UserRole.CAN_MODIFY_TUITION_MANAGER;
+    case "APPLICANTS_VIEW":
+      return UserRole.APPLICANTS_VIEW;
     case 36:
-    case "CAN_ACCESS_VIOLATION":
-      return UserRole.CAN_ACCESS_VIOLATION;
+    case "APPLICANTS_REVIEW_INFO":
+      return UserRole.APPLICANTS_REVIEW_INFO;
     case 37:
-    case "CAN_ACCESS_REPORT_ENTRY":
-      return UserRole.CAN_ACCESS_REPORT_ENTRY;
+    case "APPLICANTS_DECIDE":
+      return UserRole.APPLICANTS_DECIDE;
     case 38:
-    case "CAN_APPROVE_REPORT_ENTRY":
-      return UserRole.CAN_APPROVE_REPORT_ENTRY;
+    case "FAMILIES_VIEW_OWN":
+      return UserRole.FAMILIES_VIEW_OWN;
     case 39:
-    case "CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY":
-      return UserRole.CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY;
+    case "FAMILIES_VIEW_ALL":
+      return UserRole.FAMILIES_VIEW_ALL;
     case 40:
-    case "CAN_ACCESS_MARK_BOOK":
-      return UserRole.CAN_ACCESS_MARK_BOOK;
+    case "FAMILIES_MODIFY_OWN":
+      return UserRole.FAMILIES_MODIFY_OWN;
     case 41:
-    case "CAN_MODIFY_MARK_BOOK":
-      return UserRole.CAN_MODIFY_MARK_BOOK;
+    case "FAMILIES_MODIFY_ALL":
+      return UserRole.FAMILIES_MODIFY_ALL;
     case 42:
-    case "CAN_ACCESS_STUDENT_INCIDENT":
-      return UserRole.CAN_ACCESS_STUDENT_INCIDENT;
+    case "FAMILIES_CREATE":
+      return UserRole.FAMILIES_CREATE;
     case 43:
-    case "CAN_MODIFY_STUDENT_INCIDENT":
-      return UserRole.CAN_MODIFY_STUDENT_INCIDENT;
+    case "STUDENTS_VIEW_OWN":
+      return UserRole.STUDENTS_VIEW_OWN;
     case 44:
-    case "REPORT_CARD_ADMIN":
-      return UserRole.REPORT_CARD_ADMIN;
+    case "STUDENTS_VIEW_ALL":
+      return UserRole.STUDENTS_VIEW_ALL;
     case 45:
-    case "CAN_ACCESS_SCHEDULING":
-      return UserRole.CAN_ACCESS_SCHEDULING;
+    case "STUDENTS_MODIFY_OWN":
+      return UserRole.STUDENTS_MODIFY_OWN;
     case 46:
-    case "CAN_MODIFY_SCHEDULING":
-      return UserRole.CAN_MODIFY_SCHEDULING;
+    case "STUDENTS_MODIFY_ALL":
+      return UserRole.STUDENTS_MODIFY_ALL;
     case 47:
-    case "CAN_SEE_ALL_REPORTS":
-      return UserRole.CAN_SEE_ALL_REPORTS;
+    case "STUDENT_PROFILE_FULL_VIEW_OWN":
+      return UserRole.STUDENT_PROFILE_FULL_VIEW_OWN;
     case 48:
-    case "CAN_ACCESS_FAMILY_MANAGER":
-      return UserRole.CAN_ACCESS_FAMILY_MANAGER;
+    case "STUDENT_PROFILE_FULL_VIEW_ALL":
+      return UserRole.STUDENT_PROFILE_FULL_VIEW_ALL;
     case 49:
-    case "CAN_ACCESS_SEMESTER":
-      return UserRole.CAN_ACCESS_SEMESTER;
+    case "STUDENTS_CHANGE_PASSWORD":
+      return UserRole.STUDENTS_CHANGE_PASSWORD;
     case 50:
-    case "CAN_MODIFY_SEMESTER":
-      return UserRole.CAN_MODIFY_SEMESTER;
+    case "STUDENTS_UPLOAD":
+      return UserRole.STUDENTS_UPLOAD;
     case 51:
-    case "CAN_MODIFY_ANNOUNCEMENT":
-      return UserRole.CAN_MODIFY_ANNOUNCEMENT;
+    case "STUDENT_INCIDENTS_VIEW_OWN":
+      return UserRole.STUDENT_INCIDENTS_VIEW_OWN;
+    case 52:
+    case "STUDENT_INCIDENTS_VIEW_ALL":
+      return UserRole.STUDENT_INCIDENTS_VIEW_ALL;
+    case 53:
+    case "STUDENT_INCIDENTS_CREATE_OWN":
+      return UserRole.STUDENT_INCIDENTS_CREATE_OWN;
+    case 54:
+    case "STUDENT_INCIDENTS_CREATE_ALL":
+      return UserRole.STUDENT_INCIDENTS_CREATE_ALL;
+    case 55:
+    case "STUDENT_INCIDENTS_EDIT_OWN":
+      return UserRole.STUDENT_INCIDENTS_EDIT_OWN;
+    case 56:
+    case "STUDENT_INCIDENTS_EDIT_ALL":
+      return UserRole.STUDENT_INCIDENTS_EDIT_ALL;
+    case 57:
+    case "TEACHERS_VIEW":
+      return UserRole.TEACHERS_VIEW;
+    case 58:
+    case "TEACHERS_CREATE":
+      return UserRole.TEACHERS_CREATE;
+    case 59:
+    case "TEACHERS_MODIFY":
+      return UserRole.TEACHERS_MODIFY;
+    case 60:
+    case "TEACHERS_CHANGE_PASSWORD":
+      return UserRole.TEACHERS_CHANGE_PASSWORD;
+    case 61:
+    case "TEACHERS_ASSIGN_ROLES":
+      return UserRole.TEACHERS_ASSIGN_ROLES;
+    case 62:
+    case "TEACHERS_UPLOAD":
+      return UserRole.TEACHERS_UPLOAD;
+    case 63:
+    case "CLASSES_VIEW_OWN":
+      return UserRole.CLASSES_VIEW_OWN;
+    case 64:
+    case "CLASSES_VIEW_ALL":
+      return UserRole.CLASSES_VIEW_ALL;
+    case 65:
+    case "CLASSES_MODIFY_OWN":
+      return UserRole.CLASSES_MODIFY_OWN;
+    case 66:
+    case "CLASSES_MODIFY_ALL":
+      return UserRole.CLASSES_MODIFY_ALL;
+    case 67:
+    case "CLASSES_CREATE":
+      return UserRole.CLASSES_CREATE;
+    case 68:
+    case "ORG_SETTINGS_FULL_ACCESS":
+      return UserRole.ORG_SETTINGS_FULL_ACCESS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -231,110 +299,144 @@ export function userRoleFromJSON(object: any): UserRole {
 
 export function userRoleToJSON(object: UserRole): string {
   switch (object) {
-    case UserRole.DEVELOPER:
-      return "DEVELOPER";
-    case UserRole.BASSEM_LABS_ADMIN:
-      return "BASSEM_LABS_ADMIN";
     case UserRole.ORGANIZATION_SUPER_ADMIN:
       return "ORGANIZATION_SUPER_ADMIN";
-    case UserRole.CAN_ACCESS_STUDENT:
-      return "CAN_ACCESS_STUDENT";
-    case UserRole.CAN_MODIFY_STUDENT:
-      return "CAN_MODIFY_STUDENT";
-    case UserRole.CAN_ACCESS_ALL_STUDENT:
-      return "CAN_ACCESS_ALL_STUDENT";
-    case UserRole.CAN_MODIFY_ALL_STUDENT:
-      return "CAN_MODIFY_ALL_STUDENT";
-    case UserRole.CAN_ACCESS_STUDENT_DOCUMENTS:
-      return "CAN_ACCESS_STUDENT_DOCUMENTS";
-    case UserRole.CAN_MODIFY_STUDENT_DOCUMENTS:
-      return "CAN_MODIFY_STUDENT_DOCUMENTS";
-    case UserRole.CAN_ACCESS_SENSITIVE_STUDENT:
-      return "CAN_ACCESS_SENSITIVE_STUDENT";
-    case UserRole.CAN_MODIFY_SENSITIVE_STUDENT:
-      return "CAN_MODIFY_SENSITIVE_STUDENT";
-    case UserRole.CAN_ENROLL_STUDENT:
-      return "CAN_ENROLL_STUDENT";
-    case UserRole.CAN_ACCESS_TEACHER:
-      return "CAN_ACCESS_TEACHER";
-    case UserRole.CAN_MODIFY_TEACHER:
-      return "CAN_MODIFY_TEACHER";
-    case UserRole.CAN_CREATE_TEACHER:
-      return "CAN_CREATE_TEACHER";
-    case UserRole.CAN_ACCESS_PARENT:
-      return "CAN_ACCESS_PARENT";
-    case UserRole.CAN_MODIFY_PARENT:
-      return "CAN_MODIFY_PARENT";
-    case UserRole.CAN_ACCESS_ALL_TEACHER:
-      return "CAN_ACCESS_ALL_TEACHER";
-    case UserRole.CAN_ACCESS_HOMEROOM:
-      return "CAN_ACCESS_HOMEROOM";
-    case UserRole.CAN_MODIFY_HOMEROOM:
-      return "CAN_MODIFY_HOMEROOM";
-    case UserRole.CAN_CREATE_HOMEROOM:
-      return "CAN_CREATE_HOMEROOM";
-    case UserRole.CAN_ACCESS_COURSE:
-      return "CAN_ACCESS_COURSE";
-    case UserRole.CAN_MODIFY_COURSE:
-      return "CAN_MODIFY_COURSE";
-    case UserRole.CAN_CREATE_COURSE:
-      return "CAN_CREATE_COURSE";
-    case UserRole.CAN_ACCESS_ALL_HOMEROOM:
-      return "CAN_ACCESS_ALL_HOMEROOM";
-    case UserRole.CAN_MODIFY_ALL_HOMEROOM:
-      return "CAN_MODIFY_ALL_HOMEROOM";
-    case UserRole.CAN_ACCESS_ALL_COURSE:
-      return "CAN_ACCESS_ALL_COURSE";
-    case UserRole.CAN_MODIFY_ALL_COURSE:
-      return "CAN_MODIFY_ALL_COURSE";
-    case UserRole.CAN_ACCESS_ALL_ATTENDANCE:
-      return "CAN_ACCESS_ALL_ATTENDANCE";
-    case UserRole.CAN_ACCESS_ATTENDANCE:
-      return "CAN_ACCESS_ATTENDANCE";
-    case UserRole.CAN_ACCESS_INVOICE_MANAGER:
-      return "CAN_ACCESS_INVOICE_MANAGER";
-    case UserRole.CAN_MODIFY_INVOICE_MANAGER:
-      return "CAN_MODIFY_INVOICE_MANAGER";
-    case UserRole.CAN_ACCESS_TRANSACTION:
-      return "CAN_ACCESS_TRANSACTION";
-    case UserRole.CAN_MODIFY_TRANSACTION:
-      return "CAN_MODIFY_TRANSACTION";
-    case UserRole.CAN_ACCESS_TUITION_MANAGER:
-      return "CAN_ACCESS_TUITION_MANAGER";
-    case UserRole.CAN_MODIFY_TUITION_MANAGER:
-      return "CAN_MODIFY_TUITION_MANAGER";
-    case UserRole.CAN_ACCESS_VIOLATION:
-      return "CAN_ACCESS_VIOLATION";
-    case UserRole.CAN_ACCESS_REPORT_ENTRY:
-      return "CAN_ACCESS_REPORT_ENTRY";
-    case UserRole.CAN_APPROVE_REPORT_ENTRY:
-      return "CAN_APPROVE_REPORT_ENTRY";
-    case UserRole.CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY:
-      return "CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY";
-    case UserRole.CAN_ACCESS_MARK_BOOK:
-      return "CAN_ACCESS_MARK_BOOK";
-    case UserRole.CAN_MODIFY_MARK_BOOK:
-      return "CAN_MODIFY_MARK_BOOK";
-    case UserRole.CAN_ACCESS_STUDENT_INCIDENT:
-      return "CAN_ACCESS_STUDENT_INCIDENT";
-    case UserRole.CAN_MODIFY_STUDENT_INCIDENT:
-      return "CAN_MODIFY_STUDENT_INCIDENT";
-    case UserRole.REPORT_CARD_ADMIN:
-      return "REPORT_CARD_ADMIN";
-    case UserRole.CAN_ACCESS_SCHEDULING:
-      return "CAN_ACCESS_SCHEDULING";
-    case UserRole.CAN_MODIFY_SCHEDULING:
-      return "CAN_MODIFY_SCHEDULING";
-    case UserRole.CAN_SEE_ALL_REPORTS:
-      return "CAN_SEE_ALL_REPORTS";
-    case UserRole.CAN_ACCESS_FAMILY_MANAGER:
-      return "CAN_ACCESS_FAMILY_MANAGER";
-    case UserRole.CAN_ACCESS_SEMESTER:
-      return "CAN_ACCESS_SEMESTER";
-    case UserRole.CAN_MODIFY_SEMESTER:
-      return "CAN_MODIFY_SEMESTER";
-    case UserRole.CAN_MODIFY_ANNOUNCEMENT:
-      return "CAN_MODIFY_ANNOUNCEMENT";
+    case UserRole.MARKBOOK_VIEW_OWN:
+      return "MARKBOOK_VIEW_OWN";
+    case UserRole.MARKBOOK_VIEW_ALL:
+      return "MARKBOOK_VIEW_ALL";
+    case UserRole.MARKBOOK_EDIT_OWN:
+      return "MARKBOOK_EDIT_OWN";
+    case UserRole.MARKBOOK_EDIT_ALL:
+      return "MARKBOOK_EDIT_ALL";
+    case UserRole.ATTENDANCE_VIEW_OWN:
+      return "ATTENDANCE_VIEW_OWN";
+    case UserRole.ATTENDANCE_VIEW_ALL:
+      return "ATTENDANCE_VIEW_ALL";
+    case UserRole.ATTENDANCE_EDIT_OWN:
+      return "ATTENDANCE_EDIT_OWN";
+    case UserRole.ATTENDANCE_EDIT_ALL:
+      return "ATTENDANCE_EDIT_ALL";
+    case UserRole.REPORT_CARDS_VIEW_OWN:
+      return "REPORT_CARDS_VIEW_OWN";
+    case UserRole.REPORT_CARDS_VIEW_ALL:
+      return "REPORT_CARDS_VIEW_ALL";
+    case UserRole.REPORT_CARDS_EDIT_OWN:
+      return "REPORT_CARDS_EDIT_OWN";
+    case UserRole.REPORT_CARDS_EDIT_ALL:
+      return "REPORT_CARDS_EDIT_ALL";
+    case UserRole.REPORT_CARDS_REVIEW:
+      return "REPORT_CARDS_REVIEW";
+    case UserRole.REPORT_CARDS_PUBLISH:
+      return "REPORT_CARDS_PUBLISH";
+    case UserRole.REPORT_CARDS_EDIT_AFTER_DUE_DATE:
+      return "REPORT_CARDS_EDIT_AFTER_DUE_DATE";
+    case UserRole.ANNOUNCEMENTS_CREATE_OWN:
+      return "ANNOUNCEMENTS_CREATE_OWN";
+    case UserRole.ANNOUNCEMENTS_CREATE_ALL:
+      return "ANNOUNCEMENTS_CREATE_ALL";
+    case UserRole.COMMUNICATION_CREATE_OWN:
+      return "COMMUNICATION_CREATE_OWN";
+    case UserRole.COMMUNICATION_CREATE_ALL:
+      return "COMMUNICATION_CREATE_ALL";
+    case UserRole.INVOICES_VIEW_OWN:
+      return "INVOICES_VIEW_OWN";
+    case UserRole.INVOICES_VIEW_ALL:
+      return "INVOICES_VIEW_ALL";
+    case UserRole.INVOICES_EDIT_OWN:
+      return "INVOICES_EDIT_OWN";
+    case UserRole.INVOICES_EDIT_ALL:
+      return "INVOICES_EDIT_ALL";
+    case UserRole.TRANSACTIONS_EDIT_OWN:
+      return "TRANSACTIONS_EDIT_OWN";
+    case UserRole.TRANSACTIONS_EDIT_ALL:
+      return "TRANSACTIONS_EDIT_ALL";
+    case UserRole.TUITION_VIEW:
+      return "TUITION_VIEW";
+    case UserRole.TUITION_SETTINGS:
+      return "TUITION_SETTINGS";
+    case UserRole.TUITION_GENERATION:
+      return "TUITION_GENERATION";
+    case UserRole.WAITLIST_ADD:
+      return "WAITLIST_ADD";
+    case UserRole.WAITLIST_VIEW:
+      return "WAITLIST_VIEW";
+    case UserRole.WAITLIST_ACCEPT:
+      return "WAITLIST_ACCEPT";
+    case UserRole.INTERVIEW_VIEW:
+      return "INTERVIEW_VIEW";
+    case UserRole.INTERVIEW_EDIT:
+      return "INTERVIEW_EDIT";
+    case UserRole.INTERVIEW_DECIDE:
+      return "INTERVIEW_DECIDE";
+    case UserRole.APPLICANTS_VIEW:
+      return "APPLICANTS_VIEW";
+    case UserRole.APPLICANTS_REVIEW_INFO:
+      return "APPLICANTS_REVIEW_INFO";
+    case UserRole.APPLICANTS_DECIDE:
+      return "APPLICANTS_DECIDE";
+    case UserRole.FAMILIES_VIEW_OWN:
+      return "FAMILIES_VIEW_OWN";
+    case UserRole.FAMILIES_VIEW_ALL:
+      return "FAMILIES_VIEW_ALL";
+    case UserRole.FAMILIES_MODIFY_OWN:
+      return "FAMILIES_MODIFY_OWN";
+    case UserRole.FAMILIES_MODIFY_ALL:
+      return "FAMILIES_MODIFY_ALL";
+    case UserRole.FAMILIES_CREATE:
+      return "FAMILIES_CREATE";
+    case UserRole.STUDENTS_VIEW_OWN:
+      return "STUDENTS_VIEW_OWN";
+    case UserRole.STUDENTS_VIEW_ALL:
+      return "STUDENTS_VIEW_ALL";
+    case UserRole.STUDENTS_MODIFY_OWN:
+      return "STUDENTS_MODIFY_OWN";
+    case UserRole.STUDENTS_MODIFY_ALL:
+      return "STUDENTS_MODIFY_ALL";
+    case UserRole.STUDENT_PROFILE_FULL_VIEW_OWN:
+      return "STUDENT_PROFILE_FULL_VIEW_OWN";
+    case UserRole.STUDENT_PROFILE_FULL_VIEW_ALL:
+      return "STUDENT_PROFILE_FULL_VIEW_ALL";
+    case UserRole.STUDENTS_CHANGE_PASSWORD:
+      return "STUDENTS_CHANGE_PASSWORD";
+    case UserRole.STUDENTS_UPLOAD:
+      return "STUDENTS_UPLOAD";
+    case UserRole.STUDENT_INCIDENTS_VIEW_OWN:
+      return "STUDENT_INCIDENTS_VIEW_OWN";
+    case UserRole.STUDENT_INCIDENTS_VIEW_ALL:
+      return "STUDENT_INCIDENTS_VIEW_ALL";
+    case UserRole.STUDENT_INCIDENTS_CREATE_OWN:
+      return "STUDENT_INCIDENTS_CREATE_OWN";
+    case UserRole.STUDENT_INCIDENTS_CREATE_ALL:
+      return "STUDENT_INCIDENTS_CREATE_ALL";
+    case UserRole.STUDENT_INCIDENTS_EDIT_OWN:
+      return "STUDENT_INCIDENTS_EDIT_OWN";
+    case UserRole.STUDENT_INCIDENTS_EDIT_ALL:
+      return "STUDENT_INCIDENTS_EDIT_ALL";
+    case UserRole.TEACHERS_VIEW:
+      return "TEACHERS_VIEW";
+    case UserRole.TEACHERS_CREATE:
+      return "TEACHERS_CREATE";
+    case UserRole.TEACHERS_MODIFY:
+      return "TEACHERS_MODIFY";
+    case UserRole.TEACHERS_CHANGE_PASSWORD:
+      return "TEACHERS_CHANGE_PASSWORD";
+    case UserRole.TEACHERS_ASSIGN_ROLES:
+      return "TEACHERS_ASSIGN_ROLES";
+    case UserRole.TEACHERS_UPLOAD:
+      return "TEACHERS_UPLOAD";
+    case UserRole.CLASSES_VIEW_OWN:
+      return "CLASSES_VIEW_OWN";
+    case UserRole.CLASSES_VIEW_ALL:
+      return "CLASSES_VIEW_ALL";
+    case UserRole.CLASSES_MODIFY_OWN:
+      return "CLASSES_MODIFY_OWN";
+    case UserRole.CLASSES_MODIFY_ALL:
+      return "CLASSES_MODIFY_ALL";
+    case UserRole.CLASSES_CREATE:
+      return "CLASSES_CREATE";
+    case UserRole.ORG_SETTINGS_FULL_ACCESS:
+      return "ORG_SETTINGS_FULL_ACCESS";
     case UserRole.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -343,110 +445,144 @@ export function userRoleToJSON(object: UserRole): string {
 
 export function userRoleToNumber(object: UserRole): number {
   switch (object) {
-    case UserRole.DEVELOPER:
-      return 0;
-    case UserRole.BASSEM_LABS_ADMIN:
-      return 1;
     case UserRole.ORGANIZATION_SUPER_ADMIN:
+      return 0;
+    case UserRole.MARKBOOK_VIEW_OWN:
+      return 1;
+    case UserRole.MARKBOOK_VIEW_ALL:
       return 2;
-    case UserRole.CAN_ACCESS_STUDENT:
+    case UserRole.MARKBOOK_EDIT_OWN:
       return 3;
-    case UserRole.CAN_MODIFY_STUDENT:
+    case UserRole.MARKBOOK_EDIT_ALL:
       return 4;
-    case UserRole.CAN_ACCESS_ALL_STUDENT:
+    case UserRole.ATTENDANCE_VIEW_OWN:
       return 5;
-    case UserRole.CAN_MODIFY_ALL_STUDENT:
+    case UserRole.ATTENDANCE_VIEW_ALL:
       return 6;
-    case UserRole.CAN_ACCESS_STUDENT_DOCUMENTS:
+    case UserRole.ATTENDANCE_EDIT_OWN:
       return 7;
-    case UserRole.CAN_MODIFY_STUDENT_DOCUMENTS:
+    case UserRole.ATTENDANCE_EDIT_ALL:
       return 8;
-    case UserRole.CAN_ACCESS_SENSITIVE_STUDENT:
+    case UserRole.REPORT_CARDS_VIEW_OWN:
       return 9;
-    case UserRole.CAN_MODIFY_SENSITIVE_STUDENT:
+    case UserRole.REPORT_CARDS_VIEW_ALL:
       return 10;
-    case UserRole.CAN_ENROLL_STUDENT:
+    case UserRole.REPORT_CARDS_EDIT_OWN:
       return 11;
-    case UserRole.CAN_ACCESS_TEACHER:
+    case UserRole.REPORT_CARDS_EDIT_ALL:
       return 12;
-    case UserRole.CAN_MODIFY_TEACHER:
+    case UserRole.REPORT_CARDS_REVIEW:
       return 13;
-    case UserRole.CAN_CREATE_TEACHER:
+    case UserRole.REPORT_CARDS_PUBLISH:
       return 14;
-    case UserRole.CAN_ACCESS_PARENT:
+    case UserRole.REPORT_CARDS_EDIT_AFTER_DUE_DATE:
       return 15;
-    case UserRole.CAN_MODIFY_PARENT:
+    case UserRole.ANNOUNCEMENTS_CREATE_OWN:
       return 16;
-    case UserRole.CAN_ACCESS_ALL_TEACHER:
+    case UserRole.ANNOUNCEMENTS_CREATE_ALL:
       return 17;
-    case UserRole.CAN_ACCESS_HOMEROOM:
+    case UserRole.COMMUNICATION_CREATE_OWN:
       return 18;
-    case UserRole.CAN_MODIFY_HOMEROOM:
+    case UserRole.COMMUNICATION_CREATE_ALL:
       return 19;
-    case UserRole.CAN_CREATE_HOMEROOM:
+    case UserRole.INVOICES_VIEW_OWN:
       return 20;
-    case UserRole.CAN_ACCESS_COURSE:
+    case UserRole.INVOICES_VIEW_ALL:
       return 21;
-    case UserRole.CAN_MODIFY_COURSE:
+    case UserRole.INVOICES_EDIT_OWN:
       return 22;
-    case UserRole.CAN_CREATE_COURSE:
+    case UserRole.INVOICES_EDIT_ALL:
       return 23;
-    case UserRole.CAN_ACCESS_ALL_HOMEROOM:
+    case UserRole.TRANSACTIONS_EDIT_OWN:
       return 24;
-    case UserRole.CAN_MODIFY_ALL_HOMEROOM:
+    case UserRole.TRANSACTIONS_EDIT_ALL:
       return 25;
-    case UserRole.CAN_ACCESS_ALL_COURSE:
+    case UserRole.TUITION_VIEW:
       return 26;
-    case UserRole.CAN_MODIFY_ALL_COURSE:
+    case UserRole.TUITION_SETTINGS:
       return 27;
-    case UserRole.CAN_ACCESS_ALL_ATTENDANCE:
+    case UserRole.TUITION_GENERATION:
       return 28;
-    case UserRole.CAN_ACCESS_ATTENDANCE:
+    case UserRole.WAITLIST_ADD:
       return 29;
-    case UserRole.CAN_ACCESS_INVOICE_MANAGER:
+    case UserRole.WAITLIST_VIEW:
       return 30;
-    case UserRole.CAN_MODIFY_INVOICE_MANAGER:
+    case UserRole.WAITLIST_ACCEPT:
       return 31;
-    case UserRole.CAN_ACCESS_TRANSACTION:
+    case UserRole.INTERVIEW_VIEW:
       return 32;
-    case UserRole.CAN_MODIFY_TRANSACTION:
+    case UserRole.INTERVIEW_EDIT:
       return 33;
-    case UserRole.CAN_ACCESS_TUITION_MANAGER:
+    case UserRole.INTERVIEW_DECIDE:
       return 34;
-    case UserRole.CAN_MODIFY_TUITION_MANAGER:
+    case UserRole.APPLICANTS_VIEW:
       return 35;
-    case UserRole.CAN_ACCESS_VIOLATION:
+    case UserRole.APPLICANTS_REVIEW_INFO:
       return 36;
-    case UserRole.CAN_ACCESS_REPORT_ENTRY:
+    case UserRole.APPLICANTS_DECIDE:
       return 37;
-    case UserRole.CAN_APPROVE_REPORT_ENTRY:
+    case UserRole.FAMILIES_VIEW_OWN:
       return 38;
-    case UserRole.CAN_MODIFY_PAST_DUE_DATE_REPORT_ENTRY:
+    case UserRole.FAMILIES_VIEW_ALL:
       return 39;
-    case UserRole.CAN_ACCESS_MARK_BOOK:
+    case UserRole.FAMILIES_MODIFY_OWN:
       return 40;
-    case UserRole.CAN_MODIFY_MARK_BOOK:
+    case UserRole.FAMILIES_MODIFY_ALL:
       return 41;
-    case UserRole.CAN_ACCESS_STUDENT_INCIDENT:
+    case UserRole.FAMILIES_CREATE:
       return 42;
-    case UserRole.CAN_MODIFY_STUDENT_INCIDENT:
+    case UserRole.STUDENTS_VIEW_OWN:
       return 43;
-    case UserRole.REPORT_CARD_ADMIN:
+    case UserRole.STUDENTS_VIEW_ALL:
       return 44;
-    case UserRole.CAN_ACCESS_SCHEDULING:
+    case UserRole.STUDENTS_MODIFY_OWN:
       return 45;
-    case UserRole.CAN_MODIFY_SCHEDULING:
+    case UserRole.STUDENTS_MODIFY_ALL:
       return 46;
-    case UserRole.CAN_SEE_ALL_REPORTS:
+    case UserRole.STUDENT_PROFILE_FULL_VIEW_OWN:
       return 47;
-    case UserRole.CAN_ACCESS_FAMILY_MANAGER:
+    case UserRole.STUDENT_PROFILE_FULL_VIEW_ALL:
       return 48;
-    case UserRole.CAN_ACCESS_SEMESTER:
+    case UserRole.STUDENTS_CHANGE_PASSWORD:
       return 49;
-    case UserRole.CAN_MODIFY_SEMESTER:
+    case UserRole.STUDENTS_UPLOAD:
       return 50;
-    case UserRole.CAN_MODIFY_ANNOUNCEMENT:
+    case UserRole.STUDENT_INCIDENTS_VIEW_OWN:
       return 51;
+    case UserRole.STUDENT_INCIDENTS_VIEW_ALL:
+      return 52;
+    case UserRole.STUDENT_INCIDENTS_CREATE_OWN:
+      return 53;
+    case UserRole.STUDENT_INCIDENTS_CREATE_ALL:
+      return 54;
+    case UserRole.STUDENT_INCIDENTS_EDIT_OWN:
+      return 55;
+    case UserRole.STUDENT_INCIDENTS_EDIT_ALL:
+      return 56;
+    case UserRole.TEACHERS_VIEW:
+      return 57;
+    case UserRole.TEACHERS_CREATE:
+      return 58;
+    case UserRole.TEACHERS_MODIFY:
+      return 59;
+    case UserRole.TEACHERS_CHANGE_PASSWORD:
+      return 60;
+    case UserRole.TEACHERS_ASSIGN_ROLES:
+      return 61;
+    case UserRole.TEACHERS_UPLOAD:
+      return 62;
+    case UserRole.CLASSES_VIEW_OWN:
+      return 63;
+    case UserRole.CLASSES_VIEW_ALL:
+      return 64;
+    case UserRole.CLASSES_MODIFY_OWN:
+      return 65;
+    case UserRole.CLASSES_MODIFY_ALL:
+      return 66;
+    case UserRole.CLASSES_CREATE:
+      return 67;
+    case UserRole.ORG_SETTINGS_FULL_ACCESS:
+      return 68;
     case UserRole.UNRECOGNIZED:
     default:
       return -1;

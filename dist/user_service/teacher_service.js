@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.RemoveTeacherRoleRequest = exports.AddTeacherRoleRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
+exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -13,7 +13,6 @@ const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
 const request_context_1 = require("../utils/request_context");
 const teacher_1 = require("./teacher");
-const user_role_1 = require("./user_role");
 exports.protobufPackage = "user_service";
 function createBaseGetTeacherRequest() {
     return { context: undefined, teacher_id: undefined };
@@ -1430,174 +1429,6 @@ exports.ReactivateTeacherRequest = {
         message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
-        return message;
-    },
-};
-function createBaseAddTeacherRoleRequest() {
-    return { context: undefined, teacher_id: undefined, role: undefined };
-}
-exports.AddTeacherRoleRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.teacher_id !== undefined) {
-            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
-        }
-        if (message.role !== undefined) {
-            writer.uint32(24).int32((0, user_role_1.userRoleToNumber)(message.role));
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAddTeacherRoleRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.role = (0, user_role_1.userRoleFromJSON)(reader.int32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
-            role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.teacher_id !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
-        }
-        if (message.role !== undefined) {
-            obj.role = (0, user_role_1.userRoleToJSON)(message.role);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AddTeacherRoleRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAddTeacherRoleRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
-            : undefined;
-        message.role = object.role ?? undefined;
-        return message;
-    },
-};
-function createBaseRemoveTeacherRoleRequest() {
-    return { context: undefined, teacher_id: undefined, role: undefined };
-}
-exports.RemoveTeacherRoleRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.teacher_id !== undefined) {
-            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
-        }
-        if (message.role !== undefined) {
-            writer.uint32(24).int32((0, user_role_1.userRoleToNumber)(message.role));
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseRemoveTeacherRoleRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.role = (0, user_role_1.userRoleFromJSON)(reader.int32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
-            role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.teacher_id !== undefined) {
-            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
-        }
-        if (message.role !== undefined) {
-            obj.role = (0, user_role_1.userRoleToJSON)(message.role);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.RemoveTeacherRoleRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseRemoveTeacherRoleRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
-            : undefined;
-        message.role = object.role ?? undefined;
         return message;
     },
 };

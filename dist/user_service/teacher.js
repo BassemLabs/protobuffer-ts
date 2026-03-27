@@ -14,7 +14,6 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
-const user_role_1 = require("./user_role");
 exports.protobufPackage = "user_service";
 var TeacherStatus;
 (function (TeacherStatus) {
@@ -218,8 +217,9 @@ function createBaseTeacher() {
         date_of_birth: undefined,
         phone_number: undefined,
         signature_file_id: undefined,
-        roles: [],
         organization: undefined,
+        teacher_role_id: undefined,
+        teacher_role_name: undefined,
     };
 }
 exports.Teacher = {
@@ -260,13 +260,14 @@ exports.Teacher = {
         if (message.signature_file_id !== undefined) {
             object_id_1.ObjectId.encode(message.signature_file_id, writer.uint32(98).fork()).join();
         }
-        writer.uint32(122).fork();
-        for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
-        }
-        writer.join();
         if (message.organization !== undefined) {
-            object_id_1.ObjectId.encode(message.organization, writer.uint32(130).fork()).join();
+            object_id_1.ObjectId.encode(message.organization, writer.uint32(106).fork()).join();
+        }
+        if (message.teacher_role_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_role_id, writer.uint32(114).fork()).join();
+        }
+        if (message.teacher_role_name !== undefined) {
+            writer.uint32(122).string(message.teacher_role_name);
         }
         return writer;
     },
@@ -349,24 +350,23 @@ exports.Teacher = {
                     }
                     message.signature_file_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
-                case 15:
-                    if (tag === 120) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
-                        continue;
-                    }
-                    if (tag === 122) {
-                        const end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
-                        }
-                        continue;
-                    }
-                    break;
-                case 16:
-                    if (tag !== 130) {
+                case 13:
+                    if (tag !== 106) {
                         break;
                     }
                     message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.teacher_role_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.teacher_role_name = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -390,8 +390,9 @@ exports.Teacher = {
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
             signature_file_id: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
+            teacher_role_id: isSet(object.teacherRoleId) ? object_id_1.ObjectId.fromJSON(object.teacherRoleId) : undefined,
+            teacher_role_name: isSet(object.teacherRoleName) ? globalThis.String(object.teacherRoleName) : undefined,
         };
     },
     toJSON(message) {
@@ -432,11 +433,14 @@ exports.Teacher = {
         if (message.signature_file_id !== undefined) {
             obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signature_file_id);
         }
-        if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
-        }
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
+        }
+        if (message.teacher_role_id !== undefined) {
+            obj.teacherRoleId = object_id_1.ObjectId.toJSON(message.teacher_role_id);
+        }
+        if (message.teacher_role_name !== undefined) {
+            obj.teacherRoleName = message.teacher_role_name;
         }
         return obj;
     },
@@ -461,10 +465,13 @@ exports.Teacher = {
         message.signature_file_id = (object.signature_file_id !== undefined && object.signature_file_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.signature_file_id)
             : undefined;
-        message.roles = object.roles?.map((e) => e) || [];
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
+        message.teacher_role_id = (object.teacher_role_id !== undefined && object.teacher_role_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_role_id)
+            : undefined;
+        message.teacher_role_name = object.teacher_role_name ?? undefined;
         return message;
     },
 };

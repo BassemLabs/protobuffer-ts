@@ -1,7 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
-import { UserRole } from "./user_role";
 export declare const protobufPackage = "user_service";
 export declare enum TeacherStatus {
     ACTIVE = "ACTIVE",
@@ -35,8 +34,9 @@ export interface Teacher {
     date_of_birth: Date | undefined;
     phone_number: PhoneNumber | undefined;
     signature_file_id?: ObjectId | undefined;
-    roles: UserRole[];
     organization: ObjectId | undefined;
+    teacher_role_id: ObjectId | undefined;
+    teacher_role_name?: string | undefined;
 }
 export interface TeacherProfile {
     first_name?: string | undefined;
