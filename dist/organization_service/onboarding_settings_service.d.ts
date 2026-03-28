@@ -27,6 +27,7 @@ export interface UpdateWaitlistFeeRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
     waitlist_fee?: number | undefined;
+    has_waitlist_fee?: boolean | undefined;
 }
 export interface UpdateRegistrationFeeRequest {
     context: RequestContext | undefined;
@@ -42,6 +43,7 @@ export interface UpdateInterviewFeeRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
     interview_fee?: number | undefined;
+    has_interview_fee?: boolean | undefined;
 }
 export declare const GetOnboardingSettingsRequest: MessageFns<GetOnboardingSettingsRequest>;
 export declare const UpdateEnrollmentConfigurationRequest: MessageFns<UpdateEnrollmentConfigurationRequest>;

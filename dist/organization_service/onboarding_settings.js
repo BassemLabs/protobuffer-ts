@@ -19,6 +19,8 @@ function createBaseOnboardingSettings() {
         reregistration_fees: [],
         school_handbook: [],
         interview_fee: undefined,
+        has_waitlist_fee: undefined,
+        has_interview_fee: undefined,
     };
 }
 exports.OnboardingSettings = {
@@ -40,6 +42,12 @@ exports.OnboardingSettings = {
         }
         if (message.interview_fee !== undefined) {
             writer.uint32(61).float(message.interview_fee);
+        }
+        if (message.has_waitlist_fee !== undefined) {
+            writer.uint32(64).bool(message.has_waitlist_fee);
+        }
+        if (message.has_interview_fee !== undefined) {
+            writer.uint32(72).bool(message.has_interview_fee);
         }
         return writer;
     },
@@ -86,6 +94,18 @@ exports.OnboardingSettings = {
                     }
                     message.interview_fee = reader.float();
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.has_waitlist_fee = reader.bool();
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.has_interview_fee = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -110,6 +130,8 @@ exports.OnboardingSettings = {
                 ? object.schoolHandbook.map((e) => aws_file_1.AWSFile.fromJSON(e))
                 : [],
             interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : undefined,
+            has_waitlist_fee: isSet(object.hasWaitlistFee) ? globalThis.Boolean(object.hasWaitlistFee) : undefined,
+            has_interview_fee: isSet(object.hasInterviewFee) ? globalThis.Boolean(object.hasInterviewFee) : undefined,
         };
     },
     toJSON(message) {
@@ -132,6 +154,12 @@ exports.OnboardingSettings = {
         if (message.interview_fee !== undefined) {
             obj.interviewFee = message.interview_fee;
         }
+        if (message.has_waitlist_fee !== undefined) {
+            obj.hasWaitlistFee = message.has_waitlist_fee;
+        }
+        if (message.has_interview_fee !== undefined) {
+            obj.hasInterviewFee = message.has_interview_fee;
+        }
         return obj;
     },
     create(base) {
@@ -145,6 +173,8 @@ exports.OnboardingSettings = {
         message.reregistration_fees = object.reregistration_fees?.map((e) => exports.GradeFeeMapping.fromPartial(e)) || [];
         message.school_handbook = object.school_handbook?.map((e) => aws_file_1.AWSFile.fromPartial(e)) || [];
         message.interview_fee = object.interview_fee ?? undefined;
+        message.has_waitlist_fee = object.has_waitlist_fee ?? undefined;
+        message.has_interview_fee = object.has_interview_fee ?? undefined;
         return message;
     },
 };

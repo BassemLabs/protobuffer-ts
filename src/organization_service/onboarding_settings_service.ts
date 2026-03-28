@@ -40,6 +40,7 @@ export interface UpdateWaitlistFeeRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
   waitlist_fee?: number | undefined;
+  has_waitlist_fee?: boolean | undefined;
 }
 
 export interface UpdateRegistrationFeeRequest {
@@ -58,6 +59,7 @@ export interface UpdateInterviewFeeRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
   interview_fee?: number | undefined;
+  has_interview_fee?: boolean | undefined;
 }
 
 function createBaseGetOnboardingSettingsRequest(): GetOnboardingSettingsRequest {
@@ -441,7 +443,7 @@ export const RemoveSchoolHandbookFileRequest: MessageFns<RemoveSchoolHandbookFil
 };
 
 function createBaseUpdateWaitlistFeeRequest(): UpdateWaitlistFeeRequest {
-  return { context: undefined, organization_id: undefined, waitlist_fee: undefined };
+  return { context: undefined, organization_id: undefined, waitlist_fee: undefined, has_waitlist_fee: undefined };
 }
 
 export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
@@ -454,6 +456,9 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
     }
     if (message.waitlist_fee !== undefined) {
       writer.uint32(29).float(message.waitlist_fee);
+    }
+    if (message.has_waitlist_fee !== undefined) {
+      writer.uint32(32).bool(message.has_waitlist_fee);
     }
     return writer;
   },
@@ -486,6 +491,13 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
 
           message.waitlist_fee = reader.float();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.has_waitlist_fee = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -500,6 +512,7 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       waitlist_fee: isSet(object.waitlistFee) ? globalThis.Number(object.waitlistFee) : undefined,
+      has_waitlist_fee: isSet(object.hasWaitlistFee) ? globalThis.Boolean(object.hasWaitlistFee) : undefined,
     };
   },
 
@@ -513,6 +526,9 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
     }
     if (message.waitlist_fee !== undefined) {
       obj.waitlistFee = message.waitlist_fee;
+    }
+    if (message.has_waitlist_fee !== undefined) {
+      obj.hasWaitlistFee = message.has_waitlist_fee;
     }
     return obj;
   },
@@ -529,6 +545,7 @@ export const UpdateWaitlistFeeRequest: MessageFns<UpdateWaitlistFeeRequest> = {
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.waitlist_fee = object.waitlist_fee ?? undefined;
+    message.has_waitlist_fee = object.has_waitlist_fee ?? undefined;
     return message;
   },
 };
@@ -726,7 +743,7 @@ export const UpdateReregistrationFeeRequest: MessageFns<UpdateReregistrationFeeR
 };
 
 function createBaseUpdateInterviewFeeRequest(): UpdateInterviewFeeRequest {
-  return { context: undefined, organization_id: undefined, interview_fee: undefined };
+  return { context: undefined, organization_id: undefined, interview_fee: undefined, has_interview_fee: undefined };
 }
 
 export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = {
@@ -739,6 +756,9 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
     }
     if (message.interview_fee !== undefined) {
       writer.uint32(29).float(message.interview_fee);
+    }
+    if (message.has_interview_fee !== undefined) {
+      writer.uint32(32).bool(message.has_interview_fee);
     }
     return writer;
   },
@@ -771,6 +791,13 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
 
           message.interview_fee = reader.float();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.has_interview_fee = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -785,6 +812,7 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       interview_fee: isSet(object.interviewFee) ? globalThis.Number(object.interviewFee) : undefined,
+      has_interview_fee: isSet(object.hasInterviewFee) ? globalThis.Boolean(object.hasInterviewFee) : undefined,
     };
   },
 
@@ -798,6 +826,9 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
     }
     if (message.interview_fee !== undefined) {
       obj.interviewFee = message.interview_fee;
+    }
+    if (message.has_interview_fee !== undefined) {
+      obj.hasInterviewFee = message.has_interview_fee;
     }
     return obj;
   },
@@ -814,6 +845,7 @@ export const UpdateInterviewFeeRequest: MessageFns<UpdateInterviewFeeRequest> = 
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.interview_fee = object.interview_fee ?? undefined;
+    message.has_interview_fee = object.has_interview_fee ?? undefined;
     return message;
   },
 };

@@ -9,6 +9,8 @@ export interface OnboardingSettings {
     reregistration_fees: GradeFeeMapping[];
     school_handbook: AWSFile[];
     interview_fee?: number | undefined;
+    has_waitlist_fee?: boolean | undefined;
+    has_interview_fee?: boolean | undefined;
 }
 export interface GradeFeeMapping {
     grade?: StudentGrade | undefined;
