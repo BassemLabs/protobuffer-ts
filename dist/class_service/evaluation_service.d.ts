@@ -209,6 +209,15 @@ export interface PrincipalDashboardLowestMark {
     mark?: number | undefined;
     course_code?: string | undefined;
 }
+/** One low student average row shown in the dashboard student averages list. */
+export interface PrincipalDashboardLowStudentAverage {
+    student_id: ObjectId | undefined;
+    student_name?: string | undefined;
+    /** Average final mark across the student's graded courses in the selected scope. */
+    average_mark?: number | undefined;
+    /** Number of graded courses included in the student average. */
+    graded_courses_count?: number | undefined;
+}
 export interface GetPrincipalDashboardAcademicSummaryResponse {
     /** Distribution of marks across human-readable grade buckets. */
     grade_distribution: PrincipalDashboardGradeDistributionBucket[];
@@ -216,6 +225,8 @@ export interface GetPrincipalDashboardAcademicSummaryResponse {
     low_mark_courses: PrincipalDashboardLowMarkCourse[];
     /** Lowest student marks shown in the dashboard. */
     lowest_marks: PrincipalDashboardLowestMark[];
+    /** Lowest student averages shown in the dashboard. */
+    lowest_student_averages: PrincipalDashboardLowStudentAverage[];
 }
 export declare const CreateEvaluationRequest: MessageFns<CreateEvaluationRequest>;
 export declare const UpdateEvaluationRequest: MessageFns<UpdateEvaluationRequest>;
@@ -251,6 +262,7 @@ export declare const GetPrincipalDashboardAcademicSummaryRequest: MessageFns<Get
 export declare const PrincipalDashboardGradeDistributionBucket: MessageFns<PrincipalDashboardGradeDistributionBucket>;
 export declare const PrincipalDashboardLowMarkCourse: MessageFns<PrincipalDashboardLowMarkCourse>;
 export declare const PrincipalDashboardLowestMark: MessageFns<PrincipalDashboardLowestMark>;
+export declare const PrincipalDashboardLowStudentAverage: MessageFns<PrincipalDashboardLowStudentAverage>;
 export declare const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincipalDashboardAcademicSummaryResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

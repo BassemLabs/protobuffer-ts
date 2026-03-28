@@ -1068,6 +1068,8 @@ function createBaseInvoiceFilter() {
         user: undefined,
         family: undefined,
         school_year: undefined,
+        due_before: undefined,
+        include_tuition: undefined,
     };
 }
 exports.InvoiceFilter = {
@@ -1095,6 +1097,12 @@ exports.InvoiceFilter = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
+        }
+        if (message.due_before !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_before), writer.uint32(74).fork()).join();
+        }
+        if (message.include_tuition !== undefined) {
+            writer.uint32(80).bool(message.include_tuition);
         }
         return writer;
     },
@@ -1153,6 +1161,18 @@ exports.InvoiceFilter = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.due_before = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.include_tuition = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1171,6 +1191,8 @@ exports.InvoiceFilter = {
             user: isSet(object.user) ? object_id_1.ObjectId.fromJSON(object.user) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            due_before: isSet(object.dueBefore) ? fromJsonTimestamp(object.dueBefore) : undefined,
+            include_tuition: isSet(object.includeTuition) ? globalThis.Boolean(object.includeTuition) : undefined,
         };
     },
     toJSON(message) {
@@ -1199,6 +1221,12 @@ exports.InvoiceFilter = {
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
+        if (message.due_before !== undefined) {
+            obj.dueBefore = message.due_before.toISOString();
+        }
+        if (message.include_tuition !== undefined) {
+            obj.includeTuition = message.include_tuition;
+        }
         return obj;
     },
     create(base) {
@@ -1218,6 +1246,8 @@ exports.InvoiceFilter = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.due_before = object.due_before ?? undefined;
+        message.include_tuition = object.include_tuition ?? undefined;
         return message;
     },
 };

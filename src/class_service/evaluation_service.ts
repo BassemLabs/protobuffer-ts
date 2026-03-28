@@ -329,6 +329,20 @@ export interface PrincipalDashboardLowestMark {
   course_code?: string | undefined;
 }
 
+/** One low student average row shown in the dashboard student averages list. */
+export interface PrincipalDashboardLowStudentAverage {
+  student_id: ObjectId | undefined;
+  student_name?:
+    | string
+    | undefined;
+  /** Average final mark across the student's graded courses in the selected scope. */
+  average_mark?:
+    | number
+    | undefined;
+  /** Number of graded courses included in the student average. */
+  graded_courses_count?: number | undefined;
+}
+
 export interface GetPrincipalDashboardAcademicSummaryResponse {
   /** Distribution of marks across human-readable grade buckets. */
   grade_distribution: PrincipalDashboardGradeDistributionBucket[];
@@ -336,6 +350,8 @@ export interface GetPrincipalDashboardAcademicSummaryResponse {
   low_mark_courses: PrincipalDashboardLowMarkCourse[];
   /** Lowest student marks shown in the dashboard. */
   lowest_marks: PrincipalDashboardLowestMark[];
+  /** Lowest student averages shown in the dashboard. */
+  lowest_student_averages: PrincipalDashboardLowStudentAverage[];
 }
 
 function createBaseCreateEvaluationRequest(): CreateEvaluationRequest {
@@ -3536,8 +3552,118 @@ export const PrincipalDashboardLowestMark: MessageFns<PrincipalDashboardLowestMa
   },
 };
 
+function createBasePrincipalDashboardLowStudentAverage(): PrincipalDashboardLowStudentAverage {
+  return { student_id: undefined, student_name: undefined, average_mark: undefined, graded_courses_count: undefined };
+}
+
+export const PrincipalDashboardLowStudentAverage: MessageFns<PrincipalDashboardLowStudentAverage> = {
+  encode(message: PrincipalDashboardLowStudentAverage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.student_name !== undefined) {
+      writer.uint32(18).string(message.student_name);
+    }
+    if (message.average_mark !== undefined) {
+      writer.uint32(25).double(message.average_mark);
+    }
+    if (message.graded_courses_count !== undefined) {
+      writer.uint32(32).uint32(message.graded_courses_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PrincipalDashboardLowStudentAverage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrincipalDashboardLowStudentAverage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 25) {
+            break;
+          }
+
+          message.average_mark = reader.double();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.graded_courses_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrincipalDashboardLowStudentAverage {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+      average_mark: isSet(object.averageMark) ? globalThis.Number(object.averageMark) : undefined,
+      graded_courses_count: isSet(object.gradedCoursesCount) ? globalThis.Number(object.gradedCoursesCount) : undefined,
+    };
+  },
+
+  toJSON(message: PrincipalDashboardLowStudentAverage): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.student_name !== undefined) {
+      obj.studentName = message.student_name;
+    }
+    if (message.average_mark !== undefined) {
+      obj.averageMark = message.average_mark;
+    }
+    if (message.graded_courses_count !== undefined) {
+      obj.gradedCoursesCount = Math.round(message.graded_courses_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrincipalDashboardLowStudentAverage>, I>>(
+    base?: I,
+  ): PrincipalDashboardLowStudentAverage {
+    return PrincipalDashboardLowStudentAverage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrincipalDashboardLowStudentAverage>, I>>(
+    object: I,
+  ): PrincipalDashboardLowStudentAverage {
+    const message = createBasePrincipalDashboardLowStudentAverage();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.student_name = object.student_name ?? undefined;
+    message.average_mark = object.average_mark ?? undefined;
+    message.graded_courses_count = object.graded_courses_count ?? undefined;
+    return message;
+  },
+};
+
 function createBaseGetPrincipalDashboardAcademicSummaryResponse(): GetPrincipalDashboardAcademicSummaryResponse {
-  return { grade_distribution: [], low_mark_courses: [], lowest_marks: [] };
+  return { grade_distribution: [], low_mark_courses: [], lowest_marks: [], lowest_student_averages: [] };
 }
 
 export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincipalDashboardAcademicSummaryResponse> = {
@@ -3553,6 +3679,9 @@ export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincip
     }
     for (const v of message.lowest_marks) {
       PrincipalDashboardLowestMark.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.lowest_student_averages) {
+      PrincipalDashboardLowStudentAverage.encode(v!, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -3585,6 +3714,13 @@ export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincip
 
           message.lowest_marks.push(PrincipalDashboardLowestMark.decode(reader, reader.uint32()));
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.lowest_student_averages.push(PrincipalDashboardLowStudentAverage.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3605,6 +3741,9 @@ export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincip
       lowest_marks: globalThis.Array.isArray(object?.lowestMarks)
         ? object.lowestMarks.map((e: any) => PrincipalDashboardLowestMark.fromJSON(e))
         : [],
+      lowest_student_averages: globalThis.Array.isArray(object?.lowestStudentAverages)
+        ? object.lowestStudentAverages.map((e: any) => PrincipalDashboardLowStudentAverage.fromJSON(e))
+        : [],
     };
   },
 
@@ -3620,6 +3759,11 @@ export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincip
     }
     if (message.lowest_marks?.length) {
       obj.lowestMarks = message.lowest_marks.map((e) => PrincipalDashboardLowestMark.toJSON(e));
+    }
+    if (message.lowest_student_averages?.length) {
+      obj.lowestStudentAverages = message.lowest_student_averages.map((e) =>
+        PrincipalDashboardLowStudentAverage.toJSON(e)
+      );
     }
     return obj;
   },
@@ -3638,6 +3782,8 @@ export const GetPrincipalDashboardAcademicSummaryResponse: MessageFns<GetPrincip
     message.low_mark_courses = object.low_mark_courses?.map((e) => PrincipalDashboardLowMarkCourse.fromPartial(e)) ||
       [];
     message.lowest_marks = object.lowest_marks?.map((e) => PrincipalDashboardLowestMark.fromPartial(e)) || [];
+    message.lowest_student_averages =
+      object.lowest_student_averages?.map((e) => PrincipalDashboardLowStudentAverage.fromPartial(e)) || [];
     return message;
   },
 };

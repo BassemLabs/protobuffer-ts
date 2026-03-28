@@ -288,6 +288,8 @@ export interface InvoiceFilter {
   user?: ObjectId | undefined;
   family?: ObjectId | undefined;
   school_year?: ObjectId | undefined;
+  due_before?: Date | undefined;
+  include_tuition?: boolean | undefined;
 }
 
 export interface AutoPaymentAttempt {
@@ -1269,6 +1271,8 @@ function createBaseInvoiceFilter(): InvoiceFilter {
     user: undefined,
     family: undefined,
     school_year: undefined,
+    due_before: undefined,
+    include_tuition: undefined,
   };
 }
 
@@ -1297,6 +1301,12 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
+    }
+    if (message.due_before !== undefined) {
+      Timestamp.encode(toTimestamp(message.due_before), writer.uint32(74).fork()).join();
+    }
+    if (message.include_tuition !== undefined) {
+      writer.uint32(80).bool(message.include_tuition);
     }
     return writer;
   },
@@ -1364,6 +1374,20 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.due_before = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.include_tuition = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1383,6 +1407,8 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
       user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      due_before: isSet(object.dueBefore) ? fromJsonTimestamp(object.dueBefore) : undefined,
+      include_tuition: isSet(object.includeTuition) ? globalThis.Boolean(object.includeTuition) : undefined,
     };
   },
 
@@ -1412,6 +1438,12 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
+    if (message.due_before !== undefined) {
+      obj.dueBefore = message.due_before.toISOString();
+    }
+    if (message.include_tuition !== undefined) {
+      obj.includeTuition = message.include_tuition;
+    }
     return obj;
   },
 
@@ -1432,6 +1464,8 @@ export const InvoiceFilter: MessageFns<InvoiceFilter> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.due_before = object.due_before ?? undefined;
+    message.include_tuition = object.include_tuition ?? undefined;
     return message;
   },
 };

@@ -115,6 +115,8 @@ export interface InvoiceFilter {
     user?: ObjectId | undefined;
     family?: ObjectId | undefined;
     school_year?: ObjectId | undefined;
+    due_before?: Date | undefined;
+    include_tuition?: boolean | undefined;
 }
 export interface AutoPaymentAttempt {
     id: ObjectId | undefined;
