@@ -22,9 +22,7 @@ export enum UserRole {
   REPORT_CARDS_VIEW_ALL = "REPORT_CARDS_VIEW_ALL",
   REPORT_CARDS_EDIT_OWN = "REPORT_CARDS_EDIT_OWN",
   REPORT_CARDS_EDIT_ALL = "REPORT_CARDS_EDIT_ALL",
-  REPORT_CARDS_REVIEW = "REPORT_CARDS_REVIEW",
-  REPORT_CARDS_PUBLISH = "REPORT_CARDS_PUBLISH",
-  REPORT_CARDS_EDIT_AFTER_DUE_DATE = "REPORT_CARDS_EDIT_AFTER_DUE_DATE",
+  REPORT_CARDS_ADMIN = "REPORT_CARDS_ADMIN",
   ANNOUNCEMENTS_CREATE_OWN = "ANNOUNCEMENTS_CREATE_OWN",
   ANNOUNCEMENTS_CREATE_ALL = "ANNOUNCEMENTS_CREATE_ALL",
   COMMUNICATION_CREATE_OWN = "COMMUNICATION_CREATE_OWN",
@@ -122,15 +120,9 @@ export function userRoleFromJSON(object: any): UserRole {
     case 12:
     case "REPORT_CARDS_EDIT_ALL":
       return UserRole.REPORT_CARDS_EDIT_ALL;
-    case 13:
-    case "REPORT_CARDS_REVIEW":
-      return UserRole.REPORT_CARDS_REVIEW;
-    case 14:
-    case "REPORT_CARDS_PUBLISH":
-      return UserRole.REPORT_CARDS_PUBLISH;
-    case 15:
-    case "REPORT_CARDS_EDIT_AFTER_DUE_DATE":
-      return UserRole.REPORT_CARDS_EDIT_AFTER_DUE_DATE;
+    case 69:
+    case "REPORT_CARDS_ADMIN":
+      return UserRole.REPORT_CARDS_ADMIN;
     case 16:
     case "ANNOUNCEMENTS_CREATE_OWN":
       return UserRole.ANNOUNCEMENTS_CREATE_OWN;
@@ -325,12 +317,8 @@ export function userRoleToJSON(object: UserRole): string {
       return "REPORT_CARDS_EDIT_OWN";
     case UserRole.REPORT_CARDS_EDIT_ALL:
       return "REPORT_CARDS_EDIT_ALL";
-    case UserRole.REPORT_CARDS_REVIEW:
-      return "REPORT_CARDS_REVIEW";
-    case UserRole.REPORT_CARDS_PUBLISH:
-      return "REPORT_CARDS_PUBLISH";
-    case UserRole.REPORT_CARDS_EDIT_AFTER_DUE_DATE:
-      return "REPORT_CARDS_EDIT_AFTER_DUE_DATE";
+    case UserRole.REPORT_CARDS_ADMIN:
+      return "REPORT_CARDS_ADMIN";
     case UserRole.ANNOUNCEMENTS_CREATE_OWN:
       return "ANNOUNCEMENTS_CREATE_OWN";
     case UserRole.ANNOUNCEMENTS_CREATE_ALL:
@@ -471,12 +459,8 @@ export function userRoleToNumber(object: UserRole): number {
       return 11;
     case UserRole.REPORT_CARDS_EDIT_ALL:
       return 12;
-    case UserRole.REPORT_CARDS_REVIEW:
-      return 13;
-    case UserRole.REPORT_CARDS_PUBLISH:
-      return 14;
-    case UserRole.REPORT_CARDS_EDIT_AFTER_DUE_DATE:
-      return 15;
+    case UserRole.REPORT_CARDS_ADMIN:
+      return 69;
     case UserRole.ANNOUNCEMENTS_CREATE_OWN:
       return 16;
     case UserRole.ANNOUNCEMENTS_CREATE_ALL:
