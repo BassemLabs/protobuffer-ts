@@ -181,6 +181,8 @@ export interface GetStudentsListWithFiltersRequest {
     status?: StudentStatus | undefined;
     /** defaults to org's active school year if not provided */
     school_year?: ObjectId | undefined;
+    /** only show students that teachers have a course or homeroom with (defaults to false) */
+    show_all?: boolean | undefined;
 }
 export interface GetStudentsListWithFiltersResponse {
     students: SchoolYearStudent[];

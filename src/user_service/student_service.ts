@@ -246,7 +246,11 @@ export interface GetStudentsListWithFiltersRequest {
     | StudentStatus
     | undefined;
   /** defaults to org's active school year if not provided */
-  school_year?: ObjectId | undefined;
+  school_year?:
+    | ObjectId
+    | undefined;
+  /** only show students that teachers have a course or homeroom with (defaults to false) */
+  show_all?: boolean | undefined;
 }
 
 export interface GetStudentsListWithFiltersResponse {
@@ -3357,6 +3361,7 @@ function createBaseGetStudentsListWithFiltersRequest(): GetStudentsListWithFilte
     gender: undefined,
     status: undefined,
     school_year: undefined,
+    show_all: undefined,
   };
 }
 
@@ -3387,6 +3392,9 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
+    }
+    if (message.show_all !== undefined) {
+      writer.uint32(72).bool(message.show_all);
     }
     return writer;
   },
@@ -3464,6 +3472,13 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.show_all = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3483,6 +3498,7 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      show_all: isSet(object.showAll) ? globalThis.Boolean(object.showAll) : undefined,
     };
   },
 
@@ -3512,6 +3528,9 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
+    if (message.show_all !== undefined) {
+      obj.showAll = message.show_all;
+    }
     return obj;
   },
 
@@ -3536,6 +3555,7 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.show_all = object.show_all ?? undefined;
     return message;
   },
 };

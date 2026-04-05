@@ -2621,6 +2621,7 @@ function createBaseGetStudentsListWithFiltersRequest() {
         gender: undefined,
         status: undefined,
         school_year: undefined,
+        show_all: undefined,
     };
 }
 exports.GetStudentsListWithFiltersRequest = {
@@ -2650,6 +2651,9 @@ exports.GetStudentsListWithFiltersRequest = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
+        }
+        if (message.show_all !== undefined) {
+            writer.uint32(72).bool(message.show_all);
         }
         return writer;
     },
@@ -2715,6 +2719,12 @@ exports.GetStudentsListWithFiltersRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.show_all = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2733,6 +2743,7 @@ exports.GetStudentsListWithFiltersRequest = {
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
             status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            show_all: isSet(object.showAll) ? globalThis.Boolean(object.showAll) : undefined,
         };
     },
     toJSON(message) {
@@ -2761,6 +2772,9 @@ exports.GetStudentsListWithFiltersRequest = {
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
+        if (message.show_all !== undefined) {
+            obj.showAll = message.show_all;
+        }
         return obj;
     },
     create(base) {
@@ -2780,6 +2794,7 @@ exports.GetStudentsListWithFiltersRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.show_all = object.show_all ?? undefined;
         return message;
     },
 };
