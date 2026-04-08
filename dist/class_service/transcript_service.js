@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/transcript_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpsertStudentGraduationTrackingRequest = exports.GetStudentDiplomaRequirementsResponse = exports.StudentGraduationTracking = exports.DiplomaRequirementRow = exports.GetStudentDiplomaRequirementsRequest = exports.GetStudentTranscriptResponse = exports.TranscriptDiagnostic = exports.TranscriptSummary = exports.CategoryProgress = exports.TranscriptRow = exports.TranscriptHeader = exports.TranscriptPrimaryIdField = exports.GetStudentTranscriptRequest = exports.protobufPackage = void 0;
+exports.UpsertStudentGraduationTrackingRequest = exports.GetStudentDiplomaRequirementsResponse = exports.StudentGraduationTracking = exports.DiplomaRequirementRow = exports.GetStudentDiplomaRequirementsRequest = exports.DeleteStudentManualTranscriptRowResponse = exports.DeleteStudentManualTranscriptRowRequest = exports.UpsertStudentManualTranscriptRowRequest = exports.ManualTranscriptRow = exports.GetStudentTranscriptResponse = exports.TranscriptDiagnostic = exports.TranscriptSummary = exports.CategoryProgress = exports.TranscriptRow = exports.TranscriptHeader = exports.TranscriptPrimaryIdField = exports.GetStudentTranscriptRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -293,6 +293,11 @@ function createBaseTranscriptRow() {
         compulsory: undefined,
         note: undefined,
         credit_earned: undefined,
+        course_id: undefined,
+        manual_row_id: undefined,
+        category_ids: [],
+        school_year_id: undefined,
+        replaces_course_id: undefined,
     };
 }
 exports.TranscriptRow = {
@@ -326,6 +331,21 @@ exports.TranscriptRow = {
         }
         if (message.credit_earned !== undefined) {
             writer.uint32(80).bool(message.credit_earned);
+        }
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(90).fork()).join();
+        }
+        if (message.manual_row_id !== undefined) {
+            object_id_1.ObjectId.encode(message.manual_row_id, writer.uint32(98).fork()).join();
+        }
+        for (const v of message.category_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(106).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(114).fork()).join();
+        }
+        if (message.replaces_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.replaces_course_id, writer.uint32(122).fork()).join();
         }
         return writer;
     },
@@ -396,6 +416,36 @@ exports.TranscriptRow = {
                     }
                     message.credit_earned = reader.bool();
                     continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.manual_row_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.replaces_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -416,6 +466,13 @@ exports.TranscriptRow = {
             compulsory: isSet(object.compulsory) ? globalThis.Boolean(object.compulsory) : undefined,
             note: isSet(object.note) ? globalThis.String(object.note) : undefined,
             credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            manual_row_id: isSet(object.manualRowId) ? object_id_1.ObjectId.fromJSON(object.manualRowId) : undefined,
+            category_ids: globalThis.Array.isArray(object?.categoryIds)
+                ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            replaces_course_id: isSet(object.replacesCourseId) ? object_id_1.ObjectId.fromJSON(object.replacesCourseId) : undefined,
         };
     },
     toJSON(message) {
@@ -450,6 +507,21 @@ exports.TranscriptRow = {
         if (message.credit_earned !== undefined) {
             obj.creditEarned = message.credit_earned;
         }
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+        }
+        if (message.manual_row_id !== undefined) {
+            obj.manualRowId = object_id_1.ObjectId.toJSON(message.manual_row_id);
+        }
+        if (message.category_ids?.length) {
+            obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.replaces_course_id !== undefined) {
+            obj.replacesCourseId = object_id_1.ObjectId.toJSON(message.replaces_course_id);
+        }
         return obj;
     },
     create(base) {
@@ -467,6 +539,19 @@ exports.TranscriptRow = {
         message.compulsory = object.compulsory ?? undefined;
         message.note = object.note ?? undefined;
         message.credit_earned = object.credit_earned ?? undefined;
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
+            : undefined;
+        message.manual_row_id = (object.manual_row_id !== undefined && object.manual_row_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.manual_row_id)
+            : undefined;
+        message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.replaces_course_id = (object.replaces_course_id !== undefined && object.replaces_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.replaces_course_id)
+            : undefined;
         return message;
     },
 };
@@ -850,6 +935,483 @@ exports.GetStudentTranscriptResponse = {
             ? exports.TranscriptSummary.fromPartial(object.summary)
             : undefined;
         message.diagnostics = object.diagnostics?.map((e) => exports.TranscriptDiagnostic.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseManualTranscriptRow() {
+    return {
+        id: undefined,
+        grade: undefined,
+        year: undefined,
+        month: undefined,
+        course_title: undefined,
+        course_code: undefined,
+        percentage_grade: undefined,
+        credit: undefined,
+        compulsory: undefined,
+        note: undefined,
+        credit_earned: undefined,
+        category_ids: [],
+        school_year_id: undefined,
+        replaces_course_id: undefined,
+    };
+}
+exports.ManualTranscriptRow = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(16).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        if (message.year !== undefined) {
+            writer.uint32(24).uint32(message.year);
+        }
+        if (message.month !== undefined) {
+            writer.uint32(32).uint32(message.month);
+        }
+        if (message.course_title !== undefined) {
+            writer.uint32(42).string(message.course_title);
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(50).string(message.course_code);
+        }
+        if (message.percentage_grade !== undefined) {
+            writer.uint32(58).string(message.percentage_grade);
+        }
+        if (message.credit !== undefined) {
+            writer.uint32(65).double(message.credit);
+        }
+        if (message.compulsory !== undefined) {
+            writer.uint32(72).bool(message.compulsory);
+        }
+        if (message.note !== undefined) {
+            writer.uint32(82).string(message.note);
+        }
+        if (message.credit_earned !== undefined) {
+            writer.uint32(88).bool(message.credit_earned);
+        }
+        for (const v of message.category_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(98).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(106).fork()).join();
+        }
+        if (message.replaces_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.replaces_course_id, writer.uint32(114).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseManualTranscriptRow();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.year = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.month = reader.uint32();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.course_title = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.percentage_grade = reader.string();
+                    continue;
+                case 8:
+                    if (tag !== 65) {
+                        break;
+                    }
+                    message.credit = reader.double();
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.compulsory = reader.bool();
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.note = reader.string();
+                    continue;
+                case 11:
+                    if (tag !== 88) {
+                        break;
+                    }
+                    message.credit_earned = reader.bool();
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.replaces_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            year: isSet(object.year) ? globalThis.Number(object.year) : undefined,
+            month: isSet(object.month) ? globalThis.Number(object.month) : undefined,
+            course_title: isSet(object.courseTitle) ? globalThis.String(object.courseTitle) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+            percentage_grade: isSet(object.percentageGrade) ? globalThis.String(object.percentageGrade) : undefined,
+            credit: isSet(object.credit) ? globalThis.Number(object.credit) : undefined,
+            compulsory: isSet(object.compulsory) ? globalThis.Boolean(object.compulsory) : undefined,
+            note: isSet(object.note) ? globalThis.String(object.note) : undefined,
+            credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
+            category_ids: globalThis.Array.isArray(object?.categoryIds)
+                ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            replaces_course_id: isSet(object.replacesCourseId) ? object_id_1.ObjectId.fromJSON(object.replacesCourseId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
+        if (message.year !== undefined) {
+            obj.year = Math.round(message.year);
+        }
+        if (message.month !== undefined) {
+            obj.month = Math.round(message.month);
+        }
+        if (message.course_title !== undefined) {
+            obj.courseTitle = message.course_title;
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        if (message.percentage_grade !== undefined) {
+            obj.percentageGrade = message.percentage_grade;
+        }
+        if (message.credit !== undefined) {
+            obj.credit = message.credit;
+        }
+        if (message.compulsory !== undefined) {
+            obj.compulsory = message.compulsory;
+        }
+        if (message.note !== undefined) {
+            obj.note = message.note;
+        }
+        if (message.credit_earned !== undefined) {
+            obj.creditEarned = message.credit_earned;
+        }
+        if (message.category_ids?.length) {
+            obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.replaces_course_id !== undefined) {
+            obj.replacesCourseId = object_id_1.ObjectId.toJSON(message.replaces_course_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ManualTranscriptRow.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseManualTranscriptRow();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.grade = object.grade ?? undefined;
+        message.year = object.year ?? undefined;
+        message.month = object.month ?? undefined;
+        message.course_title = object.course_title ?? undefined;
+        message.course_code = object.course_code ?? undefined;
+        message.percentage_grade = object.percentage_grade ?? undefined;
+        message.credit = object.credit ?? undefined;
+        message.compulsory = object.compulsory ?? undefined;
+        message.note = object.note ?? undefined;
+        message.credit_earned = object.credit_earned ?? undefined;
+        message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.replaces_course_id = (object.replaces_course_id !== undefined && object.replaces_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.replaces_course_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseUpsertStudentManualTranscriptRowRequest() {
+    return { context: undefined, student_id: undefined, manual_row: undefined };
+}
+exports.UpsertStudentManualTranscriptRowRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.manual_row !== undefined) {
+            exports.ManualTranscriptRow.encode(message.manual_row, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpsertStudentManualTranscriptRowRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.manual_row = exports.ManualTranscriptRow.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            manual_row: isSet(object.manualRow) ? exports.ManualTranscriptRow.fromJSON(object.manualRow) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.manual_row !== undefined) {
+            obj.manualRow = exports.ManualTranscriptRow.toJSON(message.manual_row);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpsertStudentManualTranscriptRowRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpsertStudentManualTranscriptRowRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.manual_row = (object.manual_row !== undefined && object.manual_row !== null)
+            ? exports.ManualTranscriptRow.fromPartial(object.manual_row)
+            : undefined;
+        return message;
+    },
+};
+function createBaseDeleteStudentManualTranscriptRowRequest() {
+    return { context: undefined, student_id: undefined, manual_row_id: undefined };
+}
+exports.DeleteStudentManualTranscriptRowRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.manual_row_id !== undefined) {
+            object_id_1.ObjectId.encode(message.manual_row_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeleteStudentManualTranscriptRowRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.manual_row_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            manual_row_id: isSet(object.manualRowId) ? object_id_1.ObjectId.fromJSON(object.manualRowId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.manual_row_id !== undefined) {
+            obj.manualRowId = object_id_1.ObjectId.toJSON(message.manual_row_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeleteStudentManualTranscriptRowRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeleteStudentManualTranscriptRowRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.manual_row_id = (object.manual_row_id !== undefined && object.manual_row_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.manual_row_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseDeleteStudentManualTranscriptRowResponse() {
+    return { success: undefined };
+}
+exports.DeleteStudentManualTranscriptRowResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== undefined) {
+            writer.uint32(8).bool(message.success);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeleteStudentManualTranscriptRowResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== undefined) {
+            obj.success = message.success;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeleteStudentManualTranscriptRowResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeleteStudentManualTranscriptRowResponse();
+        message.success = object.success ?? undefined;
         return message;
     },
 };

@@ -42,6 +42,11 @@ export interface TranscriptRow {
   compulsory?: boolean | undefined;
   note?: string | undefined;
   credit_earned?: boolean | undefined;
+  course_id?: ObjectId | undefined;
+  manual_row_id?: ObjectId | undefined;
+  category_ids: ObjectId[];
+  school_year_id?: ObjectId | undefined;
+  replaces_course_id?: ObjectId | undefined;
 }
 
 export interface CategoryProgress {
@@ -69,6 +74,39 @@ export interface GetStudentTranscriptResponse {
   rows: TranscriptRow[];
   summary: TranscriptSummary | undefined;
   diagnostics: TranscriptDiagnostic[];
+}
+
+export interface ManualTranscriptRow {
+  id?: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+  year?: number | undefined;
+  month?: number | undefined;
+  course_title?: string | undefined;
+  course_code?: string | undefined;
+  percentage_grade?: string | undefined;
+  credit?: number | undefined;
+  compulsory?: boolean | undefined;
+  note?: string | undefined;
+  credit_earned?: boolean | undefined;
+  category_ids: ObjectId[];
+  school_year_id?: ObjectId | undefined;
+  replaces_course_id?: ObjectId | undefined;
+}
+
+export interface UpsertStudentManualTranscriptRowRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  manual_row: ManualTranscriptRow | undefined;
+}
+
+export interface DeleteStudentManualTranscriptRowRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  manual_row_id: ObjectId | undefined;
+}
+
+export interface DeleteStudentManualTranscriptRowResponse {
+  success?: boolean | undefined;
 }
 
 export interface GetStudentDiplomaRequirementsRequest {
@@ -436,6 +474,11 @@ function createBaseTranscriptRow(): TranscriptRow {
     compulsory: undefined,
     note: undefined,
     credit_earned: undefined,
+    course_id: undefined,
+    manual_row_id: undefined,
+    category_ids: [],
+    school_year_id: undefined,
+    replaces_course_id: undefined,
   };
 }
 
@@ -470,6 +513,21 @@ export const TranscriptRow: MessageFns<TranscriptRow> = {
     }
     if (message.credit_earned !== undefined) {
       writer.uint32(80).bool(message.credit_earned);
+    }
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(90).fork()).join();
+    }
+    if (message.manual_row_id !== undefined) {
+      ObjectId.encode(message.manual_row_id, writer.uint32(98).fork()).join();
+    }
+    for (const v of message.category_ids) {
+      ObjectId.encode(v!, writer.uint32(106).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(114).fork()).join();
+    }
+    if (message.replaces_course_id !== undefined) {
+      ObjectId.encode(message.replaces_course_id, writer.uint32(122).fork()).join();
     }
     return writer;
   },
@@ -551,6 +609,41 @@ export const TranscriptRow: MessageFns<TranscriptRow> = {
 
           message.credit_earned = reader.bool();
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.manual_row_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.replaces_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -572,6 +665,13 @@ export const TranscriptRow: MessageFns<TranscriptRow> = {
       compulsory: isSet(object.compulsory) ? globalThis.Boolean(object.compulsory) : undefined,
       note: isSet(object.note) ? globalThis.String(object.note) : undefined,
       credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      manual_row_id: isSet(object.manualRowId) ? ObjectId.fromJSON(object.manualRowId) : undefined,
+      category_ids: globalThis.Array.isArray(object?.categoryIds)
+        ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      replaces_course_id: isSet(object.replacesCourseId) ? ObjectId.fromJSON(object.replacesCourseId) : undefined,
     };
   },
 
@@ -607,6 +707,21 @@ export const TranscriptRow: MessageFns<TranscriptRow> = {
     if (message.credit_earned !== undefined) {
       obj.creditEarned = message.credit_earned;
     }
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
+    }
+    if (message.manual_row_id !== undefined) {
+      obj.manualRowId = ObjectId.toJSON(message.manual_row_id);
+    }
+    if (message.category_ids?.length) {
+      obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.replaces_course_id !== undefined) {
+      obj.replacesCourseId = ObjectId.toJSON(message.replaces_course_id);
+    }
     return obj;
   },
 
@@ -625,6 +740,19 @@ export const TranscriptRow: MessageFns<TranscriptRow> = {
     message.compulsory = object.compulsory ?? undefined;
     message.note = object.note ?? undefined;
     message.credit_earned = object.credit_earned ?? undefined;
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
+      : undefined;
+    message.manual_row_id = (object.manual_row_id !== undefined && object.manual_row_id !== null)
+      ? ObjectId.fromPartial(object.manual_row_id)
+      : undefined;
+    message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.replaces_course_id = (object.replaces_course_id !== undefined && object.replaces_course_id !== null)
+      ? ObjectId.fromPartial(object.replaces_course_id)
+      : undefined;
     return message;
   },
 };
@@ -1047,6 +1175,540 @@ export const GetStudentTranscriptResponse: MessageFns<GetStudentTranscriptRespon
       ? TranscriptSummary.fromPartial(object.summary)
       : undefined;
     message.diagnostics = object.diagnostics?.map((e) => TranscriptDiagnostic.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseManualTranscriptRow(): ManualTranscriptRow {
+  return {
+    id: undefined,
+    grade: undefined,
+    year: undefined,
+    month: undefined,
+    course_title: undefined,
+    course_code: undefined,
+    percentage_grade: undefined,
+    credit: undefined,
+    compulsory: undefined,
+    note: undefined,
+    credit_earned: undefined,
+    category_ids: [],
+    school_year_id: undefined,
+    replaces_course_id: undefined,
+  };
+}
+
+export const ManualTranscriptRow: MessageFns<ManualTranscriptRow> = {
+  encode(message: ManualTranscriptRow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(16).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.year !== undefined) {
+      writer.uint32(24).uint32(message.year);
+    }
+    if (message.month !== undefined) {
+      writer.uint32(32).uint32(message.month);
+    }
+    if (message.course_title !== undefined) {
+      writer.uint32(42).string(message.course_title);
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(50).string(message.course_code);
+    }
+    if (message.percentage_grade !== undefined) {
+      writer.uint32(58).string(message.percentage_grade);
+    }
+    if (message.credit !== undefined) {
+      writer.uint32(65).double(message.credit);
+    }
+    if (message.compulsory !== undefined) {
+      writer.uint32(72).bool(message.compulsory);
+    }
+    if (message.note !== undefined) {
+      writer.uint32(82).string(message.note);
+    }
+    if (message.credit_earned !== undefined) {
+      writer.uint32(88).bool(message.credit_earned);
+    }
+    for (const v of message.category_ids) {
+      ObjectId.encode(v!, writer.uint32(98).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(106).fork()).join();
+    }
+    if (message.replaces_course_id !== undefined) {
+      ObjectId.encode(message.replaces_course_id, writer.uint32(114).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ManualTranscriptRow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseManualTranscriptRow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.year = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.month = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.course_title = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.percentage_grade = reader.string();
+          continue;
+        case 8:
+          if (tag !== 65) {
+            break;
+          }
+
+          message.credit = reader.double();
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.compulsory = reader.bool();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.note = reader.string();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.credit_earned = reader.bool();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.replaces_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ManualTranscriptRow {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      year: isSet(object.year) ? globalThis.Number(object.year) : undefined,
+      month: isSet(object.month) ? globalThis.Number(object.month) : undefined,
+      course_title: isSet(object.courseTitle) ? globalThis.String(object.courseTitle) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      percentage_grade: isSet(object.percentageGrade) ? globalThis.String(object.percentageGrade) : undefined,
+      credit: isSet(object.credit) ? globalThis.Number(object.credit) : undefined,
+      compulsory: isSet(object.compulsory) ? globalThis.Boolean(object.compulsory) : undefined,
+      note: isSet(object.note) ? globalThis.String(object.note) : undefined,
+      credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
+      category_ids: globalThis.Array.isArray(object?.categoryIds)
+        ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      replaces_course_id: isSet(object.replacesCourseId) ? ObjectId.fromJSON(object.replacesCourseId) : undefined,
+    };
+  },
+
+  toJSON(message: ManualTranscriptRow): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.year !== undefined) {
+      obj.year = Math.round(message.year);
+    }
+    if (message.month !== undefined) {
+      obj.month = Math.round(message.month);
+    }
+    if (message.course_title !== undefined) {
+      obj.courseTitle = message.course_title;
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    if (message.percentage_grade !== undefined) {
+      obj.percentageGrade = message.percentage_grade;
+    }
+    if (message.credit !== undefined) {
+      obj.credit = message.credit;
+    }
+    if (message.compulsory !== undefined) {
+      obj.compulsory = message.compulsory;
+    }
+    if (message.note !== undefined) {
+      obj.note = message.note;
+    }
+    if (message.credit_earned !== undefined) {
+      obj.creditEarned = message.credit_earned;
+    }
+    if (message.category_ids?.length) {
+      obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.replaces_course_id !== undefined) {
+      obj.replacesCourseId = ObjectId.toJSON(message.replaces_course_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ManualTranscriptRow>, I>>(base?: I): ManualTranscriptRow {
+    return ManualTranscriptRow.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ManualTranscriptRow>, I>>(object: I): ManualTranscriptRow {
+    const message = createBaseManualTranscriptRow();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.grade = object.grade ?? undefined;
+    message.year = object.year ?? undefined;
+    message.month = object.month ?? undefined;
+    message.course_title = object.course_title ?? undefined;
+    message.course_code = object.course_code ?? undefined;
+    message.percentage_grade = object.percentage_grade ?? undefined;
+    message.credit = object.credit ?? undefined;
+    message.compulsory = object.compulsory ?? undefined;
+    message.note = object.note ?? undefined;
+    message.credit_earned = object.credit_earned ?? undefined;
+    message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.replaces_course_id = (object.replaces_course_id !== undefined && object.replaces_course_id !== null)
+      ? ObjectId.fromPartial(object.replaces_course_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpsertStudentManualTranscriptRowRequest(): UpsertStudentManualTranscriptRowRequest {
+  return { context: undefined, student_id: undefined, manual_row: undefined };
+}
+
+export const UpsertStudentManualTranscriptRowRequest: MessageFns<UpsertStudentManualTranscriptRowRequest> = {
+  encode(message: UpsertStudentManualTranscriptRowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.manual_row !== undefined) {
+      ManualTranscriptRow.encode(message.manual_row, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertStudentManualTranscriptRowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertStudentManualTranscriptRowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.manual_row = ManualTranscriptRow.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpsertStudentManualTranscriptRowRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      manual_row: isSet(object.manualRow) ? ManualTranscriptRow.fromJSON(object.manualRow) : undefined,
+    };
+  },
+
+  toJSON(message: UpsertStudentManualTranscriptRowRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.manual_row !== undefined) {
+      obj.manualRow = ManualTranscriptRow.toJSON(message.manual_row);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpsertStudentManualTranscriptRowRequest>, I>>(
+    base?: I,
+  ): UpsertStudentManualTranscriptRowRequest {
+    return UpsertStudentManualTranscriptRowRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpsertStudentManualTranscriptRowRequest>, I>>(
+    object: I,
+  ): UpsertStudentManualTranscriptRowRequest {
+    const message = createBaseUpsertStudentManualTranscriptRowRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.manual_row = (object.manual_row !== undefined && object.manual_row !== null)
+      ? ManualTranscriptRow.fromPartial(object.manual_row)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteStudentManualTranscriptRowRequest(): DeleteStudentManualTranscriptRowRequest {
+  return { context: undefined, student_id: undefined, manual_row_id: undefined };
+}
+
+export const DeleteStudentManualTranscriptRowRequest: MessageFns<DeleteStudentManualTranscriptRowRequest> = {
+  encode(message: DeleteStudentManualTranscriptRowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.manual_row_id !== undefined) {
+      ObjectId.encode(message.manual_row_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteStudentManualTranscriptRowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteStudentManualTranscriptRowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.manual_row_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteStudentManualTranscriptRowRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      manual_row_id: isSet(object.manualRowId) ? ObjectId.fromJSON(object.manualRowId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteStudentManualTranscriptRowRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.manual_row_id !== undefined) {
+      obj.manualRowId = ObjectId.toJSON(message.manual_row_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteStudentManualTranscriptRowRequest>, I>>(
+    base?: I,
+  ): DeleteStudentManualTranscriptRowRequest {
+    return DeleteStudentManualTranscriptRowRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteStudentManualTranscriptRowRequest>, I>>(
+    object: I,
+  ): DeleteStudentManualTranscriptRowRequest {
+    const message = createBaseDeleteStudentManualTranscriptRowRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.manual_row_id = (object.manual_row_id !== undefined && object.manual_row_id !== null)
+      ? ObjectId.fromPartial(object.manual_row_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteStudentManualTranscriptRowResponse(): DeleteStudentManualTranscriptRowResponse {
+  return { success: undefined };
+}
+
+export const DeleteStudentManualTranscriptRowResponse: MessageFns<DeleteStudentManualTranscriptRowResponse> = {
+  encode(message: DeleteStudentManualTranscriptRowResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== undefined) {
+      writer.uint32(8).bool(message.success);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteStudentManualTranscriptRowResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteStudentManualTranscriptRowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteStudentManualTranscriptRowResponse {
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : undefined };
+  },
+
+  toJSON(message: DeleteStudentManualTranscriptRowResponse): unknown {
+    const obj: any = {};
+    if (message.success !== undefined) {
+      obj.success = message.success;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteStudentManualTranscriptRowResponse>, I>>(
+    base?: I,
+  ): DeleteStudentManualTranscriptRowResponse {
+    return DeleteStudentManualTranscriptRowResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteStudentManualTranscriptRowResponse>, I>>(
+    object: I,
+  ): DeleteStudentManualTranscriptRowResponse {
+    const message = createBaseDeleteStudentManualTranscriptRowResponse();
+    message.success = object.success ?? undefined;
     return message;
   },
 };

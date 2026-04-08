@@ -30,6 +30,11 @@ export interface TranscriptRow {
     compulsory?: boolean | undefined;
     note?: string | undefined;
     credit_earned?: boolean | undefined;
+    course_id?: ObjectId | undefined;
+    manual_row_id?: ObjectId | undefined;
+    category_ids: ObjectId[];
+    school_year_id?: ObjectId | undefined;
+    replaces_course_id?: ObjectId | undefined;
 }
 export interface CategoryProgress {
     category_id: ObjectId | undefined;
@@ -53,6 +58,35 @@ export interface GetStudentTranscriptResponse {
     rows: TranscriptRow[];
     summary: TranscriptSummary | undefined;
     diagnostics: TranscriptDiagnostic[];
+}
+export interface ManualTranscriptRow {
+    id?: ObjectId | undefined;
+    grade?: StudentGrade | undefined;
+    year?: number | undefined;
+    month?: number | undefined;
+    course_title?: string | undefined;
+    course_code?: string | undefined;
+    percentage_grade?: string | undefined;
+    credit?: number | undefined;
+    compulsory?: boolean | undefined;
+    note?: string | undefined;
+    credit_earned?: boolean | undefined;
+    category_ids: ObjectId[];
+    school_year_id?: ObjectId | undefined;
+    replaces_course_id?: ObjectId | undefined;
+}
+export interface UpsertStudentManualTranscriptRowRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    manual_row: ManualTranscriptRow | undefined;
+}
+export interface DeleteStudentManualTranscriptRowRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    manual_row_id: ObjectId | undefined;
+}
+export interface DeleteStudentManualTranscriptRowResponse {
+    success?: boolean | undefined;
 }
 export interface GetStudentDiplomaRequirementsRequest {
     context: RequestContext | undefined;
@@ -113,6 +147,10 @@ export declare const CategoryProgress: MessageFns<CategoryProgress>;
 export declare const TranscriptSummary: MessageFns<TranscriptSummary>;
 export declare const TranscriptDiagnostic: MessageFns<TranscriptDiagnostic>;
 export declare const GetStudentTranscriptResponse: MessageFns<GetStudentTranscriptResponse>;
+export declare const ManualTranscriptRow: MessageFns<ManualTranscriptRow>;
+export declare const UpsertStudentManualTranscriptRowRequest: MessageFns<UpsertStudentManualTranscriptRowRequest>;
+export declare const DeleteStudentManualTranscriptRowRequest: MessageFns<DeleteStudentManualTranscriptRowRequest>;
+export declare const DeleteStudentManualTranscriptRowResponse: MessageFns<DeleteStudentManualTranscriptRowResponse>;
 export declare const GetStudentDiplomaRequirementsRequest: MessageFns<GetStudentDiplomaRequirementsRequest>;
 export declare const DiplomaRequirementRow: MessageFns<DiplomaRequirementRow>;
 export declare const StudentGraduationTracking: MessageFns<StudentGraduationTracking>;
