@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: user_service/student_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetNewStudentsThisYearCountRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.ExecuteReregistrationPhase3SendEmailsResponse = exports.ExecuteReregistrationPhase3SendEmailsRequest = exports.ExecuteReregistrationPhase2ResetCustomFieldsResponse = exports.ExecuteReregistrationPhase2ResetCustomFieldsRequest = exports.ExecuteReregistrationPhase1SetupStudentsResponse = exports.ExecuteReregistrationPhase1SetupStudentsRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
-exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.GetNewStudentsThisYearCountResponse = void 0;
+exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.ExecuteReregistrationPhase3SendEmailsResponse = exports.ExecuteReregistrationPhase3SendEmailsRequest = exports.ExecuteReregistrationPhase2ResetCustomFieldsResponse = exports.ExecuteReregistrationPhase2ResetCustomFieldsRequest = exports.ExecuteReregistrationPhase1SetupStudentsResponse = exports.ExecuteReregistrationPhase1SetupStudentsRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.ValidateStudentUsernameResponse = exports.ValidateStudentUsernameRequest = exports.SuggestStudentEnrollUsernameResponse = exports.SuggestStudentEnrollUsernameRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
+exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.GetNewStudentsThisYearCountResponse = exports.GetNewStudentsThisYearCountRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -686,7 +686,13 @@ exports.MoveAdmissionYearRequest = {
     },
 };
 function createBaseEnrollStudentWithMessageRequest() {
-    return { context: undefined, student_id: undefined, enrollment_message: undefined, school_year: undefined };
+    return {
+        context: undefined,
+        student_id: undefined,
+        enrollment_message: undefined,
+        school_year: undefined,
+        username: undefined,
+    };
 }
 exports.EnrollStudentWithMessageRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -701,6 +707,9 @@ exports.EnrollStudentWithMessageRequest = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+        }
+        if (message.username !== undefined) {
+            writer.uint32(42).string(message.username);
         }
         return writer;
     },
@@ -735,6 +744,12 @@ exports.EnrollStudentWithMessageRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -749,6 +764,7 @@ exports.EnrollStudentWithMessageRequest = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
         };
     },
     toJSON(message) {
@@ -764,6 +780,9 @@ exports.EnrollStudentWithMessageRequest = {
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.username !== undefined) {
+            obj.username = message.username;
         }
         return obj;
     },
@@ -782,6 +801,291 @@ exports.EnrollStudentWithMessageRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.username = object.username ?? undefined;
+        return message;
+    },
+};
+function createBaseSuggestStudentEnrollUsernameRequest() {
+    return { context: undefined, student_id: undefined, school_year: undefined };
+}
+exports.SuggestStudentEnrollUsernameRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSuggestStudentEnrollUsernameRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SuggestStudentEnrollUsernameRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSuggestStudentEnrollUsernameRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSuggestStudentEnrollUsernameResponse() {
+    return { username: undefined };
+}
+exports.SuggestStudentEnrollUsernameResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.username !== undefined) {
+            writer.uint32(10).string(message.username);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSuggestStudentEnrollUsernameResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { username: isSet(object.username) ? globalThis.String(object.username) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.username !== undefined) {
+            obj.username = message.username;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SuggestStudentEnrollUsernameResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSuggestStudentEnrollUsernameResponse();
+        message.username = object.username ?? undefined;
+        return message;
+    },
+};
+function createBaseValidateStudentUsernameRequest() {
+    return { context: undefined, username: undefined };
+}
+exports.ValidateStudentUsernameRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.username !== undefined) {
+            writer.uint32(18).string(message.username);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseValidateStudentUsernameRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.username !== undefined) {
+            obj.username = message.username;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ValidateStudentUsernameRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseValidateStudentUsernameRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.username = object.username ?? undefined;
+        return message;
+    },
+};
+function createBaseValidateStudentUsernameResponse() {
+    return { is_valid: undefined, normalized_username: undefined, error: undefined };
+}
+exports.ValidateStudentUsernameResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.is_valid !== undefined) {
+            writer.uint32(8).bool(message.is_valid);
+        }
+        if (message.normalized_username !== undefined) {
+            writer.uint32(18).string(message.normalized_username);
+        }
+        if (message.error !== undefined) {
+            writer.uint32(26).string(message.error);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseValidateStudentUsernameResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.is_valid = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.normalized_username = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.error = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            is_valid: isSet(object.isValid) ? globalThis.Boolean(object.isValid) : undefined,
+            normalized_username: isSet(object.normalizedUsername) ? globalThis.String(object.normalizedUsername) : undefined,
+            error: isSet(object.error) ? globalThis.String(object.error) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.is_valid !== undefined) {
+            obj.isValid = message.is_valid;
+        }
+        if (message.normalized_username !== undefined) {
+            obj.normalizedUsername = message.normalized_username;
+        }
+        if (message.error !== undefined) {
+            obj.error = message.error;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ValidateStudentUsernameResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseValidateStudentUsernameResponse();
+        message.is_valid = object.is_valid ?? undefined;
+        message.normalized_username = object.normalized_username ?? undefined;
+        message.error = object.error ?? undefined;
         return message;
     },
 };

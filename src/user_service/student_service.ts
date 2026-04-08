@@ -85,6 +85,28 @@ export interface EnrollStudentWithMessageRequest {
   student_id: ObjectId | undefined;
   enrollment_message?: string | undefined;
   school_year: ObjectId | undefined;
+  username?: string | undefined;
+}
+
+export interface SuggestStudentEnrollUsernameRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  school_year: ObjectId | undefined;
+}
+
+export interface SuggestStudentEnrollUsernameResponse {
+  username?: string | undefined;
+}
+
+export interface ValidateStudentUsernameRequest {
+  context: RequestContext | undefined;
+  username?: string | undefined;
+}
+
+export interface ValidateStudentUsernameResponse {
+  is_valid?: boolean | undefined;
+  normalized_username?: string | undefined;
+  error?: string | undefined;
 }
 
 export interface WithdrawStudentWithMessageRequest {
@@ -1141,7 +1163,13 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
 };
 
 function createBaseEnrollStudentWithMessageRequest(): EnrollStudentWithMessageRequest {
-  return { context: undefined, student_id: undefined, enrollment_message: undefined, school_year: undefined };
+  return {
+    context: undefined,
+    student_id: undefined,
+    enrollment_message: undefined,
+    school_year: undefined,
+    username: undefined,
+  };
 }
 
 export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessageRequest> = {
@@ -1157,6 +1185,9 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+    }
+    if (message.username !== undefined) {
+      writer.uint32(42).string(message.username);
     }
     return writer;
   },
@@ -1196,6 +1227,13 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1211,6 +1249,7 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
     };
   },
 
@@ -1227,6 +1266,9 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
     }
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.username !== undefined) {
+      obj.username = message.username;
     }
     return obj;
   },
@@ -1248,6 +1290,336 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.username = object.username ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSuggestStudentEnrollUsernameRequest(): SuggestStudentEnrollUsernameRequest {
+  return { context: undefined, student_id: undefined, school_year: undefined };
+}
+
+export const SuggestStudentEnrollUsernameRequest: MessageFns<SuggestStudentEnrollUsernameRequest> = {
+  encode(message: SuggestStudentEnrollUsernameRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SuggestStudentEnrollUsernameRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSuggestStudentEnrollUsernameRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SuggestStudentEnrollUsernameRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: SuggestStudentEnrollUsernameRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SuggestStudentEnrollUsernameRequest>, I>>(
+    base?: I,
+  ): SuggestStudentEnrollUsernameRequest {
+    return SuggestStudentEnrollUsernameRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SuggestStudentEnrollUsernameRequest>, I>>(
+    object: I,
+  ): SuggestStudentEnrollUsernameRequest {
+    const message = createBaseSuggestStudentEnrollUsernameRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSuggestStudentEnrollUsernameResponse(): SuggestStudentEnrollUsernameResponse {
+  return { username: undefined };
+}
+
+export const SuggestStudentEnrollUsernameResponse: MessageFns<SuggestStudentEnrollUsernameResponse> = {
+  encode(message: SuggestStudentEnrollUsernameResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.username !== undefined) {
+      writer.uint32(10).string(message.username);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SuggestStudentEnrollUsernameResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSuggestStudentEnrollUsernameResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SuggestStudentEnrollUsernameResponse {
+    return { username: isSet(object.username) ? globalThis.String(object.username) : undefined };
+  },
+
+  toJSON(message: SuggestStudentEnrollUsernameResponse): unknown {
+    const obj: any = {};
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SuggestStudentEnrollUsernameResponse>, I>>(
+    base?: I,
+  ): SuggestStudentEnrollUsernameResponse {
+    return SuggestStudentEnrollUsernameResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SuggestStudentEnrollUsernameResponse>, I>>(
+    object: I,
+  ): SuggestStudentEnrollUsernameResponse {
+    const message = createBaseSuggestStudentEnrollUsernameResponse();
+    message.username = object.username ?? undefined;
+    return message;
+  },
+};
+
+function createBaseValidateStudentUsernameRequest(): ValidateStudentUsernameRequest {
+  return { context: undefined, username: undefined };
+}
+
+export const ValidateStudentUsernameRequest: MessageFns<ValidateStudentUsernameRequest> = {
+  encode(message: ValidateStudentUsernameRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.username !== undefined) {
+      writer.uint32(18).string(message.username);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidateStudentUsernameRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateStudentUsernameRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateStudentUsernameRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+    };
+  },
+
+  toJSON(message: ValidateStudentUsernameRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ValidateStudentUsernameRequest>, I>>(base?: I): ValidateStudentUsernameRequest {
+    return ValidateStudentUsernameRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ValidateStudentUsernameRequest>, I>>(
+    object: I,
+  ): ValidateStudentUsernameRequest {
+    const message = createBaseValidateStudentUsernameRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.username = object.username ?? undefined;
+    return message;
+  },
+};
+
+function createBaseValidateStudentUsernameResponse(): ValidateStudentUsernameResponse {
+  return { is_valid: undefined, normalized_username: undefined, error: undefined };
+}
+
+export const ValidateStudentUsernameResponse: MessageFns<ValidateStudentUsernameResponse> = {
+  encode(message: ValidateStudentUsernameResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.is_valid !== undefined) {
+      writer.uint32(8).bool(message.is_valid);
+    }
+    if (message.normalized_username !== undefined) {
+      writer.uint32(18).string(message.normalized_username);
+    }
+    if (message.error !== undefined) {
+      writer.uint32(26).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidateStudentUsernameResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateStudentUsernameResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.is_valid = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.normalized_username = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateStudentUsernameResponse {
+    return {
+      is_valid: isSet(object.isValid) ? globalThis.Boolean(object.isValid) : undefined,
+      normalized_username: isSet(object.normalizedUsername) ? globalThis.String(object.normalizedUsername) : undefined,
+      error: isSet(object.error) ? globalThis.String(object.error) : undefined,
+    };
+  },
+
+  toJSON(message: ValidateStudentUsernameResponse): unknown {
+    const obj: any = {};
+    if (message.is_valid !== undefined) {
+      obj.isValid = message.is_valid;
+    }
+    if (message.normalized_username !== undefined) {
+      obj.normalizedUsername = message.normalized_username;
+    }
+    if (message.error !== undefined) {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ValidateStudentUsernameResponse>, I>>(base?: I): ValidateStudentUsernameResponse {
+    return ValidateStudentUsernameResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ValidateStudentUsernameResponse>, I>>(
+    object: I,
+  ): ValidateStudentUsernameResponse {
+    const message = createBaseValidateStudentUsernameResponse();
+    message.is_valid = object.is_valid ?? undefined;
+    message.normalized_username = object.normalized_username ?? undefined;
+    message.error = object.error ?? undefined;
     return message;
   },
 };

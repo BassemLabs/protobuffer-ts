@@ -78,6 +78,25 @@ export interface CreateTeacherRequest {
     phone_number: PhoneNumber | undefined;
     date_of_birth: Date | undefined;
     personal_email?: string | undefined;
+    username?: string | undefined;
+}
+export interface SuggestTeacherUsernameRequest {
+    context: RequestContext | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    date_of_birth: Date | undefined;
+}
+export interface SuggestTeacherUsernameResponse {
+    username?: string | undefined;
+}
+export interface ValidateTeacherUsernameRequest {
+    context: RequestContext | undefined;
+    username?: string | undefined;
+}
+export interface ValidateTeacherUsernameResponse {
+    is_valid?: boolean | undefined;
+    normalized_username?: string | undefined;
+    error?: string | undefined;
 }
 export interface WithdrawTeacherRequest {
     context: RequestContext | undefined;
@@ -124,6 +143,10 @@ export declare const DeleteTeacherSignatureRequest: MessageFns<DeleteTeacherSign
 export declare const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest>;
 export declare const ChangeTeacherPasswordRequest: MessageFns<ChangeTeacherPasswordRequest>;
 export declare const CreateTeacherRequest: MessageFns<CreateTeacherRequest>;
+export declare const SuggestTeacherUsernameRequest: MessageFns<SuggestTeacherUsernameRequest>;
+export declare const SuggestTeacherUsernameResponse: MessageFns<SuggestTeacherUsernameResponse>;
+export declare const ValidateTeacherUsernameRequest: MessageFns<ValidateTeacherUsernameRequest>;
+export declare const ValidateTeacherUsernameResponse: MessageFns<ValidateTeacherUsernameResponse>;
 export declare const WithdrawTeacherRequest: MessageFns<WithdrawTeacherRequest>;
 export declare const ReactivateTeacherRequest: MessageFns<ReactivateTeacherRequest>;
 export declare const UploadTeachersRequest: MessageFns<UploadTeachersRequest>;

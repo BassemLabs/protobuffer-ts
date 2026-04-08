@@ -17,6 +17,8 @@ import * as Announcement_service from './organization_service/announcement_servi
 export { Announcement_service };
 import * as Announcement from './organization_service/announcement';
 export { Announcement };
+import * as Username_policy_service from './organization_service/username_policy_service';
+export { Username_policy_service };
 import * as Campus_service from './organization_service/campus_service';
 export { Campus_service };
 import * as Organization_service from './organization_service/organization_service';
@@ -35,6 +37,8 @@ import * as Onboarding_settings_service from './organization_service/onboarding_
 export { Onboarding_settings_service };
 import * as Organization from './organization_service/organization';
 export { Organization };
+import * as Username_policy from './organization_service/username_policy';
+export { Username_policy };
 import * as Organization_owner_service from './organization_service/organization_owner_service';
 export { Organization_owner_service };
 import * as Kms_key from './organization_service/kms_key';

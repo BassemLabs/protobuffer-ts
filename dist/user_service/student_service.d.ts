@@ -55,6 +55,24 @@ export interface EnrollStudentWithMessageRequest {
     student_id: ObjectId | undefined;
     enrollment_message?: string | undefined;
     school_year: ObjectId | undefined;
+    username?: string | undefined;
+}
+export interface SuggestStudentEnrollUsernameRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+}
+export interface SuggestStudentEnrollUsernameResponse {
+    username?: string | undefined;
+}
+export interface ValidateStudentUsernameRequest {
+    context: RequestContext | undefined;
+    username?: string | undefined;
+}
+export interface ValidateStudentUsernameResponse {
+    is_valid?: boolean | undefined;
+    normalized_username?: string | undefined;
+    error?: string | undefined;
 }
 export interface WithdrawStudentWithMessageRequest {
     context: RequestContext | undefined;
@@ -312,6 +330,10 @@ export declare const UpdateStudentProfileRequest: MessageFns<UpdateStudentProfil
 export declare const UpdateStudentGradeRequest: MessageFns<UpdateStudentGradeRequest>;
 export declare const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest>;
 export declare const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessageRequest>;
+export declare const SuggestStudentEnrollUsernameRequest: MessageFns<SuggestStudentEnrollUsernameRequest>;
+export declare const SuggestStudentEnrollUsernameResponse: MessageFns<SuggestStudentEnrollUsernameResponse>;
+export declare const ValidateStudentUsernameRequest: MessageFns<ValidateStudentUsernameRequest>;
+export declare const ValidateStudentUsernameResponse: MessageFns<ValidateStudentUsernameResponse>;
 export declare const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMessageRequest>;
 export declare const ChangeStudentPasswordRequest: MessageFns<ChangeStudentPasswordRequest>;
 export declare const ChangeStudentPasswordResponse: MessageFns<ChangeStudentPasswordResponse>;

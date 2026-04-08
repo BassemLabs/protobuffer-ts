@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
+exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.ValidateTeacherUsernameResponse = exports.ValidateTeacherUsernameRequest = exports.SuggestTeacherUsernameResponse = exports.SuggestTeacherUsernameRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -1153,6 +1153,7 @@ function createBaseCreateTeacherRequest() {
         phone_number: undefined,
         date_of_birth: undefined,
         personal_email: undefined,
+        username: undefined,
     };
 }
 exports.CreateTeacherRequest = {
@@ -1177,6 +1178,9 @@ exports.CreateTeacherRequest = {
         }
         if (message.personal_email !== undefined) {
             writer.uint32(58).string(message.personal_email);
+        }
+        if (message.username !== undefined) {
+            writer.uint32(66).string(message.username);
         }
         return writer;
     },
@@ -1229,6 +1233,12 @@ exports.CreateTeacherRequest = {
                     }
                     message.personal_email = reader.string();
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1246,6 +1256,7 @@ exports.CreateTeacherRequest = {
             phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
         };
     },
     toJSON(message) {
@@ -1271,6 +1282,9 @@ exports.CreateTeacherRequest = {
         if (message.personal_email !== undefined) {
             obj.personalEmail = message.personal_email;
         }
+        if (message.username !== undefined) {
+            obj.username = message.username;
+        }
         return obj;
     },
     create(base) {
@@ -1289,6 +1303,301 @@ exports.CreateTeacherRequest = {
             : undefined;
         message.date_of_birth = object.date_of_birth ?? undefined;
         message.personal_email = object.personal_email ?? undefined;
+        message.username = object.username ?? undefined;
+        return message;
+    },
+};
+function createBaseSuggestTeacherUsernameRequest() {
+    return { context: undefined, first_name: undefined, last_name: undefined, date_of_birth: undefined };
+}
+exports.SuggestTeacherUsernameRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.first_name !== undefined) {
+            writer.uint32(18).string(message.first_name);
+        }
+        if (message.last_name !== undefined) {
+            writer.uint32(26).string(message.last_name);
+        }
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSuggestTeacherUsernameRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.first_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.last_name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.first_name !== undefined) {
+            obj.firstName = message.first_name;
+        }
+        if (message.last_name !== undefined) {
+            obj.lastName = message.last_name;
+        }
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SuggestTeacherUsernameRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSuggestTeacherUsernameRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        return message;
+    },
+};
+function createBaseSuggestTeacherUsernameResponse() {
+    return { username: undefined };
+}
+exports.SuggestTeacherUsernameResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.username !== undefined) {
+            writer.uint32(10).string(message.username);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSuggestTeacherUsernameResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { username: isSet(object.username) ? globalThis.String(object.username) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.username !== undefined) {
+            obj.username = message.username;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SuggestTeacherUsernameResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSuggestTeacherUsernameResponse();
+        message.username = object.username ?? undefined;
+        return message;
+    },
+};
+function createBaseValidateTeacherUsernameRequest() {
+    return { context: undefined, username: undefined };
+}
+exports.ValidateTeacherUsernameRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.username !== undefined) {
+            writer.uint32(18).string(message.username);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseValidateTeacherUsernameRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.username !== undefined) {
+            obj.username = message.username;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ValidateTeacherUsernameRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseValidateTeacherUsernameRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.username = object.username ?? undefined;
+        return message;
+    },
+};
+function createBaseValidateTeacherUsernameResponse() {
+    return { is_valid: undefined, normalized_username: undefined, error: undefined };
+}
+exports.ValidateTeacherUsernameResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.is_valid !== undefined) {
+            writer.uint32(8).bool(message.is_valid);
+        }
+        if (message.normalized_username !== undefined) {
+            writer.uint32(18).string(message.normalized_username);
+        }
+        if (message.error !== undefined) {
+            writer.uint32(26).string(message.error);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseValidateTeacherUsernameResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.is_valid = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.normalized_username = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.error = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            is_valid: isSet(object.isValid) ? globalThis.Boolean(object.isValid) : undefined,
+            normalized_username: isSet(object.normalizedUsername) ? globalThis.String(object.normalizedUsername) : undefined,
+            error: isSet(object.error) ? globalThis.String(object.error) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.is_valid !== undefined) {
+            obj.isValid = message.is_valid;
+        }
+        if (message.normalized_username !== undefined) {
+            obj.normalizedUsername = message.normalized_username;
+        }
+        if (message.error !== undefined) {
+            obj.error = message.error;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ValidateTeacherUsernameResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseValidateTeacherUsernameResponse();
+        message.is_valid = object.is_valid ?? undefined;
+        message.normalized_username = object.normalized_username ?? undefined;
+        message.error = object.error ?? undefined;
         return message;
     },
 };
