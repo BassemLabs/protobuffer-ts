@@ -218,12 +218,28 @@ export interface HasStudentsInInterviewStatusResponse {
   has_students_in_interview?: boolean | undefined;
 }
 
-export interface StartReregistrationForComingSchoolYearRequest {
+export interface ExecuteReregistrationPhase1SetupStudentsRequest {
   context: RequestContext | undefined;
 }
 
-/** Empty response - if successful, reregistration has been started */
-export interface StartReregistrationForComingSchoolYearResponse {
+/** Empty response */
+export interface ExecuteReregistrationPhase1SetupStudentsResponse {
+}
+
+export interface ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+  context: RequestContext | undefined;
+}
+
+/** Empty response */
+export interface ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+}
+
+export interface ExecuteReregistrationPhase3SendEmailsRequest {
+  context: RequestContext | undefined;
+}
+
+/** Empty response */
+export interface ExecuteReregistrationPhase3SendEmailsResponse {
 }
 
 export interface CreateDefaultResourceAccessSettingsForOrgRequest {
@@ -3096,88 +3112,89 @@ export const HasStudentsInInterviewStatusResponse: MessageFns<HasStudentsInInter
   },
 };
 
-function createBaseStartReregistrationForComingSchoolYearRequest(): StartReregistrationForComingSchoolYearRequest {
+function createBaseExecuteReregistrationPhase1SetupStudentsRequest(): ExecuteReregistrationPhase1SetupStudentsRequest {
   return { context: undefined };
 }
 
-export const StartReregistrationForComingSchoolYearRequest: MessageFns<StartReregistrationForComingSchoolYearRequest> =
-  {
-    encode(
-      message: StartReregistrationForComingSchoolYearRequest,
-      writer: BinaryWriter = new BinaryWriter(),
-    ): BinaryWriter {
-      if (message.context !== undefined) {
-        RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-      }
-      return writer;
-    },
-
-    decode(input: BinaryReader | Uint8Array, length?: number): StartReregistrationForComingSchoolYearRequest {
-      const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-      let end = length === undefined ? reader.len : reader.pos + length;
-      const message = createBaseStartReregistrationForComingSchoolYearRequest();
-      while (reader.pos < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          case 1:
-            if (tag !== 10) {
-              break;
-            }
-
-            message.context = RequestContext.decode(reader, reader.uint32());
-            continue;
-        }
-        if ((tag & 7) === 4 || tag === 0) {
-          break;
-        }
-        reader.skip(tag & 7);
-      }
-      return message;
-    },
-
-    fromJSON(object: any): StartReregistrationForComingSchoolYearRequest {
-      return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
-    },
-
-    toJSON(message: StartReregistrationForComingSchoolYearRequest): unknown {
-      const obj: any = {};
-      if (message.context !== undefined) {
-        obj.context = RequestContext.toJSON(message.context);
-      }
-      return obj;
-    },
-
-    create<I extends Exact<DeepPartial<StartReregistrationForComingSchoolYearRequest>, I>>(
-      base?: I,
-    ): StartReregistrationForComingSchoolYearRequest {
-      return StartReregistrationForComingSchoolYearRequest.fromPartial(base ?? ({} as any));
-    },
-    fromPartial<I extends Exact<DeepPartial<StartReregistrationForComingSchoolYearRequest>, I>>(
-      object: I,
-    ): StartReregistrationForComingSchoolYearRequest {
-      const message = createBaseStartReregistrationForComingSchoolYearRequest();
-      message.context = (object.context !== undefined && object.context !== null)
-        ? RequestContext.fromPartial(object.context)
-        : undefined;
-      return message;
-    },
-  };
-
-function createBaseStartReregistrationForComingSchoolYearResponse(): StartReregistrationForComingSchoolYearResponse {
-  return {};
-}
-
-export const StartReregistrationForComingSchoolYearResponse: MessageFns<
-  StartReregistrationForComingSchoolYearResponse
+export const ExecuteReregistrationPhase1SetupStudentsRequest: MessageFns<
+  ExecuteReregistrationPhase1SetupStudentsRequest
 > = {
-  encode(_: StartReregistrationForComingSchoolYearResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: ExecuteReregistrationPhase1SetupStudentsRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): StartReregistrationForComingSchoolYearResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteReregistrationPhase1SetupStudentsRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStartReregistrationForComingSchoolYearResponse();
+    const message = createBaseExecuteReregistrationPhase1SetupStudentsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExecuteReregistrationPhase1SetupStudentsRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: ExecuteReregistrationPhase1SetupStudentsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteReregistrationPhase1SetupStudentsRequest>, I>>(
+    base?: I,
+  ): ExecuteReregistrationPhase1SetupStudentsRequest {
+    return ExecuteReregistrationPhase1SetupStudentsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteReregistrationPhase1SetupStudentsRequest>, I>>(
+    object: I,
+  ): ExecuteReregistrationPhase1SetupStudentsRequest {
+    const message = createBaseExecuteReregistrationPhase1SetupStudentsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseExecuteReregistrationPhase1SetupStudentsResponse(): ExecuteReregistrationPhase1SetupStudentsResponse {
+  return {};
+}
+
+export const ExecuteReregistrationPhase1SetupStudentsResponse: MessageFns<
+  ExecuteReregistrationPhase1SetupStudentsResponse
+> = {
+  encode(_: ExecuteReregistrationPhase1SetupStudentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteReregistrationPhase1SetupStudentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteReregistrationPhase1SetupStudentsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -3190,27 +3207,261 @@ export const StartReregistrationForComingSchoolYearResponse: MessageFns<
     return message;
   },
 
-  fromJSON(_: any): StartReregistrationForComingSchoolYearResponse {
+  fromJSON(_: any): ExecuteReregistrationPhase1SetupStudentsResponse {
     return {};
   },
 
-  toJSON(_: StartReregistrationForComingSchoolYearResponse): unknown {
+  toJSON(_: ExecuteReregistrationPhase1SetupStudentsResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StartReregistrationForComingSchoolYearResponse>, I>>(
+  create<I extends Exact<DeepPartial<ExecuteReregistrationPhase1SetupStudentsResponse>, I>>(
     base?: I,
-  ): StartReregistrationForComingSchoolYearResponse {
-    return StartReregistrationForComingSchoolYearResponse.fromPartial(base ?? ({} as any));
+  ): ExecuteReregistrationPhase1SetupStudentsResponse {
+    return ExecuteReregistrationPhase1SetupStudentsResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<StartReregistrationForComingSchoolYearResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<ExecuteReregistrationPhase1SetupStudentsResponse>, I>>(
     _: I,
-  ): StartReregistrationForComingSchoolYearResponse {
-    const message = createBaseStartReregistrationForComingSchoolYearResponse();
+  ): ExecuteReregistrationPhase1SetupStudentsResponse {
+    const message = createBaseExecuteReregistrationPhase1SetupStudentsResponse();
     return message;
   },
 };
+
+function createBaseExecuteReregistrationPhase2ResetCustomFieldsRequest(): ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+  return { context: undefined };
+}
+
+export const ExecuteReregistrationPhase2ResetCustomFieldsRequest: MessageFns<
+  ExecuteReregistrationPhase2ResetCustomFieldsRequest
+> = {
+  encode(
+    message: ExecuteReregistrationPhase2ResetCustomFieldsRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteReregistrationPhase2ResetCustomFieldsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: ExecuteReregistrationPhase2ResetCustomFieldsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteReregistrationPhase2ResetCustomFieldsRequest>, I>>(
+    base?: I,
+  ): ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+    return ExecuteReregistrationPhase2ResetCustomFieldsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteReregistrationPhase2ResetCustomFieldsRequest>, I>>(
+    object: I,
+  ): ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+    const message = createBaseExecuteReregistrationPhase2ResetCustomFieldsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseExecuteReregistrationPhase2ResetCustomFieldsResponse(): ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+  return {};
+}
+
+export const ExecuteReregistrationPhase2ResetCustomFieldsResponse: MessageFns<
+  ExecuteReregistrationPhase2ResetCustomFieldsResponse
+> = {
+  encode(
+    _: ExecuteReregistrationPhase2ResetCustomFieldsResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteReregistrationPhase2ResetCustomFieldsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+    return {};
+  },
+
+  toJSON(_: ExecuteReregistrationPhase2ResetCustomFieldsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteReregistrationPhase2ResetCustomFieldsResponse>, I>>(
+    base?: I,
+  ): ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+    return ExecuteReregistrationPhase2ResetCustomFieldsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteReregistrationPhase2ResetCustomFieldsResponse>, I>>(
+    _: I,
+  ): ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+    const message = createBaseExecuteReregistrationPhase2ResetCustomFieldsResponse();
+    return message;
+  },
+};
+
+function createBaseExecuteReregistrationPhase3SendEmailsRequest(): ExecuteReregistrationPhase3SendEmailsRequest {
+  return { context: undefined };
+}
+
+export const ExecuteReregistrationPhase3SendEmailsRequest: MessageFns<ExecuteReregistrationPhase3SendEmailsRequest> = {
+  encode(
+    message: ExecuteReregistrationPhase3SendEmailsRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteReregistrationPhase3SendEmailsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteReregistrationPhase3SendEmailsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExecuteReregistrationPhase3SendEmailsRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: ExecuteReregistrationPhase3SendEmailsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteReregistrationPhase3SendEmailsRequest>, I>>(
+    base?: I,
+  ): ExecuteReregistrationPhase3SendEmailsRequest {
+    return ExecuteReregistrationPhase3SendEmailsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteReregistrationPhase3SendEmailsRequest>, I>>(
+    object: I,
+  ): ExecuteReregistrationPhase3SendEmailsRequest {
+    const message = createBaseExecuteReregistrationPhase3SendEmailsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseExecuteReregistrationPhase3SendEmailsResponse(): ExecuteReregistrationPhase3SendEmailsResponse {
+  return {};
+}
+
+export const ExecuteReregistrationPhase3SendEmailsResponse: MessageFns<ExecuteReregistrationPhase3SendEmailsResponse> =
+  {
+    encode(_: ExecuteReregistrationPhase3SendEmailsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+      return writer;
+    },
+
+    decode(input: BinaryReader | Uint8Array, length?: number): ExecuteReregistrationPhase3SendEmailsResponse {
+      const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+      let end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseExecuteReregistrationPhase3SendEmailsResponse();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(_: any): ExecuteReregistrationPhase3SendEmailsResponse {
+      return {};
+    },
+
+    toJSON(_: ExecuteReregistrationPhase3SendEmailsResponse): unknown {
+      const obj: any = {};
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<ExecuteReregistrationPhase3SendEmailsResponse>, I>>(
+      base?: I,
+    ): ExecuteReregistrationPhase3SendEmailsResponse {
+      return ExecuteReregistrationPhase3SendEmailsResponse.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<I extends Exact<DeepPartial<ExecuteReregistrationPhase3SendEmailsResponse>, I>>(
+      _: I,
+    ): ExecuteReregistrationPhase3SendEmailsResponse {
+      const message = createBaseExecuteReregistrationPhase3SendEmailsResponse();
+      return message;
+    },
+  };
 
 function createBaseCreateDefaultResourceAccessSettingsForOrgRequest(): CreateDefaultResourceAccessSettingsForOrgRequest {
   return { context: undefined, organization_id: undefined };

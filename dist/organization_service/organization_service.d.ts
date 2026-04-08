@@ -6,6 +6,25 @@ import { RequestContext } from "../utils/request_context";
 import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
 import { Currency, DirectoryProviderType, Organization, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
+export declare enum ReregistrationPhase {
+    REREGISTRATION_PHASE_SETUP_STUDENTS = "REREGISTRATION_PHASE_SETUP_STUDENTS",
+    REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS = "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS",
+    REREGISTRATION_PHASE_SEND_EMAILS = "REREGISTRATION_PHASE_SEND_EMAILS",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reregistrationPhaseFromJSON(object: any): ReregistrationPhase;
+export declare function reregistrationPhaseToJSON(object: ReregistrationPhase): string;
+export declare function reregistrationPhaseToNumber(object: ReregistrationPhase): number;
+export declare enum ReregistrationPhaseStatus {
+    REREGISTRATION_PHASE_STATUS_PENDING = "REREGISTRATION_PHASE_STATUS_PENDING",
+    REREGISTRATION_PHASE_STATUS_RUNNING = "REREGISTRATION_PHASE_STATUS_RUNNING",
+    REREGISTRATION_PHASE_STATUS_FAILED = "REREGISTRATION_PHASE_STATUS_FAILED",
+    REREGISTRATION_PHASE_STATUS_SUCCEEDED = "REREGISTRATION_PHASE_STATUS_SUCCEEDED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reregistrationPhaseStatusFromJSON(object: any): ReregistrationPhaseStatus;
+export declare function reregistrationPhaseStatusToJSON(object: ReregistrationPhaseStatus): string;
+export declare function reregistrationPhaseStatusToNumber(object: ReregistrationPhaseStatus): number;
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
     context: RequestContext | undefined;
@@ -126,10 +145,6 @@ export interface StartSchoolYearRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
 }
-export interface StartReregistrationRequest {
-    context: RequestContext | undefined;
-    organization_id: ObjectId | undefined;
-}
 export interface GetOrganizationByStripeRequest {
     stripe_account_id?: string | undefined;
 }
@@ -179,6 +194,29 @@ export interface GetDirectoryProviderRequest {
 export interface GetDirectoryProviderResponse {
     provider_type?: DirectoryProviderType | undefined;
 }
+export interface ReregistrationRun {
+    id: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    active_school_year_id: ObjectId | undefined;
+    coming_school_year_id: ObjectId | undefined;
+    requested_by?: ObjectId | undefined;
+    phase?: ReregistrationPhase | undefined;
+    current_phase_status?: ReregistrationPhaseStatus | undefined;
+    created_at: Date | undefined;
+    updated_at: Date | undefined;
+}
+export interface GetCurrentReregistrationRunRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
+export interface GetCurrentReregistrationRunResponse {
+    run?: ReregistrationRun | undefined;
+}
+export interface StartCurrentReregistrationPhaseRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    phase?: ReregistrationPhase | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -202,7 +240,6 @@ export declare const GetSchoolYearOpenGradesRequest: MessageFns<GetSchoolYearOpe
 export declare const GetSchoolYearOpenGradesResponse: MessageFns<GetSchoolYearOpenGradesResponse>;
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
 export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
-export declare const StartReregistrationRequest: MessageFns<StartReregistrationRequest>;
 export declare const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest>;
 export declare const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest>;
 export declare const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest>;
@@ -215,6 +252,10 @@ export declare const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboar
 export declare const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest>;
 export declare const GetDirectoryProviderRequest: MessageFns<GetDirectoryProviderRequest>;
 export declare const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderResponse>;
+export declare const ReregistrationRun: MessageFns<ReregistrationRun>;
+export declare const GetCurrentReregistrationRunRequest: MessageFns<GetCurrentReregistrationRunRequest>;
+export declare const GetCurrentReregistrationRunResponse: MessageFns<GetCurrentReregistrationRunResponse>;
+export declare const StartCurrentReregistrationPhaseRequest: MessageFns<StartCurrentReregistrationPhaseRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

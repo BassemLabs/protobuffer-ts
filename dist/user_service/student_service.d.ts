@@ -158,11 +158,23 @@ export interface HasStudentsInInterviewStatusRequest {
 export interface HasStudentsInInterviewStatusResponse {
     has_students_in_interview?: boolean | undefined;
 }
-export interface StartReregistrationForComingSchoolYearRequest {
+export interface ExecuteReregistrationPhase1SetupStudentsRequest {
     context: RequestContext | undefined;
 }
-/** Empty response - if successful, reregistration has been started */
-export interface StartReregistrationForComingSchoolYearResponse {
+/** Empty response */
+export interface ExecuteReregistrationPhase1SetupStudentsResponse {
+}
+export interface ExecuteReregistrationPhase2ResetCustomFieldsRequest {
+    context: RequestContext | undefined;
+}
+/** Empty response */
+export interface ExecuteReregistrationPhase2ResetCustomFieldsResponse {
+}
+export interface ExecuteReregistrationPhase3SendEmailsRequest {
+    context: RequestContext | undefined;
+}
+/** Empty response */
+export interface ExecuteReregistrationPhase3SendEmailsResponse {
 }
 export interface CreateDefaultResourceAccessSettingsForOrgRequest {
     context: RequestContext | undefined;
@@ -321,8 +333,12 @@ export declare const NoReregStudentForActiveSchoolYearRequest: MessageFns<NoRere
 export declare const NoReregStudentForActiveSchoolYearResponse: MessageFns<NoReregStudentForActiveSchoolYearResponse>;
 export declare const HasStudentsInInterviewStatusRequest: MessageFns<HasStudentsInInterviewStatusRequest>;
 export declare const HasStudentsInInterviewStatusResponse: MessageFns<HasStudentsInInterviewStatusResponse>;
-export declare const StartReregistrationForComingSchoolYearRequest: MessageFns<StartReregistrationForComingSchoolYearRequest>;
-export declare const StartReregistrationForComingSchoolYearResponse: MessageFns<StartReregistrationForComingSchoolYearResponse>;
+export declare const ExecuteReregistrationPhase1SetupStudentsRequest: MessageFns<ExecuteReregistrationPhase1SetupStudentsRequest>;
+export declare const ExecuteReregistrationPhase1SetupStudentsResponse: MessageFns<ExecuteReregistrationPhase1SetupStudentsResponse>;
+export declare const ExecuteReregistrationPhase2ResetCustomFieldsRequest: MessageFns<ExecuteReregistrationPhase2ResetCustomFieldsRequest>;
+export declare const ExecuteReregistrationPhase2ResetCustomFieldsResponse: MessageFns<ExecuteReregistrationPhase2ResetCustomFieldsResponse>;
+export declare const ExecuteReregistrationPhase3SendEmailsRequest: MessageFns<ExecuteReregistrationPhase3SendEmailsRequest>;
+export declare const ExecuteReregistrationPhase3SendEmailsResponse: MessageFns<ExecuteReregistrationPhase3SendEmailsResponse>;
 export declare const CreateDefaultResourceAccessSettingsForOrgRequest: MessageFns<CreateDefaultResourceAccessSettingsForOrgRequest>;
 export declare const CreateDefaultResourceAccessSettingsForOrgResponse: MessageFns<CreateDefaultResourceAccessSettingsForOrgResponse>;
 export declare const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFiltersRequest>;

@@ -5,7 +5,13 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartReregistrationRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.protobufPackage = void 0;
+exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
+exports.reregistrationPhaseFromJSON = reregistrationPhaseFromJSON;
+exports.reregistrationPhaseToJSON = reregistrationPhaseToJSON;
+exports.reregistrationPhaseToNumber = reregistrationPhaseToNumber;
+exports.reregistrationPhaseStatusFromJSON = reregistrationPhaseStatusFromJSON;
+exports.reregistrationPhaseStatusToJSON = reregistrationPhaseStatusToJSON;
+exports.reregistrationPhaseStatusToNumber = reregistrationPhaseStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -16,6 +22,114 @@ const request_context_1 = require("../utils/request_context");
 const onboarding_steps_1 = require("./onboarding_steps");
 const organization_1 = require("./organization");
 exports.protobufPackage = "organization_service";
+var ReregistrationPhase;
+(function (ReregistrationPhase) {
+    ReregistrationPhase["REREGISTRATION_PHASE_SETUP_STUDENTS"] = "REREGISTRATION_PHASE_SETUP_STUDENTS";
+    ReregistrationPhase["REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS"] = "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS";
+    ReregistrationPhase["REREGISTRATION_PHASE_SEND_EMAILS"] = "REREGISTRATION_PHASE_SEND_EMAILS";
+    ReregistrationPhase["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReregistrationPhase || (exports.ReregistrationPhase = ReregistrationPhase = {}));
+function reregistrationPhaseFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REREGISTRATION_PHASE_SETUP_STUDENTS":
+            return ReregistrationPhase.REREGISTRATION_PHASE_SETUP_STUDENTS;
+        case 1:
+        case "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS":
+            return ReregistrationPhase.REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS;
+        case 2:
+        case "REREGISTRATION_PHASE_SEND_EMAILS":
+            return ReregistrationPhase.REREGISTRATION_PHASE_SEND_EMAILS;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReregistrationPhase.UNRECOGNIZED;
+    }
+}
+function reregistrationPhaseToJSON(object) {
+    switch (object) {
+        case ReregistrationPhase.REREGISTRATION_PHASE_SETUP_STUDENTS:
+            return "REREGISTRATION_PHASE_SETUP_STUDENTS";
+        case ReregistrationPhase.REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS:
+            return "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS";
+        case ReregistrationPhase.REREGISTRATION_PHASE_SEND_EMAILS:
+            return "REREGISTRATION_PHASE_SEND_EMAILS";
+        case ReregistrationPhase.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reregistrationPhaseToNumber(object) {
+    switch (object) {
+        case ReregistrationPhase.REREGISTRATION_PHASE_SETUP_STUDENTS:
+            return 0;
+        case ReregistrationPhase.REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS:
+            return 1;
+        case ReregistrationPhase.REREGISTRATION_PHASE_SEND_EMAILS:
+            return 2;
+        case ReregistrationPhase.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ReregistrationPhaseStatus;
+(function (ReregistrationPhaseStatus) {
+    ReregistrationPhaseStatus["REREGISTRATION_PHASE_STATUS_PENDING"] = "REREGISTRATION_PHASE_STATUS_PENDING";
+    ReregistrationPhaseStatus["REREGISTRATION_PHASE_STATUS_RUNNING"] = "REREGISTRATION_PHASE_STATUS_RUNNING";
+    ReregistrationPhaseStatus["REREGISTRATION_PHASE_STATUS_FAILED"] = "REREGISTRATION_PHASE_STATUS_FAILED";
+    ReregistrationPhaseStatus["REREGISTRATION_PHASE_STATUS_SUCCEEDED"] = "REREGISTRATION_PHASE_STATUS_SUCCEEDED";
+    ReregistrationPhaseStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReregistrationPhaseStatus || (exports.ReregistrationPhaseStatus = ReregistrationPhaseStatus = {}));
+function reregistrationPhaseStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REREGISTRATION_PHASE_STATUS_PENDING":
+            return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_PENDING;
+        case 1:
+        case "REREGISTRATION_PHASE_STATUS_RUNNING":
+            return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_RUNNING;
+        case 2:
+        case "REREGISTRATION_PHASE_STATUS_FAILED":
+            return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_FAILED;
+        case 3:
+        case "REREGISTRATION_PHASE_STATUS_SUCCEEDED":
+            return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReregistrationPhaseStatus.UNRECOGNIZED;
+    }
+}
+function reregistrationPhaseStatusToJSON(object) {
+    switch (object) {
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_PENDING:
+            return "REREGISTRATION_PHASE_STATUS_PENDING";
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_RUNNING:
+            return "REREGISTRATION_PHASE_STATUS_RUNNING";
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_FAILED:
+            return "REREGISTRATION_PHASE_STATUS_FAILED";
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED:
+            return "REREGISTRATION_PHASE_STATUS_SUCCEEDED";
+        case ReregistrationPhaseStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reregistrationPhaseStatusToNumber(object) {
+    switch (object) {
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_PENDING:
+            return 0;
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_RUNNING:
+            return 1;
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_FAILED:
+            return 2;
+        case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED:
+            return 3;
+        case ReregistrationPhaseStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetOrganizationRequest() {
     return { context: undefined, organization_id: undefined };
 }
@@ -1885,76 +1999,6 @@ exports.StartSchoolYearRequest = {
         return message;
     },
 };
-function createBaseStartReregistrationRequest() {
-    return { context: undefined, organization_id: undefined };
-}
-exports.StartReregistrationRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.organization_id !== undefined) {
-            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseStartReregistrationRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.StartReregistrationRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseStartReregistrationRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organization_id)
-            : undefined;
-        return message;
-    },
-};
 function createBaseGetOrganizationByStripeRequest() {
     return { stripe_account_id: undefined };
 }
@@ -2795,6 +2839,402 @@ exports.GetDirectoryProviderResponse = {
     fromPartial(object) {
         const message = createBaseGetDirectoryProviderResponse();
         message.provider_type = object.provider_type ?? undefined;
+        return message;
+    },
+};
+function createBaseReregistrationRun() {
+    return {
+        id: undefined,
+        organization_id: undefined,
+        active_school_year_id: undefined,
+        coming_school_year_id: undefined,
+        requested_by: undefined,
+        phase: undefined,
+        current_phase_status: undefined,
+        created_at: undefined,
+        updated_at: undefined,
+    };
+}
+exports.ReregistrationRun = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.active_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.active_school_year_id, writer.uint32(26).fork()).join();
+        }
+        if (message.coming_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.coming_school_year_id, writer.uint32(34).fork()).join();
+        }
+        if (message.requested_by !== undefined) {
+            object_id_1.ObjectId.encode(message.requested_by, writer.uint32(42).fork()).join();
+        }
+        if (message.phase !== undefined) {
+            writer.uint32(48).int32(reregistrationPhaseToNumber(message.phase));
+        }
+        if (message.current_phase_status !== undefined) {
+            writer.uint32(56).int32(reregistrationPhaseStatusToNumber(message.current_phase_status));
+        }
+        if (message.created_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.created_at), writer.uint32(66).fork()).join();
+        }
+        if (message.updated_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.updated_at), writer.uint32(74).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReregistrationRun();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.active_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.coming_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.requested_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.phase = reregistrationPhaseFromJSON(reader.int32());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.current_phase_status = reregistrationPhaseStatusFromJSON(reader.int32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.created_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.updated_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            active_school_year_id: isSet(object.activeSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.activeSchoolYearId)
+                : undefined,
+            coming_school_year_id: isSet(object.comingSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.comingSchoolYearId)
+                : undefined,
+            requested_by: isSet(object.requestedBy) ? object_id_1.ObjectId.fromJSON(object.requestedBy) : undefined,
+            phase: isSet(object.phase) ? reregistrationPhaseFromJSON(object.phase) : undefined,
+            current_phase_status: isSet(object.currentPhaseStatus)
+                ? reregistrationPhaseStatusFromJSON(object.currentPhaseStatus)
+                : undefined,
+            created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+            updated_at: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.active_school_year_id !== undefined) {
+            obj.activeSchoolYearId = object_id_1.ObjectId.toJSON(message.active_school_year_id);
+        }
+        if (message.coming_school_year_id !== undefined) {
+            obj.comingSchoolYearId = object_id_1.ObjectId.toJSON(message.coming_school_year_id);
+        }
+        if (message.requested_by !== undefined) {
+            obj.requestedBy = object_id_1.ObjectId.toJSON(message.requested_by);
+        }
+        if (message.phase !== undefined) {
+            obj.phase = reregistrationPhaseToJSON(message.phase);
+        }
+        if (message.current_phase_status !== undefined) {
+            obj.currentPhaseStatus = reregistrationPhaseStatusToJSON(message.current_phase_status);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at.toISOString();
+        }
+        if (message.updated_at !== undefined) {
+            obj.updatedAt = message.updated_at.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReregistrationRun.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReregistrationRun();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.active_school_year_id =
+            (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.active_school_year_id)
+                : undefined;
+        message.coming_school_year_id =
+            (object.coming_school_year_id !== undefined && object.coming_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.coming_school_year_id)
+                : undefined;
+        message.requested_by = (object.requested_by !== undefined && object.requested_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.requested_by)
+            : undefined;
+        message.phase = object.phase ?? undefined;
+        message.current_phase_status = object.current_phase_status ?? undefined;
+        message.created_at = object.created_at ?? undefined;
+        message.updated_at = object.updated_at ?? undefined;
+        return message;
+    },
+};
+function createBaseGetCurrentReregistrationRunRequest() {
+    return { context: undefined, organization_id: undefined };
+}
+exports.GetCurrentReregistrationRunRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCurrentReregistrationRunRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCurrentReregistrationRunRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCurrentReregistrationRunRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetCurrentReregistrationRunResponse() {
+    return { run: undefined };
+}
+exports.GetCurrentReregistrationRunResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.run !== undefined) {
+            exports.ReregistrationRun.encode(message.run, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCurrentReregistrationRunResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.run = exports.ReregistrationRun.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { run: isSet(object.run) ? exports.ReregistrationRun.fromJSON(object.run) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.run !== undefined) {
+            obj.run = exports.ReregistrationRun.toJSON(message.run);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCurrentReregistrationRunResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCurrentReregistrationRunResponse();
+        message.run = (object.run !== undefined && object.run !== null)
+            ? exports.ReregistrationRun.fromPartial(object.run)
+            : undefined;
+        return message;
+    },
+};
+function createBaseStartCurrentReregistrationPhaseRequest() {
+    return { context: undefined, organization_id: undefined, phase: undefined };
+}
+exports.StartCurrentReregistrationPhaseRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.phase !== undefined) {
+            writer.uint32(24).int32(reregistrationPhaseToNumber(message.phase));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStartCurrentReregistrationPhaseRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.phase = reregistrationPhaseFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            phase: isSet(object.phase) ? reregistrationPhaseFromJSON(object.phase) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.phase !== undefined) {
+            obj.phase = reregistrationPhaseToJSON(message.phase);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StartCurrentReregistrationPhaseRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStartCurrentReregistrationPhaseRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.phase = object.phase ?? undefined;
         return message;
     },
 };

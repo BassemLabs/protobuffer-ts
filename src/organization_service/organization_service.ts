@@ -33,6 +33,120 @@ import {
 
 export const protobufPackage = "organization_service";
 
+export enum ReregistrationPhase {
+  REREGISTRATION_PHASE_SETUP_STUDENTS = "REREGISTRATION_PHASE_SETUP_STUDENTS",
+  REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS = "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS",
+  REREGISTRATION_PHASE_SEND_EMAILS = "REREGISTRATION_PHASE_SEND_EMAILS",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reregistrationPhaseFromJSON(object: any): ReregistrationPhase {
+  switch (object) {
+    case 0:
+    case "REREGISTRATION_PHASE_SETUP_STUDENTS":
+      return ReregistrationPhase.REREGISTRATION_PHASE_SETUP_STUDENTS;
+    case 1:
+    case "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS":
+      return ReregistrationPhase.REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS;
+    case 2:
+    case "REREGISTRATION_PHASE_SEND_EMAILS":
+      return ReregistrationPhase.REREGISTRATION_PHASE_SEND_EMAILS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReregistrationPhase.UNRECOGNIZED;
+  }
+}
+
+export function reregistrationPhaseToJSON(object: ReregistrationPhase): string {
+  switch (object) {
+    case ReregistrationPhase.REREGISTRATION_PHASE_SETUP_STUDENTS:
+      return "REREGISTRATION_PHASE_SETUP_STUDENTS";
+    case ReregistrationPhase.REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS:
+      return "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS";
+    case ReregistrationPhase.REREGISTRATION_PHASE_SEND_EMAILS:
+      return "REREGISTRATION_PHASE_SEND_EMAILS";
+    case ReregistrationPhase.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reregistrationPhaseToNumber(object: ReregistrationPhase): number {
+  switch (object) {
+    case ReregistrationPhase.REREGISTRATION_PHASE_SETUP_STUDENTS:
+      return 0;
+    case ReregistrationPhase.REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS:
+      return 1;
+    case ReregistrationPhase.REREGISTRATION_PHASE_SEND_EMAILS:
+      return 2;
+    case ReregistrationPhase.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum ReregistrationPhaseStatus {
+  REREGISTRATION_PHASE_STATUS_PENDING = "REREGISTRATION_PHASE_STATUS_PENDING",
+  REREGISTRATION_PHASE_STATUS_RUNNING = "REREGISTRATION_PHASE_STATUS_RUNNING",
+  REREGISTRATION_PHASE_STATUS_FAILED = "REREGISTRATION_PHASE_STATUS_FAILED",
+  REREGISTRATION_PHASE_STATUS_SUCCEEDED = "REREGISTRATION_PHASE_STATUS_SUCCEEDED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reregistrationPhaseStatusFromJSON(object: any): ReregistrationPhaseStatus {
+  switch (object) {
+    case 0:
+    case "REREGISTRATION_PHASE_STATUS_PENDING":
+      return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_PENDING;
+    case 1:
+    case "REREGISTRATION_PHASE_STATUS_RUNNING":
+      return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_RUNNING;
+    case 2:
+    case "REREGISTRATION_PHASE_STATUS_FAILED":
+      return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_FAILED;
+    case 3:
+    case "REREGISTRATION_PHASE_STATUS_SUCCEEDED":
+      return ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReregistrationPhaseStatus.UNRECOGNIZED;
+  }
+}
+
+export function reregistrationPhaseStatusToJSON(object: ReregistrationPhaseStatus): string {
+  switch (object) {
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_PENDING:
+      return "REREGISTRATION_PHASE_STATUS_PENDING";
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_RUNNING:
+      return "REREGISTRATION_PHASE_STATUS_RUNNING";
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_FAILED:
+      return "REREGISTRATION_PHASE_STATUS_FAILED";
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED:
+      return "REREGISTRATION_PHASE_STATUS_SUCCEEDED";
+    case ReregistrationPhaseStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reregistrationPhaseStatusToNumber(object: ReregistrationPhaseStatus): number {
+  switch (object) {
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_PENDING:
+      return 0;
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_RUNNING:
+      return 1;
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_FAILED:
+      return 2;
+    case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED:
+      return 3;
+    case ReregistrationPhaseStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
   context: RequestContext | undefined;
@@ -178,11 +292,6 @@ export interface StartSchoolYearRequest {
   organization_id: ObjectId | undefined;
 }
 
-export interface StartReregistrationRequest {
-  context: RequestContext | undefined;
-  organization_id: ObjectId | undefined;
-}
-
 export interface GetOrganizationByStripeRequest {
   stripe_account_id?: string | undefined;
 }
@@ -242,6 +351,33 @@ export interface GetDirectoryProviderRequest {
 
 export interface GetDirectoryProviderResponse {
   provider_type?: DirectoryProviderType | undefined;
+}
+
+export interface ReregistrationRun {
+  id: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  active_school_year_id: ObjectId | undefined;
+  coming_school_year_id: ObjectId | undefined;
+  requested_by?: ObjectId | undefined;
+  phase?: ReregistrationPhase | undefined;
+  current_phase_status?: ReregistrationPhaseStatus | undefined;
+  created_at: Date | undefined;
+  updated_at: Date | undefined;
+}
+
+export interface GetCurrentReregistrationRunRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+}
+
+export interface GetCurrentReregistrationRunResponse {
+  run?: ReregistrationRun | undefined;
+}
+
+export interface StartCurrentReregistrationPhaseRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  phase?: ReregistrationPhase | undefined;
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -2353,84 +2489,6 @@ export const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest> = {
   },
 };
 
-function createBaseStartReregistrationRequest(): StartReregistrationRequest {
-  return { context: undefined, organization_id: undefined };
-}
-
-export const StartReregistrationRequest: MessageFns<StartReregistrationRequest> = {
-  encode(message: StartReregistrationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.organization_id !== undefined) {
-      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): StartReregistrationRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStartReregistrationRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.organization_id = ObjectId.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): StartReregistrationRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-    };
-  },
-
-  toJSON(message: StartReregistrationRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<StartReregistrationRequest>, I>>(base?: I): StartReregistrationRequest {
-    return StartReregistrationRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<StartReregistrationRequest>, I>>(object: I): StartReregistrationRequest {
-    const message = createBaseStartReregistrationRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
-      ? ObjectId.fromPartial(object.organization_id)
-      : undefined;
-    return message;
-  },
-};
-
 function createBaseGetOrganizationByStripeRequest(): GetOrganizationByStripeRequest {
   return { stripe_account_id: undefined };
 }
@@ -3404,6 +3462,453 @@ export const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderRespon
   fromPartial<I extends Exact<DeepPartial<GetDirectoryProviderResponse>, I>>(object: I): GetDirectoryProviderResponse {
     const message = createBaseGetDirectoryProviderResponse();
     message.provider_type = object.provider_type ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReregistrationRun(): ReregistrationRun {
+  return {
+    id: undefined,
+    organization_id: undefined,
+    active_school_year_id: undefined,
+    coming_school_year_id: undefined,
+    requested_by: undefined,
+    phase: undefined,
+    current_phase_status: undefined,
+    created_at: undefined,
+    updated_at: undefined,
+  };
+}
+
+export const ReregistrationRun: MessageFns<ReregistrationRun> = {
+  encode(message: ReregistrationRun, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.coming_school_year_id !== undefined) {
+      ObjectId.encode(message.coming_school_year_id, writer.uint32(34).fork()).join();
+    }
+    if (message.requested_by !== undefined) {
+      ObjectId.encode(message.requested_by, writer.uint32(42).fork()).join();
+    }
+    if (message.phase !== undefined) {
+      writer.uint32(48).int32(reregistrationPhaseToNumber(message.phase));
+    }
+    if (message.current_phase_status !== undefined) {
+      writer.uint32(56).int32(reregistrationPhaseStatusToNumber(message.current_phase_status));
+    }
+    if (message.created_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.created_at), writer.uint32(66).fork()).join();
+    }
+    if (message.updated_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.updated_at), writer.uint32(74).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReregistrationRun {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReregistrationRun();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.coming_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.requested_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.phase = reregistrationPhaseFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.current_phase_status = reregistrationPhaseStatusFromJSON(reader.int32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.created_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.updated_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReregistrationRun {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      coming_school_year_id: isSet(object.comingSchoolYearId)
+        ? ObjectId.fromJSON(object.comingSchoolYearId)
+        : undefined,
+      requested_by: isSet(object.requestedBy) ? ObjectId.fromJSON(object.requestedBy) : undefined,
+      phase: isSet(object.phase) ? reregistrationPhaseFromJSON(object.phase) : undefined,
+      current_phase_status: isSet(object.currentPhaseStatus)
+        ? reregistrationPhaseStatusFromJSON(object.currentPhaseStatus)
+        : undefined,
+      created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      updated_at: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+    };
+  },
+
+  toJSON(message: ReregistrationRun): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.coming_school_year_id !== undefined) {
+      obj.comingSchoolYearId = ObjectId.toJSON(message.coming_school_year_id);
+    }
+    if (message.requested_by !== undefined) {
+      obj.requestedBy = ObjectId.toJSON(message.requested_by);
+    }
+    if (message.phase !== undefined) {
+      obj.phase = reregistrationPhaseToJSON(message.phase);
+    }
+    if (message.current_phase_status !== undefined) {
+      obj.currentPhaseStatus = reregistrationPhaseStatusToJSON(message.current_phase_status);
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at.toISOString();
+    }
+    if (message.updated_at !== undefined) {
+      obj.updatedAt = message.updated_at.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReregistrationRun>, I>>(base?: I): ReregistrationRun {
+    return ReregistrationRun.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReregistrationRun>, I>>(object: I): ReregistrationRun {
+    const message = createBaseReregistrationRun();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.coming_school_year_id =
+      (object.coming_school_year_id !== undefined && object.coming_school_year_id !== null)
+        ? ObjectId.fromPartial(object.coming_school_year_id)
+        : undefined;
+    message.requested_by = (object.requested_by !== undefined && object.requested_by !== null)
+      ? ObjectId.fromPartial(object.requested_by)
+      : undefined;
+    message.phase = object.phase ?? undefined;
+    message.current_phase_status = object.current_phase_status ?? undefined;
+    message.created_at = object.created_at ?? undefined;
+    message.updated_at = object.updated_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetCurrentReregistrationRunRequest(): GetCurrentReregistrationRunRequest {
+  return { context: undefined, organization_id: undefined };
+}
+
+export const GetCurrentReregistrationRunRequest: MessageFns<GetCurrentReregistrationRunRequest> = {
+  encode(message: GetCurrentReregistrationRunRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCurrentReregistrationRunRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCurrentReregistrationRunRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCurrentReregistrationRunRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: GetCurrentReregistrationRunRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCurrentReregistrationRunRequest>, I>>(
+    base?: I,
+  ): GetCurrentReregistrationRunRequest {
+    return GetCurrentReregistrationRunRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCurrentReregistrationRunRequest>, I>>(
+    object: I,
+  ): GetCurrentReregistrationRunRequest {
+    const message = createBaseGetCurrentReregistrationRunRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetCurrentReregistrationRunResponse(): GetCurrentReregistrationRunResponse {
+  return { run: undefined };
+}
+
+export const GetCurrentReregistrationRunResponse: MessageFns<GetCurrentReregistrationRunResponse> = {
+  encode(message: GetCurrentReregistrationRunResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.run !== undefined) {
+      ReregistrationRun.encode(message.run, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCurrentReregistrationRunResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCurrentReregistrationRunResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.run = ReregistrationRun.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCurrentReregistrationRunResponse {
+    return { run: isSet(object.run) ? ReregistrationRun.fromJSON(object.run) : undefined };
+  },
+
+  toJSON(message: GetCurrentReregistrationRunResponse): unknown {
+    const obj: any = {};
+    if (message.run !== undefined) {
+      obj.run = ReregistrationRun.toJSON(message.run);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCurrentReregistrationRunResponse>, I>>(
+    base?: I,
+  ): GetCurrentReregistrationRunResponse {
+    return GetCurrentReregistrationRunResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCurrentReregistrationRunResponse>, I>>(
+    object: I,
+  ): GetCurrentReregistrationRunResponse {
+    const message = createBaseGetCurrentReregistrationRunResponse();
+    message.run = (object.run !== undefined && object.run !== null)
+      ? ReregistrationRun.fromPartial(object.run)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseStartCurrentReregistrationPhaseRequest(): StartCurrentReregistrationPhaseRequest {
+  return { context: undefined, organization_id: undefined, phase: undefined };
+}
+
+export const StartCurrentReregistrationPhaseRequest: MessageFns<StartCurrentReregistrationPhaseRequest> = {
+  encode(message: StartCurrentReregistrationPhaseRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.phase !== undefined) {
+      writer.uint32(24).int32(reregistrationPhaseToNumber(message.phase));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartCurrentReregistrationPhaseRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartCurrentReregistrationPhaseRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.phase = reregistrationPhaseFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartCurrentReregistrationPhaseRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      phase: isSet(object.phase) ? reregistrationPhaseFromJSON(object.phase) : undefined,
+    };
+  },
+
+  toJSON(message: StartCurrentReregistrationPhaseRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.phase !== undefined) {
+      obj.phase = reregistrationPhaseToJSON(message.phase);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartCurrentReregistrationPhaseRequest>, I>>(
+    base?: I,
+  ): StartCurrentReregistrationPhaseRequest {
+    return StartCurrentReregistrationPhaseRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartCurrentReregistrationPhaseRequest>, I>>(
+    object: I,
+  ): StartCurrentReregistrationPhaseRequest {
+    const message = createBaseStartCurrentReregistrationPhaseRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.phase = object.phase ?? undefined;
     return message;
   },
 };
