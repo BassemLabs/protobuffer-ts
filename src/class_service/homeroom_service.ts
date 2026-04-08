@@ -70,6 +70,7 @@ export interface GetStudentHomeroomsRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
   include_archived?: boolean | undefined;
+  school_year_id?: ObjectId | undefined;
 }
 
 export interface GetStudentHomeroomsResponse {
@@ -901,7 +902,7 @@ export const GetHomeroomCoursesResponse: MessageFns<GetHomeroomCoursesResponse> 
 };
 
 function createBaseGetStudentHomeroomsRequest(): GetStudentHomeroomsRequest {
-  return { context: undefined, student_id: undefined, include_archived: undefined };
+  return { context: undefined, student_id: undefined, include_archived: undefined, school_year_id: undefined };
 }
 
 export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> = {
@@ -914,6 +915,9 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
     }
     if (message.include_archived !== undefined) {
       writer.uint32(24).bool(message.include_archived);
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -946,6 +950,13 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
 
           message.include_archived = reader.bool();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -960,6 +971,7 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
     };
   },
 
@@ -973,6 +985,9 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
     }
     if (message.include_archived !== undefined) {
       obj.includeArchived = message.include_archived;
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
     }
     return obj;
   },
@@ -989,6 +1004,9 @@ export const GetStudentHomeroomsRequest: MessageFns<GetStudentHomeroomsRequest> 
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
     message.include_archived = object.include_archived ?? undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
     return message;
   },
 };

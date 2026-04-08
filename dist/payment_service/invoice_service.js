@@ -205,7 +205,7 @@ exports.GetInvoiceByNumberRequest = {
     },
 };
 function createBaseGetUserInvoicesRequest() {
-    return { context: undefined, user_id: undefined };
+    return { context: undefined, user_id: undefined, school_year: undefined };
 }
 exports.GetUserInvoicesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -214,6 +214,9 @@ exports.GetUserInvoicesRequest = {
         }
         if (message.user_id !== undefined) {
             object_id_1.ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -236,6 +239,12 @@ exports.GetUserInvoicesRequest = {
                     }
                     message.user_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -248,6 +257,7 @@ exports.GetUserInvoicesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
         };
     },
     toJSON(message) {
@@ -257,6 +267,9 @@ exports.GetUserInvoicesRequest = {
         }
         if (message.user_id !== undefined) {
             obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
         return obj;
     },
@@ -270,6 +283,9 @@ exports.GetUserInvoicesRequest = {
             : undefined;
         message.user_id = (object.user_id !== undefined && object.user_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.user_id)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         return message;
     },

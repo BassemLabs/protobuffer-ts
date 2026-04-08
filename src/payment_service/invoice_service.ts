@@ -48,6 +48,7 @@ export interface GetInvoiceByNumberRequest {
 export interface GetUserInvoicesRequest {
   context: RequestContext | undefined;
   user_id: ObjectId | undefined;
+  school_year?: ObjectId | undefined;
 }
 
 export interface GetUserInvoicesResponse {
@@ -535,7 +536,7 @@ export const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest> = 
 };
 
 function createBaseGetUserInvoicesRequest(): GetUserInvoicesRequest {
-  return { context: undefined, user_id: undefined };
+  return { context: undefined, user_id: undefined, school_year: undefined };
 }
 
 export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
@@ -545,6 +546,9 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
     }
     if (message.user_id !== undefined) {
       ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -570,6 +574,13 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
 
           message.user_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -583,6 +594,7 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -593,6 +605,9 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
     }
     if (message.user_id !== undefined) {
       obj.userId = ObjectId.toJSON(message.user_id);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -607,6 +622,9 @@ export const GetUserInvoicesRequest: MessageFns<GetUserInvoicesRequest> = {
       : undefined;
     message.user_id = (object.user_id !== undefined && object.user_id !== null)
       ? ObjectId.fromPartial(object.user_id)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     return message;
   },

@@ -48,6 +48,7 @@ export interface GetStudentHomeroomsRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
     include_archived?: boolean | undefined;
+    school_year_id?: ObjectId | undefined;
 }
 export interface GetStudentHomeroomsResponse {
     homerooms: Homeroom[];

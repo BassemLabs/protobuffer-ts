@@ -33,6 +33,7 @@ export interface GetStudentCoursesRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
     include_archived?: boolean | undefined;
+    school_year_id?: ObjectId | undefined;
 }
 export interface GetStudentCoursesForSchoolYearRequest {
     context: RequestContext | undefined;

@@ -19,6 +19,7 @@ export interface GetInvoiceByNumberRequest {
 export interface GetUserInvoicesRequest {
     context: RequestContext | undefined;
     user_id: ObjectId | undefined;
+    school_year?: ObjectId | undefined;
 }
 export interface GetUserInvoicesResponse {
     invoices: InvoiceResponse[];
