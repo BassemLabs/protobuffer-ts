@@ -281,6 +281,13 @@ export interface CreateResourceAccessSettingsRequest {
   access_rules: AccessRule[];
 }
 
+export interface UpdateResourceAccessSettingsRequest {
+  context: RequestContext | undefined;
+  id: ObjectId | undefined;
+  name?: string | undefined;
+  access_rules: AccessRule[];
+}
+
 function createBaseGetCustomFieldsByGroupRequest(): GetCustomFieldsByGroupRequest {
   return { context: undefined, group_id: undefined, include_archived: undefined };
 }
@@ -3806,6 +3813,118 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     message.name = object.name ?? undefined;
     message.ownership_kind = object.ownership_kind ?? undefined;
     message.user_type = object.user_type ?? undefined;
+    message.access_rules = object.access_rules?.map((e) => AccessRule.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateResourceAccessSettingsRequest(): UpdateResourceAccessSettingsRequest {
+  return { context: undefined, id: undefined, name: undefined, access_rules: [] };
+}
+
+export const UpdateResourceAccessSettingsRequest: MessageFns<UpdateResourceAccessSettingsRequest> = {
+  encode(message: UpdateResourceAccessSettingsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    for (const v of message.access_rules) {
+      AccessRule.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateResourceAccessSettingsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateResourceAccessSettingsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.access_rules.push(AccessRule.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateResourceAccessSettingsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      access_rules: globalThis.Array.isArray(object?.accessRules)
+        ? object.accessRules.map((e: any) => AccessRule.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpdateResourceAccessSettingsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.access_rules?.length) {
+      obj.accessRules = message.access_rules.map((e) => AccessRule.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateResourceAccessSettingsRequest>, I>>(
+    base?: I,
+  ): UpdateResourceAccessSettingsRequest {
+    return UpdateResourceAccessSettingsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateResourceAccessSettingsRequest>, I>>(
+    object: I,
+  ): UpdateResourceAccessSettingsRequest {
+    const message = createBaseUpdateResourceAccessSettingsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
     message.access_rules = object.access_rules?.map((e) => AccessRule.fromPartial(e)) || [];
     return message;
   },

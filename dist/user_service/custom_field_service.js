@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/custom_field_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
+exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
@@ -3095,6 +3095,104 @@ exports.CreateResourceAccessSettingsRequest = {
         message.name = object.name ?? undefined;
         message.ownership_kind = object.ownership_kind ?? undefined;
         message.user_type = object.user_type ?? undefined;
+        message.access_rules = object.access_rules?.map((e) => resource_access_settings_1.AccessRule.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseUpdateResourceAccessSettingsRequest() {
+    return { context: undefined, id: undefined, name: undefined, access_rules: [] };
+}
+exports.UpdateResourceAccessSettingsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(26).string(message.name);
+        }
+        for (const v of message.access_rules) {
+            resource_access_settings_1.AccessRule.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateResourceAccessSettingsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.access_rules.push(resource_access_settings_1.AccessRule.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            access_rules: globalThis.Array.isArray(object?.accessRules)
+                ? object.accessRules.map((e) => resource_access_settings_1.AccessRule.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.access_rules?.length) {
+            obj.accessRules = message.access_rules.map((e) => resource_access_settings_1.AccessRule.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateResourceAccessSettingsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateResourceAccessSettingsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? undefined;
         message.access_rules = object.access_rules?.map((e) => resource_access_settings_1.AccessRule.fromPartial(e)) || [];
         return message;
     },
