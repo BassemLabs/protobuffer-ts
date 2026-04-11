@@ -51,7 +51,6 @@ var UserRole;
     UserRole["APPLICANTS_DECIDE"] = "APPLICANTS_DECIDE";
     UserRole["FAMILIES_VIEW_OWN"] = "FAMILIES_VIEW_OWN";
     UserRole["FAMILIES_VIEW_ALL"] = "FAMILIES_VIEW_ALL";
-    UserRole["FAMILIES_MODIFY_OWN"] = "FAMILIES_MODIFY_OWN";
     UserRole["FAMILIES_MODIFY_ALL"] = "FAMILIES_MODIFY_ALL";
     UserRole["FAMILIES_CREATE"] = "FAMILIES_CREATE";
     UserRole["STUDENTS_VIEW_OWN"] = "STUDENTS_VIEW_OWN";
@@ -198,9 +197,6 @@ function userRoleFromJSON(object) {
         case 39:
         case "FAMILIES_VIEW_ALL":
             return UserRole.FAMILIES_VIEW_ALL;
-        case 40:
-        case "FAMILIES_MODIFY_OWN":
-            return UserRole.FAMILIES_MODIFY_OWN;
         case 41:
         case "FAMILIES_MODIFY_ALL":
             return UserRole.FAMILIES_MODIFY_ALL;
@@ -369,8 +365,6 @@ function userRoleToJSON(object) {
             return "FAMILIES_VIEW_OWN";
         case UserRole.FAMILIES_VIEW_ALL:
             return "FAMILIES_VIEW_ALL";
-        case UserRole.FAMILIES_MODIFY_OWN:
-            return "FAMILIES_MODIFY_OWN";
         case UserRole.FAMILIES_MODIFY_ALL:
             return "FAMILIES_MODIFY_ALL";
         case UserRole.FAMILIES_CREATE:
@@ -510,8 +504,6 @@ function userRoleToNumber(object) {
             return 38;
         case UserRole.FAMILIES_VIEW_ALL:
             return 39;
-        case UserRole.FAMILIES_MODIFY_OWN:
-            return 40;
         case UserRole.FAMILIES_MODIFY_ALL:
             return 41;
         case UserRole.FAMILIES_CREATE:
