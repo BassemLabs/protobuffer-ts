@@ -51,9 +51,7 @@ export interface Student {
     first_name?: string | undefined;
     last_name?: string | undefined;
     gender?: string | undefined;
-    has_waitlist_priority?: boolean | undefined;
     date_of_birth: Date | undefined;
-    interview_date?: Date | undefined;
 }
 /**
  * Student item with school year context (used for student lists with filters)
@@ -87,8 +85,6 @@ export interface StudentProfile {
     last_name?: string | undefined;
     gender?: string | undefined;
     date_of_birth: Date | undefined;
-    interview_date?: Date | undefined;
-    has_waitlist_priority?: boolean | undefined;
 }
 /** Entry in the status history timeline */
 export interface StatusHistoryEntry {
@@ -106,6 +102,8 @@ export interface StudentSchoolYearInformation {
     status?: StudentStatus | undefined;
     grade?: StudentGrade | undefined;
     status_history: StatusHistoryEntry[];
+    has_waitlist_priority?: boolean | undefined;
+    interview_date?: Date | undefined;
 }
 export declare const Student: MessageFns<Student>;
 export declare const SchoolYearStudent: MessageFns<SchoolYearStudent>;

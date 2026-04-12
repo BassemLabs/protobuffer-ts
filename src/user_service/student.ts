@@ -270,9 +270,7 @@ export interface Student {
   first_name?: string | undefined;
   last_name?: string | undefined;
   gender?: string | undefined;
-  has_waitlist_priority?: boolean | undefined;
   date_of_birth: Date | undefined;
-  interview_date?: Date | undefined;
 }
 
 /**
@@ -312,8 +310,6 @@ export interface StudentProfile {
   last_name?: string | undefined;
   gender?: string | undefined;
   date_of_birth: Date | undefined;
-  interview_date?: Date | undefined;
-  has_waitlist_priority?: boolean | undefined;
 }
 
 /** Entry in the status history timeline */
@@ -335,6 +331,8 @@ export interface StudentSchoolYearInformation {
   status?: StudentStatus | undefined;
   grade?: StudentGrade | undefined;
   status_history: StatusHistoryEntry[];
+  has_waitlist_priority?: boolean | undefined;
+  interview_date?: Date | undefined;
 }
 
 function createBaseStudent(): Student {
@@ -348,9 +346,7 @@ function createBaseStudent(): Student {
     first_name: undefined,
     last_name: undefined,
     gender: undefined,
-    has_waitlist_priority: undefined,
     date_of_birth: undefined,
-    interview_date: undefined,
   };
 }
 
@@ -383,14 +379,8 @@ export const Student: MessageFns<Student> = {
     if (message.gender !== undefined) {
       writer.uint32(74).string(message.gender);
     }
-    if (message.has_waitlist_priority !== undefined) {
-      writer.uint32(80).bool(message.has_waitlist_priority);
-    }
     if (message.date_of_birth !== undefined) {
       Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(90).fork()).join();
-    }
-    if (message.interview_date !== undefined) {
-      Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(98).fork()).join();
     }
     return writer;
   },
@@ -465,26 +455,12 @@ export const Student: MessageFns<Student> = {
 
           message.gender = reader.string();
           continue;
-        case 10:
-          if (tag !== 80) {
-            break;
-          }
-
-          message.has_waitlist_priority = reader.bool();
-          continue;
         case 11:
           if (tag !== 90) {
             break;
           }
 
           message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-        case 12:
-          if (tag !== 98) {
-            break;
-          }
-
-          message.interview_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -506,11 +482,7 @@ export const Student: MessageFns<Student> = {
       first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
       last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
-      has_waitlist_priority: isSet(object.hasWaitlistPriority)
-        ? globalThis.Boolean(object.hasWaitlistPriority)
-        : undefined,
       date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
     };
   },
 
@@ -543,14 +515,8 @@ export const Student: MessageFns<Student> = {
     if (message.gender !== undefined) {
       obj.gender = message.gender;
     }
-    if (message.has_waitlist_priority !== undefined) {
-      obj.hasWaitlistPriority = message.has_waitlist_priority;
-    }
     if (message.date_of_birth !== undefined) {
       obj.dateOfBirth = message.date_of_birth.toISOString();
-    }
-    if (message.interview_date !== undefined) {
-      obj.interviewDate = message.interview_date.toISOString();
     }
     return obj;
   },
@@ -573,9 +539,7 @@ export const Student: MessageFns<Student> = {
     message.first_name = object.first_name ?? undefined;
     message.last_name = object.last_name ?? undefined;
     message.gender = object.gender ?? undefined;
-    message.has_waitlist_priority = object.has_waitlist_priority ?? undefined;
     message.date_of_birth = object.date_of_birth ?? undefined;
-    message.interview_date = object.interview_date ?? undefined;
     return message;
   },
 };
@@ -790,14 +754,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
 };
 
 function createBaseStudentProfile(): StudentProfile {
-  return {
-    first_name: undefined,
-    last_name: undefined,
-    gender: undefined,
-    date_of_birth: undefined,
-    interview_date: undefined,
-    has_waitlist_priority: undefined,
-  };
+  return { first_name: undefined, last_name: undefined, gender: undefined, date_of_birth: undefined };
 }
 
 export const StudentProfile: MessageFns<StudentProfile> = {
@@ -813,12 +770,6 @@ export const StudentProfile: MessageFns<StudentProfile> = {
     }
     if (message.date_of_birth !== undefined) {
       Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
-    }
-    if (message.interview_date !== undefined) {
-      Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(42).fork()).join();
-    }
-    if (message.has_waitlist_priority !== undefined) {
-      writer.uint32(48).bool(message.has_waitlist_priority);
     }
     return writer;
   },
@@ -858,20 +809,6 @@ export const StudentProfile: MessageFns<StudentProfile> = {
 
           message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.interview_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-        case 6:
-          if (tag !== 48) {
-            break;
-          }
-
-          message.has_waitlist_priority = reader.bool();
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -887,10 +824,6 @@ export const StudentProfile: MessageFns<StudentProfile> = {
       last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
       date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
-      has_waitlist_priority: isSet(object.hasWaitlistPriority)
-        ? globalThis.Boolean(object.hasWaitlistPriority)
-        : undefined,
     };
   },
 
@@ -908,12 +841,6 @@ export const StudentProfile: MessageFns<StudentProfile> = {
     if (message.date_of_birth !== undefined) {
       obj.dateOfBirth = message.date_of_birth.toISOString();
     }
-    if (message.interview_date !== undefined) {
-      obj.interviewDate = message.interview_date.toISOString();
-    }
-    if (message.has_waitlist_priority !== undefined) {
-      obj.hasWaitlistPriority = message.has_waitlist_priority;
-    }
     return obj;
   },
 
@@ -926,8 +853,6 @@ export const StudentProfile: MessageFns<StudentProfile> = {
     message.last_name = object.last_name ?? undefined;
     message.gender = object.gender ?? undefined;
     message.date_of_birth = object.date_of_birth ?? undefined;
-    message.interview_date = object.interview_date ?? undefined;
-    message.has_waitlist_priority = object.has_waitlist_priority ?? undefined;
     return message;
   },
 };
@@ -1032,6 +957,8 @@ function createBaseStudentSchoolYearInformation(): StudentSchoolYearInformation 
     status: undefined,
     grade: undefined,
     status_history: [],
+    has_waitlist_priority: undefined,
+    interview_date: undefined,
   };
 }
 
@@ -1057,6 +984,12 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     }
     for (const v of message.status_history) {
       StatusHistoryEntry.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.has_waitlist_priority !== undefined) {
+      writer.uint32(64).bool(message.has_waitlist_priority);
+    }
+    if (message.interview_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -1117,6 +1050,20 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
 
           message.status_history.push(StatusHistoryEntry.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.has_waitlist_priority = reader.bool();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.interview_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1137,6 +1084,10 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
       status_history: globalThis.Array.isArray(object?.statusHistory)
         ? object.statusHistory.map((e: any) => StatusHistoryEntry.fromJSON(e))
         : [],
+      has_waitlist_priority: isSet(object.hasWaitlistPriority)
+        ? globalThis.Boolean(object.hasWaitlistPriority)
+        : undefined,
+      interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
     };
   },
 
@@ -1163,6 +1114,12 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     if (message.status_history?.length) {
       obj.statusHistory = message.status_history.map((e) => StatusHistoryEntry.toJSON(e));
     }
+    if (message.has_waitlist_priority !== undefined) {
+      obj.hasWaitlistPriority = message.has_waitlist_priority;
+    }
+    if (message.interview_date !== undefined) {
+      obj.interviewDate = message.interview_date.toISOString();
+    }
     return obj;
   },
 
@@ -1184,6 +1141,8 @@ export const StudentSchoolYearInformation: MessageFns<StudentSchoolYearInformati
     message.status = object.status ?? undefined;
     message.grade = object.grade ?? undefined;
     message.status_history = object.status_history?.map((e) => StatusHistoryEntry.fromPartial(e)) || [];
+    message.has_waitlist_priority = object.has_waitlist_priority ?? undefined;
+    message.interview_date = object.interview_date ?? undefined;
     return message;
   },
 };
