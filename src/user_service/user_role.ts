@@ -36,22 +36,14 @@ export enum UserRole {
   TUITION_VIEW = "TUITION_VIEW",
   TUITION_SETTINGS = "TUITION_SETTINGS",
   TUITION_GENERATION = "TUITION_GENERATION",
-  WAITLIST_ADD = "WAITLIST_ADD",
-  WAITLIST_VIEW = "WAITLIST_VIEW",
-  WAITLIST_ACCEPT = "WAITLIST_ACCEPT",
   INTERVIEW_VIEW = "INTERVIEW_VIEW",
-  INTERVIEW_EDIT = "INTERVIEW_EDIT",
-  INTERVIEW_DECIDE = "INTERVIEW_DECIDE",
-  APPLICANTS_VIEW = "APPLICANTS_VIEW",
-  APPLICANTS_REVIEW_INFO = "APPLICANTS_REVIEW_INFO",
-  APPLICANTS_DECIDE = "APPLICANTS_DECIDE",
+  ONBOARDING_ADMIN = "ONBOARDING_ADMIN",
   FAMILIES_VIEW_OWN = "FAMILIES_VIEW_OWN",
   FAMILIES_VIEW_ALL = "FAMILIES_VIEW_ALL",
   FAMILIES_MODIFY_ALL = "FAMILIES_MODIFY_ALL",
   FAMILIES_CREATE = "FAMILIES_CREATE",
   STUDENTS_VIEW_OWN = "STUDENTS_VIEW_OWN",
   STUDENTS_VIEW_ALL = "STUDENTS_VIEW_ALL",
-  STUDENTS_MODIFY_OWN = "STUDENTS_MODIFY_OWN",
   STUDENTS_MODIFY_ALL = "STUDENTS_MODIFY_ALL",
   STUDENT_PROFILE_FULL_VIEW_OWN = "STUDENT_PROFILE_FULL_VIEW_OWN",
   STUDENT_PROFILE_FULL_VIEW_ALL = "STUDENT_PROFILE_FULL_VIEW_ALL",
@@ -59,10 +51,7 @@ export enum UserRole {
   STUDENTS_UPLOAD = "STUDENTS_UPLOAD",
   STUDENT_INCIDENTS_VIEW_OWN = "STUDENT_INCIDENTS_VIEW_OWN",
   STUDENT_INCIDENTS_VIEW_ALL = "STUDENT_INCIDENTS_VIEW_ALL",
-  STUDENT_INCIDENTS_CREATE_OWN = "STUDENT_INCIDENTS_CREATE_OWN",
-  STUDENT_INCIDENTS_CREATE_ALL = "STUDENT_INCIDENTS_CREATE_ALL",
-  STUDENT_INCIDENTS_EDIT_OWN = "STUDENT_INCIDENTS_EDIT_OWN",
-  STUDENT_INCIDENTS_EDIT_ALL = "STUDENT_INCIDENTS_EDIT_ALL",
+  STUDENT_INCIDENTS_MANAGEMENT = "STUDENT_INCIDENTS_MANAGEMENT",
   TEACHERS_VIEW = "TEACHERS_VIEW",
   TEACHERS_CREATE = "TEACHERS_CREATE",
   TEACHERS_MODIFY = "TEACHERS_MODIFY",
@@ -75,6 +64,8 @@ export enum UserRole {
   CLASSES_MODIFY_ALL = "CLASSES_MODIFY_ALL",
   CLASSES_CREATE = "CLASSES_CREATE",
   ORG_SETTINGS_FULL_ACCESS = "ORG_SETTINGS_FULL_ACCESS",
+  STUDENTS_MANAGE_PROVISIONED_ACCOUNTS = "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS",
+  TEACHERS_MANAGE_PROVISIONED_ACCOUNTS = "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -161,33 +152,12 @@ export function userRoleFromJSON(object: any): UserRole {
     case 28:
     case "TUITION_GENERATION":
       return UserRole.TUITION_GENERATION;
-    case 29:
-    case "WAITLIST_ADD":
-      return UserRole.WAITLIST_ADD;
-    case 30:
-    case "WAITLIST_VIEW":
-      return UserRole.WAITLIST_VIEW;
-    case 31:
-    case "WAITLIST_ACCEPT":
-      return UserRole.WAITLIST_ACCEPT;
     case 32:
     case "INTERVIEW_VIEW":
       return UserRole.INTERVIEW_VIEW;
-    case 33:
-    case "INTERVIEW_EDIT":
-      return UserRole.INTERVIEW_EDIT;
-    case 34:
-    case "INTERVIEW_DECIDE":
-      return UserRole.INTERVIEW_DECIDE;
-    case 35:
-    case "APPLICANTS_VIEW":
-      return UserRole.APPLICANTS_VIEW;
-    case 36:
-    case "APPLICANTS_REVIEW_INFO":
-      return UserRole.APPLICANTS_REVIEW_INFO;
     case 37:
-    case "APPLICANTS_DECIDE":
-      return UserRole.APPLICANTS_DECIDE;
+    case "ONBOARDING_ADMIN":
+      return UserRole.ONBOARDING_ADMIN;
     case 38:
     case "FAMILIES_VIEW_OWN":
       return UserRole.FAMILIES_VIEW_OWN;
@@ -206,9 +176,6 @@ export function userRoleFromJSON(object: any): UserRole {
     case 44:
     case "STUDENTS_VIEW_ALL":
       return UserRole.STUDENTS_VIEW_ALL;
-    case 45:
-    case "STUDENTS_MODIFY_OWN":
-      return UserRole.STUDENTS_MODIFY_OWN;
     case 46:
     case "STUDENTS_MODIFY_ALL":
       return UserRole.STUDENTS_MODIFY_ALL;
@@ -230,18 +197,9 @@ export function userRoleFromJSON(object: any): UserRole {
     case 52:
     case "STUDENT_INCIDENTS_VIEW_ALL":
       return UserRole.STUDENT_INCIDENTS_VIEW_ALL;
-    case 53:
-    case "STUDENT_INCIDENTS_CREATE_OWN":
-      return UserRole.STUDENT_INCIDENTS_CREATE_OWN;
-    case 54:
-    case "STUDENT_INCIDENTS_CREATE_ALL":
-      return UserRole.STUDENT_INCIDENTS_CREATE_ALL;
-    case 55:
-    case "STUDENT_INCIDENTS_EDIT_OWN":
-      return UserRole.STUDENT_INCIDENTS_EDIT_OWN;
     case 56:
-    case "STUDENT_INCIDENTS_EDIT_ALL":
-      return UserRole.STUDENT_INCIDENTS_EDIT_ALL;
+    case "STUDENT_INCIDENTS_MANAGEMENT":
+      return UserRole.STUDENT_INCIDENTS_MANAGEMENT;
     case 57:
     case "TEACHERS_VIEW":
       return UserRole.TEACHERS_VIEW;
@@ -278,6 +236,12 @@ export function userRoleFromJSON(object: any): UserRole {
     case 68:
     case "ORG_SETTINGS_FULL_ACCESS":
       return UserRole.ORG_SETTINGS_FULL_ACCESS;
+    case 70:
+    case "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS":
+      return UserRole.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS;
+    case 71:
+    case "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS":
+      return UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -341,24 +305,10 @@ export function userRoleToJSON(object: UserRole): string {
       return "TUITION_SETTINGS";
     case UserRole.TUITION_GENERATION:
       return "TUITION_GENERATION";
-    case UserRole.WAITLIST_ADD:
-      return "WAITLIST_ADD";
-    case UserRole.WAITLIST_VIEW:
-      return "WAITLIST_VIEW";
-    case UserRole.WAITLIST_ACCEPT:
-      return "WAITLIST_ACCEPT";
     case UserRole.INTERVIEW_VIEW:
       return "INTERVIEW_VIEW";
-    case UserRole.INTERVIEW_EDIT:
-      return "INTERVIEW_EDIT";
-    case UserRole.INTERVIEW_DECIDE:
-      return "INTERVIEW_DECIDE";
-    case UserRole.APPLICANTS_VIEW:
-      return "APPLICANTS_VIEW";
-    case UserRole.APPLICANTS_REVIEW_INFO:
-      return "APPLICANTS_REVIEW_INFO";
-    case UserRole.APPLICANTS_DECIDE:
-      return "APPLICANTS_DECIDE";
+    case UserRole.ONBOARDING_ADMIN:
+      return "ONBOARDING_ADMIN";
     case UserRole.FAMILIES_VIEW_OWN:
       return "FAMILIES_VIEW_OWN";
     case UserRole.FAMILIES_VIEW_ALL:
@@ -371,8 +321,6 @@ export function userRoleToJSON(object: UserRole): string {
       return "STUDENTS_VIEW_OWN";
     case UserRole.STUDENTS_VIEW_ALL:
       return "STUDENTS_VIEW_ALL";
-    case UserRole.STUDENTS_MODIFY_OWN:
-      return "STUDENTS_MODIFY_OWN";
     case UserRole.STUDENTS_MODIFY_ALL:
       return "STUDENTS_MODIFY_ALL";
     case UserRole.STUDENT_PROFILE_FULL_VIEW_OWN:
@@ -387,14 +335,8 @@ export function userRoleToJSON(object: UserRole): string {
       return "STUDENT_INCIDENTS_VIEW_OWN";
     case UserRole.STUDENT_INCIDENTS_VIEW_ALL:
       return "STUDENT_INCIDENTS_VIEW_ALL";
-    case UserRole.STUDENT_INCIDENTS_CREATE_OWN:
-      return "STUDENT_INCIDENTS_CREATE_OWN";
-    case UserRole.STUDENT_INCIDENTS_CREATE_ALL:
-      return "STUDENT_INCIDENTS_CREATE_ALL";
-    case UserRole.STUDENT_INCIDENTS_EDIT_OWN:
-      return "STUDENT_INCIDENTS_EDIT_OWN";
-    case UserRole.STUDENT_INCIDENTS_EDIT_ALL:
-      return "STUDENT_INCIDENTS_EDIT_ALL";
+    case UserRole.STUDENT_INCIDENTS_MANAGEMENT:
+      return "STUDENT_INCIDENTS_MANAGEMENT";
     case UserRole.TEACHERS_VIEW:
       return "TEACHERS_VIEW";
     case UserRole.TEACHERS_CREATE:
@@ -419,6 +361,10 @@ export function userRoleToJSON(object: UserRole): string {
       return "CLASSES_CREATE";
     case UserRole.ORG_SETTINGS_FULL_ACCESS:
       return "ORG_SETTINGS_FULL_ACCESS";
+    case UserRole.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS:
+      return "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS";
+    case UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
+      return "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS";
     case UserRole.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -481,23 +427,9 @@ export function userRoleToNumber(object: UserRole): number {
       return 27;
     case UserRole.TUITION_GENERATION:
       return 28;
-    case UserRole.WAITLIST_ADD:
-      return 29;
-    case UserRole.WAITLIST_VIEW:
-      return 30;
-    case UserRole.WAITLIST_ACCEPT:
-      return 31;
     case UserRole.INTERVIEW_VIEW:
       return 32;
-    case UserRole.INTERVIEW_EDIT:
-      return 33;
-    case UserRole.INTERVIEW_DECIDE:
-      return 34;
-    case UserRole.APPLICANTS_VIEW:
-      return 35;
-    case UserRole.APPLICANTS_REVIEW_INFO:
-      return 36;
-    case UserRole.APPLICANTS_DECIDE:
+    case UserRole.ONBOARDING_ADMIN:
       return 37;
     case UserRole.FAMILIES_VIEW_OWN:
       return 38;
@@ -511,8 +443,6 @@ export function userRoleToNumber(object: UserRole): number {
       return 43;
     case UserRole.STUDENTS_VIEW_ALL:
       return 44;
-    case UserRole.STUDENTS_MODIFY_OWN:
-      return 45;
     case UserRole.STUDENTS_MODIFY_ALL:
       return 46;
     case UserRole.STUDENT_PROFILE_FULL_VIEW_OWN:
@@ -527,13 +457,7 @@ export function userRoleToNumber(object: UserRole): number {
       return 51;
     case UserRole.STUDENT_INCIDENTS_VIEW_ALL:
       return 52;
-    case UserRole.STUDENT_INCIDENTS_CREATE_OWN:
-      return 53;
-    case UserRole.STUDENT_INCIDENTS_CREATE_ALL:
-      return 54;
-    case UserRole.STUDENT_INCIDENTS_EDIT_OWN:
-      return 55;
-    case UserRole.STUDENT_INCIDENTS_EDIT_ALL:
+    case UserRole.STUDENT_INCIDENTS_MANAGEMENT:
       return 56;
     case UserRole.TEACHERS_VIEW:
       return 57;
@@ -559,6 +483,10 @@ export function userRoleToNumber(object: UserRole): number {
       return 67;
     case UserRole.ORG_SETTINGS_FULL_ACCESS:
       return 68;
+    case UserRole.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS:
+      return 70;
+    case UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
+      return 71;
     case UserRole.UNRECOGNIZED:
     default:
       return -1;
