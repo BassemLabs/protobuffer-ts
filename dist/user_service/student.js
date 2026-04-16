@@ -263,6 +263,7 @@ function createBaseStudent() {
         id_number: undefined,
         username: undefined,
         email_domain: undefined,
+        has_ldap_account: undefined,
         family_id: undefined,
         first_name: undefined,
         last_name: undefined,
@@ -286,6 +287,9 @@ exports.Student = {
         }
         if (message.email_domain !== undefined) {
             writer.uint32(42).string(message.email_domain);
+        }
+        if (message.has_ldap_account !== undefined) {
+            writer.uint32(104).bool(message.has_ldap_account);
         }
         if (message.family_id !== undefined) {
             object_id_1.ObjectId.encode(message.family_id, writer.uint32(50).fork()).join();
@@ -341,6 +345,12 @@ exports.Student = {
                     }
                     message.email_domain = reader.string();
                     continue;
+                case 13:
+                    if (tag !== 104) {
+                        break;
+                    }
+                    message.has_ldap_account = reader.bool();
+                    continue;
                 case 6:
                     if (tag !== 50) {
                         break;
@@ -386,6 +396,7 @@ exports.Student = {
             id_number: isSet(object.idNumber) ? globalThis.String(object.idNumber) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : undefined,
             email_domain: isSet(object.emailDomain) ? globalThis.String(object.emailDomain) : undefined,
+            has_ldap_account: isSet(object.hasLdapAccount) ? globalThis.Boolean(object.hasLdapAccount) : undefined,
             family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
             first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
             last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
@@ -409,6 +420,9 @@ exports.Student = {
         }
         if (message.email_domain !== undefined) {
             obj.emailDomain = message.email_domain;
+        }
+        if (message.has_ldap_account !== undefined) {
+            obj.hasLdapAccount = message.has_ldap_account;
         }
         if (message.family_id !== undefined) {
             obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
@@ -439,6 +453,7 @@ exports.Student = {
         message.id_number = object.id_number ?? undefined;
         message.username = object.username ?? undefined;
         message.email_domain = object.email_domain ?? undefined;
+        message.has_ldap_account = object.has_ldap_account ?? undefined;
         message.family_id = (object.family_id !== undefined && object.family_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.family_id)
             : undefined;

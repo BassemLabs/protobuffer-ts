@@ -264,6 +264,25 @@ export interface ExecuteReregistrationPhase3SendEmailsRequest {
 export interface ExecuteReregistrationPhase3SendEmailsResponse {
 }
 
+export interface ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+  context: RequestContext | undefined;
+  active_school_year_id: ObjectId | undefined;
+  target_school_year_id: ObjectId | undefined;
+}
+
+/** Empty response */
+export interface ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+}
+
+export interface ExecuteStartSchoolYearPhase3SendEmailsRequest {
+  context: RequestContext | undefined;
+  target_school_year_id: ObjectId | undefined;
+}
+
+/** Empty response */
+export interface ExecuteStartSchoolYearPhase3SendEmailsResponse {
+}
+
 export interface CreateDefaultResourceAccessSettingsForOrgRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
@@ -3834,6 +3853,306 @@ export const ExecuteReregistrationPhase3SendEmailsResponse: MessageFns<ExecuteRe
       return message;
     },
   };
+
+function createBaseExecuteStartSchoolYearPhase1ActivateAccountsRequest(): ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+  return { context: undefined, active_school_year_id: undefined, target_school_year_id: undefined };
+}
+
+export const ExecuteStartSchoolYearPhase1ActivateAccountsRequest: MessageFns<
+  ExecuteStartSchoolYearPhase1ActivateAccountsRequest
+> = {
+  encode(
+    message: ExecuteStartSchoolYearPhase1ActivateAccountsRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.target_school_year_id !== undefined) {
+      ObjectId.encode(message.target_school_year_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteStartSchoolYearPhase1ActivateAccountsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.target_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      target_school_year_id: isSet(object.targetSchoolYearId)
+        ? ObjectId.fromJSON(object.targetSchoolYearId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: ExecuteStartSchoolYearPhase1ActivateAccountsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.target_school_year_id !== undefined) {
+      obj.targetSchoolYearId = ObjectId.toJSON(message.target_school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase1ActivateAccountsRequest>, I>>(
+    base?: I,
+  ): ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+    return ExecuteStartSchoolYearPhase1ActivateAccountsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase1ActivateAccountsRequest>, I>>(
+    object: I,
+  ): ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+    const message = createBaseExecuteStartSchoolYearPhase1ActivateAccountsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.target_school_year_id =
+      (object.target_school_year_id !== undefined && object.target_school_year_id !== null)
+        ? ObjectId.fromPartial(object.target_school_year_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseExecuteStartSchoolYearPhase1ActivateAccountsResponse(): ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+  return {};
+}
+
+export const ExecuteStartSchoolYearPhase1ActivateAccountsResponse: MessageFns<
+  ExecuteStartSchoolYearPhase1ActivateAccountsResponse
+> = {
+  encode(
+    _: ExecuteStartSchoolYearPhase1ActivateAccountsResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteStartSchoolYearPhase1ActivateAccountsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+    return {};
+  },
+
+  toJSON(_: ExecuteStartSchoolYearPhase1ActivateAccountsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase1ActivateAccountsResponse>, I>>(
+    base?: I,
+  ): ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+    return ExecuteStartSchoolYearPhase1ActivateAccountsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase1ActivateAccountsResponse>, I>>(
+    _: I,
+  ): ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+    const message = createBaseExecuteStartSchoolYearPhase1ActivateAccountsResponse();
+    return message;
+  },
+};
+
+function createBaseExecuteStartSchoolYearPhase3SendEmailsRequest(): ExecuteStartSchoolYearPhase3SendEmailsRequest {
+  return { context: undefined, target_school_year_id: undefined };
+}
+
+export const ExecuteStartSchoolYearPhase3SendEmailsRequest: MessageFns<ExecuteStartSchoolYearPhase3SendEmailsRequest> =
+  {
+    encode(
+      message: ExecuteStartSchoolYearPhase3SendEmailsRequest,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.context !== undefined) {
+        RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+      }
+      if (message.target_school_year_id !== undefined) {
+        ObjectId.encode(message.target_school_year_id, writer.uint32(18).fork()).join();
+      }
+      return writer;
+    },
+
+    decode(input: BinaryReader | Uint8Array, length?: number): ExecuteStartSchoolYearPhase3SendEmailsRequest {
+      const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+      let end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseExecuteStartSchoolYearPhase3SendEmailsRequest();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            if (tag !== 10) {
+              break;
+            }
+
+            message.context = RequestContext.decode(reader, reader.uint32());
+            continue;
+          case 2:
+            if (tag !== 18) {
+              break;
+            }
+
+            message.target_school_year_id = ObjectId.decode(reader, reader.uint32());
+            continue;
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): ExecuteStartSchoolYearPhase3SendEmailsRequest {
+      return {
+        context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+        target_school_year_id: isSet(object.targetSchoolYearId)
+          ? ObjectId.fromJSON(object.targetSchoolYearId)
+          : undefined,
+      };
+    },
+
+    toJSON(message: ExecuteStartSchoolYearPhase3SendEmailsRequest): unknown {
+      const obj: any = {};
+      if (message.context !== undefined) {
+        obj.context = RequestContext.toJSON(message.context);
+      }
+      if (message.target_school_year_id !== undefined) {
+        obj.targetSchoolYearId = ObjectId.toJSON(message.target_school_year_id);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase3SendEmailsRequest>, I>>(
+      base?: I,
+    ): ExecuteStartSchoolYearPhase3SendEmailsRequest {
+      return ExecuteStartSchoolYearPhase3SendEmailsRequest.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase3SendEmailsRequest>, I>>(
+      object: I,
+    ): ExecuteStartSchoolYearPhase3SendEmailsRequest {
+      const message = createBaseExecuteStartSchoolYearPhase3SendEmailsRequest();
+      message.context = (object.context !== undefined && object.context !== null)
+        ? RequestContext.fromPartial(object.context)
+        : undefined;
+      message.target_school_year_id =
+        (object.target_school_year_id !== undefined && object.target_school_year_id !== null)
+          ? ObjectId.fromPartial(object.target_school_year_id)
+          : undefined;
+      return message;
+    },
+  };
+
+function createBaseExecuteStartSchoolYearPhase3SendEmailsResponse(): ExecuteStartSchoolYearPhase3SendEmailsResponse {
+  return {};
+}
+
+export const ExecuteStartSchoolYearPhase3SendEmailsResponse: MessageFns<
+  ExecuteStartSchoolYearPhase3SendEmailsResponse
+> = {
+  encode(_: ExecuteStartSchoolYearPhase3SendEmailsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ExecuteStartSchoolYearPhase3SendEmailsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExecuteStartSchoolYearPhase3SendEmailsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ExecuteStartSchoolYearPhase3SendEmailsResponse {
+    return {};
+  },
+
+  toJSON(_: ExecuteStartSchoolYearPhase3SendEmailsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase3SendEmailsResponse>, I>>(
+    base?: I,
+  ): ExecuteStartSchoolYearPhase3SendEmailsResponse {
+    return ExecuteStartSchoolYearPhase3SendEmailsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ExecuteStartSchoolYearPhase3SendEmailsResponse>, I>>(
+    _: I,
+  ): ExecuteStartSchoolYearPhase3SendEmailsResponse {
+    const message = createBaseExecuteStartSchoolYearPhase3SendEmailsResponse();
+    return message;
+  },
+};
 
 function createBaseCreateDefaultResourceAccessSettingsForOrgRequest(): CreateDefaultResourceAccessSettingsForOrgRequest {
   return { context: undefined, organization_id: undefined };

@@ -194,6 +194,21 @@ export interface ExecuteReregistrationPhase3SendEmailsRequest {
 /** Empty response */
 export interface ExecuteReregistrationPhase3SendEmailsResponse {
 }
+export interface ExecuteStartSchoolYearPhase1ActivateAccountsRequest {
+    context: RequestContext | undefined;
+    active_school_year_id: ObjectId | undefined;
+    target_school_year_id: ObjectId | undefined;
+}
+/** Empty response */
+export interface ExecuteStartSchoolYearPhase1ActivateAccountsResponse {
+}
+export interface ExecuteStartSchoolYearPhase3SendEmailsRequest {
+    context: RequestContext | undefined;
+    target_school_year_id: ObjectId | undefined;
+}
+/** Empty response */
+export interface ExecuteStartSchoolYearPhase3SendEmailsResponse {
+}
 export interface CreateDefaultResourceAccessSettingsForOrgRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -361,6 +376,10 @@ export declare const ExecuteReregistrationPhase2ResetCustomFieldsRequest: Messag
 export declare const ExecuteReregistrationPhase2ResetCustomFieldsResponse: MessageFns<ExecuteReregistrationPhase2ResetCustomFieldsResponse>;
 export declare const ExecuteReregistrationPhase3SendEmailsRequest: MessageFns<ExecuteReregistrationPhase3SendEmailsRequest>;
 export declare const ExecuteReregistrationPhase3SendEmailsResponse: MessageFns<ExecuteReregistrationPhase3SendEmailsResponse>;
+export declare const ExecuteStartSchoolYearPhase1ActivateAccountsRequest: MessageFns<ExecuteStartSchoolYearPhase1ActivateAccountsRequest>;
+export declare const ExecuteStartSchoolYearPhase1ActivateAccountsResponse: MessageFns<ExecuteStartSchoolYearPhase1ActivateAccountsResponse>;
+export declare const ExecuteStartSchoolYearPhase3SendEmailsRequest: MessageFns<ExecuteStartSchoolYearPhase3SendEmailsRequest>;
+export declare const ExecuteStartSchoolYearPhase3SendEmailsResponse: MessageFns<ExecuteStartSchoolYearPhase3SendEmailsResponse>;
 export declare const CreateDefaultResourceAccessSettingsForOrgRequest: MessageFns<CreateDefaultResourceAccessSettingsForOrgRequest>;
 export declare const CreateDefaultResourceAccessSettingsForOrgResponse: MessageFns<CreateDefaultResourceAccessSettingsForOrgResponse>;
 export declare const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFiltersRequest>;

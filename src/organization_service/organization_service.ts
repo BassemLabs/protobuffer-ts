@@ -147,6 +147,120 @@ export function reregistrationPhaseStatusToNumber(object: ReregistrationPhaseSta
   }
 }
 
+export enum StartSchoolYearPhase {
+  START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS = "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS",
+  START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR = "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR",
+  START_SCHOOL_YEAR_PHASE_SEND_EMAILS = "START_SCHOOL_YEAR_PHASE_SEND_EMAILS",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function startSchoolYearPhaseFromJSON(object: any): StartSchoolYearPhase {
+  switch (object) {
+    case 0:
+    case "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS":
+      return StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS;
+    case 1:
+    case "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR":
+      return StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR;
+    case 2:
+    case "START_SCHOOL_YEAR_PHASE_SEND_EMAILS":
+      return StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SEND_EMAILS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StartSchoolYearPhase.UNRECOGNIZED;
+  }
+}
+
+export function startSchoolYearPhaseToJSON(object: StartSchoolYearPhase): string {
+  switch (object) {
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS:
+      return "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS";
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR:
+      return "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR";
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SEND_EMAILS:
+      return "START_SCHOOL_YEAR_PHASE_SEND_EMAILS";
+    case StartSchoolYearPhase.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function startSchoolYearPhaseToNumber(object: StartSchoolYearPhase): number {
+  switch (object) {
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS:
+      return 0;
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR:
+      return 1;
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SEND_EMAILS:
+      return 2;
+    case StartSchoolYearPhase.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum StartSchoolYearPhaseStatus {
+  START_SCHOOL_YEAR_PHASE_STATUS_PENDING = "START_SCHOOL_YEAR_PHASE_STATUS_PENDING",
+  START_SCHOOL_YEAR_PHASE_STATUS_RUNNING = "START_SCHOOL_YEAR_PHASE_STATUS_RUNNING",
+  START_SCHOOL_YEAR_PHASE_STATUS_FAILED = "START_SCHOOL_YEAR_PHASE_STATUS_FAILED",
+  START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED = "START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function startSchoolYearPhaseStatusFromJSON(object: any): StartSchoolYearPhaseStatus {
+  switch (object) {
+    case 0:
+    case "START_SCHOOL_YEAR_PHASE_STATUS_PENDING":
+      return StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_PENDING;
+    case 1:
+    case "START_SCHOOL_YEAR_PHASE_STATUS_RUNNING":
+      return StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_RUNNING;
+    case 2:
+    case "START_SCHOOL_YEAR_PHASE_STATUS_FAILED":
+      return StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_FAILED;
+    case 3:
+    case "START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED":
+      return StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StartSchoolYearPhaseStatus.UNRECOGNIZED;
+  }
+}
+
+export function startSchoolYearPhaseStatusToJSON(object: StartSchoolYearPhaseStatus): string {
+  switch (object) {
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_PENDING:
+      return "START_SCHOOL_YEAR_PHASE_STATUS_PENDING";
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_RUNNING:
+      return "START_SCHOOL_YEAR_PHASE_STATUS_RUNNING";
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_FAILED:
+      return "START_SCHOOL_YEAR_PHASE_STATUS_FAILED";
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED:
+      return "START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED";
+    case StartSchoolYearPhaseStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function startSchoolYearPhaseStatusToNumber(object: StartSchoolYearPhaseStatus): number {
+  switch (object) {
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_PENDING:
+      return 0;
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_RUNNING:
+      return 1;
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_FAILED:
+      return 2;
+    case StartSchoolYearPhaseStatus.START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED:
+      return 3;
+    case StartSchoolYearPhaseStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
   context: RequestContext | undefined;
@@ -378,6 +492,33 @@ export interface StartCurrentReregistrationPhaseRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
   phase?: ReregistrationPhase | undefined;
+}
+
+export interface StartSchoolYearRun {
+  id: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  active_school_year_id: ObjectId | undefined;
+  target_school_year_id: ObjectId | undefined;
+  requested_by?: ObjectId | undefined;
+  phase?: StartSchoolYearPhase | undefined;
+  current_phase_status?: StartSchoolYearPhaseStatus | undefined;
+  created_at: Date | undefined;
+  updated_at: Date | undefined;
+}
+
+export interface GetCurrentStartSchoolYearRunRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+}
+
+export interface GetCurrentStartSchoolYearRunResponse {
+  run?: StartSchoolYearRun | undefined;
+}
+
+export interface StartCurrentStartSchoolYearPhaseRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  phase?: StartSchoolYearPhase | undefined;
 }
 
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
@@ -3902,6 +4043,453 @@ export const StartCurrentReregistrationPhaseRequest: MessageFns<StartCurrentRere
     object: I,
   ): StartCurrentReregistrationPhaseRequest {
     const message = createBaseStartCurrentReregistrationPhaseRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.phase = object.phase ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStartSchoolYearRun(): StartSchoolYearRun {
+  return {
+    id: undefined,
+    organization_id: undefined,
+    active_school_year_id: undefined,
+    target_school_year_id: undefined,
+    requested_by: undefined,
+    phase: undefined,
+    current_phase_status: undefined,
+    created_at: undefined,
+    updated_at: undefined,
+  };
+}
+
+export const StartSchoolYearRun: MessageFns<StartSchoolYearRun> = {
+  encode(message: StartSchoolYearRun, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.target_school_year_id !== undefined) {
+      ObjectId.encode(message.target_school_year_id, writer.uint32(34).fork()).join();
+    }
+    if (message.requested_by !== undefined) {
+      ObjectId.encode(message.requested_by, writer.uint32(42).fork()).join();
+    }
+    if (message.phase !== undefined) {
+      writer.uint32(48).int32(startSchoolYearPhaseToNumber(message.phase));
+    }
+    if (message.current_phase_status !== undefined) {
+      writer.uint32(56).int32(startSchoolYearPhaseStatusToNumber(message.current_phase_status));
+    }
+    if (message.created_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.created_at), writer.uint32(66).fork()).join();
+    }
+    if (message.updated_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.updated_at), writer.uint32(74).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartSchoolYearRun {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartSchoolYearRun();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.target_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.requested_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.phase = startSchoolYearPhaseFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.current_phase_status = startSchoolYearPhaseStatusFromJSON(reader.int32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.created_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.updated_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartSchoolYearRun {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      target_school_year_id: isSet(object.targetSchoolYearId)
+        ? ObjectId.fromJSON(object.targetSchoolYearId)
+        : undefined,
+      requested_by: isSet(object.requestedBy) ? ObjectId.fromJSON(object.requestedBy) : undefined,
+      phase: isSet(object.phase) ? startSchoolYearPhaseFromJSON(object.phase) : undefined,
+      current_phase_status: isSet(object.currentPhaseStatus)
+        ? startSchoolYearPhaseStatusFromJSON(object.currentPhaseStatus)
+        : undefined,
+      created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      updated_at: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+    };
+  },
+
+  toJSON(message: StartSchoolYearRun): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.target_school_year_id !== undefined) {
+      obj.targetSchoolYearId = ObjectId.toJSON(message.target_school_year_id);
+    }
+    if (message.requested_by !== undefined) {
+      obj.requestedBy = ObjectId.toJSON(message.requested_by);
+    }
+    if (message.phase !== undefined) {
+      obj.phase = startSchoolYearPhaseToJSON(message.phase);
+    }
+    if (message.current_phase_status !== undefined) {
+      obj.currentPhaseStatus = startSchoolYearPhaseStatusToJSON(message.current_phase_status);
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at.toISOString();
+    }
+    if (message.updated_at !== undefined) {
+      obj.updatedAt = message.updated_at.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartSchoolYearRun>, I>>(base?: I): StartSchoolYearRun {
+    return StartSchoolYearRun.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartSchoolYearRun>, I>>(object: I): StartSchoolYearRun {
+    const message = createBaseStartSchoolYearRun();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.target_school_year_id =
+      (object.target_school_year_id !== undefined && object.target_school_year_id !== null)
+        ? ObjectId.fromPartial(object.target_school_year_id)
+        : undefined;
+    message.requested_by = (object.requested_by !== undefined && object.requested_by !== null)
+      ? ObjectId.fromPartial(object.requested_by)
+      : undefined;
+    message.phase = object.phase ?? undefined;
+    message.current_phase_status = object.current_phase_status ?? undefined;
+    message.created_at = object.created_at ?? undefined;
+    message.updated_at = object.updated_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetCurrentStartSchoolYearRunRequest(): GetCurrentStartSchoolYearRunRequest {
+  return { context: undefined, organization_id: undefined };
+}
+
+export const GetCurrentStartSchoolYearRunRequest: MessageFns<GetCurrentStartSchoolYearRunRequest> = {
+  encode(message: GetCurrentStartSchoolYearRunRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCurrentStartSchoolYearRunRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCurrentStartSchoolYearRunRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCurrentStartSchoolYearRunRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: GetCurrentStartSchoolYearRunRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCurrentStartSchoolYearRunRequest>, I>>(
+    base?: I,
+  ): GetCurrentStartSchoolYearRunRequest {
+    return GetCurrentStartSchoolYearRunRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCurrentStartSchoolYearRunRequest>, I>>(
+    object: I,
+  ): GetCurrentStartSchoolYearRunRequest {
+    const message = createBaseGetCurrentStartSchoolYearRunRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetCurrentStartSchoolYearRunResponse(): GetCurrentStartSchoolYearRunResponse {
+  return { run: undefined };
+}
+
+export const GetCurrentStartSchoolYearRunResponse: MessageFns<GetCurrentStartSchoolYearRunResponse> = {
+  encode(message: GetCurrentStartSchoolYearRunResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.run !== undefined) {
+      StartSchoolYearRun.encode(message.run, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCurrentStartSchoolYearRunResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCurrentStartSchoolYearRunResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.run = StartSchoolYearRun.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCurrentStartSchoolYearRunResponse {
+    return { run: isSet(object.run) ? StartSchoolYearRun.fromJSON(object.run) : undefined };
+  },
+
+  toJSON(message: GetCurrentStartSchoolYearRunResponse): unknown {
+    const obj: any = {};
+    if (message.run !== undefined) {
+      obj.run = StartSchoolYearRun.toJSON(message.run);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCurrentStartSchoolYearRunResponse>, I>>(
+    base?: I,
+  ): GetCurrentStartSchoolYearRunResponse {
+    return GetCurrentStartSchoolYearRunResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCurrentStartSchoolYearRunResponse>, I>>(
+    object: I,
+  ): GetCurrentStartSchoolYearRunResponse {
+    const message = createBaseGetCurrentStartSchoolYearRunResponse();
+    message.run = (object.run !== undefined && object.run !== null)
+      ? StartSchoolYearRun.fromPartial(object.run)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseStartCurrentStartSchoolYearPhaseRequest(): StartCurrentStartSchoolYearPhaseRequest {
+  return { context: undefined, organization_id: undefined, phase: undefined };
+}
+
+export const StartCurrentStartSchoolYearPhaseRequest: MessageFns<StartCurrentStartSchoolYearPhaseRequest> = {
+  encode(message: StartCurrentStartSchoolYearPhaseRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.phase !== undefined) {
+      writer.uint32(24).int32(startSchoolYearPhaseToNumber(message.phase));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartCurrentStartSchoolYearPhaseRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartCurrentStartSchoolYearPhaseRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.phase = startSchoolYearPhaseFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartCurrentStartSchoolYearPhaseRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      phase: isSet(object.phase) ? startSchoolYearPhaseFromJSON(object.phase) : undefined,
+    };
+  },
+
+  toJSON(message: StartCurrentStartSchoolYearPhaseRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.phase !== undefined) {
+      obj.phase = startSchoolYearPhaseToJSON(message.phase);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartCurrentStartSchoolYearPhaseRequest>, I>>(
+    base?: I,
+  ): StartCurrentStartSchoolYearPhaseRequest {
+    return StartCurrentStartSchoolYearPhaseRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartCurrentStartSchoolYearPhaseRequest>, I>>(
+    object: I,
+  ): StartCurrentStartSchoolYearPhaseRequest {
+    const message = createBaseStartCurrentStartSchoolYearPhaseRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;

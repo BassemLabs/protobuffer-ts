@@ -25,6 +25,25 @@ export declare enum ReregistrationPhaseStatus {
 export declare function reregistrationPhaseStatusFromJSON(object: any): ReregistrationPhaseStatus;
 export declare function reregistrationPhaseStatusToJSON(object: ReregistrationPhaseStatus): string;
 export declare function reregistrationPhaseStatusToNumber(object: ReregistrationPhaseStatus): number;
+export declare enum StartSchoolYearPhase {
+    START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS = "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS",
+    START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR = "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR",
+    START_SCHOOL_YEAR_PHASE_SEND_EMAILS = "START_SCHOOL_YEAR_PHASE_SEND_EMAILS",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function startSchoolYearPhaseFromJSON(object: any): StartSchoolYearPhase;
+export declare function startSchoolYearPhaseToJSON(object: StartSchoolYearPhase): string;
+export declare function startSchoolYearPhaseToNumber(object: StartSchoolYearPhase): number;
+export declare enum StartSchoolYearPhaseStatus {
+    START_SCHOOL_YEAR_PHASE_STATUS_PENDING = "START_SCHOOL_YEAR_PHASE_STATUS_PENDING",
+    START_SCHOOL_YEAR_PHASE_STATUS_RUNNING = "START_SCHOOL_YEAR_PHASE_STATUS_RUNNING",
+    START_SCHOOL_YEAR_PHASE_STATUS_FAILED = "START_SCHOOL_YEAR_PHASE_STATUS_FAILED",
+    START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED = "START_SCHOOL_YEAR_PHASE_STATUS_SUCCEEDED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function startSchoolYearPhaseStatusFromJSON(object: any): StartSchoolYearPhaseStatus;
+export declare function startSchoolYearPhaseStatusToJSON(object: StartSchoolYearPhaseStatus): string;
+export declare function startSchoolYearPhaseStatusToNumber(object: StartSchoolYearPhaseStatus): number;
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
     context: RequestContext | undefined;
@@ -217,6 +236,29 @@ export interface StartCurrentReregistrationPhaseRequest {
     organization_id: ObjectId | undefined;
     phase?: ReregistrationPhase | undefined;
 }
+export interface StartSchoolYearRun {
+    id: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    active_school_year_id: ObjectId | undefined;
+    target_school_year_id: ObjectId | undefined;
+    requested_by?: ObjectId | undefined;
+    phase?: StartSchoolYearPhase | undefined;
+    current_phase_status?: StartSchoolYearPhaseStatus | undefined;
+    created_at: Date | undefined;
+    updated_at: Date | undefined;
+}
+export interface GetCurrentStartSchoolYearRunRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
+export interface GetCurrentStartSchoolYearRunResponse {
+    run?: StartSchoolYearRun | undefined;
+}
+export interface StartCurrentStartSchoolYearPhaseRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    phase?: StartSchoolYearPhase | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -256,6 +298,10 @@ export declare const ReregistrationRun: MessageFns<ReregistrationRun>;
 export declare const GetCurrentReregistrationRunRequest: MessageFns<GetCurrentReregistrationRunRequest>;
 export declare const GetCurrentReregistrationRunResponse: MessageFns<GetCurrentReregistrationRunResponse>;
 export declare const StartCurrentReregistrationPhaseRequest: MessageFns<StartCurrentReregistrationPhaseRequest>;
+export declare const StartSchoolYearRun: MessageFns<StartSchoolYearRun>;
+export declare const GetCurrentStartSchoolYearRunRequest: MessageFns<GetCurrentStartSchoolYearRunRequest>;
+export declare const GetCurrentStartSchoolYearRunResponse: MessageFns<GetCurrentStartSchoolYearRunResponse>;
+export declare const StartCurrentStartSchoolYearPhaseRequest: MessageFns<StartCurrentStartSchoolYearPhaseRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

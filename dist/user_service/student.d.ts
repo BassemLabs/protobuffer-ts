@@ -47,6 +47,7 @@ export interface Student {
     id_number?: string | undefined;
     username?: string | undefined;
     email_domain?: string | undefined;
+    has_ldap_account?: boolean | undefined;
     family_id: ObjectId | undefined;
     first_name?: string | undefined;
     last_name?: string | undefined;
