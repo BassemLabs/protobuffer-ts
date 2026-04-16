@@ -31,11 +31,8 @@ export enum UserRole {
   INVOICES_VIEW_ALL = "INVOICES_VIEW_ALL",
   INVOICES_EDIT_OWN = "INVOICES_EDIT_OWN",
   INVOICES_EDIT_ALL = "INVOICES_EDIT_ALL",
-  TRANSACTIONS_EDIT_OWN = "TRANSACTIONS_EDIT_OWN",
-  TRANSACTIONS_EDIT_ALL = "TRANSACTIONS_EDIT_ALL",
   TUITION_VIEW = "TUITION_VIEW",
-  TUITION_SETTINGS = "TUITION_SETTINGS",
-  TUITION_GENERATION = "TUITION_GENERATION",
+  TUITION_MANAGER = "TUITION_MANAGER",
   INTERVIEW_VIEW = "INTERVIEW_VIEW",
   ONBOARDING_ADMIN = "ONBOARDING_ADMIN",
   FAMILIES_VIEW_OWN = "FAMILIES_VIEW_OWN",
@@ -66,6 +63,8 @@ export enum UserRole {
   ORG_SETTINGS_FULL_ACCESS = "ORG_SETTINGS_FULL_ACCESS",
   STUDENTS_MANAGE_PROVISIONED_ACCOUNTS = "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS",
   TEACHERS_MANAGE_PROVISIONED_ACCOUNTS = "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS",
+  TRANSACTIONS_ISSUE_REFUND = "TRANSACTIONS_ISSUE_REFUND",
+  TRANSACTIONS_CREATE_MANUAL_TRANSACTION = "TRANSACTIONS_CREATE_MANUAL_TRANSACTION",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -137,21 +136,12 @@ export function userRoleFromJSON(object: any): UserRole {
     case 23:
     case "INVOICES_EDIT_ALL":
       return UserRole.INVOICES_EDIT_ALL;
-    case 24:
-    case "TRANSACTIONS_EDIT_OWN":
-      return UserRole.TRANSACTIONS_EDIT_OWN;
-    case 25:
-    case "TRANSACTIONS_EDIT_ALL":
-      return UserRole.TRANSACTIONS_EDIT_ALL;
     case 26:
     case "TUITION_VIEW":
       return UserRole.TUITION_VIEW;
     case 27:
-    case "TUITION_SETTINGS":
-      return UserRole.TUITION_SETTINGS;
-    case 28:
-    case "TUITION_GENERATION":
-      return UserRole.TUITION_GENERATION;
+    case "TUITION_MANAGER":
+      return UserRole.TUITION_MANAGER;
     case 32:
     case "INTERVIEW_VIEW":
       return UserRole.INTERVIEW_VIEW;
@@ -242,6 +232,12 @@ export function userRoleFromJSON(object: any): UserRole {
     case 71:
     case "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS":
       return UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS;
+    case 72:
+    case "TRANSACTIONS_ISSUE_REFUND":
+      return UserRole.TRANSACTIONS_ISSUE_REFUND;
+    case 73:
+    case "TRANSACTIONS_CREATE_MANUAL_TRANSACTION":
+      return UserRole.TRANSACTIONS_CREATE_MANUAL_TRANSACTION;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -295,16 +291,10 @@ export function userRoleToJSON(object: UserRole): string {
       return "INVOICES_EDIT_OWN";
     case UserRole.INVOICES_EDIT_ALL:
       return "INVOICES_EDIT_ALL";
-    case UserRole.TRANSACTIONS_EDIT_OWN:
-      return "TRANSACTIONS_EDIT_OWN";
-    case UserRole.TRANSACTIONS_EDIT_ALL:
-      return "TRANSACTIONS_EDIT_ALL";
     case UserRole.TUITION_VIEW:
       return "TUITION_VIEW";
-    case UserRole.TUITION_SETTINGS:
-      return "TUITION_SETTINGS";
-    case UserRole.TUITION_GENERATION:
-      return "TUITION_GENERATION";
+    case UserRole.TUITION_MANAGER:
+      return "TUITION_MANAGER";
     case UserRole.INTERVIEW_VIEW:
       return "INTERVIEW_VIEW";
     case UserRole.ONBOARDING_ADMIN:
@@ -365,6 +355,10 @@ export function userRoleToJSON(object: UserRole): string {
       return "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS";
     case UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
       return "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS";
+    case UserRole.TRANSACTIONS_ISSUE_REFUND:
+      return "TRANSACTIONS_ISSUE_REFUND";
+    case UserRole.TRANSACTIONS_CREATE_MANUAL_TRANSACTION:
+      return "TRANSACTIONS_CREATE_MANUAL_TRANSACTION";
     case UserRole.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -417,16 +411,10 @@ export function userRoleToNumber(object: UserRole): number {
       return 22;
     case UserRole.INVOICES_EDIT_ALL:
       return 23;
-    case UserRole.TRANSACTIONS_EDIT_OWN:
-      return 24;
-    case UserRole.TRANSACTIONS_EDIT_ALL:
-      return 25;
     case UserRole.TUITION_VIEW:
       return 26;
-    case UserRole.TUITION_SETTINGS:
+    case UserRole.TUITION_MANAGER:
       return 27;
-    case UserRole.TUITION_GENERATION:
-      return 28;
     case UserRole.INTERVIEW_VIEW:
       return 32;
     case UserRole.ONBOARDING_ADMIN:
@@ -487,6 +475,10 @@ export function userRoleToNumber(object: UserRole): number {
       return 70;
     case UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
       return 71;
+    case UserRole.TRANSACTIONS_ISSUE_REFUND:
+      return 72;
+    case UserRole.TRANSACTIONS_CREATE_MANUAL_TRANSACTION:
+      return 73;
     case UserRole.UNRECOGNIZED:
     default:
       return -1;
