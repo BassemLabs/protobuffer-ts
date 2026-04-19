@@ -1,6 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { ClassRef } from "./class_ref";
 import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
 import { ReportType } from "./semester";
 export declare const protobufPackage = "class_service.report_entry_service";
@@ -40,6 +41,11 @@ export interface GetStudentReportEntriesForHomeroomRequest {
 export interface GetStudentPublishedReportEntriesRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
+    /**
+     * Optional class scope filter; when provided, results are restricted to
+     * that class only. If omitted, behavior remains unchanged.
+     */
+    class_ref?: ClassRef | undefined;
 }
 export interface GetParentPublishedReportSummariesRequest {
     context: RequestContext | undefined;

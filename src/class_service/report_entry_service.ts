@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { ClassRef } from "./class_ref";
 import {
   GuardianSignatureSessionMetadata,
   ParentStudentReportSummary,
@@ -99,7 +100,14 @@ export interface GetStudentReportEntriesForHomeroomRequest {
 
 export interface GetStudentPublishedReportEntriesRequest {
   context: RequestContext | undefined;
-  student_id: ObjectId | undefined;
+  student_id:
+    | ObjectId
+    | undefined;
+  /**
+   * Optional class scope filter; when provided, results are restricted to
+   * that class only. If omitted, behavior remains unchanged.
+   */
+  class_ref?: ClassRef | undefined;
 }
 
 export interface GetParentPublishedReportSummariesRequest {
@@ -845,7 +853,7 @@ export const GetStudentReportEntriesForHomeroomRequest: MessageFns<GetStudentRep
 };
 
 function createBaseGetStudentPublishedReportEntriesRequest(): GetStudentPublishedReportEntriesRequest {
-  return { context: undefined, student_id: undefined };
+  return { context: undefined, student_id: undefined, class_ref: undefined };
 }
 
 export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPublishedReportEntriesRequest> = {
@@ -855,6 +863,9 @@ export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPubli
     }
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.class_ref !== undefined) {
+      ClassRef.encode(message.class_ref, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -880,6 +891,13 @@ export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPubli
 
           message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_ref = ClassRef.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -893,6 +911,7 @@ export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPubli
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      class_ref: isSet(object.classRef) ? ClassRef.fromJSON(object.classRef) : undefined,
     };
   },
 
@@ -903,6 +922,9 @@ export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPubli
     }
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.class_ref !== undefined) {
+      obj.classRef = ClassRef.toJSON(message.class_ref);
     }
     return obj;
   },
@@ -921,6 +943,9 @@ export const GetStudentPublishedReportEntriesRequest: MessageFns<GetStudentPubli
       : undefined;
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+      ? ClassRef.fromPartial(object.class_ref)
       : undefined;
     return message;
   },

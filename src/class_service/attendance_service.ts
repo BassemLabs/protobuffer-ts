@@ -19,6 +19,7 @@ import {
   attendanceStatusToJSON,
   attendanceStatusToNumber,
 } from "./attendance";
+import { ClassRef } from "./class_ref";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
 
@@ -221,12 +222,6 @@ export interface GetPrincipalDashboardAttendanceSummaryResponse {
 
 export interface AttendanceResponse {
   attendance: Attendance[];
-}
-
-/** One-of to reference class context */
-export interface ClassRef {
-  course_id?: ObjectId | undefined;
-  homeroom_id?: ObjectId | undefined;
 }
 
 /** Queries */
@@ -1241,84 +1236,6 @@ export const AttendanceResponse: MessageFns<AttendanceResponse> = {
   fromPartial<I extends Exact<DeepPartial<AttendanceResponse>, I>>(object: I): AttendanceResponse {
     const message = createBaseAttendanceResponse();
     message.attendance = object.attendance?.map((e) => Attendance.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseClassRef(): ClassRef {
-  return { course_id: undefined, homeroom_id: undefined };
-}
-
-export const ClassRef: MessageFns<ClassRef> = {
-  encode(message: ClassRef, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.course_id !== undefined) {
-      ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
-    }
-    if (message.homeroom_id !== undefined) {
-      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): ClassRef {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseClassRef();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.course_id = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ClassRef {
-    return {
-      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
-      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
-    };
-  },
-
-  toJSON(message: ClassRef): unknown {
-    const obj: any = {};
-    if (message.course_id !== undefined) {
-      obj.courseId = ObjectId.toJSON(message.course_id);
-    }
-    if (message.homeroom_id !== undefined) {
-      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<ClassRef>, I>>(base?: I): ClassRef {
-    return ClassRef.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<ClassRef>, I>>(object: I): ClassRef {
-    const message = createBaseClassRef();
-    message.course_id = (object.course_id !== undefined && object.course_id !== null)
-      ? ObjectId.fromPartial(object.course_id)
-      : undefined;
-    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
-      ? ObjectId.fromPartial(object.homeroom_id)
-      : undefined;
     return message;
   },
 };

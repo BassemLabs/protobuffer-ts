@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/attendance_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateLateDismissalDateRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.ClassRef = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
+exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateLateDismissalDateRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
 exports.principalDashboardAttendanceScopeTypeFromJSON = principalDashboardAttendanceScopeTypeFromJSON;
 exports.principalDashboardAttendanceScopeTypeToJSON = principalDashboardAttendanceScopeTypeToJSON;
 exports.principalDashboardAttendanceScopeTypeToNumber = principalDashboardAttendanceScopeTypeToNumber;
@@ -24,6 +24,7 @@ const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const user_type_1 = require("../utils/user_type");
 const attendance_1 = require("./attendance");
+const class_ref_1 = require("./class_ref");
 const course_1 = require("./course");
 const homeroom_1 = require("./homeroom");
 exports.protobufPackage = "class_service.attendance_service";
@@ -847,76 +848,6 @@ exports.AttendanceResponse = {
         return message;
     },
 };
-function createBaseClassRef() {
-    return { course_id: undefined, homeroom_id: undefined };
-}
-exports.ClassRef = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.course_id !== undefined) {
-            object_id_1.ObjectId.encode(message.course_id, writer.uint32(10).fork()).join();
-        }
-        if (message.homeroom_id !== undefined) {
-            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseClassRef();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
-            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.course_id !== undefined) {
-            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
-        }
-        if (message.homeroom_id !== undefined) {
-            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.ClassRef.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseClassRef();
-        message.course_id = (object.course_id !== undefined && object.course_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.course_id)
-            : undefined;
-        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
-            : undefined;
-        return message;
-    },
-};
 function createBaseGetStudentEntriesRequest() {
     return {
         context: undefined,
@@ -932,7 +863,7 @@ exports.GetStudentEntriesRequest = {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
         if (message.class_ref !== undefined) {
-            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
+            class_ref_1.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(26).fork()).join();
@@ -962,7 +893,7 @@ exports.GetStudentEntriesRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = class_ref_1.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -993,7 +924,7 @@ exports.GetStudentEntriesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            class_ref: isSet(object.classRef) ? class_ref_1.ClassRef.fromJSON(object.classRef) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
@@ -1005,7 +936,7 @@ exports.GetStudentEntriesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = class_ref_1.ClassRef.toJSON(message.class_ref);
         }
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
@@ -1027,7 +958,7 @@ exports.GetStudentEntriesRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
-            ? exports.ClassRef.fromPartial(object.class_ref)
+            ? class_ref_1.ClassRef.fromPartial(object.class_ref)
             : undefined;
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
@@ -1046,7 +977,7 @@ exports.GetStudentsEntriesCountRequest = {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
         if (message.class_ref !== undefined) {
-            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
+            class_ref_1.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
         for (const v of message.student_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
@@ -1076,7 +1007,7 @@ exports.GetStudentsEntriesCountRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = class_ref_1.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -1107,7 +1038,7 @@ exports.GetStudentsEntriesCountRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            class_ref: isSet(object.classRef) ? class_ref_1.ClassRef.fromJSON(object.classRef) : undefined,
             student_ids: globalThis.Array.isArray(object?.studentIds)
                 ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
@@ -1121,7 +1052,7 @@ exports.GetStudentsEntriesCountRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = class_ref_1.ClassRef.toJSON(message.class_ref);
         }
         if (message.student_ids?.length) {
             obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
@@ -1143,7 +1074,7 @@ exports.GetStudentsEntriesCountRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
-            ? exports.ClassRef.fromPartial(object.class_ref)
+            ? class_ref_1.ClassRef.fromPartial(object.class_ref)
             : undefined;
         message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.start_date = object.start_date ?? undefined;
@@ -2795,7 +2726,7 @@ exports.GetAttendanceDateMapRequest = {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
         if (message.class_ref !== undefined) {
-            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
+            class_ref_1.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
         if (message.start_date !== undefined) {
             writer.uint32(26).string(message.start_date);
@@ -2822,7 +2753,7 @@ exports.GetAttendanceDateMapRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = class_ref_1.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -2847,7 +2778,7 @@ exports.GetAttendanceDateMapRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            class_ref: isSet(object.classRef) ? class_ref_1.ClassRef.fromJSON(object.classRef) : undefined,
             start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
         };
@@ -2858,7 +2789,7 @@ exports.GetAttendanceDateMapRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = class_ref_1.ClassRef.toJSON(message.class_ref);
         }
         if (message.start_date !== undefined) {
             obj.startDate = message.start_date;
@@ -2877,7 +2808,7 @@ exports.GetAttendanceDateMapRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
-            ? exports.ClassRef.fromPartial(object.class_ref)
+            ? class_ref_1.ClassRef.fromPartial(object.class_ref)
             : undefined;
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;
@@ -3015,7 +2946,7 @@ exports.GetAttendanceCsvDataRequest = {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
         if (message.class_ref !== undefined) {
-            exports.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
+            class_ref_1.ClassRef.encode(message.class_ref, writer.uint32(18).fork()).join();
         }
         if (message.start_date !== undefined) {
             writer.uint32(26).string(message.start_date);
@@ -3042,7 +2973,7 @@ exports.GetAttendanceCsvDataRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.class_ref = exports.ClassRef.decode(reader, reader.uint32());
+                    message.class_ref = class_ref_1.ClassRef.decode(reader, reader.uint32());
                     continue;
                 case 3:
                     if (tag !== 26) {
@@ -3067,7 +2998,7 @@ exports.GetAttendanceCsvDataRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            class_ref: isSet(object.classRef) ? exports.ClassRef.fromJSON(object.classRef) : undefined,
+            class_ref: isSet(object.classRef) ? class_ref_1.ClassRef.fromJSON(object.classRef) : undefined,
             start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
         };
@@ -3078,7 +3009,7 @@ exports.GetAttendanceCsvDataRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.class_ref !== undefined) {
-            obj.classRef = exports.ClassRef.toJSON(message.class_ref);
+            obj.classRef = class_ref_1.ClassRef.toJSON(message.class_ref);
         }
         if (message.start_date !== undefined) {
             obj.startDate = message.start_date;
@@ -3097,7 +3028,7 @@ exports.GetAttendanceCsvDataRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
-            ? exports.ClassRef.fromPartial(object.class_ref)
+            ? class_ref_1.ClassRef.fromPartial(object.class_ref)
             : undefined;
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;

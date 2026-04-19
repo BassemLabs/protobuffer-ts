@@ -5,6 +5,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { UserType } from "../utils/user_type";
 import { Attendance, AttendanceStatus } from "./attendance";
+import { ClassRef } from "./class_ref";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
 export declare const protobufPackage = "class_service.attendance_service";
@@ -80,11 +81,6 @@ export interface GetPrincipalDashboardAttendanceSummaryResponse {
 }
 export interface AttendanceResponse {
     attendance: Attendance[];
-}
-/** One-of to reference class context */
-export interface ClassRef {
-    course_id?: ObjectId | undefined;
-    homeroom_id?: ObjectId | undefined;
 }
 /** Queries */
 export interface GetStudentEntriesRequest {
@@ -269,7 +265,6 @@ export declare const PrincipalDashboardAttendanceTodayRow: MessageFns<PrincipalD
 export declare const PrincipalDashboardChronicAbsentee: MessageFns<PrincipalDashboardChronicAbsentee>;
 export declare const GetPrincipalDashboardAttendanceSummaryResponse: MessageFns<GetPrincipalDashboardAttendanceSummaryResponse>;
 export declare const AttendanceResponse: MessageFns<AttendanceResponse>;
-export declare const ClassRef: MessageFns<ClassRef>;
 export declare const GetStudentEntriesRequest: MessageFns<GetStudentEntriesRequest>;
 export declare const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntriesCountRequest>;
 export declare const UpdateStatusRequest: MessageFns<UpdateStatusRequest>;

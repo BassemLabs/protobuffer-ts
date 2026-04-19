@@ -13,6 +13,7 @@ exports.reportPublishClassTypeToNumber = reportPublishClassTypeToNumber;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
+const class_ref_1 = require("./class_ref");
 const report_entry_1 = require("./report_entry");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service.report_entry_service";
@@ -459,7 +460,7 @@ exports.GetStudentReportEntriesForHomeroomRequest = {
     },
 };
 function createBaseGetStudentPublishedReportEntriesRequest() {
-    return { context: undefined, student_id: undefined };
+    return { context: undefined, student_id: undefined, class_ref: undefined };
 }
 exports.GetStudentPublishedReportEntriesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -468,6 +469,9 @@ exports.GetStudentPublishedReportEntriesRequest = {
         }
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.class_ref !== undefined) {
+            class_ref_1.ClassRef.encode(message.class_ref, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -490,6 +494,12 @@ exports.GetStudentPublishedReportEntriesRequest = {
                     }
                     message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.class_ref = class_ref_1.ClassRef.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -502,6 +512,7 @@ exports.GetStudentPublishedReportEntriesRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            class_ref: isSet(object.classRef) ? class_ref_1.ClassRef.fromJSON(object.classRef) : undefined,
         };
     },
     toJSON(message) {
@@ -511,6 +522,9 @@ exports.GetStudentPublishedReportEntriesRequest = {
         }
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.class_ref !== undefined) {
+            obj.classRef = class_ref_1.ClassRef.toJSON(message.class_ref);
         }
         return obj;
     },
@@ -524,6 +538,9 @@ exports.GetStudentPublishedReportEntriesRequest = {
             : undefined;
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.class_ref = (object.class_ref !== undefined && object.class_ref !== null)
+            ? class_ref_1.ClassRef.fromPartial(object.class_ref)
             : undefined;
         return message;
     },

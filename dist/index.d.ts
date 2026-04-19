@@ -168,6 +168,8 @@ import * as Report_layout from './class_service/report_layout';
 export { Report_layout };
 import * as Report_card_export_service from './class_service/report_card_export_service';
 export { Report_card_export_service };
+import * as Class_ref from './class_service/class_ref';
+export { Class_ref };
 import * as Evaluation_entry from './class_service/evaluation_entry';
 export { Evaluation_entry };
 import * as Homeroom_service from './class_service/homeroom_service';
