@@ -1,5 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { UserRole } from "../user_service/user_role";
+import { StaffPermission } from "../user_service/user_role";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { BassemLabsStaff, StaffStatus } from "./bassem_labs_staff";
@@ -22,7 +22,7 @@ export interface CreateUserRequest {
     /** Date of birth */
     date_of_birth: Date | undefined;
     /** User roles */
-    roles: UserRole[];
+    roles: StaffPermission[];
 }
 export interface UpdateProfileRequest {
     /** Context of the request */

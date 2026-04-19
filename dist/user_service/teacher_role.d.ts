@@ -1,13 +1,13 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { TeacherBasic } from "./teacher";
-import { UserRole } from "./user_role";
+import { StaffPermission } from "./user_role";
 export declare const protobufPackage = "user_service";
 export interface TeacherRole {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     name?: string | undefined;
-    roles: UserRole[];
+    roles: StaffPermission[];
     is_default?: boolean | undefined;
 }
 export interface TeacherRoleSummary {

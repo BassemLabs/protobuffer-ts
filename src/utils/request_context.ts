@@ -6,7 +6,12 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "../user_service/user_role";
+import {
+  StaffPermission,
+  staffPermissionFromJSON,
+  staffPermissionToJSON,
+  staffPermissionToNumber,
+} from "../user_service/user_role";
 import { ObjectId } from "./object_id";
 import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "./user_type";
 
@@ -128,7 +133,7 @@ export interface TeacherContext {
   course_ids: ObjectId[];
   homeroom_ids: ObjectId[];
   homerooms_subject_ids: HomeroomSubjectId[];
-  roles: UserRole[];
+  roles: StaffPermission[];
 }
 
 export interface StudentContext {
@@ -624,7 +629,7 @@ export const TeacherContext: MessageFns<TeacherContext> = {
     }
     writer.uint32(50).fork();
     for (const v of message.roles) {
-      writer.int32(userRoleToNumber(v));
+      writer.int32(staffPermissionToNumber(v));
     }
     writer.join();
     return writer;
@@ -674,7 +679,7 @@ export const TeacherContext: MessageFns<TeacherContext> = {
           continue;
         case 6:
           if (tag === 48) {
-            message.roles.push(userRoleFromJSON(reader.int32()));
+            message.roles.push(staffPermissionFromJSON(reader.int32()));
 
             continue;
           }
@@ -682,7 +687,7 @@ export const TeacherContext: MessageFns<TeacherContext> = {
           if (tag === 50) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.roles.push(userRoleFromJSON(reader.int32()));
+              message.roles.push(staffPermissionFromJSON(reader.int32()));
             }
 
             continue;
@@ -715,7 +720,7 @@ export const TeacherContext: MessageFns<TeacherContext> = {
       homerooms_subject_ids: globalThis.Array.isArray(object?.homeroomsSubjectIds)
         ? object.homeroomsSubjectIds.map((e: any) => HomeroomSubjectId.fromJSON(e))
         : [],
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => staffPermissionFromJSON(e)) : [],
     };
   },
 
@@ -737,7 +742,7 @@ export const TeacherContext: MessageFns<TeacherContext> = {
       obj.homeroomsSubjectIds = message.homerooms_subject_ids.map((e) => HomeroomSubjectId.toJSON(e));
     }
     if (message.roles?.length) {
-      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+      obj.roles = message.roles.map((e) => staffPermissionToJSON(e));
     }
     return obj;
   },

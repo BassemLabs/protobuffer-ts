@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { UserType } from "../utils/user_type";
-import { UserRole } from "./user_role";
+import { StaffPermission } from "./user_role";
 export declare const protobufPackage = "user_service";
 export declare enum OwnershipKind {
     OWNED = "OWNED",
@@ -56,7 +56,7 @@ export interface AccessRule {
 export interface WildcardAccess {
     type?: WildcardAccessType | undefined;
     /** Only used when type is ROLE */
-    role?: UserRole | undefined;
+    role?: StaffPermission | undefined;
 }
 export declare const ResourceAccessSettings: MessageFns<ResourceAccessSettings>;
 export declare const AccessRule: MessageFns<AccessRule>;

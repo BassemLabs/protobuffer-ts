@@ -1,5 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { UserRole } from "../user_service/user_role";
+import { StaffPermission } from "../user_service/user_role";
 import { ObjectId } from "./object_id";
 import { UserType } from "./user_type";
 export declare const protobufPackage = "utils";
@@ -52,7 +52,7 @@ export interface TeacherContext {
     course_ids: ObjectId[];
     homeroom_ids: ObjectId[];
     homerooms_subject_ids: HomeroomSubjectId[];
-    roles: UserRole[];
+    roles: StaffPermission[];
 }
 export interface StudentContext {
     /** Cached org active school year to avoid repeated org fetches. */

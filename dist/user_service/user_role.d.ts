@@ -1,5 +1,5 @@
 export declare const protobufPackage = "user_service";
-export declare enum UserRole {
+export declare enum StaffPermission {
     ORGANIZATION_SUPER_ADMIN = "ORGANIZATION_SUPER_ADMIN",
     MARKBOOK_VIEW_OWN = "MARKBOOK_VIEW_OWN",
     MARKBOOK_VIEW_ALL = "MARKBOOK_VIEW_ALL",
@@ -58,6 +58,6 @@ export declare enum UserRole {
     TRANSACTIONS_CREATE_MANUAL_TRANSACTION = "TRANSACTIONS_CREATE_MANUAL_TRANSACTION",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
-export declare function userRoleFromJSON(object: any): UserRole;
-export declare function userRoleToJSON(object: UserRole): string;
-export declare function userRoleToNumber(object: UserRole): number;
+export declare function staffPermissionFromJSON(object: any): StaffPermission;
+export declare function staffPermissionToJSON(object: StaffPermission): string;
+export declare function staffPermissionToNumber(object: StaffPermission): number;

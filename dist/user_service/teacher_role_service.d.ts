@@ -3,7 +3,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { TeacherStatus } from "./teacher";
 import { TeacherRoleSummary } from "./teacher_role";
-import { UserRole } from "./user_role";
+import { StaffPermission } from "./user_role";
 export declare const protobufPackage = "user_service";
 export interface GetTeacherRoleRequest {
     context: RequestContext | undefined;
@@ -14,7 +14,7 @@ export interface GetTeacherRolesRequest {
     teacher_id: ObjectId | undefined;
 }
 export interface GetTeacherRolesResponse {
-    roles: UserRole[];
+    roles: StaffPermission[];
 }
 export interface ListTeacherRolesRequest {
     context: RequestContext | undefined;
@@ -25,14 +25,14 @@ export interface ListTeacherRolesResponse {
 export interface CreateTeacherRoleRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
-    roles: UserRole[];
+    roles: StaffPermission[];
     is_default?: boolean | undefined;
 }
 export interface UpdateTeacherRoleRequest {
     context: RequestContext | undefined;
     teacher_role_id: ObjectId | undefined;
     name?: string | undefined;
-    roles: UserRole[];
+    roles: StaffPermission[];
 }
 export interface DeleteTeacherRoleRequest {
     context: RequestContext | undefined;

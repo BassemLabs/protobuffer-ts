@@ -10,7 +10,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { TeacherStatus, teacherStatusFromJSON, teacherStatusToJSON, teacherStatusToNumber } from "./teacher";
 import { TeacherRoleSummary } from "./teacher_role";
-import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "./user_role";
+import { StaffPermission, staffPermissionFromJSON, staffPermissionToJSON, staffPermissionToNumber } from "./user_role";
 
 export const protobufPackage = "user_service";
 
@@ -25,7 +25,7 @@ export interface GetTeacherRolesRequest {
 }
 
 export interface GetTeacherRolesResponse {
-  roles: UserRole[];
+  roles: StaffPermission[];
 }
 
 export interface ListTeacherRolesRequest {
@@ -39,7 +39,7 @@ export interface ListTeacherRolesResponse {
 export interface CreateTeacherRoleRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
-  roles: UserRole[];
+  roles: StaffPermission[];
   is_default?: boolean | undefined;
 }
 
@@ -47,7 +47,7 @@ export interface UpdateTeacherRoleRequest {
   context: RequestContext | undefined;
   teacher_role_id: ObjectId | undefined;
   name?: string | undefined;
-  roles: UserRole[];
+  roles: StaffPermission[];
 }
 
 export interface DeleteTeacherRoleRequest {
@@ -244,7 +244,7 @@ export const GetTeacherRolesResponse: MessageFns<GetTeacherRolesResponse> = {
   encode(message: GetTeacherRolesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.roles) {
-      writer.int32(userRoleToNumber(v));
+      writer.int32(staffPermissionToNumber(v));
     }
     writer.join();
     return writer;
@@ -259,7 +259,7 @@ export const GetTeacherRolesResponse: MessageFns<GetTeacherRolesResponse> = {
       switch (tag >>> 3) {
         case 1:
           if (tag === 8) {
-            message.roles.push(userRoleFromJSON(reader.int32()));
+            message.roles.push(staffPermissionFromJSON(reader.int32()));
 
             continue;
           }
@@ -267,7 +267,7 @@ export const GetTeacherRolesResponse: MessageFns<GetTeacherRolesResponse> = {
           if (tag === 10) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.roles.push(userRoleFromJSON(reader.int32()));
+              message.roles.push(staffPermissionFromJSON(reader.int32()));
             }
 
             continue;
@@ -284,13 +284,15 @@ export const GetTeacherRolesResponse: MessageFns<GetTeacherRolesResponse> = {
   },
 
   fromJSON(object: any): GetTeacherRolesResponse {
-    return { roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [] };
+    return {
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => staffPermissionFromJSON(e)) : [],
+    };
   },
 
   toJSON(message: GetTeacherRolesResponse): unknown {
     const obj: any = {};
     if (message.roles?.length) {
-      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+      obj.roles = message.roles.map((e) => staffPermissionToJSON(e));
     }
     return obj;
   },
@@ -439,7 +441,7 @@ export const CreateTeacherRoleRequest: MessageFns<CreateTeacherRoleRequest> = {
     }
     writer.uint32(26).fork();
     for (const v of message.roles) {
-      writer.int32(userRoleToNumber(v));
+      writer.int32(staffPermissionToNumber(v));
     }
     writer.join();
     if (message.is_default !== undefined) {
@@ -471,7 +473,7 @@ export const CreateTeacherRoleRequest: MessageFns<CreateTeacherRoleRequest> = {
           continue;
         case 3:
           if (tag === 24) {
-            message.roles.push(userRoleFromJSON(reader.int32()));
+            message.roles.push(staffPermissionFromJSON(reader.int32()));
 
             continue;
           }
@@ -479,7 +481,7 @@ export const CreateTeacherRoleRequest: MessageFns<CreateTeacherRoleRequest> = {
           if (tag === 26) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.roles.push(userRoleFromJSON(reader.int32()));
+              message.roles.push(staffPermissionFromJSON(reader.int32()));
             }
 
             continue;
@@ -506,7 +508,7 @@ export const CreateTeacherRoleRequest: MessageFns<CreateTeacherRoleRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => staffPermissionFromJSON(e)) : [],
       is_default: isSet(object.isDefault) ? globalThis.Boolean(object.isDefault) : undefined,
     };
   },
@@ -520,7 +522,7 @@ export const CreateTeacherRoleRequest: MessageFns<CreateTeacherRoleRequest> = {
       obj.name = message.name;
     }
     if (message.roles?.length) {
-      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+      obj.roles = message.roles.map((e) => staffPermissionToJSON(e));
     }
     if (message.is_default !== undefined) {
       obj.isDefault = message.is_default;
@@ -560,7 +562,7 @@ export const UpdateTeacherRoleRequest: MessageFns<UpdateTeacherRoleRequest> = {
     }
     writer.uint32(34).fork();
     for (const v of message.roles) {
-      writer.int32(userRoleToNumber(v));
+      writer.int32(staffPermissionToNumber(v));
     }
     writer.join();
     return writer;
@@ -596,7 +598,7 @@ export const UpdateTeacherRoleRequest: MessageFns<UpdateTeacherRoleRequest> = {
           continue;
         case 4:
           if (tag === 32) {
-            message.roles.push(userRoleFromJSON(reader.int32()));
+            message.roles.push(staffPermissionFromJSON(reader.int32()));
 
             continue;
           }
@@ -604,7 +606,7 @@ export const UpdateTeacherRoleRequest: MessageFns<UpdateTeacherRoleRequest> = {
           if (tag === 34) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.roles.push(userRoleFromJSON(reader.int32()));
+              message.roles.push(staffPermissionFromJSON(reader.int32()));
             }
 
             continue;
@@ -625,7 +627,7 @@ export const UpdateTeacherRoleRequest: MessageFns<UpdateTeacherRoleRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       teacher_role_id: isSet(object.teacherRoleId) ? ObjectId.fromJSON(object.teacherRoleId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => staffPermissionFromJSON(e)) : [],
     };
   },
 
@@ -641,7 +643,7 @@ export const UpdateTeacherRoleRequest: MessageFns<UpdateTeacherRoleRequest> = {
       obj.name = message.name;
     }
     if (message.roles?.length) {
-      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+      obj.roles = message.roles.map((e) => staffPermissionToJSON(e));
     }
     return obj;
   },

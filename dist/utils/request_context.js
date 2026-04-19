@@ -516,7 +516,7 @@ exports.TeacherContext = {
         }
         writer.uint32(50).fork();
         for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
+            writer.int32((0, user_role_1.staffPermissionToNumber)(v));
         }
         writer.join();
         return writer;
@@ -560,13 +560,13 @@ exports.TeacherContext = {
                     continue;
                 case 6:
                     if (tag === 48) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 50) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                            message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -596,7 +596,7 @@ exports.TeacherContext = {
             homerooms_subject_ids: globalThis.Array.isArray(object?.homeroomsSubjectIds)
                 ? object.homeroomsSubjectIds.map((e) => exports.HomeroomSubjectId.fromJSON(e))
                 : [],
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.staffPermissionFromJSON)(e)) : [],
         };
     },
     toJSON(message) {
@@ -617,7 +617,7 @@ exports.TeacherContext = {
             obj.homeroomsSubjectIds = message.homerooms_subject_ids.map((e) => exports.HomeroomSubjectId.toJSON(e));
         }
         if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+            obj.roles = message.roles.map((e) => (0, user_role_1.staffPermissionToJSON)(e));
         }
         return obj;
     },

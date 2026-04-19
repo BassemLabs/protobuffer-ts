@@ -456,7 +456,7 @@ exports.WildcardAccess = {
             writer.uint32(8).int32(wildcardAccessTypeToNumber(message.type));
         }
         if (message.role !== undefined) {
-            writer.uint32(16).int32((0, user_role_1.userRoleToNumber)(message.role));
+            writer.uint32(16).int32((0, user_role_1.staffPermissionToNumber)(message.role));
         }
         return writer;
     },
@@ -477,7 +477,7 @@ exports.WildcardAccess = {
                     if (tag !== 16) {
                         break;
                     }
-                    message.role = (0, user_role_1.userRoleFromJSON)(reader.int32());
+                    message.role = (0, user_role_1.staffPermissionFromJSON)(reader.int32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -490,7 +490,7 @@ exports.WildcardAccess = {
     fromJSON(object) {
         return {
             type: isSet(object.type) ? wildcardAccessTypeFromJSON(object.type) : undefined,
-            role: isSet(object.role) ? (0, user_role_1.userRoleFromJSON)(object.role) : undefined,
+            role: isSet(object.role) ? (0, user_role_1.staffPermissionFromJSON)(object.role) : undefined,
         };
     },
     toJSON(message) {
@@ -499,7 +499,7 @@ exports.WildcardAccess = {
             obj.type = wildcardAccessTypeToJSON(message.type);
         }
         if (message.role !== undefined) {
-            obj.role = (0, user_role_1.userRoleToJSON)(message.role);
+            obj.role = (0, user_role_1.staffPermissionToJSON)(message.role);
         }
         return obj;
     },

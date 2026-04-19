@@ -8,7 +8,7 @@
 
 export const protobufPackage = "user_service";
 
-export enum UserRole {
+export enum StaffPermission {
   ORGANIZATION_SUPER_ADMIN = "ORGANIZATION_SUPER_ADMIN",
   MARKBOOK_VIEW_OWN = "MARKBOOK_VIEW_OWN",
   MARKBOOK_VIEW_ALL = "MARKBOOK_VIEW_ALL",
@@ -68,418 +68,418 @@ export enum UserRole {
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export function userRoleFromJSON(object: any): UserRole {
+export function staffPermissionFromJSON(object: any): StaffPermission {
   switch (object) {
     case 0:
     case "ORGANIZATION_SUPER_ADMIN":
-      return UserRole.ORGANIZATION_SUPER_ADMIN;
+      return StaffPermission.ORGANIZATION_SUPER_ADMIN;
     case 1:
     case "MARKBOOK_VIEW_OWN":
-      return UserRole.MARKBOOK_VIEW_OWN;
+      return StaffPermission.MARKBOOK_VIEW_OWN;
     case 2:
     case "MARKBOOK_VIEW_ALL":
-      return UserRole.MARKBOOK_VIEW_ALL;
+      return StaffPermission.MARKBOOK_VIEW_ALL;
     case 3:
     case "MARKBOOK_EDIT_OWN":
-      return UserRole.MARKBOOK_EDIT_OWN;
+      return StaffPermission.MARKBOOK_EDIT_OWN;
     case 4:
     case "MARKBOOK_EDIT_ALL":
-      return UserRole.MARKBOOK_EDIT_ALL;
+      return StaffPermission.MARKBOOK_EDIT_ALL;
     case 5:
     case "ATTENDANCE_VIEW_OWN":
-      return UserRole.ATTENDANCE_VIEW_OWN;
+      return StaffPermission.ATTENDANCE_VIEW_OWN;
     case 6:
     case "ATTENDANCE_VIEW_ALL":
-      return UserRole.ATTENDANCE_VIEW_ALL;
+      return StaffPermission.ATTENDANCE_VIEW_ALL;
     case 7:
     case "ATTENDANCE_EDIT_OWN":
-      return UserRole.ATTENDANCE_EDIT_OWN;
+      return StaffPermission.ATTENDANCE_EDIT_OWN;
     case 8:
     case "ATTENDANCE_EDIT_ALL":
-      return UserRole.ATTENDANCE_EDIT_ALL;
+      return StaffPermission.ATTENDANCE_EDIT_ALL;
     case 9:
     case "REPORT_CARDS_VIEW_OWN":
-      return UserRole.REPORT_CARDS_VIEW_OWN;
+      return StaffPermission.REPORT_CARDS_VIEW_OWN;
     case 10:
     case "REPORT_CARDS_VIEW_ALL":
-      return UserRole.REPORT_CARDS_VIEW_ALL;
+      return StaffPermission.REPORT_CARDS_VIEW_ALL;
     case 11:
     case "REPORT_CARDS_EDIT_OWN":
-      return UserRole.REPORT_CARDS_EDIT_OWN;
+      return StaffPermission.REPORT_CARDS_EDIT_OWN;
     case 12:
     case "REPORT_CARDS_EDIT_ALL":
-      return UserRole.REPORT_CARDS_EDIT_ALL;
+      return StaffPermission.REPORT_CARDS_EDIT_ALL;
     case 69:
     case "REPORT_CARDS_ADMIN":
-      return UserRole.REPORT_CARDS_ADMIN;
+      return StaffPermission.REPORT_CARDS_ADMIN;
     case 16:
     case "ANNOUNCEMENTS_CREATE_OWN":
-      return UserRole.ANNOUNCEMENTS_CREATE_OWN;
+      return StaffPermission.ANNOUNCEMENTS_CREATE_OWN;
     case 17:
     case "ANNOUNCEMENTS_CREATE_ALL":
-      return UserRole.ANNOUNCEMENTS_CREATE_ALL;
+      return StaffPermission.ANNOUNCEMENTS_CREATE_ALL;
     case 18:
     case "COMMUNICATION_CREATE_OWN":
-      return UserRole.COMMUNICATION_CREATE_OWN;
+      return StaffPermission.COMMUNICATION_CREATE_OWN;
     case 19:
     case "COMMUNICATION_CREATE_ALL":
-      return UserRole.COMMUNICATION_CREATE_ALL;
+      return StaffPermission.COMMUNICATION_CREATE_ALL;
     case 20:
     case "INVOICES_VIEW_OWN":
-      return UserRole.INVOICES_VIEW_OWN;
+      return StaffPermission.INVOICES_VIEW_OWN;
     case 21:
     case "INVOICES_VIEW_ALL":
-      return UserRole.INVOICES_VIEW_ALL;
+      return StaffPermission.INVOICES_VIEW_ALL;
     case 22:
     case "INVOICES_EDIT_OWN":
-      return UserRole.INVOICES_EDIT_OWN;
+      return StaffPermission.INVOICES_EDIT_OWN;
     case 23:
     case "INVOICES_EDIT_ALL":
-      return UserRole.INVOICES_EDIT_ALL;
+      return StaffPermission.INVOICES_EDIT_ALL;
     case 26:
     case "TUITION_VIEW":
-      return UserRole.TUITION_VIEW;
+      return StaffPermission.TUITION_VIEW;
     case 27:
     case "TUITION_MANAGER":
-      return UserRole.TUITION_MANAGER;
+      return StaffPermission.TUITION_MANAGER;
     case 32:
     case "INTERVIEW_VIEW":
-      return UserRole.INTERVIEW_VIEW;
+      return StaffPermission.INTERVIEW_VIEW;
     case 37:
     case "ONBOARDING_ADMIN":
-      return UserRole.ONBOARDING_ADMIN;
+      return StaffPermission.ONBOARDING_ADMIN;
     case 38:
     case "FAMILIES_VIEW_OWN":
-      return UserRole.FAMILIES_VIEW_OWN;
+      return StaffPermission.FAMILIES_VIEW_OWN;
     case 39:
     case "FAMILIES_VIEW_ALL":
-      return UserRole.FAMILIES_VIEW_ALL;
+      return StaffPermission.FAMILIES_VIEW_ALL;
     case 41:
     case "FAMILIES_MODIFY_ALL":
-      return UserRole.FAMILIES_MODIFY_ALL;
+      return StaffPermission.FAMILIES_MODIFY_ALL;
     case 42:
     case "FAMILIES_CREATE":
-      return UserRole.FAMILIES_CREATE;
+      return StaffPermission.FAMILIES_CREATE;
     case 43:
     case "STUDENTS_VIEW_OWN":
-      return UserRole.STUDENTS_VIEW_OWN;
+      return StaffPermission.STUDENTS_VIEW_OWN;
     case 44:
     case "STUDENTS_VIEW_ALL":
-      return UserRole.STUDENTS_VIEW_ALL;
+      return StaffPermission.STUDENTS_VIEW_ALL;
     case 46:
     case "STUDENTS_MODIFY_ALL":
-      return UserRole.STUDENTS_MODIFY_ALL;
+      return StaffPermission.STUDENTS_MODIFY_ALL;
     case 47:
     case "STUDENT_PROFILE_FULL_VIEW_OWN":
-      return UserRole.STUDENT_PROFILE_FULL_VIEW_OWN;
+      return StaffPermission.STUDENT_PROFILE_FULL_VIEW_OWN;
     case 48:
     case "STUDENT_PROFILE_FULL_VIEW_ALL":
-      return UserRole.STUDENT_PROFILE_FULL_VIEW_ALL;
+      return StaffPermission.STUDENT_PROFILE_FULL_VIEW_ALL;
     case 49:
     case "STUDENTS_CHANGE_PASSWORD":
-      return UserRole.STUDENTS_CHANGE_PASSWORD;
+      return StaffPermission.STUDENTS_CHANGE_PASSWORD;
     case 50:
     case "STUDENTS_UPLOAD":
-      return UserRole.STUDENTS_UPLOAD;
+      return StaffPermission.STUDENTS_UPLOAD;
     case 51:
     case "STUDENT_INCIDENTS_VIEW_OWN":
-      return UserRole.STUDENT_INCIDENTS_VIEW_OWN;
+      return StaffPermission.STUDENT_INCIDENTS_VIEW_OWN;
     case 52:
     case "STUDENT_INCIDENTS_VIEW_ALL":
-      return UserRole.STUDENT_INCIDENTS_VIEW_ALL;
+      return StaffPermission.STUDENT_INCIDENTS_VIEW_ALL;
     case 56:
     case "STUDENT_INCIDENTS_MANAGEMENT":
-      return UserRole.STUDENT_INCIDENTS_MANAGEMENT;
+      return StaffPermission.STUDENT_INCIDENTS_MANAGEMENT;
     case 57:
     case "TEACHERS_VIEW":
-      return UserRole.TEACHERS_VIEW;
+      return StaffPermission.TEACHERS_VIEW;
     case 58:
     case "TEACHERS_CREATE":
-      return UserRole.TEACHERS_CREATE;
+      return StaffPermission.TEACHERS_CREATE;
     case 59:
     case "TEACHERS_MODIFY":
-      return UserRole.TEACHERS_MODIFY;
+      return StaffPermission.TEACHERS_MODIFY;
     case 60:
     case "TEACHERS_CHANGE_PASSWORD":
-      return UserRole.TEACHERS_CHANGE_PASSWORD;
+      return StaffPermission.TEACHERS_CHANGE_PASSWORD;
     case 61:
     case "TEACHERS_ASSIGN_ROLES":
-      return UserRole.TEACHERS_ASSIGN_ROLES;
+      return StaffPermission.TEACHERS_ASSIGN_ROLES;
     case 62:
     case "TEACHERS_UPLOAD":
-      return UserRole.TEACHERS_UPLOAD;
+      return StaffPermission.TEACHERS_UPLOAD;
     case 63:
     case "CLASSES_VIEW_OWN":
-      return UserRole.CLASSES_VIEW_OWN;
+      return StaffPermission.CLASSES_VIEW_OWN;
     case 64:
     case "CLASSES_VIEW_ALL":
-      return UserRole.CLASSES_VIEW_ALL;
+      return StaffPermission.CLASSES_VIEW_ALL;
     case 65:
     case "CLASSES_MODIFY_OWN":
-      return UserRole.CLASSES_MODIFY_OWN;
+      return StaffPermission.CLASSES_MODIFY_OWN;
     case 66:
     case "CLASSES_MODIFY_ALL":
-      return UserRole.CLASSES_MODIFY_ALL;
+      return StaffPermission.CLASSES_MODIFY_ALL;
     case 67:
     case "CLASSES_CREATE":
-      return UserRole.CLASSES_CREATE;
+      return StaffPermission.CLASSES_CREATE;
     case 68:
     case "ORG_SETTINGS_FULL_ACCESS":
-      return UserRole.ORG_SETTINGS_FULL_ACCESS;
+      return StaffPermission.ORG_SETTINGS_FULL_ACCESS;
     case 70:
     case "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS":
-      return UserRole.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS;
+      return StaffPermission.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS;
     case 71:
     case "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS":
-      return UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS;
+      return StaffPermission.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS;
     case 72:
     case "TRANSACTIONS_ISSUE_REFUND":
-      return UserRole.TRANSACTIONS_ISSUE_REFUND;
+      return StaffPermission.TRANSACTIONS_ISSUE_REFUND;
     case 73:
     case "TRANSACTIONS_CREATE_MANUAL_TRANSACTION":
-      return UserRole.TRANSACTIONS_CREATE_MANUAL_TRANSACTION;
+      return StaffPermission.TRANSACTIONS_CREATE_MANUAL_TRANSACTION;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return UserRole.UNRECOGNIZED;
+      return StaffPermission.UNRECOGNIZED;
   }
 }
 
-export function userRoleToJSON(object: UserRole): string {
+export function staffPermissionToJSON(object: StaffPermission): string {
   switch (object) {
-    case UserRole.ORGANIZATION_SUPER_ADMIN:
+    case StaffPermission.ORGANIZATION_SUPER_ADMIN:
       return "ORGANIZATION_SUPER_ADMIN";
-    case UserRole.MARKBOOK_VIEW_OWN:
+    case StaffPermission.MARKBOOK_VIEW_OWN:
       return "MARKBOOK_VIEW_OWN";
-    case UserRole.MARKBOOK_VIEW_ALL:
+    case StaffPermission.MARKBOOK_VIEW_ALL:
       return "MARKBOOK_VIEW_ALL";
-    case UserRole.MARKBOOK_EDIT_OWN:
+    case StaffPermission.MARKBOOK_EDIT_OWN:
       return "MARKBOOK_EDIT_OWN";
-    case UserRole.MARKBOOK_EDIT_ALL:
+    case StaffPermission.MARKBOOK_EDIT_ALL:
       return "MARKBOOK_EDIT_ALL";
-    case UserRole.ATTENDANCE_VIEW_OWN:
+    case StaffPermission.ATTENDANCE_VIEW_OWN:
       return "ATTENDANCE_VIEW_OWN";
-    case UserRole.ATTENDANCE_VIEW_ALL:
+    case StaffPermission.ATTENDANCE_VIEW_ALL:
       return "ATTENDANCE_VIEW_ALL";
-    case UserRole.ATTENDANCE_EDIT_OWN:
+    case StaffPermission.ATTENDANCE_EDIT_OWN:
       return "ATTENDANCE_EDIT_OWN";
-    case UserRole.ATTENDANCE_EDIT_ALL:
+    case StaffPermission.ATTENDANCE_EDIT_ALL:
       return "ATTENDANCE_EDIT_ALL";
-    case UserRole.REPORT_CARDS_VIEW_OWN:
+    case StaffPermission.REPORT_CARDS_VIEW_OWN:
       return "REPORT_CARDS_VIEW_OWN";
-    case UserRole.REPORT_CARDS_VIEW_ALL:
+    case StaffPermission.REPORT_CARDS_VIEW_ALL:
       return "REPORT_CARDS_VIEW_ALL";
-    case UserRole.REPORT_CARDS_EDIT_OWN:
+    case StaffPermission.REPORT_CARDS_EDIT_OWN:
       return "REPORT_CARDS_EDIT_OWN";
-    case UserRole.REPORT_CARDS_EDIT_ALL:
+    case StaffPermission.REPORT_CARDS_EDIT_ALL:
       return "REPORT_CARDS_EDIT_ALL";
-    case UserRole.REPORT_CARDS_ADMIN:
+    case StaffPermission.REPORT_CARDS_ADMIN:
       return "REPORT_CARDS_ADMIN";
-    case UserRole.ANNOUNCEMENTS_CREATE_OWN:
+    case StaffPermission.ANNOUNCEMENTS_CREATE_OWN:
       return "ANNOUNCEMENTS_CREATE_OWN";
-    case UserRole.ANNOUNCEMENTS_CREATE_ALL:
+    case StaffPermission.ANNOUNCEMENTS_CREATE_ALL:
       return "ANNOUNCEMENTS_CREATE_ALL";
-    case UserRole.COMMUNICATION_CREATE_OWN:
+    case StaffPermission.COMMUNICATION_CREATE_OWN:
       return "COMMUNICATION_CREATE_OWN";
-    case UserRole.COMMUNICATION_CREATE_ALL:
+    case StaffPermission.COMMUNICATION_CREATE_ALL:
       return "COMMUNICATION_CREATE_ALL";
-    case UserRole.INVOICES_VIEW_OWN:
+    case StaffPermission.INVOICES_VIEW_OWN:
       return "INVOICES_VIEW_OWN";
-    case UserRole.INVOICES_VIEW_ALL:
+    case StaffPermission.INVOICES_VIEW_ALL:
       return "INVOICES_VIEW_ALL";
-    case UserRole.INVOICES_EDIT_OWN:
+    case StaffPermission.INVOICES_EDIT_OWN:
       return "INVOICES_EDIT_OWN";
-    case UserRole.INVOICES_EDIT_ALL:
+    case StaffPermission.INVOICES_EDIT_ALL:
       return "INVOICES_EDIT_ALL";
-    case UserRole.TUITION_VIEW:
+    case StaffPermission.TUITION_VIEW:
       return "TUITION_VIEW";
-    case UserRole.TUITION_MANAGER:
+    case StaffPermission.TUITION_MANAGER:
       return "TUITION_MANAGER";
-    case UserRole.INTERVIEW_VIEW:
+    case StaffPermission.INTERVIEW_VIEW:
       return "INTERVIEW_VIEW";
-    case UserRole.ONBOARDING_ADMIN:
+    case StaffPermission.ONBOARDING_ADMIN:
       return "ONBOARDING_ADMIN";
-    case UserRole.FAMILIES_VIEW_OWN:
+    case StaffPermission.FAMILIES_VIEW_OWN:
       return "FAMILIES_VIEW_OWN";
-    case UserRole.FAMILIES_VIEW_ALL:
+    case StaffPermission.FAMILIES_VIEW_ALL:
       return "FAMILIES_VIEW_ALL";
-    case UserRole.FAMILIES_MODIFY_ALL:
+    case StaffPermission.FAMILIES_MODIFY_ALL:
       return "FAMILIES_MODIFY_ALL";
-    case UserRole.FAMILIES_CREATE:
+    case StaffPermission.FAMILIES_CREATE:
       return "FAMILIES_CREATE";
-    case UserRole.STUDENTS_VIEW_OWN:
+    case StaffPermission.STUDENTS_VIEW_OWN:
       return "STUDENTS_VIEW_OWN";
-    case UserRole.STUDENTS_VIEW_ALL:
+    case StaffPermission.STUDENTS_VIEW_ALL:
       return "STUDENTS_VIEW_ALL";
-    case UserRole.STUDENTS_MODIFY_ALL:
+    case StaffPermission.STUDENTS_MODIFY_ALL:
       return "STUDENTS_MODIFY_ALL";
-    case UserRole.STUDENT_PROFILE_FULL_VIEW_OWN:
+    case StaffPermission.STUDENT_PROFILE_FULL_VIEW_OWN:
       return "STUDENT_PROFILE_FULL_VIEW_OWN";
-    case UserRole.STUDENT_PROFILE_FULL_VIEW_ALL:
+    case StaffPermission.STUDENT_PROFILE_FULL_VIEW_ALL:
       return "STUDENT_PROFILE_FULL_VIEW_ALL";
-    case UserRole.STUDENTS_CHANGE_PASSWORD:
+    case StaffPermission.STUDENTS_CHANGE_PASSWORD:
       return "STUDENTS_CHANGE_PASSWORD";
-    case UserRole.STUDENTS_UPLOAD:
+    case StaffPermission.STUDENTS_UPLOAD:
       return "STUDENTS_UPLOAD";
-    case UserRole.STUDENT_INCIDENTS_VIEW_OWN:
+    case StaffPermission.STUDENT_INCIDENTS_VIEW_OWN:
       return "STUDENT_INCIDENTS_VIEW_OWN";
-    case UserRole.STUDENT_INCIDENTS_VIEW_ALL:
+    case StaffPermission.STUDENT_INCIDENTS_VIEW_ALL:
       return "STUDENT_INCIDENTS_VIEW_ALL";
-    case UserRole.STUDENT_INCIDENTS_MANAGEMENT:
+    case StaffPermission.STUDENT_INCIDENTS_MANAGEMENT:
       return "STUDENT_INCIDENTS_MANAGEMENT";
-    case UserRole.TEACHERS_VIEW:
+    case StaffPermission.TEACHERS_VIEW:
       return "TEACHERS_VIEW";
-    case UserRole.TEACHERS_CREATE:
+    case StaffPermission.TEACHERS_CREATE:
       return "TEACHERS_CREATE";
-    case UserRole.TEACHERS_MODIFY:
+    case StaffPermission.TEACHERS_MODIFY:
       return "TEACHERS_MODIFY";
-    case UserRole.TEACHERS_CHANGE_PASSWORD:
+    case StaffPermission.TEACHERS_CHANGE_PASSWORD:
       return "TEACHERS_CHANGE_PASSWORD";
-    case UserRole.TEACHERS_ASSIGN_ROLES:
+    case StaffPermission.TEACHERS_ASSIGN_ROLES:
       return "TEACHERS_ASSIGN_ROLES";
-    case UserRole.TEACHERS_UPLOAD:
+    case StaffPermission.TEACHERS_UPLOAD:
       return "TEACHERS_UPLOAD";
-    case UserRole.CLASSES_VIEW_OWN:
+    case StaffPermission.CLASSES_VIEW_OWN:
       return "CLASSES_VIEW_OWN";
-    case UserRole.CLASSES_VIEW_ALL:
+    case StaffPermission.CLASSES_VIEW_ALL:
       return "CLASSES_VIEW_ALL";
-    case UserRole.CLASSES_MODIFY_OWN:
+    case StaffPermission.CLASSES_MODIFY_OWN:
       return "CLASSES_MODIFY_OWN";
-    case UserRole.CLASSES_MODIFY_ALL:
+    case StaffPermission.CLASSES_MODIFY_ALL:
       return "CLASSES_MODIFY_ALL";
-    case UserRole.CLASSES_CREATE:
+    case StaffPermission.CLASSES_CREATE:
       return "CLASSES_CREATE";
-    case UserRole.ORG_SETTINGS_FULL_ACCESS:
+    case StaffPermission.ORG_SETTINGS_FULL_ACCESS:
       return "ORG_SETTINGS_FULL_ACCESS";
-    case UserRole.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS:
+    case StaffPermission.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS:
       return "STUDENTS_MANAGE_PROVISIONED_ACCOUNTS";
-    case UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
+    case StaffPermission.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
       return "TEACHERS_MANAGE_PROVISIONED_ACCOUNTS";
-    case UserRole.TRANSACTIONS_ISSUE_REFUND:
+    case StaffPermission.TRANSACTIONS_ISSUE_REFUND:
       return "TRANSACTIONS_ISSUE_REFUND";
-    case UserRole.TRANSACTIONS_CREATE_MANUAL_TRANSACTION:
+    case StaffPermission.TRANSACTIONS_CREATE_MANUAL_TRANSACTION:
       return "TRANSACTIONS_CREATE_MANUAL_TRANSACTION";
-    case UserRole.UNRECOGNIZED:
+    case StaffPermission.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
-export function userRoleToNumber(object: UserRole): number {
+export function staffPermissionToNumber(object: StaffPermission): number {
   switch (object) {
-    case UserRole.ORGANIZATION_SUPER_ADMIN:
+    case StaffPermission.ORGANIZATION_SUPER_ADMIN:
       return 0;
-    case UserRole.MARKBOOK_VIEW_OWN:
+    case StaffPermission.MARKBOOK_VIEW_OWN:
       return 1;
-    case UserRole.MARKBOOK_VIEW_ALL:
+    case StaffPermission.MARKBOOK_VIEW_ALL:
       return 2;
-    case UserRole.MARKBOOK_EDIT_OWN:
+    case StaffPermission.MARKBOOK_EDIT_OWN:
       return 3;
-    case UserRole.MARKBOOK_EDIT_ALL:
+    case StaffPermission.MARKBOOK_EDIT_ALL:
       return 4;
-    case UserRole.ATTENDANCE_VIEW_OWN:
+    case StaffPermission.ATTENDANCE_VIEW_OWN:
       return 5;
-    case UserRole.ATTENDANCE_VIEW_ALL:
+    case StaffPermission.ATTENDANCE_VIEW_ALL:
       return 6;
-    case UserRole.ATTENDANCE_EDIT_OWN:
+    case StaffPermission.ATTENDANCE_EDIT_OWN:
       return 7;
-    case UserRole.ATTENDANCE_EDIT_ALL:
+    case StaffPermission.ATTENDANCE_EDIT_ALL:
       return 8;
-    case UserRole.REPORT_CARDS_VIEW_OWN:
+    case StaffPermission.REPORT_CARDS_VIEW_OWN:
       return 9;
-    case UserRole.REPORT_CARDS_VIEW_ALL:
+    case StaffPermission.REPORT_CARDS_VIEW_ALL:
       return 10;
-    case UserRole.REPORT_CARDS_EDIT_OWN:
+    case StaffPermission.REPORT_CARDS_EDIT_OWN:
       return 11;
-    case UserRole.REPORT_CARDS_EDIT_ALL:
+    case StaffPermission.REPORT_CARDS_EDIT_ALL:
       return 12;
-    case UserRole.REPORT_CARDS_ADMIN:
+    case StaffPermission.REPORT_CARDS_ADMIN:
       return 69;
-    case UserRole.ANNOUNCEMENTS_CREATE_OWN:
+    case StaffPermission.ANNOUNCEMENTS_CREATE_OWN:
       return 16;
-    case UserRole.ANNOUNCEMENTS_CREATE_ALL:
+    case StaffPermission.ANNOUNCEMENTS_CREATE_ALL:
       return 17;
-    case UserRole.COMMUNICATION_CREATE_OWN:
+    case StaffPermission.COMMUNICATION_CREATE_OWN:
       return 18;
-    case UserRole.COMMUNICATION_CREATE_ALL:
+    case StaffPermission.COMMUNICATION_CREATE_ALL:
       return 19;
-    case UserRole.INVOICES_VIEW_OWN:
+    case StaffPermission.INVOICES_VIEW_OWN:
       return 20;
-    case UserRole.INVOICES_VIEW_ALL:
+    case StaffPermission.INVOICES_VIEW_ALL:
       return 21;
-    case UserRole.INVOICES_EDIT_OWN:
+    case StaffPermission.INVOICES_EDIT_OWN:
       return 22;
-    case UserRole.INVOICES_EDIT_ALL:
+    case StaffPermission.INVOICES_EDIT_ALL:
       return 23;
-    case UserRole.TUITION_VIEW:
+    case StaffPermission.TUITION_VIEW:
       return 26;
-    case UserRole.TUITION_MANAGER:
+    case StaffPermission.TUITION_MANAGER:
       return 27;
-    case UserRole.INTERVIEW_VIEW:
+    case StaffPermission.INTERVIEW_VIEW:
       return 32;
-    case UserRole.ONBOARDING_ADMIN:
+    case StaffPermission.ONBOARDING_ADMIN:
       return 37;
-    case UserRole.FAMILIES_VIEW_OWN:
+    case StaffPermission.FAMILIES_VIEW_OWN:
       return 38;
-    case UserRole.FAMILIES_VIEW_ALL:
+    case StaffPermission.FAMILIES_VIEW_ALL:
       return 39;
-    case UserRole.FAMILIES_MODIFY_ALL:
+    case StaffPermission.FAMILIES_MODIFY_ALL:
       return 41;
-    case UserRole.FAMILIES_CREATE:
+    case StaffPermission.FAMILIES_CREATE:
       return 42;
-    case UserRole.STUDENTS_VIEW_OWN:
+    case StaffPermission.STUDENTS_VIEW_OWN:
       return 43;
-    case UserRole.STUDENTS_VIEW_ALL:
+    case StaffPermission.STUDENTS_VIEW_ALL:
       return 44;
-    case UserRole.STUDENTS_MODIFY_ALL:
+    case StaffPermission.STUDENTS_MODIFY_ALL:
       return 46;
-    case UserRole.STUDENT_PROFILE_FULL_VIEW_OWN:
+    case StaffPermission.STUDENT_PROFILE_FULL_VIEW_OWN:
       return 47;
-    case UserRole.STUDENT_PROFILE_FULL_VIEW_ALL:
+    case StaffPermission.STUDENT_PROFILE_FULL_VIEW_ALL:
       return 48;
-    case UserRole.STUDENTS_CHANGE_PASSWORD:
+    case StaffPermission.STUDENTS_CHANGE_PASSWORD:
       return 49;
-    case UserRole.STUDENTS_UPLOAD:
+    case StaffPermission.STUDENTS_UPLOAD:
       return 50;
-    case UserRole.STUDENT_INCIDENTS_VIEW_OWN:
+    case StaffPermission.STUDENT_INCIDENTS_VIEW_OWN:
       return 51;
-    case UserRole.STUDENT_INCIDENTS_VIEW_ALL:
+    case StaffPermission.STUDENT_INCIDENTS_VIEW_ALL:
       return 52;
-    case UserRole.STUDENT_INCIDENTS_MANAGEMENT:
+    case StaffPermission.STUDENT_INCIDENTS_MANAGEMENT:
       return 56;
-    case UserRole.TEACHERS_VIEW:
+    case StaffPermission.TEACHERS_VIEW:
       return 57;
-    case UserRole.TEACHERS_CREATE:
+    case StaffPermission.TEACHERS_CREATE:
       return 58;
-    case UserRole.TEACHERS_MODIFY:
+    case StaffPermission.TEACHERS_MODIFY:
       return 59;
-    case UserRole.TEACHERS_CHANGE_PASSWORD:
+    case StaffPermission.TEACHERS_CHANGE_PASSWORD:
       return 60;
-    case UserRole.TEACHERS_ASSIGN_ROLES:
+    case StaffPermission.TEACHERS_ASSIGN_ROLES:
       return 61;
-    case UserRole.TEACHERS_UPLOAD:
+    case StaffPermission.TEACHERS_UPLOAD:
       return 62;
-    case UserRole.CLASSES_VIEW_OWN:
+    case StaffPermission.CLASSES_VIEW_OWN:
       return 63;
-    case UserRole.CLASSES_VIEW_ALL:
+    case StaffPermission.CLASSES_VIEW_ALL:
       return 64;
-    case UserRole.CLASSES_MODIFY_OWN:
+    case StaffPermission.CLASSES_MODIFY_OWN:
       return 65;
-    case UserRole.CLASSES_MODIFY_ALL:
+    case StaffPermission.CLASSES_MODIFY_ALL:
       return 66;
-    case UserRole.CLASSES_CREATE:
+    case StaffPermission.CLASSES_CREATE:
       return 67;
-    case UserRole.ORG_SETTINGS_FULL_ACCESS:
+    case StaffPermission.ORG_SETTINGS_FULL_ACCESS:
       return 68;
-    case UserRole.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS:
+    case StaffPermission.STUDENTS_MANAGE_PROVISIONED_ACCOUNTS:
       return 70;
-    case UserRole.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
+    case StaffPermission.TEACHERS_MANAGE_PROVISIONED_ACCOUNTS:
       return 71;
-    case UserRole.TRANSACTIONS_ISSUE_REFUND:
+    case StaffPermission.TRANSACTIONS_ISSUE_REFUND:
       return 72;
-    case UserRole.TRANSACTIONS_CREATE_MANUAL_TRANSACTION:
+    case StaffPermission.TRANSACTIONS_CREATE_MANUAL_TRANSACTION:
       return 73;
-    case UserRole.UNRECOGNIZED:
+    case StaffPermission.UNRECOGNIZED:
     default:
       return -1;
   }

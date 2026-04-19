@@ -55,7 +55,7 @@ exports.CreateUserRequest = {
         }
         writer.uint32(74).fork();
         for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
+            writer.int32((0, user_role_1.staffPermissionToNumber)(v));
         }
         writer.join();
         return writer;
@@ -117,13 +117,13 @@ exports.CreateUserRequest = {
                     continue;
                 case 9:
                     if (tag === 72) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 74) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                            message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -146,7 +146,7 @@ exports.CreateUserRequest = {
             personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
             phone_number: isSet(object.phoneNumber) ? globalThis.String(object.phoneNumber) : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.staffPermissionFromJSON)(e)) : [],
         };
     },
     toJSON(message) {
@@ -176,7 +176,7 @@ exports.CreateUserRequest = {
             obj.dateOfBirth = message.date_of_birth.toISOString();
         }
         if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+            obj.roles = message.roles.map((e) => (0, user_role_1.staffPermissionToJSON)(e));
         }
         return obj;
     },

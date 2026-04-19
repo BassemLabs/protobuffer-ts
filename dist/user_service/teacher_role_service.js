@@ -161,7 +161,7 @@ exports.GetTeacherRolesResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         writer.uint32(10).fork();
         for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
+            writer.int32((0, user_role_1.staffPermissionToNumber)(v));
         }
         writer.join();
         return writer;
@@ -175,13 +175,13 @@ exports.GetTeacherRolesResponse = {
             switch (tag >>> 3) {
                 case 1:
                     if (tag === 8) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 10) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                            message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -195,12 +195,14 @@ exports.GetTeacherRolesResponse = {
         return message;
     },
     fromJSON(object) {
-        return { roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [] };
+        return {
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.staffPermissionFromJSON)(e)) : [],
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+            obj.roles = message.roles.map((e) => (0, user_role_1.staffPermissionToJSON)(e));
         }
         return obj;
     },
@@ -332,7 +334,7 @@ exports.CreateTeacherRoleRequest = {
         }
         writer.uint32(26).fork();
         for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
+            writer.int32((0, user_role_1.staffPermissionToNumber)(v));
         }
         writer.join();
         if (message.is_default !== undefined) {
@@ -361,13 +363,13 @@ exports.CreateTeacherRoleRequest = {
                     continue;
                 case 3:
                     if (tag === 24) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 26) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                            message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -390,7 +392,7 @@ exports.CreateTeacherRoleRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.staffPermissionFromJSON)(e)) : [],
             is_default: isSet(object.isDefault) ? globalThis.Boolean(object.isDefault) : undefined,
         };
     },
@@ -403,7 +405,7 @@ exports.CreateTeacherRoleRequest = {
             obj.name = message.name;
         }
         if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+            obj.roles = message.roles.map((e) => (0, user_role_1.staffPermissionToJSON)(e));
         }
         if (message.is_default !== undefined) {
             obj.isDefault = message.is_default;
@@ -440,7 +442,7 @@ exports.UpdateTeacherRoleRequest = {
         }
         writer.uint32(34).fork();
         for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
+            writer.int32((0, user_role_1.staffPermissionToNumber)(v));
         }
         writer.join();
         return writer;
@@ -472,13 +474,13 @@ exports.UpdateTeacherRoleRequest = {
                     continue;
                 case 4:
                     if (tag === 32) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 34) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                            message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -496,7 +498,7 @@ exports.UpdateTeacherRoleRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             teacher_role_id: isSet(object.teacherRoleId) ? object_id_1.ObjectId.fromJSON(object.teacherRoleId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.staffPermissionFromJSON)(e)) : [],
         };
     },
     toJSON(message) {
@@ -511,7 +513,7 @@ exports.UpdateTeacherRoleRequest = {
             obj.name = message.name;
         }
         if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+            obj.roles = message.roles.map((e) => (0, user_role_1.staffPermissionToJSON)(e));
         }
         return obj;
     },

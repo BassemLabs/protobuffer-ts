@@ -28,7 +28,7 @@ exports.TeacherRole = {
         }
         writer.uint32(34).fork();
         for (const v of message.roles) {
-            writer.int32((0, user_role_1.userRoleToNumber)(v));
+            writer.int32((0, user_role_1.staffPermissionToNumber)(v));
         }
         writer.join();
         if (message.is_default !== undefined) {
@@ -63,13 +63,13 @@ exports.TeacherRole = {
                     continue;
                 case 4:
                     if (tag === 32) {
-                        message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                        message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         continue;
                     }
                     if (tag === 34) {
                         const end2 = reader.uint32() + reader.pos;
                         while (reader.pos < end2) {
-                            message.roles.push((0, user_role_1.userRoleFromJSON)(reader.int32()));
+                            message.roles.push((0, user_role_1.staffPermissionFromJSON)(reader.int32()));
                         }
                         continue;
                     }
@@ -93,7 +93,7 @@ exports.TeacherRole = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.userRoleFromJSON)(e)) : [],
+            roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e) => (0, user_role_1.staffPermissionFromJSON)(e)) : [],
             is_default: isSet(object.isDefault) ? globalThis.Boolean(object.isDefault) : undefined,
         };
     },
@@ -109,7 +109,7 @@ exports.TeacherRole = {
             obj.name = message.name;
         }
         if (message.roles?.length) {
-            obj.roles = message.roles.map((e) => (0, user_role_1.userRoleToJSON)(e));
+            obj.roles = message.roles.map((e) => (0, user_role_1.staffPermissionToJSON)(e));
         }
         if (message.is_default !== undefined) {
             obj.isDefault = message.is_default;

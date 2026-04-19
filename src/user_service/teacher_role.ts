@@ -8,7 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { TeacherBasic } from "./teacher";
-import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "./user_role";
+import { StaffPermission, staffPermissionFromJSON, staffPermissionToJSON, staffPermissionToNumber } from "./user_role";
 
 export const protobufPackage = "user_service";
 
@@ -16,7 +16,7 @@ export interface TeacherRole {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
   name?: string | undefined;
-  roles: UserRole[];
+  roles: StaffPermission[];
   is_default?: boolean | undefined;
 }
 
@@ -43,7 +43,7 @@ export const TeacherRole: MessageFns<TeacherRole> = {
     }
     writer.uint32(34).fork();
     for (const v of message.roles) {
-      writer.int32(userRoleToNumber(v));
+      writer.int32(staffPermissionToNumber(v));
     }
     writer.join();
     if (message.is_default !== undefined) {
@@ -82,7 +82,7 @@ export const TeacherRole: MessageFns<TeacherRole> = {
           continue;
         case 4:
           if (tag === 32) {
-            message.roles.push(userRoleFromJSON(reader.int32()));
+            message.roles.push(staffPermissionFromJSON(reader.int32()));
 
             continue;
           }
@@ -90,7 +90,7 @@ export const TeacherRole: MessageFns<TeacherRole> = {
           if (tag === 34) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.roles.push(userRoleFromJSON(reader.int32()));
+              message.roles.push(staffPermissionFromJSON(reader.int32()));
             }
 
             continue;
@@ -118,7 +118,7 @@ export const TeacherRole: MessageFns<TeacherRole> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => userRoleFromJSON(e)) : [],
+      roles: globalThis.Array.isArray(object?.roles) ? object.roles.map((e: any) => staffPermissionFromJSON(e)) : [],
       is_default: isSet(object.isDefault) ? globalThis.Boolean(object.isDefault) : undefined,
     };
   },
@@ -135,7 +135,7 @@ export const TeacherRole: MessageFns<TeacherRole> = {
       obj.name = message.name;
     }
     if (message.roles?.length) {
-      obj.roles = message.roles.map((e) => userRoleToJSON(e));
+      obj.roles = message.roles.map((e) => staffPermissionToJSON(e));
     }
     if (message.is_default !== undefined) {
       obj.isDefault = message.is_default;

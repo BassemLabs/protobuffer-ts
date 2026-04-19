@@ -8,7 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "../utils/user_type";
-import { UserRole, userRoleFromJSON, userRoleToJSON, userRoleToNumber } from "./user_role";
+import { StaffPermission, staffPermissionFromJSON, staffPermissionToJSON, staffPermissionToNumber } from "./user_role";
 
 export const protobufPackage = "user_service";
 
@@ -252,7 +252,7 @@ export interface WildcardAccess {
     | WildcardAccessType
     | undefined;
   /** Only used when type is ROLE */
-  role?: UserRole | undefined;
+  role?: StaffPermission | undefined;
 }
 
 function createBaseResourceAccessSettings(): ResourceAccessSettings {
@@ -501,7 +501,7 @@ export const WildcardAccess: MessageFns<WildcardAccess> = {
       writer.uint32(8).int32(wildcardAccessTypeToNumber(message.type));
     }
     if (message.role !== undefined) {
-      writer.uint32(16).int32(userRoleToNumber(message.role));
+      writer.uint32(16).int32(staffPermissionToNumber(message.role));
     }
     return writer;
   },
@@ -525,7 +525,7 @@ export const WildcardAccess: MessageFns<WildcardAccess> = {
             break;
           }
 
-          message.role = userRoleFromJSON(reader.int32());
+          message.role = staffPermissionFromJSON(reader.int32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -539,7 +539,7 @@ export const WildcardAccess: MessageFns<WildcardAccess> = {
   fromJSON(object: any): WildcardAccess {
     return {
       type: isSet(object.type) ? wildcardAccessTypeFromJSON(object.type) : undefined,
-      role: isSet(object.role) ? userRoleFromJSON(object.role) : undefined,
+      role: isSet(object.role) ? staffPermissionFromJSON(object.role) : undefined,
     };
   },
 
@@ -549,7 +549,7 @@ export const WildcardAccess: MessageFns<WildcardAccess> = {
       obj.type = wildcardAccessTypeToJSON(message.type);
     }
     if (message.role !== undefined) {
-      obj.role = userRoleToJSON(message.role);
+      obj.role = staffPermissionToJSON(message.role);
     }
     return obj;
   },
