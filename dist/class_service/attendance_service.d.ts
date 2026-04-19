@@ -155,6 +155,7 @@ export interface GetCoursesAttendanceOverviewRequest {
     show_all_classes?: boolean | undefined;
     semester_id?: ObjectId | undefined;
     show_archived_only?: boolean | undefined;
+    school_year_id?: ObjectId | undefined;
 }
 export interface GetCoursesAttendanceOverviewResponse {
     courses: Course[];
@@ -172,6 +173,7 @@ export interface GetHomeroomsAttendanceOverviewRequest {
     show_all_classes?: boolean | undefined;
     semester_id?: ObjectId | undefined;
     show_archived_only?: boolean | undefined;
+    school_year_id?: ObjectId | undefined;
 }
 export interface GetHomeroomsAttendanceOverviewResponse {
     homerooms: Homeroom[];

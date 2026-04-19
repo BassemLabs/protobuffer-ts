@@ -1814,6 +1814,7 @@ function createBaseGetCoursesAttendanceOverviewRequest() {
         show_all_classes: undefined,
         semester_id: undefined,
         show_archived_only: undefined,
+        school_year_id: undefined,
     };
 }
 exports.GetCoursesAttendanceOverviewRequest = {
@@ -1832,6 +1833,9 @@ exports.GetCoursesAttendanceOverviewRequest = {
         }
         if (message.show_archived_only !== undefined) {
             writer.uint32(40).bool(message.show_archived_only);
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -1872,6 +1876,12 @@ exports.GetCoursesAttendanceOverviewRequest = {
                     }
                     message.show_archived_only = reader.bool();
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1887,6 +1897,7 @@ exports.GetCoursesAttendanceOverviewRequest = {
             show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : undefined,
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             show_archived_only: isSet(object.showArchivedOnly) ? globalThis.Boolean(object.showArchivedOnly) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -1906,6 +1917,9 @@ exports.GetCoursesAttendanceOverviewRequest = {
         if (message.show_archived_only !== undefined) {
             obj.showArchivedOnly = message.show_archived_only;
         }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
         return obj;
     },
     create(base) {
@@ -1922,6 +1936,9 @@ exports.GetCoursesAttendanceOverviewRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
         message.show_archived_only = object.show_archived_only ?? undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
         return message;
     },
 };
@@ -2084,6 +2101,7 @@ function createBaseGetHomeroomsAttendanceOverviewRequest() {
         show_all_classes: undefined,
         semester_id: undefined,
         show_archived_only: undefined,
+        school_year_id: undefined,
     };
 }
 exports.GetHomeroomsAttendanceOverviewRequest = {
@@ -2102,6 +2120,9 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         }
         if (message.show_archived_only !== undefined) {
             writer.uint32(40).bool(message.show_archived_only);
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -2142,6 +2163,12 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
                     }
                     message.show_archived_only = reader.bool();
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2157,6 +2184,7 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
             show_all_classes: isSet(object.showAllClasses) ? globalThis.Boolean(object.showAllClasses) : undefined,
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
             show_archived_only: isSet(object.showArchivedOnly) ? globalThis.Boolean(object.showArchivedOnly) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
         };
     },
     toJSON(message) {
@@ -2176,6 +2204,9 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
         if (message.show_archived_only !== undefined) {
             obj.showArchivedOnly = message.show_archived_only;
         }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
         return obj;
     },
     create(base) {
@@ -2192,6 +2223,9 @@ exports.GetHomeroomsAttendanceOverviewRequest = {
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
         message.show_archived_only = object.show_archived_only ?? undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
         return message;
     },
 };
