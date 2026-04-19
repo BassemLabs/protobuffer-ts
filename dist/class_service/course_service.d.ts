@@ -68,6 +68,11 @@ export interface RemoveTeachersRequest {
     course_id: ObjectId | undefined;
     teacher_ids: ObjectId[];
 }
+export interface SetOwnerTeacherRequest {
+    context: RequestContext | undefined;
+    course_id: ObjectId | undefined;
+    owner_teacher_id: ObjectId | undefined;
+}
 /** Request to add students to a course */
 export interface AddStudentsRequest {
     context: RequestContext | undefined;
@@ -164,6 +169,7 @@ export declare const UnarchiveCourseRequest: MessageFns<UnarchiveCourseRequest>;
 export declare const UpdateCourseRequest: MessageFns<UpdateCourseRequest>;
 export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;
 export declare const RemoveTeachersRequest: MessageFns<RemoveTeachersRequest>;
+export declare const SetOwnerTeacherRequest: MessageFns<SetOwnerTeacherRequest>;
 export declare const AddStudentsRequest: MessageFns<AddStudentsRequest>;
 export declare const TeacherFailure: MessageFns<TeacherFailure>;
 export declare const StudentFailure: MessageFns<StudentFailure>;
