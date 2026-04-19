@@ -9,6 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
+import { Homeroom } from "./homeroom";
 import {
   LmsCourseWork,
   LmsProviderType,
@@ -19,6 +20,59 @@ import {
 } from "./lms_course";
 
 export const protobufPackage = "class_service.course_service";
+
+export enum StudentProfileFeatureScope {
+  STUDENT_PROFILE_FEATURE_SCOPE_REPORTS = "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS",
+  STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE = "STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE",
+  STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER = "STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function studentProfileFeatureScopeFromJSON(object: any): StudentProfileFeatureScope {
+  switch (object) {
+    case 0:
+    case "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS":
+      return StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_REPORTS;
+    case 1:
+    case "STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE":
+      return StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE;
+    case 2:
+    case "STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER":
+      return StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StudentProfileFeatureScope.UNRECOGNIZED;
+  }
+}
+
+export function studentProfileFeatureScopeToJSON(object: StudentProfileFeatureScope): string {
+  switch (object) {
+    case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_REPORTS:
+      return "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS";
+    case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE:
+      return "STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE";
+    case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER:
+      return "STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER";
+    case StudentProfileFeatureScope.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function studentProfileFeatureScopeToNumber(object: StudentProfileFeatureScope): number {
+  switch (object) {
+    case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_REPORTS:
+      return 0;
+    case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE:
+      return 1;
+    case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER:
+      return 2;
+    case StudentProfileFeatureScope.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
 
 export interface GetCourseRequest {
   context: RequestContext | undefined;
@@ -55,6 +109,18 @@ export interface GetStudentCoursesRequest {
   student_id: ObjectId | undefined;
   include_archived?: boolean | undefined;
   school_year_id?: ObjectId | undefined;
+}
+
+export interface GetStudentProfileClassScopeRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+  feature_scope?: StudentProfileFeatureScope | undefined;
+}
+
+export interface GetStudentProfileClassScopeResponse {
+  courses: Course[];
+  homerooms: Homeroom[];
 }
 
 export interface GetStudentCoursesForSchoolYearRequest {
@@ -758,6 +824,200 @@ export const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest> = {
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentProfileClassScopeRequest(): GetStudentProfileClassScopeRequest {
+  return { context: undefined, student_id: undefined, school_year_id: undefined, feature_scope: undefined };
+}
+
+export const GetStudentProfileClassScopeRequest: MessageFns<GetStudentProfileClassScopeRequest> = {
+  encode(message: GetStudentProfileClassScopeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.feature_scope !== undefined) {
+      writer.uint32(32).int32(studentProfileFeatureScopeToNumber(message.feature_scope));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentProfileClassScopeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentProfileClassScopeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.feature_scope = studentProfileFeatureScopeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentProfileClassScopeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      feature_scope: isSet(object.featureScope) ? studentProfileFeatureScopeFromJSON(object.featureScope) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentProfileClassScopeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.feature_scope !== undefined) {
+      obj.featureScope = studentProfileFeatureScopeToJSON(message.feature_scope);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentProfileClassScopeRequest>, I>>(
+    base?: I,
+  ): GetStudentProfileClassScopeRequest {
+    return GetStudentProfileClassScopeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentProfileClassScopeRequest>, I>>(
+    object: I,
+  ): GetStudentProfileClassScopeRequest {
+    const message = createBaseGetStudentProfileClassScopeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.feature_scope = object.feature_scope ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentProfileClassScopeResponse(): GetStudentProfileClassScopeResponse {
+  return { courses: [], homerooms: [] };
+}
+
+export const GetStudentProfileClassScopeResponse: MessageFns<GetStudentProfileClassScopeResponse> = {
+  encode(message: GetStudentProfileClassScopeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      Course.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.homerooms) {
+      Homeroom.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentProfileClassScopeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentProfileClassScopeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(Course.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.homerooms.push(Homeroom.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentProfileClassScopeResponse {
+    return {
+      courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => Course.fromJSON(e)) : [],
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => Homeroom.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetStudentProfileClassScopeResponse): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => Course.toJSON(e));
+    }
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => Homeroom.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentProfileClassScopeResponse>, I>>(
+    base?: I,
+  ): GetStudentProfileClassScopeResponse {
+    return GetStudentProfileClassScopeResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentProfileClassScopeResponse>, I>>(
+    object: I,
+  ): GetStudentProfileClassScopeResponse {
+    const message = createBaseGetStudentProfileClassScopeResponse();
+    message.courses = object.courses?.map((e) => Course.fromPartial(e)) || [];
+    message.homerooms = object.homerooms?.map((e) => Homeroom.fromPartial(e)) || [];
     return message;
   },
 };

@@ -5,14 +5,68 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
+exports.studentProfileFeatureScopeFromJSON = studentProfileFeatureScopeFromJSON;
+exports.studentProfileFeatureScopeToJSON = studentProfileFeatureScopeToJSON;
+exports.studentProfileFeatureScopeToNumber = studentProfileFeatureScopeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const course_1 = require("./course");
+const homeroom_1 = require("./homeroom");
 const lms_course_1 = require("./lms_course");
 exports.protobufPackage = "class_service.course_service";
+var StudentProfileFeatureScope;
+(function (StudentProfileFeatureScope) {
+    StudentProfileFeatureScope["STUDENT_PROFILE_FEATURE_SCOPE_REPORTS"] = "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS";
+    StudentProfileFeatureScope["STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE"] = "STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE";
+    StudentProfileFeatureScope["STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER"] = "STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER";
+    StudentProfileFeatureScope["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(StudentProfileFeatureScope || (exports.StudentProfileFeatureScope = StudentProfileFeatureScope = {}));
+function studentProfileFeatureScopeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS":
+            return StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_REPORTS;
+        case 1:
+        case "STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE":
+            return StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE;
+        case 2:
+        case "STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER":
+            return StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return StudentProfileFeatureScope.UNRECOGNIZED;
+    }
+}
+function studentProfileFeatureScopeToJSON(object) {
+    switch (object) {
+        case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_REPORTS:
+            return "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS";
+        case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE:
+            return "STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE";
+        case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER:
+            return "STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER";
+        case StudentProfileFeatureScope.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function studentProfileFeatureScopeToNumber(object) {
+    switch (object) {
+        case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_REPORTS:
+            return 0;
+        case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ATTENDANCE:
+            return 1;
+        case StudentProfileFeatureScope.STUDENT_PROFILE_FEATURE_SCOPE_ACADEMIC_TRACKER:
+            return 2;
+        case StudentProfileFeatureScope.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetCourseRequest() {
     return { context: undefined, course_id: undefined };
 }
@@ -524,6 +578,174 @@ exports.GetStudentCoursesRequest = {
         message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetStudentProfileClassScopeRequest() {
+    return { context: undefined, student_id: undefined, school_year_id: undefined, feature_scope: undefined };
+}
+exports.GetStudentProfileClassScopeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        if (message.feature_scope !== undefined) {
+            writer.uint32(32).int32(studentProfileFeatureScopeToNumber(message.feature_scope));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentProfileClassScopeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.feature_scope = studentProfileFeatureScopeFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            feature_scope: isSet(object.featureScope) ? studentProfileFeatureScopeFromJSON(object.featureScope) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.feature_scope !== undefined) {
+            obj.featureScope = studentProfileFeatureScopeToJSON(message.feature_scope);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentProfileClassScopeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentProfileClassScopeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.feature_scope = object.feature_scope ?? undefined;
+        return message;
+    },
+};
+function createBaseGetStudentProfileClassScopeResponse() {
+    return { courses: [], homerooms: [] };
+}
+exports.GetStudentProfileClassScopeResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.courses) {
+            course_1.Course.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.homerooms) {
+            homeroom_1.Homeroom.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentProfileClassScopeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courses.push(course_1.Course.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.homerooms.push(homeroom_1.Homeroom.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => course_1.Course.fromJSON(e)) : [],
+            homerooms: globalThis.Array.isArray(object?.homerooms)
+                ? object.homerooms.map((e) => homeroom_1.Homeroom.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => course_1.Course.toJSON(e));
+        }
+        if (message.homerooms?.length) {
+            obj.homerooms = message.homerooms.map((e) => homeroom_1.Homeroom.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentProfileClassScopeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentProfileClassScopeResponse();
+        message.courses = object.courses?.map((e) => course_1.Course.fromPartial(e)) || [];
+        message.homerooms = object.homerooms?.map((e) => homeroom_1.Homeroom.fromPartial(e)) || [];
         return message;
     },
 };
