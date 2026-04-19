@@ -18,7 +18,6 @@ export interface Course {
     report_layout: ReportLayout | undefined;
     abstract_course_id?: ObjectId | undefined;
     abstract_course?: AbstractCourse | undefined;
-    owner_teacher_id: ObjectId | undefined;
 }
 export interface ListCourse {
     id: ObjectId | undefined;
