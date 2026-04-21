@@ -13,6 +13,7 @@ export declare enum CustomFieldType {
     REGEX_VALIDATED = "REGEX_VALIDATED",
     CHECKBOX = "CHECKBOX",
     DOCUMENT = "DOCUMENT",
+    PHONE_NUMBER = "PHONE_NUMBER",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function customFieldTypeFromJSON(object: any): CustomFieldType;

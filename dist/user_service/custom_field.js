@@ -29,6 +29,7 @@ var CustomFieldType;
     CustomFieldType["REGEX_VALIDATED"] = "REGEX_VALIDATED";
     CustomFieldType["CHECKBOX"] = "CHECKBOX";
     CustomFieldType["DOCUMENT"] = "DOCUMENT";
+    CustomFieldType["PHONE_NUMBER"] = "PHONE_NUMBER";
     CustomFieldType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(CustomFieldType || (exports.CustomFieldType = CustomFieldType = {}));
 function customFieldTypeFromJSON(object) {
@@ -54,6 +55,9 @@ function customFieldTypeFromJSON(object) {
         case 6:
         case "DOCUMENT":
             return CustomFieldType.DOCUMENT;
+        case 7:
+        case "PHONE_NUMBER":
+            return CustomFieldType.PHONE_NUMBER;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -76,6 +80,8 @@ function customFieldTypeToJSON(object) {
             return "CHECKBOX";
         case CustomFieldType.DOCUMENT:
             return "DOCUMENT";
+        case CustomFieldType.PHONE_NUMBER:
+            return "PHONE_NUMBER";
         case CustomFieldType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -97,6 +103,8 @@ function customFieldTypeToNumber(object) {
             return 5;
         case CustomFieldType.DOCUMENT:
             return 6;
+        case CustomFieldType.PHONE_NUMBER:
+            return 7;
         case CustomFieldType.UNRECOGNIZED:
         default:
             return -1;

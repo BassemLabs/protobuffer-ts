@@ -27,6 +27,7 @@ export enum CustomFieldType {
   REGEX_VALIDATED = "REGEX_VALIDATED",
   CHECKBOX = "CHECKBOX",
   DOCUMENT = "DOCUMENT",
+  PHONE_NUMBER = "PHONE_NUMBER",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -53,6 +54,9 @@ export function customFieldTypeFromJSON(object: any): CustomFieldType {
     case 6:
     case "DOCUMENT":
       return CustomFieldType.DOCUMENT;
+    case 7:
+    case "PHONE_NUMBER":
+      return CustomFieldType.PHONE_NUMBER;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -76,6 +80,8 @@ export function customFieldTypeToJSON(object: CustomFieldType): string {
       return "CHECKBOX";
     case CustomFieldType.DOCUMENT:
       return "DOCUMENT";
+    case CustomFieldType.PHONE_NUMBER:
+      return "PHONE_NUMBER";
     case CustomFieldType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -98,6 +104,8 @@ export function customFieldTypeToNumber(object: CustomFieldType): number {
       return 5;
     case CustomFieldType.DOCUMENT:
       return 6;
+    case CustomFieldType.PHONE_NUMBER:
+      return 7;
     case CustomFieldType.UNRECOGNIZED:
     default:
       return -1;
