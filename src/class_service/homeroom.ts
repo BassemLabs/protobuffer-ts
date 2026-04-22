@@ -22,6 +22,7 @@ export interface Homeroom {
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
   lms_course?: LmsCourse | undefined;
+  owner_teacher_id: ObjectId | undefined;
 }
 
 export interface ListHomeroom {
@@ -32,6 +33,7 @@ export interface ListHomeroom {
   semester: ListSemester | undefined;
   teacher_ids: ObjectId[];
   student_ids: ObjectId[];
+  owner_teacher_id: ObjectId | undefined;
 }
 
 export interface HomeroomList {
@@ -49,6 +51,7 @@ function createBaseHomeroom(): Homeroom {
     teacher_ids: [],
     student_ids: [],
     lms_course: undefined,
+    owner_teacher_id: undefined,
   };
 }
 
@@ -79,6 +82,9 @@ export const Homeroom: MessageFns<Homeroom> = {
     }
     if (message.lms_course !== undefined) {
       LmsCourse.encode(message.lms_course, writer.uint32(66).fork()).join();
+    }
+    if (message.owner_teacher_id !== undefined) {
+      ObjectId.encode(message.owner_teacher_id, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -156,6 +162,13 @@ export const Homeroom: MessageFns<Homeroom> = {
 
           message.lms_course = LmsCourse.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.owner_teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -179,6 +192,7 @@ export const Homeroom: MessageFns<Homeroom> = {
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
       lms_course: isSet(object.lmsCourse) ? LmsCourse.fromJSON(object.lmsCourse) : undefined,
+      owner_teacher_id: isSet(object.ownerTeacherId) ? ObjectId.fromJSON(object.ownerTeacherId) : undefined,
     };
   },
 
@@ -208,6 +222,9 @@ export const Homeroom: MessageFns<Homeroom> = {
     if (message.lms_course !== undefined) {
       obj.lmsCourse = LmsCourse.toJSON(message.lms_course);
     }
+    if (message.owner_teacher_id !== undefined) {
+      obj.ownerTeacherId = ObjectId.toJSON(message.owner_teacher_id);
+    }
     return obj;
   },
 
@@ -228,6 +245,9 @@ export const Homeroom: MessageFns<Homeroom> = {
     message.lms_course = (object.lms_course !== undefined && object.lms_course !== null)
       ? LmsCourse.fromPartial(object.lms_course)
       : undefined;
+    message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+      ? ObjectId.fromPartial(object.owner_teacher_id)
+      : undefined;
     return message;
   },
 };
@@ -241,6 +261,7 @@ function createBaseListHomeroom(): ListHomeroom {
     semester: undefined,
     teacher_ids: [],
     student_ids: [],
+    owner_teacher_id: undefined,
   };
 }
 
@@ -266,6 +287,9 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     }
     for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.owner_teacher_id !== undefined) {
+      ObjectId.encode(message.owner_teacher_id, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -326,6 +350,13 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
 
           message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.owner_teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -348,6 +379,7 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
       student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      owner_teacher_id: isSet(object.ownerTeacherId) ? ObjectId.fromJSON(object.ownerTeacherId) : undefined,
     };
   },
 
@@ -374,6 +406,9 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
     if (message.student_ids?.length) {
       obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
     }
+    if (message.owner_teacher_id !== undefined) {
+      obj.ownerTeacherId = ObjectId.toJSON(message.owner_teacher_id);
+    }
     return obj;
   },
 
@@ -391,6 +426,9 @@ export const ListHomeroom: MessageFns<ListHomeroom> = {
       : undefined;
     message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+      ? ObjectId.fromPartial(object.owner_teacher_id)
+      : undefined;
     return message;
   },
 };

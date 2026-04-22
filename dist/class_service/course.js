@@ -28,6 +28,7 @@ function createBaseCourse() {
         report_layout: undefined,
         abstract_course_id: undefined,
         abstract_course: undefined,
+        owner_teacher_id: undefined,
     };
 }
 exports.Course = {
@@ -64,6 +65,9 @@ exports.Course = {
         }
         if (message.abstract_course !== undefined) {
             abstract_course_1.AbstractCourse.encode(message.abstract_course, writer.uint32(98).fork()).join();
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(106).fork()).join();
         }
         return writer;
     },
@@ -140,6 +144,12 @@ exports.Course = {
                     }
                     message.abstract_course = abstract_course_1.AbstractCourse.decode(reader, reader.uint32());
                     continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -165,6 +175,7 @@ exports.Course = {
             report_layout: isSet(object.reportLayout) ? report_layout_1.ReportLayout.fromJSON(object.reportLayout) : undefined,
             abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
             abstract_course: isSet(object.abstractCourse) ? abstract_course_1.AbstractCourse.fromJSON(object.abstractCourse) : undefined,
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -202,6 +213,9 @@ exports.Course = {
         if (message.abstract_course !== undefined) {
             obj.abstractCourse = abstract_course_1.AbstractCourse.toJSON(message.abstract_course);
         }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
         return obj;
     },
     create(base) {
@@ -232,6 +246,9 @@ exports.Course = {
         message.abstract_course = (object.abstract_course !== undefined && object.abstract_course !== null)
             ? abstract_course_1.AbstractCourse.fromPartial(object.abstract_course)
             : undefined;
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
+            : undefined;
         return message;
     },
 };
@@ -245,6 +262,7 @@ function createBaseListCourse() {
         teachers: [],
         abstract_course_id: undefined,
         abstract_course: undefined,
+        owner_teacher_id: undefined,
     };
 }
 exports.ListCourse = {
@@ -272,6 +290,9 @@ exports.ListCourse = {
         }
         if (message.abstract_course !== undefined) {
             abstract_course_1.AbstractCourse.encode(message.abstract_course, writer.uint32(74).fork()).join();
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(82).fork()).join();
         }
         return writer;
     },
@@ -330,6 +351,12 @@ exports.ListCourse = {
                     }
                     message.abstract_course = abstract_course_1.AbstractCourse.decode(reader, reader.uint32());
                     continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -348,6 +375,7 @@ exports.ListCourse = {
             teachers: globalThis.Array.isArray(object?.teachers) ? object.teachers.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
             abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
             abstract_course: isSet(object.abstractCourse) ? abstract_course_1.AbstractCourse.fromJSON(object.abstractCourse) : undefined,
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -376,6 +404,9 @@ exports.ListCourse = {
         if (message.abstract_course !== undefined) {
             obj.abstractCourse = abstract_course_1.AbstractCourse.toJSON(message.abstract_course);
         }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
         return obj;
     },
     create(base) {
@@ -398,6 +429,9 @@ exports.ListCourse = {
             : undefined;
         message.abstract_course = (object.abstract_course !== undefined && object.abstract_course !== null)
             ? abstract_course_1.AbstractCourse.fromPartial(object.abstract_course)
+            : undefined;
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
             : undefined;
         return message;
     },

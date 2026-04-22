@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/homeroom_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
+exports.SetOwnerTeacherRequest = exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -2136,6 +2136,92 @@ exports.LmsStudentSubmissionResponse = {
     fromPartial(object) {
         const message = createBaseLmsStudentSubmissionResponse();
         message.lms_student_submission = object.lms_student_submission?.map((e) => lms_course_1.LmsSubmission.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSetOwnerTeacherRequest() {
+    return { context: undefined, homeroom_id: undefined, owner_teacher_id: undefined };
+}
+exports.SetOwnerTeacherRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSetOwnerTeacherRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SetOwnerTeacherRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSetOwnerTeacherRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
+            : undefined;
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
+            : undefined;
         return message;
     },
 };

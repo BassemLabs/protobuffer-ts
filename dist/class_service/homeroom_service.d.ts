@@ -128,6 +128,11 @@ export interface GetStudentLmsCourseWorkRequest {
 export interface LmsStudentSubmissionResponse {
     lms_student_submission: LmsSubmission[];
 }
+export interface SetOwnerTeacherRequest {
+    context: RequestContext | undefined;
+    homeroom_id: ObjectId | undefined;
+    owner_teacher_id: ObjectId | undefined;
+}
 export declare const GetHomeroomRequest: MessageFns<GetHomeroomRequest>;
 export declare const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest>;
 export declare const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest>;
@@ -154,6 +159,7 @@ export declare const GetLmsCourseWorkRequest: MessageFns<GetLmsCourseWorkRequest
 export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
 export declare const GetStudentLmsCourseWorkRequest: MessageFns<GetStudentLmsCourseWorkRequest>;
 export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;
+export declare const SetOwnerTeacherRequest: MessageFns<SetOwnerTeacherRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -170,6 +170,12 @@ export interface LmsStudentSubmissionResponse {
   lms_student_submission: LmsSubmission[];
 }
 
+export interface SetOwnerTeacherRequest {
+  context: RequestContext | undefined;
+  homeroom_id: ObjectId | undefined;
+  owner_teacher_id: ObjectId | undefined;
+}
+
 function createBaseGetHomeroomRequest(): GetHomeroomRequest {
   return { context: undefined, homeroom_id: undefined };
 }
@@ -2531,6 +2537,101 @@ export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionRespon
   fromPartial<I extends Exact<DeepPartial<LmsStudentSubmissionResponse>, I>>(object: I): LmsStudentSubmissionResponse {
     const message = createBaseLmsStudentSubmissionResponse();
     message.lms_student_submission = object.lms_student_submission?.map((e) => LmsSubmission.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSetOwnerTeacherRequest(): SetOwnerTeacherRequest {
+  return { context: undefined, homeroom_id: undefined, owner_teacher_id: undefined };
+}
+
+export const SetOwnerTeacherRequest: MessageFns<SetOwnerTeacherRequest> = {
+  encode(message: SetOwnerTeacherRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(18).fork()).join();
+    }
+    if (message.owner_teacher_id !== undefined) {
+      ObjectId.encode(message.owner_teacher_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetOwnerTeacherRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetOwnerTeacherRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.owner_teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetOwnerTeacherRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      owner_teacher_id: isSet(object.ownerTeacherId) ? ObjectId.fromJSON(object.ownerTeacherId) : undefined,
+    };
+  },
+
+  toJSON(message: SetOwnerTeacherRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
+    }
+    if (message.owner_teacher_id !== undefined) {
+      obj.ownerTeacherId = ObjectId.toJSON(message.owner_teacher_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SetOwnerTeacherRequest>, I>>(base?: I): SetOwnerTeacherRequest {
+    return SetOwnerTeacherRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SetOwnerTeacherRequest>, I>>(object: I): SetOwnerTeacherRequest {
+    const message = createBaseSetOwnerTeacherRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
+      : undefined;
+    message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+      ? ObjectId.fromPartial(object.owner_teacher_id)
+      : undefined;
     return message;
   },
 };

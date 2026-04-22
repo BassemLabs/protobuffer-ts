@@ -23,6 +23,7 @@ function createBaseHomeroom() {
         teacher_ids: [],
         student_ids: [],
         lms_course: undefined,
+        owner_teacher_id: undefined,
     };
 }
 exports.Homeroom = {
@@ -52,6 +53,9 @@ exports.Homeroom = {
         }
         if (message.lms_course !== undefined) {
             lms_course_1.LmsCourse.encode(message.lms_course, writer.uint32(66).fork()).join();
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -117,6 +121,12 @@ exports.Homeroom = {
                     }
                     message.lms_course = lms_course_1.LmsCourse.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -139,6 +149,7 @@ exports.Homeroom = {
                 ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             lms_course: isSet(object.lmsCourse) ? lms_course_1.LmsCourse.fromJSON(object.lmsCourse) : undefined,
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -167,6 +178,9 @@ exports.Homeroom = {
         if (message.lms_course !== undefined) {
             obj.lmsCourse = lms_course_1.LmsCourse.toJSON(message.lms_course);
         }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
         return obj;
     },
     create(base) {
@@ -186,6 +200,9 @@ exports.Homeroom = {
         message.lms_course = (object.lms_course !== undefined && object.lms_course !== null)
             ? lms_course_1.LmsCourse.fromPartial(object.lms_course)
             : undefined;
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
+            : undefined;
         return message;
     },
 };
@@ -198,6 +215,7 @@ function createBaseListHomeroom() {
         semester: undefined,
         teacher_ids: [],
         student_ids: [],
+        owner_teacher_id: undefined,
     };
 }
 exports.ListHomeroom = {
@@ -222,6 +240,9 @@ exports.ListHomeroom = {
         }
         for (const v of message.student_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -274,6 +295,12 @@ exports.ListHomeroom = {
                     }
                     message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -295,6 +322,7 @@ exports.ListHomeroom = {
             student_ids: globalThis.Array.isArray(object?.studentIds)
                 ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -320,6 +348,9 @@ exports.ListHomeroom = {
         if (message.student_ids?.length) {
             obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
         return obj;
     },
     create(base) {
@@ -336,6 +367,9 @@ exports.ListHomeroom = {
             : undefined;
         message.teacher_ids = object.teacher_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
+            : undefined;
         return message;
     },
 };

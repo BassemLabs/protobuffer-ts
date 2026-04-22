@@ -13,6 +13,7 @@ export interface Homeroom {
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];
     lms_course?: LmsCourse | undefined;
+    owner_teacher_id: ObjectId | undefined;
 }
 export interface ListHomeroom {
     id: ObjectId | undefined;
@@ -22,6 +23,7 @@ export interface ListHomeroom {
     semester: ListSemester | undefined;
     teacher_ids: ObjectId[];
     student_ids: ObjectId[];
+    owner_teacher_id: ObjectId | undefined;
 }
 export interface HomeroomList {
     homerooms: ListHomeroom[];
