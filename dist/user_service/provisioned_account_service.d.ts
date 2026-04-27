@@ -41,6 +41,16 @@ export interface DeactivateProvisionedAccountForTeacherRequest {
     context: RequestContext | undefined;
     provisioned_account_id: ObjectId | undefined;
 }
+export interface ResetProvisionedAccountPasswordForStudentRequest {
+    context: RequestContext | undefined;
+    provisioned_account_id: ObjectId | undefined;
+    password?: string | undefined;
+}
+export interface ResetProvisionedAccountPasswordForTeacherRequest {
+    context: RequestContext | undefined;
+    provisioned_account_id: ObjectId | undefined;
+    password?: string | undefined;
+}
 export declare const ListProvisionedAccountsForStudentRequest: MessageFns<ListProvisionedAccountsForStudentRequest>;
 export declare const ListProvisionedAccountsForTeacherRequest: MessageFns<ListProvisionedAccountsForTeacherRequest>;
 export declare const ListProvisionedAccountsResponse: MessageFns<ListProvisionedAccountsResponse>;
@@ -50,6 +60,8 @@ export declare const ActivateProvisionedAccountForStudentRequest: MessageFns<Act
 export declare const ActivateProvisionedAccountForTeacherRequest: MessageFns<ActivateProvisionedAccountForTeacherRequest>;
 export declare const DeactivateProvisionedAccountForStudentRequest: MessageFns<DeactivateProvisionedAccountForStudentRequest>;
 export declare const DeactivateProvisionedAccountForTeacherRequest: MessageFns<DeactivateProvisionedAccountForTeacherRequest>;
+export declare const ResetProvisionedAccountPasswordForStudentRequest: MessageFns<ResetProvisionedAccountPasswordForStudentRequest>;
+export declare const ResetProvisionedAccountPasswordForTeacherRequest: MessageFns<ResetProvisionedAccountPasswordForTeacherRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

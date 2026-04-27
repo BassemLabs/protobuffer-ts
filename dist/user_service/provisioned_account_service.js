@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/provisioned_account_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeactivateProvisionedAccountForTeacherRequest = exports.DeactivateProvisionedAccountForStudentRequest = exports.ActivateProvisionedAccountForTeacherRequest = exports.ActivateProvisionedAccountForStudentRequest = exports.CreateProvisionedAccountForTeacherRequest = exports.CreateProvisionedAccountForStudentRequest = exports.ListProvisionedAccountsResponse = exports.ListProvisionedAccountsForTeacherRequest = exports.ListProvisionedAccountsForStudentRequest = exports.protobufPackage = void 0;
+exports.ResetProvisionedAccountPasswordForTeacherRequest = exports.ResetProvisionedAccountPasswordForStudentRequest = exports.DeactivateProvisionedAccountForTeacherRequest = exports.DeactivateProvisionedAccountForStudentRequest = exports.ActivateProvisionedAccountForTeacherRequest = exports.ActivateProvisionedAccountForStudentRequest = exports.CreateProvisionedAccountForTeacherRequest = exports.CreateProvisionedAccountForStudentRequest = exports.ListProvisionedAccountsResponse = exports.ListProvisionedAccountsForTeacherRequest = exports.ListProvisionedAccountsForStudentRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const lms_course_1 = require("../class_service/lms_course");
@@ -664,6 +664,180 @@ exports.DeactivateProvisionedAccountForTeacherRequest = {
             (object.provisioned_account_id !== undefined && object.provisioned_account_id !== null)
                 ? object_id_1.ObjectId.fromPartial(object.provisioned_account_id)
                 : undefined;
+        return message;
+    },
+};
+function createBaseResetProvisionedAccountPasswordForStudentRequest() {
+    return { context: undefined, provisioned_account_id: undefined, password: undefined };
+}
+exports.ResetProvisionedAccountPasswordForStudentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.provisioned_account_id !== undefined) {
+            object_id_1.ObjectId.encode(message.provisioned_account_id, writer.uint32(18).fork()).join();
+        }
+        if (message.password !== undefined) {
+            writer.uint32(26).string(message.password);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResetProvisionedAccountPasswordForStudentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.provisioned_account_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.password = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            provisioned_account_id: isSet(object.provisionedAccountId)
+                ? object_id_1.ObjectId.fromJSON(object.provisionedAccountId)
+                : undefined,
+            password: isSet(object.password) ? globalThis.String(object.password) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.provisioned_account_id !== undefined) {
+            obj.provisionedAccountId = object_id_1.ObjectId.toJSON(message.provisioned_account_id);
+        }
+        if (message.password !== undefined) {
+            obj.password = message.password;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResetProvisionedAccountPasswordForStudentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResetProvisionedAccountPasswordForStudentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.provisioned_account_id =
+            (object.provisioned_account_id !== undefined && object.provisioned_account_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.provisioned_account_id)
+                : undefined;
+        message.password = object.password ?? undefined;
+        return message;
+    },
+};
+function createBaseResetProvisionedAccountPasswordForTeacherRequest() {
+    return { context: undefined, provisioned_account_id: undefined, password: undefined };
+}
+exports.ResetProvisionedAccountPasswordForTeacherRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.provisioned_account_id !== undefined) {
+            object_id_1.ObjectId.encode(message.provisioned_account_id, writer.uint32(18).fork()).join();
+        }
+        if (message.password !== undefined) {
+            writer.uint32(26).string(message.password);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResetProvisionedAccountPasswordForTeacherRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.provisioned_account_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.password = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            provisioned_account_id: isSet(object.provisionedAccountId)
+                ? object_id_1.ObjectId.fromJSON(object.provisionedAccountId)
+                : undefined,
+            password: isSet(object.password) ? globalThis.String(object.password) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.provisioned_account_id !== undefined) {
+            obj.provisionedAccountId = object_id_1.ObjectId.toJSON(message.provisioned_account_id);
+        }
+        if (message.password !== undefined) {
+            obj.password = message.password;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResetProvisionedAccountPasswordForTeacherRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResetProvisionedAccountPasswordForTeacherRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.provisioned_account_id =
+            (object.provisioned_account_id !== undefined && object.provisioned_account_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.provisioned_account_id)
+                : undefined;
+        message.password = object.password ?? undefined;
         return message;
     },
 };

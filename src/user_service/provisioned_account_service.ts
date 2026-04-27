@@ -64,6 +64,18 @@ export interface DeactivateProvisionedAccountForTeacherRequest {
   provisioned_account_id: ObjectId | undefined;
 }
 
+export interface ResetProvisionedAccountPasswordForStudentRequest {
+  context: RequestContext | undefined;
+  provisioned_account_id: ObjectId | undefined;
+  password?: string | undefined;
+}
+
+export interface ResetProvisionedAccountPasswordForTeacherRequest {
+  context: RequestContext | undefined;
+  provisioned_account_id: ObjectId | undefined;
+  password?: string | undefined;
+}
+
 function createBaseListProvisionedAccountsForStudentRequest(): ListProvisionedAccountsForStudentRequest {
   return { context: undefined, student_id: undefined };
 }
@@ -838,6 +850,216 @@ export const DeactivateProvisionedAccountForTeacherRequest: MessageFns<Deactivat
       return message;
     },
   };
+
+function createBaseResetProvisionedAccountPasswordForStudentRequest(): ResetProvisionedAccountPasswordForStudentRequest {
+  return { context: undefined, provisioned_account_id: undefined, password: undefined };
+}
+
+export const ResetProvisionedAccountPasswordForStudentRequest: MessageFns<
+  ResetProvisionedAccountPasswordForStudentRequest
+> = {
+  encode(
+    message: ResetProvisionedAccountPasswordForStudentRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.provisioned_account_id !== undefined) {
+      ObjectId.encode(message.provisioned_account_id, writer.uint32(18).fork()).join();
+    }
+    if (message.password !== undefined) {
+      writer.uint32(26).string(message.password);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ResetProvisionedAccountPasswordForStudentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResetProvisionedAccountPasswordForStudentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.provisioned_account_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResetProvisionedAccountPasswordForStudentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      provisioned_account_id: isSet(object.provisionedAccountId)
+        ? ObjectId.fromJSON(object.provisionedAccountId)
+        : undefined,
+      password: isSet(object.password) ? globalThis.String(object.password) : undefined,
+    };
+  },
+
+  toJSON(message: ResetProvisionedAccountPasswordForStudentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.provisioned_account_id !== undefined) {
+      obj.provisionedAccountId = ObjectId.toJSON(message.provisioned_account_id);
+    }
+    if (message.password !== undefined) {
+      obj.password = message.password;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ResetProvisionedAccountPasswordForStudentRequest>, I>>(
+    base?: I,
+  ): ResetProvisionedAccountPasswordForStudentRequest {
+    return ResetProvisionedAccountPasswordForStudentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ResetProvisionedAccountPasswordForStudentRequest>, I>>(
+    object: I,
+  ): ResetProvisionedAccountPasswordForStudentRequest {
+    const message = createBaseResetProvisionedAccountPasswordForStudentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.provisioned_account_id =
+      (object.provisioned_account_id !== undefined && object.provisioned_account_id !== null)
+        ? ObjectId.fromPartial(object.provisioned_account_id)
+        : undefined;
+    message.password = object.password ?? undefined;
+    return message;
+  },
+};
+
+function createBaseResetProvisionedAccountPasswordForTeacherRequest(): ResetProvisionedAccountPasswordForTeacherRequest {
+  return { context: undefined, provisioned_account_id: undefined, password: undefined };
+}
+
+export const ResetProvisionedAccountPasswordForTeacherRequest: MessageFns<
+  ResetProvisionedAccountPasswordForTeacherRequest
+> = {
+  encode(
+    message: ResetProvisionedAccountPasswordForTeacherRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.provisioned_account_id !== undefined) {
+      ObjectId.encode(message.provisioned_account_id, writer.uint32(18).fork()).join();
+    }
+    if (message.password !== undefined) {
+      writer.uint32(26).string(message.password);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ResetProvisionedAccountPasswordForTeacherRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResetProvisionedAccountPasswordForTeacherRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.provisioned_account_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResetProvisionedAccountPasswordForTeacherRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      provisioned_account_id: isSet(object.provisionedAccountId)
+        ? ObjectId.fromJSON(object.provisionedAccountId)
+        : undefined,
+      password: isSet(object.password) ? globalThis.String(object.password) : undefined,
+    };
+  },
+
+  toJSON(message: ResetProvisionedAccountPasswordForTeacherRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.provisioned_account_id !== undefined) {
+      obj.provisionedAccountId = ObjectId.toJSON(message.provisioned_account_id);
+    }
+    if (message.password !== undefined) {
+      obj.password = message.password;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ResetProvisionedAccountPasswordForTeacherRequest>, I>>(
+    base?: I,
+  ): ResetProvisionedAccountPasswordForTeacherRequest {
+    return ResetProvisionedAccountPasswordForTeacherRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ResetProvisionedAccountPasswordForTeacherRequest>, I>>(
+    object: I,
+  ): ResetProvisionedAccountPasswordForTeacherRequest {
+    const message = createBaseResetProvisionedAccountPasswordForTeacherRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.provisioned_account_id =
+      (object.provisioned_account_id !== undefined && object.provisioned_account_id !== null)
+        ? ObjectId.fromPartial(object.provisioned_account_id)
+        : undefined;
+    message.password = object.password ?? undefined;
+    return message;
+  },
+};
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
