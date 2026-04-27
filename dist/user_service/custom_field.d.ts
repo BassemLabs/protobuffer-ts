@@ -43,6 +43,7 @@ export interface CustomField {
     regex_pattern?: string | undefined;
     options: string[];
     is_archived?: boolean | undefined;
+    sort_order?: number | undefined;
 }
 /** Custom fields group */
 export interface CustomFieldsGroup {
@@ -57,6 +58,7 @@ export interface CustomFieldsGroup {
     /** these fields are only for custom field groups for user type: Student */
     visible_to_parents_for_statuses: StudentStatus[];
     visible_to_teachers_for_statuses: StudentStatus[];
+    sort_order?: number | undefined;
 }
 /** Group approval status (approval workflow for custom field groups) */
 export interface GroupApprovalStatus {

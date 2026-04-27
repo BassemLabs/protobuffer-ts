@@ -182,6 +182,7 @@ function createBaseCustomField() {
         regex_pattern: undefined,
         options: [],
         is_archived: undefined,
+        sort_order: undefined,
     };
 }
 exports.CustomField = {
@@ -218,6 +219,9 @@ exports.CustomField = {
         }
         if (message.is_archived !== undefined) {
             writer.uint32(88).bool(message.is_archived);
+        }
+        if (message.sort_order !== undefined) {
+            writer.uint32(96).int32(message.sort_order);
         }
         return writer;
     },
@@ -294,6 +298,12 @@ exports.CustomField = {
                     }
                     message.is_archived = reader.bool();
                     continue;
+                case 12:
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.sort_order = reader.int32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -315,6 +325,7 @@ exports.CustomField = {
             regex_pattern: isSet(object.regexPattern) ? globalThis.String(object.regexPattern) : undefined,
             options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
             is_archived: isSet(object.isArchived) ? globalThis.Boolean(object.isArchived) : undefined,
+            sort_order: isSet(object.sortOrder) ? globalThis.Number(object.sortOrder) : undefined,
         };
     },
     toJSON(message) {
@@ -352,6 +363,9 @@ exports.CustomField = {
         if (message.is_archived !== undefined) {
             obj.isArchived = message.is_archived;
         }
+        if (message.sort_order !== undefined) {
+            obj.sortOrder = Math.round(message.sort_order);
+        }
         return obj;
     },
     create(base) {
@@ -374,6 +388,7 @@ exports.CustomField = {
         message.regex_pattern = object.regex_pattern ?? undefined;
         message.options = object.options?.map((e) => e) || [];
         message.is_archived = object.is_archived ?? undefined;
+        message.sort_order = object.sort_order ?? undefined;
         return message;
     },
 };
@@ -389,6 +404,7 @@ function createBaseCustomFieldsGroup() {
         entries_access_settings: undefined,
         visible_to_parents_for_statuses: [],
         visible_to_teachers_for_statuses: [],
+        sort_order: undefined,
     };
 }
 exports.CustomFieldsGroup = {
@@ -427,6 +443,9 @@ exports.CustomFieldsGroup = {
             writer.int32((0, student_1.studentStatusToNumber)(v));
         }
         writer.join();
+        if (message.sort_order !== undefined) {
+            writer.uint32(88).int32(message.sort_order);
+        }
         return writer;
     },
     decode(input, length) {
@@ -510,6 +529,12 @@ exports.CustomFieldsGroup = {
                         continue;
                     }
                     break;
+                case 11:
+                    if (tag !== 88) {
+                        break;
+                    }
+                    message.sort_order = reader.int32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -538,6 +563,7 @@ exports.CustomFieldsGroup = {
             visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
                 ? object.visibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
+            sort_order: isSet(object.sortOrder) ? globalThis.Number(object.sortOrder) : undefined,
         };
     },
     toJSON(message) {
@@ -572,6 +598,9 @@ exports.CustomFieldsGroup = {
         if (message.visible_to_teachers_for_statuses?.length) {
             obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
+        if (message.sort_order !== undefined) {
+            obj.sortOrder = Math.round(message.sort_order);
+        }
         return obj;
     },
     create(base) {
@@ -597,6 +626,7 @@ exports.CustomFieldsGroup = {
                 : undefined;
         message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
         message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
+        message.sort_order = object.sort_order ?? undefined;
         return message;
     },
 };

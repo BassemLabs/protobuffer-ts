@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/custom_field_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
+exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.ReorderCustomFieldsRequest = exports.ReorderCustomFieldsGroupsRequest = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
@@ -2551,6 +2551,190 @@ exports.GetParentGroupsWithFieldsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
+        return message;
+    },
+};
+function createBaseReorderCustomFieldsGroupsRequest() {
+    return { context: undefined, user_type: undefined, profile_section: undefined, group_ids: [] };
+}
+exports.ReorderCustomFieldsGroupsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.user_type !== undefined) {
+            writer.uint32(16).int32((0, user_type_1.userTypeToNumber)(message.user_type));
+        }
+        if (message.profile_section !== undefined) {
+            writer.uint32(24).int32((0, organization_profile_settings_1.profileSectionToNumber)(message.profile_section));
+        }
+        for (const v of message.group_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReorderCustomFieldsGroupsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.user_type = (0, user_type_1.userTypeFromJSON)(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.profile_section = (0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.group_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
+            profile_section: isSet(object.profileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection) : undefined,
+            group_ids: globalThis.Array.isArray(object?.groupIds)
+                ? object.groupIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.user_type !== undefined) {
+            obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
+        }
+        if (message.profile_section !== undefined) {
+            obj.profileSection = (0, organization_profile_settings_1.profileSectionToJSON)(message.profile_section);
+        }
+        if (message.group_ids?.length) {
+            obj.groupIds = message.group_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReorderCustomFieldsGroupsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReorderCustomFieldsGroupsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.user_type = object.user_type ?? undefined;
+        message.profile_section = object.profile_section ?? undefined;
+        message.group_ids = object.group_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseReorderCustomFieldsRequest() {
+    return { context: undefined, group_id: undefined, field_ids: [] };
+}
+exports.ReorderCustomFieldsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.field_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReorderCustomFieldsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.field_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            field_ids: globalThis.Array.isArray(object?.fieldIds)
+                ? object.fieldIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.group_id !== undefined) {
+            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+        }
+        if (message.field_ids?.length) {
+            obj.fieldIds = message.field_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReorderCustomFieldsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReorderCustomFieldsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.group_id = (object.group_id !== undefined && object.group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.group_id)
+            : undefined;
+        message.field_ids = object.field_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

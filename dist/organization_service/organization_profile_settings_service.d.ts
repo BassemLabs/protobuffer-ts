@@ -44,6 +44,11 @@ export interface RemoveStudentProfileSectionRequest {
     organization_id: ObjectId | undefined;
     remove_profile_section?: ProfileSection | undefined;
 }
+export interface ReorderProfileSectionsRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    profile_sections: ProfileSection[];
+}
 /** Request to set student_primary_id_custom_field */
 export interface SetStudentPrimaryIdCustomFieldRequest {
     context: RequestContext | undefined;
@@ -64,6 +69,7 @@ export declare const AddTeacherProfileSectionRequest: MessageFns<AddTeacherProfi
 export declare const RemoveTeacherProfileSectionRequest: MessageFns<RemoveTeacherProfileSectionRequest>;
 export declare const AddStudentProfileSectionRequest: MessageFns<AddStudentProfileSectionRequest>;
 export declare const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfileSectionRequest>;
+export declare const ReorderProfileSectionsRequest: MessageFns<ReorderProfileSectionsRequest>;
 export declare const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimaryIdCustomFieldRequest>;
 export declare const UpdateGraduationSettingsRequest: MessageFns<UpdateGraduationSettingsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

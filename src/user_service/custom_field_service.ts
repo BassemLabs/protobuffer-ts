@@ -241,6 +241,19 @@ export interface GetParentGroupsWithFieldsRequest {
   context: RequestContext | undefined;
 }
 
+export interface ReorderCustomFieldsGroupsRequest {
+  context: RequestContext | undefined;
+  user_type?: UserType | undefined;
+  profile_section?: ProfileSection | undefined;
+  group_ids: ObjectId[];
+}
+
+export interface ReorderCustomFieldsRequest {
+  context: RequestContext | undefined;
+  group_id: ObjectId | undefined;
+  field_ids: ObjectId[];
+}
+
 /** Unified response for all endpoints that return a list of CustomFieldsGroupWithFields */
 export interface GetCustomFieldsGroupsWithFieldsResponse {
   groups_with_fields: CustomFieldsGroupWithFields[];
@@ -3193,6 +3206,213 @@ export const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFie
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseReorderCustomFieldsGroupsRequest(): ReorderCustomFieldsGroupsRequest {
+  return { context: undefined, user_type: undefined, profile_section: undefined, group_ids: [] };
+}
+
+export const ReorderCustomFieldsGroupsRequest: MessageFns<ReorderCustomFieldsGroupsRequest> = {
+  encode(message: ReorderCustomFieldsGroupsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.user_type !== undefined) {
+      writer.uint32(16).int32(userTypeToNumber(message.user_type));
+    }
+    if (message.profile_section !== undefined) {
+      writer.uint32(24).int32(profileSectionToNumber(message.profile_section));
+    }
+    for (const v of message.group_ids) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReorderCustomFieldsGroupsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReorderCustomFieldsGroupsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.user_type = userTypeFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.profile_section = profileSectionFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.group_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReorderCustomFieldsGroupsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
+      profile_section: isSet(object.profileSection) ? profileSectionFromJSON(object.profileSection) : undefined,
+      group_ids: globalThis.Array.isArray(object?.groupIds)
+        ? object.groupIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReorderCustomFieldsGroupsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.user_type !== undefined) {
+      obj.userType = userTypeToJSON(message.user_type);
+    }
+    if (message.profile_section !== undefined) {
+      obj.profileSection = profileSectionToJSON(message.profile_section);
+    }
+    if (message.group_ids?.length) {
+      obj.groupIds = message.group_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReorderCustomFieldsGroupsRequest>, I>>(
+    base?: I,
+  ): ReorderCustomFieldsGroupsRequest {
+    return ReorderCustomFieldsGroupsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReorderCustomFieldsGroupsRequest>, I>>(
+    object: I,
+  ): ReorderCustomFieldsGroupsRequest {
+    const message = createBaseReorderCustomFieldsGroupsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.user_type = object.user_type ?? undefined;
+    message.profile_section = object.profile_section ?? undefined;
+    message.group_ids = object.group_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseReorderCustomFieldsRequest(): ReorderCustomFieldsRequest {
+  return { context: undefined, group_id: undefined, field_ids: [] };
+}
+
+export const ReorderCustomFieldsRequest: MessageFns<ReorderCustomFieldsRequest> = {
+  encode(message: ReorderCustomFieldsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.group_id !== undefined) {
+      ObjectId.encode(message.group_id, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.field_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReorderCustomFieldsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReorderCustomFieldsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.group_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.field_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReorderCustomFieldsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
+      field_ids: globalThis.Array.isArray(object?.fieldIds)
+        ? object.fieldIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReorderCustomFieldsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.group_id !== undefined) {
+      obj.groupId = ObjectId.toJSON(message.group_id);
+    }
+    if (message.field_ids?.length) {
+      obj.fieldIds = message.field_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReorderCustomFieldsRequest>, I>>(base?: I): ReorderCustomFieldsRequest {
+    return ReorderCustomFieldsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReorderCustomFieldsRequest>, I>>(object: I): ReorderCustomFieldsRequest {
+    const message = createBaseReorderCustomFieldsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.group_id = (object.group_id !== undefined && object.group_id !== null)
+      ? ObjectId.fromPartial(object.group_id)
+      : undefined;
+    message.field_ids = object.field_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

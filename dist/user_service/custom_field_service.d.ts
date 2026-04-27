@@ -168,6 +168,17 @@ export interface GetStudentGroupsWithFieldsRequest {
 export interface GetParentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
 }
+export interface ReorderCustomFieldsGroupsRequest {
+    context: RequestContext | undefined;
+    user_type?: UserType | undefined;
+    profile_section?: ProfileSection | undefined;
+    group_ids: ObjectId[];
+}
+export interface ReorderCustomFieldsRequest {
+    context: RequestContext | undefined;
+    group_id: ObjectId | undefined;
+    field_ids: ObjectId[];
+}
 /** Unified response for all endpoints that return a list of CustomFieldsGroupWithFields */
 export interface GetCustomFieldsGroupsWithFieldsResponse {
     groups_with_fields: CustomFieldsGroupWithFields[];
@@ -236,6 +247,8 @@ export declare const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAcces
 export declare const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns<GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest>;
 export declare const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithFieldsRequest>;
 export declare const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFieldsRequest>;
+export declare const ReorderCustomFieldsGroupsRequest: MessageFns<ReorderCustomFieldsGroupsRequest>;
+export declare const ReorderCustomFieldsRequest: MessageFns<ReorderCustomFieldsRequest>;
 export declare const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFieldsGroupsWithFieldsResponse>;
 export declare const GetGroupStatusRequest: MessageFns<GetGroupStatusRequest>;
 export declare const ApproveGroupRequest: MessageFns<ApproveGroupRequest>;

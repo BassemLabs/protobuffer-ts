@@ -65,6 +65,12 @@ export interface RemoveStudentProfileSectionRequest {
   remove_profile_section?: ProfileSection | undefined;
 }
 
+export interface ReorderProfileSectionsRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  profile_sections: ProfileSection[];
+}
+
 /** Request to set student_primary_id_custom_field */
 export interface SetStudentPrimaryIdCustomFieldRequest {
   context: RequestContext | undefined;
@@ -746,6 +752,115 @@ export const RemoveStudentProfileSectionRequest: MessageFns<RemoveStudentProfile
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.remove_profile_section = object.remove_profile_section ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReorderProfileSectionsRequest(): ReorderProfileSectionsRequest {
+  return { context: undefined, organization_id: undefined, profile_sections: [] };
+}
+
+export const ReorderProfileSectionsRequest: MessageFns<ReorderProfileSectionsRequest> = {
+  encode(message: ReorderProfileSectionsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    writer.uint32(26).fork();
+    for (const v of message.profile_sections) {
+      writer.int32(profileSectionToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReorderProfileSectionsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReorderProfileSectionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag === 24) {
+            message.profile_sections.push(profileSectionFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 26) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.profile_sections.push(profileSectionFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReorderProfileSectionsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      profile_sections: globalThis.Array.isArray(object?.profileSections)
+        ? object.profileSections.map((e: any) => profileSectionFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReorderProfileSectionsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.profile_sections?.length) {
+      obj.profileSections = message.profile_sections.map((e) => profileSectionToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReorderProfileSectionsRequest>, I>>(base?: I): ReorderProfileSectionsRequest {
+    return ReorderProfileSectionsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReorderProfileSectionsRequest>, I>>(
+    object: I,
+  ): ReorderProfileSectionsRequest {
+    const message = createBaseReorderProfileSectionsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.profile_sections = object.profile_sections?.map((e) => e) || [];
     return message;
   },
 };

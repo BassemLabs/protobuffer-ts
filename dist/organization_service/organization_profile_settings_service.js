@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_profile_settings_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateGraduationSettingsRequest = exports.SetStudentPrimaryIdCustomFieldRequest = exports.RemoveStudentProfileSectionRequest = exports.AddStudentProfileSectionRequest = exports.RemoveTeacherProfileSectionRequest = exports.AddTeacherProfileSectionRequest = exports.RemoveParentProfileSectionRequest = exports.AddParentProfileSectionRequest = exports.GetOrganizationProfileSettingsRequest = exports.protobufPackage = void 0;
+exports.UpdateGraduationSettingsRequest = exports.SetStudentPrimaryIdCustomFieldRequest = exports.ReorderProfileSectionsRequest = exports.RemoveStudentProfileSectionRequest = exports.AddStudentProfileSectionRequest = exports.RemoveTeacherProfileSectionRequest = exports.AddTeacherProfileSectionRequest = exports.RemoveParentProfileSectionRequest = exports.AddParentProfileSectionRequest = exports.GetOrganizationProfileSettingsRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -595,6 +595,101 @@ exports.RemoveStudentProfileSectionRequest = {
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         message.remove_profile_section = object.remove_profile_section ?? undefined;
+        return message;
+    },
+};
+function createBaseReorderProfileSectionsRequest() {
+    return { context: undefined, organization_id: undefined, profile_sections: [] };
+}
+exports.ReorderProfileSectionsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        writer.uint32(26).fork();
+        for (const v of message.profile_sections) {
+            writer.int32((0, organization_profile_settings_1.profileSectionToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReorderProfileSectionsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag === 24) {
+                        message.profile_sections.push((0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 26) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.profile_sections.push((0, organization_profile_settings_1.profileSectionFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            profile_sections: globalThis.Array.isArray(object?.profileSections)
+                ? object.profileSections.map((e) => (0, organization_profile_settings_1.profileSectionFromJSON)(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.profile_sections?.length) {
+            obj.profileSections = message.profile_sections.map((e) => (0, organization_profile_settings_1.profileSectionToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReorderProfileSectionsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReorderProfileSectionsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.profile_sections = object.profile_sections?.map((e) => e) || [];
         return message;
     },
 };
