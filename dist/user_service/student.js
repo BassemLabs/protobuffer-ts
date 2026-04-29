@@ -476,6 +476,7 @@ function createBaseSchoolYearStudent() {
         has_non_paid_invoices: undefined,
         date_of_birth: undefined,
         interview_date: undefined,
+        has_enrolled_family: undefined,
     };
 }
 exports.SchoolYearStudent = {
@@ -509,6 +510,9 @@ exports.SchoolYearStudent = {
         }
         if (message.interview_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(82).fork()).join();
+        }
+        if (message.has_enrolled_family !== undefined) {
+            writer.uint32(88).bool(message.has_enrolled_family);
         }
         return writer;
     },
@@ -579,6 +583,12 @@ exports.SchoolYearStudent = {
                     }
                     message.interview_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 11:
+                    if (tag !== 88) {
+                        break;
+                    }
+                    message.has_enrolled_family = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -601,6 +611,7 @@ exports.SchoolYearStudent = {
                 : undefined,
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+            has_enrolled_family: isSet(object.hasEnrolledFamily) ? globalThis.Boolean(object.hasEnrolledFamily) : undefined,
         };
     },
     toJSON(message) {
@@ -635,6 +646,9 @@ exports.SchoolYearStudent = {
         if (message.interview_date !== undefined) {
             obj.interviewDate = message.interview_date.toISOString();
         }
+        if (message.has_enrolled_family !== undefined) {
+            obj.hasEnrolledFamily = message.has_enrolled_family;
+        }
         return obj;
     },
     create(base) {
@@ -654,6 +668,7 @@ exports.SchoolYearStudent = {
         message.has_non_paid_invoices = object.has_non_paid_invoices ?? undefined;
         message.date_of_birth = object.date_of_birth ?? undefined;
         message.interview_date = object.interview_date ?? undefined;
+        message.has_enrolled_family = object.has_enrolled_family ?? undefined;
         return message;
     },
 };

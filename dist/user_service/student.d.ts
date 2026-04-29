@@ -79,6 +79,7 @@ export interface SchoolYearStudent {
     has_non_paid_invoices?: boolean | undefined;
     date_of_birth: Date | undefined;
     interview_date?: Date | undefined;
+    has_enrolled_family?: boolean | undefined;
 }
 /** Student profile data for updates */
 export interface StudentProfile {

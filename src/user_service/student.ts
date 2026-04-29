@@ -303,6 +303,7 @@ export interface SchoolYearStudent {
   has_non_paid_invoices?: boolean | undefined;
   date_of_birth: Date | undefined;
   interview_date?: Date | undefined;
+  has_enrolled_family?: boolean | undefined;
 }
 
 /** Student profile data for updates */
@@ -573,6 +574,7 @@ function createBaseSchoolYearStudent(): SchoolYearStudent {
     has_non_paid_invoices: undefined,
     date_of_birth: undefined,
     interview_date: undefined,
+    has_enrolled_family: undefined,
   };
 }
 
@@ -607,6 +609,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     }
     if (message.interview_date !== undefined) {
       Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(82).fork()).join();
+    }
+    if (message.has_enrolled_family !== undefined) {
+      writer.uint32(88).bool(message.has_enrolled_family);
     }
     return writer;
   },
@@ -688,6 +693,13 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
 
           message.interview_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.has_enrolled_family = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -711,6 +723,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
         : undefined,
       date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
       interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
+      has_enrolled_family: isSet(object.hasEnrolledFamily) ? globalThis.Boolean(object.hasEnrolledFamily) : undefined,
     };
   },
 
@@ -746,6 +759,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     if (message.interview_date !== undefined) {
       obj.interviewDate = message.interview_date.toISOString();
     }
+    if (message.has_enrolled_family !== undefined) {
+      obj.hasEnrolledFamily = message.has_enrolled_family;
+    }
     return obj;
   },
 
@@ -766,6 +782,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     message.has_non_paid_invoices = object.has_non_paid_invoices ?? undefined;
     message.date_of_birth = object.date_of_birth ?? undefined;
     message.interview_date = object.interview_date ?? undefined;
+    message.has_enrolled_family = object.has_enrolled_family ?? undefined;
     return message;
   },
 };
