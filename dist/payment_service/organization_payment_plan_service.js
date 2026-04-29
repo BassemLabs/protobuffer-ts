@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/organization_payment_plan_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOrgActivePaymentPlanWithInfoRequest = exports.GetOrgsPaymentPlanInfoResponse = exports.GetOrgsPaymentPlanInfoRequest = exports.GetOrganizationActiveOrgPaymentPlanInfoRequest = exports.AssignPaymentPlanToOrganizationRequest = exports.MakePaymentPlanAccessibleForOrganizationRequest = exports.GetAllPaymentPlanAccessResponse = exports.GetAllPaymentPlanAccessRequest = exports.GetOrganizationVisiblePlansRequest = exports.CreatePaymentPlanRequest = exports.GetPaymentPlansResponse = exports.GetAllPaymentPlansRequest = exports.protobufPackage = void 0;
+exports.GetOrgActivePaymentPlanWithInfoRequest = exports.GetOrgsPaymentPlanInfoResponse = exports.GetOrgsPaymentPlanInfoRequest = exports.OrganizationNextPaymentPlanStatus = exports.GetOrganizationPaymentPlanHistoryResponse = exports.GetOrganizationPaymentPlanHistoryRequest = exports.GetOrganizationNextPaymentPlanStatusRequest = exports.GetOrganizationActiveOrgPaymentPlanInfoRequest = exports.AssignNextPaymentPlanToOrganizationRequest = exports.AssignPaymentPlanToOrganizationRequest = exports.MakePaymentPlanAccessibleForOrganizationRequest = exports.GetAllPaymentPlanAccessResponse = exports.GetAllPaymentPlanAccessRequest = exports.GetOrganizationVisiblePlansRequest = exports.CreatePaymentPlanRequest = exports.GetPaymentPlansResponse = exports.GetAllPaymentPlansRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_1 = require("../organization_service/organization");
@@ -630,6 +630,113 @@ exports.AssignPaymentPlanToOrganizationRequest = {
         return message;
     },
 };
+function createBaseAssignNextPaymentPlanToOrganizationRequest() {
+    return {
+        context: undefined,
+        organization_id: undefined,
+        payment_plan_id: undefined,
+        defer_per_student_cost_to_parent: undefined,
+    };
+}
+exports.AssignNextPaymentPlanToOrganizationRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.payment_plan_id !== undefined) {
+            object_id_1.ObjectId.encode(message.payment_plan_id, writer.uint32(26).fork()).join();
+        }
+        if (message.defer_per_student_cost_to_parent !== undefined) {
+            writer.uint32(32).bool(message.defer_per_student_cost_to_parent);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseAssignNextPaymentPlanToOrganizationRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.payment_plan_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.defer_per_student_cost_to_parent = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            payment_plan_id: isSet(object.paymentPlanId) ? object_id_1.ObjectId.fromJSON(object.paymentPlanId) : undefined,
+            defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
+                ? globalThis.Boolean(object.deferPerStudentCostToParent)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.payment_plan_id !== undefined) {
+            obj.paymentPlanId = object_id_1.ObjectId.toJSON(message.payment_plan_id);
+        }
+        if (message.defer_per_student_cost_to_parent !== undefined) {
+            obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.AssignNextPaymentPlanToOrganizationRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseAssignNextPaymentPlanToOrganizationRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.payment_plan_id)
+            : undefined;
+        message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? undefined;
+        return message;
+    },
+};
 function createBaseGetOrganizationActiveOrgPaymentPlanInfoRequest() {
     return { context: undefined };
 }
@@ -678,6 +785,274 @@ exports.GetOrganizationActiveOrgPaymentPlanInfoRequest = {
         const message = createBaseGetOrganizationActiveOrgPaymentPlanInfoRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetOrganizationNextPaymentPlanStatusRequest() {
+    return { context: undefined };
+}
+exports.GetOrganizationNextPaymentPlanStatusRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationNextPaymentPlanStatusRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationNextPaymentPlanStatusRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationNextPaymentPlanStatusRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetOrganizationPaymentPlanHistoryRequest() {
+    return { context: undefined };
+}
+exports.GetOrganizationPaymentPlanHistoryRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationPaymentPlanHistoryRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationPaymentPlanHistoryRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationPaymentPlanHistoryRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetOrganizationPaymentPlanHistoryResponse() {
+    return { payment_plan_history: [] };
+}
+exports.GetOrganizationPaymentPlanHistoryResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.payment_plan_history) {
+            organization_payment_plan_1.OrganizationPaymentPlanWithInfo.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationPaymentPlanHistoryResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.payment_plan_history.push(organization_payment_plan_1.OrganizationPaymentPlanWithInfo.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            payment_plan_history: globalThis.Array.isArray(object?.paymentPlanHistory)
+                ? object.paymentPlanHistory.map((e) => organization_payment_plan_1.OrganizationPaymentPlanWithInfo.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.payment_plan_history?.length) {
+            obj.paymentPlanHistory = message.payment_plan_history.map((e) => organization_payment_plan_1.OrganizationPaymentPlanWithInfo.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationPaymentPlanHistoryResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationPaymentPlanHistoryResponse();
+        message.payment_plan_history =
+            object.payment_plan_history?.map((e) => organization_payment_plan_1.OrganizationPaymentPlanWithInfo.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseOrganizationNextPaymentPlanStatus() {
+    return {
+        should_show_alert: undefined,
+        days_until_active_plan_end: undefined,
+        active_plan_info: undefined,
+        next_plan_info: undefined,
+    };
+}
+exports.OrganizationNextPaymentPlanStatus = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.should_show_alert !== undefined) {
+            writer.uint32(8).bool(message.should_show_alert);
+        }
+        if (message.days_until_active_plan_end !== undefined) {
+            writer.uint32(16).int32(message.days_until_active_plan_end);
+        }
+        if (message.active_plan_info !== undefined) {
+            organization_payment_plan_1.OrganizationPaymentPlanInformation.encode(message.active_plan_info, writer.uint32(26).fork()).join();
+        }
+        if (message.next_plan_info !== undefined) {
+            organization_payment_plan_1.OrganizationPaymentPlanInformation.encode(message.next_plan_info, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOrganizationNextPaymentPlanStatus();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.should_show_alert = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.days_until_active_plan_end = reader.int32();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.active_plan_info = organization_payment_plan_1.OrganizationPaymentPlanInformation.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.next_plan_info = organization_payment_plan_1.OrganizationPaymentPlanInformation.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            should_show_alert: isSet(object.shouldShowAlert) ? globalThis.Boolean(object.shouldShowAlert) : undefined,
+            days_until_active_plan_end: isSet(object.daysUntilActivePlanEnd)
+                ? globalThis.Number(object.daysUntilActivePlanEnd)
+                : undefined,
+            active_plan_info: isSet(object.activePlanInfo)
+                ? organization_payment_plan_1.OrganizationPaymentPlanInformation.fromJSON(object.activePlanInfo)
+                : undefined,
+            next_plan_info: isSet(object.nextPlanInfo)
+                ? organization_payment_plan_1.OrganizationPaymentPlanInformation.fromJSON(object.nextPlanInfo)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.should_show_alert !== undefined) {
+            obj.shouldShowAlert = message.should_show_alert;
+        }
+        if (message.days_until_active_plan_end !== undefined) {
+            obj.daysUntilActivePlanEnd = Math.round(message.days_until_active_plan_end);
+        }
+        if (message.active_plan_info !== undefined) {
+            obj.activePlanInfo = organization_payment_plan_1.OrganizationPaymentPlanInformation.toJSON(message.active_plan_info);
+        }
+        if (message.next_plan_info !== undefined) {
+            obj.nextPlanInfo = organization_payment_plan_1.OrganizationPaymentPlanInformation.toJSON(message.next_plan_info);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OrganizationNextPaymentPlanStatus.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOrganizationNextPaymentPlanStatus();
+        message.should_show_alert = object.should_show_alert ?? undefined;
+        message.days_until_active_plan_end = object.days_until_active_plan_end ?? undefined;
+        message.active_plan_info = (object.active_plan_info !== undefined && object.active_plan_info !== null)
+            ? organization_payment_plan_1.OrganizationPaymentPlanInformation.fromPartial(object.active_plan_info)
+            : undefined;
+        message.next_plan_info = (object.next_plan_info !== undefined && object.next_plan_info !== null)
+            ? organization_payment_plan_1.OrganizationPaymentPlanInformation.fromPartial(object.next_plan_info)
             : undefined;
         return message;
     },

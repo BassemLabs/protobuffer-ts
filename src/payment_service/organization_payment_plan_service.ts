@@ -12,6 +12,7 @@ import { RequestContext } from "../utils/request_context";
 import {
   OrganizationPaymentPlan,
   OrganizationPaymentPlanInformation,
+  OrganizationPaymentPlanWithInfo,
   OrganizationPlanAccess,
   PaymentInterval,
   paymentIntervalFromJSON,
@@ -65,8 +66,34 @@ export interface AssignPaymentPlanToOrganizationRequest {
   defer_per_student_cost_to_parent?: boolean | undefined;
 }
 
+export interface AssignNextPaymentPlanToOrganizationRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  payment_plan_id: ObjectId | undefined;
+  defer_per_student_cost_to_parent?: boolean | undefined;
+}
+
 export interface GetOrganizationActiveOrgPaymentPlanInfoRequest {
   context: RequestContext | undefined;
+}
+
+export interface GetOrganizationNextPaymentPlanStatusRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetOrganizationPaymentPlanHistoryRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetOrganizationPaymentPlanHistoryResponse {
+  payment_plan_history: OrganizationPaymentPlanWithInfo[];
+}
+
+export interface OrganizationNextPaymentPlanStatus {
+  should_show_alert?: boolean | undefined;
+  days_until_active_plan_end?: number | undefined;
+  active_plan_info?: OrganizationPaymentPlanInformation | undefined;
+  next_plan_info?: OrganizationPaymentPlanInformation | undefined;
 }
 
 export interface GetOrgsPaymentPlanInfoRequest {
@@ -788,6 +815,127 @@ export const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPla
   },
 };
 
+function createBaseAssignNextPaymentPlanToOrganizationRequest(): AssignNextPaymentPlanToOrganizationRequest {
+  return {
+    context: undefined,
+    organization_id: undefined,
+    payment_plan_id: undefined,
+    defer_per_student_cost_to_parent: undefined,
+  };
+}
+
+export const AssignNextPaymentPlanToOrganizationRequest: MessageFns<AssignNextPaymentPlanToOrganizationRequest> = {
+  encode(message: AssignNextPaymentPlanToOrganizationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.payment_plan_id !== undefined) {
+      ObjectId.encode(message.payment_plan_id, writer.uint32(26).fork()).join();
+    }
+    if (message.defer_per_student_cost_to_parent !== undefined) {
+      writer.uint32(32).bool(message.defer_per_student_cost_to_parent);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AssignNextPaymentPlanToOrganizationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAssignNextPaymentPlanToOrganizationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.payment_plan_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.defer_per_student_cost_to_parent = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AssignNextPaymentPlanToOrganizationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      payment_plan_id: isSet(object.paymentPlanId) ? ObjectId.fromJSON(object.paymentPlanId) : undefined,
+      defer_per_student_cost_to_parent: isSet(object.deferPerStudentCostToParent)
+        ? globalThis.Boolean(object.deferPerStudentCostToParent)
+        : undefined,
+    };
+  },
+
+  toJSON(message: AssignNextPaymentPlanToOrganizationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.payment_plan_id !== undefined) {
+      obj.paymentPlanId = ObjectId.toJSON(message.payment_plan_id);
+    }
+    if (message.defer_per_student_cost_to_parent !== undefined) {
+      obj.deferPerStudentCostToParent = message.defer_per_student_cost_to_parent;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AssignNextPaymentPlanToOrganizationRequest>, I>>(
+    base?: I,
+  ): AssignNextPaymentPlanToOrganizationRequest {
+    return AssignNextPaymentPlanToOrganizationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AssignNextPaymentPlanToOrganizationRequest>, I>>(
+    object: I,
+  ): AssignNextPaymentPlanToOrganizationRequest {
+    const message = createBaseAssignNextPaymentPlanToOrganizationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.payment_plan_id = (object.payment_plan_id !== undefined && object.payment_plan_id !== null)
+      ? ObjectId.fromPartial(object.payment_plan_id)
+      : undefined;
+    message.defer_per_student_cost_to_parent = object.defer_per_student_cost_to_parent ?? undefined;
+    return message;
+  },
+};
+
 function createBaseGetOrganizationActiveOrgPaymentPlanInfoRequest(): GetOrganizationActiveOrgPaymentPlanInfoRequest {
   return { context: undefined };
 }
@@ -851,6 +999,324 @@ export const GetOrganizationActiveOrgPaymentPlanInfoRequest: MessageFns<
     const message = createBaseGetOrganizationActiveOrgPaymentPlanInfoRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationNextPaymentPlanStatusRequest(): GetOrganizationNextPaymentPlanStatusRequest {
+  return { context: undefined };
+}
+
+export const GetOrganizationNextPaymentPlanStatusRequest: MessageFns<GetOrganizationNextPaymentPlanStatusRequest> = {
+  encode(
+    message: GetOrganizationNextPaymentPlanStatusRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationNextPaymentPlanStatusRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationNextPaymentPlanStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationNextPaymentPlanStatusRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetOrganizationNextPaymentPlanStatusRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationNextPaymentPlanStatusRequest>, I>>(
+    base?: I,
+  ): GetOrganizationNextPaymentPlanStatusRequest {
+    return GetOrganizationNextPaymentPlanStatusRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationNextPaymentPlanStatusRequest>, I>>(
+    object: I,
+  ): GetOrganizationNextPaymentPlanStatusRequest {
+    const message = createBaseGetOrganizationNextPaymentPlanStatusRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationPaymentPlanHistoryRequest(): GetOrganizationPaymentPlanHistoryRequest {
+  return { context: undefined };
+}
+
+export const GetOrganizationPaymentPlanHistoryRequest: MessageFns<GetOrganizationPaymentPlanHistoryRequest> = {
+  encode(message: GetOrganizationPaymentPlanHistoryRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationPaymentPlanHistoryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationPaymentPlanHistoryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationPaymentPlanHistoryRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetOrganizationPaymentPlanHistoryRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationPaymentPlanHistoryRequest>, I>>(
+    base?: I,
+  ): GetOrganizationPaymentPlanHistoryRequest {
+    return GetOrganizationPaymentPlanHistoryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationPaymentPlanHistoryRequest>, I>>(
+    object: I,
+  ): GetOrganizationPaymentPlanHistoryRequest {
+    const message = createBaseGetOrganizationPaymentPlanHistoryRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationPaymentPlanHistoryResponse(): GetOrganizationPaymentPlanHistoryResponse {
+  return { payment_plan_history: [] };
+}
+
+export const GetOrganizationPaymentPlanHistoryResponse: MessageFns<GetOrganizationPaymentPlanHistoryResponse> = {
+  encode(message: GetOrganizationPaymentPlanHistoryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.payment_plan_history) {
+      OrganizationPaymentPlanWithInfo.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationPaymentPlanHistoryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationPaymentPlanHistoryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.payment_plan_history.push(OrganizationPaymentPlanWithInfo.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationPaymentPlanHistoryResponse {
+    return {
+      payment_plan_history: globalThis.Array.isArray(object?.paymentPlanHistory)
+        ? object.paymentPlanHistory.map((e: any) => OrganizationPaymentPlanWithInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetOrganizationPaymentPlanHistoryResponse): unknown {
+    const obj: any = {};
+    if (message.payment_plan_history?.length) {
+      obj.paymentPlanHistory = message.payment_plan_history.map((e) => OrganizationPaymentPlanWithInfo.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationPaymentPlanHistoryResponse>, I>>(
+    base?: I,
+  ): GetOrganizationPaymentPlanHistoryResponse {
+    return GetOrganizationPaymentPlanHistoryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationPaymentPlanHistoryResponse>, I>>(
+    object: I,
+  ): GetOrganizationPaymentPlanHistoryResponse {
+    const message = createBaseGetOrganizationPaymentPlanHistoryResponse();
+    message.payment_plan_history =
+      object.payment_plan_history?.map((e) => OrganizationPaymentPlanWithInfo.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseOrganizationNextPaymentPlanStatus(): OrganizationNextPaymentPlanStatus {
+  return {
+    should_show_alert: undefined,
+    days_until_active_plan_end: undefined,
+    active_plan_info: undefined,
+    next_plan_info: undefined,
+  };
+}
+
+export const OrganizationNextPaymentPlanStatus: MessageFns<OrganizationNextPaymentPlanStatus> = {
+  encode(message: OrganizationNextPaymentPlanStatus, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.should_show_alert !== undefined) {
+      writer.uint32(8).bool(message.should_show_alert);
+    }
+    if (message.days_until_active_plan_end !== undefined) {
+      writer.uint32(16).int32(message.days_until_active_plan_end);
+    }
+    if (message.active_plan_info !== undefined) {
+      OrganizationPaymentPlanInformation.encode(message.active_plan_info, writer.uint32(26).fork()).join();
+    }
+    if (message.next_plan_info !== undefined) {
+      OrganizationPaymentPlanInformation.encode(message.next_plan_info, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): OrganizationNextPaymentPlanStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrganizationNextPaymentPlanStatus();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.should_show_alert = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.days_until_active_plan_end = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.active_plan_info = OrganizationPaymentPlanInformation.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.next_plan_info = OrganizationPaymentPlanInformation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OrganizationNextPaymentPlanStatus {
+    return {
+      should_show_alert: isSet(object.shouldShowAlert) ? globalThis.Boolean(object.shouldShowAlert) : undefined,
+      days_until_active_plan_end: isSet(object.daysUntilActivePlanEnd)
+        ? globalThis.Number(object.daysUntilActivePlanEnd)
+        : undefined,
+      active_plan_info: isSet(object.activePlanInfo)
+        ? OrganizationPaymentPlanInformation.fromJSON(object.activePlanInfo)
+        : undefined,
+      next_plan_info: isSet(object.nextPlanInfo)
+        ? OrganizationPaymentPlanInformation.fromJSON(object.nextPlanInfo)
+        : undefined,
+    };
+  },
+
+  toJSON(message: OrganizationNextPaymentPlanStatus): unknown {
+    const obj: any = {};
+    if (message.should_show_alert !== undefined) {
+      obj.shouldShowAlert = message.should_show_alert;
+    }
+    if (message.days_until_active_plan_end !== undefined) {
+      obj.daysUntilActivePlanEnd = Math.round(message.days_until_active_plan_end);
+    }
+    if (message.active_plan_info !== undefined) {
+      obj.activePlanInfo = OrganizationPaymentPlanInformation.toJSON(message.active_plan_info);
+    }
+    if (message.next_plan_info !== undefined) {
+      obj.nextPlanInfo = OrganizationPaymentPlanInformation.toJSON(message.next_plan_info);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<OrganizationNextPaymentPlanStatus>, I>>(
+    base?: I,
+  ): OrganizationNextPaymentPlanStatus {
+    return OrganizationNextPaymentPlanStatus.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<OrganizationNextPaymentPlanStatus>, I>>(
+    object: I,
+  ): OrganizationNextPaymentPlanStatus {
+    const message = createBaseOrganizationNextPaymentPlanStatus();
+    message.should_show_alert = object.should_show_alert ?? undefined;
+    message.days_until_active_plan_end = object.days_until_active_plan_end ?? undefined;
+    message.active_plan_info = (object.active_plan_info !== undefined && object.active_plan_info !== null)
+      ? OrganizationPaymentPlanInformation.fromPartial(object.active_plan_info)
+      : undefined;
+    message.next_plan_info = (object.next_plan_info !== undefined && object.next_plan_info !== null)
+      ? OrganizationPaymentPlanInformation.fromPartial(object.next_plan_info)
       : undefined;
     return message;
   },

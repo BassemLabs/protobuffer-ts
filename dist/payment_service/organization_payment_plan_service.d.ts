@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Currency } from "../organization_service/organization";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { OrganizationPaymentPlan, OrganizationPaymentPlanInformation, OrganizationPlanAccess, PaymentInterval } from "./organization_payment_plan";
+import { OrganizationPaymentPlan, OrganizationPaymentPlanInformation, OrganizationPaymentPlanWithInfo, OrganizationPlanAccess, PaymentInterval } from "./organization_payment_plan";
 export declare const protobufPackage = "payment_service";
 export interface GetAllPaymentPlansRequest {
     context: RequestContext | undefined;
@@ -40,8 +40,29 @@ export interface AssignPaymentPlanToOrganizationRequest {
     payment_plan_id: ObjectId | undefined;
     defer_per_student_cost_to_parent?: boolean | undefined;
 }
+export interface AssignNextPaymentPlanToOrganizationRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    payment_plan_id: ObjectId | undefined;
+    defer_per_student_cost_to_parent?: boolean | undefined;
+}
 export interface GetOrganizationActiveOrgPaymentPlanInfoRequest {
     context: RequestContext | undefined;
+}
+export interface GetOrganizationNextPaymentPlanStatusRequest {
+    context: RequestContext | undefined;
+}
+export interface GetOrganizationPaymentPlanHistoryRequest {
+    context: RequestContext | undefined;
+}
+export interface GetOrganizationPaymentPlanHistoryResponse {
+    payment_plan_history: OrganizationPaymentPlanWithInfo[];
+}
+export interface OrganizationNextPaymentPlanStatus {
+    should_show_alert?: boolean | undefined;
+    days_until_active_plan_end?: number | undefined;
+    active_plan_info?: OrganizationPaymentPlanInformation | undefined;
+    next_plan_info?: OrganizationPaymentPlanInformation | undefined;
 }
 export interface GetOrgsPaymentPlanInfoRequest {
     context: RequestContext | undefined;
@@ -61,7 +82,12 @@ export declare const GetAllPaymentPlanAccessRequest: MessageFns<GetAllPaymentPla
 export declare const GetAllPaymentPlanAccessResponse: MessageFns<GetAllPaymentPlanAccessResponse>;
 export declare const MakePaymentPlanAccessibleForOrganizationRequest: MessageFns<MakePaymentPlanAccessibleForOrganizationRequest>;
 export declare const AssignPaymentPlanToOrganizationRequest: MessageFns<AssignPaymentPlanToOrganizationRequest>;
+export declare const AssignNextPaymentPlanToOrganizationRequest: MessageFns<AssignNextPaymentPlanToOrganizationRequest>;
 export declare const GetOrganizationActiveOrgPaymentPlanInfoRequest: MessageFns<GetOrganizationActiveOrgPaymentPlanInfoRequest>;
+export declare const GetOrganizationNextPaymentPlanStatusRequest: MessageFns<GetOrganizationNextPaymentPlanStatusRequest>;
+export declare const GetOrganizationPaymentPlanHistoryRequest: MessageFns<GetOrganizationPaymentPlanHistoryRequest>;
+export declare const GetOrganizationPaymentPlanHistoryResponse: MessageFns<GetOrganizationPaymentPlanHistoryResponse>;
+export declare const OrganizationNextPaymentPlanStatus: MessageFns<OrganizationNextPaymentPlanStatus>;
 export declare const GetOrgsPaymentPlanInfoRequest: MessageFns<GetOrgsPaymentPlanInfoRequest>;
 export declare const GetOrgsPaymentPlanInfoResponse: MessageFns<GetOrgsPaymentPlanInfoResponse>;
 export declare const GetOrgActivePaymentPlanWithInfoRequest: MessageFns<GetOrgActivePaymentPlanWithInfoRequest>;
