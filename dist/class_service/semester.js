@@ -13,6 +13,7 @@ exports.reportTypeToNumber = reportTypeToNumber;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
+const report_layout_1 = require("./report_layout");
 exports.protobufPackage = "class_service";
 var ReportType;
 (function (ReportType) {
@@ -238,6 +239,7 @@ function createBaseSemesterReportLayout() {
         report_dates: [],
         hide_learning_skills_from_homerooms: undefined,
         hide_learning_skills_from_courses: undefined,
+        default_check_boxes: [],
     };
 }
 exports.SemesterReportLayout = {
@@ -262,6 +264,9 @@ exports.SemesterReportLayout = {
         }
         if (message.hide_learning_skills_from_courses !== undefined) {
             writer.uint32(56).bool(message.hide_learning_skills_from_courses);
+        }
+        for (const v of message.default_check_boxes) {
+            report_layout_1.ReportCheckBoxLayout.encode(v, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -314,6 +319,12 @@ exports.SemesterReportLayout = {
                     }
                     message.hide_learning_skills_from_courses = reader.bool();
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.default_check_boxes.push(report_layout_1.ReportCheckBoxLayout.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -343,6 +354,9 @@ exports.SemesterReportLayout = {
             hide_learning_skills_from_courses: isSet(object.hideLearningSkillsFromCourses)
                 ? globalThis.Boolean(object.hideLearningSkillsFromCourses)
                 : undefined,
+            default_check_boxes: globalThis.Array.isArray(object?.defaultCheckBoxes)
+                ? object.defaultCheckBoxes.map((e) => report_layout_1.ReportCheckBoxLayout.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -368,6 +382,9 @@ exports.SemesterReportLayout = {
         if (message.hide_learning_skills_from_courses !== undefined) {
             obj.hideLearningSkillsFromCourses = message.hide_learning_skills_from_courses;
         }
+        if (message.default_check_boxes?.length) {
+            obj.defaultCheckBoxes = message.default_check_boxes.map((e) => report_layout_1.ReportCheckBoxLayout.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -382,6 +399,7 @@ exports.SemesterReportLayout = {
         message.report_dates = object.report_dates?.map((e) => exports.ReportDates.fromPartial(e)) || [];
         message.hide_learning_skills_from_homerooms = object.hide_learning_skills_from_homerooms ?? undefined;
         message.hide_learning_skills_from_courses = object.hide_learning_skills_from_courses ?? undefined;
+        message.default_check_boxes = object.default_check_boxes?.map((e) => report_layout_1.ReportCheckBoxLayout.fromPartial(e)) || [];
         return message;
     },
 };

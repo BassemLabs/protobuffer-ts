@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { ReportCheckBoxLayout } from "./report_layout";
 export declare const protobufPackage = "class_service";
 export declare enum ReportType {
     Progress = "Progress",
@@ -28,6 +29,7 @@ export interface SemesterReportLayout {
     report_dates: ReportDates[];
     hide_learning_skills_from_homerooms?: boolean | undefined;
     hide_learning_skills_from_courses?: boolean | undefined;
+    default_check_boxes: ReportCheckBoxLayout[];
 }
 export interface ReportDates {
     report_type?: ReportType | undefined;
