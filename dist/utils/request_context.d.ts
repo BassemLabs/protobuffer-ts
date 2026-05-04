@@ -9,6 +9,7 @@ export declare enum ServiceContext {
     OrganizationInvoices = "OrganizationInvoices",
     StagingDataSyncJob = "StagingDataSyncJob",
     NotificationService = "NotificationService",
+    AutoReportCardOwnerReminders = "AutoReportCardOwnerReminders",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function serviceContextFromJSON(object: any): ServiceContext;

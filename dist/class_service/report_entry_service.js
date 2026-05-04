@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_entry_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.ReportPublishClassType = exports.protobufPackage = void 0;
+exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.ReportPublishClassType = exports.protobufPackage = void 0;
 exports.reportPublishClassTypeFromJSON = reportPublishClassTypeFromJSON;
 exports.reportPublishClassTypeToJSON = reportPublishClassTypeToJSON;
 exports.reportPublishClassTypeToNumber = reportPublishClassTypeToNumber;
@@ -3336,6 +3336,76 @@ exports.GuardianSignReportCardsRequest = {
         message.report_entry_ids = object.report_entry_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.session_metadata = (object.session_metadata !== undefined && object.session_metadata !== null)
             ? report_entry_1.GuardianSignatureSessionMetadata.fromPartial(object.session_metadata)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSendOwnerTeacherReportCardRemindersForOrganizationRequest() {
+    return { context: undefined, organization_id: undefined };
+}
+exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSendOwnerTeacherReportCardRemindersForOrganizationRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSendOwnerTeacherReportCardRemindersForOrganizationRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         return message;
     },

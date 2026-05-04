@@ -22,6 +22,7 @@ var ServiceContext;
     ServiceContext["OrganizationInvoices"] = "OrganizationInvoices";
     ServiceContext["StagingDataSyncJob"] = "StagingDataSyncJob";
     ServiceContext["NotificationService"] = "NotificationService";
+    ServiceContext["AutoReportCardOwnerReminders"] = "AutoReportCardOwnerReminders";
     ServiceContext["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ServiceContext || (exports.ServiceContext = ServiceContext = {}));
 function serviceContextFromJSON(object) {
@@ -41,6 +42,9 @@ function serviceContextFromJSON(object) {
         case 5:
         case "NotificationService":
             return ServiceContext.NotificationService;
+        case 6:
+        case "AutoReportCardOwnerReminders":
+            return ServiceContext.AutoReportCardOwnerReminders;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -59,6 +63,8 @@ function serviceContextToJSON(object) {
             return "StagingDataSyncJob";
         case ServiceContext.NotificationService:
             return "NotificationService";
+        case ServiceContext.AutoReportCardOwnerReminders:
+            return "AutoReportCardOwnerReminders";
         case ServiceContext.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -76,6 +82,8 @@ function serviceContextToNumber(object) {
             return 4;
         case ServiceContext.NotificationService:
             return 5;
+        case ServiceContext.AutoReportCardOwnerReminders:
+            return 6;
         case ServiceContext.UNRECOGNIZED:
         default:
             return -1;

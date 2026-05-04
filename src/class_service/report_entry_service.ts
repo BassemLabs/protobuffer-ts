@@ -397,6 +397,11 @@ export interface GuardianSignReportCardsRequest {
   session_metadata?: GuardianSignatureSessionMetadata | undefined;
 }
 
+export interface SendOwnerTeacherReportCardRemindersForOrganizationRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+}
+
 function createBaseGetCourseReportEntriesRequest(): GetCourseReportEntriesRequest {
   return { context: undefined, course_id: undefined };
 }
@@ -4109,6 +4114,93 @@ export const GuardianSignReportCardsRequest: MessageFns<GuardianSignReportCardsR
     message.report_entry_ids = object.report_entry_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.session_metadata = (object.session_metadata !== undefined && object.session_metadata !== null)
       ? GuardianSignatureSessionMetadata.fromPartial(object.session_metadata)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSendOwnerTeacherReportCardRemindersForOrganizationRequest(): SendOwnerTeacherReportCardRemindersForOrganizationRequest {
+  return { context: undefined, organization_id: undefined };
+}
+
+export const SendOwnerTeacherReportCardRemindersForOrganizationRequest: MessageFns<
+  SendOwnerTeacherReportCardRemindersForOrganizationRequest
+> = {
+  encode(
+    message: SendOwnerTeacherReportCardRemindersForOrganizationRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendOwnerTeacherReportCardRemindersForOrganizationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendOwnerTeacherReportCardRemindersForOrganizationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendOwnerTeacherReportCardRemindersForOrganizationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: SendOwnerTeacherReportCardRemindersForOrganizationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SendOwnerTeacherReportCardRemindersForOrganizationRequest>, I>>(
+    base?: I,
+  ): SendOwnerTeacherReportCardRemindersForOrganizationRequest {
+    return SendOwnerTeacherReportCardRemindersForOrganizationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SendOwnerTeacherReportCardRemindersForOrganizationRequest>, I>>(
+    object: I,
+  ): SendOwnerTeacherReportCardRemindersForOrganizationRequest {
+    const message = createBaseSendOwnerTeacherReportCardRemindersForOrganizationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     return message;
   },
