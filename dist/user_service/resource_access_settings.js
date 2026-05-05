@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/resource_access_settings.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WildcardAccess = exports.AccessRule = exports.ResourceAccessSettings = exports.WildcardAccessType = exports.AccessPermissionType = exports.PrincipalType = exports.OwnershipKind = exports.protobufPackage = void 0;
+exports.AccessRule = exports.ResourceAccessSettings = exports.AccessPermissionType = exports.PrincipalType = exports.OwnershipKind = exports.protobufPackage = void 0;
 exports.ownershipKindFromJSON = ownershipKindFromJSON;
 exports.ownershipKindToJSON = ownershipKindToJSON;
 exports.ownershipKindToNumber = ownershipKindToNumber;
@@ -15,9 +15,6 @@ exports.principalTypeToNumber = principalTypeToNumber;
 exports.accessPermissionTypeFromJSON = accessPermissionTypeFromJSON;
 exports.accessPermissionTypeToJSON = accessPermissionTypeToJSON;
 exports.accessPermissionTypeToNumber = accessPermissionTypeToNumber;
-exports.wildcardAccessTypeFromJSON = wildcardAccessTypeFromJSON;
-exports.wildcardAccessTypeToJSON = wildcardAccessTypeToJSON;
-exports.wildcardAccessTypeToNumber = wildcardAccessTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -166,81 +163,8 @@ function accessPermissionTypeToNumber(object) {
             return -1;
     }
 }
-var WildcardAccessType;
-(function (WildcardAccessType) {
-    WildcardAccessType["ALL_PRINCIPALS"] = "ALL_PRINCIPALS";
-    WildcardAccessType["ALL_TEACHER_PRINCIPALS"] = "ALL_TEACHER_PRINCIPALS";
-    WildcardAccessType["ALL_PARENT_PRINCIPALS"] = "ALL_PARENT_PRINCIPALS";
-    WildcardAccessType["ALL_STUDENT_PRINCIPALS"] = "ALL_STUDENT_PRINCIPALS";
-    WildcardAccessType["ROLE"] = "ROLE";
-    WildcardAccessType["UNRECOGNIZED"] = "UNRECOGNIZED";
-})(WildcardAccessType || (exports.WildcardAccessType = WildcardAccessType = {}));
-function wildcardAccessTypeFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "ALL_PRINCIPALS":
-            return WildcardAccessType.ALL_PRINCIPALS;
-        case 1:
-        case "ALL_TEACHER_PRINCIPALS":
-            return WildcardAccessType.ALL_TEACHER_PRINCIPALS;
-        case 2:
-        case "ALL_PARENT_PRINCIPALS":
-            return WildcardAccessType.ALL_PARENT_PRINCIPALS;
-        case 3:
-        case "ALL_STUDENT_PRINCIPALS":
-            return WildcardAccessType.ALL_STUDENT_PRINCIPALS;
-        case 4:
-        case "ROLE":
-            return WildcardAccessType.ROLE;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return WildcardAccessType.UNRECOGNIZED;
-    }
-}
-function wildcardAccessTypeToJSON(object) {
-    switch (object) {
-        case WildcardAccessType.ALL_PRINCIPALS:
-            return "ALL_PRINCIPALS";
-        case WildcardAccessType.ALL_TEACHER_PRINCIPALS:
-            return "ALL_TEACHER_PRINCIPALS";
-        case WildcardAccessType.ALL_PARENT_PRINCIPALS:
-            return "ALL_PARENT_PRINCIPALS";
-        case WildcardAccessType.ALL_STUDENT_PRINCIPALS:
-            return "ALL_STUDENT_PRINCIPALS";
-        case WildcardAccessType.ROLE:
-            return "ROLE";
-        case WildcardAccessType.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-function wildcardAccessTypeToNumber(object) {
-    switch (object) {
-        case WildcardAccessType.ALL_PRINCIPALS:
-            return 0;
-        case WildcardAccessType.ALL_TEACHER_PRINCIPALS:
-            return 1;
-        case WildcardAccessType.ALL_PARENT_PRINCIPALS:
-            return 2;
-        case WildcardAccessType.ALL_STUDENT_PRINCIPALS:
-            return 3;
-        case WildcardAccessType.ROLE:
-            return 4;
-        case WildcardAccessType.UNRECOGNIZED:
-        default:
-            return -1;
-    }
-}
 function createBaseResourceAccessSettings() {
-    return {
-        id: undefined,
-        organization: undefined,
-        name: undefined,
-        ownership_kind: undefined,
-        user_type: undefined,
-        access_rules: [],
-    };
+    return { id: undefined, organization: undefined, name: undefined, user_type: undefined, access_rules: [] };
 }
 exports.ResourceAccessSettings = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -252,9 +176,6 @@ exports.ResourceAccessSettings = {
         }
         if (message.name !== undefined) {
             writer.uint32(26).string(message.name);
-        }
-        if (message.ownership_kind !== undefined) {
-            writer.uint32(32).int32(ownershipKindToNumber(message.ownership_kind));
         }
         if (message.user_type !== undefined) {
             writer.uint32(40).int32((0, user_type_1.userTypeToNumber)(message.user_type));
@@ -289,12 +210,6 @@ exports.ResourceAccessSettings = {
                     }
                     message.name = reader.string();
                     continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.ownership_kind = ownershipKindFromJSON(reader.int32());
-                    continue;
                 case 5:
                     if (tag !== 40) {
                         break;
@@ -320,7 +235,6 @@ exports.ResourceAccessSettings = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-            ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : undefined,
             user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
             access_rules: globalThis.Array.isArray(object?.accessRules)
                 ? object.accessRules.map((e) => exports.AccessRule.fromJSON(e))
@@ -337,9 +251,6 @@ exports.ResourceAccessSettings = {
         }
         if (message.name !== undefined) {
             obj.name = message.name;
-        }
-        if (message.ownership_kind !== undefined) {
-            obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
         }
         if (message.user_type !== undefined) {
             obj.userType = (0, user_type_1.userTypeToJSON)(message.user_type);
@@ -359,14 +270,13 @@ exports.ResourceAccessSettings = {
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
         message.name = object.name ?? undefined;
-        message.ownership_kind = object.ownership_kind ?? undefined;
         message.user_type = object.user_type ?? undefined;
         message.access_rules = object.access_rules?.map((e) => exports.AccessRule.fromPartial(e)) || [];
         return message;
     },
 };
 function createBaseAccessRule() {
-    return { permission_type: undefined, principal: undefined, wildcard: undefined };
+    return { permission_type: undefined, principal: undefined, role: undefined };
 }
 exports.AccessRule = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -376,8 +286,8 @@ exports.AccessRule = {
         if (message.principal !== undefined) {
             writer.uint32(16).int32(principalTypeToNumber(message.principal));
         }
-        if (message.wildcard !== undefined) {
-            exports.WildcardAccess.encode(message.wildcard, writer.uint32(26).fork()).join();
+        if (message.role !== undefined) {
+            writer.uint32(24).int32((0, user_role_1.staffPermissionToNumber)(message.role));
         }
         return writer;
     },
@@ -401,80 +311,7 @@ exports.AccessRule = {
                     message.principal = principalTypeFromJSON(reader.int32());
                     continue;
                 case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.wildcard = exports.WildcardAccess.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            permission_type: isSet(object.permissionType) ? accessPermissionTypeFromJSON(object.permissionType) : undefined,
-            principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : undefined,
-            wildcard: isSet(object.wildcard) ? exports.WildcardAccess.fromJSON(object.wildcard) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.permission_type !== undefined) {
-            obj.permissionType = accessPermissionTypeToJSON(message.permission_type);
-        }
-        if (message.principal !== undefined) {
-            obj.principal = principalTypeToJSON(message.principal);
-        }
-        if (message.wildcard !== undefined) {
-            obj.wildcard = exports.WildcardAccess.toJSON(message.wildcard);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AccessRule.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAccessRule();
-        message.permission_type = object.permission_type ?? undefined;
-        message.principal = object.principal ?? undefined;
-        message.wildcard = (object.wildcard !== undefined && object.wildcard !== null)
-            ? exports.WildcardAccess.fromPartial(object.wildcard)
-            : undefined;
-        return message;
-    },
-};
-function createBaseWildcardAccess() {
-    return { type: undefined, role: undefined };
-}
-exports.WildcardAccess = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.type !== undefined) {
-            writer.uint32(8).int32(wildcardAccessTypeToNumber(message.type));
-        }
-        if (message.role !== undefined) {
-            writer.uint32(16).int32((0, user_role_1.staffPermissionToNumber)(message.role));
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseWildcardAccess();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 8) {
-                        break;
-                    }
-                    message.type = wildcardAccessTypeFromJSON(reader.int32());
-                    continue;
-                case 2:
-                    if (tag !== 16) {
+                    if (tag !== 24) {
                         break;
                     }
                     message.role = (0, user_role_1.staffPermissionFromJSON)(reader.int32());
@@ -489,14 +326,18 @@ exports.WildcardAccess = {
     },
     fromJSON(object) {
         return {
-            type: isSet(object.type) ? wildcardAccessTypeFromJSON(object.type) : undefined,
+            permission_type: isSet(object.permissionType) ? accessPermissionTypeFromJSON(object.permissionType) : undefined,
+            principal: isSet(object.principal) ? principalTypeFromJSON(object.principal) : undefined,
             role: isSet(object.role) ? (0, user_role_1.staffPermissionFromJSON)(object.role) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.type !== undefined) {
-            obj.type = wildcardAccessTypeToJSON(message.type);
+        if (message.permission_type !== undefined) {
+            obj.permissionType = accessPermissionTypeToJSON(message.permission_type);
+        }
+        if (message.principal !== undefined) {
+            obj.principal = principalTypeToJSON(message.principal);
         }
         if (message.role !== undefined) {
             obj.role = (0, user_role_1.staffPermissionToJSON)(message.role);
@@ -504,11 +345,12 @@ exports.WildcardAccess = {
         return obj;
     },
     create(base) {
-        return exports.WildcardAccess.fromPartial(base ?? {});
+        return exports.AccessRule.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseWildcardAccess();
-        message.type = object.type ?? undefined;
+        const message = createBaseAccessRule();
+        message.permission_type = object.permission_type ?? undefined;
+        message.principal = object.principal ?? undefined;
         message.role = object.role ?? undefined;
         return message;
     },

@@ -29,38 +29,20 @@ export declare enum AccessPermissionType {
 export declare function accessPermissionTypeFromJSON(object: any): AccessPermissionType;
 export declare function accessPermissionTypeToJSON(object: AccessPermissionType): string;
 export declare function accessPermissionTypeToNumber(object: AccessPermissionType): number;
-export declare enum WildcardAccessType {
-    ALL_PRINCIPALS = "ALL_PRINCIPALS",
-    ALL_TEACHER_PRINCIPALS = "ALL_TEACHER_PRINCIPALS",
-    ALL_PARENT_PRINCIPALS = "ALL_PARENT_PRINCIPALS",
-    ALL_STUDENT_PRINCIPALS = "ALL_STUDENT_PRINCIPALS",
-    ROLE = "ROLE",
-    UNRECOGNIZED = "UNRECOGNIZED"
-}
-export declare function wildcardAccessTypeFromJSON(object: any): WildcardAccessType;
-export declare function wildcardAccessTypeToJSON(object: WildcardAccessType): string;
-export declare function wildcardAccessTypeToNumber(object: WildcardAccessType): number;
 export interface ResourceAccessSettings {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
     name?: string | undefined;
-    ownership_kind?: OwnershipKind | undefined;
     user_type?: UserType | undefined;
     access_rules: AccessRule[];
 }
 export interface AccessRule {
     permission_type?: AccessPermissionType | undefined;
     principal?: PrincipalType | undefined;
-    wildcard?: WildcardAccess | undefined;
-}
-export interface WildcardAccess {
-    type?: WildcardAccessType | undefined;
-    /** Only used when type is ROLE */
     role?: StaffPermission | undefined;
 }
 export declare const ResourceAccessSettings: MessageFns<ResourceAccessSettings>;
 export declare const AccessRule: MessageFns<AccessRule>;
-export declare const WildcardAccess: MessageFns<WildcardAccess>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

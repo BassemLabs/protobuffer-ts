@@ -14,6 +14,7 @@ exports.approvalStatusToJSON = approvalStatusToJSON;
 exports.approvalStatusToNumber = approvalStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
 const object_id_1 = require("../utils/object_id");
 const user_type_1 = require("../utils/user_type");
@@ -400,11 +401,10 @@ function createBaseCustomFieldsGroup() {
         user_type: undefined,
         profile_section: undefined,
         hints: [],
-        group_access_settings: undefined,
-        entries_access_settings: undefined,
         visible_to_parents_for_statuses: [],
         visible_to_teachers_for_statuses: [],
         sort_order: undefined,
+        access_rules: undefined,
     };
 }
 exports.CustomFieldsGroup = {
@@ -427,12 +427,6 @@ exports.CustomFieldsGroup = {
         for (const v of message.hints) {
             writer.uint32(50).string(v);
         }
-        if (message.group_access_settings !== undefined) {
-            object_id_1.ObjectId.encode(message.group_access_settings, writer.uint32(58).fork()).join();
-        }
-        if (message.entries_access_settings !== undefined) {
-            object_id_1.ObjectId.encode(message.entries_access_settings, writer.uint32(66).fork()).join();
-        }
         writer.uint32(74).fork();
         for (const v of message.visible_to_parents_for_statuses) {
             writer.int32((0, student_1.studentStatusToNumber)(v));
@@ -445,6 +439,9 @@ exports.CustomFieldsGroup = {
         writer.join();
         if (message.sort_order !== undefined) {
             writer.uint32(88).int32(message.sort_order);
+        }
+        if (message.access_rules !== undefined) {
+            object_id_1.ObjectId.encode(message.access_rules, writer.uint32(98).fork()).join();
         }
         return writer;
     },
@@ -491,18 +488,6 @@ exports.CustomFieldsGroup = {
                     }
                     message.hints.push(reader.string());
                     continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.group_access_settings = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 8:
-                    if (tag !== 66) {
-                        break;
-                    }
-                    message.entries_access_settings = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
                 case 9:
                     if (tag === 72) {
                         message.visible_to_parents_for_statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
@@ -535,6 +520,12 @@ exports.CustomFieldsGroup = {
                     }
                     message.sort_order = reader.int32();
                     continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.access_rules = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -551,12 +542,6 @@ exports.CustomFieldsGroup = {
             user_type: isSet(object.userType) ? (0, user_type_1.userTypeFromJSON)(object.userType) : undefined,
             profile_section: isSet(object.profileSection) ? (0, organization_profile_settings_1.profileSectionFromJSON)(object.profileSection) : undefined,
             hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e) => globalThis.String(e)) : [],
-            group_access_settings: isSet(object.groupAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.groupAccessSettings)
-                : undefined,
-            entries_access_settings: isSet(object.entriesAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.entriesAccessSettings)
-                : undefined,
             visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
                 ? object.visibleToParentsForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
@@ -564,6 +549,7 @@ exports.CustomFieldsGroup = {
                 ? object.visibleToTeachersForStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
             sort_order: isSet(object.sortOrder) ? globalThis.Number(object.sortOrder) : undefined,
+            access_rules: isSet(object.accessRules) ? object_id_1.ObjectId.fromJSON(object.accessRules) : undefined,
         };
     },
     toJSON(message) {
@@ -586,12 +572,6 @@ exports.CustomFieldsGroup = {
         if (message.hints?.length) {
             obj.hints = message.hints;
         }
-        if (message.group_access_settings !== undefined) {
-            obj.groupAccessSettings = object_id_1.ObjectId.toJSON(message.group_access_settings);
-        }
-        if (message.entries_access_settings !== undefined) {
-            obj.entriesAccessSettings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
-        }
         if (message.visible_to_parents_for_statuses?.length) {
             obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
@@ -600,6 +580,9 @@ exports.CustomFieldsGroup = {
         }
         if (message.sort_order !== undefined) {
             obj.sortOrder = Math.round(message.sort_order);
+        }
+        if (message.access_rules !== undefined) {
+            obj.accessRules = object_id_1.ObjectId.toJSON(message.access_rules);
         }
         return obj;
     },
@@ -616,17 +599,12 @@ exports.CustomFieldsGroup = {
         message.user_type = object.user_type ?? undefined;
         message.profile_section = object.profile_section ?? undefined;
         message.hints = object.hints?.map((e) => e) || [];
-        message.group_access_settings =
-            (object.group_access_settings !== undefined && object.group_access_settings !== null)
-                ? object_id_1.ObjectId.fromPartial(object.group_access_settings)
-                : undefined;
-        message.entries_access_settings =
-            (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
-                ? object_id_1.ObjectId.fromPartial(object.entries_access_settings)
-                : undefined;
         message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
         message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
         message.sort_order = object.sort_order ?? undefined;
+        message.access_rules = (object.access_rules !== undefined && object.access_rules !== null)
+            ? object_id_1.ObjectId.fromPartial(object.access_rules)
+            : undefined;
         return message;
     },
 };
@@ -638,6 +616,8 @@ function createBaseGroupApprovalStatus() {
         user_id: undefined,
         status: undefined,
         rejection_message: undefined,
+        approved_by_teacher_id: undefined,
+        approved_at: undefined,
     };
 }
 exports.GroupApprovalStatus = {
@@ -659,6 +639,12 @@ exports.GroupApprovalStatus = {
         }
         if (message.rejection_message !== undefined) {
             writer.uint32(50).string(message.rejection_message);
+        }
+        if (message.approved_by_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.approved_by_teacher_id, writer.uint32(58).fork()).join();
+        }
+        if (message.approved_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.approved_at), writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -705,6 +691,18 @@ exports.GroupApprovalStatus = {
                     }
                     message.rejection_message = reader.string();
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.approved_by_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.approved_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -721,6 +719,10 @@ exports.GroupApprovalStatus = {
             user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
             status: isSet(object.status) ? approvalStatusFromJSON(object.status) : undefined,
             rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
+            approved_by_teacher_id: isSet(object.approvedByTeacherId)
+                ? object_id_1.ObjectId.fromJSON(object.approvedByTeacherId)
+                : undefined,
+            approved_at: isSet(object.approvedAt) ? fromJsonTimestamp(object.approvedAt) : undefined,
         };
     },
     toJSON(message) {
@@ -743,6 +745,12 @@ exports.GroupApprovalStatus = {
         if (message.rejection_message !== undefined) {
             obj.rejectionMessage = message.rejection_message;
         }
+        if (message.approved_by_teacher_id !== undefined) {
+            obj.approvedByTeacherId = object_id_1.ObjectId.toJSON(message.approved_by_teacher_id);
+        }
+        if (message.approved_at !== undefined) {
+            obj.approvedAt = message.approved_at.toISOString();
+        }
         return obj;
     },
     create(base) {
@@ -762,6 +770,11 @@ exports.GroupApprovalStatus = {
             : undefined;
         message.status = object.status ?? undefined;
         message.rejection_message = object.rejection_message ?? undefined;
+        message.approved_by_teacher_id =
+            (object.approved_by_teacher_id !== undefined && object.approved_by_teacher_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.approved_by_teacher_id)
+                : undefined;
+        message.approved_at = object.approved_at ?? undefined;
         return message;
     },
 };
@@ -899,6 +912,27 @@ exports.CustomFieldsGroupWithFields = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

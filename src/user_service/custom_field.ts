@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import {
   ProfileSection,
   profileSectionFromJSON,
@@ -198,14 +199,11 @@ export interface CustomFieldsGroup {
   user_type?: UserType | undefined;
   profile_section?: ProfileSection | undefined;
   hints: string[];
-  group_access_settings: ObjectId | undefined;
-  entries_access_settings:
-    | ObjectId
-    | undefined;
   /** these fields are only for custom field groups for user type: Student */
   visible_to_parents_for_statuses: StudentStatus[];
   visible_to_teachers_for_statuses: StudentStatus[];
   sort_order?: number | undefined;
+  access_rules: ObjectId | undefined;
 }
 
 /** Group approval status (approval workflow for custom field groups) */
@@ -216,6 +214,8 @@ export interface GroupApprovalStatus {
   user_id: ObjectId | undefined;
   status?: ApprovalStatus | undefined;
   rejection_message?: string | undefined;
+  approved_by_teacher_id?: ObjectId | undefined;
+  approved_at?: Date | undefined;
 }
 
 export interface StudentPrimaryIdField {
@@ -478,11 +478,10 @@ function createBaseCustomFieldsGroup(): CustomFieldsGroup {
     user_type: undefined,
     profile_section: undefined,
     hints: [],
-    group_access_settings: undefined,
-    entries_access_settings: undefined,
     visible_to_parents_for_statuses: [],
     visible_to_teachers_for_statuses: [],
     sort_order: undefined,
+    access_rules: undefined,
   };
 }
 
@@ -506,12 +505,6 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     for (const v of message.hints) {
       writer.uint32(50).string(v!);
     }
-    if (message.group_access_settings !== undefined) {
-      ObjectId.encode(message.group_access_settings, writer.uint32(58).fork()).join();
-    }
-    if (message.entries_access_settings !== undefined) {
-      ObjectId.encode(message.entries_access_settings, writer.uint32(66).fork()).join();
-    }
     writer.uint32(74).fork();
     for (const v of message.visible_to_parents_for_statuses) {
       writer.int32(studentStatusToNumber(v));
@@ -524,6 +517,9 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     writer.join();
     if (message.sort_order !== undefined) {
       writer.uint32(88).int32(message.sort_order);
+    }
+    if (message.access_rules !== undefined) {
+      ObjectId.encode(message.access_rules, writer.uint32(98).fork()).join();
     }
     return writer;
   },
@@ -577,20 +573,6 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
 
           message.hints.push(reader.string());
           continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.group_access_settings = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.entries_access_settings = ObjectId.decode(reader, reader.uint32());
-          continue;
         case 9:
           if (tag === 72) {
             message.visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
@@ -632,6 +614,13 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
 
           message.sort_order = reader.int32();
           continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.access_rules = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -649,12 +638,6 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
       user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
       profile_section: isSet(object.profileSection) ? profileSectionFromJSON(object.profileSection) : undefined,
       hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e: any) => globalThis.String(e)) : [],
-      group_access_settings: isSet(object.groupAccessSettings)
-        ? ObjectId.fromJSON(object.groupAccessSettings)
-        : undefined,
-      entries_access_settings: isSet(object.entriesAccessSettings)
-        ? ObjectId.fromJSON(object.entriesAccessSettings)
-        : undefined,
       visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
         ? object.visibleToParentsForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
@@ -662,6 +645,7 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
         ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
       sort_order: isSet(object.sortOrder) ? globalThis.Number(object.sortOrder) : undefined,
+      access_rules: isSet(object.accessRules) ? ObjectId.fromJSON(object.accessRules) : undefined,
     };
   },
 
@@ -685,12 +669,6 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     if (message.hints?.length) {
       obj.hints = message.hints;
     }
-    if (message.group_access_settings !== undefined) {
-      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
-    }
-    if (message.entries_access_settings !== undefined) {
-      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
-    }
     if (message.visible_to_parents_for_statuses?.length) {
       obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => studentStatusToJSON(e));
     }
@@ -699,6 +677,9 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     }
     if (message.sort_order !== undefined) {
       obj.sortOrder = Math.round(message.sort_order);
+    }
+    if (message.access_rules !== undefined) {
+      obj.accessRules = ObjectId.toJSON(message.access_rules);
     }
     return obj;
   },
@@ -716,17 +697,12 @@ export const CustomFieldsGroup: MessageFns<CustomFieldsGroup> = {
     message.user_type = object.user_type ?? undefined;
     message.profile_section = object.profile_section ?? undefined;
     message.hints = object.hints?.map((e) => e) || [];
-    message.group_access_settings =
-      (object.group_access_settings !== undefined && object.group_access_settings !== null)
-        ? ObjectId.fromPartial(object.group_access_settings)
-        : undefined;
-    message.entries_access_settings =
-      (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
-        ? ObjectId.fromPartial(object.entries_access_settings)
-        : undefined;
     message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
     message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
     message.sort_order = object.sort_order ?? undefined;
+    message.access_rules = (object.access_rules !== undefined && object.access_rules !== null)
+      ? ObjectId.fromPartial(object.access_rules)
+      : undefined;
     return message;
   },
 };
@@ -739,6 +715,8 @@ function createBaseGroupApprovalStatus(): GroupApprovalStatus {
     user_id: undefined,
     status: undefined,
     rejection_message: undefined,
+    approved_by_teacher_id: undefined,
+    approved_at: undefined,
   };
 }
 
@@ -761,6 +739,12 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
     }
     if (message.rejection_message !== undefined) {
       writer.uint32(50).string(message.rejection_message);
+    }
+    if (message.approved_by_teacher_id !== undefined) {
+      ObjectId.encode(message.approved_by_teacher_id, writer.uint32(58).fork()).join();
+    }
+    if (message.approved_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.approved_at), writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -814,6 +798,20 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
 
           message.rejection_message = reader.string();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.approved_by_teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.approved_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -831,6 +829,10 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
       user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
       status: isSet(object.status) ? approvalStatusFromJSON(object.status) : undefined,
       rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
+      approved_by_teacher_id: isSet(object.approvedByTeacherId)
+        ? ObjectId.fromJSON(object.approvedByTeacherId)
+        : undefined,
+      approved_at: isSet(object.approvedAt) ? fromJsonTimestamp(object.approvedAt) : undefined,
     };
   },
 
@@ -854,6 +856,12 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
     if (message.rejection_message !== undefined) {
       obj.rejectionMessage = message.rejection_message;
     }
+    if (message.approved_by_teacher_id !== undefined) {
+      obj.approvedByTeacherId = ObjectId.toJSON(message.approved_by_teacher_id);
+    }
+    if (message.approved_at !== undefined) {
+      obj.approvedAt = message.approved_at.toISOString();
+    }
     return obj;
   },
 
@@ -874,6 +882,11 @@ export const GroupApprovalStatus: MessageFns<GroupApprovalStatus> = {
       : undefined;
     message.status = object.status ?? undefined;
     message.rejection_message = object.rejection_message ?? undefined;
+    message.approved_by_teacher_id =
+      (object.approved_by_teacher_id !== undefined && object.approved_by_teacher_id !== null)
+        ? ObjectId.fromPartial(object.approved_by_teacher_id)
+        : undefined;
+    message.approved_at = object.approved_at ?? undefined;
     return message;
   },
 };
@@ -1039,6 +1052,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

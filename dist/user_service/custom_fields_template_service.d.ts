@@ -49,8 +49,7 @@ export interface AddFieldToTemplateGroupRequest {
 /** Group access settings entry (mapping group_id to access settings) */
 export interface GroupAccessSettingsEntry {
     group_id: ObjectId | undefined;
-    group_access_settings: ObjectId | undefined;
-    entries_access_settings: ObjectId | undefined;
+    access_rules: ObjectId | undefined;
 }
 export interface InstantiateTemplateRequest {
     context: RequestContext | undefined;

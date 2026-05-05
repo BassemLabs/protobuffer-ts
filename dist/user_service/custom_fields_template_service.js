@@ -692,18 +692,15 @@ exports.AddFieldToTemplateGroupRequest = {
     },
 };
 function createBaseGroupAccessSettingsEntry() {
-    return { group_id: undefined, group_access_settings: undefined, entries_access_settings: undefined };
+    return { group_id: undefined, access_rules: undefined };
 }
 exports.GroupAccessSettingsEntry = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.group_id !== undefined) {
             object_id_1.ObjectId.encode(message.group_id, writer.uint32(10).fork()).join();
         }
-        if (message.group_access_settings !== undefined) {
-            object_id_1.ObjectId.encode(message.group_access_settings, writer.uint32(18).fork()).join();
-        }
-        if (message.entries_access_settings !== undefined) {
-            object_id_1.ObjectId.encode(message.entries_access_settings, writer.uint32(26).fork()).join();
+        if (message.access_rules !== undefined) {
+            object_id_1.ObjectId.encode(message.access_rules, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -720,17 +717,11 @@ exports.GroupAccessSettingsEntry = {
                     }
                     message.group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
-                case 2:
-                    if (tag !== 18) {
+                case 4:
+                    if (tag !== 34) {
                         break;
                     }
-                    message.group_access_settings = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.entries_access_settings = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    message.access_rules = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -743,12 +734,7 @@ exports.GroupAccessSettingsEntry = {
     fromJSON(object) {
         return {
             group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
-            group_access_settings: isSet(object.groupAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.groupAccessSettings)
-                : undefined,
-            entries_access_settings: isSet(object.entriesAccessSettings)
-                ? object_id_1.ObjectId.fromJSON(object.entriesAccessSettings)
-                : undefined,
+            access_rules: isSet(object.accessRules) ? object_id_1.ObjectId.fromJSON(object.accessRules) : undefined,
         };
     },
     toJSON(message) {
@@ -756,11 +742,8 @@ exports.GroupAccessSettingsEntry = {
         if (message.group_id !== undefined) {
             obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
         }
-        if (message.group_access_settings !== undefined) {
-            obj.groupAccessSettings = object_id_1.ObjectId.toJSON(message.group_access_settings);
-        }
-        if (message.entries_access_settings !== undefined) {
-            obj.entriesAccessSettings = object_id_1.ObjectId.toJSON(message.entries_access_settings);
+        if (message.access_rules !== undefined) {
+            obj.accessRules = object_id_1.ObjectId.toJSON(message.access_rules);
         }
         return obj;
     },
@@ -772,14 +755,9 @@ exports.GroupAccessSettingsEntry = {
         message.group_id = (object.group_id !== undefined && object.group_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.group_id)
             : undefined;
-        message.group_access_settings =
-            (object.group_access_settings !== undefined && object.group_access_settings !== null)
-                ? object_id_1.ObjectId.fromPartial(object.group_access_settings)
-                : undefined;
-        message.entries_access_settings =
-            (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
-                ? object_id_1.ObjectId.fromPartial(object.entries_access_settings)
-                : undefined;
+        message.access_rules = (object.access_rules !== undefined && object.access_rules !== null)
+            ? object_id_1.ObjectId.fromPartial(object.access_rules)
+            : undefined;
         return message;
     },
 };

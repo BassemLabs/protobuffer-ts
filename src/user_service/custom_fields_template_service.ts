@@ -75,8 +75,7 @@ export interface AddFieldToTemplateGroupRequest {
 /** Group access settings entry (mapping group_id to access settings) */
 export interface GroupAccessSettingsEntry {
   group_id: ObjectId | undefined;
-  group_access_settings: ObjectId | undefined;
-  entries_access_settings: ObjectId | undefined;
+  access_rules: ObjectId | undefined;
 }
 
 export interface InstantiateTemplateRequest {
@@ -863,7 +862,7 @@ export const AddFieldToTemplateGroupRequest: MessageFns<AddFieldToTemplateGroupR
 };
 
 function createBaseGroupAccessSettingsEntry(): GroupAccessSettingsEntry {
-  return { group_id: undefined, group_access_settings: undefined, entries_access_settings: undefined };
+  return { group_id: undefined, access_rules: undefined };
 }
 
 export const GroupAccessSettingsEntry: MessageFns<GroupAccessSettingsEntry> = {
@@ -871,11 +870,8 @@ export const GroupAccessSettingsEntry: MessageFns<GroupAccessSettingsEntry> = {
     if (message.group_id !== undefined) {
       ObjectId.encode(message.group_id, writer.uint32(10).fork()).join();
     }
-    if (message.group_access_settings !== undefined) {
-      ObjectId.encode(message.group_access_settings, writer.uint32(18).fork()).join();
-    }
-    if (message.entries_access_settings !== undefined) {
-      ObjectId.encode(message.entries_access_settings, writer.uint32(26).fork()).join();
+    if (message.access_rules !== undefined) {
+      ObjectId.encode(message.access_rules, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -894,19 +890,12 @@ export const GroupAccessSettingsEntry: MessageFns<GroupAccessSettingsEntry> = {
 
           message.group_id = ObjectId.decode(reader, reader.uint32());
           continue;
-        case 2:
-          if (tag !== 18) {
+        case 4:
+          if (tag !== 34) {
             break;
           }
 
-          message.group_access_settings = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.entries_access_settings = ObjectId.decode(reader, reader.uint32());
+          message.access_rules = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -920,12 +909,7 @@ export const GroupAccessSettingsEntry: MessageFns<GroupAccessSettingsEntry> = {
   fromJSON(object: any): GroupAccessSettingsEntry {
     return {
       group_id: isSet(object.groupId) ? ObjectId.fromJSON(object.groupId) : undefined,
-      group_access_settings: isSet(object.groupAccessSettings)
-        ? ObjectId.fromJSON(object.groupAccessSettings)
-        : undefined,
-      entries_access_settings: isSet(object.entriesAccessSettings)
-        ? ObjectId.fromJSON(object.entriesAccessSettings)
-        : undefined,
+      access_rules: isSet(object.accessRules) ? ObjectId.fromJSON(object.accessRules) : undefined,
     };
   },
 
@@ -934,11 +918,8 @@ export const GroupAccessSettingsEntry: MessageFns<GroupAccessSettingsEntry> = {
     if (message.group_id !== undefined) {
       obj.groupId = ObjectId.toJSON(message.group_id);
     }
-    if (message.group_access_settings !== undefined) {
-      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
-    }
-    if (message.entries_access_settings !== undefined) {
-      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
+    if (message.access_rules !== undefined) {
+      obj.accessRules = ObjectId.toJSON(message.access_rules);
     }
     return obj;
   },
@@ -951,14 +932,9 @@ export const GroupAccessSettingsEntry: MessageFns<GroupAccessSettingsEntry> = {
     message.group_id = (object.group_id !== undefined && object.group_id !== null)
       ? ObjectId.fromPartial(object.group_id)
       : undefined;
-    message.group_access_settings =
-      (object.group_access_settings !== undefined && object.group_access_settings !== null)
-        ? ObjectId.fromPartial(object.group_access_settings)
-        : undefined;
-    message.entries_access_settings =
-      (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
-        ? ObjectId.fromPartial(object.entries_access_settings)
-        : undefined;
+    message.access_rules = (object.access_rules !== undefined && object.access_rules !== null)
+      ? ObjectId.fromPartial(object.access_rules)
+      : undefined;
     return message;
   },
 };

@@ -26,14 +26,7 @@ import {
   StudentPrimaryIdField,
 } from "./custom_field";
 import { CustomFieldEntry } from "./custom_field_entry";
-import {
-  AccessRule,
-  OwnershipKind,
-  ownershipKindFromJSON,
-  ownershipKindToJSON,
-  ownershipKindToNumber,
-  ResourceAccessSettings,
-} from "./resource_access_settings";
+import { AccessRule, ResourceAccessSettings } from "./resource_access_settings";
 import { StudentStatus, studentStatusFromJSON, studentStatusToJSON, studentStatusToNumber } from "./student";
 
 export const protobufPackage = "user_service";
@@ -191,13 +184,10 @@ export interface CreateCustomFieldsGroupRequest {
   user_type?: UserType | undefined;
   profile_section?: ProfileSection | undefined;
   hints: string[];
-  group_access_settings: ObjectId | undefined;
-  entries_access_settings:
-    | ObjectId
-    | undefined;
   /** these fields are only for custom field groups for user type: Student */
   visible_to_parents_for_statuses: StudentStatus[];
   visible_to_teachers_for_statuses: StudentStatus[];
+  access_rules: ObjectId | undefined;
 }
 
 export interface UpdateCustomFieldsGroupRequest {
@@ -209,12 +199,7 @@ export interface UpdateCustomFieldsGroupRequest {
   /** these fields are only for custom field groups for user type: Student */
   visible_to_parents_for_statuses: StudentStatus[];
   visible_to_teachers_for_statuses: StudentStatus[];
-  /**
-   * Optional: allow changing which ResourceAccessSettings applies to the group/entries.
-   * This must be super-admin gated at the service layer.
-   */
-  group_access_settings?: ObjectId | undefined;
-  entries_access_settings?: ObjectId | undefined;
+  access_rules: ObjectId | undefined;
 }
 
 export interface GetAllCustomFieldsGroupsRequest {
@@ -289,7 +274,6 @@ export interface GetResourceAccessSettingsResponse {
 export interface CreateResourceAccessSettingsRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
-  ownership_kind?: OwnershipKind | undefined;
   user_type?: UserType | undefined;
   access_rules: AccessRule[];
 }
@@ -2369,10 +2353,9 @@ function createBaseCreateCustomFieldsGroupRequest(): CreateCustomFieldsGroupRequ
     user_type: undefined,
     profile_section: undefined,
     hints: [],
-    group_access_settings: undefined,
-    entries_access_settings: undefined,
     visible_to_parents_for_statuses: [],
     visible_to_teachers_for_statuses: [],
+    access_rules: undefined,
   };
 }
 
@@ -2393,12 +2376,6 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
     for (const v of message.hints) {
       writer.uint32(42).string(v!);
     }
-    if (message.group_access_settings !== undefined) {
-      ObjectId.encode(message.group_access_settings, writer.uint32(50).fork()).join();
-    }
-    if (message.entries_access_settings !== undefined) {
-      ObjectId.encode(message.entries_access_settings, writer.uint32(58).fork()).join();
-    }
     writer.uint32(66).fork();
     for (const v of message.visible_to_parents_for_statuses) {
       writer.int32(studentStatusToNumber(v));
@@ -2409,6 +2386,9 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
+    if (message.access_rules !== undefined) {
+      ObjectId.encode(message.access_rules, writer.uint32(82).fork()).join();
+    }
     return writer;
   },
 
@@ -2454,20 +2434,6 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
 
           message.hints.push(reader.string());
           continue;
-        case 6:
-          if (tag !== 50) {
-            break;
-          }
-
-          message.group_access_settings = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.entries_access_settings = ObjectId.decode(reader, reader.uint32());
-          continue;
         case 8:
           if (tag === 64) {
             message.visible_to_parents_for_statuses.push(studentStatusFromJSON(reader.int32()));
@@ -2502,6 +2468,13 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
           }
 
           break;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.access_rules = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2518,18 +2491,13 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
       user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
       profile_section: isSet(object.profileSection) ? profileSectionFromJSON(object.profileSection) : undefined,
       hints: globalThis.Array.isArray(object?.hints) ? object.hints.map((e: any) => globalThis.String(e)) : [],
-      group_access_settings: isSet(object.groupAccessSettings)
-        ? ObjectId.fromJSON(object.groupAccessSettings)
-        : undefined,
-      entries_access_settings: isSet(object.entriesAccessSettings)
-        ? ObjectId.fromJSON(object.entriesAccessSettings)
-        : undefined,
       visible_to_parents_for_statuses: globalThis.Array.isArray(object?.visibleToParentsForStatuses)
         ? object.visibleToParentsForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
       visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
         ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
+      access_rules: isSet(object.accessRules) ? ObjectId.fromJSON(object.accessRules) : undefined,
     };
   },
 
@@ -2550,17 +2518,14 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
     if (message.hints?.length) {
       obj.hints = message.hints;
     }
-    if (message.group_access_settings !== undefined) {
-      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
-    }
-    if (message.entries_access_settings !== undefined) {
-      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
-    }
     if (message.visible_to_parents_for_statuses?.length) {
       obj.visibleToParentsForStatuses = message.visible_to_parents_for_statuses.map((e) => studentStatusToJSON(e));
     }
     if (message.visible_to_teachers_for_statuses?.length) {
       obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => studentStatusToJSON(e));
+    }
+    if (message.access_rules !== undefined) {
+      obj.accessRules = ObjectId.toJSON(message.access_rules);
     }
     return obj;
   },
@@ -2579,16 +2544,11 @@ export const CreateCustomFieldsGroupRequest: MessageFns<CreateCustomFieldsGroupR
     message.user_type = object.user_type ?? undefined;
     message.profile_section = object.profile_section ?? undefined;
     message.hints = object.hints?.map((e) => e) || [];
-    message.group_access_settings =
-      (object.group_access_settings !== undefined && object.group_access_settings !== null)
-        ? ObjectId.fromPartial(object.group_access_settings)
-        : undefined;
-    message.entries_access_settings =
-      (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
-        ? ObjectId.fromPartial(object.entries_access_settings)
-        : undefined;
     message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
     message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
+    message.access_rules = (object.access_rules !== undefined && object.access_rules !== null)
+      ? ObjectId.fromPartial(object.access_rules)
+      : undefined;
     return message;
   },
 };
@@ -2602,8 +2562,7 @@ function createBaseUpdateCustomFieldsGroupRequest(): UpdateCustomFieldsGroupRequ
     hints: [],
     visible_to_parents_for_statuses: [],
     visible_to_teachers_for_statuses: [],
-    group_access_settings: undefined,
-    entries_access_settings: undefined,
+    access_rules: undefined,
   };
 }
 
@@ -2634,11 +2593,8 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
-    if (message.group_access_settings !== undefined) {
-      ObjectId.encode(message.group_access_settings, writer.uint32(66).fork()).join();
-    }
-    if (message.entries_access_settings !== undefined) {
-      ObjectId.encode(message.entries_access_settings, writer.uint32(74).fork()).join();
+    if (message.access_rules !== undefined) {
+      ObjectId.encode(message.access_rules, writer.uint32(82).fork()).join();
     }
     return writer;
   },
@@ -2719,19 +2675,12 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
           }
 
           break;
-        case 8:
-          if (tag !== 66) {
+        case 10:
+          if (tag !== 82) {
             break;
           }
 
-          message.group_access_settings = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.entries_access_settings = ObjectId.decode(reader, reader.uint32());
+          message.access_rules = ObjectId.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2755,12 +2704,7 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
       visible_to_teachers_for_statuses: globalThis.Array.isArray(object?.visibleToTeachersForStatuses)
         ? object.visibleToTeachersForStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
-      group_access_settings: isSet(object.groupAccessSettings)
-        ? ObjectId.fromJSON(object.groupAccessSettings)
-        : undefined,
-      entries_access_settings: isSet(object.entriesAccessSettings)
-        ? ObjectId.fromJSON(object.entriesAccessSettings)
-        : undefined,
+      access_rules: isSet(object.accessRules) ? ObjectId.fromJSON(object.accessRules) : undefined,
     };
   },
 
@@ -2787,11 +2731,8 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     if (message.visible_to_teachers_for_statuses?.length) {
       obj.visibleToTeachersForStatuses = message.visible_to_teachers_for_statuses.map((e) => studentStatusToJSON(e));
     }
-    if (message.group_access_settings !== undefined) {
-      obj.groupAccessSettings = ObjectId.toJSON(message.group_access_settings);
-    }
-    if (message.entries_access_settings !== undefined) {
-      obj.entriesAccessSettings = ObjectId.toJSON(message.entries_access_settings);
+    if (message.access_rules !== undefined) {
+      obj.accessRules = ObjectId.toJSON(message.access_rules);
     }
     return obj;
   },
@@ -2814,14 +2755,9 @@ export const UpdateCustomFieldsGroupRequest: MessageFns<UpdateCustomFieldsGroupR
     message.hints = object.hints?.map((e) => e) || [];
     message.visible_to_parents_for_statuses = object.visible_to_parents_for_statuses?.map((e) => e) || [];
     message.visible_to_teachers_for_statuses = object.visible_to_teachers_for_statuses?.map((e) => e) || [];
-    message.group_access_settings =
-      (object.group_access_settings !== undefined && object.group_access_settings !== null)
-        ? ObjectId.fromPartial(object.group_access_settings)
-        : undefined;
-    message.entries_access_settings =
-      (object.entries_access_settings !== undefined && object.entries_access_settings !== null)
-        ? ObjectId.fromPartial(object.entries_access_settings)
-        : undefined;
+    message.access_rules = (object.access_rules !== undefined && object.access_rules !== null)
+      ? ObjectId.fromPartial(object.access_rules)
+      : undefined;
     return message;
   },
 };
@@ -3912,7 +3848,7 @@ export const GetResourceAccessSettingsResponse: MessageFns<GetResourceAccessSett
 };
 
 function createBaseCreateResourceAccessSettingsRequest(): CreateResourceAccessSettingsRequest {
-  return { context: undefined, name: undefined, ownership_kind: undefined, user_type: undefined, access_rules: [] };
+  return { context: undefined, name: undefined, user_type: undefined, access_rules: [] };
 }
 
 export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAccessSettingsRequest> = {
@@ -3922,9 +3858,6 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     }
     if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
-    }
-    if (message.ownership_kind !== undefined) {
-      writer.uint32(24).int32(ownershipKindToNumber(message.ownership_kind));
     }
     if (message.user_type !== undefined) {
       writer.uint32(32).int32(userTypeToNumber(message.user_type));
@@ -3956,13 +3889,6 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
 
           message.name = reader.string();
           continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.ownership_kind = ownershipKindFromJSON(reader.int32());
-          continue;
         case 4:
           if (tag !== 32) {
             break;
@@ -3990,7 +3916,6 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      ownership_kind: isSet(object.ownershipKind) ? ownershipKindFromJSON(object.ownershipKind) : undefined,
       user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
       access_rules: globalThis.Array.isArray(object?.accessRules)
         ? object.accessRules.map((e: any) => AccessRule.fromJSON(e))
@@ -4005,9 +3930,6 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
     }
     if (message.name !== undefined) {
       obj.name = message.name;
-    }
-    if (message.ownership_kind !== undefined) {
-      obj.ownershipKind = ownershipKindToJSON(message.ownership_kind);
     }
     if (message.user_type !== undefined) {
       obj.userType = userTypeToJSON(message.user_type);
@@ -4031,7 +3953,6 @@ export const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAcces
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? undefined;
-    message.ownership_kind = object.ownership_kind ?? undefined;
     message.user_type = object.user_type ?? undefined;
     message.access_rules = object.access_rules?.map((e) => AccessRule.fromPartial(e)) || [];
     return message;

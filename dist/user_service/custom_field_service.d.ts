@@ -5,7 +5,7 @@ import { RequestContext } from "../utils/request_context";
 import { UserType } from "../utils/user_type";
 import { CustomField, CustomFieldsGroup, CustomFieldsGroupWithFields, CustomFieldType, StudentPrimaryIdField } from "./custom_field";
 import { CustomFieldEntry } from "./custom_field_entry";
-import { AccessRule, OwnershipKind, ResourceAccessSettings } from "./resource_access_settings";
+import { AccessRule, ResourceAccessSettings } from "./resource_access_settings";
 import { StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
 export interface GetCustomFieldsByGroupRequest {
@@ -127,11 +127,10 @@ export interface CreateCustomFieldsGroupRequest {
     user_type?: UserType | undefined;
     profile_section?: ProfileSection | undefined;
     hints: string[];
-    group_access_settings: ObjectId | undefined;
-    entries_access_settings: ObjectId | undefined;
     /** these fields are only for custom field groups for user type: Student */
     visible_to_parents_for_statuses: StudentStatus[];
     visible_to_teachers_for_statuses: StudentStatus[];
+    access_rules: ObjectId | undefined;
 }
 export interface UpdateCustomFieldsGroupRequest {
     context: RequestContext | undefined;
@@ -142,12 +141,7 @@ export interface UpdateCustomFieldsGroupRequest {
     /** these fields are only for custom field groups for user type: Student */
     visible_to_parents_for_statuses: StudentStatus[];
     visible_to_teachers_for_statuses: StudentStatus[];
-    /**
-     * Optional: allow changing which ResourceAccessSettings applies to the group/entries.
-     * This must be super-admin gated at the service layer.
-     */
-    group_access_settings?: ObjectId | undefined;
-    entries_access_settings?: ObjectId | undefined;
+    access_rules: ObjectId | undefined;
 }
 export interface GetAllCustomFieldsGroupsRequest {
     context: RequestContext | undefined;
@@ -208,7 +202,6 @@ export interface GetResourceAccessSettingsResponse {
 export interface CreateResourceAccessSettingsRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
-    ownership_kind?: OwnershipKind | undefined;
     user_type?: UserType | undefined;
     access_rules: AccessRule[];
 }

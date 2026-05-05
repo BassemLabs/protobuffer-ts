@@ -53,12 +53,11 @@ export interface CustomFieldsGroup {
     user_type?: UserType | undefined;
     profile_section?: ProfileSection | undefined;
     hints: string[];
-    group_access_settings: ObjectId | undefined;
-    entries_access_settings: ObjectId | undefined;
     /** these fields are only for custom field groups for user type: Student */
     visible_to_parents_for_statuses: StudentStatus[];
     visible_to_teachers_for_statuses: StudentStatus[];
     sort_order?: number | undefined;
+    access_rules: ObjectId | undefined;
 }
 /** Group approval status (approval workflow for custom field groups) */
 export interface GroupApprovalStatus {
@@ -68,6 +67,8 @@ export interface GroupApprovalStatus {
     user_id: ObjectId | undefined;
     status?: ApprovalStatus | undefined;
     rejection_message?: string | undefined;
+    approved_by_teacher_id?: ObjectId | undefined;
+    approved_at?: Date | undefined;
 }
 export interface StudentPrimaryIdField {
     field_name?: string | undefined;
