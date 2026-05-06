@@ -4913,7 +4913,7 @@ exports.StudentSchoolYear = {
     },
 };
 function createBaseGetOnboardingCardInformationRequest() {
-    return { context: undefined, student_id: undefined };
+    return { context: undefined, student_id: undefined, group_ids: [] };
 }
 exports.GetOnboardingCardInformationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -4922,6 +4922,9 @@ exports.GetOnboardingCardInformationRequest = {
         }
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.group_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -4944,6 +4947,12 @@ exports.GetOnboardingCardInformationRequest = {
                     }
                     message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.group_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4956,6 +4965,9 @@ exports.GetOnboardingCardInformationRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            group_ids: globalThis.Array.isArray(object?.groupIds)
+                ? object.groupIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -4965,6 +4977,9 @@ exports.GetOnboardingCardInformationRequest = {
         }
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.group_ids?.length) {
+            obj.groupIds = message.group_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -4979,6 +4994,7 @@ exports.GetOnboardingCardInformationRequest = {
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
+        message.group_ids = object.group_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

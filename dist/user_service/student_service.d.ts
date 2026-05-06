@@ -315,6 +315,7 @@ export interface StudentSchoolYear {
 export interface GetOnboardingCardInformationRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
+    group_ids: ObjectId[];
 }
 export interface GetOnboardingCardInformationResponse {
     custom_field_entries: CustomFieldEntry[];

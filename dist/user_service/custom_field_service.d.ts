@@ -158,6 +158,7 @@ export interface GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest {
 export interface GetStudentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
     student_status?: StudentStatus | undefined;
+    require_all_access_for_status?: boolean | undefined;
 }
 export interface GetParentGroupsWithFieldsRequest {
     context: RequestContext | undefined;

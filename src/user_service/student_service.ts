@@ -415,6 +415,7 @@ export interface StudentSchoolYear {
 export interface GetOnboardingCardInformationRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
+  group_ids: ObjectId[];
 }
 
 export interface GetOnboardingCardInformationResponse {
@@ -6089,7 +6090,7 @@ export const StudentSchoolYear: MessageFns<StudentSchoolYear> = {
 };
 
 function createBaseGetOnboardingCardInformationRequest(): GetOnboardingCardInformationRequest {
-  return { context: undefined, student_id: undefined };
+  return { context: undefined, student_id: undefined, group_ids: [] };
 }
 
 export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardInformationRequest> = {
@@ -6099,6 +6100,9 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
     }
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.group_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -6124,6 +6128,13 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
 
           message.student_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.group_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -6137,6 +6148,9 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      group_ids: globalThis.Array.isArray(object?.groupIds)
+        ? object.groupIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -6147,6 +6161,9 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
     }
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.group_ids?.length) {
+      obj.groupIds = message.group_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -6166,6 +6183,7 @@ export const GetOnboardingCardInformationRequest: MessageFns<GetOnboardingCardIn
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
+    message.group_ids = object.group_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

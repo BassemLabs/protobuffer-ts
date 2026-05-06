@@ -2389,7 +2389,7 @@ exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = {
     },
 };
 function createBaseGetStudentGroupsWithFieldsRequest() {
-    return { context: undefined, student_status: undefined };
+    return { context: undefined, student_status: undefined, require_all_access_for_status: undefined };
 }
 exports.GetStudentGroupsWithFieldsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2398,6 +2398,9 @@ exports.GetStudentGroupsWithFieldsRequest = {
         }
         if (message.student_status !== undefined) {
             writer.uint32(16).int32((0, student_1.studentStatusToNumber)(message.student_status));
+        }
+        if (message.require_all_access_for_status !== undefined) {
+            writer.uint32(24).bool(message.require_all_access_for_status);
         }
         return writer;
     },
@@ -2420,6 +2423,12 @@ exports.GetStudentGroupsWithFieldsRequest = {
                     }
                     message.student_status = (0, student_1.studentStatusFromJSON)(reader.int32());
                     continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.require_all_access_for_status = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2432,6 +2441,9 @@ exports.GetStudentGroupsWithFieldsRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_status: isSet(object.studentStatus) ? (0, student_1.studentStatusFromJSON)(object.studentStatus) : undefined,
+            require_all_access_for_status: isSet(object.requireAllAccessForStatus)
+                ? globalThis.Boolean(object.requireAllAccessForStatus)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2441,6 +2453,9 @@ exports.GetStudentGroupsWithFieldsRequest = {
         }
         if (message.student_status !== undefined) {
             obj.studentStatus = (0, student_1.studentStatusToJSON)(message.student_status);
+        }
+        if (message.require_all_access_for_status !== undefined) {
+            obj.requireAllAccessForStatus = message.require_all_access_for_status;
         }
         return obj;
     },
@@ -2453,6 +2468,7 @@ exports.GetStudentGroupsWithFieldsRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.student_status = object.student_status ?? undefined;
+        message.require_all_access_for_status = object.require_all_access_for_status ?? undefined;
         return message;
     },
 };
