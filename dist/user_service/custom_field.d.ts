@@ -14,6 +14,7 @@ export declare enum CustomFieldType {
     CHECKBOX = "CHECKBOX",
     DOCUMENT = "DOCUMENT",
     PHONE_NUMBER = "PHONE_NUMBER",
+    MULTI_SELECT = "MULTI_SELECT",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function customFieldTypeFromJSON(object: any): CustomFieldType;
