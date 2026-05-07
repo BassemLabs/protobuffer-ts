@@ -216,10 +216,12 @@ export interface GetStudentsWithUnpaidInvoicesRequest {
   context: RequestContext | undefined;
   student_statuses: StudentStatus[];
   school_year: ObjectId | undefined;
+  include_processing_in_paid_filter?: boolean | undefined;
 }
 
 export interface GetStudentsWithUnpaidInvoicesResponse {
   student_ids: ObjectId[];
+  processing_student_ids: ObjectId[];
 }
 
 export interface GetStudentsWithReregistrationInvoicesRequest {
@@ -236,6 +238,7 @@ export interface GetNonPaidOnboardingInvoicesForStudentsRequest {
   student_ids: ObjectId[];
   school_year_id: ObjectId | undefined;
   student_statuses: StudentStatus[];
+  include_processing_in_paid_filter?: boolean | undefined;
 }
 
 export interface GetNonPaidOnboardingInvoicesForStudentsResponse {
@@ -3190,7 +3193,12 @@ export const GetFamilyTuitionInvoicesRequest: MessageFns<GetFamilyTuitionInvoice
 };
 
 function createBaseGetStudentsWithUnpaidInvoicesRequest(): GetStudentsWithUnpaidInvoicesRequest {
-  return { context: undefined, student_statuses: [], school_year: undefined };
+  return {
+    context: undefined,
+    student_statuses: [],
+    school_year: undefined,
+    include_processing_in_paid_filter: undefined,
+  };
 }
 
 export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnpaidInvoicesRequest> = {
@@ -3205,6 +3213,9 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
     writer.join();
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    if (message.include_processing_in_paid_filter !== undefined) {
+      writer.uint32(32).bool(message.include_processing_in_paid_filter);
     }
     return writer;
   },
@@ -3247,6 +3258,13 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.include_processing_in_paid_filter = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3263,6 +3281,9 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
         ? object.studentStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      include_processing_in_paid_filter: isSet(object.includeProcessingInPaidFilter)
+        ? globalThis.Boolean(object.includeProcessingInPaidFilter)
+        : undefined,
     };
   },
 
@@ -3276,6 +3297,9 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
     }
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.include_processing_in_paid_filter !== undefined) {
+      obj.includeProcessingInPaidFilter = message.include_processing_in_paid_filter;
     }
     return obj;
   },
@@ -3296,18 +3320,22 @@ export const GetStudentsWithUnpaidInvoicesRequest: MessageFns<GetStudentsWithUnp
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.include_processing_in_paid_filter = object.include_processing_in_paid_filter ?? undefined;
     return message;
   },
 };
 
 function createBaseGetStudentsWithUnpaidInvoicesResponse(): GetStudentsWithUnpaidInvoicesResponse {
-  return { student_ids: [] };
+  return { student_ids: [], processing_student_ids: [] };
 }
 
 export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUnpaidInvoicesResponse> = {
   encode(message: GetStudentsWithUnpaidInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.student_ids) {
       ObjectId.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.processing_student_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -3326,6 +3354,13 @@ export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUn
 
           message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.processing_student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3340,6 +3375,9 @@ export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUn
       student_ids: globalThis.Array.isArray(object?.studentIds)
         ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      processing_student_ids: globalThis.Array.isArray(object?.processingStudentIds)
+        ? object.processingStudentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -3347,6 +3385,9 @@ export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUn
     const obj: any = {};
     if (message.student_ids?.length) {
       obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.processing_student_ids?.length) {
+      obj.processingStudentIds = message.processing_student_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -3361,6 +3402,7 @@ export const GetStudentsWithUnpaidInvoicesResponse: MessageFns<GetStudentsWithUn
   ): GetStudentsWithUnpaidInvoicesResponse {
     const message = createBaseGetStudentsWithUnpaidInvoicesResponse();
     message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.processing_student_ids = object.processing_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3520,7 +3562,13 @@ export const GetStudentsWithReregistrationInvoicesResponse: MessageFns<GetStuden
   };
 
 function createBaseGetNonPaidOnboardingInvoicesForStudentsRequest(): GetNonPaidOnboardingInvoicesForStudentsRequest {
-  return { context: undefined, student_ids: [], school_year_id: undefined, student_statuses: [] };
+  return {
+    context: undefined,
+    student_ids: [],
+    school_year_id: undefined,
+    student_statuses: [],
+    include_processing_in_paid_filter: undefined,
+  };
 }
 
 export const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<
@@ -3544,6 +3592,9 @@ export const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<
       writer.int32(studentStatusToNumber(v));
     }
     writer.join();
+    if (message.include_processing_in_paid_filter !== undefined) {
+      writer.uint32(40).bool(message.include_processing_in_paid_filter);
+    }
     return writer;
   },
 
@@ -3592,6 +3643,13 @@ export const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<
           }
 
           break;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.include_processing_in_paid_filter = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3611,6 +3669,9 @@ export const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<
       student_statuses: globalThis.Array.isArray(object?.studentStatuses)
         ? object.studentStatuses.map((e: any) => studentStatusFromJSON(e))
         : [],
+      include_processing_in_paid_filter: isSet(object.includeProcessingInPaidFilter)
+        ? globalThis.Boolean(object.includeProcessingInPaidFilter)
+        : undefined,
     };
   },
 
@@ -3627,6 +3688,9 @@ export const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<
     }
     if (message.student_statuses?.length) {
       obj.studentStatuses = message.student_statuses.map((e) => studentStatusToJSON(e));
+    }
+    if (message.include_processing_in_paid_filter !== undefined) {
+      obj.includeProcessingInPaidFilter = message.include_processing_in_paid_filter;
     }
     return obj;
   },
@@ -3648,6 +3712,7 @@ export const GetNonPaidOnboardingInvoicesForStudentsRequest: MessageFns<
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     message.student_statuses = object.student_statuses?.map((e) => e) || [];
+    message.include_processing_in_paid_filter = object.include_processing_in_paid_filter ?? undefined;
     return message;
   },
 };

@@ -295,6 +295,7 @@ export interface GetFilteredStudentsListRequest {
     has_priority_first?: boolean | undefined;
     /** When true, restrict to students who have filled all groups visible for this status (visible_to_parents_for_statuses contains status) */
     completed_only?: boolean | undefined;
+    include_processing_in_paid_filter?: boolean | undefined;
 }
 export interface GetFilteredStudentsListResponse {
     students: SchoolYearStudent[];

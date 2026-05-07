@@ -2580,7 +2580,12 @@ exports.GetFamilyTuitionInvoicesRequest = {
     },
 };
 function createBaseGetStudentsWithUnpaidInvoicesRequest() {
-    return { context: undefined, student_statuses: [], school_year: undefined };
+    return {
+        context: undefined,
+        student_statuses: [],
+        school_year: undefined,
+        include_processing_in_paid_filter: undefined,
+    };
 }
 exports.GetStudentsWithUnpaidInvoicesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2594,6 +2599,9 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
         writer.join();
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        if (message.include_processing_in_paid_filter !== undefined) {
+            writer.uint32(32).bool(message.include_processing_in_paid_filter);
         }
         return writer;
     },
@@ -2629,6 +2637,12 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.include_processing_in_paid_filter = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2644,6 +2658,9 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
                 ? object.studentStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            include_processing_in_paid_filter: isSet(object.includeProcessingInPaidFilter)
+                ? globalThis.Boolean(object.includeProcessingInPaidFilter)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2656,6 +2673,9 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.include_processing_in_paid_filter !== undefined) {
+            obj.includeProcessingInPaidFilter = message.include_processing_in_paid_filter;
         }
         return obj;
     },
@@ -2671,16 +2691,20 @@ exports.GetStudentsWithUnpaidInvoicesRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.include_processing_in_paid_filter = object.include_processing_in_paid_filter ?? undefined;
         return message;
     },
 };
 function createBaseGetStudentsWithUnpaidInvoicesResponse() {
-    return { student_ids: [] };
+    return { student_ids: [], processing_student_ids: [] };
 }
 exports.GetStudentsWithUnpaidInvoicesResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.student_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.processing_student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -2697,6 +2721,12 @@ exports.GetStudentsWithUnpaidInvoicesResponse = {
                     }
                     message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.processing_student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2710,12 +2740,18 @@ exports.GetStudentsWithUnpaidInvoicesResponse = {
             student_ids: globalThis.Array.isArray(object?.studentIds)
                 ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
+            processing_student_ids: globalThis.Array.isArray(object?.processingStudentIds)
+                ? object.processingStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.student_ids?.length) {
             obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.processing_student_ids?.length) {
+            obj.processingStudentIds = message.processing_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -2725,6 +2761,7 @@ exports.GetStudentsWithUnpaidInvoicesResponse = {
     fromPartial(object) {
         const message = createBaseGetStudentsWithUnpaidInvoicesResponse();
         message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.processing_student_ids = object.processing_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -2853,7 +2890,13 @@ exports.GetStudentsWithReregistrationInvoicesResponse = {
     },
 };
 function createBaseGetNonPaidOnboardingInvoicesForStudentsRequest() {
-    return { context: undefined, student_ids: [], school_year_id: undefined, student_statuses: [] };
+    return {
+        context: undefined,
+        student_ids: [],
+        school_year_id: undefined,
+        student_statuses: [],
+        include_processing_in_paid_filter: undefined,
+    };
 }
 exports.GetNonPaidOnboardingInvoicesForStudentsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2871,6 +2914,9 @@ exports.GetNonPaidOnboardingInvoicesForStudentsRequest = {
             writer.int32((0, student_1.studentStatusToNumber)(v));
         }
         writer.join();
+        if (message.include_processing_in_paid_filter !== undefined) {
+            writer.uint32(40).bool(message.include_processing_in_paid_filter);
+        }
         return writer;
     },
     decode(input, length) {
@@ -2911,6 +2957,12 @@ exports.GetNonPaidOnboardingInvoicesForStudentsRequest = {
                         continue;
                     }
                     break;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.include_processing_in_paid_filter = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2929,6 +2981,9 @@ exports.GetNonPaidOnboardingInvoicesForStudentsRequest = {
             student_statuses: globalThis.Array.isArray(object?.studentStatuses)
                 ? object.studentStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
                 : [],
+            include_processing_in_paid_filter: isSet(object.includeProcessingInPaidFilter)
+                ? globalThis.Boolean(object.includeProcessingInPaidFilter)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2945,6 +3000,9 @@ exports.GetNonPaidOnboardingInvoicesForStudentsRequest = {
         if (message.student_statuses?.length) {
             obj.studentStatuses = message.student_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
         }
+        if (message.include_processing_in_paid_filter !== undefined) {
+            obj.includeProcessingInPaidFilter = message.include_processing_in_paid_filter;
+        }
         return obj;
     },
     create(base) {
@@ -2960,6 +3018,7 @@ exports.GetNonPaidOnboardingInvoicesForStudentsRequest = {
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
         message.student_statuses = object.student_statuses?.map((e) => e) || [];
+        message.include_processing_in_paid_filter = object.include_processing_in_paid_filter ?? undefined;
         return message;
     },
 };

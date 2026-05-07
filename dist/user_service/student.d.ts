@@ -80,6 +80,7 @@ export interface SchoolYearStudent {
     date_of_birth: Date | undefined;
     interview_date?: Date | undefined;
     has_enrolled_family?: boolean | undefined;
+    has_processing_transactions?: boolean | undefined;
 }
 /** Student profile data for updates */
 export interface StudentProfile {

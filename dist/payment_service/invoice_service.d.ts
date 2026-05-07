@@ -161,9 +161,11 @@ export interface GetStudentsWithUnpaidInvoicesRequest {
     context: RequestContext | undefined;
     student_statuses: StudentStatus[];
     school_year: ObjectId | undefined;
+    include_processing_in_paid_filter?: boolean | undefined;
 }
 export interface GetStudentsWithUnpaidInvoicesResponse {
     student_ids: ObjectId[];
+    processing_student_ids: ObjectId[];
 }
 export interface GetStudentsWithReregistrationInvoicesRequest {
     context: RequestContext | undefined;
@@ -177,6 +179,7 @@ export interface GetNonPaidOnboardingInvoicesForStudentsRequest {
     student_ids: ObjectId[];
     school_year_id: ObjectId | undefined;
     student_statuses: StudentStatus[];
+    include_processing_in_paid_filter?: boolean | undefined;
 }
 export interface GetNonPaidOnboardingInvoicesForStudentsResponse {
     student_invoices: StudentInvoices[];

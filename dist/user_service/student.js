@@ -477,6 +477,7 @@ function createBaseSchoolYearStudent() {
         date_of_birth: undefined,
         interview_date: undefined,
         has_enrolled_family: undefined,
+        has_processing_transactions: undefined,
     };
 }
 exports.SchoolYearStudent = {
@@ -513,6 +514,9 @@ exports.SchoolYearStudent = {
         }
         if (message.has_enrolled_family !== undefined) {
             writer.uint32(88).bool(message.has_enrolled_family);
+        }
+        if (message.has_processing_transactions !== undefined) {
+            writer.uint32(96).bool(message.has_processing_transactions);
         }
         return writer;
     },
@@ -589,6 +593,12 @@ exports.SchoolYearStudent = {
                     }
                     message.has_enrolled_family = reader.bool();
                     continue;
+                case 12:
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.has_processing_transactions = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -612,6 +622,9 @@ exports.SchoolYearStudent = {
             date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
             interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
             has_enrolled_family: isSet(object.hasEnrolledFamily) ? globalThis.Boolean(object.hasEnrolledFamily) : undefined,
+            has_processing_transactions: isSet(object.hasProcessingTransactions)
+                ? globalThis.Boolean(object.hasProcessingTransactions)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -649,6 +662,9 @@ exports.SchoolYearStudent = {
         if (message.has_enrolled_family !== undefined) {
             obj.hasEnrolledFamily = message.has_enrolled_family;
         }
+        if (message.has_processing_transactions !== undefined) {
+            obj.hasProcessingTransactions = message.has_processing_transactions;
+        }
         return obj;
     },
     create(base) {
@@ -669,6 +685,7 @@ exports.SchoolYearStudent = {
         message.date_of_birth = object.date_of_birth ?? undefined;
         message.interview_date = object.interview_date ?? undefined;
         message.has_enrolled_family = object.has_enrolled_family ?? undefined;
+        message.has_processing_transactions = object.has_processing_transactions ?? undefined;
         return message;
     },
 };

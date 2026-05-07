@@ -390,6 +390,7 @@ export interface GetFilteredStudentsListRequest {
     | undefined;
   /** When true, restrict to students who have filled all groups visible for this status (visible_to_parents_for_statuses contains status) */
   completed_only?: boolean | undefined;
+  include_processing_in_paid_filter?: boolean | undefined;
 }
 
 export interface GetFilteredStudentsListResponse {
@@ -5517,6 +5518,7 @@ function createBaseGetFilteredStudentsListRequest(): GetFilteredStudentsListRequ
     school_year: undefined,
     has_priority_first: undefined,
     completed_only: undefined,
+    include_processing_in_paid_filter: undefined,
   };
 }
 
@@ -5562,6 +5564,9 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     }
     if (message.completed_only !== undefined) {
       writer.uint32(104).bool(message.completed_only);
+    }
+    if (message.include_processing_in_paid_filter !== undefined) {
+      writer.uint32(112).bool(message.include_processing_in_paid_filter);
     }
     return writer;
   },
@@ -5674,6 +5679,13 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
 
           message.completed_only = reader.bool();
           continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.include_processing_in_paid_filter = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5704,6 +5716,9 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       has_priority_first: isSet(object.hasPriorityFirst) ? globalThis.Boolean(object.hasPriorityFirst) : undefined,
       completed_only: isSet(object.completedOnly) ? globalThis.Boolean(object.completedOnly) : undefined,
+      include_processing_in_paid_filter: isSet(object.includeProcessingInPaidFilter)
+        ? globalThis.Boolean(object.includeProcessingInPaidFilter)
+        : undefined,
     };
   },
 
@@ -5748,6 +5763,9 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
     if (message.completed_only !== undefined) {
       obj.completedOnly = message.completed_only;
     }
+    if (message.include_processing_in_paid_filter !== undefined) {
+      obj.includeProcessingInPaidFilter = message.include_processing_in_paid_filter;
+    }
     return obj;
   },
 
@@ -5775,6 +5793,7 @@ export const GetFilteredStudentsListRequest: MessageFns<GetFilteredStudentsListR
       : undefined;
     message.has_priority_first = object.has_priority_first ?? undefined;
     message.completed_only = object.completed_only ?? undefined;
+    message.include_processing_in_paid_filter = object.include_processing_in_paid_filter ?? undefined;
     return message;
   },
 };
