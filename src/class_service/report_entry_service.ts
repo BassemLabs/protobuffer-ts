@@ -75,6 +75,13 @@ export interface GetCourseReportEntriesRequest {
   course_id: ObjectId | undefined;
 }
 
+export interface SendOwnerTeacherReportCardNudgeRequest {
+  context: RequestContext | undefined;
+  owner_teacher_id: ObjectId | undefined;
+  class_id: ObjectId | undefined;
+  class_type?: ReportPublishClassType | undefined;
+}
+
 export interface GetHomeroomReportEntriesRequest {
   context: RequestContext | undefined;
   homeroom_id: ObjectId | undefined;
@@ -215,6 +222,12 @@ export interface ReportPublishQueueClass {
     | undefined;
   /** Homeroom grades when this row represents a homeroom scope. */
   grades: string[];
+  /** Owner teacher display name for this class scope. */
+  owner_teacher_name?:
+    | string
+    | undefined;
+  /** Owner teacher identifier for this class scope. */
+  owner_teacher_id?: ObjectId | undefined;
 }
 
 export interface GetReportPublishQueueClassesRequest {
@@ -478,6 +491,120 @@ export const GetCourseReportEntriesRequest: MessageFns<GetCourseReportEntriesReq
     message.course_id = (object.course_id !== undefined && object.course_id !== null)
       ? ObjectId.fromPartial(object.course_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseSendOwnerTeacherReportCardNudgeRequest(): SendOwnerTeacherReportCardNudgeRequest {
+  return { context: undefined, owner_teacher_id: undefined, class_id: undefined, class_type: undefined };
+}
+
+export const SendOwnerTeacherReportCardNudgeRequest: MessageFns<SendOwnerTeacherReportCardNudgeRequest> = {
+  encode(message: SendOwnerTeacherReportCardNudgeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.owner_teacher_id !== undefined) {
+      ObjectId.encode(message.owner_teacher_id, writer.uint32(18).fork()).join();
+    }
+    if (message.class_id !== undefined) {
+      ObjectId.encode(message.class_id, writer.uint32(26).fork()).join();
+    }
+    if (message.class_type !== undefined) {
+      writer.uint32(32).int32(reportPublishClassTypeToNumber(message.class_type));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendOwnerTeacherReportCardNudgeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendOwnerTeacherReportCardNudgeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.owner_teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.class_type = reportPublishClassTypeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendOwnerTeacherReportCardNudgeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      owner_teacher_id: isSet(object.ownerTeacherId) ? ObjectId.fromJSON(object.ownerTeacherId) : undefined,
+      class_id: isSet(object.classId) ? ObjectId.fromJSON(object.classId) : undefined,
+      class_type: isSet(object.classType) ? reportPublishClassTypeFromJSON(object.classType) : undefined,
+    };
+  },
+
+  toJSON(message: SendOwnerTeacherReportCardNudgeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.owner_teacher_id !== undefined) {
+      obj.ownerTeacherId = ObjectId.toJSON(message.owner_teacher_id);
+    }
+    if (message.class_id !== undefined) {
+      obj.classId = ObjectId.toJSON(message.class_id);
+    }
+    if (message.class_type !== undefined) {
+      obj.classType = reportPublishClassTypeToJSON(message.class_type);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SendOwnerTeacherReportCardNudgeRequest>, I>>(
+    base?: I,
+  ): SendOwnerTeacherReportCardNudgeRequest {
+    return SendOwnerTeacherReportCardNudgeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SendOwnerTeacherReportCardNudgeRequest>, I>>(
+    object: I,
+  ): SendOwnerTeacherReportCardNudgeRequest {
+    const message = createBaseSendOwnerTeacherReportCardNudgeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+      ? ObjectId.fromPartial(object.owner_teacher_id)
+      : undefined;
+    message.class_id = (object.class_id !== undefined && object.class_id !== null)
+      ? ObjectId.fromPartial(object.class_id)
+      : undefined;
+    message.class_type = object.class_type ?? undefined;
     return message;
   },
 };
@@ -1846,6 +1973,8 @@ function createBaseReportPublishQueueClass(): ReportPublishQueueClass {
     semester_name: undefined,
     course_code: undefined,
     grades: [],
+    owner_teacher_name: undefined,
+    owner_teacher_id: undefined,
   };
 }
 
@@ -1880,6 +2009,12 @@ export const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass> = {
     }
     for (const v of message.grades) {
       writer.uint32(82).string(v!);
+    }
+    if (message.owner_teacher_name !== undefined) {
+      writer.uint32(90).string(message.owner_teacher_name);
+    }
+    if (message.owner_teacher_id !== undefined) {
+      ObjectId.encode(message.owner_teacher_id, writer.uint32(98).fork()).join();
     }
     return writer;
   },
@@ -1961,6 +2096,20 @@ export const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass> = {
 
           message.grades.push(reader.string());
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.owner_teacher_name = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.owner_teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1982,6 +2131,8 @@ export const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass> = {
       semester_name: isSet(object.semesterName) ? globalThis.String(object.semesterName) : undefined,
       course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
       grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => globalThis.String(e)) : [],
+      owner_teacher_name: isSet(object.ownerTeacherName) ? globalThis.String(object.ownerTeacherName) : undefined,
+      owner_teacher_id: isSet(object.ownerTeacherId) ? ObjectId.fromJSON(object.ownerTeacherId) : undefined,
     };
   },
 
@@ -2017,6 +2168,12 @@ export const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass> = {
     if (message.grades?.length) {
       obj.grades = message.grades;
     }
+    if (message.owner_teacher_name !== undefined) {
+      obj.ownerTeacherName = message.owner_teacher_name;
+    }
+    if (message.owner_teacher_id !== undefined) {
+      obj.ownerTeacherId = ObjectId.toJSON(message.owner_teacher_id);
+    }
     return obj;
   },
 
@@ -2039,6 +2196,10 @@ export const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass> = {
     message.semester_name = object.semester_name ?? undefined;
     message.course_code = object.course_code ?? undefined;
     message.grades = object.grades?.map((e) => e) || [];
+    message.owner_teacher_name = object.owner_teacher_name ?? undefined;
+    message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+      ? ObjectId.fromPartial(object.owner_teacher_id)
+      : undefined;
     return message;
   },
 };

@@ -19,6 +19,12 @@ export interface GetCourseReportEntriesRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
 }
+export interface SendOwnerTeacherReportCardNudgeRequest {
+    context: RequestContext | undefined;
+    owner_teacher_id: ObjectId | undefined;
+    class_id: ObjectId | undefined;
+    class_type?: ReportPublishClassType | undefined;
+}
 export interface GetHomeroomReportEntriesRequest {
     context: RequestContext | undefined;
     homeroom_id: ObjectId | undefined;
@@ -118,6 +124,10 @@ export interface ReportPublishQueueClass {
     course_code?: string | undefined;
     /** Homeroom grades when this row represents a homeroom scope. */
     grades: string[];
+    /** Owner teacher display name for this class scope. */
+    owner_teacher_name?: string | undefined;
+    /** Owner teacher identifier for this class scope. */
+    owner_teacher_id?: ObjectId | undefined;
 }
 export interface GetReportPublishQueueClassesRequest {
     context: RequestContext | undefined;
@@ -250,6 +260,7 @@ export interface SendOwnerTeacherReportCardRemindersForOrganizationRequest {
     organization_id: ObjectId | undefined;
 }
 export declare const GetCourseReportEntriesRequest: MessageFns<GetCourseReportEntriesRequest>;
+export declare const SendOwnerTeacherReportCardNudgeRequest: MessageFns<SendOwnerTeacherReportCardNudgeRequest>;
 export declare const GetHomeroomReportEntriesRequest: MessageFns<GetHomeroomReportEntriesRequest>;
 export declare const GetStudentReportEntriesRequest: MessageFns<GetStudentReportEntriesRequest>;
 export declare const GetStudentReportEntriesForCourseRequest: MessageFns<GetStudentReportEntriesForCourseRequest>;

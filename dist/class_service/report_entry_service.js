@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_entry_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.GetCourseReportEntriesRequest = exports.ReportPublishClassType = exports.protobufPackage = void 0;
+exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.SendOwnerTeacherReportCardNudgeRequest = exports.GetCourseReportEntriesRequest = exports.ReportPublishClassType = exports.protobufPackage = void 0;
 exports.reportPublishClassTypeFromJSON = reportPublishClassTypeFromJSON;
 exports.reportPublishClassTypeToJSON = reportPublishClassTypeToJSON;
 exports.reportPublishClassTypeToNumber = reportPublishClassTypeToNumber;
@@ -128,6 +128,106 @@ exports.GetCourseReportEntriesRequest = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseSendOwnerTeacherReportCardNudgeRequest() {
+    return { context: undefined, owner_teacher_id: undefined, class_id: undefined, class_type: undefined };
+}
+exports.SendOwnerTeacherReportCardNudgeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(18).fork()).join();
+        }
+        if (message.class_id !== undefined) {
+            object_id_1.ObjectId.encode(message.class_id, writer.uint32(26).fork()).join();
+        }
+        if (message.class_type !== undefined) {
+            writer.uint32(32).int32(reportPublishClassTypeToNumber(message.class_type));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSendOwnerTeacherReportCardNudgeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.class_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.class_type = reportPublishClassTypeFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
+            class_id: isSet(object.classId) ? object_id_1.ObjectId.fromJSON(object.classId) : undefined,
+            class_type: isSet(object.classType) ? reportPublishClassTypeFromJSON(object.classType) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
+        if (message.class_id !== undefined) {
+            obj.classId = object_id_1.ObjectId.toJSON(message.class_id);
+        }
+        if (message.class_type !== undefined) {
+            obj.classType = reportPublishClassTypeToJSON(message.class_type);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SendOwnerTeacherReportCardNudgeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSendOwnerTeacherReportCardNudgeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
+            : undefined;
+        message.class_id = (object.class_id !== undefined && object.class_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.class_id)
+            : undefined;
+        message.class_type = object.class_type ?? undefined;
         return message;
     },
 };
@@ -1320,6 +1420,8 @@ function createBaseReportPublishQueueClass() {
         semester_name: undefined,
         course_code: undefined,
         grades: [],
+        owner_teacher_name: undefined,
+        owner_teacher_id: undefined,
     };
 }
 exports.ReportPublishQueueClass = {
@@ -1353,6 +1455,12 @@ exports.ReportPublishQueueClass = {
         }
         for (const v of message.grades) {
             writer.uint32(82).string(v);
+        }
+        if (message.owner_teacher_name !== undefined) {
+            writer.uint32(90).string(message.owner_teacher_name);
+        }
+        if (message.owner_teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.owner_teacher_id, writer.uint32(98).fork()).join();
         }
         return writer;
     },
@@ -1423,6 +1531,18 @@ exports.ReportPublishQueueClass = {
                     }
                     message.grades.push(reader.string());
                     continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.owner_teacher_name = reader.string();
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.owner_teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1443,6 +1563,8 @@ exports.ReportPublishQueueClass = {
             semester_name: isSet(object.semesterName) ? globalThis.String(object.semesterName) : undefined,
             course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
             grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => globalThis.String(e)) : [],
+            owner_teacher_name: isSet(object.ownerTeacherName) ? globalThis.String(object.ownerTeacherName) : undefined,
+            owner_teacher_id: isSet(object.ownerTeacherId) ? object_id_1.ObjectId.fromJSON(object.ownerTeacherId) : undefined,
         };
     },
     toJSON(message) {
@@ -1477,6 +1599,12 @@ exports.ReportPublishQueueClass = {
         if (message.grades?.length) {
             obj.grades = message.grades;
         }
+        if (message.owner_teacher_name !== undefined) {
+            obj.ownerTeacherName = message.owner_teacher_name;
+        }
+        if (message.owner_teacher_id !== undefined) {
+            obj.ownerTeacherId = object_id_1.ObjectId.toJSON(message.owner_teacher_id);
+        }
         return obj;
     },
     create(base) {
@@ -1498,6 +1626,10 @@ exports.ReportPublishQueueClass = {
         message.semester_name = object.semester_name ?? undefined;
         message.course_code = object.course_code ?? undefined;
         message.grades = object.grades?.map((e) => e) || [];
+        message.owner_teacher_name = object.owner_teacher_name ?? undefined;
+        message.owner_teacher_id = (object.owner_teacher_id !== undefined && object.owner_teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.owner_teacher_id)
+            : undefined;
         return message;
     },
 };
