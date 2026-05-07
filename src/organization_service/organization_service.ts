@@ -151,6 +151,7 @@ export enum StartSchoolYearPhase {
   START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS = "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS",
   START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR = "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR",
   START_SCHOOL_YEAR_PHASE_SEND_EMAILS = "START_SCHOOL_YEAR_PHASE_SEND_EMAILS",
+  START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES = "START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -165,6 +166,9 @@ export function startSchoolYearPhaseFromJSON(object: any): StartSchoolYearPhase 
     case 2:
     case "START_SCHOOL_YEAR_PHASE_SEND_EMAILS":
       return StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SEND_EMAILS;
+    case 3:
+    case "START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES":
+      return StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -180,6 +184,8 @@ export function startSchoolYearPhaseToJSON(object: StartSchoolYearPhase): string
       return "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR";
     case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SEND_EMAILS:
       return "START_SCHOOL_YEAR_PHASE_SEND_EMAILS";
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES:
+      return "START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES";
     case StartSchoolYearPhase.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -194,6 +200,8 @@ export function startSchoolYearPhaseToNumber(object: StartSchoolYearPhase): numb
       return 1;
     case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_SEND_EMAILS:
       return 2;
+    case StartSchoolYearPhase.START_SCHOOL_YEAR_PHASE_ARCHIVE_LMS_CLASSES:
+      return 3;
     case StartSchoolYearPhase.UNRECOGNIZED:
     default:
       return -1;

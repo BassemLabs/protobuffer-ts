@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
 exports.studentProfileFeatureScopeFromJSON = studentProfileFeatureScopeFromJSON;
 exports.studentProfileFeatureScopeToJSON = studentProfileFeatureScopeToJSON;
 exports.studentProfileFeatureScopeToNumber = studentProfileFeatureScopeToNumber;
@@ -902,6 +902,179 @@ exports.ArchiveCourseRequest = {
         message.course_id = (object.course_id !== undefined && object.course_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseArchiveLmsClassesForSchoolYearRequest() {
+    return { context: undefined, school_year_id: undefined };
+}
+exports.ArchiveLmsClassesForSchoolYearRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseArchiveLmsClassesForSchoolYearRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ArchiveLmsClassesForSchoolYearRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseArchiveLmsClassesForSchoolYearRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseArchiveLmsClassesForSchoolYearResponse() {
+    return {
+        total_lms_courses_found: undefined,
+        archived_count: undefined,
+        skipped_duplicate_count: undefined,
+        failed_count: undefined,
+    };
+}
+exports.ArchiveLmsClassesForSchoolYearResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.total_lms_courses_found !== undefined) {
+            writer.uint32(8).uint32(message.total_lms_courses_found);
+        }
+        if (message.archived_count !== undefined) {
+            writer.uint32(16).uint32(message.archived_count);
+        }
+        if (message.skipped_duplicate_count !== undefined) {
+            writer.uint32(24).uint32(message.skipped_duplicate_count);
+        }
+        if (message.failed_count !== undefined) {
+            writer.uint32(32).uint32(message.failed_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseArchiveLmsClassesForSchoolYearResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.total_lms_courses_found = reader.uint32();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.archived_count = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.skipped_duplicate_count = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.failed_count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            total_lms_courses_found: isSet(object.totalLmsCoursesFound)
+                ? globalThis.Number(object.totalLmsCoursesFound)
+                : undefined,
+            archived_count: isSet(object.archivedCount) ? globalThis.Number(object.archivedCount) : undefined,
+            skipped_duplicate_count: isSet(object.skippedDuplicateCount)
+                ? globalThis.Number(object.skippedDuplicateCount)
+                : undefined,
+            failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.total_lms_courses_found !== undefined) {
+            obj.totalLmsCoursesFound = Math.round(message.total_lms_courses_found);
+        }
+        if (message.archived_count !== undefined) {
+            obj.archivedCount = Math.round(message.archived_count);
+        }
+        if (message.skipped_duplicate_count !== undefined) {
+            obj.skippedDuplicateCount = Math.round(message.skipped_duplicate_count);
+        }
+        if (message.failed_count !== undefined) {
+            obj.failedCount = Math.round(message.failed_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ArchiveLmsClassesForSchoolYearResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseArchiveLmsClassesForSchoolYearResponse();
+        message.total_lms_courses_found = object.total_lms_courses_found ?? undefined;
+        message.archived_count = object.archived_count ?? undefined;
+        message.skipped_duplicate_count = object.skipped_duplicate_count ?? undefined;
+        message.failed_count = object.failed_count ?? undefined;
         return message;
     },
 };

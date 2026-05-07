@@ -135,6 +135,18 @@ export interface ArchiveCourseRequest {
   course_id: ObjectId | undefined;
 }
 
+export interface ArchiveLmsClassesForSchoolYearRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface ArchiveLmsClassesForSchoolYearResponse {
+  total_lms_courses_found?: number | undefined;
+  archived_count?: number | undefined;
+  skipped_duplicate_count?: number | undefined;
+  failed_count?: number | undefined;
+}
+
 export interface UnarchiveCourseRequest {
   context: RequestContext | undefined;
   course_id: ObjectId | undefined;
@@ -1202,6 +1214,205 @@ export const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest> = {
     message.course_id = (object.course_id !== undefined && object.course_id !== null)
       ? ObjectId.fromPartial(object.course_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseArchiveLmsClassesForSchoolYearRequest(): ArchiveLmsClassesForSchoolYearRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const ArchiveLmsClassesForSchoolYearRequest: MessageFns<ArchiveLmsClassesForSchoolYearRequest> = {
+  encode(message: ArchiveLmsClassesForSchoolYearRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ArchiveLmsClassesForSchoolYearRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseArchiveLmsClassesForSchoolYearRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ArchiveLmsClassesForSchoolYearRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: ArchiveLmsClassesForSchoolYearRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ArchiveLmsClassesForSchoolYearRequest>, I>>(
+    base?: I,
+  ): ArchiveLmsClassesForSchoolYearRequest {
+    return ArchiveLmsClassesForSchoolYearRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ArchiveLmsClassesForSchoolYearRequest>, I>>(
+    object: I,
+  ): ArchiveLmsClassesForSchoolYearRequest {
+    const message = createBaseArchiveLmsClassesForSchoolYearRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseArchiveLmsClassesForSchoolYearResponse(): ArchiveLmsClassesForSchoolYearResponse {
+  return {
+    total_lms_courses_found: undefined,
+    archived_count: undefined,
+    skipped_duplicate_count: undefined,
+    failed_count: undefined,
+  };
+}
+
+export const ArchiveLmsClassesForSchoolYearResponse: MessageFns<ArchiveLmsClassesForSchoolYearResponse> = {
+  encode(message: ArchiveLmsClassesForSchoolYearResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.total_lms_courses_found !== undefined) {
+      writer.uint32(8).uint32(message.total_lms_courses_found);
+    }
+    if (message.archived_count !== undefined) {
+      writer.uint32(16).uint32(message.archived_count);
+    }
+    if (message.skipped_duplicate_count !== undefined) {
+      writer.uint32(24).uint32(message.skipped_duplicate_count);
+    }
+    if (message.failed_count !== undefined) {
+      writer.uint32(32).uint32(message.failed_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ArchiveLmsClassesForSchoolYearResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseArchiveLmsClassesForSchoolYearResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.total_lms_courses_found = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.archived_count = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.skipped_duplicate_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.failed_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ArchiveLmsClassesForSchoolYearResponse {
+    return {
+      total_lms_courses_found: isSet(object.totalLmsCoursesFound)
+        ? globalThis.Number(object.totalLmsCoursesFound)
+        : undefined,
+      archived_count: isSet(object.archivedCount) ? globalThis.Number(object.archivedCount) : undefined,
+      skipped_duplicate_count: isSet(object.skippedDuplicateCount)
+        ? globalThis.Number(object.skippedDuplicateCount)
+        : undefined,
+      failed_count: isSet(object.failedCount) ? globalThis.Number(object.failedCount) : undefined,
+    };
+  },
+
+  toJSON(message: ArchiveLmsClassesForSchoolYearResponse): unknown {
+    const obj: any = {};
+    if (message.total_lms_courses_found !== undefined) {
+      obj.totalLmsCoursesFound = Math.round(message.total_lms_courses_found);
+    }
+    if (message.archived_count !== undefined) {
+      obj.archivedCount = Math.round(message.archived_count);
+    }
+    if (message.skipped_duplicate_count !== undefined) {
+      obj.skippedDuplicateCount = Math.round(message.skipped_duplicate_count);
+    }
+    if (message.failed_count !== undefined) {
+      obj.failedCount = Math.round(message.failed_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ArchiveLmsClassesForSchoolYearResponse>, I>>(
+    base?: I,
+  ): ArchiveLmsClassesForSchoolYearResponse {
+    return ArchiveLmsClassesForSchoolYearResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ArchiveLmsClassesForSchoolYearResponse>, I>>(
+    object: I,
+  ): ArchiveLmsClassesForSchoolYearResponse {
+    const message = createBaseArchiveLmsClassesForSchoolYearResponse();
+    message.total_lms_courses_found = object.total_lms_courses_found ?? undefined;
+    message.archived_count = object.archived_count ?? undefined;
+    message.skipped_duplicate_count = object.skipped_duplicate_count ?? undefined;
+    message.failed_count = object.failed_count ?? undefined;
     return message;
   },
 };

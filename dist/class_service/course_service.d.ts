@@ -65,6 +65,16 @@ export interface ArchiveCourseRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
 }
+export interface ArchiveLmsClassesForSchoolYearRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface ArchiveLmsClassesForSchoolYearResponse {
+    total_lms_courses_found?: number | undefined;
+    archived_count?: number | undefined;
+    skipped_duplicate_count?: number | undefined;
+    failed_count?: number | undefined;
+}
 export interface UnarchiveCourseRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
@@ -188,6 +198,8 @@ export declare const GetStudentProfileClassScopeRequest: MessageFns<GetStudentPr
 export declare const GetStudentProfileClassScopeResponse: MessageFns<GetStudentProfileClassScopeResponse>;
 export declare const GetStudentCoursesForSchoolYearRequest: MessageFns<GetStudentCoursesForSchoolYearRequest>;
 export declare const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest>;
+export declare const ArchiveLmsClassesForSchoolYearRequest: MessageFns<ArchiveLmsClassesForSchoolYearRequest>;
+export declare const ArchiveLmsClassesForSchoolYearResponse: MessageFns<ArchiveLmsClassesForSchoolYearResponse>;
 export declare const UnarchiveCourseRequest: MessageFns<UnarchiveCourseRequest>;
 export declare const UpdateCourseRequest: MessageFns<UpdateCourseRequest>;
 export declare const AddTeachersRequest: MessageFns<AddTeachersRequest>;
