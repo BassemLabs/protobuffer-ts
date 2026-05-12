@@ -19,6 +19,51 @@ import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "..
 
 export const protobufPackage = "user_service";
 
+export enum BroadcastListScope {
+  BROADCAST_LIST_SCOPE_ALL = "BROADCAST_LIST_SCOPE_ALL",
+  BROADCAST_LIST_SCOPE_OWN = "BROADCAST_LIST_SCOPE_OWN",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function broadcastListScopeFromJSON(object: any): BroadcastListScope {
+  switch (object) {
+    case 0:
+    case "BROADCAST_LIST_SCOPE_ALL":
+      return BroadcastListScope.BROADCAST_LIST_SCOPE_ALL;
+    case 1:
+    case "BROADCAST_LIST_SCOPE_OWN":
+      return BroadcastListScope.BROADCAST_LIST_SCOPE_OWN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BroadcastListScope.UNRECOGNIZED;
+  }
+}
+
+export function broadcastListScopeToJSON(object: BroadcastListScope): string {
+  switch (object) {
+    case BroadcastListScope.BROADCAST_LIST_SCOPE_ALL:
+      return "BROADCAST_LIST_SCOPE_ALL";
+    case BroadcastListScope.BROADCAST_LIST_SCOPE_OWN:
+      return "BROADCAST_LIST_SCOPE_OWN";
+    case BroadcastListScope.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function broadcastListScopeToNumber(object: BroadcastListScope): number {
+  switch (object) {
+    case BroadcastListScope.BROADCAST_LIST_SCOPE_ALL:
+      return 0;
+    case BroadcastListScope.BROADCAST_LIST_SCOPE_OWN:
+      return 1;
+    case BroadcastListScope.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface CommunicationFilters {
   homeroom_ids: ObjectId[];
   course_ids: ObjectId[];

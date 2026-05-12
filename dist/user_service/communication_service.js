@@ -232,7 +232,7 @@ exports.SendCommunicationRequest = {
     },
 };
 function createBaseGetBroadcastsListRequest() {
-    return { context: undefined, per_page: undefined, page: undefined };
+    return { context: undefined, per_page: undefined, page: undefined, scope: undefined };
 }
 exports.GetBroadcastsListRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -244,6 +244,9 @@ exports.GetBroadcastsListRequest = {
         }
         if (message.page !== undefined) {
             writer.uint32(24).uint64(message.page);
+        }
+        if (message.scope !== undefined) {
+            writer.uint32(32).int32((0, communication_1.broadcastListScopeToNumber)(message.scope));
         }
         return writer;
     },
@@ -272,6 +275,12 @@ exports.GetBroadcastsListRequest = {
                     }
                     message.page = longToNumber(reader.uint64());
                     continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.scope = (0, communication_1.broadcastListScopeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -285,6 +294,7 @@ exports.GetBroadcastsListRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
             page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+            scope: isSet(object.scope) ? (0, communication_1.broadcastListScopeFromJSON)(object.scope) : undefined,
         };
     },
     toJSON(message) {
@@ -298,6 +308,9 @@ exports.GetBroadcastsListRequest = {
         if (message.page !== undefined) {
             obj.page = Math.round(message.page);
         }
+        if (message.scope !== undefined) {
+            obj.scope = (0, communication_1.broadcastListScopeToJSON)(message.scope);
+        }
         return obj;
     },
     create(base) {
@@ -310,6 +323,7 @@ exports.GetBroadcastsListRequest = {
             : undefined;
         message.per_page = object.per_page ?? undefined;
         message.page = object.page ?? undefined;
+        message.scope = object.scope ?? undefined;
         return message;
     },
 };

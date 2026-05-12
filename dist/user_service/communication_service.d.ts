@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { NotificationType } from "../utils/notification_type";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { CommunicationFilters, CommunicationTarget } from "./communication";
+import { BroadcastListScope, CommunicationFilters, CommunicationTarget } from "./communication";
 export declare const protobufPackage = "user_service";
 export interface PreviewCommunicationRequest {
     context: RequestContext | undefined;
@@ -20,6 +20,7 @@ export interface GetBroadcastsListRequest {
     context: RequestContext | undefined;
     per_page?: number | undefined;
     page?: number | undefined;
+    scope?: BroadcastListScope | undefined;
 }
 export interface GetBroadcastRequest {
     context: RequestContext | undefined;

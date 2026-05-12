@@ -5,6 +5,14 @@ import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { UserType } from "../utils/user_type";
 export declare const protobufPackage = "user_service";
+export declare enum BroadcastListScope {
+    BROADCAST_LIST_SCOPE_ALL = "BROADCAST_LIST_SCOPE_ALL",
+    BROADCAST_LIST_SCOPE_OWN = "BROADCAST_LIST_SCOPE_OWN",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function broadcastListScopeFromJSON(object: any): BroadcastListScope;
+export declare function broadcastListScopeToJSON(object: BroadcastListScope): string;
+export declare function broadcastListScopeToNumber(object: BroadcastListScope): number;
 export interface CommunicationFilters {
     homeroom_ids: ObjectId[];
     course_ids: ObjectId[];

@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: user_service/communication.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PreviewCommunicationResponse = exports.RecipientList = exports.BroadcastList = exports.CommunicationChannelCounts = exports.CommunicationTarget = exports.CommunicationBroadcast = exports.CommunicationFilters = exports.protobufPackage = void 0;
+exports.PreviewCommunicationResponse = exports.RecipientList = exports.BroadcastList = exports.CommunicationChannelCounts = exports.CommunicationTarget = exports.CommunicationBroadcast = exports.CommunicationFilters = exports.BroadcastListScope = exports.protobufPackage = void 0;
+exports.broadcastListScopeFromJSON = broadcastListScopeFromJSON;
+exports.broadcastListScopeToJSON = broadcastListScopeToJSON;
+exports.broadcastListScopeToNumber = broadcastListScopeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const notification_1 = require("../utils/notification");
@@ -14,6 +17,48 @@ const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
 const user_type_1 = require("../utils/user_type");
 exports.protobufPackage = "user_service";
+var BroadcastListScope;
+(function (BroadcastListScope) {
+    BroadcastListScope["BROADCAST_LIST_SCOPE_ALL"] = "BROADCAST_LIST_SCOPE_ALL";
+    BroadcastListScope["BROADCAST_LIST_SCOPE_OWN"] = "BROADCAST_LIST_SCOPE_OWN";
+    BroadcastListScope["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(BroadcastListScope || (exports.BroadcastListScope = BroadcastListScope = {}));
+function broadcastListScopeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "BROADCAST_LIST_SCOPE_ALL":
+            return BroadcastListScope.BROADCAST_LIST_SCOPE_ALL;
+        case 1:
+        case "BROADCAST_LIST_SCOPE_OWN":
+            return BroadcastListScope.BROADCAST_LIST_SCOPE_OWN;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return BroadcastListScope.UNRECOGNIZED;
+    }
+}
+function broadcastListScopeToJSON(object) {
+    switch (object) {
+        case BroadcastListScope.BROADCAST_LIST_SCOPE_ALL:
+            return "BROADCAST_LIST_SCOPE_ALL";
+        case BroadcastListScope.BROADCAST_LIST_SCOPE_OWN:
+            return "BROADCAST_LIST_SCOPE_OWN";
+        case BroadcastListScope.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function broadcastListScopeToNumber(object) {
+    switch (object) {
+        case BroadcastListScope.BROADCAST_LIST_SCOPE_ALL:
+            return 0;
+        case BroadcastListScope.BROADCAST_LIST_SCOPE_OWN:
+            return 1;
+        case BroadcastListScope.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseCommunicationFilters() {
     return {
         homeroom_ids: [],

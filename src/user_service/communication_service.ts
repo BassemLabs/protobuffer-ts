@@ -14,7 +14,14 @@ import {
 } from "../utils/notification_type";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { CommunicationFilters, CommunicationTarget } from "./communication";
+import {
+  BroadcastListScope,
+  broadcastListScopeFromJSON,
+  broadcastListScopeToJSON,
+  broadcastListScopeToNumber,
+  CommunicationFilters,
+  CommunicationTarget,
+} from "./communication";
 
 export const protobufPackage = "user_service";
 
@@ -36,6 +43,7 @@ export interface GetBroadcastsListRequest {
   context: RequestContext | undefined;
   per_page?: number | undefined;
   page?: number | undefined;
+  scope?: BroadcastListScope | undefined;
 }
 
 export interface GetBroadcastRequest {
@@ -302,7 +310,7 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
 };
 
 function createBaseGetBroadcastsListRequest(): GetBroadcastsListRequest {
-  return { context: undefined, per_page: undefined, page: undefined };
+  return { context: undefined, per_page: undefined, page: undefined, scope: undefined };
 }
 
 export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
@@ -315,6 +323,9 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
     }
     if (message.page !== undefined) {
       writer.uint32(24).uint64(message.page);
+    }
+    if (message.scope !== undefined) {
+      writer.uint32(32).int32(broadcastListScopeToNumber(message.scope));
     }
     return writer;
   },
@@ -347,6 +358,13 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
 
           message.page = longToNumber(reader.uint64());
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.scope = broadcastListScopeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -361,6 +379,7 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
       page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+      scope: isSet(object.scope) ? broadcastListScopeFromJSON(object.scope) : undefined,
     };
   },
 
@@ -375,6 +394,9 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
     if (message.page !== undefined) {
       obj.page = Math.round(message.page);
     }
+    if (message.scope !== undefined) {
+      obj.scope = broadcastListScopeToJSON(message.scope);
+    }
     return obj;
   },
 
@@ -388,6 +410,7 @@ export const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest> = {
       : undefined;
     message.per_page = object.per_page ?? undefined;
     message.page = object.page ?? undefined;
+    message.scope = object.scope ?? undefined;
     return message;
   },
 };
