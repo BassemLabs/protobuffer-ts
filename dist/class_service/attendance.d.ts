@@ -21,13 +21,13 @@ export interface Attendance {
     /** YYYY-MM-DD format for NaiveDate */
     date?: string | undefined;
     period_number?: number | undefined;
-    reason?: string | undefined;
+    teacher_reason?: string | undefined;
     sign_in_time?: Date | undefined;
     sign_out_time?: Date | undefined;
     status?: AttendanceStatus | undefined;
-    late_dismissal_date?: Date | undefined;
     student_excused_by?: ObjectId | undefined;
     student_excused_by_user_type?: UserType | undefined;
+    parent_reason?: string | undefined;
 }
 export declare const Attendance: MessageFns<Attendance>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

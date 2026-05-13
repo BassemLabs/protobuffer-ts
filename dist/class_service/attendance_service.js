@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/attendance_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateLateDismissalDateRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
+exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
 exports.principalDashboardAttendanceScopeTypeFromJSON = principalDashboardAttendanceScopeTypeFromJSON;
 exports.principalDashboardAttendanceScopeTypeToJSON = principalDashboardAttendanceScopeTypeToJSON;
 exports.principalDashboardAttendanceScopeTypeToNumber = principalDashboardAttendanceScopeTypeToNumber;
@@ -1265,7 +1265,7 @@ exports.UpdateTimeRequest = {
     },
 };
 function createBaseUpdateReasonRequest() {
-    return { context: undefined, attendance_entry_id: undefined, reason: undefined };
+    return { context: undefined, attendance_entry_id: undefined, teacher_reason: undefined };
 }
 exports.UpdateReasonRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1275,8 +1275,8 @@ exports.UpdateReasonRequest = {
         if (message.attendance_entry_id !== undefined) {
             object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.reason !== undefined) {
-            writer.uint32(26).string(message.reason);
+        if (message.teacher_reason !== undefined) {
+            writer.uint32(26).string(message.teacher_reason);
         }
         return writer;
     },
@@ -1303,7 +1303,7 @@ exports.UpdateReasonRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.reason = reader.string();
+                    message.teacher_reason = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1317,7 +1317,7 @@ exports.UpdateReasonRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-            reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+            teacher_reason: isSet(object.teacherReason) ? globalThis.String(object.teacherReason) : undefined,
         };
     },
     toJSON(message) {
@@ -1328,8 +1328,8 @@ exports.UpdateReasonRequest = {
         if (message.attendance_entry_id !== undefined) {
             obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
-        if (message.reason !== undefined) {
-            obj.reason = message.reason;
+        if (message.teacher_reason !== undefined) {
+            obj.teacherReason = message.teacher_reason;
         }
         return obj;
     },
@@ -1344,91 +1344,7 @@ exports.UpdateReasonRequest = {
         message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
-        message.reason = object.reason ?? undefined;
-        return message;
-    },
-};
-function createBaseUpdateLateDismissalDateRequest() {
-    return { context: undefined, attendance_entry_id: undefined, late_dismissal_date: undefined };
-}
-exports.UpdateLateDismissalDateRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.attendance_entry_id !== undefined) {
-            object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
-        }
-        if (message.late_dismissal_date !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.late_dismissal_date), writer.uint32(26).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUpdateLateDismissalDateRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.attendance_entry_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.late_dismissal_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-            late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.attendance_entry_id !== undefined) {
-            obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
-        }
-        if (message.late_dismissal_date !== undefined) {
-            obj.lateDismissalDate = message.late_dismissal_date.toISOString();
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.UpdateLateDismissalDateRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseUpdateLateDismissalDateRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
-            : undefined;
-        message.late_dismissal_date = object.late_dismissal_date ?? undefined;
+        message.teacher_reason = object.teacher_reason ?? undefined;
         return message;
     },
 };
@@ -1436,7 +1352,7 @@ function createBaseUpdateExcuseStudentRequest() {
     return {
         context: undefined,
         attendance_entry_id: undefined,
-        reason: undefined,
+        parent_reason: undefined,
         student_excused_by: undefined,
         student_excused_by_user_type: undefined,
     };
@@ -1449,8 +1365,8 @@ exports.UpdateExcuseStudentRequest = {
         if (message.attendance_entry_id !== undefined) {
             object_id_1.ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
         }
-        if (message.reason !== undefined) {
-            writer.uint32(26).string(message.reason);
+        if (message.parent_reason !== undefined) {
+            writer.uint32(26).string(message.parent_reason);
         }
         if (message.student_excused_by !== undefined) {
             object_id_1.ObjectId.encode(message.student_excused_by, writer.uint32(34).fork()).join();
@@ -1483,7 +1399,7 @@ exports.UpdateExcuseStudentRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.reason = reader.string();
+                    message.parent_reason = reader.string();
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -1509,7 +1425,7 @@ exports.UpdateExcuseStudentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             attendance_entry_id: isSet(object.attendanceEntryId) ? object_id_1.ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-            reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+            parent_reason: isSet(object.parentReason) ? globalThis.String(object.parentReason) : undefined,
             student_excused_by: isSet(object.studentExcusedBy) ? object_id_1.ObjectId.fromJSON(object.studentExcusedBy) : undefined,
             student_excused_by_user_type: isSet(object.studentExcusedByUserType)
                 ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
@@ -1524,8 +1440,8 @@ exports.UpdateExcuseStudentRequest = {
         if (message.attendance_entry_id !== undefined) {
             obj.attendanceEntryId = object_id_1.ObjectId.toJSON(message.attendance_entry_id);
         }
-        if (message.reason !== undefined) {
-            obj.reason = message.reason;
+        if (message.parent_reason !== undefined) {
+            obj.parentReason = message.parent_reason;
         }
         if (message.student_excused_by !== undefined) {
             obj.studentExcusedBy = object_id_1.ObjectId.toJSON(message.student_excused_by);
@@ -1546,7 +1462,7 @@ exports.UpdateExcuseStudentRequest = {
         message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.attendance_entry_id)
             : undefined;
-        message.reason = object.reason ?? undefined;
+        message.parent_reason = object.parent_reason ?? undefined;
         message.student_excused_by = (object.student_excused_by !== undefined && object.student_excused_by !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_excused_by)
             : undefined;

@@ -29,7 +29,6 @@ var EmailTemplateKey;
     EmailTemplateKey["ATTENDANCE_SIGN_OUT_EMAIL"] = "ATTENDANCE_SIGN_OUT_EMAIL";
     EmailTemplateKey["ATTENDANCE_LATE_STATUS_EMAIL"] = "ATTENDANCE_LATE_STATUS_EMAIL";
     EmailTemplateKey["ATTENDANCE_ABSENCE_STATUS_EMAIL"] = "ATTENDANCE_ABSENCE_STATUS_EMAIL";
-    EmailTemplateKey["ATTENDANCE_LATE_DISMISSAL_EMAIL"] = "ATTENDANCE_LATE_DISMISSAL_EMAIL";
     /** REPORT_CARD_CHANGES_REQUESTED_EMAIL - Report card templates */
     EmailTemplateKey["REPORT_CARD_CHANGES_REQUESTED_EMAIL"] = "REPORT_CARD_CHANGES_REQUESTED_EMAIL";
     EmailTemplateKey["REPORT_CARD_PUBLISHED_EMAIL"] = "REPORT_CARD_PUBLISHED_EMAIL";
@@ -82,9 +81,6 @@ function emailTemplateKeyFromJSON(object) {
         case 11:
         case "ATTENDANCE_ABSENCE_STATUS_EMAIL":
             return EmailTemplateKey.ATTENDANCE_ABSENCE_STATUS_EMAIL;
-        case 12:
-        case "ATTENDANCE_LATE_DISMISSAL_EMAIL":
-            return EmailTemplateKey.ATTENDANCE_LATE_DISMISSAL_EMAIL;
         case 13:
         case "REPORT_CARD_CHANGES_REQUESTED_EMAIL":
             return EmailTemplateKey.REPORT_CARD_CHANGES_REQUESTED_EMAIL;
@@ -138,8 +134,6 @@ function emailTemplateKeyToJSON(object) {
             return "ATTENDANCE_LATE_STATUS_EMAIL";
         case EmailTemplateKey.ATTENDANCE_ABSENCE_STATUS_EMAIL:
             return "ATTENDANCE_ABSENCE_STATUS_EMAIL";
-        case EmailTemplateKey.ATTENDANCE_LATE_DISMISSAL_EMAIL:
-            return "ATTENDANCE_LATE_DISMISSAL_EMAIL";
         case EmailTemplateKey.REPORT_CARD_CHANGES_REQUESTED_EMAIL:
             return "REPORT_CARD_CHANGES_REQUESTED_EMAIL";
         case EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL:
@@ -185,8 +179,6 @@ function emailTemplateKeyToNumber(object) {
             return 10;
         case EmailTemplateKey.ATTENDANCE_ABSENCE_STATUS_EMAIL:
             return 11;
-        case EmailTemplateKey.ATTENDANCE_LATE_DISMISSAL_EMAIL:
-            return 12;
         case EmailTemplateKey.REPORT_CARD_CHANGES_REQUESTED_EMAIL:
             return 13;
         case EmailTemplateKey.REPORT_CARD_PUBLISHED_EMAIL:

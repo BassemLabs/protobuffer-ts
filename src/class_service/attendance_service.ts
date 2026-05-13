@@ -274,19 +274,13 @@ export interface UpdateTimeRequest {
 export interface UpdateReasonRequest {
   context: RequestContext | undefined;
   attendance_entry_id: ObjectId | undefined;
-  reason?: string | undefined;
-}
-
-export interface UpdateLateDismissalDateRequest {
-  context: RequestContext | undefined;
-  attendance_entry_id: ObjectId | undefined;
-  late_dismissal_date?: Date | undefined;
+  teacher_reason?: string | undefined;
 }
 
 export interface UpdateExcuseStudentRequest {
   context: RequestContext | undefined;
   attendance_entry_id: ObjectId | undefined;
-  reason?: string | undefined;
+  parent_reason?: string | undefined;
   student_excused_by: ObjectId | undefined;
   student_excused_by_user_type?: UserType | undefined;
 }
@@ -1702,7 +1696,7 @@ export const UpdateTimeRequest: MessageFns<UpdateTimeRequest> = {
 };
 
 function createBaseUpdateReasonRequest(): UpdateReasonRequest {
-  return { context: undefined, attendance_entry_id: undefined, reason: undefined };
+  return { context: undefined, attendance_entry_id: undefined, teacher_reason: undefined };
 }
 
 export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
@@ -1713,8 +1707,8 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     if (message.attendance_entry_id !== undefined) {
       ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
-    if (message.reason !== undefined) {
-      writer.uint32(26).string(message.reason);
+    if (message.teacher_reason !== undefined) {
+      writer.uint32(26).string(message.teacher_reason);
     }
     return writer;
   },
@@ -1745,7 +1739,7 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
             break;
           }
 
-          message.reason = reader.string();
+          message.teacher_reason = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1760,7 +1754,7 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      teacher_reason: isSet(object.teacherReason) ? globalThis.String(object.teacherReason) : undefined,
     };
   },
 
@@ -1772,8 +1766,8 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     if (message.attendance_entry_id !== undefined) {
       obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
-    if (message.reason !== undefined) {
-      obj.reason = message.reason;
+    if (message.teacher_reason !== undefined) {
+      obj.teacherReason = message.teacher_reason;
     }
     return obj;
   },
@@ -1789,102 +1783,7 @@ export const UpdateReasonRequest: MessageFns<UpdateReasonRequest> = {
     message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
       ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
-    message.reason = object.reason ?? undefined;
-    return message;
-  },
-};
-
-function createBaseUpdateLateDismissalDateRequest(): UpdateLateDismissalDateRequest {
-  return { context: undefined, attendance_entry_id: undefined, late_dismissal_date: undefined };
-}
-
-export const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateRequest> = {
-  encode(message: UpdateLateDismissalDateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.attendance_entry_id !== undefined) {
-      ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
-    }
-    if (message.late_dismissal_date !== undefined) {
-      Timestamp.encode(toTimestamp(message.late_dismissal_date), writer.uint32(26).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): UpdateLateDismissalDateRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdateLateDismissalDateRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.attendance_entry_id = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.late_dismissal_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): UpdateLateDismissalDateRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-      late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
-    };
-  },
-
-  toJSON(message: UpdateLateDismissalDateRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.attendance_entry_id !== undefined) {
-      obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
-    }
-    if (message.late_dismissal_date !== undefined) {
-      obj.lateDismissalDate = message.late_dismissal_date.toISOString();
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<UpdateLateDismissalDateRequest>, I>>(base?: I): UpdateLateDismissalDateRequest {
-    return UpdateLateDismissalDateRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<UpdateLateDismissalDateRequest>, I>>(
-    object: I,
-  ): UpdateLateDismissalDateRequest {
-    const message = createBaseUpdateLateDismissalDateRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
-      ? ObjectId.fromPartial(object.attendance_entry_id)
-      : undefined;
-    message.late_dismissal_date = object.late_dismissal_date ?? undefined;
+    message.teacher_reason = object.teacher_reason ?? undefined;
     return message;
   },
 };
@@ -1893,7 +1792,7 @@ function createBaseUpdateExcuseStudentRequest(): UpdateExcuseStudentRequest {
   return {
     context: undefined,
     attendance_entry_id: undefined,
-    reason: undefined,
+    parent_reason: undefined,
     student_excused_by: undefined,
     student_excused_by_user_type: undefined,
   };
@@ -1907,8 +1806,8 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     if (message.attendance_entry_id !== undefined) {
       ObjectId.encode(message.attendance_entry_id, writer.uint32(18).fork()).join();
     }
-    if (message.reason !== undefined) {
-      writer.uint32(26).string(message.reason);
+    if (message.parent_reason !== undefined) {
+      writer.uint32(26).string(message.parent_reason);
     }
     if (message.student_excused_by !== undefined) {
       ObjectId.encode(message.student_excused_by, writer.uint32(34).fork()).join();
@@ -1945,7 +1844,7 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
             break;
           }
 
-          message.reason = reader.string();
+          message.parent_reason = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
@@ -1974,7 +1873,7 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       attendance_entry_id: isSet(object.attendanceEntryId) ? ObjectId.fromJSON(object.attendanceEntryId) : undefined,
-      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      parent_reason: isSet(object.parentReason) ? globalThis.String(object.parentReason) : undefined,
       student_excused_by: isSet(object.studentExcusedBy) ? ObjectId.fromJSON(object.studentExcusedBy) : undefined,
       student_excused_by_user_type: isSet(object.studentExcusedByUserType)
         ? userTypeFromJSON(object.studentExcusedByUserType)
@@ -1990,8 +1889,8 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     if (message.attendance_entry_id !== undefined) {
       obj.attendanceEntryId = ObjectId.toJSON(message.attendance_entry_id);
     }
-    if (message.reason !== undefined) {
-      obj.reason = message.reason;
+    if (message.parent_reason !== undefined) {
+      obj.parentReason = message.parent_reason;
     }
     if (message.student_excused_by !== undefined) {
       obj.studentExcusedBy = ObjectId.toJSON(message.student_excused_by);
@@ -2013,7 +1912,7 @@ export const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest> 
     message.attendance_entry_id = (object.attendance_entry_id !== undefined && object.attendance_entry_id !== null)
       ? ObjectId.fromPartial(object.attendance_entry_id)
       : undefined;
-    message.reason = object.reason ?? undefined;
+    message.parent_reason = object.parent_reason ?? undefined;
     message.student_excused_by = (object.student_excused_by !== undefined && object.student_excused_by !== null)
       ? ObjectId.fromPartial(object.student_excused_by)
       : undefined;

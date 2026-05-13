@@ -84,13 +84,13 @@ export interface Attendance {
   /** YYYY-MM-DD format for NaiveDate */
   date?: string | undefined;
   period_number?: number | undefined;
-  reason?: string | undefined;
+  teacher_reason?: string | undefined;
   sign_in_time?: Date | undefined;
   sign_out_time?: Date | undefined;
   status?: AttendanceStatus | undefined;
-  late_dismissal_date?: Date | undefined;
   student_excused_by?: ObjectId | undefined;
   student_excused_by_user_type?: UserType | undefined;
+  parent_reason?: string | undefined;
 }
 
 function createBaseAttendance(): Attendance {
@@ -102,13 +102,13 @@ function createBaseAttendance(): Attendance {
     homeroom: undefined,
     date: undefined,
     period_number: undefined,
-    reason: undefined,
+    teacher_reason: undefined,
     sign_in_time: undefined,
     sign_out_time: undefined,
     status: undefined,
-    late_dismissal_date: undefined,
     student_excused_by: undefined,
     student_excused_by_user_type: undefined,
+    parent_reason: undefined,
   };
 }
 
@@ -135,8 +135,8 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.period_number !== undefined) {
       writer.uint32(56).uint32(message.period_number);
     }
-    if (message.reason !== undefined) {
-      writer.uint32(66).string(message.reason);
+    if (message.teacher_reason !== undefined) {
+      writer.uint32(66).string(message.teacher_reason);
     }
     if (message.sign_in_time !== undefined) {
       Timestamp.encode(toTimestamp(message.sign_in_time), writer.uint32(74).fork()).join();
@@ -147,14 +147,14 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.status !== undefined) {
       writer.uint32(88).int32(attendanceStatusToNumber(message.status));
     }
-    if (message.late_dismissal_date !== undefined) {
-      Timestamp.encode(toTimestamp(message.late_dismissal_date), writer.uint32(98).fork()).join();
-    }
     if (message.student_excused_by !== undefined) {
       ObjectId.encode(message.student_excused_by, writer.uint32(106).fork()).join();
     }
     if (message.student_excused_by_user_type !== undefined) {
       writer.uint32(112).int32(userTypeToNumber(message.student_excused_by_user_type));
+    }
+    if (message.parent_reason !== undefined) {
+      writer.uint32(122).string(message.parent_reason);
     }
     return writer;
   },
@@ -220,7 +220,7 @@ export const Attendance: MessageFns<Attendance> = {
             break;
           }
 
-          message.reason = reader.string();
+          message.teacher_reason = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
@@ -243,13 +243,6 @@ export const Attendance: MessageFns<Attendance> = {
 
           message.status = attendanceStatusFromJSON(reader.int32());
           continue;
-        case 12:
-          if (tag !== 98) {
-            break;
-          }
-
-          message.late_dismissal_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
         case 13:
           if (tag !== 106) {
             break;
@@ -263,6 +256,13 @@ export const Attendance: MessageFns<Attendance> = {
           }
 
           message.student_excused_by_user_type = userTypeFromJSON(reader.int32());
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.parent_reason = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -282,15 +282,15 @@ export const Attendance: MessageFns<Attendance> = {
       homeroom: isSet(object.homeroom) ? ObjectId.fromJSON(object.homeroom) : undefined,
       date: isSet(object.date) ? globalThis.String(object.date) : undefined,
       period_number: isSet(object.periodNumber) ? globalThis.Number(object.periodNumber) : undefined,
-      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      teacher_reason: isSet(object.teacherReason) ? globalThis.String(object.teacherReason) : undefined,
       sign_in_time: isSet(object.signInTime) ? fromJsonTimestamp(object.signInTime) : undefined,
       sign_out_time: isSet(object.signOutTime) ? fromJsonTimestamp(object.signOutTime) : undefined,
       status: isSet(object.status) ? attendanceStatusFromJSON(object.status) : undefined,
-      late_dismissal_date: isSet(object.lateDismissalDate) ? fromJsonTimestamp(object.lateDismissalDate) : undefined,
       student_excused_by: isSet(object.studentExcusedBy) ? ObjectId.fromJSON(object.studentExcusedBy) : undefined,
       student_excused_by_user_type: isSet(object.studentExcusedByUserType)
         ? userTypeFromJSON(object.studentExcusedByUserType)
         : undefined,
+      parent_reason: isSet(object.parentReason) ? globalThis.String(object.parentReason) : undefined,
     };
   },
 
@@ -317,8 +317,8 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.period_number !== undefined) {
       obj.periodNumber = Math.round(message.period_number);
     }
-    if (message.reason !== undefined) {
-      obj.reason = message.reason;
+    if (message.teacher_reason !== undefined) {
+      obj.teacherReason = message.teacher_reason;
     }
     if (message.sign_in_time !== undefined) {
       obj.signInTime = message.sign_in_time.toISOString();
@@ -329,14 +329,14 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.status !== undefined) {
       obj.status = attendanceStatusToJSON(message.status);
     }
-    if (message.late_dismissal_date !== undefined) {
-      obj.lateDismissalDate = message.late_dismissal_date.toISOString();
-    }
     if (message.student_excused_by !== undefined) {
       obj.studentExcusedBy = ObjectId.toJSON(message.student_excused_by);
     }
     if (message.student_excused_by_user_type !== undefined) {
       obj.studentExcusedByUserType = userTypeToJSON(message.student_excused_by_user_type);
+    }
+    if (message.parent_reason !== undefined) {
+      obj.parentReason = message.parent_reason;
     }
     return obj;
   },
@@ -361,15 +361,15 @@ export const Attendance: MessageFns<Attendance> = {
       : undefined;
     message.date = object.date ?? undefined;
     message.period_number = object.period_number ?? undefined;
-    message.reason = object.reason ?? undefined;
+    message.teacher_reason = object.teacher_reason ?? undefined;
     message.sign_in_time = object.sign_in_time ?? undefined;
     message.sign_out_time = object.sign_out_time ?? undefined;
     message.status = object.status ?? undefined;
-    message.late_dismissal_date = object.late_dismissal_date ?? undefined;
     message.student_excused_by = (object.student_excused_by !== undefined && object.student_excused_by !== null)
       ? ObjectId.fromPartial(object.student_excused_by)
       : undefined;
     message.student_excused_by_user_type = object.student_excused_by_user_type ?? undefined;
+    message.parent_reason = object.parent_reason ?? undefined;
     return message;
   },
 };

@@ -118,17 +118,12 @@ export interface UpdateTimeRequest {
 export interface UpdateReasonRequest {
     context: RequestContext | undefined;
     attendance_entry_id: ObjectId | undefined;
-    reason?: string | undefined;
-}
-export interface UpdateLateDismissalDateRequest {
-    context: RequestContext | undefined;
-    attendance_entry_id: ObjectId | undefined;
-    late_dismissal_date?: Date | undefined;
+    teacher_reason?: string | undefined;
 }
 export interface UpdateExcuseStudentRequest {
     context: RequestContext | undefined;
     attendance_entry_id: ObjectId | undefined;
-    reason?: string | undefined;
+    parent_reason?: string | undefined;
     student_excused_by: ObjectId | undefined;
     student_excused_by_user_type?: UserType | undefined;
 }
@@ -272,7 +267,6 @@ export declare const GetStudentsEntriesCountRequest: MessageFns<GetStudentsEntri
 export declare const UpdateStatusRequest: MessageFns<UpdateStatusRequest>;
 export declare const UpdateTimeRequest: MessageFns<UpdateTimeRequest>;
 export declare const UpdateReasonRequest: MessageFns<UpdateReasonRequest>;
-export declare const UpdateLateDismissalDateRequest: MessageFns<UpdateLateDismissalDateRequest>;
 export declare const UpdateExcuseStudentRequest: MessageFns<UpdateExcuseStudentRequest>;
 export declare const AttendanceCounts: MessageFns<AttendanceCounts>;
 export declare const StudentAttendanceCounts: MessageFns<StudentAttendanceCounts>;
