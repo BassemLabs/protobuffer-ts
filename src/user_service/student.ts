@@ -305,6 +305,7 @@ export interface SchoolYearStudent {
   interview_date?: Date | undefined;
   has_enrolled_family?: boolean | undefined;
   has_processing_transactions?: boolean | undefined;
+  admission_date?: Date | undefined;
 }
 
 /** Student profile data for updates */
@@ -577,6 +578,7 @@ function createBaseSchoolYearStudent(): SchoolYearStudent {
     interview_date: undefined,
     has_enrolled_family: undefined,
     has_processing_transactions: undefined,
+    admission_date: undefined,
   };
 }
 
@@ -617,6 +619,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     }
     if (message.has_processing_transactions !== undefined) {
       writer.uint32(96).bool(message.has_processing_transactions);
+    }
+    if (message.admission_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.admission_date), writer.uint32(106).fork()).join();
     }
     return writer;
   },
@@ -712,6 +717,13 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
 
           message.has_processing_transactions = reader.bool();
           continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.admission_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -739,6 +751,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
       has_processing_transactions: isSet(object.hasProcessingTransactions)
         ? globalThis.Boolean(object.hasProcessingTransactions)
         : undefined,
+      admission_date: isSet(object.admissionDate) ? fromJsonTimestamp(object.admissionDate) : undefined,
     };
   },
 
@@ -780,6 +793,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     if (message.has_processing_transactions !== undefined) {
       obj.hasProcessingTransactions = message.has_processing_transactions;
     }
+    if (message.admission_date !== undefined) {
+      obj.admissionDate = message.admission_date.toISOString();
+    }
     return obj;
   },
 
@@ -802,6 +818,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     message.interview_date = object.interview_date ?? undefined;
     message.has_enrolled_family = object.has_enrolled_family ?? undefined;
     message.has_processing_transactions = object.has_processing_transactions ?? undefined;
+    message.admission_date = object.admission_date ?? undefined;
     return message;
   },
 };

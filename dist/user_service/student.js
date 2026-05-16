@@ -478,6 +478,7 @@ function createBaseSchoolYearStudent() {
         interview_date: undefined,
         has_enrolled_family: undefined,
         has_processing_transactions: undefined,
+        admission_date: undefined,
     };
 }
 exports.SchoolYearStudent = {
@@ -517,6 +518,9 @@ exports.SchoolYearStudent = {
         }
         if (message.has_processing_transactions !== undefined) {
             writer.uint32(96).bool(message.has_processing_transactions);
+        }
+        if (message.admission_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.admission_date), writer.uint32(106).fork()).join();
         }
         return writer;
     },
@@ -599,6 +603,12 @@ exports.SchoolYearStudent = {
                     }
                     message.has_processing_transactions = reader.bool();
                     continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.admission_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -625,6 +635,7 @@ exports.SchoolYearStudent = {
             has_processing_transactions: isSet(object.hasProcessingTransactions)
                 ? globalThis.Boolean(object.hasProcessingTransactions)
                 : undefined,
+            admission_date: isSet(object.admissionDate) ? fromJsonTimestamp(object.admissionDate) : undefined,
         };
     },
     toJSON(message) {
@@ -665,6 +676,9 @@ exports.SchoolYearStudent = {
         if (message.has_processing_transactions !== undefined) {
             obj.hasProcessingTransactions = message.has_processing_transactions;
         }
+        if (message.admission_date !== undefined) {
+            obj.admissionDate = message.admission_date.toISOString();
+        }
         return obj;
     },
     create(base) {
@@ -686,6 +700,7 @@ exports.SchoolYearStudent = {
         message.interview_date = object.interview_date ?? undefined;
         message.has_enrolled_family = object.has_enrolled_family ?? undefined;
         message.has_processing_transactions = object.has_processing_transactions ?? undefined;
+        message.admission_date = object.admission_date ?? undefined;
         return message;
     },
 };
