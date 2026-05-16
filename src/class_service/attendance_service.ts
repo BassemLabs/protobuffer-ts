@@ -364,6 +364,7 @@ export interface GetHomeroomAttendanceDetailsResponse {
   homeroom: Homeroom | undefined;
   students: Student[];
   attendance_entries: Attendance[];
+  is_school_day?: boolean | undefined;
 }
 
 export interface GetSingleStudentHomeroomAttendanceEntryRequest {
@@ -378,8 +379,9 @@ export interface GetSingleStudentHomeroomAttendanceEntryRequest {
 
 export interface GetSingleStudentHomeroomAttendanceEntryResponse {
   student: Student | undefined;
-  attendance_entry: Attendance | undefined;
+  attendance_entry?: Attendance | undefined;
   homeroom: Homeroom | undefined;
+  is_school_day?: boolean | undefined;
 }
 
 export interface GetAttendanceDateMapRequest {
@@ -437,6 +439,7 @@ export interface GetCourseAttendanceDetailsResponse {
   course: Course | undefined;
   students: Student[];
   attendance_entries: Attendance[];
+  is_school_day?: boolean | undefined;
 }
 
 export interface GetSingleStudentCourseAttendanceEntryRequest {
@@ -452,8 +455,9 @@ export interface GetSingleStudentCourseAttendanceEntryRequest {
 
 export interface GetSingleStudentCourseAttendanceEntryResponse {
   student: Student | undefined;
-  attendance_entry: Attendance | undefined;
+  attendance_entry?: Attendance | undefined;
   course: Course | undefined;
+  is_school_day?: boolean | undefined;
 }
 
 function createBaseGetPrincipalDashboardAttendanceSummaryRequest(): GetPrincipalDashboardAttendanceSummaryRequest {
@@ -2968,7 +2972,7 @@ export const GetHomeroomAttendanceDetailsRequest: MessageFns<GetHomeroomAttendan
 };
 
 function createBaseGetHomeroomAttendanceDetailsResponse(): GetHomeroomAttendanceDetailsResponse {
-  return { homeroom: undefined, students: [], attendance_entries: [] };
+  return { homeroom: undefined, students: [], attendance_entries: [], is_school_day: undefined };
 }
 
 export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttendanceDetailsResponse> = {
@@ -2981,6 +2985,9 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
     }
     for (const v of message.attendance_entries) {
       Attendance.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.is_school_day !== undefined) {
+      writer.uint32(32).bool(message.is_school_day);
     }
     return writer;
   },
@@ -3013,6 +3020,13 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
 
           message.attendance_entries.push(Attendance.decode(reader, reader.uint32()));
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.is_school_day = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3029,6 +3043,7 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
       attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
         ? object.attendanceEntries.map((e: any) => Attendance.fromJSON(e))
         : [],
+      is_school_day: isSet(object.isSchoolDay) ? globalThis.Boolean(object.isSchoolDay) : undefined,
     };
   },
 
@@ -3042,6 +3057,9 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
     }
     if (message.attendance_entries?.length) {
       obj.attendanceEntries = message.attendance_entries.map((e) => Attendance.toJSON(e));
+    }
+    if (message.is_school_day !== undefined) {
+      obj.isSchoolDay = message.is_school_day;
     }
     return obj;
   },
@@ -3060,6 +3078,7 @@ export const GetHomeroomAttendanceDetailsResponse: MessageFns<GetHomeroomAttenda
       : undefined;
     message.students = object.students?.map((e) => Student.fromPartial(e)) || [];
     message.attendance_entries = object.attendance_entries?.map((e) => Attendance.fromPartial(e)) || [];
+    message.is_school_day = object.is_school_day ?? undefined;
     return message;
   },
 };
@@ -3184,7 +3203,7 @@ export const GetSingleStudentHomeroomAttendanceEntryRequest: MessageFns<
 };
 
 function createBaseGetSingleStudentHomeroomAttendanceEntryResponse(): GetSingleStudentHomeroomAttendanceEntryResponse {
-  return { student: undefined, attendance_entry: undefined, homeroom: undefined };
+  return { student: undefined, attendance_entry: undefined, homeroom: undefined, is_school_day: undefined };
 }
 
 export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
@@ -3202,6 +3221,9 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
     }
     if (message.homeroom !== undefined) {
       Homeroom.encode(message.homeroom, writer.uint32(26).fork()).join();
+    }
+    if (message.is_school_day !== undefined) {
+      writer.uint32(32).bool(message.is_school_day);
     }
     return writer;
   },
@@ -3234,6 +3256,13 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
 
           message.homeroom = Homeroom.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.is_school_day = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3248,6 +3277,7 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
       student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
       attendance_entry: isSet(object.attendanceEntry) ? Attendance.fromJSON(object.attendanceEntry) : undefined,
       homeroom: isSet(object.homeroom) ? Homeroom.fromJSON(object.homeroom) : undefined,
+      is_school_day: isSet(object.isSchoolDay) ? globalThis.Boolean(object.isSchoolDay) : undefined,
     };
   },
 
@@ -3261,6 +3291,9 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
     }
     if (message.homeroom !== undefined) {
       obj.homeroom = Homeroom.toJSON(message.homeroom);
+    }
+    if (message.is_school_day !== undefined) {
+      obj.isSchoolDay = message.is_school_day;
     }
     return obj;
   },
@@ -3283,6 +3316,7 @@ export const GetSingleStudentHomeroomAttendanceEntryResponse: MessageFns<
     message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
       ? Homeroom.fromPartial(object.homeroom)
       : undefined;
+    message.is_school_day = object.is_school_day ?? undefined;
     return message;
   },
 };
@@ -3827,7 +3861,7 @@ export const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAttendanceDe
 };
 
 function createBaseGetCourseAttendanceDetailsResponse(): GetCourseAttendanceDetailsResponse {
-  return { course: undefined, students: [], attendance_entries: [] };
+  return { course: undefined, students: [], attendance_entries: [], is_school_day: undefined };
 }
 
 export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceDetailsResponse> = {
@@ -3840,6 +3874,9 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
     }
     for (const v of message.attendance_entries) {
       Attendance.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.is_school_day !== undefined) {
+      writer.uint32(32).bool(message.is_school_day);
     }
     return writer;
   },
@@ -3872,6 +3909,13 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
 
           message.attendance_entries.push(Attendance.decode(reader, reader.uint32()));
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.is_school_day = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3888,6 +3932,7 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
       attendance_entries: globalThis.Array.isArray(object?.attendanceEntries)
         ? object.attendanceEntries.map((e: any) => Attendance.fromJSON(e))
         : [],
+      is_school_day: isSet(object.isSchoolDay) ? globalThis.Boolean(object.isSchoolDay) : undefined,
     };
   },
 
@@ -3901,6 +3946,9 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
     }
     if (message.attendance_entries?.length) {
       obj.attendanceEntries = message.attendance_entries.map((e) => Attendance.toJSON(e));
+    }
+    if (message.is_school_day !== undefined) {
+      obj.isSchoolDay = message.is_school_day;
     }
     return obj;
   },
@@ -3919,6 +3967,7 @@ export const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceD
       : undefined;
     message.students = object.students?.map((e) => Student.fromPartial(e)) || [];
     message.attendance_entries = object.attendance_entries?.map((e) => Attendance.fromPartial(e)) || [];
+    message.is_school_day = object.is_school_day ?? undefined;
     return message;
   },
 };
@@ -4056,7 +4105,7 @@ export const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleS
 };
 
 function createBaseGetSingleStudentCourseAttendanceEntryResponse(): GetSingleStudentCourseAttendanceEntryResponse {
-  return { student: undefined, attendance_entry: undefined, course: undefined };
+  return { student: undefined, attendance_entry: undefined, course: undefined, is_school_day: undefined };
 }
 
 export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingleStudentCourseAttendanceEntryResponse> =
@@ -4073,6 +4122,9 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       }
       if (message.course !== undefined) {
         Course.encode(message.course, writer.uint32(26).fork()).join();
+      }
+      if (message.is_school_day !== undefined) {
+        writer.uint32(32).bool(message.is_school_day);
       }
       return writer;
     },
@@ -4105,6 +4157,13 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
 
             message.course = Course.decode(reader, reader.uint32());
             continue;
+          case 4:
+            if (tag !== 32) {
+              break;
+            }
+
+            message.is_school_day = reader.bool();
+            continue;
         }
         if ((tag & 7) === 4 || tag === 0) {
           break;
@@ -4119,6 +4178,7 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
         student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
         attendance_entry: isSet(object.attendanceEntry) ? Attendance.fromJSON(object.attendanceEntry) : undefined,
         course: isSet(object.course) ? Course.fromJSON(object.course) : undefined,
+        is_school_day: isSet(object.isSchoolDay) ? globalThis.Boolean(object.isSchoolDay) : undefined,
       };
     },
 
@@ -4132,6 +4192,9 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       }
       if (message.course !== undefined) {
         obj.course = Course.toJSON(message.course);
+      }
+      if (message.is_school_day !== undefined) {
+        obj.isSchoolDay = message.is_school_day;
       }
       return obj;
     },
@@ -4154,6 +4217,7 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       message.course = (object.course !== undefined && object.course !== null)
         ? Course.fromPartial(object.course)
         : undefined;
+      message.is_school_day = object.is_school_day ?? undefined;
       return message;
     },
   };

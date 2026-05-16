@@ -190,6 +190,7 @@ export interface GetHomeroomAttendanceDetailsResponse {
     homeroom: Homeroom | undefined;
     students: Student[];
     attendance_entries: Attendance[];
+    is_school_day?: boolean | undefined;
 }
 export interface GetSingleStudentHomeroomAttendanceEntryRequest {
     context: RequestContext | undefined;
@@ -200,8 +201,9 @@ export interface GetSingleStudentHomeroomAttendanceEntryRequest {
 }
 export interface GetSingleStudentHomeroomAttendanceEntryResponse {
     student: Student | undefined;
-    attendance_entry: Attendance | undefined;
+    attendance_entry?: Attendance | undefined;
     homeroom: Homeroom | undefined;
+    is_school_day?: boolean | undefined;
 }
 export interface GetAttendanceDateMapRequest {
     context: RequestContext | undefined;
@@ -242,6 +244,7 @@ export interface GetCourseAttendanceDetailsResponse {
     course: Course | undefined;
     students: Student[];
     attendance_entries: Attendance[];
+    is_school_day?: boolean | undefined;
 }
 export interface GetSingleStudentCourseAttendanceEntryRequest {
     context: RequestContext | undefined;
@@ -253,8 +256,9 @@ export interface GetSingleStudentCourseAttendanceEntryRequest {
 }
 export interface GetSingleStudentCourseAttendanceEntryResponse {
     student: Student | undefined;
-    attendance_entry: Attendance | undefined;
+    attendance_entry?: Attendance | undefined;
     course: Course | undefined;
+    is_school_day?: boolean | undefined;
 }
 export declare const GetPrincipalDashboardAttendanceSummaryRequest: MessageFns<GetPrincipalDashboardAttendanceSummaryRequest>;
 export declare const PrincipalDashboardAttendanceTrendPoint: MessageFns<PrincipalDashboardAttendanceTrendPoint>;
