@@ -2,10 +2,19 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { UserType } from "../utils/user_type";
-import { Announcement } from "./announcement";
+import { Announcement, AnnouncementTargetScope } from "./announcement";
 export declare const protobufPackage = "organization_service";
+export declare enum AnnouncementListScope {
+    ANNOUNCEMENT_LIST_SCOPE_ALL = "ANNOUNCEMENT_LIST_SCOPE_ALL",
+    ANNOUNCEMENT_LIST_SCOPE_OWN = "ANNOUNCEMENT_LIST_SCOPE_OWN",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function announcementListScopeFromJSON(object: any): AnnouncementListScope;
+export declare function announcementListScopeToJSON(object: AnnouncementListScope): string;
+export declare function announcementListScopeToNumber(object: AnnouncementListScope): number;
 export interface ListAnnouncementsRequest {
     context: RequestContext | undefined;
+    scope?: AnnouncementListScope | undefined;
 }
 export interface ListAnnouncementsResponse {
     announcements: Announcement[];
@@ -22,6 +31,9 @@ export interface CreateAnnouncementRequest {
     end_date: Date | undefined;
     link?: string | undefined;
     audience: UserType[];
+    target_scope?: AnnouncementTargetScope | undefined;
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
 }
 export interface UpdateAnnouncementRequest {
     context: RequestContext | undefined;
@@ -32,6 +44,9 @@ export interface UpdateAnnouncementRequest {
     end_date: Date | undefined;
     link?: string | undefined;
     audience: UserType[];
+    target_scope?: AnnouncementTargetScope | undefined;
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
 }
 export interface DeleteAnnouncementRequest {
     context: RequestContext | undefined;

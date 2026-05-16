@@ -12,6 +12,59 @@ import { UserType, userTypeFromJSON, userTypeToJSON, userTypeToNumber } from "..
 
 export const protobufPackage = "organization_service";
 
+export enum AnnouncementTargetScope {
+  ANNOUNCEMENT_TARGET_SCOPE_ALL = "ANNOUNCEMENT_TARGET_SCOPE_ALL",
+  ANNOUNCEMENT_TARGET_SCOPE_COURSE = "ANNOUNCEMENT_TARGET_SCOPE_COURSE",
+  ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM = "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function announcementTargetScopeFromJSON(object: any): AnnouncementTargetScope {
+  switch (object) {
+    case 0:
+    case "ANNOUNCEMENT_TARGET_SCOPE_ALL":
+      return AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_ALL;
+    case 1:
+    case "ANNOUNCEMENT_TARGET_SCOPE_COURSE":
+      return AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_COURSE;
+    case 2:
+    case "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM":
+      return AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return AnnouncementTargetScope.UNRECOGNIZED;
+  }
+}
+
+export function announcementTargetScopeToJSON(object: AnnouncementTargetScope): string {
+  switch (object) {
+    case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_ALL:
+      return "ANNOUNCEMENT_TARGET_SCOPE_ALL";
+    case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_COURSE:
+      return "ANNOUNCEMENT_TARGET_SCOPE_COURSE";
+    case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM:
+      return "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM";
+    case AnnouncementTargetScope.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function announcementTargetScopeToNumber(object: AnnouncementTargetScope): number {
+  switch (object) {
+    case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_ALL:
+      return 0;
+    case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_COURSE:
+      return 1;
+    case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM:
+      return 2;
+    case AnnouncementTargetScope.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface Announcement {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -21,6 +74,9 @@ export interface Announcement {
   end_date: Date | undefined;
   link?: string | undefined;
   audience: UserType[];
+  target_scope?: AnnouncementTargetScope | undefined;
+  course_ids: ObjectId[];
+  homeroom_ids: ObjectId[];
 }
 
 function createBaseAnnouncement(): Announcement {
@@ -33,6 +89,9 @@ function createBaseAnnouncement(): Announcement {
     end_date: undefined,
     link: undefined,
     audience: [],
+    target_scope: undefined,
+    course_ids: [],
+    homeroom_ids: [],
   };
 }
 
@@ -64,6 +123,15 @@ export const Announcement: MessageFns<Announcement> = {
       writer.int32(userTypeToNumber(v));
     }
     writer.join();
+    if (message.target_scope !== undefined) {
+      writer.uint32(72).int32(announcementTargetScopeToNumber(message.target_scope));
+    }
+    for (const v of message.course_ids) {
+      ObjectId.encode(v!, writer.uint32(82).fork()).join();
+    }
+    for (const v of message.homeroom_ids) {
+      ObjectId.encode(v!, writer.uint32(90).fork()).join();
+    }
     return writer;
   },
 
@@ -140,6 +208,27 @@ export const Announcement: MessageFns<Announcement> = {
           }
 
           break;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.target_scope = announcementTargetScopeFromJSON(reader.int32());
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.homeroom_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -159,6 +248,13 @@ export const Announcement: MessageFns<Announcement> = {
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       link: isSet(object.link) ? globalThis.String(object.link) : undefined,
       audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e: any) => userTypeFromJSON(e)) : [],
+      target_scope: isSet(object.targetScope) ? announcementTargetScopeFromJSON(object.targetScope) : undefined,
+      course_ids: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+        ? object.homeroomIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -188,6 +284,15 @@ export const Announcement: MessageFns<Announcement> = {
     if (message.audience?.length) {
       obj.audience = message.audience.map((e) => userTypeToJSON(e));
     }
+    if (message.target_scope !== undefined) {
+      obj.targetScope = announcementTargetScopeToJSON(message.target_scope);
+    }
+    if (message.course_ids?.length) {
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.homeroom_ids?.length) {
+      obj.homeroomIds = message.homeroom_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -206,6 +311,9 @@ export const Announcement: MessageFns<Announcement> = {
     message.end_date = object.end_date ?? undefined;
     message.link = object.link ?? undefined;
     message.audience = object.audience?.map((e) => e) || [];
+    message.target_scope = object.target_scope ?? undefined;
+    message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

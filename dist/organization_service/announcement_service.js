@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: organization_service/announcement_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteAnnouncementResponse = exports.DeleteAnnouncementRequest = exports.UpdateAnnouncementRequest = exports.CreateAnnouncementRequest = exports.GetAnnouncementRequest = exports.ListAnnouncementsResponse = exports.ListAnnouncementsRequest = exports.protobufPackage = void 0;
+exports.DeleteAnnouncementResponse = exports.DeleteAnnouncementRequest = exports.UpdateAnnouncementRequest = exports.CreateAnnouncementRequest = exports.GetAnnouncementRequest = exports.ListAnnouncementsResponse = exports.ListAnnouncementsRequest = exports.AnnouncementListScope = exports.protobufPackage = void 0;
+exports.announcementListScopeFromJSON = announcementListScopeFromJSON;
+exports.announcementListScopeToJSON = announcementListScopeToJSON;
+exports.announcementListScopeToNumber = announcementListScopeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -14,13 +17,58 @@ const request_context_1 = require("../utils/request_context");
 const user_type_1 = require("../utils/user_type");
 const announcement_1 = require("./announcement");
 exports.protobufPackage = "organization_service";
+var AnnouncementListScope;
+(function (AnnouncementListScope) {
+    AnnouncementListScope["ANNOUNCEMENT_LIST_SCOPE_ALL"] = "ANNOUNCEMENT_LIST_SCOPE_ALL";
+    AnnouncementListScope["ANNOUNCEMENT_LIST_SCOPE_OWN"] = "ANNOUNCEMENT_LIST_SCOPE_OWN";
+    AnnouncementListScope["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(AnnouncementListScope || (exports.AnnouncementListScope = AnnouncementListScope = {}));
+function announcementListScopeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "ANNOUNCEMENT_LIST_SCOPE_ALL":
+            return AnnouncementListScope.ANNOUNCEMENT_LIST_SCOPE_ALL;
+        case 1:
+        case "ANNOUNCEMENT_LIST_SCOPE_OWN":
+            return AnnouncementListScope.ANNOUNCEMENT_LIST_SCOPE_OWN;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return AnnouncementListScope.UNRECOGNIZED;
+    }
+}
+function announcementListScopeToJSON(object) {
+    switch (object) {
+        case AnnouncementListScope.ANNOUNCEMENT_LIST_SCOPE_ALL:
+            return "ANNOUNCEMENT_LIST_SCOPE_ALL";
+        case AnnouncementListScope.ANNOUNCEMENT_LIST_SCOPE_OWN:
+            return "ANNOUNCEMENT_LIST_SCOPE_OWN";
+        case AnnouncementListScope.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function announcementListScopeToNumber(object) {
+    switch (object) {
+        case AnnouncementListScope.ANNOUNCEMENT_LIST_SCOPE_ALL:
+            return 0;
+        case AnnouncementListScope.ANNOUNCEMENT_LIST_SCOPE_OWN:
+            return 1;
+        case AnnouncementListScope.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseListAnnouncementsRequest() {
-    return { context: undefined };
+    return { context: undefined, scope: undefined };
 }
 exports.ListAnnouncementsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.scope !== undefined) {
+            writer.uint32(16).int32(announcementListScopeToNumber(message.scope));
         }
         return writer;
     },
@@ -37,6 +85,12 @@ exports.ListAnnouncementsRequest = {
                     }
                     message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
                     continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.scope = announcementListScopeFromJSON(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -46,12 +100,18 @@ exports.ListAnnouncementsRequest = {
         return message;
     },
     fromJSON(object) {
-        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            scope: isSet(object.scope) ? announcementListScopeFromJSON(object.scope) : undefined,
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.scope !== undefined) {
+            obj.scope = announcementListScopeToJSON(message.scope);
         }
         return obj;
     },
@@ -63,6 +123,7 @@ exports.ListAnnouncementsRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
+        message.scope = object.scope ?? undefined;
         return message;
     },
 };
@@ -197,6 +258,9 @@ function createBaseCreateAnnouncementRequest() {
         end_date: undefined,
         link: undefined,
         audience: [],
+        target_scope: undefined,
+        course_ids: [],
+        homeroom_ids: [],
     };
 }
 exports.CreateAnnouncementRequest = {
@@ -224,6 +288,15 @@ exports.CreateAnnouncementRequest = {
             writer.int32((0, user_type_1.userTypeToNumber)(v));
         }
         writer.join();
+        if (message.target_scope !== undefined) {
+            writer.uint32(64).int32((0, announcement_1.announcementTargetScopeToNumber)(message.target_scope));
+        }
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(74).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(82).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -282,6 +355,24 @@ exports.CreateAnnouncementRequest = {
                         continue;
                     }
                     break;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.target_scope = (0, announcement_1.announcementTargetScopeFromJSON)(reader.int32());
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -299,6 +390,13 @@ exports.CreateAnnouncementRequest = {
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             link: isSet(object.link) ? globalThis.String(object.link) : undefined,
             audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e) => (0, user_type_1.userTypeFromJSON)(e)) : [],
+            target_scope: isSet(object.targetScope) ? (0, announcement_1.announcementTargetScopeFromJSON)(object.targetScope) : undefined,
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -324,6 +422,15 @@ exports.CreateAnnouncementRequest = {
         if (message.audience?.length) {
             obj.audience = message.audience.map((e) => (0, user_type_1.userTypeToJSON)(e));
         }
+        if (message.target_scope !== undefined) {
+            obj.targetScope = (0, announcement_1.announcementTargetScopeToJSON)(message.target_scope);
+        }
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -340,6 +447,9 @@ exports.CreateAnnouncementRequest = {
         message.end_date = object.end_date ?? undefined;
         message.link = object.link ?? undefined;
         message.audience = object.audience?.map((e) => e) || [];
+        message.target_scope = object.target_scope ?? undefined;
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -353,6 +463,9 @@ function createBaseUpdateAnnouncementRequest() {
         end_date: undefined,
         link: undefined,
         audience: [],
+        target_scope: undefined,
+        course_ids: [],
+        homeroom_ids: [],
     };
 }
 exports.UpdateAnnouncementRequest = {
@@ -383,6 +496,15 @@ exports.UpdateAnnouncementRequest = {
             writer.int32((0, user_type_1.userTypeToNumber)(v));
         }
         writer.join();
+        if (message.target_scope !== undefined) {
+            writer.uint32(72).int32((0, announcement_1.announcementTargetScopeToNumber)(message.target_scope));
+        }
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(82).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(90).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -447,6 +569,24 @@ exports.UpdateAnnouncementRequest = {
                         continue;
                     }
                     break;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.target_scope = (0, announcement_1.announcementTargetScopeFromJSON)(reader.int32());
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -465,6 +605,13 @@ exports.UpdateAnnouncementRequest = {
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             link: isSet(object.link) ? globalThis.String(object.link) : undefined,
             audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e) => (0, user_type_1.userTypeFromJSON)(e)) : [],
+            target_scope: isSet(object.targetScope) ? (0, announcement_1.announcementTargetScopeFromJSON)(object.targetScope) : undefined,
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -493,6 +640,15 @@ exports.UpdateAnnouncementRequest = {
         if (message.audience?.length) {
             obj.audience = message.audience.map((e) => (0, user_type_1.userTypeToJSON)(e));
         }
+        if (message.target_scope !== undefined) {
+            obj.targetScope = (0, announcement_1.announcementTargetScopeToJSON)(message.target_scope);
+        }
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -510,6 +666,9 @@ exports.UpdateAnnouncementRequest = {
         message.end_date = object.end_date ?? undefined;
         message.link = object.link ?? undefined;
         message.audience = object.audience?.map((e) => e) || [];
+        message.target_scope = object.target_scope ?? undefined;
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

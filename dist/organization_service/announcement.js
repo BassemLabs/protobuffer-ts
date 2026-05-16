@@ -5,13 +5,66 @@
 //   protoc               unknown
 // source: organization_service/announcement.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Announcement = exports.protobufPackage = void 0;
+exports.Announcement = exports.AnnouncementTargetScope = exports.protobufPackage = void 0;
+exports.announcementTargetScopeFromJSON = announcementTargetScopeFromJSON;
+exports.announcementTargetScopeToJSON = announcementTargetScopeToJSON;
+exports.announcementTargetScopeToNumber = announcementTargetScopeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const user_type_1 = require("../utils/user_type");
 exports.protobufPackage = "organization_service";
+var AnnouncementTargetScope;
+(function (AnnouncementTargetScope) {
+    AnnouncementTargetScope["ANNOUNCEMENT_TARGET_SCOPE_ALL"] = "ANNOUNCEMENT_TARGET_SCOPE_ALL";
+    AnnouncementTargetScope["ANNOUNCEMENT_TARGET_SCOPE_COURSE"] = "ANNOUNCEMENT_TARGET_SCOPE_COURSE";
+    AnnouncementTargetScope["ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM"] = "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM";
+    AnnouncementTargetScope["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(AnnouncementTargetScope || (exports.AnnouncementTargetScope = AnnouncementTargetScope = {}));
+function announcementTargetScopeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "ANNOUNCEMENT_TARGET_SCOPE_ALL":
+            return AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_ALL;
+        case 1:
+        case "ANNOUNCEMENT_TARGET_SCOPE_COURSE":
+            return AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_COURSE;
+        case 2:
+        case "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM":
+            return AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return AnnouncementTargetScope.UNRECOGNIZED;
+    }
+}
+function announcementTargetScopeToJSON(object) {
+    switch (object) {
+        case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_ALL:
+            return "ANNOUNCEMENT_TARGET_SCOPE_ALL";
+        case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_COURSE:
+            return "ANNOUNCEMENT_TARGET_SCOPE_COURSE";
+        case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM:
+            return "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM";
+        case AnnouncementTargetScope.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function announcementTargetScopeToNumber(object) {
+    switch (object) {
+        case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_ALL:
+            return 0;
+        case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_COURSE:
+            return 1;
+        case AnnouncementTargetScope.ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM:
+            return 2;
+        case AnnouncementTargetScope.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseAnnouncement() {
     return {
         id: undefined,
@@ -22,6 +75,9 @@ function createBaseAnnouncement() {
         end_date: undefined,
         link: undefined,
         audience: [],
+        target_scope: undefined,
+        course_ids: [],
+        homeroom_ids: [],
     };
 }
 exports.Announcement = {
@@ -52,6 +108,15 @@ exports.Announcement = {
             writer.int32((0, user_type_1.userTypeToNumber)(v));
         }
         writer.join();
+        if (message.target_scope !== undefined) {
+            writer.uint32(72).int32(announcementTargetScopeToNumber(message.target_scope));
+        }
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(82).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(90).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -116,6 +181,24 @@ exports.Announcement = {
                         continue;
                     }
                     break;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.target_scope = announcementTargetScopeFromJSON(reader.int32());
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -134,6 +217,13 @@ exports.Announcement = {
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             link: isSet(object.link) ? globalThis.String(object.link) : undefined,
             audience: globalThis.Array.isArray(object?.audience) ? object.audience.map((e) => (0, user_type_1.userTypeFromJSON)(e)) : [],
+            target_scope: isSet(object.targetScope) ? announcementTargetScopeFromJSON(object.targetScope) : undefined,
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -162,6 +252,15 @@ exports.Announcement = {
         if (message.audience?.length) {
             obj.audience = message.audience.map((e) => (0, user_type_1.userTypeToJSON)(e));
         }
+        if (message.target_scope !== undefined) {
+            obj.targetScope = announcementTargetScopeToJSON(message.target_scope);
+        }
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -179,6 +278,9 @@ exports.Announcement = {
         message.end_date = object.end_date ?? undefined;
         message.link = object.link ?? undefined;
         message.audience = object.audience?.map((e) => e) || [];
+        message.target_scope = object.target_scope ?? undefined;
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

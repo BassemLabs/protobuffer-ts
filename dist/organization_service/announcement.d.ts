@@ -2,6 +2,15 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { UserType } from "../utils/user_type";
 export declare const protobufPackage = "organization_service";
+export declare enum AnnouncementTargetScope {
+    ANNOUNCEMENT_TARGET_SCOPE_ALL = "ANNOUNCEMENT_TARGET_SCOPE_ALL",
+    ANNOUNCEMENT_TARGET_SCOPE_COURSE = "ANNOUNCEMENT_TARGET_SCOPE_COURSE",
+    ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM = "ANNOUNCEMENT_TARGET_SCOPE_HOMEROOM",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function announcementTargetScopeFromJSON(object: any): AnnouncementTargetScope;
+export declare function announcementTargetScopeToJSON(object: AnnouncementTargetScope): string;
+export declare function announcementTargetScopeToNumber(object: AnnouncementTargetScope): number;
 export interface Announcement {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -11,6 +20,9 @@ export interface Announcement {
     end_date: Date | undefined;
     link?: string | undefined;
     audience: UserType[];
+    target_scope?: AnnouncementTargetScope | undefined;
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
 }
 export declare const Announcement: MessageFns<Announcement>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
