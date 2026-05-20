@@ -29,6 +29,7 @@ export declare enum OnboardingStepName {
     SEMESTERS = "SEMESTERS",
     PAYMENT_PLAN = "PAYMENT_PLAN",
     CUSTOM_FIELDS_TEMPLATES = "CUSTOM_FIELDS_TEMPLATES",
+    STAFF_ROLES = "STAFF_ROLES",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function onboardingStepNameFromJSON(object: any): OnboardingStepName;

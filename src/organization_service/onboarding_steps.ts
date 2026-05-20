@@ -83,6 +83,7 @@ export enum OnboardingStepName {
   SEMESTERS = "SEMESTERS",
   PAYMENT_PLAN = "PAYMENT_PLAN",
   CUSTOM_FIELDS_TEMPLATES = "CUSTOM_FIELDS_TEMPLATES",
+  STAFF_ROLES = "STAFF_ROLES",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -142,6 +143,9 @@ export function onboardingStepNameFromJSON(object: any): OnboardingStepName {
     case 17:
     case "CUSTOM_FIELDS_TEMPLATES":
       return OnboardingStepName.CUSTOM_FIELDS_TEMPLATES;
+    case 18:
+    case "STAFF_ROLES":
+      return OnboardingStepName.STAFF_ROLES;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -187,6 +191,8 @@ export function onboardingStepNameToJSON(object: OnboardingStepName): string {
       return "PAYMENT_PLAN";
     case OnboardingStepName.CUSTOM_FIELDS_TEMPLATES:
       return "CUSTOM_FIELDS_TEMPLATES";
+    case OnboardingStepName.STAFF_ROLES:
+      return "STAFF_ROLES";
     case OnboardingStepName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -231,6 +237,8 @@ export function onboardingStepNameToNumber(object: OnboardingStepName): number {
       return 16;
     case OnboardingStepName.CUSTOM_FIELDS_TEMPLATES:
       return 17;
+    case OnboardingStepName.STAFF_ROLES:
+      return 18;
     case OnboardingStepName.UNRECOGNIZED:
     default:
       return -1;

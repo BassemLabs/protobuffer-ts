@@ -87,6 +87,7 @@ var OnboardingStepName;
     OnboardingStepName["SEMESTERS"] = "SEMESTERS";
     OnboardingStepName["PAYMENT_PLAN"] = "PAYMENT_PLAN";
     OnboardingStepName["CUSTOM_FIELDS_TEMPLATES"] = "CUSTOM_FIELDS_TEMPLATES";
+    OnboardingStepName["STAFF_ROLES"] = "STAFF_ROLES";
     OnboardingStepName["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(OnboardingStepName || (exports.OnboardingStepName = OnboardingStepName = {}));
 function onboardingStepNameFromJSON(object) {
@@ -145,6 +146,9 @@ function onboardingStepNameFromJSON(object) {
         case 17:
         case "CUSTOM_FIELDS_TEMPLATES":
             return OnboardingStepName.CUSTOM_FIELDS_TEMPLATES;
+        case 18:
+        case "STAFF_ROLES":
+            return OnboardingStepName.STAFF_ROLES;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -189,6 +193,8 @@ function onboardingStepNameToJSON(object) {
             return "PAYMENT_PLAN";
         case OnboardingStepName.CUSTOM_FIELDS_TEMPLATES:
             return "CUSTOM_FIELDS_TEMPLATES";
+        case OnboardingStepName.STAFF_ROLES:
+            return "STAFF_ROLES";
         case OnboardingStepName.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -232,6 +238,8 @@ function onboardingStepNameToNumber(object) {
             return 16;
         case OnboardingStepName.CUSTOM_FIELDS_TEMPLATES:
             return 17;
+        case OnboardingStepName.STAFF_ROLES:
+            return 18;
         case OnboardingStepName.UNRECOGNIZED:
         default:
             return -1;
