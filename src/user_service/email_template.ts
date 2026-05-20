@@ -37,6 +37,8 @@ export enum EmailTemplateKey {
   PARENT_INVITATION_EMAIL = "PARENT_INVITATION_EMAIL",
   /** PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL - Parent withdraw re-registration student (during onboarding required actions) */
   PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL = "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL",
+  /** REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL - Re-registration enrollment confirmation template */
+  REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL = "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -99,6 +101,9 @@ export function emailTemplateKeyFromJSON(object: any): EmailTemplateKey {
     case 19:
     case "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL":
       return EmailTemplateKey.PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL;
+    case 20:
+    case "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL":
+      return EmailTemplateKey.REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -146,6 +151,8 @@ export function emailTemplateKeyToJSON(object: EmailTemplateKey): string {
       return "PARENT_INVITATION_EMAIL";
     case EmailTemplateKey.PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL:
       return "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL";
+    case EmailTemplateKey.REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL:
+      return "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL";
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -192,6 +199,8 @@ export function emailTemplateKeyToNumber(object: EmailTemplateKey): number {
       return 18;
     case EmailTemplateKey.PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL:
       return 19;
+    case EmailTemplateKey.REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL:
+      return 20;
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return -1;

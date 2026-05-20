@@ -28,6 +28,8 @@ export declare enum EmailTemplateKey {
     PARENT_INVITATION_EMAIL = "PARENT_INVITATION_EMAIL",
     /** PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL - Parent withdraw re-registration student (during onboarding required actions) */
     PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL = "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL",
+    /** REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL - Re-registration enrollment confirmation template */
+    REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL = "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function emailTemplateKeyFromJSON(object: any): EmailTemplateKey;
