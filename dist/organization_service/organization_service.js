@@ -5,13 +5,17 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
+exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
+exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = void 0;
 exports.reregistrationPhaseFromJSON = reregistrationPhaseFromJSON;
 exports.reregistrationPhaseToJSON = reregistrationPhaseToJSON;
 exports.reregistrationPhaseToNumber = reregistrationPhaseToNumber;
 exports.reregistrationPhaseStatusFromJSON = reregistrationPhaseStatusFromJSON;
 exports.reregistrationPhaseStatusToJSON = reregistrationPhaseStatusToJSON;
 exports.reregistrationPhaseStatusToNumber = reregistrationPhaseStatusToNumber;
+exports.reregistrationPreparationStepFromJSON = reregistrationPreparationStepFromJSON;
+exports.reregistrationPreparationStepToJSON = reregistrationPreparationStepToJSON;
+exports.reregistrationPreparationStepToNumber = reregistrationPreparationStepToNumber;
 exports.startSchoolYearPhaseFromJSON = startSchoolYearPhaseFromJSON;
 exports.startSchoolYearPhaseToJSON = startSchoolYearPhaseToJSON;
 exports.startSchoolYearPhaseToNumber = startSchoolYearPhaseToNumber;
@@ -132,6 +136,88 @@ function reregistrationPhaseStatusToNumber(object) {
         case ReregistrationPhaseStatus.REREGISTRATION_PHASE_STATUS_SUCCEEDED:
             return 3;
         case ReregistrationPhaseStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ReregistrationPreparationStep;
+(function (ReregistrationPreparationStep) {
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR"] = "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR";
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS"] = "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS";
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES"] = "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES";
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP"] = "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP";
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES"] = "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES";
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS"] = "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS";
+    ReregistrationPreparationStep["REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION"] = "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION";
+    ReregistrationPreparationStep["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReregistrationPreparationStep || (exports.ReregistrationPreparationStep = ReregistrationPreparationStep = {}));
+function reregistrationPreparationStepFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR;
+        case 1:
+        case "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS;
+        case 2:
+        case "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES;
+        case 3:
+        case "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP;
+        case 4:
+        case "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES;
+        case 5:
+        case "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS;
+        case 6:
+        case "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION":
+            return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReregistrationPreparationStep.UNRECOGNIZED;
+    }
+}
+function reregistrationPreparationStepToJSON(object) {
+    switch (object) {
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR:
+            return "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR";
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS:
+            return "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS";
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES:
+            return "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES";
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP:
+            return "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP";
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES:
+            return "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES";
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS:
+            return "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS";
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION:
+            return "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION";
+        case ReregistrationPreparationStep.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reregistrationPreparationStepToNumber(object) {
+    switch (object) {
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR:
+            return 0;
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS:
+            return 1;
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES:
+            return 2;
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP:
+            return 3;
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES:
+            return 4;
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS:
+            return 5;
+        case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION:
+            return 6;
+        case ReregistrationPreparationStep.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -2961,6 +3047,449 @@ exports.GetDirectoryProviderResponse = {
     fromPartial(object) {
         const message = createBaseGetDirectoryProviderResponse();
         message.provider_type = object.provider_type ?? undefined;
+        return message;
+    },
+};
+function createBaseReregistrationPreparationStepState() {
+    return {
+        step: undefined,
+        completed: undefined,
+        completed_by: undefined,
+        completed_at: undefined,
+        validation_message: undefined,
+    };
+}
+exports.ReregistrationPreparationStepState = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.step !== undefined) {
+            writer.uint32(8).int32(reregistrationPreparationStepToNumber(message.step));
+        }
+        if (message.completed !== undefined) {
+            writer.uint32(16).bool(message.completed);
+        }
+        if (message.completed_by !== undefined) {
+            object_id_1.ObjectId.encode(message.completed_by, writer.uint32(26).fork()).join();
+        }
+        if (message.completed_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.completed_at), writer.uint32(34).fork()).join();
+        }
+        if (message.validation_message !== undefined) {
+            writer.uint32(42).string(message.validation_message);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReregistrationPreparationStepState();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.step = reregistrationPreparationStepFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.completed = reader.bool();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.completed_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.completed_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.validation_message = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            step: isSet(object.step) ? reregistrationPreparationStepFromJSON(object.step) : undefined,
+            completed: isSet(object.completed) ? globalThis.Boolean(object.completed) : undefined,
+            completed_by: isSet(object.completedBy) ? object_id_1.ObjectId.fromJSON(object.completedBy) : undefined,
+            completed_at: isSet(object.completedAt) ? fromJsonTimestamp(object.completedAt) : undefined,
+            validation_message: isSet(object.validationMessage) ? globalThis.String(object.validationMessage) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.step !== undefined) {
+            obj.step = reregistrationPreparationStepToJSON(message.step);
+        }
+        if (message.completed !== undefined) {
+            obj.completed = message.completed;
+        }
+        if (message.completed_by !== undefined) {
+            obj.completedBy = object_id_1.ObjectId.toJSON(message.completed_by);
+        }
+        if (message.completed_at !== undefined) {
+            obj.completedAt = message.completed_at.toISOString();
+        }
+        if (message.validation_message !== undefined) {
+            obj.validationMessage = message.validation_message;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReregistrationPreparationStepState.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReregistrationPreparationStepState();
+        message.step = object.step ?? undefined;
+        message.completed = object.completed ?? undefined;
+        message.completed_by = (object.completed_by !== undefined && object.completed_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.completed_by)
+            : undefined;
+        message.completed_at = object.completed_at ?? undefined;
+        message.validation_message = object.validation_message ?? undefined;
+        return message;
+    },
+};
+function createBaseReregistrationPreparation() {
+    return {
+        id: undefined,
+        organization_id: undefined,
+        active_school_year_id: undefined,
+        coming_school_year_id: undefined,
+        is_complete: undefined,
+        steps: [],
+        created_at: undefined,
+        updated_at: undefined,
+    };
+}
+exports.ReregistrationPreparation = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.active_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.active_school_year_id, writer.uint32(26).fork()).join();
+        }
+        if (message.coming_school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.coming_school_year_id, writer.uint32(34).fork()).join();
+        }
+        if (message.is_complete !== undefined) {
+            writer.uint32(40).bool(message.is_complete);
+        }
+        for (const v of message.steps) {
+            exports.ReregistrationPreparationStepState.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.created_at), writer.uint32(58).fork()).join();
+        }
+        if (message.updated_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.updated_at), writer.uint32(66).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReregistrationPreparation();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.active_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.coming_school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.is_complete = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.steps.push(exports.ReregistrationPreparationStepState.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.created_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.updated_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            active_school_year_id: isSet(object.activeSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.activeSchoolYearId)
+                : undefined,
+            coming_school_year_id: isSet(object.comingSchoolYearId)
+                ? object_id_1.ObjectId.fromJSON(object.comingSchoolYearId)
+                : undefined,
+            is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : undefined,
+            steps: globalThis.Array.isArray(object?.steps)
+                ? object.steps.map((e) => exports.ReregistrationPreparationStepState.fromJSON(e))
+                : [],
+            created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+            updated_at: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.active_school_year_id !== undefined) {
+            obj.activeSchoolYearId = object_id_1.ObjectId.toJSON(message.active_school_year_id);
+        }
+        if (message.coming_school_year_id !== undefined) {
+            obj.comingSchoolYearId = object_id_1.ObjectId.toJSON(message.coming_school_year_id);
+        }
+        if (message.is_complete !== undefined) {
+            obj.isComplete = message.is_complete;
+        }
+        if (message.steps?.length) {
+            obj.steps = message.steps.map((e) => exports.ReregistrationPreparationStepState.toJSON(e));
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at.toISOString();
+        }
+        if (message.updated_at !== undefined) {
+            obj.updatedAt = message.updated_at.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReregistrationPreparation.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReregistrationPreparation();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.active_school_year_id =
+            (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.active_school_year_id)
+                : undefined;
+        message.coming_school_year_id =
+            (object.coming_school_year_id !== undefined && object.coming_school_year_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.coming_school_year_id)
+                : undefined;
+        message.is_complete = object.is_complete ?? undefined;
+        message.steps = object.steps?.map((e) => exports.ReregistrationPreparationStepState.fromPartial(e)) || [];
+        message.created_at = object.created_at ?? undefined;
+        message.updated_at = object.updated_at ?? undefined;
+        return message;
+    },
+};
+function createBaseGetCurrentReregistrationPreparationRequest() {
+    return { context: undefined, organization_id: undefined };
+}
+exports.GetCurrentReregistrationPreparationRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCurrentReregistrationPreparationRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCurrentReregistrationPreparationRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCurrentReregistrationPreparationRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseCompleteReregistrationPreparationStepRequest() {
+    return { context: undefined, organization_id: undefined, step: undefined };
+}
+exports.CompleteReregistrationPreparationStepRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.step !== undefined) {
+            writer.uint32(24).int32(reregistrationPreparationStepToNumber(message.step));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCompleteReregistrationPreparationStepRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.step = reregistrationPreparationStepFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            step: isSet(object.step) ? reregistrationPreparationStepFromJSON(object.step) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.step !== undefined) {
+            obj.step = reregistrationPreparationStepToJSON(message.step);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CompleteReregistrationPreparationStepRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCompleteReregistrationPreparationStepRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.step = object.step ?? undefined;
         return message;
     },
 };

@@ -221,6 +221,7 @@ export interface GetStudentGroupsWithFieldsRequest {
   context: RequestContext | undefined;
   student_status?: StudentStatus | undefined;
   require_all_access_for_status?: boolean | undefined;
+  writable_by_parents_only?: boolean | undefined;
 }
 
 export interface GetParentGroupsWithFieldsRequest {
@@ -3005,7 +3006,12 @@ export const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns
 };
 
 function createBaseGetStudentGroupsWithFieldsRequest(): GetStudentGroupsWithFieldsRequest {
-  return { context: undefined, student_status: undefined, require_all_access_for_status: undefined };
+  return {
+    context: undefined,
+    student_status: undefined,
+    require_all_access_for_status: undefined,
+    writable_by_parents_only: undefined,
+  };
 }
 
 export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithFieldsRequest> = {
@@ -3018,6 +3024,9 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
     }
     if (message.require_all_access_for_status !== undefined) {
       writer.uint32(24).bool(message.require_all_access_for_status);
+    }
+    if (message.writable_by_parents_only !== undefined) {
+      writer.uint32(32).bool(message.writable_by_parents_only);
     }
     return writer;
   },
@@ -3050,6 +3059,13 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
 
           message.require_all_access_for_status = reader.bool();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.writable_by_parents_only = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3066,6 +3082,9 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
       require_all_access_for_status: isSet(object.requireAllAccessForStatus)
         ? globalThis.Boolean(object.requireAllAccessForStatus)
         : undefined,
+      writable_by_parents_only: isSet(object.writableByParentsOnly)
+        ? globalThis.Boolean(object.writableByParentsOnly)
+        : undefined,
     };
   },
 
@@ -3079,6 +3098,9 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
     }
     if (message.require_all_access_for_status !== undefined) {
       obj.requireAllAccessForStatus = message.require_all_access_for_status;
+    }
+    if (message.writable_by_parents_only !== undefined) {
+      obj.writableByParentsOnly = message.writable_by_parents_only;
     }
     return obj;
   },
@@ -3097,6 +3119,7 @@ export const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithF
       : undefined;
     message.student_status = object.student_status ?? undefined;
     message.require_all_access_for_status = object.require_all_access_for_status ?? undefined;
+    message.writable_by_parents_only = object.writable_by_parents_only ?? undefined;
     return message;
   },
 };

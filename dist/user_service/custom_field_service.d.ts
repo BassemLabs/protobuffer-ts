@@ -159,6 +159,7 @@ export interface GetStudentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
     student_status?: StudentStatus | undefined;
     require_all_access_for_status?: boolean | undefined;
+    writable_by_parents_only?: boolean | undefined;
 }
 export interface GetParentGroupsWithFieldsRequest {
     context: RequestContext | undefined;

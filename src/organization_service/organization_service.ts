@@ -147,6 +147,93 @@ export function reregistrationPhaseStatusToNumber(object: ReregistrationPhaseSta
   }
 }
 
+export enum ReregistrationPreparationStep {
+  REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR =
+    "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR",
+  REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS =
+    "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS",
+  REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES = "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES",
+  REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP = "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP",
+  REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES = "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES",
+  REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS = "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS",
+  REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION = "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reregistrationPreparationStepFromJSON(object: any): ReregistrationPreparationStep {
+  switch (object) {
+    case 0:
+    case "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR;
+    case 1:
+    case "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS;
+    case 2:
+    case "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES;
+    case 3:
+    case "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP;
+    case 4:
+    case "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES;
+    case 5:
+    case "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS;
+    case 6:
+    case "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION":
+      return ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReregistrationPreparationStep.UNRECOGNIZED;
+  }
+}
+
+export function reregistrationPreparationStepToJSON(object: ReregistrationPreparationStep): string {
+  switch (object) {
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR:
+      return "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR";
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS:
+      return "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS";
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES:
+      return "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES";
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP:
+      return "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP";
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES:
+      return "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES";
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS:
+      return "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS";
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION:
+      return "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION";
+    case ReregistrationPreparationStep.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reregistrationPreparationStepToNumber(object: ReregistrationPreparationStep): number {
+  switch (object) {
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR:
+      return 0;
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS:
+      return 1;
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES:
+      return 2;
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP:
+      return 3;
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES:
+      return 4;
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS:
+      return 5;
+    case ReregistrationPreparationStep.REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION:
+      return 6;
+    case ReregistrationPreparationStep.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export enum StartSchoolYearPhase {
   START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS = "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS",
   START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR = "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR",
@@ -473,6 +560,36 @@ export interface GetDirectoryProviderRequest {
 
 export interface GetDirectoryProviderResponse {
   provider_type?: DirectoryProviderType | undefined;
+}
+
+export interface ReregistrationPreparationStepState {
+  step?: ReregistrationPreparationStep | undefined;
+  completed?: boolean | undefined;
+  completed_by?: ObjectId | undefined;
+  completed_at?: Date | undefined;
+  validation_message?: string | undefined;
+}
+
+export interface ReregistrationPreparation {
+  id: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  active_school_year_id: ObjectId | undefined;
+  coming_school_year_id: ObjectId | undefined;
+  is_complete?: boolean | undefined;
+  steps: ReregistrationPreparationStepState[];
+  created_at: Date | undefined;
+  updated_at: Date | undefined;
+}
+
+export interface GetCurrentReregistrationPreparationRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+}
+
+export interface CompleteReregistrationPreparationStepRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  step?: ReregistrationPreparationStep | undefined;
 }
 
 export interface ReregistrationRun {
@@ -3611,6 +3728,506 @@ export const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderRespon
   fromPartial<I extends Exact<DeepPartial<GetDirectoryProviderResponse>, I>>(object: I): GetDirectoryProviderResponse {
     const message = createBaseGetDirectoryProviderResponse();
     message.provider_type = object.provider_type ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReregistrationPreparationStepState(): ReregistrationPreparationStepState {
+  return {
+    step: undefined,
+    completed: undefined,
+    completed_by: undefined,
+    completed_at: undefined,
+    validation_message: undefined,
+  };
+}
+
+export const ReregistrationPreparationStepState: MessageFns<ReregistrationPreparationStepState> = {
+  encode(message: ReregistrationPreparationStepState, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.step !== undefined) {
+      writer.uint32(8).int32(reregistrationPreparationStepToNumber(message.step));
+    }
+    if (message.completed !== undefined) {
+      writer.uint32(16).bool(message.completed);
+    }
+    if (message.completed_by !== undefined) {
+      ObjectId.encode(message.completed_by, writer.uint32(26).fork()).join();
+    }
+    if (message.completed_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.completed_at), writer.uint32(34).fork()).join();
+    }
+    if (message.validation_message !== undefined) {
+      writer.uint32(42).string(message.validation_message);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReregistrationPreparationStepState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReregistrationPreparationStepState();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.step = reregistrationPreparationStepFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.completed = reader.bool();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.completed_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.completed_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.validation_message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReregistrationPreparationStepState {
+    return {
+      step: isSet(object.step) ? reregistrationPreparationStepFromJSON(object.step) : undefined,
+      completed: isSet(object.completed) ? globalThis.Boolean(object.completed) : undefined,
+      completed_by: isSet(object.completedBy) ? ObjectId.fromJSON(object.completedBy) : undefined,
+      completed_at: isSet(object.completedAt) ? fromJsonTimestamp(object.completedAt) : undefined,
+      validation_message: isSet(object.validationMessage) ? globalThis.String(object.validationMessage) : undefined,
+    };
+  },
+
+  toJSON(message: ReregistrationPreparationStepState): unknown {
+    const obj: any = {};
+    if (message.step !== undefined) {
+      obj.step = reregistrationPreparationStepToJSON(message.step);
+    }
+    if (message.completed !== undefined) {
+      obj.completed = message.completed;
+    }
+    if (message.completed_by !== undefined) {
+      obj.completedBy = ObjectId.toJSON(message.completed_by);
+    }
+    if (message.completed_at !== undefined) {
+      obj.completedAt = message.completed_at.toISOString();
+    }
+    if (message.validation_message !== undefined) {
+      obj.validationMessage = message.validation_message;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReregistrationPreparationStepState>, I>>(
+    base?: I,
+  ): ReregistrationPreparationStepState {
+    return ReregistrationPreparationStepState.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReregistrationPreparationStepState>, I>>(
+    object: I,
+  ): ReregistrationPreparationStepState {
+    const message = createBaseReregistrationPreparationStepState();
+    message.step = object.step ?? undefined;
+    message.completed = object.completed ?? undefined;
+    message.completed_by = (object.completed_by !== undefined && object.completed_by !== null)
+      ? ObjectId.fromPartial(object.completed_by)
+      : undefined;
+    message.completed_at = object.completed_at ?? undefined;
+    message.validation_message = object.validation_message ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReregistrationPreparation(): ReregistrationPreparation {
+  return {
+    id: undefined,
+    organization_id: undefined,
+    active_school_year_id: undefined,
+    coming_school_year_id: undefined,
+    is_complete: undefined,
+    steps: [],
+    created_at: undefined,
+    updated_at: undefined,
+  };
+}
+
+export const ReregistrationPreparation: MessageFns<ReregistrationPreparation> = {
+  encode(message: ReregistrationPreparation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.active_school_year_id !== undefined) {
+      ObjectId.encode(message.active_school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.coming_school_year_id !== undefined) {
+      ObjectId.encode(message.coming_school_year_id, writer.uint32(34).fork()).join();
+    }
+    if (message.is_complete !== undefined) {
+      writer.uint32(40).bool(message.is_complete);
+    }
+    for (const v of message.steps) {
+      ReregistrationPreparationStepState.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.created_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.created_at), writer.uint32(58).fork()).join();
+    }
+    if (message.updated_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.updated_at), writer.uint32(66).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReregistrationPreparation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReregistrationPreparation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.active_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.coming_school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.is_complete = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.steps.push(ReregistrationPreparationStepState.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.created_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.updated_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReregistrationPreparation {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      active_school_year_id: isSet(object.activeSchoolYearId)
+        ? ObjectId.fromJSON(object.activeSchoolYearId)
+        : undefined,
+      coming_school_year_id: isSet(object.comingSchoolYearId)
+        ? ObjectId.fromJSON(object.comingSchoolYearId)
+        : undefined,
+      is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : undefined,
+      steps: globalThis.Array.isArray(object?.steps)
+        ? object.steps.map((e: any) => ReregistrationPreparationStepState.fromJSON(e))
+        : [],
+      created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      updated_at: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+    };
+  },
+
+  toJSON(message: ReregistrationPreparation): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.active_school_year_id !== undefined) {
+      obj.activeSchoolYearId = ObjectId.toJSON(message.active_school_year_id);
+    }
+    if (message.coming_school_year_id !== undefined) {
+      obj.comingSchoolYearId = ObjectId.toJSON(message.coming_school_year_id);
+    }
+    if (message.is_complete !== undefined) {
+      obj.isComplete = message.is_complete;
+    }
+    if (message.steps?.length) {
+      obj.steps = message.steps.map((e) => ReregistrationPreparationStepState.toJSON(e));
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at.toISOString();
+    }
+    if (message.updated_at !== undefined) {
+      obj.updatedAt = message.updated_at.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReregistrationPreparation>, I>>(base?: I): ReregistrationPreparation {
+    return ReregistrationPreparation.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReregistrationPreparation>, I>>(object: I): ReregistrationPreparation {
+    const message = createBaseReregistrationPreparation();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.active_school_year_id =
+      (object.active_school_year_id !== undefined && object.active_school_year_id !== null)
+        ? ObjectId.fromPartial(object.active_school_year_id)
+        : undefined;
+    message.coming_school_year_id =
+      (object.coming_school_year_id !== undefined && object.coming_school_year_id !== null)
+        ? ObjectId.fromPartial(object.coming_school_year_id)
+        : undefined;
+    message.is_complete = object.is_complete ?? undefined;
+    message.steps = object.steps?.map((e) => ReregistrationPreparationStepState.fromPartial(e)) || [];
+    message.created_at = object.created_at ?? undefined;
+    message.updated_at = object.updated_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetCurrentReregistrationPreparationRequest(): GetCurrentReregistrationPreparationRequest {
+  return { context: undefined, organization_id: undefined };
+}
+
+export const GetCurrentReregistrationPreparationRequest: MessageFns<GetCurrentReregistrationPreparationRequest> = {
+  encode(message: GetCurrentReregistrationPreparationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCurrentReregistrationPreparationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCurrentReregistrationPreparationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCurrentReregistrationPreparationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: GetCurrentReregistrationPreparationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCurrentReregistrationPreparationRequest>, I>>(
+    base?: I,
+  ): GetCurrentReregistrationPreparationRequest {
+    return GetCurrentReregistrationPreparationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCurrentReregistrationPreparationRequest>, I>>(
+    object: I,
+  ): GetCurrentReregistrationPreparationRequest {
+    const message = createBaseGetCurrentReregistrationPreparationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCompleteReregistrationPreparationStepRequest(): CompleteReregistrationPreparationStepRequest {
+  return { context: undefined, organization_id: undefined, step: undefined };
+}
+
+export const CompleteReregistrationPreparationStepRequest: MessageFns<CompleteReregistrationPreparationStepRequest> = {
+  encode(
+    message: CompleteReregistrationPreparationStepRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.step !== undefined) {
+      writer.uint32(24).int32(reregistrationPreparationStepToNumber(message.step));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CompleteReregistrationPreparationStepRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCompleteReregistrationPreparationStepRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.step = reregistrationPreparationStepFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CompleteReregistrationPreparationStepRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      step: isSet(object.step) ? reregistrationPreparationStepFromJSON(object.step) : undefined,
+    };
+  },
+
+  toJSON(message: CompleteReregistrationPreparationStepRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.step !== undefined) {
+      obj.step = reregistrationPreparationStepToJSON(message.step);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CompleteReregistrationPreparationStepRequest>, I>>(
+    base?: I,
+  ): CompleteReregistrationPreparationStepRequest {
+    return CompleteReregistrationPreparationStepRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CompleteReregistrationPreparationStepRequest>, I>>(
+    object: I,
+  ): CompleteReregistrationPreparationStepRequest {
+    const message = createBaseCompleteReregistrationPreparationStepRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.step = object.step ?? undefined;
     return message;
   },
 };

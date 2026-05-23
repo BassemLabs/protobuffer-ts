@@ -25,6 +25,19 @@ export declare enum ReregistrationPhaseStatus {
 export declare function reregistrationPhaseStatusFromJSON(object: any): ReregistrationPhaseStatus;
 export declare function reregistrationPhaseStatusToJSON(object: ReregistrationPhaseStatus): string;
 export declare function reregistrationPhaseStatusToNumber(object: ReregistrationPhaseStatus): number;
+export declare enum ReregistrationPreparationStep {
+    REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR = "REREGISTRATION_PREPARATION_STEP_CONFIRM_COMING_SCHOOL_YEAR",
+    REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS = "REREGISTRATION_PREPARATION_STEP_REVIEW_STUDENT_CUSTOM_FIELDS",
+    REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES = "REREGISTRATION_PREPARATION_STEP_REVIEW_GRADE_FEES",
+    REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP = "REREGISTRATION_PREPARATION_STEP_REVIEW_TUITION_SETUP",
+    REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES = "REREGISTRATION_PREPARATION_STEP_REVIEW_EMAIL_TEMPLATES",
+    REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS = "REREGISTRATION_PREPARATION_STEP_REVIEW_CRITICAL_BLOCKERS",
+    REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION = "REREGISTRATION_PREPARATION_STEP_FINAL_CONFIRMATION",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reregistrationPreparationStepFromJSON(object: any): ReregistrationPreparationStep;
+export declare function reregistrationPreparationStepToJSON(object: ReregistrationPreparationStep): string;
+export declare function reregistrationPreparationStepToNumber(object: ReregistrationPreparationStep): number;
 export declare enum StartSchoolYearPhase {
     START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS = "START_SCHOOL_YEAR_PHASE_ACTIVATE_ACCOUNTS",
     START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR = "START_SCHOOL_YEAR_PHASE_SWITCH_ACTIVE_SCHOOL_YEAR",
@@ -214,6 +227,32 @@ export interface GetDirectoryProviderRequest {
 export interface GetDirectoryProviderResponse {
     provider_type?: DirectoryProviderType | undefined;
 }
+export interface ReregistrationPreparationStepState {
+    step?: ReregistrationPreparationStep | undefined;
+    completed?: boolean | undefined;
+    completed_by?: ObjectId | undefined;
+    completed_at?: Date | undefined;
+    validation_message?: string | undefined;
+}
+export interface ReregistrationPreparation {
+    id: ObjectId | undefined;
+    organization_id: ObjectId | undefined;
+    active_school_year_id: ObjectId | undefined;
+    coming_school_year_id: ObjectId | undefined;
+    is_complete?: boolean | undefined;
+    steps: ReregistrationPreparationStepState[];
+    created_at: Date | undefined;
+    updated_at: Date | undefined;
+}
+export interface GetCurrentReregistrationPreparationRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
+export interface CompleteReregistrationPreparationStepRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    step?: ReregistrationPreparationStep | undefined;
+}
 export interface ReregistrationRun {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
@@ -295,6 +334,10 @@ export declare const MarkOnboardingStepAsCompletedRequest: MessageFns<MarkOnboar
 export declare const UpdateInvoiceSettingsRequest: MessageFns<UpdateInvoiceSettingsRequest>;
 export declare const GetDirectoryProviderRequest: MessageFns<GetDirectoryProviderRequest>;
 export declare const GetDirectoryProviderResponse: MessageFns<GetDirectoryProviderResponse>;
+export declare const ReregistrationPreparationStepState: MessageFns<ReregistrationPreparationStepState>;
+export declare const ReregistrationPreparation: MessageFns<ReregistrationPreparation>;
+export declare const GetCurrentReregistrationPreparationRequest: MessageFns<GetCurrentReregistrationPreparationRequest>;
+export declare const CompleteReregistrationPreparationStepRequest: MessageFns<CompleteReregistrationPreparationStepRequest>;
 export declare const ReregistrationRun: MessageFns<ReregistrationRun>;
 export declare const GetCurrentReregistrationRunRequest: MessageFns<GetCurrentReregistrationRunRequest>;
 export declare const GetCurrentReregistrationRunResponse: MessageFns<GetCurrentReregistrationRunResponse>;
