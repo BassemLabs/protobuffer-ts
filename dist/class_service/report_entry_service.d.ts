@@ -5,6 +5,15 @@ import { ClassRef } from "./class_ref";
 import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
 import { ReportType } from "./semester";
 export declare const protobufPackage = "class_service.report_entry_service";
+export declare enum TeacherReportCardHomepageUrgency {
+    TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL",
+    TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW",
+    TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function teacherReportCardHomepageUrgencyFromJSON(object: any): TeacherReportCardHomepageUrgency;
+export declare function teacherReportCardHomepageUrgencyToJSON(object: TeacherReportCardHomepageUrgency): string;
+export declare function teacherReportCardHomepageUrgencyToNumber(object: TeacherReportCardHomepageUrgency): number;
 export declare enum ReportPublishClassType {
     /** REPORT_PUBLISH_CLASS_TYPE_COURSE - Standalone subject/course class. */
     REPORT_PUBLISH_CLASS_TYPE_COURSE = "REPORT_PUBLISH_CLASS_TYPE_COURSE",
@@ -83,6 +92,34 @@ export interface PrincipalDashboardTeacherActivityRow {
 }
 export interface GetPrincipalDashboardTeacherActivitySummaryResponse {
     teachers: PrincipalDashboardTeacherActivityRow[];
+}
+export interface GetTeacherReportCardHomepageRequest {
+    context: RequestContext | undefined;
+}
+export interface TeacherReportCardHomepageRow {
+    class_type?: ReportPublishClassType | undefined;
+    class_id: ObjectId | undefined;
+    class_name?: string | undefined;
+    course_code?: string | undefined;
+    grades: string[];
+    semester_id: ObjectId | undefined;
+    semester_name?: string | undefined;
+    report_type?: ReportType | undefined;
+    due_date?: Date | undefined;
+    distribution_date?: Date | undefined;
+    counters: ReportStatusCounters | undefined;
+    total_expected?: number | undefined;
+    progress_completed?: number | undefined;
+    urgency?: TeacherReportCardHomepageUrgency | undefined;
+    /** Present for homeroom rows only: counters for holistic homeroom entries. */
+    holistic_counters?: ReportStatusCounters | undefined;
+    /** Present for homeroom rows only: merged counters for linked subject-course entries. */
+    subject_counters?: ReportStatusCounters | undefined;
+}
+export interface GetTeacherReportCardHomepageResponse {
+    pending: TeacherReportCardHomepageRow[];
+    completed: TeacherReportCardHomepageRow[];
+    has_late_report_cards?: boolean | undefined;
 }
 export interface GetReportEntriesQueueRequest {
     context: RequestContext | undefined;
@@ -272,6 +309,9 @@ export declare const GetPrincipalDashboardTeacherActivitySummaryRequest: Message
 export declare const PrincipalDashboardTeacherPendingClass: MessageFns<PrincipalDashboardTeacherPendingClass>;
 export declare const PrincipalDashboardTeacherActivityRow: MessageFns<PrincipalDashboardTeacherActivityRow>;
 export declare const GetPrincipalDashboardTeacherActivitySummaryResponse: MessageFns<GetPrincipalDashboardTeacherActivitySummaryResponse>;
+export declare const GetTeacherReportCardHomepageRequest: MessageFns<GetTeacherReportCardHomepageRequest>;
+export declare const TeacherReportCardHomepageRow: MessageFns<TeacherReportCardHomepageRow>;
+export declare const GetTeacherReportCardHomepageResponse: MessageFns<GetTeacherReportCardHomepageResponse>;
 export declare const GetReportEntriesQueueRequest: MessageFns<GetReportEntriesQueueRequest>;
 export declare const ReportStatusCounters: MessageFns<ReportStatusCounters>;
 export declare const ReportPublishQueueClass: MessageFns<ReportPublishQueueClass>;

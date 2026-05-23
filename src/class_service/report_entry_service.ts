@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { ClassRef } from "./class_ref";
@@ -22,6 +23,59 @@ import {
 import { ReportType, reportTypeFromJSON, reportTypeToJSON, reportTypeToNumber } from "./semester";
 
 export const protobufPackage = "class_service.report_entry_service";
+
+export enum TeacherReportCardHomepageUrgency {
+  TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL",
+  TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW",
+  TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function teacherReportCardHomepageUrgencyFromJSON(object: any): TeacherReportCardHomepageUrgency {
+  switch (object) {
+    case 0:
+    case "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL":
+      return TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL;
+    case 1:
+    case "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW":
+      return TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW;
+    case 2:
+    case "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED":
+      return TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TeacherReportCardHomepageUrgency.UNRECOGNIZED;
+  }
+}
+
+export function teacherReportCardHomepageUrgencyToJSON(object: TeacherReportCardHomepageUrgency): string {
+  switch (object) {
+    case TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL:
+      return "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL";
+    case TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW:
+      return "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW";
+    case TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED:
+      return "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED";
+    case TeacherReportCardHomepageUrgency.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function teacherReportCardHomepageUrgencyToNumber(object: TeacherReportCardHomepageUrgency): number {
+  switch (object) {
+    case TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL:
+      return 0;
+    case TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_YELLOW:
+      return 1;
+    case TeacherReportCardHomepageUrgency.TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_RED:
+      return 2;
+    case TeacherReportCardHomepageUrgency.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
 
 export enum ReportPublishClassType {
   /** REPORT_PUBLISH_CLASS_TYPE_COURSE - Standalone subject/course class. */
@@ -152,6 +206,41 @@ export interface PrincipalDashboardTeacherActivityRow {
 
 export interface GetPrincipalDashboardTeacherActivitySummaryResponse {
   teachers: PrincipalDashboardTeacherActivityRow[];
+}
+
+export interface GetTeacherReportCardHomepageRequest {
+  context: RequestContext | undefined;
+}
+
+export interface TeacherReportCardHomepageRow {
+  class_type?: ReportPublishClassType | undefined;
+  class_id: ObjectId | undefined;
+  class_name?: string | undefined;
+  course_code?: string | undefined;
+  grades: string[];
+  semester_id: ObjectId | undefined;
+  semester_name?: string | undefined;
+  report_type?: ReportType | undefined;
+  due_date?: Date | undefined;
+  distribution_date?: Date | undefined;
+  counters: ReportStatusCounters | undefined;
+  total_expected?: number | undefined;
+  progress_completed?: number | undefined;
+  urgency?:
+    | TeacherReportCardHomepageUrgency
+    | undefined;
+  /** Present for homeroom rows only: counters for holistic homeroom entries. */
+  holistic_counters?:
+    | ReportStatusCounters
+    | undefined;
+  /** Present for homeroom rows only: merged counters for linked subject-course entries. */
+  subject_counters?: ReportStatusCounters | undefined;
+}
+
+export interface GetTeacherReportCardHomepageResponse {
+  pending: TeacherReportCardHomepageRow[];
+  completed: TeacherReportCardHomepageRow[];
+  has_late_report_cards?: boolean | undefined;
 }
 
 export interface GetReportEntriesQueueRequest {
@@ -1697,6 +1786,483 @@ export const GetPrincipalDashboardTeacherActivitySummaryResponse: MessageFns<
   ): GetPrincipalDashboardTeacherActivitySummaryResponse {
     const message = createBaseGetPrincipalDashboardTeacherActivitySummaryResponse();
     message.teachers = object.teachers?.map((e) => PrincipalDashboardTeacherActivityRow.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetTeacherReportCardHomepageRequest(): GetTeacherReportCardHomepageRequest {
+  return { context: undefined };
+}
+
+export const GetTeacherReportCardHomepageRequest: MessageFns<GetTeacherReportCardHomepageRequest> = {
+  encode(message: GetTeacherReportCardHomepageRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherReportCardHomepageRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherReportCardHomepageRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherReportCardHomepageRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetTeacherReportCardHomepageRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherReportCardHomepageRequest>, I>>(
+    base?: I,
+  ): GetTeacherReportCardHomepageRequest {
+    return GetTeacherReportCardHomepageRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherReportCardHomepageRequest>, I>>(
+    object: I,
+  ): GetTeacherReportCardHomepageRequest {
+    const message = createBaseGetTeacherReportCardHomepageRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseTeacherReportCardHomepageRow(): TeacherReportCardHomepageRow {
+  return {
+    class_type: undefined,
+    class_id: undefined,
+    class_name: undefined,
+    course_code: undefined,
+    grades: [],
+    semester_id: undefined,
+    semester_name: undefined,
+    report_type: undefined,
+    due_date: undefined,
+    distribution_date: undefined,
+    counters: undefined,
+    total_expected: undefined,
+    progress_completed: undefined,
+    urgency: undefined,
+    holistic_counters: undefined,
+    subject_counters: undefined,
+  };
+}
+
+export const TeacherReportCardHomepageRow: MessageFns<TeacherReportCardHomepageRow> = {
+  encode(message: TeacherReportCardHomepageRow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.class_type !== undefined) {
+      writer.uint32(8).int32(reportPublishClassTypeToNumber(message.class_type));
+    }
+    if (message.class_id !== undefined) {
+      ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
+    }
+    if (message.class_name !== undefined) {
+      writer.uint32(26).string(message.class_name);
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(34).string(message.course_code);
+    }
+    for (const v of message.grades) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(50).fork()).join();
+    }
+    if (message.semester_name !== undefined) {
+      writer.uint32(58).string(message.semester_name);
+    }
+    if (message.report_type !== undefined) {
+      writer.uint32(64).int32(reportTypeToNumber(message.report_type));
+    }
+    if (message.due_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.due_date), writer.uint32(74).fork()).join();
+    }
+    if (message.distribution_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.distribution_date), writer.uint32(82).fork()).join();
+    }
+    if (message.counters !== undefined) {
+      ReportStatusCounters.encode(message.counters, writer.uint32(90).fork()).join();
+    }
+    if (message.total_expected !== undefined) {
+      writer.uint32(96).uint32(message.total_expected);
+    }
+    if (message.progress_completed !== undefined) {
+      writer.uint32(104).uint32(message.progress_completed);
+    }
+    if (message.urgency !== undefined) {
+      writer.uint32(112).int32(teacherReportCardHomepageUrgencyToNumber(message.urgency));
+    }
+    if (message.holistic_counters !== undefined) {
+      ReportStatusCounters.encode(message.holistic_counters, writer.uint32(122).fork()).join();
+    }
+    if (message.subject_counters !== undefined) {
+      ReportStatusCounters.encode(message.subject_counters, writer.uint32(130).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TeacherReportCardHomepageRow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTeacherReportCardHomepageRow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.class_type = reportPublishClassTypeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.class_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.grades.push(reader.string());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.semester_name = reader.string();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.due_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.distribution_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.counters = ReportStatusCounters.decode(reader, reader.uint32());
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.total_expected = reader.uint32();
+          continue;
+        case 13:
+          if (tag !== 104) {
+            break;
+          }
+
+          message.progress_completed = reader.uint32();
+          continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.urgency = teacherReportCardHomepageUrgencyFromJSON(reader.int32());
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.holistic_counters = ReportStatusCounters.decode(reader, reader.uint32());
+          continue;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.subject_counters = ReportStatusCounters.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TeacherReportCardHomepageRow {
+    return {
+      class_type: isSet(object.classType) ? reportPublishClassTypeFromJSON(object.classType) : undefined,
+      class_id: isSet(object.classId) ? ObjectId.fromJSON(object.classId) : undefined,
+      class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => globalThis.String(e)) : [],
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      semester_name: isSet(object.semesterName) ? globalThis.String(object.semesterName) : undefined,
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+      due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+      distribution_date: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
+      counters: isSet(object.counters) ? ReportStatusCounters.fromJSON(object.counters) : undefined,
+      total_expected: isSet(object.totalExpected) ? globalThis.Number(object.totalExpected) : undefined,
+      progress_completed: isSet(object.progressCompleted) ? globalThis.Number(object.progressCompleted) : undefined,
+      urgency: isSet(object.urgency) ? teacherReportCardHomepageUrgencyFromJSON(object.urgency) : undefined,
+      holistic_counters: isSet(object.holisticCounters)
+        ? ReportStatusCounters.fromJSON(object.holisticCounters)
+        : undefined,
+      subject_counters: isSet(object.subjectCounters)
+        ? ReportStatusCounters.fromJSON(object.subjectCounters)
+        : undefined,
+    };
+  },
+
+  toJSON(message: TeacherReportCardHomepageRow): unknown {
+    const obj: any = {};
+    if (message.class_type !== undefined) {
+      obj.classType = reportPublishClassTypeToJSON(message.class_type);
+    }
+    if (message.class_id !== undefined) {
+      obj.classId = ObjectId.toJSON(message.class_id);
+    }
+    if (message.class_name !== undefined) {
+      obj.className = message.class_name;
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    if (message.grades?.length) {
+      obj.grades = message.grades;
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.semester_name !== undefined) {
+      obj.semesterName = message.semester_name;
+    }
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
+    if (message.due_date !== undefined) {
+      obj.dueDate = message.due_date.toISOString();
+    }
+    if (message.distribution_date !== undefined) {
+      obj.distributionDate = message.distribution_date.toISOString();
+    }
+    if (message.counters !== undefined) {
+      obj.counters = ReportStatusCounters.toJSON(message.counters);
+    }
+    if (message.total_expected !== undefined) {
+      obj.totalExpected = Math.round(message.total_expected);
+    }
+    if (message.progress_completed !== undefined) {
+      obj.progressCompleted = Math.round(message.progress_completed);
+    }
+    if (message.urgency !== undefined) {
+      obj.urgency = teacherReportCardHomepageUrgencyToJSON(message.urgency);
+    }
+    if (message.holistic_counters !== undefined) {
+      obj.holisticCounters = ReportStatusCounters.toJSON(message.holistic_counters);
+    }
+    if (message.subject_counters !== undefined) {
+      obj.subjectCounters = ReportStatusCounters.toJSON(message.subject_counters);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TeacherReportCardHomepageRow>, I>>(base?: I): TeacherReportCardHomepageRow {
+    return TeacherReportCardHomepageRow.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TeacherReportCardHomepageRow>, I>>(object: I): TeacherReportCardHomepageRow {
+    const message = createBaseTeacherReportCardHomepageRow();
+    message.class_type = object.class_type ?? undefined;
+    message.class_id = (object.class_id !== undefined && object.class_id !== null)
+      ? ObjectId.fromPartial(object.class_id)
+      : undefined;
+    message.class_name = object.class_name ?? undefined;
+    message.course_code = object.course_code ?? undefined;
+    message.grades = object.grades?.map((e) => e) || [];
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.semester_name = object.semester_name ?? undefined;
+    message.report_type = object.report_type ?? undefined;
+    message.due_date = object.due_date ?? undefined;
+    message.distribution_date = object.distribution_date ?? undefined;
+    message.counters = (object.counters !== undefined && object.counters !== null)
+      ? ReportStatusCounters.fromPartial(object.counters)
+      : undefined;
+    message.total_expected = object.total_expected ?? undefined;
+    message.progress_completed = object.progress_completed ?? undefined;
+    message.urgency = object.urgency ?? undefined;
+    message.holistic_counters = (object.holistic_counters !== undefined && object.holistic_counters !== null)
+      ? ReportStatusCounters.fromPartial(object.holistic_counters)
+      : undefined;
+    message.subject_counters = (object.subject_counters !== undefined && object.subject_counters !== null)
+      ? ReportStatusCounters.fromPartial(object.subject_counters)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeacherReportCardHomepageResponse(): GetTeacherReportCardHomepageResponse {
+  return { pending: [], completed: [], has_late_report_cards: undefined };
+}
+
+export const GetTeacherReportCardHomepageResponse: MessageFns<GetTeacherReportCardHomepageResponse> = {
+  encode(message: GetTeacherReportCardHomepageResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.pending) {
+      TeacherReportCardHomepageRow.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.completed) {
+      TeacherReportCardHomepageRow.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.has_late_report_cards !== undefined) {
+      writer.uint32(24).bool(message.has_late_report_cards);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherReportCardHomepageResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherReportCardHomepageResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.pending.push(TeacherReportCardHomepageRow.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.completed.push(TeacherReportCardHomepageRow.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.has_late_report_cards = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherReportCardHomepageResponse {
+    return {
+      pending: globalThis.Array.isArray(object?.pending)
+        ? object.pending.map((e: any) => TeacherReportCardHomepageRow.fromJSON(e))
+        : [],
+      completed: globalThis.Array.isArray(object?.completed)
+        ? object.completed.map((e: any) => TeacherReportCardHomepageRow.fromJSON(e))
+        : [],
+      has_late_report_cards: isSet(object.hasLateReportCards)
+        ? globalThis.Boolean(object.hasLateReportCards)
+        : undefined,
+    };
+  },
+
+  toJSON(message: GetTeacherReportCardHomepageResponse): unknown {
+    const obj: any = {};
+    if (message.pending?.length) {
+      obj.pending = message.pending.map((e) => TeacherReportCardHomepageRow.toJSON(e));
+    }
+    if (message.completed?.length) {
+      obj.completed = message.completed.map((e) => TeacherReportCardHomepageRow.toJSON(e));
+    }
+    if (message.has_late_report_cards !== undefined) {
+      obj.hasLateReportCards = message.has_late_report_cards;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherReportCardHomepageResponse>, I>>(
+    base?: I,
+  ): GetTeacherReportCardHomepageResponse {
+    return GetTeacherReportCardHomepageResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherReportCardHomepageResponse>, I>>(
+    object: I,
+  ): GetTeacherReportCardHomepageResponse {
+    const message = createBaseGetTeacherReportCardHomepageResponse();
+    message.pending = object.pending?.map((e) => TeacherReportCardHomepageRow.fromPartial(e)) || [];
+    message.completed = object.completed?.map((e) => TeacherReportCardHomepageRow.fromPartial(e)) || [];
+    message.has_late_report_cards = object.has_late_report_cards ?? undefined;
     return message;
   },
 };
@@ -4378,6 +4944,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
