@@ -5,12 +5,13 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetStudentCoursesRequest = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentLmsCalendarRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetStudentCoursesRequest = exports.GetStudentLmsCalendarResponse = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
 exports.studentProfileFeatureScopeFromJSON = studentProfileFeatureScopeFromJSON;
 exports.studentProfileFeatureScopeToJSON = studentProfileFeatureScopeToJSON;
 exports.studentProfileFeatureScopeToNumber = studentProfileFeatureScopeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const course_1 = require("./course");
@@ -481,6 +482,60 @@ exports.LmsStudentSubmissionResponse = {
         return message;
     },
 };
+function createBaseGetStudentLmsCalendarResponse() {
+    return { calendar_items: [] };
+}
+exports.GetStudentLmsCalendarResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.calendar_items) {
+            lms_course_1.LmsCalendarItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentLmsCalendarResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.calendar_items.push(lms_course_1.LmsCalendarItem.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            calendar_items: globalThis.Array.isArray(object?.calendarItems)
+                ? object.calendarItems.map((e) => lms_course_1.LmsCalendarItem.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.calendar_items?.length) {
+            obj.calendarItems = message.calendar_items.map((e) => lms_course_1.LmsCalendarItem.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentLmsCalendarResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentLmsCalendarResponse();
+        message.calendar_items = object.calendar_items?.map((e) => lms_course_1.LmsCalendarItem.fromPartial(e)) || [];
+        return message;
+    },
+};
 function createBaseGetStudentCoursesRequest() {
     return { context: undefined, student_id: undefined, include_archived: undefined, school_year_id: undefined };
 }
@@ -746,6 +801,126 @@ exports.GetStudentProfileClassScopeResponse = {
         const message = createBaseGetStudentProfileClassScopeResponse();
         message.courses = object.courses?.map((e) => course_1.Course.fromPartial(e)) || [];
         message.homerooms = object.homerooms?.map((e) => homeroom_1.Homeroom.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetStudentLmsCalendarRequest() {
+    return {
+        context: undefined,
+        student_id: undefined,
+        school_year_id: undefined,
+        start_date: undefined,
+        end_date: undefined,
+    };
+}
+exports.GetStudentLmsCalendarRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        if (message.start_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.start_date), writer.uint32(34).fork()).join();
+        }
+        if (message.end_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentLmsCalendarRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.start_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.end_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.start_date !== undefined) {
+            obj.startDate = message.start_date.toISOString();
+        }
+        if (message.end_date !== undefined) {
+            obj.endDate = message.end_date.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentLmsCalendarRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentLmsCalendarRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.start_date = object.start_date ?? undefined;
+        message.end_date = object.end_date ?? undefined;
         return message;
     },
 };
@@ -2766,6 +2941,27 @@ exports.HomeroomCloneRequest = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function longToNumber(int64) {
     const num = globalThis.Number(int64.toString());
     if (num > globalThis.Number.MAX_SAFE_INTEGER) {

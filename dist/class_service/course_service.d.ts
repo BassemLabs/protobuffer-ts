@@ -3,7 +3,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
-import { LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
+import { LmsCalendarItem, LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
 export declare const protobufPackage = "class_service.course_service";
 export declare enum StudentProfileFeatureScope {
     STUDENT_PROFILE_FEATURE_SCOPE_REPORTS = "STUDENT_PROFILE_FEATURE_SCOPE_REPORTS",
@@ -38,6 +38,9 @@ export interface LmsCourseWorkResponse {
 export interface LmsStudentSubmissionResponse {
     lms_student_submission: LmsSubmission[];
 }
+export interface GetStudentLmsCalendarResponse {
+    calendar_items: LmsCalendarItem[];
+}
 /** Request to get student courses */
 export interface GetStudentCoursesRequest {
     context: RequestContext | undefined;
@@ -54,6 +57,13 @@ export interface GetStudentProfileClassScopeRequest {
 export interface GetStudentProfileClassScopeResponse {
     courses: Course[];
     homerooms: Homeroom[];
+}
+export interface GetStudentLmsCalendarRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+    start_date?: Date | undefined;
+    end_date?: Date | undefined;
 }
 export interface GetStudentCoursesForSchoolYearRequest {
     context: RequestContext | undefined;
@@ -193,9 +203,11 @@ export declare const ListCoursesRequest: MessageFns<ListCoursesRequest>;
 export declare const CourseResponse: MessageFns<CourseResponse>;
 export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
 export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;
+export declare const GetStudentLmsCalendarResponse: MessageFns<GetStudentLmsCalendarResponse>;
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
 export declare const GetStudentProfileClassScopeRequest: MessageFns<GetStudentProfileClassScopeRequest>;
 export declare const GetStudentProfileClassScopeResponse: MessageFns<GetStudentProfileClassScopeResponse>;
+export declare const GetStudentLmsCalendarRequest: MessageFns<GetStudentLmsCalendarRequest>;
 export declare const GetStudentCoursesForSchoolYearRequest: MessageFns<GetStudentCoursesForSchoolYearRequest>;
 export declare const ArchiveCourseRequest: MessageFns<ArchiveCourseRequest>;
 export declare const ArchiveLmsClassesForSchoolYearRequest: MessageFns<ArchiveLmsClassesForSchoolYearRequest>;

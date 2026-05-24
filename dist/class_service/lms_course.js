@@ -5,10 +5,13 @@
 //   protoc               unknown
 // source: class_service/lms_course.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LmsHistory = exports.LmsSubmission = exports.Attachment = exports.LmsCourseWork = exports.LmsCourse = exports.LmsSubmissionState = exports.LmsWorkType = exports.LmsProviderType = exports.protobufPackage = void 0;
+exports.LmsHistory = exports.LmsCalendarItem = exports.LmsSubmission = exports.Attachment = exports.LmsCourseWork = exports.LmsCourse = exports.LmsSubmissionState = exports.LmsWorkType = exports.LmsCalendarItemType = exports.LmsProviderType = exports.protobufPackage = void 0;
 exports.lmsProviderTypeFromJSON = lmsProviderTypeFromJSON;
 exports.lmsProviderTypeToJSON = lmsProviderTypeToJSON;
 exports.lmsProviderTypeToNumber = lmsProviderTypeToNumber;
+exports.lmsCalendarItemTypeFromJSON = lmsCalendarItemTypeFromJSON;
+exports.lmsCalendarItemTypeToJSON = lmsCalendarItemTypeToJSON;
+exports.lmsCalendarItemTypeToNumber = lmsCalendarItemTypeToNumber;
 exports.lmsWorkTypeFromJSON = lmsWorkTypeFromJSON;
 exports.lmsWorkTypeToJSON = lmsWorkTypeToJSON;
 exports.lmsWorkTypeToNumber = lmsWorkTypeToNumber;
@@ -58,6 +61,56 @@ function lmsProviderTypeToNumber(object) {
         case LmsProviderType.CANVAS:
             return 2;
         case LmsProviderType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var LmsCalendarItemType;
+(function (LmsCalendarItemType) {
+    LmsCalendarItemType["LMS_CALENDAR_ITEM_ASSIGNED"] = "LMS_CALENDAR_ITEM_ASSIGNED";
+    LmsCalendarItemType["LMS_CALENDAR_ITEM_DUE"] = "LMS_CALENDAR_ITEM_DUE";
+    LmsCalendarItemType["LMS_CALENDAR_ITEM_SUBMITTED"] = "LMS_CALENDAR_ITEM_SUBMITTED";
+    LmsCalendarItemType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(LmsCalendarItemType || (exports.LmsCalendarItemType = LmsCalendarItemType = {}));
+function lmsCalendarItemTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "LMS_CALENDAR_ITEM_ASSIGNED":
+            return LmsCalendarItemType.LMS_CALENDAR_ITEM_ASSIGNED;
+        case 1:
+        case "LMS_CALENDAR_ITEM_DUE":
+            return LmsCalendarItemType.LMS_CALENDAR_ITEM_DUE;
+        case 2:
+        case "LMS_CALENDAR_ITEM_SUBMITTED":
+            return LmsCalendarItemType.LMS_CALENDAR_ITEM_SUBMITTED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return LmsCalendarItemType.UNRECOGNIZED;
+    }
+}
+function lmsCalendarItemTypeToJSON(object) {
+    switch (object) {
+        case LmsCalendarItemType.LMS_CALENDAR_ITEM_ASSIGNED:
+            return "LMS_CALENDAR_ITEM_ASSIGNED";
+        case LmsCalendarItemType.LMS_CALENDAR_ITEM_DUE:
+            return "LMS_CALENDAR_ITEM_DUE";
+        case LmsCalendarItemType.LMS_CALENDAR_ITEM_SUBMITTED:
+            return "LMS_CALENDAR_ITEM_SUBMITTED";
+        case LmsCalendarItemType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function lmsCalendarItemTypeToNumber(object) {
+    switch (object) {
+        case LmsCalendarItemType.LMS_CALENDAR_ITEM_ASSIGNED:
+            return 0;
+        case LmsCalendarItemType.LMS_CALENDAR_ITEM_DUE:
+            return 1;
+        case LmsCalendarItemType.LMS_CALENDAR_ITEM_SUBMITTED:
+            return 2;
+        case LmsCalendarItemType.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -819,6 +872,364 @@ exports.LmsSubmission = {
         message.history = object.history?.map((e) => exports.LmsHistory.fromPartial(e)) || [];
         message.provider = object.provider ?? undefined;
         message.raw_json = object.raw_json ?? undefined;
+        return message;
+    },
+};
+function createBaseLmsCalendarItem() {
+    return {
+        item_type: undefined,
+        event_time: undefined,
+        class_id: undefined,
+        class_name: undefined,
+        lms_course_work_id: undefined,
+        lms_course_id: undefined,
+        title: undefined,
+        description: undefined,
+        link: undefined,
+        attachments: [],
+        creation_time: undefined,
+        due_date: undefined,
+        max_points: undefined,
+        work_type: undefined,
+        provider: undefined,
+        lms_submission_id: undefined,
+        submission_url: undefined,
+        state: undefined,
+        submitted_at: undefined,
+        late: undefined,
+        grade: undefined,
+    };
+}
+exports.LmsCalendarItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.item_type !== undefined) {
+            writer.uint32(8).int32(lmsCalendarItemTypeToNumber(message.item_type));
+        }
+        if (message.event_time !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.event_time), writer.uint32(18).fork()).join();
+        }
+        if (message.class_id !== undefined) {
+            object_id_1.ObjectId.encode(message.class_id, writer.uint32(26).fork()).join();
+        }
+        if (message.class_name !== undefined) {
+            writer.uint32(34).string(message.class_name);
+        }
+        if (message.lms_course_work_id !== undefined) {
+            writer.uint32(42).string(message.lms_course_work_id);
+        }
+        if (message.lms_course_id !== undefined) {
+            writer.uint32(50).string(message.lms_course_id);
+        }
+        if (message.title !== undefined) {
+            writer.uint32(58).string(message.title);
+        }
+        if (message.description !== undefined) {
+            writer.uint32(66).string(message.description);
+        }
+        if (message.link !== undefined) {
+            writer.uint32(74).string(message.link);
+        }
+        for (const v of message.attachments) {
+            exports.Attachment.encode(v, writer.uint32(82).fork()).join();
+        }
+        if (message.creation_time !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.creation_time), writer.uint32(90).fork()).join();
+        }
+        if (message.due_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(98).fork()).join();
+        }
+        if (message.max_points !== undefined) {
+            writer.uint32(105).double(message.max_points);
+        }
+        if (message.work_type !== undefined) {
+            writer.uint32(112).int32(lmsWorkTypeToNumber(message.work_type));
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(120).int32(lmsProviderTypeToNumber(message.provider));
+        }
+        if (message.lms_submission_id !== undefined) {
+            writer.uint32(130).string(message.lms_submission_id);
+        }
+        if (message.submission_url !== undefined) {
+            writer.uint32(138).string(message.submission_url);
+        }
+        if (message.state !== undefined) {
+            writer.uint32(144).int32(lmsSubmissionStateToNumber(message.state));
+        }
+        if (message.submitted_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.submitted_at), writer.uint32(154).fork()).join();
+        }
+        if (message.late !== undefined) {
+            writer.uint32(160).bool(message.late);
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(169).double(message.grade);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLmsCalendarItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.item_type = lmsCalendarItemTypeFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.event_time = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.class_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.class_name = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.lms_course_work_id = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.lms_course_id = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.link = reader.string();
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.attachments.push(exports.Attachment.decode(reader, reader.uint32()));
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.creation_time = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.due_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 13:
+                    if (tag !== 105) {
+                        break;
+                    }
+                    message.max_points = reader.double();
+                    continue;
+                case 14:
+                    if (tag !== 112) {
+                        break;
+                    }
+                    message.work_type = lmsWorkTypeFromJSON(reader.int32());
+                    continue;
+                case 15:
+                    if (tag !== 120) {
+                        break;
+                    }
+                    message.provider = lmsProviderTypeFromJSON(reader.int32());
+                    continue;
+                case 16:
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.lms_submission_id = reader.string();
+                    continue;
+                case 17:
+                    if (tag !== 138) {
+                        break;
+                    }
+                    message.submission_url = reader.string();
+                    continue;
+                case 18:
+                    if (tag !== 144) {
+                        break;
+                    }
+                    message.state = lmsSubmissionStateFromJSON(reader.int32());
+                    continue;
+                case 19:
+                    if (tag !== 154) {
+                        break;
+                    }
+                    message.submitted_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 20:
+                    if (tag !== 160) {
+                        break;
+                    }
+                    message.late = reader.bool();
+                    continue;
+                case 21:
+                    if (tag !== 169) {
+                        break;
+                    }
+                    message.grade = reader.double();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            item_type: isSet(object.itemType) ? lmsCalendarItemTypeFromJSON(object.itemType) : undefined,
+            event_time: isSet(object.eventTime) ? fromJsonTimestamp(object.eventTime) : undefined,
+            class_id: isSet(object.classId) ? object_id_1.ObjectId.fromJSON(object.classId) : undefined,
+            class_name: isSet(object.className) ? globalThis.String(object.className) : undefined,
+            lms_course_work_id: isSet(object.lmsCourseWorkId) ? globalThis.String(object.lmsCourseWorkId) : undefined,
+            lms_course_id: isSet(object.lmsCourseId) ? globalThis.String(object.lmsCourseId) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            link: isSet(object.link) ? globalThis.String(object.link) : undefined,
+            attachments: globalThis.Array.isArray(object?.attachments)
+                ? object.attachments.map((e) => exports.Attachment.fromJSON(e))
+                : [],
+            creation_time: isSet(object.creationTime) ? fromJsonTimestamp(object.creationTime) : undefined,
+            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            max_points: isSet(object.maxPoints) ? globalThis.Number(object.maxPoints) : undefined,
+            work_type: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : undefined,
+            provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+            lms_submission_id: isSet(object.lmsSubmissionId) ? globalThis.String(object.lmsSubmissionId) : undefined,
+            submission_url: isSet(object.submissionUrl) ? globalThis.String(object.submissionUrl) : undefined,
+            state: isSet(object.state) ? lmsSubmissionStateFromJSON(object.state) : undefined,
+            submitted_at: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
+            late: isSet(object.late) ? globalThis.Boolean(object.late) : undefined,
+            grade: isSet(object.grade) ? globalThis.Number(object.grade) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.item_type !== undefined) {
+            obj.itemType = lmsCalendarItemTypeToJSON(message.item_type);
+        }
+        if (message.event_time !== undefined) {
+            obj.eventTime = message.event_time.toISOString();
+        }
+        if (message.class_id !== undefined) {
+            obj.classId = object_id_1.ObjectId.toJSON(message.class_id);
+        }
+        if (message.class_name !== undefined) {
+            obj.className = message.class_name;
+        }
+        if (message.lms_course_work_id !== undefined) {
+            obj.lmsCourseWorkId = message.lms_course_work_id;
+        }
+        if (message.lms_course_id !== undefined) {
+            obj.lmsCourseId = message.lms_course_id;
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
+        }
+        if (message.link !== undefined) {
+            obj.link = message.link;
+        }
+        if (message.attachments?.length) {
+            obj.attachments = message.attachments.map((e) => exports.Attachment.toJSON(e));
+        }
+        if (message.creation_time !== undefined) {
+            obj.creationTime = message.creation_time.toISOString();
+        }
+        if (message.due_date !== undefined) {
+            obj.dueDate = message.due_date.toISOString();
+        }
+        if (message.max_points !== undefined) {
+            obj.maxPoints = message.max_points;
+        }
+        if (message.work_type !== undefined) {
+            obj.workType = lmsWorkTypeToJSON(message.work_type);
+        }
+        if (message.provider !== undefined) {
+            obj.provider = lmsProviderTypeToJSON(message.provider);
+        }
+        if (message.lms_submission_id !== undefined) {
+            obj.lmsSubmissionId = message.lms_submission_id;
+        }
+        if (message.submission_url !== undefined) {
+            obj.submissionUrl = message.submission_url;
+        }
+        if (message.state !== undefined) {
+            obj.state = lmsSubmissionStateToJSON(message.state);
+        }
+        if (message.submitted_at !== undefined) {
+            obj.submittedAt = message.submitted_at.toISOString();
+        }
+        if (message.late !== undefined) {
+            obj.late = message.late;
+        }
+        if (message.grade !== undefined) {
+            obj.grade = message.grade;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LmsCalendarItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLmsCalendarItem();
+        message.item_type = object.item_type ?? undefined;
+        message.event_time = object.event_time ?? undefined;
+        message.class_id = (object.class_id !== undefined && object.class_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.class_id)
+            : undefined;
+        message.class_name = object.class_name ?? undefined;
+        message.lms_course_work_id = object.lms_course_work_id ?? undefined;
+        message.lms_course_id = object.lms_course_id ?? undefined;
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
+        message.link = object.link ?? undefined;
+        message.attachments = object.attachments?.map((e) => exports.Attachment.fromPartial(e)) || [];
+        message.creation_time = object.creation_time ?? undefined;
+        message.due_date = object.due_date ?? undefined;
+        message.max_points = object.max_points ?? undefined;
+        message.work_type = object.work_type ?? undefined;
+        message.provider = object.provider ?? undefined;
+        message.lms_submission_id = object.lms_submission_id ?? undefined;
+        message.submission_url = object.submission_url ?? undefined;
+        message.state = object.state ?? undefined;
+        message.submitted_at = object.submitted_at ?? undefined;
+        message.late = object.late ?? undefined;
+        message.grade = object.grade ?? undefined;
         return message;
     },
 };

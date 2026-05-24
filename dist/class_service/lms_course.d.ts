@@ -9,6 +9,15 @@ export declare enum LmsProviderType {
 export declare function lmsProviderTypeFromJSON(object: any): LmsProviderType;
 export declare function lmsProviderTypeToJSON(object: LmsProviderType): string;
 export declare function lmsProviderTypeToNumber(object: LmsProviderType): number;
+export declare enum LmsCalendarItemType {
+    LMS_CALENDAR_ITEM_ASSIGNED = "LMS_CALENDAR_ITEM_ASSIGNED",
+    LMS_CALENDAR_ITEM_DUE = "LMS_CALENDAR_ITEM_DUE",
+    LMS_CALENDAR_ITEM_SUBMITTED = "LMS_CALENDAR_ITEM_SUBMITTED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function lmsCalendarItemTypeFromJSON(object: any): LmsCalendarItemType;
+export declare function lmsCalendarItemTypeToJSON(object: LmsCalendarItemType): string;
+export declare function lmsCalendarItemTypeToNumber(object: LmsCalendarItemType): number;
 export declare enum LmsWorkType {
     ASSIGNMENT = "ASSIGNMENT",
     MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
@@ -115,6 +124,29 @@ export interface LmsSubmission {
     /** Provider raw JSON (always keep for edge cases) */
     raw_json?: string | undefined;
 }
+export interface LmsCalendarItem {
+    item_type?: LmsCalendarItemType | undefined;
+    event_time: Date | undefined;
+    class_id: ObjectId | undefined;
+    class_name?: string | undefined;
+    lms_course_work_id?: string | undefined;
+    lms_course_id?: string | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    link?: string | undefined;
+    attachments: Attachment[];
+    creation_time?: Date | undefined;
+    due_date?: Date | undefined;
+    max_points?: number | undefined;
+    work_type?: LmsWorkType | undefined;
+    provider?: LmsProviderType | undefined;
+    lms_submission_id?: string | undefined;
+    submission_url?: string | undefined;
+    state?: LmsSubmissionState | undefined;
+    submitted_at?: Date | undefined;
+    late?: boolean | undefined;
+    grade?: number | undefined;
+}
 export interface LmsHistory {
     /** Who made the change (provider user id) */
     actor_id?: string | undefined;
@@ -130,6 +162,7 @@ export declare const LmsCourse: MessageFns<LmsCourse>;
 export declare const LmsCourseWork: MessageFns<LmsCourseWork>;
 export declare const Attachment: MessageFns<Attachment>;
 export declare const LmsSubmission: MessageFns<LmsSubmission>;
+export declare const LmsCalendarItem: MessageFns<LmsCalendarItem>;
 export declare const LmsHistory: MessageFns<LmsHistory>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

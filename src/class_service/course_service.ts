@@ -6,11 +6,13 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
 import {
+  LmsCalendarItem,
   LmsCourseWork,
   LmsProviderType,
   lmsProviderTypeFromJSON,
@@ -103,6 +105,10 @@ export interface LmsStudentSubmissionResponse {
   lms_student_submission: LmsSubmission[];
 }
 
+export interface GetStudentLmsCalendarResponse {
+  calendar_items: LmsCalendarItem[];
+}
+
 /** Request to get student courses */
 export interface GetStudentCoursesRequest {
   context: RequestContext | undefined;
@@ -121,6 +127,14 @@ export interface GetStudentProfileClassScopeRequest {
 export interface GetStudentProfileClassScopeResponse {
   courses: Course[];
   homerooms: Homeroom[];
+}
+
+export interface GetStudentLmsCalendarRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+  start_date?: Date | undefined;
+  end_date?: Date | undefined;
 }
 
 export interface GetStudentCoursesForSchoolYearRequest {
@@ -737,6 +751,69 @@ export const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionRespon
   },
 };
 
+function createBaseGetStudentLmsCalendarResponse(): GetStudentLmsCalendarResponse {
+  return { calendar_items: [] };
+}
+
+export const GetStudentLmsCalendarResponse: MessageFns<GetStudentLmsCalendarResponse> = {
+  encode(message: GetStudentLmsCalendarResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.calendar_items) {
+      LmsCalendarItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentLmsCalendarResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentLmsCalendarResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.calendar_items.push(LmsCalendarItem.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentLmsCalendarResponse {
+    return {
+      calendar_items: globalThis.Array.isArray(object?.calendarItems)
+        ? object.calendarItems.map((e: any) => LmsCalendarItem.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetStudentLmsCalendarResponse): unknown {
+    const obj: any = {};
+    if (message.calendar_items?.length) {
+      obj.calendarItems = message.calendar_items.map((e) => LmsCalendarItem.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentLmsCalendarResponse>, I>>(base?: I): GetStudentLmsCalendarResponse {
+    return GetStudentLmsCalendarResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentLmsCalendarResponse>, I>>(
+    object: I,
+  ): GetStudentLmsCalendarResponse {
+    const message = createBaseGetStudentLmsCalendarResponse();
+    message.calendar_items = object.calendar_items?.map((e) => LmsCalendarItem.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 function createBaseGetStudentCoursesRequest(): GetStudentCoursesRequest {
   return { context: undefined, student_id: undefined, include_archived: undefined, school_year_id: undefined };
 }
@@ -1037,6 +1114,137 @@ export const GetStudentProfileClassScopeResponse: MessageFns<GetStudentProfileCl
     const message = createBaseGetStudentProfileClassScopeResponse();
     message.courses = object.courses?.map((e) => Course.fromPartial(e)) || [];
     message.homerooms = object.homerooms?.map((e) => Homeroom.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetStudentLmsCalendarRequest(): GetStudentLmsCalendarRequest {
+  return {
+    context: undefined,
+    student_id: undefined,
+    school_year_id: undefined,
+    start_date: undefined,
+    end_date: undefined,
+  };
+}
+
+export const GetStudentLmsCalendarRequest: MessageFns<GetStudentLmsCalendarRequest> = {
+  encode(message: GetStudentLmsCalendarRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.start_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.start_date), writer.uint32(34).fork()).join();
+    }
+    if (message.end_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentLmsCalendarRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentLmsCalendarRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.start_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentLmsCalendarRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentLmsCalendarRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date.toISOString();
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentLmsCalendarRequest>, I>>(base?: I): GetStudentLmsCalendarRequest {
+    return GetStudentLmsCalendarRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentLmsCalendarRequest>, I>>(object: I): GetStudentLmsCalendarRequest {
+    const message = createBaseGetStudentLmsCalendarRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
     return message;
   },
 };
@@ -3293,6 +3501,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(int64: { toString(): string }): number {
   const num = globalThis.Number(int64.toString());
