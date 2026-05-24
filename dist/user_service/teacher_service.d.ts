@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
-import { Teacher, TeacherBasic, TeacherProfile, TeacherStatus } from "./teacher";
+import { Teacher, TeacherBasic, TeacherProfileUpdate, TeacherStatus } from "./teacher";
 export declare const protobufPackage = "user_service";
 export interface GetTeacherRequest {
     context: RequestContext | undefined;
@@ -62,7 +62,7 @@ export interface DeleteTeacherSignatureRequest {
 export interface UpdateTeacherProfileRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
-    profile: TeacherProfile | undefined;
+    profile: TeacherProfileUpdate | undefined;
 }
 export interface ChangeTeacherPasswordRequest {
     context: RequestContext | undefined;

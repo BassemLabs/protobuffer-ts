@@ -970,7 +970,7 @@ exports.UpdateTeacherProfileRequest = {
             object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
         }
         if (message.profile !== undefined) {
-            teacher_1.TeacherProfile.encode(message.profile, writer.uint32(26).fork()).join();
+            teacher_1.TeacherProfileUpdate.encode(message.profile, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -997,7 +997,7 @@ exports.UpdateTeacherProfileRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.profile = teacher_1.TeacherProfile.decode(reader, reader.uint32());
+                    message.profile = teacher_1.TeacherProfileUpdate.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1011,7 +1011,7 @@ exports.UpdateTeacherProfileRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
-            profile: isSet(object.profile) ? teacher_1.TeacherProfile.fromJSON(object.profile) : undefined,
+            profile: isSet(object.profile) ? teacher_1.TeacherProfileUpdate.fromJSON(object.profile) : undefined,
         };
     },
     toJSON(message) {
@@ -1023,7 +1023,7 @@ exports.UpdateTeacherProfileRequest = {
             obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
         }
         if (message.profile !== undefined) {
-            obj.profile = teacher_1.TeacherProfile.toJSON(message.profile);
+            obj.profile = teacher_1.TeacherProfileUpdate.toJSON(message.profile);
         }
         return obj;
     },
@@ -1039,7 +1039,7 @@ exports.UpdateTeacherProfileRequest = {
             ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
         message.profile = (object.profile !== undefined && object.profile !== null)
-            ? teacher_1.TeacherProfile.fromPartial(object.profile)
+            ? teacher_1.TeacherProfileUpdate.fromPartial(object.profile)
             : undefined;
         return message;
     },

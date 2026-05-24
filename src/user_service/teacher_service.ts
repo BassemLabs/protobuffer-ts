@@ -13,7 +13,7 @@ import { RequestContext } from "../utils/request_context";
 import {
   Teacher,
   TeacherBasic,
-  TeacherProfile,
+  TeacherProfileUpdate,
   TeacherStatus,
   teacherStatusFromJSON,
   teacherStatusToJSON,
@@ -94,7 +94,7 @@ export interface DeleteTeacherSignatureRequest {
 export interface UpdateTeacherProfileRequest {
   context: RequestContext | undefined;
   teacher_id: ObjectId | undefined;
-  profile: TeacherProfile | undefined;
+  profile: TeacherProfileUpdate | undefined;
 }
 
 export interface ChangeTeacherPasswordRequest {
@@ -1253,7 +1253,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
       ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
     }
     if (message.profile !== undefined) {
-      TeacherProfile.encode(message.profile, writer.uint32(26).fork()).join();
+      TeacherProfileUpdate.encode(message.profile, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -1284,7 +1284,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
             break;
           }
 
-          message.profile = TeacherProfile.decode(reader, reader.uint32());
+          message.profile = TeacherProfileUpdate.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1299,7 +1299,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
-      profile: isSet(object.profile) ? TeacherProfile.fromJSON(object.profile) : undefined,
+      profile: isSet(object.profile) ? TeacherProfileUpdate.fromJSON(object.profile) : undefined,
     };
   },
 
@@ -1312,7 +1312,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
       obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     if (message.profile !== undefined) {
-      obj.profile = TeacherProfile.toJSON(message.profile);
+      obj.profile = TeacherProfileUpdate.toJSON(message.profile);
     }
     return obj;
   },
@@ -1329,7 +1329,7 @@ export const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest
       ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
     message.profile = (object.profile !== undefined && object.profile !== null)
-      ? TeacherProfile.fromPartial(object.profile)
+      ? TeacherProfileUpdate.fromPartial(object.profile)
       : undefined;
     return message;
   },

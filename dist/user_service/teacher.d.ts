@@ -47,9 +47,18 @@ export interface TeacherProfile {
     date_of_birth: Date | undefined;
     phone_number: PhoneNumber | undefined;
 }
+export interface TeacherProfileUpdate {
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    gender?: string | undefined;
+    personal_email?: string | undefined;
+    date_of_birth: Date | undefined;
+    phone_number: PhoneNumber | undefined;
+}
 export declare const TeacherBasic: MessageFns<TeacherBasic>;
 export declare const Teacher: MessageFns<Teacher>;
 export declare const TeacherProfile: MessageFns<TeacherProfile>;
+export declare const TeacherProfileUpdate: MessageFns<TeacherProfileUpdate>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

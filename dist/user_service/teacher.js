@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TeacherProfile = exports.Teacher = exports.TeacherBasic = exports.TeacherStatus = exports.protobufPackage = void 0;
+exports.TeacherProfileUpdate = exports.TeacherProfile = exports.Teacher = exports.TeacherBasic = exports.TeacherStatus = exports.protobufPackage = void 0;
 exports.teacherStatusFromJSON = teacherStatusFromJSON;
 exports.teacherStatusToJSON = teacherStatusToJSON;
 exports.teacherStatusToNumber = teacherStatusToNumber;
@@ -613,6 +613,137 @@ exports.TeacherProfile = {
         message.last_name = object.last_name ?? undefined;
         message.gender = object.gender ?? undefined;
         message.email = object.email ?? undefined;
+        message.personal_email = object.personal_email ?? undefined;
+        message.date_of_birth = object.date_of_birth ?? undefined;
+        message.phone_number = (object.phone_number !== undefined && object.phone_number !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.phone_number)
+            : undefined;
+        return message;
+    },
+};
+function createBaseTeacherProfileUpdate() {
+    return {
+        first_name: undefined,
+        last_name: undefined,
+        gender: undefined,
+        personal_email: undefined,
+        date_of_birth: undefined,
+        phone_number: undefined,
+    };
+}
+exports.TeacherProfileUpdate = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.first_name !== undefined) {
+            writer.uint32(10).string(message.first_name);
+        }
+        if (message.last_name !== undefined) {
+            writer.uint32(18).string(message.last_name);
+        }
+        if (message.gender !== undefined) {
+            writer.uint32(26).string(message.gender);
+        }
+        if (message.personal_email !== undefined) {
+            writer.uint32(34).string(message.personal_email);
+        }
+        if (message.date_of_birth !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(42).fork()).join();
+        }
+        if (message.phone_number !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.phone_number, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTeacherProfileUpdate();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.first_name = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.last_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.gender = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.personal_email = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.phone_number = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+            personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.first_name !== undefined) {
+            obj.firstName = message.first_name;
+        }
+        if (message.last_name !== undefined) {
+            obj.lastName = message.last_name;
+        }
+        if (message.gender !== undefined) {
+            obj.gender = message.gender;
+        }
+        if (message.personal_email !== undefined) {
+            obj.personalEmail = message.personal_email;
+        }
+        if (message.date_of_birth !== undefined) {
+            obj.dateOfBirth = message.date_of_birth.toISOString();
+        }
+        if (message.phone_number !== undefined) {
+            obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TeacherProfileUpdate.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTeacherProfileUpdate();
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.gender = object.gender ?? undefined;
         message.personal_email = object.personal_email ?? undefined;
         message.date_of_birth = object.date_of_birth ?? undefined;
         message.phone_number = (object.phone_number !== undefined && object.phone_number !== null)
