@@ -4401,6 +4401,7 @@ function createBaseGetFilteredStudentsListRequest() {
         has_priority_first: undefined,
         completed_only: undefined,
         include_processing_in_paid_filter: undefined,
+        interview_date: undefined,
     };
 }
 exports.GetFilteredStudentsListRequest = {
@@ -4448,6 +4449,9 @@ exports.GetFilteredStudentsListRequest = {
         }
         if (message.include_processing_in_paid_filter !== undefined) {
             writer.uint32(112).bool(message.include_processing_in_paid_filter);
+        }
+        if (message.interview_date !== undefined) {
+            writer.uint32(122).string(message.interview_date);
         }
         return writer;
     },
@@ -4549,6 +4553,12 @@ exports.GetFilteredStudentsListRequest = {
                     }
                     message.include_processing_in_paid_filter = reader.bool();
                     continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.interview_date = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4581,6 +4591,7 @@ exports.GetFilteredStudentsListRequest = {
             include_processing_in_paid_filter: isSet(object.includeProcessingInPaidFilter)
                 ? globalThis.Boolean(object.includeProcessingInPaidFilter)
                 : undefined,
+            interview_date: isSet(object.interviewDate) ? globalThis.String(object.interviewDate) : undefined,
         };
     },
     toJSON(message) {
@@ -4627,6 +4638,9 @@ exports.GetFilteredStudentsListRequest = {
         if (message.include_processing_in_paid_filter !== undefined) {
             obj.includeProcessingInPaidFilter = message.include_processing_in_paid_filter;
         }
+        if (message.interview_date !== undefined) {
+            obj.interviewDate = message.interview_date;
+        }
         return obj;
     },
     create(base) {
@@ -4652,6 +4666,7 @@ exports.GetFilteredStudentsListRequest = {
         message.has_priority_first = object.has_priority_first ?? undefined;
         message.completed_only = object.completed_only ?? undefined;
         message.include_processing_in_paid_filter = object.include_processing_in_paid_filter ?? undefined;
+        message.interview_date = object.interview_date ?? undefined;
         return message;
     },
 };

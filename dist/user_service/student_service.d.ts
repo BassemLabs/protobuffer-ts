@@ -296,6 +296,8 @@ export interface GetFilteredStudentsListRequest {
     /** When true, restrict to students who have filled all groups visible for this status (visible_to_parents_for_statuses contains status) */
     completed_only?: boolean | undefined;
     include_processing_in_paid_filter?: boolean | undefined;
+    /** in the organization's local timezone. */
+    interview_date?: string | undefined;
 }
 export interface GetFilteredStudentsListResponse {
     students: SchoolYearStudent[];
