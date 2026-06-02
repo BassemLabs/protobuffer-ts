@@ -306,6 +306,7 @@ export interface SchoolYearStudent {
   has_enrolled_family?: boolean | undefined;
   has_processing_transactions?: boolean | undefined;
   admission_date?: Date | undefined;
+  has_previous_school_year_record?: boolean | undefined;
 }
 
 /** Student profile data for updates */
@@ -579,6 +580,7 @@ function createBaseSchoolYearStudent(): SchoolYearStudent {
     has_enrolled_family: undefined,
     has_processing_transactions: undefined,
     admission_date: undefined,
+    has_previous_school_year_record: undefined,
   };
 }
 
@@ -622,6 +624,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     }
     if (message.admission_date !== undefined) {
       Timestamp.encode(toTimestamp(message.admission_date), writer.uint32(106).fork()).join();
+    }
+    if (message.has_previous_school_year_record !== undefined) {
+      writer.uint32(112).bool(message.has_previous_school_year_record);
     }
     return writer;
   },
@@ -724,6 +729,13 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
 
           message.admission_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.has_previous_school_year_record = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -752,6 +764,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
         ? globalThis.Boolean(object.hasProcessingTransactions)
         : undefined,
       admission_date: isSet(object.admissionDate) ? fromJsonTimestamp(object.admissionDate) : undefined,
+      has_previous_school_year_record: isSet(object.hasPreviousSchoolYearRecord)
+        ? globalThis.Boolean(object.hasPreviousSchoolYearRecord)
+        : undefined,
     };
   },
 
@@ -796,6 +811,9 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     if (message.admission_date !== undefined) {
       obj.admissionDate = message.admission_date.toISOString();
     }
+    if (message.has_previous_school_year_record !== undefined) {
+      obj.hasPreviousSchoolYearRecord = message.has_previous_school_year_record;
+    }
     return obj;
   },
 
@@ -819,6 +837,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
     message.has_enrolled_family = object.has_enrolled_family ?? undefined;
     message.has_processing_transactions = object.has_processing_transactions ?? undefined;
     message.admission_date = object.admission_date ?? undefined;
+    message.has_previous_school_year_record = object.has_previous_school_year_record ?? undefined;
     return message;
   },
 };

@@ -60,6 +60,13 @@ export interface CreateStudentRequest {
   admission_year: ObjectId | undefined;
 }
 
+export interface AddExistingStudentToWaitlistRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+}
+
 export interface UpdateStudentProfileRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
@@ -868,6 +875,120 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
     message.admission_year = (object.admission_year !== undefined && object.admission_year !== null)
       ? ObjectId.fromPartial(object.admission_year)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseAddExistingStudentToWaitlistRequest(): AddExistingStudentToWaitlistRequest {
+  return { context: undefined, student_id: undefined, school_year_id: undefined, grade: undefined };
+}
+
+export const AddExistingStudentToWaitlistRequest: MessageFns<AddExistingStudentToWaitlistRequest> = {
+  encode(message: AddExistingStudentToWaitlistRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddExistingStudentToWaitlistRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddExistingStudentToWaitlistRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddExistingStudentToWaitlistRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+    };
+  },
+
+  toJSON(message: AddExistingStudentToWaitlistRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddExistingStudentToWaitlistRequest>, I>>(
+    base?: I,
+  ): AddExistingStudentToWaitlistRequest {
+    return AddExistingStudentToWaitlistRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AddExistingStudentToWaitlistRequest>, I>>(
+    object: I,
+  ): AddExistingStudentToWaitlistRequest {
+    const message = createBaseAddExistingStudentToWaitlistRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
     return message;
   },
 };

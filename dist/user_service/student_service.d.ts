@@ -33,6 +33,12 @@ export interface CreateStudentRequest {
     date_of_birth: Date | undefined;
     admission_year: ObjectId | undefined;
 }
+export interface AddExistingStudentToWaitlistRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+    grade?: StudentGrade | undefined;
+}
 export interface UpdateStudentProfileRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
@@ -345,6 +351,7 @@ export declare const GetStudentRequest: MessageFns<GetStudentRequest>;
 export declare const GetStudentWithSchoolYearInfoRequest: MessageFns<GetStudentWithSchoolYearInfoRequest>;
 export declare const GetStudentWithSchoolYearInfoResponse: MessageFns<GetStudentWithSchoolYearInfoResponse>;
 export declare const CreateStudentRequest: MessageFns<CreateStudentRequest>;
+export declare const AddExistingStudentToWaitlistRequest: MessageFns<AddExistingStudentToWaitlistRequest>;
 export declare const UpdateStudentProfileRequest: MessageFns<UpdateStudentProfileRequest>;
 export declare const UpdateStudentGradeRequest: MessageFns<UpdateStudentGradeRequest>;
 export declare const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest>;
