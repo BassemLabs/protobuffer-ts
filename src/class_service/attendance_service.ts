@@ -325,6 +325,8 @@ export interface GetCoursesAttendanceOverviewResponse {
 export interface CourseEntryStatus {
   course_id: ObjectId | undefined;
   is_complete?: boolean | undefined;
+  expected_count?: number | undefined;
+  marked_count?: number | undefined;
 }
 
 export interface GetHomeroomsAttendanceOverviewRequest {
@@ -348,6 +350,8 @@ export interface GetHomeroomsAttendanceOverviewResponse {
 export interface HomeroomEntryStatus {
   homeroom_id: ObjectId | undefined;
   is_complete?: boolean | undefined;
+  expected_count?: number | undefined;
+  marked_count?: number | undefined;
 }
 
 export interface GetHomeroomAttendanceDetailsRequest {
@@ -2458,7 +2462,7 @@ export const GetCoursesAttendanceOverviewResponse: MessageFns<GetCoursesAttendan
 };
 
 function createBaseCourseEntryStatus(): CourseEntryStatus {
-  return { course_id: undefined, is_complete: undefined };
+  return { course_id: undefined, is_complete: undefined, expected_count: undefined, marked_count: undefined };
 }
 
 export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
@@ -2468,6 +2472,12 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
     }
     if (message.is_complete !== undefined) {
       writer.uint32(16).bool(message.is_complete);
+    }
+    if (message.expected_count !== undefined) {
+      writer.uint32(24).uint32(message.expected_count);
+    }
+    if (message.marked_count !== undefined) {
+      writer.uint32(32).uint32(message.marked_count);
     }
     return writer;
   },
@@ -2493,6 +2503,20 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
 
           message.is_complete = reader.bool();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.expected_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.marked_count = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2506,6 +2530,8 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
     return {
       course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : undefined,
+      expected_count: isSet(object.expectedCount) ? globalThis.Number(object.expectedCount) : undefined,
+      marked_count: isSet(object.markedCount) ? globalThis.Number(object.markedCount) : undefined,
     };
   },
 
@@ -2516,6 +2542,12 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
     }
     if (message.is_complete !== undefined) {
       obj.isComplete = message.is_complete;
+    }
+    if (message.expected_count !== undefined) {
+      obj.expectedCount = Math.round(message.expected_count);
+    }
+    if (message.marked_count !== undefined) {
+      obj.markedCount = Math.round(message.marked_count);
     }
     return obj;
   },
@@ -2529,6 +2561,8 @@ export const CourseEntryStatus: MessageFns<CourseEntryStatus> = {
       ? ObjectId.fromPartial(object.course_id)
       : undefined;
     message.is_complete = object.is_complete ?? undefined;
+    message.expected_count = object.expected_count ?? undefined;
+    message.marked_count = object.marked_count ?? undefined;
     return message;
   },
 };
@@ -2784,7 +2818,7 @@ export const GetHomeroomsAttendanceOverviewResponse: MessageFns<GetHomeroomsAtte
 };
 
 function createBaseHomeroomEntryStatus(): HomeroomEntryStatus {
-  return { homeroom_id: undefined, is_complete: undefined };
+  return { homeroom_id: undefined, is_complete: undefined, expected_count: undefined, marked_count: undefined };
 }
 
 export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
@@ -2794,6 +2828,12 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
     }
     if (message.is_complete !== undefined) {
       writer.uint32(16).bool(message.is_complete);
+    }
+    if (message.expected_count !== undefined) {
+      writer.uint32(24).uint32(message.expected_count);
+    }
+    if (message.marked_count !== undefined) {
+      writer.uint32(32).uint32(message.marked_count);
     }
     return writer;
   },
@@ -2819,6 +2859,20 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
 
           message.is_complete = reader.bool();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.expected_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.marked_count = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2832,6 +2886,8 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
     return {
       homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       is_complete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : undefined,
+      expected_count: isSet(object.expectedCount) ? globalThis.Number(object.expectedCount) : undefined,
+      marked_count: isSet(object.markedCount) ? globalThis.Number(object.markedCount) : undefined,
     };
   },
 
@@ -2842,6 +2898,12 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
     }
     if (message.is_complete !== undefined) {
       obj.isComplete = message.is_complete;
+    }
+    if (message.expected_count !== undefined) {
+      obj.expectedCount = Math.round(message.expected_count);
+    }
+    if (message.marked_count !== undefined) {
+      obj.markedCount = Math.round(message.marked_count);
     }
     return obj;
   },
@@ -2855,6 +2917,8 @@ export const HomeroomEntryStatus: MessageFns<HomeroomEntryStatus> = {
       ? ObjectId.fromPartial(object.homeroom_id)
       : undefined;
     message.is_complete = object.is_complete ?? undefined;
+    message.expected_count = object.expected_count ?? undefined;
+    message.marked_count = object.marked_count ?? undefined;
     return message;
   },
 };

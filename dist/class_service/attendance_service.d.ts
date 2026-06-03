@@ -160,6 +160,8 @@ export interface GetCoursesAttendanceOverviewResponse {
 export interface CourseEntryStatus {
     course_id: ObjectId | undefined;
     is_complete?: boolean | undefined;
+    expected_count?: number | undefined;
+    marked_count?: number | undefined;
 }
 export interface GetHomeroomsAttendanceOverviewRequest {
     context: RequestContext | undefined;
@@ -178,6 +180,8 @@ export interface GetHomeroomsAttendanceOverviewResponse {
 export interface HomeroomEntryStatus {
     homeroom_id: ObjectId | undefined;
     is_complete?: boolean | undefined;
+    expected_count?: number | undefined;
+    marked_count?: number | undefined;
 }
 export interface GetHomeroomAttendanceDetailsRequest {
     context: RequestContext | undefined;
