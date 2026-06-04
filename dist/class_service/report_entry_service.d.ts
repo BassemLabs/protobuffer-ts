@@ -24,6 +24,44 @@ export declare enum ReportPublishClassType {
 export declare function reportPublishClassTypeFromJSON(object: any): ReportPublishClassType;
 export declare function reportPublishClassTypeToJSON(object: ReportPublishClassType): string;
 export declare function reportPublishClassTypeToNumber(object: ReportPublishClassType): number;
+export declare enum SmartCommentStructure {
+    SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST = "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST",
+    SMART_COMMENT_STRUCTURE_STUDENT_FIRST = "SMART_COMMENT_STRUCTURE_STUDENT_FIRST",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function smartCommentStructureFromJSON(object: any): SmartCommentStructure;
+export declare function smartCommentStructureToJSON(object: SmartCommentStructure): string;
+export declare function smartCommentStructureToNumber(object: SmartCommentStructure): number;
+export declare enum SmartCommentTone {
+    SMART_COMMENT_TONE_NORMAL = "SMART_COMMENT_TONE_NORMAL",
+    SMART_COMMENT_TONE_WARM = "SMART_COMMENT_TONE_WARM",
+    SMART_COMMENT_TONE_STRONG = "SMART_COMMENT_TONE_STRONG",
+    SMART_COMMENT_TONE_GROWTH = "SMART_COMMENT_TONE_GROWTH",
+    SMART_COMMENT_TONE_DIRECT = "SMART_COMMENT_TONE_DIRECT",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function smartCommentToneFromJSON(object: any): SmartCommentTone;
+export declare function smartCommentToneToJSON(object: SmartCommentTone): string;
+export declare function smartCommentToneToNumber(object: SmartCommentTone): number;
+export declare enum SmartCommentNextStep {
+    SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE = "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE",
+    SMART_COMMENT_NEXT_STEP_GENTLE = "SMART_COMMENT_NEXT_STEP_GENTLE",
+    SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN = "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN",
+    SMART_COMMENT_NEXT_STEP_NONE = "SMART_COMMENT_NEXT_STEP_NONE",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function smartCommentNextStepFromJSON(object: any): SmartCommentNextStep;
+export declare function smartCommentNextStepToJSON(object: SmartCommentNextStep): string;
+export declare function smartCommentNextStepToNumber(object: SmartCommentNextStep): number;
+export declare enum SmartCommentLength {
+    SMART_COMMENT_LENGTH_SHORT = "SMART_COMMENT_LENGTH_SHORT",
+    SMART_COMMENT_LENGTH_STANDARD = "SMART_COMMENT_LENGTH_STANDARD",
+    SMART_COMMENT_LENGTH_FULL = "SMART_COMMENT_LENGTH_FULL",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function smartCommentLengthFromJSON(object: any): SmartCommentLength;
+export declare function smartCommentLengthToJSON(object: SmartCommentLength): string;
+export declare function smartCommentLengthToNumber(object: SmartCommentLength): number;
 export interface GetCourseReportEntriesRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
@@ -220,10 +258,19 @@ export interface GetReportEntryMedianRequest {
 export interface GetReportEntryMedianResponse {
     report_entry_median: ReportEntryMedian | undefined;
 }
+export interface GenerateReportEntrySmartCommentInput {
+    course_learning_summary?: string | undefined;
+    teacher_notes?: string | undefined;
+    structure?: SmartCommentStructure | undefined;
+    tone?: SmartCommentTone | undefined;
+    next_step?: SmartCommentNextStep | undefined;
+    length?: SmartCommentLength | undefined;
+}
 export interface GenerateReportEntrySmartCommentRequest {
     context: RequestContext | undefined;
     report_entry_id: ObjectId | undefined;
     optional_prompt?: string | undefined;
+    smart_comment_input?: GenerateReportEntrySmartCommentInput | undefined;
 }
 export interface GenerateReportEntrySmartCommentResponse {
     comment?: string | undefined;
@@ -324,6 +371,7 @@ export declare const GetReportEntryRequest: MessageFns<GetReportEntryRequest>;
 export declare const GetReportEntryResponse: MessageFns<GetReportEntryResponse>;
 export declare const GetReportEntryMedianRequest: MessageFns<GetReportEntryMedianRequest>;
 export declare const GetReportEntryMedianResponse: MessageFns<GetReportEntryMedianResponse>;
+export declare const GenerateReportEntrySmartCommentInput: MessageFns<GenerateReportEntrySmartCommentInput>;
 export declare const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEntrySmartCommentRequest>;
 export declare const GenerateReportEntrySmartCommentResponse: MessageFns<GenerateReportEntrySmartCommentResponse>;
 export declare const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest>;

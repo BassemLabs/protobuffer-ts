@@ -124,6 +124,234 @@ export function reportPublishClassTypeToNumber(object: ReportPublishClassType): 
   }
 }
 
+export enum SmartCommentStructure {
+  SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST = "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST",
+  SMART_COMMENT_STRUCTURE_STUDENT_FIRST = "SMART_COMMENT_STRUCTURE_STUDENT_FIRST",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function smartCommentStructureFromJSON(object: any): SmartCommentStructure {
+  switch (object) {
+    case 1:
+    case "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST":
+      return SmartCommentStructure.SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST;
+    case 2:
+    case "SMART_COMMENT_STRUCTURE_STUDENT_FIRST":
+      return SmartCommentStructure.SMART_COMMENT_STRUCTURE_STUDENT_FIRST;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SmartCommentStructure.UNRECOGNIZED;
+  }
+}
+
+export function smartCommentStructureToJSON(object: SmartCommentStructure): string {
+  switch (object) {
+    case SmartCommentStructure.SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST:
+      return "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST";
+    case SmartCommentStructure.SMART_COMMENT_STRUCTURE_STUDENT_FIRST:
+      return "SMART_COMMENT_STRUCTURE_STUDENT_FIRST";
+    case SmartCommentStructure.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function smartCommentStructureToNumber(object: SmartCommentStructure): number {
+  switch (object) {
+    case SmartCommentStructure.SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST:
+      return 1;
+    case SmartCommentStructure.SMART_COMMENT_STRUCTURE_STUDENT_FIRST:
+      return 2;
+    case SmartCommentStructure.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SmartCommentTone {
+  SMART_COMMENT_TONE_NORMAL = "SMART_COMMENT_TONE_NORMAL",
+  SMART_COMMENT_TONE_WARM = "SMART_COMMENT_TONE_WARM",
+  SMART_COMMENT_TONE_STRONG = "SMART_COMMENT_TONE_STRONG",
+  SMART_COMMENT_TONE_GROWTH = "SMART_COMMENT_TONE_GROWTH",
+  SMART_COMMENT_TONE_DIRECT = "SMART_COMMENT_TONE_DIRECT",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function smartCommentToneFromJSON(object: any): SmartCommentTone {
+  switch (object) {
+    case 1:
+    case "SMART_COMMENT_TONE_NORMAL":
+      return SmartCommentTone.SMART_COMMENT_TONE_NORMAL;
+    case 2:
+    case "SMART_COMMENT_TONE_WARM":
+      return SmartCommentTone.SMART_COMMENT_TONE_WARM;
+    case 3:
+    case "SMART_COMMENT_TONE_STRONG":
+      return SmartCommentTone.SMART_COMMENT_TONE_STRONG;
+    case 4:
+    case "SMART_COMMENT_TONE_GROWTH":
+      return SmartCommentTone.SMART_COMMENT_TONE_GROWTH;
+    case 5:
+    case "SMART_COMMENT_TONE_DIRECT":
+      return SmartCommentTone.SMART_COMMENT_TONE_DIRECT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SmartCommentTone.UNRECOGNIZED;
+  }
+}
+
+export function smartCommentToneToJSON(object: SmartCommentTone): string {
+  switch (object) {
+    case SmartCommentTone.SMART_COMMENT_TONE_NORMAL:
+      return "SMART_COMMENT_TONE_NORMAL";
+    case SmartCommentTone.SMART_COMMENT_TONE_WARM:
+      return "SMART_COMMENT_TONE_WARM";
+    case SmartCommentTone.SMART_COMMENT_TONE_STRONG:
+      return "SMART_COMMENT_TONE_STRONG";
+    case SmartCommentTone.SMART_COMMENT_TONE_GROWTH:
+      return "SMART_COMMENT_TONE_GROWTH";
+    case SmartCommentTone.SMART_COMMENT_TONE_DIRECT:
+      return "SMART_COMMENT_TONE_DIRECT";
+    case SmartCommentTone.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function smartCommentToneToNumber(object: SmartCommentTone): number {
+  switch (object) {
+    case SmartCommentTone.SMART_COMMENT_TONE_NORMAL:
+      return 1;
+    case SmartCommentTone.SMART_COMMENT_TONE_WARM:
+      return 2;
+    case SmartCommentTone.SMART_COMMENT_TONE_STRONG:
+      return 3;
+    case SmartCommentTone.SMART_COMMENT_TONE_GROWTH:
+      return 4;
+    case SmartCommentTone.SMART_COMMENT_TONE_DIRECT:
+      return 5;
+    case SmartCommentTone.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SmartCommentNextStep {
+  SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE = "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE",
+  SMART_COMMENT_NEXT_STEP_GENTLE = "SMART_COMMENT_NEXT_STEP_GENTLE",
+  SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN = "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN",
+  SMART_COMMENT_NEXT_STEP_NONE = "SMART_COMMENT_NEXT_STEP_NONE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function smartCommentNextStepFromJSON(object: any): SmartCommentNextStep {
+  switch (object) {
+    case 1:
+    case "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE":
+      return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE;
+    case 2:
+    case "SMART_COMMENT_NEXT_STEP_GENTLE":
+      return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_GENTLE;
+    case 3:
+    case "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN":
+      return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN;
+    case 4:
+    case "SMART_COMMENT_NEXT_STEP_NONE":
+      return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_NONE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SmartCommentNextStep.UNRECOGNIZED;
+  }
+}
+
+export function smartCommentNextStepToJSON(object: SmartCommentNextStep): string {
+  switch (object) {
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE:
+      return "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE";
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_GENTLE:
+      return "SMART_COMMENT_NEXT_STEP_GENTLE";
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN:
+      return "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN";
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_NONE:
+      return "SMART_COMMENT_NEXT_STEP_NONE";
+    case SmartCommentNextStep.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function smartCommentNextStepToNumber(object: SmartCommentNextStep): number {
+  switch (object) {
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE:
+      return 1;
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_GENTLE:
+      return 2;
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN:
+      return 3;
+    case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_NONE:
+      return 4;
+    case SmartCommentNextStep.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SmartCommentLength {
+  SMART_COMMENT_LENGTH_SHORT = "SMART_COMMENT_LENGTH_SHORT",
+  SMART_COMMENT_LENGTH_STANDARD = "SMART_COMMENT_LENGTH_STANDARD",
+  SMART_COMMENT_LENGTH_FULL = "SMART_COMMENT_LENGTH_FULL",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function smartCommentLengthFromJSON(object: any): SmartCommentLength {
+  switch (object) {
+    case 1:
+    case "SMART_COMMENT_LENGTH_SHORT":
+      return SmartCommentLength.SMART_COMMENT_LENGTH_SHORT;
+    case 2:
+    case "SMART_COMMENT_LENGTH_STANDARD":
+      return SmartCommentLength.SMART_COMMENT_LENGTH_STANDARD;
+    case 3:
+    case "SMART_COMMENT_LENGTH_FULL":
+      return SmartCommentLength.SMART_COMMENT_LENGTH_FULL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SmartCommentLength.UNRECOGNIZED;
+  }
+}
+
+export function smartCommentLengthToJSON(object: SmartCommentLength): string {
+  switch (object) {
+    case SmartCommentLength.SMART_COMMENT_LENGTH_SHORT:
+      return "SMART_COMMENT_LENGTH_SHORT";
+    case SmartCommentLength.SMART_COMMENT_LENGTH_STANDARD:
+      return "SMART_COMMENT_LENGTH_STANDARD";
+    case SmartCommentLength.SMART_COMMENT_LENGTH_FULL:
+      return "SMART_COMMENT_LENGTH_FULL";
+    case SmartCommentLength.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function smartCommentLengthToNumber(object: SmartCommentLength): number {
+  switch (object) {
+    case SmartCommentLength.SMART_COMMENT_LENGTH_SHORT:
+      return 1;
+    case SmartCommentLength.SMART_COMMENT_LENGTH_STANDARD:
+      return 2;
+    case SmartCommentLength.SMART_COMMENT_LENGTH_FULL:
+      return 3;
+    case SmartCommentLength.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface GetCourseReportEntriesRequest {
   context: RequestContext | undefined;
   course_id: ObjectId | undefined;
@@ -398,10 +626,20 @@ export interface GetReportEntryMedianResponse {
   report_entry_median: ReportEntryMedian | undefined;
 }
 
+export interface GenerateReportEntrySmartCommentInput {
+  course_learning_summary?: string | undefined;
+  teacher_notes?: string | undefined;
+  structure?: SmartCommentStructure | undefined;
+  tone?: SmartCommentTone | undefined;
+  next_step?: SmartCommentNextStep | undefined;
+  length?: SmartCommentLength | undefined;
+}
+
 export interface GenerateReportEntrySmartCommentRequest {
   context: RequestContext | undefined;
   report_entry_id: ObjectId | undefined;
   optional_prompt?: string | undefined;
+  smart_comment_input?: GenerateReportEntrySmartCommentInput | undefined;
 }
 
 export interface GenerateReportEntrySmartCommentResponse {
@@ -3634,8 +3872,155 @@ export const GetReportEntryMedianResponse: MessageFns<GetReportEntryMedianRespon
   },
 };
 
+function createBaseGenerateReportEntrySmartCommentInput(): GenerateReportEntrySmartCommentInput {
+  return {
+    course_learning_summary: undefined,
+    teacher_notes: undefined,
+    structure: undefined,
+    tone: undefined,
+    next_step: undefined,
+    length: undefined,
+  };
+}
+
+export const GenerateReportEntrySmartCommentInput: MessageFns<GenerateReportEntrySmartCommentInput> = {
+  encode(message: GenerateReportEntrySmartCommentInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.course_learning_summary !== undefined) {
+      writer.uint32(10).string(message.course_learning_summary);
+    }
+    if (message.teacher_notes !== undefined) {
+      writer.uint32(18).string(message.teacher_notes);
+    }
+    if (message.structure !== undefined) {
+      writer.uint32(24).int32(smartCommentStructureToNumber(message.structure));
+    }
+    if (message.tone !== undefined) {
+      writer.uint32(32).int32(smartCommentToneToNumber(message.tone));
+    }
+    if (message.next_step !== undefined) {
+      writer.uint32(40).int32(smartCommentNextStepToNumber(message.next_step));
+    }
+    if (message.length !== undefined) {
+      writer.uint32(48).int32(smartCommentLengthToNumber(message.length));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenerateReportEntrySmartCommentInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateReportEntrySmartCommentInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.course_learning_summary = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teacher_notes = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.structure = smartCommentStructureFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.tone = smartCommentToneFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.next_step = smartCommentNextStepFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.length = smartCommentLengthFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateReportEntrySmartCommentInput {
+    return {
+      course_learning_summary: isSet(object.courseLearningSummary)
+        ? globalThis.String(object.courseLearningSummary)
+        : undefined,
+      teacher_notes: isSet(object.teacherNotes) ? globalThis.String(object.teacherNotes) : undefined,
+      structure: isSet(object.structure) ? smartCommentStructureFromJSON(object.structure) : undefined,
+      tone: isSet(object.tone) ? smartCommentToneFromJSON(object.tone) : undefined,
+      next_step: isSet(object.nextStep) ? smartCommentNextStepFromJSON(object.nextStep) : undefined,
+      length: isSet(object.length) ? smartCommentLengthFromJSON(object.length) : undefined,
+    };
+  },
+
+  toJSON(message: GenerateReportEntrySmartCommentInput): unknown {
+    const obj: any = {};
+    if (message.course_learning_summary !== undefined) {
+      obj.courseLearningSummary = message.course_learning_summary;
+    }
+    if (message.teacher_notes !== undefined) {
+      obj.teacherNotes = message.teacher_notes;
+    }
+    if (message.structure !== undefined) {
+      obj.structure = smartCommentStructureToJSON(message.structure);
+    }
+    if (message.tone !== undefined) {
+      obj.tone = smartCommentToneToJSON(message.tone);
+    }
+    if (message.next_step !== undefined) {
+      obj.nextStep = smartCommentNextStepToJSON(message.next_step);
+    }
+    if (message.length !== undefined) {
+      obj.length = smartCommentLengthToJSON(message.length);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GenerateReportEntrySmartCommentInput>, I>>(
+    base?: I,
+  ): GenerateReportEntrySmartCommentInput {
+    return GenerateReportEntrySmartCommentInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GenerateReportEntrySmartCommentInput>, I>>(
+    object: I,
+  ): GenerateReportEntrySmartCommentInput {
+    const message = createBaseGenerateReportEntrySmartCommentInput();
+    message.course_learning_summary = object.course_learning_summary ?? undefined;
+    message.teacher_notes = object.teacher_notes ?? undefined;
+    message.structure = object.structure ?? undefined;
+    message.tone = object.tone ?? undefined;
+    message.next_step = object.next_step ?? undefined;
+    message.length = object.length ?? undefined;
+    return message;
+  },
+};
+
 function createBaseGenerateReportEntrySmartCommentRequest(): GenerateReportEntrySmartCommentRequest {
-  return { context: undefined, report_entry_id: undefined, optional_prompt: undefined };
+  return { context: undefined, report_entry_id: undefined, optional_prompt: undefined, smart_comment_input: undefined };
 }
 
 export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEntrySmartCommentRequest> = {
@@ -3648,6 +4033,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     }
     if (message.optional_prompt !== undefined) {
       writer.uint32(26).string(message.optional_prompt);
+    }
+    if (message.smart_comment_input !== undefined) {
+      GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -3680,6 +4068,13 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
 
           message.optional_prompt = reader.string();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.smart_comment_input = GenerateReportEntrySmartCommentInput.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3694,6 +4089,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       report_entry_id: isSet(object.reportEntryId) ? ObjectId.fromJSON(object.reportEntryId) : undefined,
       optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : undefined,
+      smart_comment_input: isSet(object.smartCommentInput)
+        ? GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput)
+        : undefined,
     };
   },
 
@@ -3707,6 +4105,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     }
     if (message.optional_prompt !== undefined) {
       obj.optionalPrompt = message.optional_prompt;
+    }
+    if (message.smart_comment_input !== undefined) {
+      obj.smartCommentInput = GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
     }
     return obj;
   },
@@ -3727,6 +4128,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
       ? ObjectId.fromPartial(object.report_entry_id)
       : undefined;
     message.optional_prompt = object.optional_prompt ?? undefined;
+    message.smart_comment_input = (object.smart_comment_input !== undefined && object.smart_comment_input !== null)
+      ? GenerateReportEntrySmartCommentInput.fromPartial(object.smart_comment_input)
+      : undefined;
     return message;
   },
 };

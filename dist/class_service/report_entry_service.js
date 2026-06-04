@@ -5,13 +5,25 @@
 //   protoc               unknown
 // source: class_service/report_entry_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetTeacherReportCardHomepageResponse = exports.TeacherReportCardHomepageRow = exports.GetTeacherReportCardHomepageRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.SendOwnerTeacherReportCardNudgeRequest = exports.GetCourseReportEntriesRequest = exports.ReportPublishClassType = exports.TeacherReportCardHomepageUrgency = exports.protobufPackage = void 0;
+exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GenerateReportEntrySmartCommentInput = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetTeacherReportCardHomepageResponse = exports.TeacherReportCardHomepageRow = exports.GetTeacherReportCardHomepageRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.SendOwnerTeacherReportCardNudgeRequest = exports.GetCourseReportEntriesRequest = exports.SmartCommentLength = exports.SmartCommentNextStep = exports.SmartCommentTone = exports.SmartCommentStructure = exports.ReportPublishClassType = exports.TeacherReportCardHomepageUrgency = exports.protobufPackage = void 0;
 exports.teacherReportCardHomepageUrgencyFromJSON = teacherReportCardHomepageUrgencyFromJSON;
 exports.teacherReportCardHomepageUrgencyToJSON = teacherReportCardHomepageUrgencyToJSON;
 exports.teacherReportCardHomepageUrgencyToNumber = teacherReportCardHomepageUrgencyToNumber;
 exports.reportPublishClassTypeFromJSON = reportPublishClassTypeFromJSON;
 exports.reportPublishClassTypeToJSON = reportPublishClassTypeToJSON;
 exports.reportPublishClassTypeToNumber = reportPublishClassTypeToNumber;
+exports.smartCommentStructureFromJSON = smartCommentStructureFromJSON;
+exports.smartCommentStructureToJSON = smartCommentStructureToJSON;
+exports.smartCommentStructureToNumber = smartCommentStructureToNumber;
+exports.smartCommentToneFromJSON = smartCommentToneFromJSON;
+exports.smartCommentToneToJSON = smartCommentToneToJSON;
+exports.smartCommentToneToNumber = smartCommentToneToNumber;
+exports.smartCommentNextStepFromJSON = smartCommentNextStepFromJSON;
+exports.smartCommentNextStepToJSON = smartCommentNextStepToJSON;
+exports.smartCommentNextStepToNumber = smartCommentNextStepToNumber;
+exports.smartCommentLengthFromJSON = smartCommentLengthFromJSON;
+exports.smartCommentLengthToJSON = smartCommentLengthToJSON;
+exports.smartCommentLengthToNumber = smartCommentLengthToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -111,6 +123,222 @@ function reportPublishClassTypeToNumber(object) {
         case ReportPublishClassType.REPORT_PUBLISH_CLASS_TYPE_HOMEROOM:
             return 1;
         case ReportPublishClassType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SmartCommentStructure;
+(function (SmartCommentStructure) {
+    SmartCommentStructure["SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST"] = "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST";
+    SmartCommentStructure["SMART_COMMENT_STRUCTURE_STUDENT_FIRST"] = "SMART_COMMENT_STRUCTURE_STUDENT_FIRST";
+    SmartCommentStructure["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SmartCommentStructure || (exports.SmartCommentStructure = SmartCommentStructure = {}));
+function smartCommentStructureFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST":
+            return SmartCommentStructure.SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST;
+        case 2:
+        case "SMART_COMMENT_STRUCTURE_STUDENT_FIRST":
+            return SmartCommentStructure.SMART_COMMENT_STRUCTURE_STUDENT_FIRST;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SmartCommentStructure.UNRECOGNIZED;
+    }
+}
+function smartCommentStructureToJSON(object) {
+    switch (object) {
+        case SmartCommentStructure.SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST:
+            return "SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST";
+        case SmartCommentStructure.SMART_COMMENT_STRUCTURE_STUDENT_FIRST:
+            return "SMART_COMMENT_STRUCTURE_STUDENT_FIRST";
+        case SmartCommentStructure.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function smartCommentStructureToNumber(object) {
+    switch (object) {
+        case SmartCommentStructure.SMART_COMMENT_STRUCTURE_CURRICULUM_FIRST:
+            return 1;
+        case SmartCommentStructure.SMART_COMMENT_STRUCTURE_STUDENT_FIRST:
+            return 2;
+        case SmartCommentStructure.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SmartCommentTone;
+(function (SmartCommentTone) {
+    SmartCommentTone["SMART_COMMENT_TONE_NORMAL"] = "SMART_COMMENT_TONE_NORMAL";
+    SmartCommentTone["SMART_COMMENT_TONE_WARM"] = "SMART_COMMENT_TONE_WARM";
+    SmartCommentTone["SMART_COMMENT_TONE_STRONG"] = "SMART_COMMENT_TONE_STRONG";
+    SmartCommentTone["SMART_COMMENT_TONE_GROWTH"] = "SMART_COMMENT_TONE_GROWTH";
+    SmartCommentTone["SMART_COMMENT_TONE_DIRECT"] = "SMART_COMMENT_TONE_DIRECT";
+    SmartCommentTone["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SmartCommentTone || (exports.SmartCommentTone = SmartCommentTone = {}));
+function smartCommentToneFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SMART_COMMENT_TONE_NORMAL":
+            return SmartCommentTone.SMART_COMMENT_TONE_NORMAL;
+        case 2:
+        case "SMART_COMMENT_TONE_WARM":
+            return SmartCommentTone.SMART_COMMENT_TONE_WARM;
+        case 3:
+        case "SMART_COMMENT_TONE_STRONG":
+            return SmartCommentTone.SMART_COMMENT_TONE_STRONG;
+        case 4:
+        case "SMART_COMMENT_TONE_GROWTH":
+            return SmartCommentTone.SMART_COMMENT_TONE_GROWTH;
+        case 5:
+        case "SMART_COMMENT_TONE_DIRECT":
+            return SmartCommentTone.SMART_COMMENT_TONE_DIRECT;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SmartCommentTone.UNRECOGNIZED;
+    }
+}
+function smartCommentToneToJSON(object) {
+    switch (object) {
+        case SmartCommentTone.SMART_COMMENT_TONE_NORMAL:
+            return "SMART_COMMENT_TONE_NORMAL";
+        case SmartCommentTone.SMART_COMMENT_TONE_WARM:
+            return "SMART_COMMENT_TONE_WARM";
+        case SmartCommentTone.SMART_COMMENT_TONE_STRONG:
+            return "SMART_COMMENT_TONE_STRONG";
+        case SmartCommentTone.SMART_COMMENT_TONE_GROWTH:
+            return "SMART_COMMENT_TONE_GROWTH";
+        case SmartCommentTone.SMART_COMMENT_TONE_DIRECT:
+            return "SMART_COMMENT_TONE_DIRECT";
+        case SmartCommentTone.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function smartCommentToneToNumber(object) {
+    switch (object) {
+        case SmartCommentTone.SMART_COMMENT_TONE_NORMAL:
+            return 1;
+        case SmartCommentTone.SMART_COMMENT_TONE_WARM:
+            return 2;
+        case SmartCommentTone.SMART_COMMENT_TONE_STRONG:
+            return 3;
+        case SmartCommentTone.SMART_COMMENT_TONE_GROWTH:
+            return 4;
+        case SmartCommentTone.SMART_COMMENT_TONE_DIRECT:
+            return 5;
+        case SmartCommentTone.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SmartCommentNextStep;
+(function (SmartCommentNextStep) {
+    SmartCommentNextStep["SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE"] = "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE";
+    SmartCommentNextStep["SMART_COMMENT_NEXT_STEP_GENTLE"] = "SMART_COMMENT_NEXT_STEP_GENTLE";
+    SmartCommentNextStep["SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN"] = "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN";
+    SmartCommentNextStep["SMART_COMMENT_NEXT_STEP_NONE"] = "SMART_COMMENT_NEXT_STEP_NONE";
+    SmartCommentNextStep["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SmartCommentNextStep || (exports.SmartCommentNextStep = SmartCommentNextStep = {}));
+function smartCommentNextStepFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE":
+            return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE;
+        case 2:
+        case "SMART_COMMENT_NEXT_STEP_GENTLE":
+            return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_GENTLE;
+        case 3:
+        case "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN":
+            return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN;
+        case 4:
+        case "SMART_COMMENT_NEXT_STEP_NONE":
+            return SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_NONE;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SmartCommentNextStep.UNRECOGNIZED;
+    }
+}
+function smartCommentNextStepToJSON(object) {
+    switch (object) {
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE:
+            return "SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE";
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_GENTLE:
+            return "SMART_COMMENT_NEXT_STEP_GENTLE";
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN:
+            return "SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN";
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_NONE:
+            return "SMART_COMMENT_NEXT_STEP_NONE";
+        case SmartCommentNextStep.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function smartCommentNextStepToNumber(object) {
+    switch (object) {
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_SPECIFIC_PRACTICE:
+            return 1;
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_GENTLE:
+            return 2;
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_DIRECT_CONCERN:
+            return 3;
+        case SmartCommentNextStep.SMART_COMMENT_NEXT_STEP_NONE:
+            return 4;
+        case SmartCommentNextStep.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SmartCommentLength;
+(function (SmartCommentLength) {
+    SmartCommentLength["SMART_COMMENT_LENGTH_SHORT"] = "SMART_COMMENT_LENGTH_SHORT";
+    SmartCommentLength["SMART_COMMENT_LENGTH_STANDARD"] = "SMART_COMMENT_LENGTH_STANDARD";
+    SmartCommentLength["SMART_COMMENT_LENGTH_FULL"] = "SMART_COMMENT_LENGTH_FULL";
+    SmartCommentLength["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SmartCommentLength || (exports.SmartCommentLength = SmartCommentLength = {}));
+function smartCommentLengthFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SMART_COMMENT_LENGTH_SHORT":
+            return SmartCommentLength.SMART_COMMENT_LENGTH_SHORT;
+        case 2:
+        case "SMART_COMMENT_LENGTH_STANDARD":
+            return SmartCommentLength.SMART_COMMENT_LENGTH_STANDARD;
+        case 3:
+        case "SMART_COMMENT_LENGTH_FULL":
+            return SmartCommentLength.SMART_COMMENT_LENGTH_FULL;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SmartCommentLength.UNRECOGNIZED;
+    }
+}
+function smartCommentLengthToJSON(object) {
+    switch (object) {
+        case SmartCommentLength.SMART_COMMENT_LENGTH_SHORT:
+            return "SMART_COMMENT_LENGTH_SHORT";
+        case SmartCommentLength.SMART_COMMENT_LENGTH_STANDARD:
+            return "SMART_COMMENT_LENGTH_STANDARD";
+        case SmartCommentLength.SMART_COMMENT_LENGTH_FULL:
+            return "SMART_COMMENT_LENGTH_FULL";
+        case SmartCommentLength.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function smartCommentLengthToNumber(object) {
+    switch (object) {
+        case SmartCommentLength.SMART_COMMENT_LENGTH_SHORT:
+            return 1;
+        case SmartCommentLength.SMART_COMMENT_LENGTH_STANDARD:
+            return 2;
+        case SmartCommentLength.SMART_COMMENT_LENGTH_FULL:
+            return 3;
+        case SmartCommentLength.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -2882,8 +3110,139 @@ exports.GetReportEntryMedianResponse = {
         return message;
     },
 };
+function createBaseGenerateReportEntrySmartCommentInput() {
+    return {
+        course_learning_summary: undefined,
+        teacher_notes: undefined,
+        structure: undefined,
+        tone: undefined,
+        next_step: undefined,
+        length: undefined,
+    };
+}
+exports.GenerateReportEntrySmartCommentInput = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.course_learning_summary !== undefined) {
+            writer.uint32(10).string(message.course_learning_summary);
+        }
+        if (message.teacher_notes !== undefined) {
+            writer.uint32(18).string(message.teacher_notes);
+        }
+        if (message.structure !== undefined) {
+            writer.uint32(24).int32(smartCommentStructureToNumber(message.structure));
+        }
+        if (message.tone !== undefined) {
+            writer.uint32(32).int32(smartCommentToneToNumber(message.tone));
+        }
+        if (message.next_step !== undefined) {
+            writer.uint32(40).int32(smartCommentNextStepToNumber(message.next_step));
+        }
+        if (message.length !== undefined) {
+            writer.uint32(48).int32(smartCommentLengthToNumber(message.length));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGenerateReportEntrySmartCommentInput();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.course_learning_summary = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.teacher_notes = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.structure = smartCommentStructureFromJSON(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.tone = smartCommentToneFromJSON(reader.int32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.next_step = smartCommentNextStepFromJSON(reader.int32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.length = smartCommentLengthFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            course_learning_summary: isSet(object.courseLearningSummary)
+                ? globalThis.String(object.courseLearningSummary)
+                : undefined,
+            teacher_notes: isSet(object.teacherNotes) ? globalThis.String(object.teacherNotes) : undefined,
+            structure: isSet(object.structure) ? smartCommentStructureFromJSON(object.structure) : undefined,
+            tone: isSet(object.tone) ? smartCommentToneFromJSON(object.tone) : undefined,
+            next_step: isSet(object.nextStep) ? smartCommentNextStepFromJSON(object.nextStep) : undefined,
+            length: isSet(object.length) ? smartCommentLengthFromJSON(object.length) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.course_learning_summary !== undefined) {
+            obj.courseLearningSummary = message.course_learning_summary;
+        }
+        if (message.teacher_notes !== undefined) {
+            obj.teacherNotes = message.teacher_notes;
+        }
+        if (message.structure !== undefined) {
+            obj.structure = smartCommentStructureToJSON(message.structure);
+        }
+        if (message.tone !== undefined) {
+            obj.tone = smartCommentToneToJSON(message.tone);
+        }
+        if (message.next_step !== undefined) {
+            obj.nextStep = smartCommentNextStepToJSON(message.next_step);
+        }
+        if (message.length !== undefined) {
+            obj.length = smartCommentLengthToJSON(message.length);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GenerateReportEntrySmartCommentInput.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGenerateReportEntrySmartCommentInput();
+        message.course_learning_summary = object.course_learning_summary ?? undefined;
+        message.teacher_notes = object.teacher_notes ?? undefined;
+        message.structure = object.structure ?? undefined;
+        message.tone = object.tone ?? undefined;
+        message.next_step = object.next_step ?? undefined;
+        message.length = object.length ?? undefined;
+        return message;
+    },
+};
 function createBaseGenerateReportEntrySmartCommentRequest() {
-    return { context: undefined, report_entry_id: undefined, optional_prompt: undefined };
+    return { context: undefined, report_entry_id: undefined, optional_prompt: undefined, smart_comment_input: undefined };
 }
 exports.GenerateReportEntrySmartCommentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2895,6 +3254,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
         }
         if (message.optional_prompt !== undefined) {
             writer.uint32(26).string(message.optional_prompt);
+        }
+        if (message.smart_comment_input !== undefined) {
+            exports.GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -2923,6 +3285,12 @@ exports.GenerateReportEntrySmartCommentRequest = {
                     }
                     message.optional_prompt = reader.string();
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.smart_comment_input = exports.GenerateReportEntrySmartCommentInput.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2936,6 +3304,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
             optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : undefined,
+            smart_comment_input: isSet(object.smartCommentInput)
+                ? exports.GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -2948,6 +3319,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
         }
         if (message.optional_prompt !== undefined) {
             obj.optionalPrompt = message.optional_prompt;
+        }
+        if (message.smart_comment_input !== undefined) {
+            obj.smartCommentInput = exports.GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
         }
         return obj;
     },
@@ -2963,6 +3337,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
             ? object_id_1.ObjectId.fromPartial(object.report_entry_id)
             : undefined;
         message.optional_prompt = object.optional_prompt ?? undefined;
+        message.smart_comment_input = (object.smart_comment_input !== undefined && object.smart_comment_input !== null)
+            ? exports.GenerateReportEntrySmartCommentInput.fromPartial(object.smart_comment_input)
+            : undefined;
         return message;
     },
 };
