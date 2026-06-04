@@ -3242,7 +3242,12 @@ exports.GenerateReportEntrySmartCommentInput = {
     },
 };
 function createBaseGenerateReportEntrySmartCommentRequest() {
-    return { context: undefined, report_entry_id: undefined, optional_prompt: undefined, smart_comment_input: undefined };
+    return {
+        context: undefined,
+        report_entry_id: undefined,
+        optional_prompt: undefined,
+        smart_comment_input: createBaseGenerateReportEntrySmartCommentInput(),
+    };
 }
 exports.GenerateReportEntrySmartCommentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -3255,15 +3260,14 @@ exports.GenerateReportEntrySmartCommentRequest = {
         if (message.optional_prompt !== undefined) {
             writer.uint32(26).string(message.optional_prompt);
         }
-        if (message.smart_comment_input !== undefined) {
-            exports.GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
-        }
+        exports.GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseGenerateReportEntrySmartCommentRequest();
+        let hasSmartCommentInput = false;
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -3290,6 +3294,7 @@ exports.GenerateReportEntrySmartCommentRequest = {
                         break;
                     }
                     message.smart_comment_input = exports.GenerateReportEntrySmartCommentInput.decode(reader, reader.uint32());
+                    hasSmartCommentInput = true;
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -3297,16 +3302,20 @@ exports.GenerateReportEntrySmartCommentRequest = {
             }
             reader.skip(tag & 7);
         }
+        if (!hasSmartCommentInput) {
+            throw new Error("Missing required field smart_comment_input");
+        }
         return message;
     },
     fromJSON(object) {
+        if (!isSet(object.smartCommentInput)) {
+            throw new Error("Missing required field smartCommentInput");
+        }
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             report_entry_id: isSet(object.reportEntryId) ? object_id_1.ObjectId.fromJSON(object.reportEntryId) : undefined,
             optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : undefined,
-            smart_comment_input: isSet(object.smartCommentInput)
-                ? exports.GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput)
-                : undefined,
+            smart_comment_input: exports.GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput),
         };
     },
     toJSON(message) {
@@ -3320,9 +3329,7 @@ exports.GenerateReportEntrySmartCommentRequest = {
         if (message.optional_prompt !== undefined) {
             obj.optionalPrompt = message.optional_prompt;
         }
-        if (message.smart_comment_input !== undefined) {
-            obj.smartCommentInput = exports.GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
-        }
+        obj.smartCommentInput = exports.GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
         return obj;
     },
     create(base) {
@@ -3339,7 +3346,7 @@ exports.GenerateReportEntrySmartCommentRequest = {
         message.optional_prompt = object.optional_prompt ?? undefined;
         message.smart_comment_input = (object.smart_comment_input !== undefined && object.smart_comment_input !== null)
             ? exports.GenerateReportEntrySmartCommentInput.fromPartial(object.smart_comment_input)
-            : undefined;
+            : createBaseGenerateReportEntrySmartCommentInput();
         return message;
     },
 };

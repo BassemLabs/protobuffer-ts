@@ -639,7 +639,7 @@ export interface GenerateReportEntrySmartCommentRequest {
   context: RequestContext | undefined;
   report_entry_id: ObjectId | undefined;
   optional_prompt?: string | undefined;
-  smart_comment_input?: GenerateReportEntrySmartCommentInput | undefined;
+  smart_comment_input: GenerateReportEntrySmartCommentInput;
 }
 
 export interface GenerateReportEntrySmartCommentResponse {
@@ -4020,7 +4020,12 @@ export const GenerateReportEntrySmartCommentInput: MessageFns<GenerateReportEntr
 };
 
 function createBaseGenerateReportEntrySmartCommentRequest(): GenerateReportEntrySmartCommentRequest {
-  return { context: undefined, report_entry_id: undefined, optional_prompt: undefined, smart_comment_input: undefined };
+  return {
+    context: undefined,
+    report_entry_id: undefined,
+    optional_prompt: undefined,
+    smart_comment_input: createBaseGenerateReportEntrySmartCommentInput(),
+  };
 }
 
 export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEntrySmartCommentRequest> = {
@@ -4034,9 +4039,7 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     if (message.optional_prompt !== undefined) {
       writer.uint32(26).string(message.optional_prompt);
     }
-    if (message.smart_comment_input !== undefined) {
-      GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
-    }
+    GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
     return writer;
   },
 
@@ -4044,6 +4047,7 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenerateReportEntrySmartCommentRequest();
+    let hasSmartCommentInput = false;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -4074,6 +4078,7 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
           }
 
           message.smart_comment_input = GenerateReportEntrySmartCommentInput.decode(reader, reader.uint32());
+          hasSmartCommentInput = true;
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4081,17 +4086,22 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
       }
       reader.skip(tag & 7);
     }
+    if (!hasSmartCommentInput) {
+      throw new Error("Missing required field smart_comment_input");
+    }
     return message;
   },
 
   fromJSON(object: any): GenerateReportEntrySmartCommentRequest {
+    if (!isSet(object.smartCommentInput)) {
+      throw new Error("Missing required field smartCommentInput");
+    }
+
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       report_entry_id: isSet(object.reportEntryId) ? ObjectId.fromJSON(object.reportEntryId) : undefined,
       optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : undefined,
-      smart_comment_input: isSet(object.smartCommentInput)
-        ? GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput)
-        : undefined,
+      smart_comment_input: GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput),
     };
   },
 
@@ -4106,9 +4116,7 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     if (message.optional_prompt !== undefined) {
       obj.optionalPrompt = message.optional_prompt;
     }
-    if (message.smart_comment_input !== undefined) {
-      obj.smartCommentInput = GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
-    }
+    obj.smartCommentInput = GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
     return obj;
   },
 
@@ -4130,7 +4138,7 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     message.optional_prompt = object.optional_prompt ?? undefined;
     message.smart_comment_input = (object.smart_comment_input !== undefined && object.smart_comment_input !== null)
       ? GenerateReportEntrySmartCommentInput.fromPartial(object.smart_comment_input)
-      : undefined;
+      : createBaseGenerateReportEntrySmartCommentInput();
     return message;
   },
 };
