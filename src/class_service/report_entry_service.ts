@@ -639,7 +639,7 @@ export interface GenerateReportEntrySmartCommentRequest {
   context: RequestContext | undefined;
   report_entry_id: ObjectId | undefined;
   optional_prompt?: string | undefined;
-  smart_comment_input?: GenerateReportEntrySmartCommentInput | undefined;
+  smart_comment_input: GenerateReportEntrySmartCommentInput | undefined;
 }
 
 export interface GenerateReportEntrySmartCommentResponse {
