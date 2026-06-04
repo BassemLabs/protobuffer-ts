@@ -3443,6 +3443,7 @@ function createBaseGetStudentsListWithFiltersRequest() {
         status: undefined,
         school_year: undefined,
         show_all: undefined,
+        new_students_this_year: undefined,
     };
 }
 exports.GetStudentsListWithFiltersRequest = {
@@ -3475,6 +3476,9 @@ exports.GetStudentsListWithFiltersRequest = {
         }
         if (message.show_all !== undefined) {
             writer.uint32(72).bool(message.show_all);
+        }
+        if (message.new_students_this_year !== undefined) {
+            writer.uint32(80).bool(message.new_students_this_year);
         }
         return writer;
     },
@@ -3546,6 +3550,12 @@ exports.GetStudentsListWithFiltersRequest = {
                     }
                     message.show_all = reader.bool();
                     continue;
+                case 10:
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.new_students_this_year = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3565,6 +3575,9 @@ exports.GetStudentsListWithFiltersRequest = {
             status: isSet(object.status) ? (0, student_1.studentStatusFromJSON)(object.status) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             show_all: isSet(object.showAll) ? globalThis.Boolean(object.showAll) : undefined,
+            new_students_this_year: isSet(object.newStudentsThisYear)
+                ? globalThis.Boolean(object.newStudentsThisYear)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -3596,6 +3609,9 @@ exports.GetStudentsListWithFiltersRequest = {
         if (message.show_all !== undefined) {
             obj.showAll = message.show_all;
         }
+        if (message.new_students_this_year !== undefined) {
+            obj.newStudentsThisYear = message.new_students_this_year;
+        }
         return obj;
     },
     create(base) {
@@ -3616,6 +3632,7 @@ exports.GetStudentsListWithFiltersRequest = {
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.show_all = object.show_all ?? undefined;
+        message.new_students_this_year = object.new_students_this_year ?? undefined;
         return message;
     },
 };

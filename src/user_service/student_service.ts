@@ -314,7 +314,11 @@ export interface GetStudentsListWithFiltersRequest {
     | ObjectId
     | undefined;
   /** only show students that teachers have a course or homeroom with (defaults to false) */
-  show_all?: boolean | undefined;
+  show_all?:
+    | boolean
+    | undefined;
+  /** only students whose enrolled record is unique to the selected school year */
+  new_students_this_year?: boolean | undefined;
 }
 
 export interface GetStudentsListWithFiltersResponse {
@@ -4431,6 +4435,7 @@ function createBaseGetStudentsListWithFiltersRequest(): GetStudentsListWithFilte
     status: undefined,
     school_year: undefined,
     show_all: undefined,
+    new_students_this_year: undefined,
   };
 }
 
@@ -4464,6 +4469,9 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     }
     if (message.show_all !== undefined) {
       writer.uint32(72).bool(message.show_all);
+    }
+    if (message.new_students_this_year !== undefined) {
+      writer.uint32(80).bool(message.new_students_this_year);
     }
     return writer;
   },
@@ -4548,6 +4556,13 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
 
           message.show_all = reader.bool();
           continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.new_students_this_year = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4568,6 +4583,9 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       show_all: isSet(object.showAll) ? globalThis.Boolean(object.showAll) : undefined,
+      new_students_this_year: isSet(object.newStudentsThisYear)
+        ? globalThis.Boolean(object.newStudentsThisYear)
+        : undefined,
     };
   },
 
@@ -4600,6 +4618,9 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
     if (message.show_all !== undefined) {
       obj.showAll = message.show_all;
     }
+    if (message.new_students_this_year !== undefined) {
+      obj.newStudentsThisYear = message.new_students_this_year;
+    }
     return obj;
   },
 
@@ -4625,6 +4646,7 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.show_all = object.show_all ?? undefined;
+    message.new_students_this_year = object.new_students_this_year ?? undefined;
     return message;
   },
 };

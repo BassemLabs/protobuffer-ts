@@ -234,6 +234,8 @@ export interface GetStudentsListWithFiltersRequest {
     school_year?: ObjectId | undefined;
     /** only show students that teachers have a course or homeroom with (defaults to false) */
     show_all?: boolean | undefined;
+    /** only students whose enrolled record is unique to the selected school year */
+    new_students_this_year?: boolean | undefined;
 }
 export interface GetStudentsListWithFiltersResponse {
     students: SchoolYearStudent[];
