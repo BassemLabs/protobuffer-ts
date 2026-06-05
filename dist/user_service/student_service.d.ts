@@ -50,6 +50,10 @@ export interface UpdateStudentGradeRequest {
     school_year_id: ObjectId | undefined;
     grade?: StudentGrade | undefined;
 }
+export interface DeleteStudentRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+}
 export interface MoveAdmissionYearRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
@@ -356,6 +360,7 @@ export declare const CreateStudentRequest: MessageFns<CreateStudentRequest>;
 export declare const AddExistingStudentToWaitlistRequest: MessageFns<AddExistingStudentToWaitlistRequest>;
 export declare const UpdateStudentProfileRequest: MessageFns<UpdateStudentProfileRequest>;
 export declare const UpdateStudentGradeRequest: MessageFns<UpdateStudentGradeRequest>;
+export declare const DeleteStudentRequest: MessageFns<DeleteStudentRequest>;
 export declare const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest>;
 export declare const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessageRequest>;
 export declare const SuggestStudentEnrollUsernameRequest: MessageFns<SuggestStudentEnrollUsernameRequest>;

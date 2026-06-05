@@ -76,6 +76,16 @@ export interface StudentHasNoUnpaidInvoicesResponse {
   has_no_unpaid_invoices?: boolean | undefined;
 }
 
+export interface ValidateStudentDeletionFinancialEligibilityRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+}
+
+export interface DeleteStudentWaitlistInvoicesRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+}
+
 export interface ListInvoicesRequest {
   context: RequestContext | undefined;
   filter: InvoiceFilter | undefined;
@@ -1025,6 +1035,175 @@ export const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidIn
   ): StudentHasNoUnpaidInvoicesResponse {
     const message = createBaseStudentHasNoUnpaidInvoicesResponse();
     message.has_no_unpaid_invoices = object.has_no_unpaid_invoices ?? undefined;
+    return message;
+  },
+};
+
+function createBaseValidateStudentDeletionFinancialEligibilityRequest(): ValidateStudentDeletionFinancialEligibilityRequest {
+  return { context: undefined, student_id: undefined };
+}
+
+export const ValidateStudentDeletionFinancialEligibilityRequest: MessageFns<
+  ValidateStudentDeletionFinancialEligibilityRequest
+> = {
+  encode(
+    message: ValidateStudentDeletionFinancialEligibilityRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidateStudentDeletionFinancialEligibilityRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateStudentDeletionFinancialEligibilityRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateStudentDeletionFinancialEligibilityRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+    };
+  },
+
+  toJSON(message: ValidateStudentDeletionFinancialEligibilityRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ValidateStudentDeletionFinancialEligibilityRequest>, I>>(
+    base?: I,
+  ): ValidateStudentDeletionFinancialEligibilityRequest {
+    return ValidateStudentDeletionFinancialEligibilityRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ValidateStudentDeletionFinancialEligibilityRequest>, I>>(
+    object: I,
+  ): ValidateStudentDeletionFinancialEligibilityRequest {
+    const message = createBaseValidateStudentDeletionFinancialEligibilityRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteStudentWaitlistInvoicesRequest(): DeleteStudentWaitlistInvoicesRequest {
+  return { context: undefined, student_id: undefined };
+}
+
+export const DeleteStudentWaitlistInvoicesRequest: MessageFns<DeleteStudentWaitlistInvoicesRequest> = {
+  encode(message: DeleteStudentWaitlistInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteStudentWaitlistInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteStudentWaitlistInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteStudentWaitlistInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteStudentWaitlistInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteStudentWaitlistInvoicesRequest>, I>>(
+    base?: I,
+  ): DeleteStudentWaitlistInvoicesRequest {
+    return DeleteStudentWaitlistInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteStudentWaitlistInvoicesRequest>, I>>(
+    object: I,
+  ): DeleteStudentWaitlistInvoicesRequest {
+    const message = createBaseDeleteStudentWaitlistInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
     return message;
   },
 };

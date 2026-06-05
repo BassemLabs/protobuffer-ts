@@ -18,6 +18,10 @@ export interface GetCourseRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
 }
+export interface ValidateStudentDeletionAcademicEligibilityRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+}
 export interface ListCoursesRequest {
     context: RequestContext | undefined;
     per_page?: number | undefined;
@@ -199,6 +203,7 @@ export interface HomeroomCloneRequest {
     gclass_create?: boolean | undefined;
 }
 export declare const GetCourseRequest: MessageFns<GetCourseRequest>;
+export declare const ValidateStudentDeletionAcademicEligibilityRequest: MessageFns<ValidateStudentDeletionAcademicEligibilityRequest>;
 export declare const ListCoursesRequest: MessageFns<ListCoursesRequest>;
 export declare const CourseResponse: MessageFns<CourseResponse>;
 export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;

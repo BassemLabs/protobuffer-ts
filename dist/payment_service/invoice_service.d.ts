@@ -41,6 +41,14 @@ export interface StudentHasNoUnpaidInvoicesRequest {
 export interface StudentHasNoUnpaidInvoicesResponse {
     has_no_unpaid_invoices?: boolean | undefined;
 }
+export interface ValidateStudentDeletionFinancialEligibilityRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+}
+export interface DeleteStudentWaitlistInvoicesRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+}
 export interface ListInvoicesRequest {
     context: RequestContext | undefined;
     filter: InvoiceFilter | undefined;
@@ -258,6 +266,8 @@ export declare const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesReque
 export declare const GetParentInvoicesRequest: MessageFns<GetParentInvoicesRequest>;
 export declare const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoUnpaidInvoicesRequest>;
 export declare const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidInvoicesResponse>;
+export declare const ValidateStudentDeletionFinancialEligibilityRequest: MessageFns<ValidateStudentDeletionFinancialEligibilityRequest>;
+export declare const DeleteStudentWaitlistInvoicesRequest: MessageFns<DeleteStudentWaitlistInvoicesRequest>;
 export declare const ListInvoicesRequest: MessageFns<ListInvoicesRequest>;
 export declare const AggregationResponse: MessageFns<AggregationResponse>;
 export declare const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResponse>;

@@ -80,6 +80,11 @@ export interface UpdateStudentGradeRequest {
   grade?: StudentGrade | undefined;
 }
 
+export interface DeleteStudentRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+}
+
 export interface MoveAdmissionYearRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
@@ -1198,6 +1203,84 @@ export const UpdateStudentGradeRequest: MessageFns<UpdateStudentGradeRequest> = 
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     message.grade = object.grade ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteStudentRequest(): DeleteStudentRequest {
+  return { context: undefined, student_id: undefined };
+}
+
+export const DeleteStudentRequest: MessageFns<DeleteStudentRequest> = {
+  encode(message: DeleteStudentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteStudentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteStudentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteStudentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteStudentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteStudentRequest>, I>>(base?: I): DeleteStudentRequest {
+    return DeleteStudentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteStudentRequest>, I>>(object: I): DeleteStudentRequest {
+    const message = createBaseDeleteStudentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
     return message;
   },
 };

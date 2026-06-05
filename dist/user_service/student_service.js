@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: user_service/student_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetCourseOrHomeroomStudentsRequest = exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.ExecuteStartSchoolYearPhase3SendEmailsResponse = exports.ExecuteStartSchoolYearPhase3SendEmailsRequest = exports.ExecuteStartSchoolYearPhase1ActivateAccountsResponse = exports.ExecuteStartSchoolYearPhase1ActivateAccountsRequest = exports.ExecuteReregistrationPhase3SendEmailsResponse = exports.ExecuteReregistrationPhase3SendEmailsRequest = exports.ExecuteReregistrationPhase2ResetCustomFieldsResponse = exports.ExecuteReregistrationPhase2ResetCustomFieldsRequest = exports.ExecuteReregistrationPhase1SetupStudentsResponse = exports.ExecuteReregistrationPhase1SetupStudentsRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.ValidateStudentUsernameResponse = exports.ValidateStudentUsernameRequest = exports.SuggestStudentEnrollUsernameResponse = exports.SuggestStudentEnrollUsernameRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.AddExistingStudentToWaitlistRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
-exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.GetNewStudentsThisYearCountResponse = exports.GetNewStudentsThisYearCountRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = void 0;
+exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.ExecuteStartSchoolYearPhase3SendEmailsResponse = exports.ExecuteStartSchoolYearPhase3SendEmailsRequest = exports.ExecuteStartSchoolYearPhase1ActivateAccountsResponse = exports.ExecuteStartSchoolYearPhase1ActivateAccountsRequest = exports.ExecuteReregistrationPhase3SendEmailsResponse = exports.ExecuteReregistrationPhase3SendEmailsRequest = exports.ExecuteReregistrationPhase2ResetCustomFieldsResponse = exports.ExecuteReregistrationPhase2ResetCustomFieldsRequest = exports.ExecuteReregistrationPhase1SetupStudentsResponse = exports.ExecuteReregistrationPhase1SetupStudentsRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.ValidateStudentUsernameResponse = exports.ValidateStudentUsernameRequest = exports.SuggestStudentEnrollUsernameResponse = exports.SuggestStudentEnrollUsernameRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.DeleteStudentRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.AddExistingStudentToWaitlistRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
+exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.GetNewStudentsThisYearCountResponse = exports.GetNewStudentsThisYearCountRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -682,6 +682,76 @@ exports.UpdateStudentGradeRequest = {
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
         message.grade = object.grade ?? undefined;
+        return message;
+    },
+};
+function createBaseDeleteStudentRequest() {
+    return { context: undefined, student_id: undefined };
+}
+exports.DeleteStudentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeleteStudentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeleteStudentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeleteStudentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
         return message;
     },
 };
