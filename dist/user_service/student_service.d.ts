@@ -59,6 +59,7 @@ export interface MoveAdmissionYearRequest {
     student_id: ObjectId | undefined;
     school_year: ObjectId | undefined;
     message?: string | undefined;
+    send_parent_email?: boolean | undefined;
 }
 export interface EnrollStudentWithMessageRequest {
     context: RequestContext | undefined;
@@ -66,6 +67,7 @@ export interface EnrollStudentWithMessageRequest {
     enrollment_message?: string | undefined;
     school_year: ObjectId | undefined;
     username?: string | undefined;
+    send_parent_email?: boolean | undefined;
 }
 export interface SuggestStudentEnrollUsernameRequest {
     context: RequestContext | undefined;
@@ -89,6 +91,7 @@ export interface WithdrawStudentWithMessageRequest {
     student_id: ObjectId | undefined;
     withdraw_message?: string | undefined;
     school_year: ObjectId | undefined;
+    send_parent_email?: boolean | undefined;
 }
 export interface ChangeStudentPasswordRequest {
     context: RequestContext | undefined;
@@ -104,12 +107,14 @@ export interface RejectStudentRequest {
     student_id: ObjectId | undefined;
     rejection_message?: string | undefined;
     school_year: ObjectId | undefined;
+    send_parent_email?: boolean | undefined;
 }
 export interface ApproveStudentRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
     approval_message?: string | undefined;
     school_year: ObjectId | undefined;
+    send_parent_email?: boolean | undefined;
 }
 export interface ToInterviewRequest {
     context: RequestContext | undefined;
@@ -117,6 +122,7 @@ export interface ToInterviewRequest {
     interview_message?: string | undefined;
     interview_date: Date | undefined;
     school_year: ObjectId | undefined;
+    send_parent_email?: boolean | undefined;
 }
 export interface RequireFieldsChangesFromParentsRequest {
     context: RequestContext | undefined;

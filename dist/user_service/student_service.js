@@ -756,7 +756,13 @@ exports.DeleteStudentRequest = {
     },
 };
 function createBaseMoveAdmissionYearRequest() {
-    return { context: undefined, student_id: undefined, school_year: undefined, message: undefined };
+    return {
+        context: undefined,
+        student_id: undefined,
+        school_year: undefined,
+        message: undefined,
+        send_parent_email: undefined,
+    };
 }
 exports.MoveAdmissionYearRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -771,6 +777,9 @@ exports.MoveAdmissionYearRequest = {
         }
         if (message.message !== undefined) {
             writer.uint32(34).string(message.message);
+        }
+        if (message.send_parent_email !== undefined) {
+            writer.uint32(40).bool(message.send_parent_email);
         }
         return writer;
     },
@@ -805,6 +814,12 @@ exports.MoveAdmissionYearRequest = {
                     }
                     message.message = reader.string();
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.send_parent_email = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -819,6 +834,7 @@ exports.MoveAdmissionYearRequest = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+            send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
         };
     },
     toJSON(message) {
@@ -834,6 +850,9 @@ exports.MoveAdmissionYearRequest = {
         }
         if (message.message !== undefined) {
             obj.message = message.message;
+        }
+        if (message.send_parent_email !== undefined) {
+            obj.sendParentEmail = message.send_parent_email;
         }
         return obj;
     },
@@ -852,6 +871,7 @@ exports.MoveAdmissionYearRequest = {
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.message = object.message ?? undefined;
+        message.send_parent_email = object.send_parent_email ?? undefined;
         return message;
     },
 };
@@ -862,6 +882,7 @@ function createBaseEnrollStudentWithMessageRequest() {
         enrollment_message: undefined,
         school_year: undefined,
         username: undefined,
+        send_parent_email: undefined,
     };
 }
 exports.EnrollStudentWithMessageRequest = {
@@ -880,6 +901,9 @@ exports.EnrollStudentWithMessageRequest = {
         }
         if (message.username !== undefined) {
             writer.uint32(42).string(message.username);
+        }
+        if (message.send_parent_email !== undefined) {
+            writer.uint32(48).bool(message.send_parent_email);
         }
         return writer;
     },
@@ -920,6 +944,12 @@ exports.EnrollStudentWithMessageRequest = {
                     }
                     message.username = reader.string();
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.send_parent_email = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -935,6 +965,7 @@ exports.EnrollStudentWithMessageRequest = {
             enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+            send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
         };
     },
     toJSON(message) {
@@ -954,6 +985,9 @@ exports.EnrollStudentWithMessageRequest = {
         if (message.username !== undefined) {
             obj.username = message.username;
         }
+        if (message.send_parent_email !== undefined) {
+            obj.sendParentEmail = message.send_parent_email;
+        }
         return obj;
     },
     create(base) {
@@ -972,6 +1006,7 @@ exports.EnrollStudentWithMessageRequest = {
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.username = object.username ?? undefined;
+        message.send_parent_email = object.send_parent_email ?? undefined;
         return message;
     },
 };
@@ -1260,7 +1295,13 @@ exports.ValidateStudentUsernameResponse = {
     },
 };
 function createBaseWithdrawStudentWithMessageRequest() {
-    return { context: undefined, student_id: undefined, withdraw_message: undefined, school_year: undefined };
+    return {
+        context: undefined,
+        student_id: undefined,
+        withdraw_message: undefined,
+        school_year: undefined,
+        send_parent_email: undefined,
+    };
 }
 exports.WithdrawStudentWithMessageRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1275,6 +1316,9 @@ exports.WithdrawStudentWithMessageRequest = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+        }
+        if (message.send_parent_email !== undefined) {
+            writer.uint32(40).bool(message.send_parent_email);
         }
         return writer;
     },
@@ -1309,6 +1353,12 @@ exports.WithdrawStudentWithMessageRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.send_parent_email = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1323,6 +1373,7 @@ exports.WithdrawStudentWithMessageRequest = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             withdraw_message: isSet(object.withdrawMessage) ? globalThis.String(object.withdrawMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
         };
     },
     toJSON(message) {
@@ -1338,6 +1389,9 @@ exports.WithdrawStudentWithMessageRequest = {
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.send_parent_email !== undefined) {
+            obj.sendParentEmail = message.send_parent_email;
         }
         return obj;
     },
@@ -1356,6 +1410,7 @@ exports.WithdrawStudentWithMessageRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.send_parent_email = object.send_parent_email ?? undefined;
         return message;
     },
 };
@@ -1497,7 +1552,13 @@ exports.ChangeStudentPasswordResponse = {
     },
 };
 function createBaseRejectStudentRequest() {
-    return { context: undefined, student_id: undefined, rejection_message: undefined, school_year: undefined };
+    return {
+        context: undefined,
+        student_id: undefined,
+        rejection_message: undefined,
+        school_year: undefined,
+        send_parent_email: undefined,
+    };
 }
 exports.RejectStudentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1512,6 +1573,9 @@ exports.RejectStudentRequest = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+        }
+        if (message.send_parent_email !== undefined) {
+            writer.uint32(40).bool(message.send_parent_email);
         }
         return writer;
     },
@@ -1546,6 +1610,12 @@ exports.RejectStudentRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.send_parent_email = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1560,6 +1630,7 @@ exports.RejectStudentRequest = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
         };
     },
     toJSON(message) {
@@ -1575,6 +1646,9 @@ exports.RejectStudentRequest = {
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.send_parent_email !== undefined) {
+            obj.sendParentEmail = message.send_parent_email;
         }
         return obj;
     },
@@ -1593,11 +1667,18 @@ exports.RejectStudentRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.send_parent_email = object.send_parent_email ?? undefined;
         return message;
     },
 };
 function createBaseApproveStudentRequest() {
-    return { context: undefined, student_id: undefined, approval_message: undefined, school_year: undefined };
+    return {
+        context: undefined,
+        student_id: undefined,
+        approval_message: undefined,
+        school_year: undefined,
+        send_parent_email: undefined,
+    };
 }
 exports.ApproveStudentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1612,6 +1693,9 @@ exports.ApproveStudentRequest = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+        }
+        if (message.send_parent_email !== undefined) {
+            writer.uint32(40).bool(message.send_parent_email);
         }
         return writer;
     },
@@ -1646,6 +1730,12 @@ exports.ApproveStudentRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.send_parent_email = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1660,6 +1750,7 @@ exports.ApproveStudentRequest = {
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
             approval_message: isSet(object.approvalMessage) ? globalThis.String(object.approvalMessage) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
         };
     },
     toJSON(message) {
@@ -1675,6 +1766,9 @@ exports.ApproveStudentRequest = {
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.send_parent_email !== undefined) {
+            obj.sendParentEmail = message.send_parent_email;
         }
         return obj;
     },
@@ -1693,6 +1787,7 @@ exports.ApproveStudentRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.send_parent_email = object.send_parent_email ?? undefined;
         return message;
     },
 };
@@ -1703,6 +1798,7 @@ function createBaseToInterviewRequest() {
         interview_message: undefined,
         interview_date: undefined,
         school_year: undefined,
+        send_parent_email: undefined,
     };
 }
 exports.ToInterviewRequest = {
@@ -1721,6 +1817,9 @@ exports.ToInterviewRequest = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(42).fork()).join();
+        }
+        if (message.send_parent_email !== undefined) {
+            writer.uint32(48).bool(message.send_parent_email);
         }
         return writer;
     },
@@ -1761,6 +1860,12 @@ exports.ToInterviewRequest = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.send_parent_email = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1776,6 +1881,7 @@ exports.ToInterviewRequest = {
             interview_message: isSet(object.interviewMessage) ? globalThis.String(object.interviewMessage) : undefined,
             interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
         };
     },
     toJSON(message) {
@@ -1795,6 +1901,9 @@ exports.ToInterviewRequest = {
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
+        if (message.send_parent_email !== undefined) {
+            obj.sendParentEmail = message.send_parent_email;
+        }
         return obj;
     },
     create(base) {
@@ -1813,6 +1922,7 @@ exports.ToInterviewRequest = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.send_parent_email = object.send_parent_email ?? undefined;
         return message;
     },
 };

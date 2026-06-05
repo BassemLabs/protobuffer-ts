@@ -90,6 +90,7 @@ export interface MoveAdmissionYearRequest {
   student_id: ObjectId | undefined;
   school_year: ObjectId | undefined;
   message?: string | undefined;
+  send_parent_email?: boolean | undefined;
 }
 
 export interface EnrollStudentWithMessageRequest {
@@ -98,6 +99,7 @@ export interface EnrollStudentWithMessageRequest {
   enrollment_message?: string | undefined;
   school_year: ObjectId | undefined;
   username?: string | undefined;
+  send_parent_email?: boolean | undefined;
 }
 
 export interface SuggestStudentEnrollUsernameRequest {
@@ -126,6 +128,7 @@ export interface WithdrawStudentWithMessageRequest {
   student_id: ObjectId | undefined;
   withdraw_message?: string | undefined;
   school_year: ObjectId | undefined;
+  send_parent_email?: boolean | undefined;
 }
 
 export interface ChangeStudentPasswordRequest {
@@ -144,6 +147,7 @@ export interface RejectStudentRequest {
   student_id: ObjectId | undefined;
   rejection_message?: string | undefined;
   school_year: ObjectId | undefined;
+  send_parent_email?: boolean | undefined;
 }
 
 export interface ApproveStudentRequest {
@@ -151,6 +155,7 @@ export interface ApproveStudentRequest {
   student_id: ObjectId | undefined;
   approval_message?: string | undefined;
   school_year: ObjectId | undefined;
+  send_parent_email?: boolean | undefined;
 }
 
 export interface ToInterviewRequest {
@@ -159,6 +164,7 @@ export interface ToInterviewRequest {
   interview_message?: string | undefined;
   interview_date: Date | undefined;
   school_year: ObjectId | undefined;
+  send_parent_email?: boolean | undefined;
 }
 
 export interface RequireFieldsChangesFromParentsRequest {
@@ -1286,7 +1292,13 @@ export const DeleteStudentRequest: MessageFns<DeleteStudentRequest> = {
 };
 
 function createBaseMoveAdmissionYearRequest(): MoveAdmissionYearRequest {
-  return { context: undefined, student_id: undefined, school_year: undefined, message: undefined };
+  return {
+    context: undefined,
+    student_id: undefined,
+    school_year: undefined,
+    message: undefined,
+    send_parent_email: undefined,
+  };
 }
 
 export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
@@ -1302,6 +1314,9 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
     }
     if (message.message !== undefined) {
       writer.uint32(34).string(message.message);
+    }
+    if (message.send_parent_email !== undefined) {
+      writer.uint32(40).bool(message.send_parent_email);
     }
     return writer;
   },
@@ -1341,6 +1356,13 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
 
           message.message = reader.string();
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.send_parent_email = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1356,6 +1378,7 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+      send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
     };
   },
 
@@ -1372,6 +1395,9 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
     }
     if (message.message !== undefined) {
       obj.message = message.message;
+    }
+    if (message.send_parent_email !== undefined) {
+      obj.sendParentEmail = message.send_parent_email;
     }
     return obj;
   },
@@ -1391,6 +1417,7 @@ export const MoveAdmissionYearRequest: MessageFns<MoveAdmissionYearRequest> = {
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.message = object.message ?? undefined;
+    message.send_parent_email = object.send_parent_email ?? undefined;
     return message;
   },
 };
@@ -1402,6 +1429,7 @@ function createBaseEnrollStudentWithMessageRequest(): EnrollStudentWithMessageRe
     enrollment_message: undefined,
     school_year: undefined,
     username: undefined,
+    send_parent_email: undefined,
   };
 }
 
@@ -1421,6 +1449,9 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
     }
     if (message.username !== undefined) {
       writer.uint32(42).string(message.username);
+    }
+    if (message.send_parent_email !== undefined) {
+      writer.uint32(48).bool(message.send_parent_email);
     }
     return writer;
   },
@@ -1467,6 +1498,13 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
 
           message.username = reader.string();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.send_parent_email = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1483,6 +1521,7 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
       enrollment_message: isSet(object.enrollmentMessage) ? globalThis.String(object.enrollmentMessage) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
     };
   },
 
@@ -1502,6 +1541,9 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
     }
     if (message.username !== undefined) {
       obj.username = message.username;
+    }
+    if (message.send_parent_email !== undefined) {
+      obj.sendParentEmail = message.send_parent_email;
     }
     return obj;
   },
@@ -1524,6 +1566,7 @@ export const EnrollStudentWithMessageRequest: MessageFns<EnrollStudentWithMessag
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.username = object.username ?? undefined;
+    message.send_parent_email = object.send_parent_email ?? undefined;
     return message;
   },
 };
@@ -1858,7 +1901,13 @@ export const ValidateStudentUsernameResponse: MessageFns<ValidateStudentUsername
 };
 
 function createBaseWithdrawStudentWithMessageRequest(): WithdrawStudentWithMessageRequest {
-  return { context: undefined, student_id: undefined, withdraw_message: undefined, school_year: undefined };
+  return {
+    context: undefined,
+    student_id: undefined,
+    withdraw_message: undefined,
+    school_year: undefined,
+    send_parent_email: undefined,
+  };
 }
 
 export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMessageRequest> = {
@@ -1874,6 +1923,9 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+    }
+    if (message.send_parent_email !== undefined) {
+      writer.uint32(40).bool(message.send_parent_email);
     }
     return writer;
   },
@@ -1913,6 +1965,13 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.send_parent_email = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1928,6 +1987,7 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       withdraw_message: isSet(object.withdrawMessage) ? globalThis.String(object.withdrawMessage) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
     };
   },
 
@@ -1944,6 +2004,9 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
     }
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.send_parent_email !== undefined) {
+      obj.sendParentEmail = message.send_parent_email;
     }
     return obj;
   },
@@ -1967,6 +2030,7 @@ export const WithdrawStudentWithMessageRequest: MessageFns<WithdrawStudentWithMe
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.send_parent_email = object.send_parent_email ?? undefined;
     return message;
   },
 };
@@ -2125,7 +2189,13 @@ export const ChangeStudentPasswordResponse: MessageFns<ChangeStudentPasswordResp
 };
 
 function createBaseRejectStudentRequest(): RejectStudentRequest {
-  return { context: undefined, student_id: undefined, rejection_message: undefined, school_year: undefined };
+  return {
+    context: undefined,
+    student_id: undefined,
+    rejection_message: undefined,
+    school_year: undefined,
+    send_parent_email: undefined,
+  };
 }
 
 export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
@@ -2141,6 +2211,9 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+    }
+    if (message.send_parent_email !== undefined) {
+      writer.uint32(40).bool(message.send_parent_email);
     }
     return writer;
   },
@@ -2180,6 +2253,13 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.send_parent_email = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2195,6 +2275,7 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
     };
   },
 
@@ -2211,6 +2292,9 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
     }
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.send_parent_email !== undefined) {
+      obj.sendParentEmail = message.send_parent_email;
     }
     return obj;
   },
@@ -2230,12 +2314,19 @@ export const RejectStudentRequest: MessageFns<RejectStudentRequest> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.send_parent_email = object.send_parent_email ?? undefined;
     return message;
   },
 };
 
 function createBaseApproveStudentRequest(): ApproveStudentRequest {
-  return { context: undefined, student_id: undefined, approval_message: undefined, school_year: undefined };
+  return {
+    context: undefined,
+    student_id: undefined,
+    approval_message: undefined,
+    school_year: undefined,
+    send_parent_email: undefined,
+  };
 }
 
 export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
@@ -2251,6 +2342,9 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+    }
+    if (message.send_parent_email !== undefined) {
+      writer.uint32(40).bool(message.send_parent_email);
     }
     return writer;
   },
@@ -2290,6 +2384,13 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.send_parent_email = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2305,6 +2406,7 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
       approval_message: isSet(object.approvalMessage) ? globalThis.String(object.approvalMessage) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
     };
   },
 
@@ -2321,6 +2423,9 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
     }
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.send_parent_email !== undefined) {
+      obj.sendParentEmail = message.send_parent_email;
     }
     return obj;
   },
@@ -2340,6 +2445,7 @@ export const ApproveStudentRequest: MessageFns<ApproveStudentRequest> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.send_parent_email = object.send_parent_email ?? undefined;
     return message;
   },
 };
@@ -2351,6 +2457,7 @@ function createBaseToInterviewRequest(): ToInterviewRequest {
     interview_message: undefined,
     interview_date: undefined,
     school_year: undefined,
+    send_parent_email: undefined,
   };
 }
 
@@ -2370,6 +2477,9 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(42).fork()).join();
+    }
+    if (message.send_parent_email !== undefined) {
+      writer.uint32(48).bool(message.send_parent_email);
     }
     return writer;
   },
@@ -2416,6 +2526,13 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.send_parent_email = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2432,6 +2549,7 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
       interview_message: isSet(object.interviewMessage) ? globalThis.String(object.interviewMessage) : undefined,
       interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      send_parent_email: isSet(object.sendParentEmail) ? globalThis.Boolean(object.sendParentEmail) : undefined,
     };
   },
 
@@ -2452,6 +2570,9 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
+    if (message.send_parent_email !== undefined) {
+      obj.sendParentEmail = message.send_parent_email;
+    }
     return obj;
   },
 
@@ -2471,6 +2592,7 @@ export const ToInterviewRequest: MessageFns<ToInterviewRequest> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.send_parent_email = object.send_parent_email ?? undefined;
     return message;
   },
 };
