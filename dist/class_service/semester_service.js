@@ -1141,28 +1141,12 @@ exports.GetStudentSemestersResponse = {
     },
 };
 function createBaseListSemestersRequest() {
-    return {
-        context: undefined,
-        per_page: undefined,
-        page: undefined,
-        name_search: undefined,
-        school_year: undefined,
-        archived: undefined,
-    };
+    return { context: undefined, school_year: undefined, archived: undefined };
 }
 exports.ListSemestersRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.per_page !== undefined) {
-            writer.uint32(16).uint64(message.per_page);
-        }
-        if (message.page !== undefined) {
-            writer.uint32(24).uint64(message.page);
-        }
-        if (message.name_search !== undefined) {
-            writer.uint32(34).string(message.name_search);
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(42).fork()).join();
@@ -1184,24 +1168,6 @@ exports.ListSemestersRequest = {
                         break;
                     }
                     message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 16) {
-                        break;
-                    }
-                    message.per_page = longToNumber(reader.uint64());
-                    continue;
-                case 3:
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.page = longToNumber(reader.uint64());
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.name_search = reader.string();
                     continue;
                 case 5:
                     if (tag !== 42) {
@@ -1226,9 +1192,6 @@ exports.ListSemestersRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
-            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
-            name_search: isSet(object.nameSearch) ? globalThis.String(object.nameSearch) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
         };
@@ -1237,15 +1200,6 @@ exports.ListSemestersRequest = {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.per_page !== undefined) {
-            obj.perPage = Math.round(message.per_page);
-        }
-        if (message.page !== undefined) {
-            obj.page = Math.round(message.page);
-        }
-        if (message.name_search !== undefined) {
-            obj.nameSearch = message.name_search;
         }
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
@@ -1263,9 +1217,6 @@ exports.ListSemestersRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
-        message.per_page = object.per_page ?? undefined;
-        message.page = object.page ?? undefined;
-        message.name_search = object.name_search ?? undefined;
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
@@ -1293,16 +1244,6 @@ function fromJsonTimestamp(o) {
     else {
         return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
     }
-}
-function longToNumber(int64) {
-    const num = globalThis.Number(int64.toString());
-    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-    }
-    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-    }
-    return num;
 }
 function isSet(value) {
     return value !== null && value !== undefined;

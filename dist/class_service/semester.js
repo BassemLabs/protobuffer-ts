@@ -564,7 +564,14 @@ exports.SemesterLearningSkill = {
     },
 };
 function createBaseListSemester() {
-    return { id: undefined, archived: undefined, name: undefined, start_date: undefined, end_date: undefined };
+    return {
+        id: undefined,
+        archived: undefined,
+        name: undefined,
+        start_date: undefined,
+        end_date: undefined,
+        campus_id: undefined,
+    };
 }
 exports.ListSemester = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -582,6 +589,9 @@ exports.ListSemester = {
         }
         if (message.end_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
+        }
+        if (message.campus_id !== undefined) {
+            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -622,6 +632,12 @@ exports.ListSemester = {
                     }
                     message.end_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -637,6 +653,7 @@ exports.ListSemester = {
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
         };
     },
     toJSON(message) {
@@ -656,6 +673,9 @@ exports.ListSemester = {
         if (message.end_date !== undefined) {
             obj.endDate = message.end_date.toISOString();
         }
+        if (message.campus_id !== undefined) {
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
+        }
         return obj;
     },
     create(base) {
@@ -668,6 +688,9 @@ exports.ListSemester = {
         message.name = object.name ?? undefined;
         message.start_date = object.start_date ?? undefined;
         message.end_date = object.end_date ?? undefined;
+        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.campus_id)
+            : undefined;
         return message;
     },
 };

@@ -47,6 +47,7 @@ export interface ListSemester {
     name?: string | undefined;
     start_date: Date | undefined;
     end_date: Date | undefined;
+    campus_id: ObjectId | undefined;
 }
 export interface SemesterList {
     semesters: ListSemester[];

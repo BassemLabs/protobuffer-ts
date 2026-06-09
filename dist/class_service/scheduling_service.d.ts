@@ -1,20 +1,24 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
-export declare const protobufPackage = "class_service";
-export interface AbstractCourse {
-    id: ObjectId | undefined;
-    organization: ObjectId | undefined;
-    course_code?: string | undefined;
-    official_name?: string | undefined;
-    credit?: number | undefined;
-    mandatory?: boolean | undefined;
-    category_ids: ObjectId[];
-    can_delete?: boolean | undefined;
-    /** this field is only for subject courses */
-    grade?: StudentGrade | undefined;
+import { RequestContext } from "../utils/request_context";
+import { SchedulingPreparationStep } from "./scheduling";
+export declare const protobufPackage = "class_service.scheduling_service";
+export interface GetSchedulingPreparationRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
 }
-export declare const AbstractCourse: MessageFns<AbstractCourse>;
+export interface CreateSchedulingWorkspaceRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface CompleteSchedulingPreparationStepRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    step?: SchedulingPreparationStep | undefined;
+}
+export declare const GetSchedulingPreparationRequest: MessageFns<GetSchedulingPreparationRequest>;
+export declare const CreateSchedulingWorkspaceRequest: MessageFns<CreateSchedulingWorkspaceRequest>;
+export declare const CompleteSchedulingPreparationStepRequest: MessageFns<CompleteSchedulingPreparationStepRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -105,6 +105,7 @@ export interface ListSemester {
   name?: string | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
+  campus_id: ObjectId | undefined;
 }
 
 export interface SemesterList {
@@ -657,7 +658,14 @@ export const SemesterLearningSkill: MessageFns<SemesterLearningSkill> = {
 };
 
 function createBaseListSemester(): ListSemester {
-  return { id: undefined, archived: undefined, name: undefined, start_date: undefined, end_date: undefined };
+  return {
+    id: undefined,
+    archived: undefined,
+    name: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    campus_id: undefined,
+  };
 }
 
 export const ListSemester: MessageFns<ListSemester> = {
@@ -676,6 +684,9 @@ export const ListSemester: MessageFns<ListSemester> = {
     }
     if (message.end_date !== undefined) {
       Timestamp.encode(toTimestamp(message.end_date), writer.uint32(42).fork()).join();
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -722,6 +733,13 @@ export const ListSemester: MessageFns<ListSemester> = {
 
           message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -738,6 +756,7 @@ export const ListSemester: MessageFns<ListSemester> = {
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
     };
   },
 
@@ -758,6 +777,9 @@ export const ListSemester: MessageFns<ListSemester> = {
     if (message.end_date !== undefined) {
       obj.endDate = message.end_date.toISOString();
     }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
     return obj;
   },
 
@@ -771,6 +793,9 @@ export const ListSemester: MessageFns<ListSemester> = {
     message.name = object.name ?? undefined;
     message.start_date = object.start_date ?? undefined;
     message.end_date = object.end_date ?? undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
     return message;
   },
 };

@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractCourse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "class_service";
 function createBaseAbstractCourse() {
@@ -20,6 +21,7 @@ function createBaseAbstractCourse() {
         mandatory: undefined,
         category_ids: [],
         can_delete: undefined,
+        grade: undefined,
     };
 }
 exports.AbstractCourse = {
@@ -47,6 +49,9 @@ exports.AbstractCourse = {
         }
         if (message.can_delete !== undefined) {
             writer.uint32(64).bool(message.can_delete);
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(72).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -105,6 +110,12 @@ exports.AbstractCourse = {
                     }
                     message.can_delete = reader.bool();
                     continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -125,6 +136,7 @@ exports.AbstractCourse = {
                 ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
             can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
         };
     },
     toJSON(message) {
@@ -153,6 +165,9 @@ exports.AbstractCourse = {
         if (message.can_delete !== undefined) {
             obj.canDelete = message.can_delete;
         }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
         return obj;
     },
     create(base) {
@@ -170,6 +185,7 @@ exports.AbstractCourse = {
         message.mandatory = object.mandatory ?? undefined;
         message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.can_delete = object.can_delete ?? undefined;
+        message.grade = object.grade ?? undefined;
         return message;
     },
 };

@@ -78,9 +78,6 @@ export interface GetStudentSemestersResponse {
 }
 export interface ListSemestersRequest {
     context: RequestContext | undefined;
-    per_page?: number | undefined;
-    page?: number | undefined;
-    name_search?: string | undefined;
     school_year: ObjectId | undefined;
     archived?: boolean | undefined;
 }

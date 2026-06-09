@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { AbstractCategory } from "./abstract_category";
@@ -34,7 +35,12 @@ export interface ListAbstractCoursesRequest {
   context: RequestContext | undefined;
   per_page?: number | undefined;
   page?: number | undefined;
-  search?: string | undefined;
+  search?:
+    | string
+    | undefined;
+  /** true -> subject, false -> course */
+  has_grade?: boolean | undefined;
+  grade?: StudentGrade | undefined;
 }
 
 export interface ListAbstractCoursesResponse {
@@ -93,6 +99,7 @@ export interface CreateAbstractCourseRequest {
   credit?: number | undefined;
   mandatory?: boolean | undefined;
   category_ids: ObjectId[];
+  grade?: StudentGrade | undefined;
 }
 
 export interface UpdateAbstractCourseRequest {
@@ -103,6 +110,7 @@ export interface UpdateAbstractCourseRequest {
   credit?: number | undefined;
   mandatory?: boolean | undefined;
   category_ids: ObjectId[];
+  grade?: StudentGrade | undefined;
 }
 
 export interface DeleteAbstractCourseRequest {
@@ -364,7 +372,14 @@ export const ListAbstractCategoryGroupsResponse: MessageFns<ListAbstractCategory
 };
 
 function createBaseListAbstractCoursesRequest(): ListAbstractCoursesRequest {
-  return { context: undefined, per_page: undefined, page: undefined, search: undefined };
+  return {
+    context: undefined,
+    per_page: undefined,
+    page: undefined,
+    search: undefined,
+    has_grade: undefined,
+    grade: undefined,
+  };
 }
 
 export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> = {
@@ -380,6 +395,12 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
     }
     if (message.search !== undefined) {
       writer.uint32(34).string(message.search);
+    }
+    if (message.has_grade !== undefined) {
+      writer.uint32(40).bool(message.has_grade);
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(48).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -419,6 +440,20 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
 
           message.search = reader.string();
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.has_grade = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -434,6 +469,8 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
       per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
       page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
       search: isSet(object.search) ? globalThis.String(object.search) : undefined,
+      has_grade: isSet(object.hasGrade) ? globalThis.Boolean(object.hasGrade) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
     };
   },
 
@@ -451,6 +488,12 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
     if (message.search !== undefined) {
       obj.search = message.search;
     }
+    if (message.has_grade !== undefined) {
+      obj.hasGrade = message.has_grade;
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
     return obj;
   },
 
@@ -465,6 +508,8 @@ export const ListAbstractCoursesRequest: MessageFns<ListAbstractCoursesRequest> 
     message.per_page = object.per_page ?? undefined;
     message.page = object.page ?? undefined;
     message.search = object.search ?? undefined;
+    message.has_grade = object.has_grade ?? undefined;
+    message.grade = object.grade ?? undefined;
     return message;
   },
 };
@@ -1267,6 +1312,7 @@ function createBaseCreateAbstractCourseRequest(): CreateAbstractCourseRequest {
     credit: undefined,
     mandatory: undefined,
     category_ids: [],
+    grade: undefined,
   };
 }
 
@@ -1289,6 +1335,9 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     }
     for (const v of message.category_ids) {
       ObjectId.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(56).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -1342,6 +1391,13 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
 
           message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1361,6 +1417,7 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
     };
   },
 
@@ -1384,6 +1441,9 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     if (message.category_ids?.length) {
       obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
     }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
     return obj;
   },
 
@@ -1400,6 +1460,7 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     message.credit = object.credit ?? undefined;
     message.mandatory = object.mandatory ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.grade = object.grade ?? undefined;
     return message;
   },
 };
@@ -1413,6 +1474,7 @@ function createBaseUpdateAbstractCourseRequest(): UpdateAbstractCourseRequest {
     credit: undefined,
     mandatory: undefined,
     category_ids: [],
+    grade: undefined,
   };
 }
 
@@ -1438,6 +1500,9 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     }
     for (const v of message.category_ids) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(64).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -1498,6 +1563,13 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
 
           message.category_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1518,6 +1590,7 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
       category_ids: globalThis.Array.isArray(object?.categoryIds)
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
     };
   },
 
@@ -1544,6 +1617,9 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     if (message.category_ids?.length) {
       obj.categoryIds = message.category_ids.map((e) => ObjectId.toJSON(e));
     }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
     return obj;
   },
 
@@ -1563,6 +1639,7 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     message.credit = object.credit ?? undefined;
     message.mandatory = object.mandatory ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.grade = object.grade ?? undefined;
     return message;
   },
 };

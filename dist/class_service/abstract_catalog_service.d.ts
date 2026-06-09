@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { AbstractCategory } from "./abstract_category";
@@ -22,6 +23,9 @@ export interface ListAbstractCoursesRequest {
     per_page?: number | undefined;
     page?: number | undefined;
     search?: string | undefined;
+    /** true -> subject, false -> course */
+    has_grade?: boolean | undefined;
+    grade?: StudentGrade | undefined;
 }
 export interface ListAbstractCoursesResponse {
     abstract_courses: AbstractCourse[];
@@ -71,6 +75,7 @@ export interface CreateAbstractCourseRequest {
     credit?: number | undefined;
     mandatory?: boolean | undefined;
     category_ids: ObjectId[];
+    grade?: StudentGrade | undefined;
 }
 export interface UpdateAbstractCourseRequest {
     context: RequestContext | undefined;
@@ -80,6 +85,7 @@ export interface UpdateAbstractCourseRequest {
     credit?: number | undefined;
     mandatory?: boolean | undefined;
     category_ids: ObjectId[];
+    grade?: StudentGrade | undefined;
 }
 export interface DeleteAbstractCourseRequest {
     context: RequestContext | undefined;

@@ -25,7 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User_role = exports.Communication_service = exports.Processing_fees_service = exports.Tuition_invoice_service = exports.Tuition_application_service = exports.Invoice_service = exports.Tuition_service = exports.Invoice = exports.Tuition_invoice = exports.Organization_payment_plan_service = exports.Tuition = exports.Payment_service = exports.Tuition_application = exports.Organization_payment_plan = exports.Transaction = exports.Transaction_service = exports.Processing_fees = exports.Notification = exports.Object_id = exports.Phone_number = exports.Request_context = exports.Notification_type = exports.Staging_sync = exports.User_type = exports.Aws_file = exports.Onboarding_steps = exports.Onboarding_settings = exports.Kms_service = exports.Organization_owner_service = exports.Organization_invoice_settings = exports.Bassem_labs_staff_service = exports.Bassem_labs_staff = exports.Kms_key = exports.Announcement_service = exports.Username_policy = exports.Organization_profile_settings = exports.Username_policy_service = exports.Onboarding_settings_service = exports.Organization = exports.Campus_service = exports.Campus = exports.Organization_owner = exports.Organization_service = exports.Announcement = exports.Organization_profile_settings_service = exports.Timestamp = exports.Empty = exports.Dayofweek = exports.Invoice_to_charge = exports.Sample = void 0;
 exports.Evaluation_service = exports.Evaluation = exports.Course = exports.Report_card_export_service = exports.Ai_interaction_service = exports.Report_layout_service = exports.Transcript_service = exports.Course_service = exports.Report_layout = exports.Abstract_catalog_service = exports.Report_entry = exports.Comment_template = exports.Ai_interaction_record = exports.Report_entry_service = exports.Evaluation_entry = exports.Comment_template_service = exports.Attendance = exports.Abstract_course = exports.Homeroom_service = exports.Semester = exports.Abstract_category_group = exports.Test_service = exports.Test = exports.Communication = exports.Teacher_role_service = exports.Action_required_by_parents = exports.Parent = exports.Custom_fields_template = exports.Teacher = exports.Custom_field_entry = exports.Student_service = exports.Student_incident = exports.Custom_fields_template_service = exports.Email_template = exports.Resource_access_settings = exports.Teacher_service = exports.Email_template_service = exports.Parent_service = exports.Student = exports.Custom_field_service = exports.Required_actions_service = exports.Family_service = exports.Custom_field = exports.Provisioned_account_service = exports.Device_token_service = exports.Teacher_role = exports.Provisioned_account = exports.Family = exports.Device_token = exports.Student_incident_service = void 0;
-exports.Homeroom = exports.Mark_category = exports.Class_ref = exports.Abstract_category = exports.Lms_course = exports.Attendance_service = exports.Semester_service = void 0;
+exports.Scheduling_service = exports.Homeroom = exports.Mark_category = exports.Class_ref = exports.Abstract_category = exports.Lms_course = exports.Attendance_service = exports.Semester_service = exports.Scheduling = void 0;
 // Auto-generated index.ts
 const Sample = __importStar(require("./rabbitmq_schemas/sample"));
 exports.Sample = Sample;
@@ -227,6 +227,8 @@ const Evaluation = __importStar(require("./class_service/evaluation"));
 exports.Evaluation = Evaluation;
 const Evaluation_service = __importStar(require("./class_service/evaluation_service"));
 exports.Evaluation_service = Evaluation_service;
+const Scheduling = __importStar(require("./class_service/scheduling"));
+exports.Scheduling = Scheduling;
 const Semester_service = __importStar(require("./class_service/semester_service"));
 exports.Semester_service = Semester_service;
 const Attendance_service = __importStar(require("./class_service/attendance_service"));
@@ -241,3 +243,5 @@ const Mark_category = __importStar(require("./class_service/mark_category"));
 exports.Mark_category = Mark_category;
 const Homeroom = __importStar(require("./class_service/homeroom"));
 exports.Homeroom = Homeroom;
+const Scheduling_service = __importStar(require("./class_service/scheduling_service"));
+exports.Scheduling_service = Scheduling_service;

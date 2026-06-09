@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "class_service";
@@ -18,7 +19,11 @@ export interface AbstractCourse {
   credit?: number | undefined;
   mandatory?: boolean | undefined;
   category_ids: ObjectId[];
-  can_delete?: boolean | undefined;
+  can_delete?:
+    | boolean
+    | undefined;
+  /** this field is only for subject courses */
+  grade?: StudentGrade | undefined;
 }
 
 function createBaseAbstractCourse(): AbstractCourse {
@@ -31,6 +36,7 @@ function createBaseAbstractCourse(): AbstractCourse {
     mandatory: undefined,
     category_ids: [],
     can_delete: undefined,
+    grade: undefined,
   };
 }
 
@@ -59,6 +65,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     }
     if (message.can_delete !== undefined) {
       writer.uint32(64).bool(message.can_delete);
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(72).int32(studentGradeToNumber(message.grade));
     }
     return writer;
   },
@@ -126,6 +135,13 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
 
           message.can_delete = reader.bool();
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -147,6 +163,7 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
         ? object.categoryIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
       can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
     };
   },
 
@@ -176,6 +193,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     if (message.can_delete !== undefined) {
       obj.canDelete = message.can_delete;
     }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
     return obj;
   },
 
@@ -194,6 +214,7 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     message.mandatory = object.mandatory ?? undefined;
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.can_delete = object.can_delete ?? undefined;
+    message.grade = object.grade ?? undefined;
     return message;
   },
 };

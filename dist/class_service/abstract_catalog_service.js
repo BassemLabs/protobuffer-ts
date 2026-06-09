@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteAbstractCourseRequest = exports.UpdateAbstractCourseRequest = exports.CreateAbstractCourseRequest = exports.DeleteAbstractCategoryGroupRequest = exports.UpdateAbstractCategoryGroupRequest = exports.CreateAbstractCategoryGroupRequest = exports.DeleteAbstractCategoryRequest = exports.UpdateAbstractCategoryRequest = exports.CreateAbstractCategoryRequest = exports.GetAbstractCourseRequest = exports.ListAbstractCoursesResponse = exports.ListAbstractCoursesRequest = exports.ListAbstractCategoryGroupsResponse = exports.ListAbstractCategoryGroupsRequest = exports.ListAbstractCategoriesResponse = exports.ListAbstractCategoriesRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const abstract_category_1 = require("./abstract_category");
@@ -228,7 +229,14 @@ exports.ListAbstractCategoryGroupsResponse = {
     },
 };
 function createBaseListAbstractCoursesRequest() {
-    return { context: undefined, per_page: undefined, page: undefined, search: undefined };
+    return {
+        context: undefined,
+        per_page: undefined,
+        page: undefined,
+        search: undefined,
+        has_grade: undefined,
+        grade: undefined,
+    };
 }
 exports.ListAbstractCoursesRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -243,6 +251,12 @@ exports.ListAbstractCoursesRequest = {
         }
         if (message.search !== undefined) {
             writer.uint32(34).string(message.search);
+        }
+        if (message.has_grade !== undefined) {
+            writer.uint32(40).bool(message.has_grade);
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(48).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -277,6 +291,18 @@ exports.ListAbstractCoursesRequest = {
                     }
                     message.search = reader.string();
                     continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.has_grade = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -291,6 +317,8 @@ exports.ListAbstractCoursesRequest = {
             per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
             page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
             search: isSet(object.search) ? globalThis.String(object.search) : undefined,
+            has_grade: isSet(object.hasGrade) ? globalThis.Boolean(object.hasGrade) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
         };
     },
     toJSON(message) {
@@ -307,6 +335,12 @@ exports.ListAbstractCoursesRequest = {
         if (message.search !== undefined) {
             obj.search = message.search;
         }
+        if (message.has_grade !== undefined) {
+            obj.hasGrade = message.has_grade;
+        }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
         return obj;
     },
     create(base) {
@@ -320,6 +354,8 @@ exports.ListAbstractCoursesRequest = {
         message.per_page = object.per_page ?? undefined;
         message.page = object.page ?? undefined;
         message.search = object.search ?? undefined;
+        message.has_grade = object.has_grade ?? undefined;
+        message.grade = object.grade ?? undefined;
         return message;
     },
 };
@@ -1030,6 +1066,7 @@ function createBaseCreateAbstractCourseRequest() {
         credit: undefined,
         mandatory: undefined,
         category_ids: [],
+        grade: undefined,
     };
 }
 exports.CreateAbstractCourseRequest = {
@@ -1051,6 +1088,9 @@ exports.CreateAbstractCourseRequest = {
         }
         for (const v of message.category_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(56).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -1097,6 +1137,12 @@ exports.CreateAbstractCourseRequest = {
                     }
                     message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1115,6 +1161,7 @@ exports.CreateAbstractCourseRequest = {
             category_ids: globalThis.Array.isArray(object?.categoryIds)
                 ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
         };
     },
     toJSON(message) {
@@ -1137,6 +1184,9 @@ exports.CreateAbstractCourseRequest = {
         if (message.category_ids?.length) {
             obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
         return obj;
     },
     create(base) {
@@ -1152,6 +1202,7 @@ exports.CreateAbstractCourseRequest = {
         message.credit = object.credit ?? undefined;
         message.mandatory = object.mandatory ?? undefined;
         message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.grade = object.grade ?? undefined;
         return message;
     },
 };
@@ -1164,6 +1215,7 @@ function createBaseUpdateAbstractCourseRequest() {
         credit: undefined,
         mandatory: undefined,
         category_ids: [],
+        grade: undefined,
     };
 }
 exports.UpdateAbstractCourseRequest = {
@@ -1188,6 +1240,9 @@ exports.UpdateAbstractCourseRequest = {
         }
         for (const v of message.category_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(64).int32((0, student_1.studentGradeToNumber)(message.grade));
         }
         return writer;
     },
@@ -1240,6 +1295,12 @@ exports.UpdateAbstractCourseRequest = {
                     }
                     message.category_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1259,6 +1320,7 @@ exports.UpdateAbstractCourseRequest = {
             category_ids: globalThis.Array.isArray(object?.categoryIds)
                 ? object.categoryIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
         };
     },
     toJSON(message) {
@@ -1284,6 +1346,9 @@ exports.UpdateAbstractCourseRequest = {
         if (message.category_ids?.length) {
             obj.categoryIds = message.category_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
         return obj;
     },
     create(base) {
@@ -1302,6 +1367,7 @@ exports.UpdateAbstractCourseRequest = {
         message.credit = object.credit ?? undefined;
         message.mandatory = object.mandatory ?? undefined;
         message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.grade = object.grade ?? undefined;
         return message;
     },
 };
