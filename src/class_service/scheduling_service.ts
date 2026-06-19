@@ -6,13 +6,17 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
+  SchedulingPeriodDefinition,
   SchedulingPreparationStep,
   schedulingPreparationStepFromJSON,
   schedulingPreparationStepToJSON,
   schedulingPreparationStepToNumber,
+  SchedulingSemesterOptionGroup,
+  SchedulingTeacherAvailabilityWindow,
 } from "./scheduling";
 
 export const protobufPackage = "class_service.scheduling_service";
@@ -31,6 +35,84 @@ export interface CompleteSchedulingPreparationStepRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
   step?: SchedulingPreparationStep | undefined;
+}
+
+export interface GetSchedulingOfferedGradeSetupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface UpsertSchedulingOfferedGradeRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  campus_id: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+  semester_ids: ObjectId[];
+}
+
+export interface DeleteSchedulingOfferedGradeRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  campus_id: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+}
+
+export interface GetSchedulingPeriodTimeSetupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface CreateSchedulingPeriodTimeSetupTemplateRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  name?: string | undefined;
+  periods: SchedulingPeriodDefinition[];
+}
+
+export interface UpdateSchedulingPeriodTimeSetupTemplateRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  template_id: ObjectId | undefined;
+  name?: string | undefined;
+  periods: SchedulingPeriodDefinition[];
+}
+
+export interface AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
+  template_id: ObjectId | undefined;
+}
+
+export interface GetSchedulingTeacherSetupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface UpsertSchedulingTeacherProfileRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  teacher_id: ObjectId | undefined;
+  abstract_course_ids: ObjectId[];
+  /** When false, semester_ids is ignored and the teacher can teach in any semester. */
+  has_semester_restrictions?: boolean | undefined;
+  semester_ids: ObjectId[];
+  /** When false, availability_windows is ignored and the teacher is available full-time. */
+  has_time_availability_restrictions?: boolean | undefined;
+  availability_windows: SchedulingTeacherAvailabilityWindow[];
+}
+
+export interface GetSchedulingClassesSetupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface UpsertSchedulingHighSchoolCourseSetupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  abstract_course_id: ObjectId | undefined;
+  is_offered?: boolean | undefined;
+  semester_option_groups: SchedulingSemesterOptionGroup[];
 }
 
 function createBaseGetSchedulingPreparationRequest(): GetSchedulingPreparationRequest {
@@ -288,6 +370,1290 @@ export const CompleteSchedulingPreparationStepRequest: MessageFns<CompleteSchedu
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     message.step = object.step ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingOfferedGradeSetupRequest(): GetSchedulingOfferedGradeSetupRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetSchedulingOfferedGradeSetupRequest: MessageFns<GetSchedulingOfferedGradeSetupRequest> = {
+  encode(message: GetSchedulingOfferedGradeSetupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingOfferedGradeSetupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingOfferedGradeSetupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingOfferedGradeSetupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingOfferedGradeSetupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingOfferedGradeSetupRequest>, I>>(
+    base?: I,
+  ): GetSchedulingOfferedGradeSetupRequest {
+    return GetSchedulingOfferedGradeSetupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingOfferedGradeSetupRequest>, I>>(
+    object: I,
+  ): GetSchedulingOfferedGradeSetupRequest {
+    const message = createBaseGetSchedulingOfferedGradeSetupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpsertSchedulingOfferedGradeRequest(): UpsertSchedulingOfferedGradeRequest {
+  return { context: undefined, school_year_id: undefined, campus_id: undefined, grade: undefined, semester_ids: [] };
+}
+
+export const UpsertSchedulingOfferedGradeRequest: MessageFns<UpsertSchedulingOfferedGradeRequest> = {
+  encode(message: UpsertSchedulingOfferedGradeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    }
+    for (const v of message.semester_ids) {
+      ObjectId.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertSchedulingOfferedGradeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertSchedulingOfferedGradeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.semester_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpsertSchedulingOfferedGradeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      semester_ids: globalThis.Array.isArray(object?.semesterIds)
+        ? object.semesterIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpsertSchedulingOfferedGradeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.semester_ids?.length) {
+      obj.semesterIds = message.semester_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpsertSchedulingOfferedGradeRequest>, I>>(
+    base?: I,
+  ): UpsertSchedulingOfferedGradeRequest {
+    return UpsertSchedulingOfferedGradeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpsertSchedulingOfferedGradeRequest>, I>>(
+    object: I,
+  ): UpsertSchedulingOfferedGradeRequest {
+    const message = createBaseUpsertSchedulingOfferedGradeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
+    message.semester_ids = object.semester_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteSchedulingOfferedGradeRequest(): DeleteSchedulingOfferedGradeRequest {
+  return { context: undefined, school_year_id: undefined, campus_id: undefined, grade: undefined };
+}
+
+export const DeleteSchedulingOfferedGradeRequest: MessageFns<DeleteSchedulingOfferedGradeRequest> = {
+  encode(message: DeleteSchedulingOfferedGradeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteSchedulingOfferedGradeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteSchedulingOfferedGradeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteSchedulingOfferedGradeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteSchedulingOfferedGradeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteSchedulingOfferedGradeRequest>, I>>(
+    base?: I,
+  ): DeleteSchedulingOfferedGradeRequest {
+    return DeleteSchedulingOfferedGradeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteSchedulingOfferedGradeRequest>, I>>(
+    object: I,
+  ): DeleteSchedulingOfferedGradeRequest {
+    const message = createBaseDeleteSchedulingOfferedGradeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingPeriodTimeSetupRequest(): GetSchedulingPeriodTimeSetupRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetSchedulingPeriodTimeSetupRequest: MessageFns<GetSchedulingPeriodTimeSetupRequest> = {
+  encode(message: GetSchedulingPeriodTimeSetupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingPeriodTimeSetupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingPeriodTimeSetupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingPeriodTimeSetupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingPeriodTimeSetupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingPeriodTimeSetupRequest>, I>>(
+    base?: I,
+  ): GetSchedulingPeriodTimeSetupRequest {
+    return GetSchedulingPeriodTimeSetupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingPeriodTimeSetupRequest>, I>>(
+    object: I,
+  ): GetSchedulingPeriodTimeSetupRequest {
+    const message = createBaseGetSchedulingPeriodTimeSetupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateSchedulingPeriodTimeSetupTemplateRequest(): CreateSchedulingPeriodTimeSetupTemplateRequest {
+  return { context: undefined, school_year_id: undefined, name: undefined, periods: [] };
+}
+
+export const CreateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<
+  CreateSchedulingPeriodTimeSetupTemplateRequest
+> = {
+  encode(
+    message: CreateSchedulingPeriodTimeSetupTemplateRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    for (const v of message.periods) {
+      SchedulingPeriodDefinition.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateSchedulingPeriodTimeSetupTemplateRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSchedulingPeriodTimeSetupTemplateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.periods.push(SchedulingPeriodDefinition.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSchedulingPeriodTimeSetupTemplateRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      periods: globalThis.Array.isArray(object?.periods)
+        ? object.periods.map((e: any) => SchedulingPeriodDefinition.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateSchedulingPeriodTimeSetupTemplateRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.periods?.length) {
+      obj.periods = message.periods.map((e) => SchedulingPeriodDefinition.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    base?: I,
+  ): CreateSchedulingPeriodTimeSetupTemplateRequest {
+    return CreateSchedulingPeriodTimeSetupTemplateRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    object: I,
+  ): CreateSchedulingPeriodTimeSetupTemplateRequest {
+    const message = createBaseCreateSchedulingPeriodTimeSetupTemplateRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.name = object.name ?? undefined;
+    message.periods = object.periods?.map((e) => SchedulingPeriodDefinition.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateSchedulingPeriodTimeSetupTemplateRequest(): UpdateSchedulingPeriodTimeSetupTemplateRequest {
+  return { context: undefined, school_year_id: undefined, template_id: undefined, name: undefined, periods: [] };
+}
+
+export const UpdateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<
+  UpdateSchedulingPeriodTimeSetupTemplateRequest
+> = {
+  encode(
+    message: UpdateSchedulingPeriodTimeSetupTemplateRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.template_id !== undefined) {
+      ObjectId.encode(message.template_id, writer.uint32(26).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(34).string(message.name);
+    }
+    for (const v of message.periods) {
+      SchedulingPeriodDefinition.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateSchedulingPeriodTimeSetupTemplateRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSchedulingPeriodTimeSetupTemplateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.template_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.periods.push(SchedulingPeriodDefinition.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSchedulingPeriodTimeSetupTemplateRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      template_id: isSet(object.templateId) ? ObjectId.fromJSON(object.templateId) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      periods: globalThis.Array.isArray(object?.periods)
+        ? object.periods.map((e: any) => SchedulingPeriodDefinition.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpdateSchedulingPeriodTimeSetupTemplateRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.template_id !== undefined) {
+      obj.templateId = ObjectId.toJSON(message.template_id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.periods?.length) {
+      obj.periods = message.periods.map((e) => SchedulingPeriodDefinition.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    base?: I,
+  ): UpdateSchedulingPeriodTimeSetupTemplateRequest {
+    return UpdateSchedulingPeriodTimeSetupTemplateRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    object: I,
+  ): UpdateSchedulingPeriodTimeSetupTemplateRequest {
+    const message = createBaseUpdateSchedulingPeriodTimeSetupTemplateRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.template_id = (object.template_id !== undefined && object.template_id !== null)
+      ? ObjectId.fromPartial(object.template_id)
+      : undefined;
+    message.name = object.name ?? undefined;
+    message.periods = object.periods?.map((e) => SchedulingPeriodDefinition.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseAssignSemesterSchedulingPeriodTimeSetupTemplateRequest(): AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
+  return { context: undefined, school_year_id: undefined, semester_id: undefined, template_id: undefined };
+}
+
+export const AssignSemesterSchedulingPeriodTimeSetupTemplateRequest: MessageFns<
+  AssignSemesterSchedulingPeriodTimeSetupTemplateRequest
+> = {
+  encode(
+    message: AssignSemesterSchedulingPeriodTimeSetupTemplateRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+    }
+    if (message.template_id !== undefined) {
+      ObjectId.encode(message.template_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAssignSemesterSchedulingPeriodTimeSetupTemplateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.template_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      template_id: isSet(object.templateId) ? ObjectId.fromJSON(object.templateId) : undefined,
+    };
+  },
+
+  toJSON(message: AssignSemesterSchedulingPeriodTimeSetupTemplateRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.template_id !== undefined) {
+      obj.templateId = ObjectId.toJSON(message.template_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AssignSemesterSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    base?: I,
+  ): AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
+    return AssignSemesterSchedulingPeriodTimeSetupTemplateRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AssignSemesterSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    object: I,
+  ): AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
+    const message = createBaseAssignSemesterSchedulingPeriodTimeSetupTemplateRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.template_id = (object.template_id !== undefined && object.template_id !== null)
+      ? ObjectId.fromPartial(object.template_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingTeacherSetupRequest(): GetSchedulingTeacherSetupRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetSchedulingTeacherSetupRequest: MessageFns<GetSchedulingTeacherSetupRequest> = {
+  encode(message: GetSchedulingTeacherSetupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingTeacherSetupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingTeacherSetupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingTeacherSetupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingTeacherSetupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingTeacherSetupRequest>, I>>(
+    base?: I,
+  ): GetSchedulingTeacherSetupRequest {
+    return GetSchedulingTeacherSetupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingTeacherSetupRequest>, I>>(
+    object: I,
+  ): GetSchedulingTeacherSetupRequest {
+    const message = createBaseGetSchedulingTeacherSetupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpsertSchedulingTeacherProfileRequest(): UpsertSchedulingTeacherProfileRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    teacher_id: undefined,
+    abstract_course_ids: [],
+    has_semester_restrictions: undefined,
+    semester_ids: [],
+    has_time_availability_restrictions: undefined,
+    availability_windows: [],
+  };
+}
+
+export const UpsertSchedulingTeacherProfileRequest: MessageFns<UpsertSchedulingTeacherProfileRequest> = {
+  encode(message: UpsertSchedulingTeacherProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.abstract_course_ids) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.has_semester_restrictions !== undefined) {
+      writer.uint32(40).bool(message.has_semester_restrictions);
+    }
+    for (const v of message.semester_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.has_time_availability_restrictions !== undefined) {
+      writer.uint32(56).bool(message.has_time_availability_restrictions);
+    }
+    for (const v of message.availability_windows) {
+      SchedulingTeacherAvailabilityWindow.encode(v!, writer.uint32(66).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertSchedulingTeacherProfileRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertSchedulingTeacherProfileRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.abstract_course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.has_semester_restrictions = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.semester_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.has_time_availability_restrictions = reader.bool();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.availability_windows.push(SchedulingTeacherAvailabilityWindow.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpsertSchedulingTeacherProfileRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      abstract_course_ids: globalThis.Array.isArray(object?.abstractCourseIds)
+        ? object.abstractCourseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      has_semester_restrictions: isSet(object.hasSemesterRestrictions)
+        ? globalThis.Boolean(object.hasSemesterRestrictions)
+        : undefined,
+      semester_ids: globalThis.Array.isArray(object?.semesterIds)
+        ? object.semesterIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      has_time_availability_restrictions: isSet(object.hasTimeAvailabilityRestrictions)
+        ? globalThis.Boolean(object.hasTimeAvailabilityRestrictions)
+        : undefined,
+      availability_windows: globalThis.Array.isArray(object?.availabilityWindows)
+        ? object.availabilityWindows.map((e: any) => SchedulingTeacherAvailabilityWindow.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpsertSchedulingTeacherProfileRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.abstract_course_ids?.length) {
+      obj.abstractCourseIds = message.abstract_course_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.has_semester_restrictions !== undefined) {
+      obj.hasSemesterRestrictions = message.has_semester_restrictions;
+    }
+    if (message.semester_ids?.length) {
+      obj.semesterIds = message.semester_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.has_time_availability_restrictions !== undefined) {
+      obj.hasTimeAvailabilityRestrictions = message.has_time_availability_restrictions;
+    }
+    if (message.availability_windows?.length) {
+      obj.availabilityWindows = message.availability_windows.map((e) => SchedulingTeacherAvailabilityWindow.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpsertSchedulingTeacherProfileRequest>, I>>(
+    base?: I,
+  ): UpsertSchedulingTeacherProfileRequest {
+    return UpsertSchedulingTeacherProfileRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpsertSchedulingTeacherProfileRequest>, I>>(
+    object: I,
+  ): UpsertSchedulingTeacherProfileRequest {
+    const message = createBaseUpsertSchedulingTeacherProfileRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.abstract_course_ids = object.abstract_course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.has_semester_restrictions = object.has_semester_restrictions ?? undefined;
+    message.semester_ids = object.semester_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.has_time_availability_restrictions = object.has_time_availability_restrictions ?? undefined;
+    message.availability_windows =
+      object.availability_windows?.map((e) => SchedulingTeacherAvailabilityWindow.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetSchedulingClassesSetupRequest(): GetSchedulingClassesSetupRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetSchedulingClassesSetupRequest: MessageFns<GetSchedulingClassesSetupRequest> = {
+  encode(message: GetSchedulingClassesSetupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingClassesSetupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingClassesSetupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingClassesSetupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingClassesSetupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingClassesSetupRequest>, I>>(
+    base?: I,
+  ): GetSchedulingClassesSetupRequest {
+    return GetSchedulingClassesSetupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingClassesSetupRequest>, I>>(
+    object: I,
+  ): GetSchedulingClassesSetupRequest {
+    const message = createBaseGetSchedulingClassesSetupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpsertSchedulingHighSchoolCourseSetupRequest(): UpsertSchedulingHighSchoolCourseSetupRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    abstract_course_id: undefined,
+    is_offered: undefined,
+    semester_option_groups: [],
+  };
+}
+
+export const UpsertSchedulingHighSchoolCourseSetupRequest: MessageFns<UpsertSchedulingHighSchoolCourseSetupRequest> = {
+  encode(
+    message: UpsertSchedulingHighSchoolCourseSetupRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(26).fork()).join();
+    }
+    if (message.is_offered !== undefined) {
+      writer.uint32(32).bool(message.is_offered);
+    }
+    for (const v of message.semester_option_groups) {
+      SchedulingSemesterOptionGroup.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertSchedulingHighSchoolCourseSetupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertSchedulingHighSchoolCourseSetupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.is_offered = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.semester_option_groups.push(SchedulingSemesterOptionGroup.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpsertSchedulingHighSchoolCourseSetupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      is_offered: isSet(object.isOffered) ? globalThis.Boolean(object.isOffered) : undefined,
+      semester_option_groups: globalThis.Array.isArray(object?.semesterOptionGroups)
+        ? object.semesterOptionGroups.map((e: any) => SchedulingSemesterOptionGroup.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpsertSchedulingHighSchoolCourseSetupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.is_offered !== undefined) {
+      obj.isOffered = message.is_offered;
+    }
+    if (message.semester_option_groups?.length) {
+      obj.semesterOptionGroups = message.semester_option_groups.map((e) => SchedulingSemesterOptionGroup.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpsertSchedulingHighSchoolCourseSetupRequest>, I>>(
+    base?: I,
+  ): UpsertSchedulingHighSchoolCourseSetupRequest {
+    return UpsertSchedulingHighSchoolCourseSetupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpsertSchedulingHighSchoolCourseSetupRequest>, I>>(
+    object: I,
+  ): UpsertSchedulingHighSchoolCourseSetupRequest {
+    const message = createBaseUpsertSchedulingHighSchoolCourseSetupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.is_offered = object.is_offered ?? undefined;
+    message.semester_option_groups =
+      object.semester_option_groups?.map((e) => SchedulingSemesterOptionGroup.fromPartial(e)) || [];
     return message;
   },
 };
