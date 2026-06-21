@@ -16,6 +16,7 @@ exports.directoryProviderTypeToNumber = directoryProviderTypeToNumber;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const dayofweek_1 = require("../google/type/dayofweek");
+const aws_file_1 = require("../utils/aws_file");
 const object_id_1 = require("../utils/object_id");
 const onboarding_settings_1 = require("./onboarding_settings");
 const organization_invoice_settings_1 = require("./organization_invoice_settings");
@@ -132,6 +133,7 @@ function createBaseOrganization() {
         weekend_days: [],
         timezone: undefined,
         directory_provider: undefined,
+        logo: undefined,
     };
 }
 exports.Organization = {
@@ -188,6 +190,9 @@ exports.Organization = {
         }
         if (message.directory_provider !== undefined) {
             writer.uint32(136).int32(directoryProviderTypeToNumber(message.directory_provider));
+        }
+        if (message.logo !== undefined) {
+            aws_file_1.AWSFile.encode(message.logo, writer.uint32(146).fork()).join();
         }
         return writer;
     },
@@ -307,6 +312,12 @@ exports.Organization = {
                     }
                     message.directory_provider = directoryProviderTypeFromJSON(reader.int32());
                     continue;
+                case 18:
+                    if (tag !== 146) {
+                        break;
+                    }
+                    message.logo = aws_file_1.AWSFile.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -346,6 +357,7 @@ exports.Organization = {
             directory_provider: isSet(object.directoryProvider)
                 ? directoryProviderTypeFromJSON(object.directoryProvider)
                 : undefined,
+            logo: isSet(object.logo) ? aws_file_1.AWSFile.fromJSON(object.logo) : undefined,
         };
     },
     toJSON(message) {
@@ -401,6 +413,9 @@ exports.Organization = {
         if (message.directory_provider !== undefined) {
             obj.directoryProvider = directoryProviderTypeToJSON(message.directory_provider);
         }
+        if (message.logo !== undefined) {
+            obj.logo = aws_file_1.AWSFile.toJSON(message.logo);
+        }
         return obj;
     },
     create(base) {
@@ -439,6 +454,7 @@ exports.Organization = {
         message.weekend_days = object.weekend_days?.map((e) => e) || [];
         message.timezone = object.timezone ?? undefined;
         message.directory_provider = object.directory_provider ?? undefined;
+        message.logo = (object.logo !== undefined && object.logo !== null) ? aws_file_1.AWSFile.fromPartial(object.logo) : undefined;
         return message;
     },
 };

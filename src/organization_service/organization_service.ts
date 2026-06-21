@@ -421,6 +421,18 @@ export interface UpdateOrganizationSettingsRequest {
   timezone?: string | undefined;
 }
 
+export interface UpdateOrganizationLogoRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  file_name?: string | undefined;
+  aws_s3_file_location?: string | undefined;
+}
+
+export interface DeleteOrganizationLogoRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+}
+
 export interface UpdateOrganizationAutoPayRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
@@ -1540,6 +1552,196 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.main_address = object.main_address ?? undefined;
     message.weekend_days = object.weekend_days?.map((e) => e) || [];
     message.timezone = object.timezone ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateOrganizationLogoRequest(): UpdateOrganizationLogoRequest {
+  return { context: undefined, organization_id: undefined, file_name: undefined, aws_s3_file_location: undefined };
+}
+
+export const UpdateOrganizationLogoRequest: MessageFns<UpdateOrganizationLogoRequest> = {
+  encode(message: UpdateOrganizationLogoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.file_name !== undefined) {
+      writer.uint32(26).string(message.file_name);
+    }
+    if (message.aws_s3_file_location !== undefined) {
+      writer.uint32(34).string(message.aws_s3_file_location);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateOrganizationLogoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateOrganizationLogoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.file_name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.aws_s3_file_location = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateOrganizationLogoRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+      aws_s3_file_location: isSet(object.awsS3FileLocation) ? globalThis.String(object.awsS3FileLocation) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateOrganizationLogoRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.file_name !== undefined) {
+      obj.fileName = message.file_name;
+    }
+    if (message.aws_s3_file_location !== undefined) {
+      obj.awsS3FileLocation = message.aws_s3_file_location;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateOrganizationLogoRequest>, I>>(base?: I): UpdateOrganizationLogoRequest {
+    return UpdateOrganizationLogoRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateOrganizationLogoRequest>, I>>(
+    object: I,
+  ): UpdateOrganizationLogoRequest {
+    const message = createBaseUpdateOrganizationLogoRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.file_name = object.file_name ?? undefined;
+    message.aws_s3_file_location = object.aws_s3_file_location ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteOrganizationLogoRequest(): DeleteOrganizationLogoRequest {
+  return { context: undefined, organization_id: undefined };
+}
+
+export const DeleteOrganizationLogoRequest: MessageFns<DeleteOrganizationLogoRequest> = {
+  encode(message: DeleteOrganizationLogoRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteOrganizationLogoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteOrganizationLogoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteOrganizationLogoRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteOrganizationLogoRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteOrganizationLogoRequest>, I>>(base?: I): DeleteOrganizationLogoRequest {
+    return DeleteOrganizationLogoRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteOrganizationLogoRequest>, I>>(
+    object: I,
+  ): DeleteOrganizationLogoRequest {
+    const message = createBaseDeleteOrganizationLogoRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
     return message;
   },
 };

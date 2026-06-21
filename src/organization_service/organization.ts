@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { DayOfWeek, dayOfWeekFromJSON, dayOfWeekToJSON, dayOfWeekToNumber } from "../google/type/dayofweek";
+import { AWSFile } from "../utils/aws_file";
 import { ObjectId } from "../utils/object_id";
 import { OnboardingSettings } from "./onboarding_settings";
 import { InvoiceSettings } from "./organization_invoice_settings";
@@ -131,6 +132,7 @@ export interface Organization {
   weekend_days: DayOfWeek[];
   timezone?: string | undefined;
   directory_provider?: DirectoryProviderType | undefined;
+  logo?: AWSFile | undefined;
 }
 
 export interface SchoolYear {
@@ -187,6 +189,7 @@ function createBaseOrganization(): Organization {
     weekend_days: [],
     timezone: undefined,
     directory_provider: undefined,
+    logo: undefined,
   };
 }
 
@@ -244,6 +247,9 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.directory_provider !== undefined) {
       writer.uint32(136).int32(directoryProviderTypeToNumber(message.directory_provider));
+    }
+    if (message.logo !== undefined) {
+      AWSFile.encode(message.logo, writer.uint32(146).fork()).join();
     }
     return writer;
   },
@@ -384,6 +390,13 @@ export const Organization: MessageFns<Organization> = {
 
           message.directory_provider = directoryProviderTypeFromJSON(reader.int32());
           continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.logo = AWSFile.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -424,6 +437,7 @@ export const Organization: MessageFns<Organization> = {
       directory_provider: isSet(object.directoryProvider)
         ? directoryProviderTypeFromJSON(object.directoryProvider)
         : undefined,
+      logo: isSet(object.logo) ? AWSFile.fromJSON(object.logo) : undefined,
     };
   },
 
@@ -480,6 +494,9 @@ export const Organization: MessageFns<Organization> = {
     if (message.directory_provider !== undefined) {
       obj.directoryProvider = directoryProviderTypeToJSON(message.directory_provider);
     }
+    if (message.logo !== undefined) {
+      obj.logo = AWSFile.toJSON(message.logo);
+    }
     return obj;
   },
 
@@ -519,6 +536,7 @@ export const Organization: MessageFns<Organization> = {
     message.weekend_days = object.weekend_days?.map((e) => e) || [];
     message.timezone = object.timezone ?? undefined;
     message.directory_provider = object.directory_provider ?? undefined;
+    message.logo = (object.logo !== undefined && object.logo !== null) ? AWSFile.fromPartial(object.logo) : undefined;
     return message;
   },
 };

@@ -114,6 +114,16 @@ export interface UpdateOrganizationSettingsRequest {
     weekend_days: DayOfWeek[];
     timezone?: string | undefined;
 }
+export interface UpdateOrganizationLogoRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    file_name?: string | undefined;
+    aws_s3_file_location?: string | undefined;
+}
+export interface DeleteOrganizationLogoRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
 export interface UpdateOrganizationAutoPayRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -308,6 +318,8 @@ export declare const UpdateDefaultDomainRequest: MessageFns<UpdateDefaultDomainR
 export declare const AddDomainRequest: MessageFns<AddDomainRequest>;
 export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
 export declare const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSettingsRequest>;
+export declare const UpdateOrganizationLogoRequest: MessageFns<UpdateOrganizationLogoRequest>;
+export declare const DeleteOrganizationLogoRequest: MessageFns<DeleteOrganizationLogoRequest>;
 export declare const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest>;
 export declare const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfigRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;

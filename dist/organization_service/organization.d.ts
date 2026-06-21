@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { DayOfWeek } from "../google/type/dayofweek";
+import { AWSFile } from "../utils/aws_file";
 import { ObjectId } from "../utils/object_id";
 import { OnboardingSettings } from "./onboarding_settings";
 import { InvoiceSettings } from "./organization_invoice_settings";
@@ -40,6 +41,7 @@ export interface Organization {
     weekend_days: DayOfWeek[];
     timezone?: string | undefined;
     directory_provider?: DirectoryProviderType | undefined;
+    logo?: AWSFile | undefined;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;
