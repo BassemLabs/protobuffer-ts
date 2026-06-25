@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/custom_field_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.ReorderCustomFieldsRequest = exports.ReorderCustomFieldsGroupsRequest = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
+exports.GenerateRegexPatternFromDescriptionResponse = exports.GenerateRegexPatternFromDescriptionRequest = exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.ReorderCustomFieldsRequest = exports.ReorderCustomFieldsGroupsRequest = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
@@ -3355,6 +3355,186 @@ exports.UpdateResourceAccessSettingsRequest = {
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? undefined;
         message.access_rules = object.access_rules?.map((e) => resource_access_settings_1.AccessRule.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGenerateRegexPatternFromDescriptionRequest() {
+    return { context: undefined, description: undefined, field_name: undefined };
+}
+exports.GenerateRegexPatternFromDescriptionRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.description !== undefined) {
+            writer.uint32(18).string(message.description);
+        }
+        if (message.field_name !== undefined) {
+            writer.uint32(26).string(message.field_name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGenerateRegexPatternFromDescriptionRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.field_name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            field_name: isSet(object.fieldName) ? globalThis.String(object.fieldName) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
+        }
+        if (message.field_name !== undefined) {
+            obj.fieldName = message.field_name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GenerateRegexPatternFromDescriptionRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGenerateRegexPatternFromDescriptionRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.description = object.description ?? undefined;
+        message.field_name = object.field_name ?? undefined;
+        return message;
+    },
+};
+function createBaseGenerateRegexPatternFromDescriptionResponse() {
+    return { pattern: undefined, explanation: undefined, sample_matches: [], sample_non_matches: [] };
+}
+exports.GenerateRegexPatternFromDescriptionResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.pattern !== undefined) {
+            writer.uint32(10).string(message.pattern);
+        }
+        if (message.explanation !== undefined) {
+            writer.uint32(18).string(message.explanation);
+        }
+        for (const v of message.sample_matches) {
+            writer.uint32(26).string(v);
+        }
+        for (const v of message.sample_non_matches) {
+            writer.uint32(34).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGenerateRegexPatternFromDescriptionResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.pattern = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.explanation = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.sample_matches.push(reader.string());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.sample_non_matches.push(reader.string());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            pattern: isSet(object.pattern) ? globalThis.String(object.pattern) : undefined,
+            explanation: isSet(object.explanation) ? globalThis.String(object.explanation) : undefined,
+            sample_matches: globalThis.Array.isArray(object?.sampleMatches)
+                ? object.sampleMatches.map((e) => globalThis.String(e))
+                : [],
+            sample_non_matches: globalThis.Array.isArray(object?.sampleNonMatches)
+                ? object.sampleNonMatches.map((e) => globalThis.String(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.pattern !== undefined) {
+            obj.pattern = message.pattern;
+        }
+        if (message.explanation !== undefined) {
+            obj.explanation = message.explanation;
+        }
+        if (message.sample_matches?.length) {
+            obj.sampleMatches = message.sample_matches;
+        }
+        if (message.sample_non_matches?.length) {
+            obj.sampleNonMatches = message.sample_non_matches;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GenerateRegexPatternFromDescriptionResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGenerateRegexPatternFromDescriptionResponse();
+        message.pattern = object.pattern ?? undefined;
+        message.explanation = object.explanation ?? undefined;
+        message.sample_matches = object.sample_matches?.map((e) => e) || [];
+        message.sample_non_matches = object.sample_non_matches?.map((e) => e) || [];
         return message;
     },
 };

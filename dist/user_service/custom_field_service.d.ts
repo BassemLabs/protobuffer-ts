@@ -213,6 +213,33 @@ export interface UpdateResourceAccessSettingsRequest {
     name?: string | undefined;
     access_rules: AccessRule[];
 }
+export interface GenerateRegexPatternFromDescriptionRequest {
+    context: RequestContext | undefined;
+    /**
+     * Plain-English description of the format the regex should match.
+     * Server enforces a length cap.
+     */
+    description?: string | undefined;
+    /**
+     * Optional name of the field being defined; included in the prompt for
+     * better grounding (e.g. "Saudi Phone Number").
+     */
+    field_name?: string | undefined;
+}
+export interface GenerateRegexPatternFromDescriptionResponse {
+    /**
+     * The generated regex pattern, compiled-validated by the Rust `regex` crate
+     * before the response is returned. Frontend may also try `new RegExp(...)`
+     * for a non-blocking preview; backend remains source of truth.
+     */
+    pattern?: string | undefined;
+    /** One-sentence human explanation of what the pattern accepts. */
+    explanation?: string | undefined;
+    /** 3-5 realistic strings that should match. */
+    sample_matches: string[];
+    /** 3-5 realistic strings that should NOT match. */
+    sample_non_matches: string[];
+}
 export declare const GetCustomFieldsByGroupRequest: MessageFns<GetCustomFieldsByGroupRequest>;
 export declare const GetCustomFieldsByGroupResponse: MessageFns<GetCustomFieldsByGroupResponse>;
 export declare const GetActiveCustomFieldsByGroupRequest: MessageFns<GetActiveCustomFieldsByGroupRequest>;
@@ -252,6 +279,8 @@ export declare const GetResourceAccessSettingsRequest: MessageFns<GetResourceAcc
 export declare const GetResourceAccessSettingsResponse: MessageFns<GetResourceAccessSettingsResponse>;
 export declare const CreateResourceAccessSettingsRequest: MessageFns<CreateResourceAccessSettingsRequest>;
 export declare const UpdateResourceAccessSettingsRequest: MessageFns<UpdateResourceAccessSettingsRequest>;
+export declare const GenerateRegexPatternFromDescriptionRequest: MessageFns<GenerateRegexPatternFromDescriptionRequest>;
+export declare const GenerateRegexPatternFromDescriptionResponse: MessageFns<GenerateRegexPatternFromDescriptionResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
