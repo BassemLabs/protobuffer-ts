@@ -12,6 +12,51 @@ import { PaymentType, paymentTypeFromJSON, paymentTypeToJSON, paymentTypeToNumbe
 
 export const protobufPackage = "payment_service";
 
+export enum SetupAutoPaymentMethod {
+  SETUP_AUTO_PAYMENT_METHOD_CARD = "SETUP_AUTO_PAYMENT_METHOD_CARD",
+  SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT = "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function setupAutoPaymentMethodFromJSON(object: any): SetupAutoPaymentMethod {
+  switch (object) {
+    case 0:
+    case "SETUP_AUTO_PAYMENT_METHOD_CARD":
+      return SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_CARD;
+    case 1:
+    case "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT":
+      return SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SetupAutoPaymentMethod.UNRECOGNIZED;
+  }
+}
+
+export function setupAutoPaymentMethodToJSON(object: SetupAutoPaymentMethod): string {
+  switch (object) {
+    case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_CARD:
+      return "SETUP_AUTO_PAYMENT_METHOD_CARD";
+    case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT:
+      return "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT";
+    case SetupAutoPaymentMethod.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function setupAutoPaymentMethodToNumber(object: SetupAutoPaymentMethod): number {
+  switch (object) {
+    case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_CARD:
+      return 0;
+    case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT:
+      return 1;
+    case SetupAutoPaymentMethod.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface HandleWebhookRequest {
   payload?: string | undefined;
   stripe_signature?: string | undefined;
@@ -23,6 +68,7 @@ export interface HandleWebhookResponse {
 
 export interface GetSetupAutoIntentRequest {
   context: RequestContext | undefined;
+  setup_payment_method?: SetupAutoPaymentMethod | undefined;
 }
 
 export interface GetSetupAutoIntentResponse {
@@ -191,13 +237,16 @@ export const HandleWebhookResponse: MessageFns<HandleWebhookResponse> = {
 };
 
 function createBaseGetSetupAutoIntentRequest(): GetSetupAutoIntentRequest {
-  return { context: undefined };
+  return { context: undefined, setup_payment_method: undefined };
 }
 
 export const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest> = {
   encode(message: GetSetupAutoIntentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.setup_payment_method !== undefined) {
+      writer.uint32(16).int32(setupAutoPaymentMethodToNumber(message.setup_payment_method));
     }
     return writer;
   },
@@ -216,6 +265,13 @@ export const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest> = 
 
           message.context = RequestContext.decode(reader, reader.uint32());
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.setup_payment_method = setupAutoPaymentMethodFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -226,13 +282,21 @@ export const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest> = 
   },
 
   fromJSON(object: any): GetSetupAutoIntentRequest {
-    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      setup_payment_method: isSet(object.setupPaymentMethod)
+        ? setupAutoPaymentMethodFromJSON(object.setupPaymentMethod)
+        : undefined,
+    };
   },
 
   toJSON(message: GetSetupAutoIntentRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.setup_payment_method !== undefined) {
+      obj.setupPaymentMethod = setupAutoPaymentMethodToJSON(message.setup_payment_method);
     }
     return obj;
   },
@@ -245,6 +309,7 @@ export const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest> = 
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
+    message.setup_payment_method = object.setup_payment_method ?? undefined;
     return message;
   },
 };

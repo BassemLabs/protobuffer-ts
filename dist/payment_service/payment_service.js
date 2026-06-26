@@ -5,13 +5,58 @@
 //   protoc               unknown
 // source: payment_service/payment_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OnboardOrganizationStripeAccountResponse = exports.OnboardOrganizationStripeAccountRequest = exports.CreatePaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.VerifyMicroDepositsResponse = exports.VerifyMicroDepositsRequest = exports.GetSetupAutoIntentResponse = exports.GetSetupAutoIntentRequest = exports.HandleWebhookResponse = exports.HandleWebhookRequest = exports.protobufPackage = void 0;
+exports.OnboardOrganizationStripeAccountResponse = exports.OnboardOrganizationStripeAccountRequest = exports.CreatePaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.VerifyMicroDepositsResponse = exports.VerifyMicroDepositsRequest = exports.GetSetupAutoIntentResponse = exports.GetSetupAutoIntentRequest = exports.HandleWebhookResponse = exports.HandleWebhookRequest = exports.SetupAutoPaymentMethod = exports.protobufPackage = void 0;
+exports.setupAutoPaymentMethodFromJSON = setupAutoPaymentMethodFromJSON;
+exports.setupAutoPaymentMethodToJSON = setupAutoPaymentMethodToJSON;
+exports.setupAutoPaymentMethodToNumber = setupAutoPaymentMethodToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const transaction_1 = require("./transaction");
 exports.protobufPackage = "payment_service";
+var SetupAutoPaymentMethod;
+(function (SetupAutoPaymentMethod) {
+    SetupAutoPaymentMethod["SETUP_AUTO_PAYMENT_METHOD_CARD"] = "SETUP_AUTO_PAYMENT_METHOD_CARD";
+    SetupAutoPaymentMethod["SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT"] = "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT";
+    SetupAutoPaymentMethod["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SetupAutoPaymentMethod || (exports.SetupAutoPaymentMethod = SetupAutoPaymentMethod = {}));
+function setupAutoPaymentMethodFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "SETUP_AUTO_PAYMENT_METHOD_CARD":
+            return SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_CARD;
+        case 1:
+        case "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT":
+            return SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SetupAutoPaymentMethod.UNRECOGNIZED;
+    }
+}
+function setupAutoPaymentMethodToJSON(object) {
+    switch (object) {
+        case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_CARD:
+            return "SETUP_AUTO_PAYMENT_METHOD_CARD";
+        case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT:
+            return "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT";
+        case SetupAutoPaymentMethod.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function setupAutoPaymentMethodToNumber(object) {
+    switch (object) {
+        case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_CARD:
+            return 0;
+        case SetupAutoPaymentMethod.SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT:
+            return 1;
+        case SetupAutoPaymentMethod.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseHandleWebhookRequest() {
     return { payload: undefined, stripe_signature: undefined };
 }
@@ -129,12 +174,15 @@ exports.HandleWebhookResponse = {
     },
 };
 function createBaseGetSetupAutoIntentRequest() {
-    return { context: undefined };
+    return { context: undefined, setup_payment_method: undefined };
 }
 exports.GetSetupAutoIntentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.setup_payment_method !== undefined) {
+            writer.uint32(16).int32(setupAutoPaymentMethodToNumber(message.setup_payment_method));
         }
         return writer;
     },
@@ -151,6 +199,12 @@ exports.GetSetupAutoIntentRequest = {
                     }
                     message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
                     continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.setup_payment_method = setupAutoPaymentMethodFromJSON(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -160,12 +214,20 @@ exports.GetSetupAutoIntentRequest = {
         return message;
     },
     fromJSON(object) {
-        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            setup_payment_method: isSet(object.setupPaymentMethod)
+                ? setupAutoPaymentMethodFromJSON(object.setupPaymentMethod)
+                : undefined,
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.context !== undefined) {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.setup_payment_method !== undefined) {
+            obj.setupPaymentMethod = setupAutoPaymentMethodToJSON(message.setup_payment_method);
         }
         return obj;
     },
@@ -177,6 +239,7 @@ exports.GetSetupAutoIntentRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
+        message.setup_payment_method = object.setup_payment_method ?? undefined;
         return message;
     },
 };

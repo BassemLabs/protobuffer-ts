@@ -3,6 +3,14 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { PaymentType } from "./transaction";
 export declare const protobufPackage = "payment_service";
+export declare enum SetupAutoPaymentMethod {
+    SETUP_AUTO_PAYMENT_METHOD_CARD = "SETUP_AUTO_PAYMENT_METHOD_CARD",
+    SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT = "SETUP_AUTO_PAYMENT_METHOD_ACSS_DEBIT",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function setupAutoPaymentMethodFromJSON(object: any): SetupAutoPaymentMethod;
+export declare function setupAutoPaymentMethodToJSON(object: SetupAutoPaymentMethod): string;
+export declare function setupAutoPaymentMethodToNumber(object: SetupAutoPaymentMethod): number;
 export interface HandleWebhookRequest {
     payload?: string | undefined;
     stripe_signature?: string | undefined;
@@ -12,6 +20,7 @@ export interface HandleWebhookResponse {
 }
 export interface GetSetupAutoIntentRequest {
     context: RequestContext | undefined;
+    setup_payment_method?: SetupAutoPaymentMethod | undefined;
 }
 export interface GetSetupAutoIntentResponse {
     setup_auto_intent_secret?: string | undefined;
