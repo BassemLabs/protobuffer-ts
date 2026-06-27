@@ -55,8 +55,11 @@ export interface CreateStudentRequest {
   last_name?: string | undefined;
   gender?: string | undefined;
   grade?: StudentGrade | undefined;
-  family_id: ObjectId | undefined;
-  date_of_birth: Date | undefined;
+  family_id:
+    | ObjectId
+    | undefined;
+  /** YYYY-MM-DD format for NaiveDate */
+  date_of_birth?: string | undefined;
   admission_year: ObjectId | undefined;
 }
 
@@ -749,7 +752,7 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
       ObjectId.encode(message.family_id, writer.uint32(50).fork()).join();
     }
     if (message.date_of_birth !== undefined) {
-      Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.date_of_birth);
     }
     if (message.admission_year !== undefined) {
       ObjectId.encode(message.admission_year, writer.uint32(66).fork()).join();
@@ -811,7 +814,7 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
             break;
           }
 
-          message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_of_birth = reader.string();
           continue;
         case 8:
           if (tag !== 66) {
@@ -837,7 +840,7 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
       admission_year: isSet(object.admissionYear) ? ObjectId.fromJSON(object.admissionYear) : undefined,
     };
   },
@@ -863,7 +866,7 @@ export const CreateStudentRequest: MessageFns<CreateStudentRequest> = {
       obj.familyId = ObjectId.toJSON(message.family_id);
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth;
     }
     if (message.admission_year !== undefined) {
       obj.admissionYear = ObjectId.toJSON(message.admission_year);

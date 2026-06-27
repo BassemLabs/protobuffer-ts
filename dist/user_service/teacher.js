@@ -11,7 +11,6 @@ exports.teacherStatusToJSON = teacherStatusToJSON;
 exports.teacherStatusToNumber = teacherStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
 exports.protobufPackage = "user_service";
@@ -252,7 +251,7 @@ exports.Teacher = {
             writer.uint32(74).string(message.personal_email);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(82).fork()).join();
+            writer.uint32(82).string(message.date_of_birth);
         }
         if (message.phone_number !== undefined) {
             phone_number_1.PhoneNumber.encode(message.phone_number, writer.uint32(90).fork()).join();
@@ -336,7 +335,7 @@ exports.Teacher = {
                     if (tag !== 82) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
                 case 11:
                     if (tag !== 90) {
@@ -387,7 +386,7 @@ exports.Teacher = {
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
             email: isSet(object.email) ? globalThis.String(object.email) : undefined,
             personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
             phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
             signature_file_id: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
@@ -425,7 +424,7 @@ exports.Teacher = {
             obj.personalEmail = message.personal_email;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         if (message.phone_number !== undefined) {
             obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
@@ -504,7 +503,7 @@ exports.TeacherProfile = {
             writer.uint32(42).string(message.personal_email);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(50).fork()).join();
+            writer.uint32(50).string(message.date_of_birth);
         }
         if (message.phone_number !== undefined) {
             phone_number_1.PhoneNumber.encode(message.phone_number, writer.uint32(58).fork()).join();
@@ -552,7 +551,7 @@ exports.TeacherProfile = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -575,7 +574,7 @@ exports.TeacherProfile = {
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
             email: isSet(object.email) ? globalThis.String(object.email) : undefined,
             personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
             phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
         };
     },
@@ -597,7 +596,7 @@ exports.TeacherProfile = {
             obj.personalEmail = message.personal_email;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         if (message.phone_number !== undefined) {
             obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
@@ -646,7 +645,7 @@ exports.TeacherProfileUpdate = {
             writer.uint32(34).string(message.personal_email);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(42).fork()).join();
+            writer.uint32(42).string(message.date_of_birth);
         }
         if (message.phone_number !== undefined) {
             phone_number_1.PhoneNumber.encode(message.phone_number, writer.uint32(50).fork()).join();
@@ -688,7 +687,7 @@ exports.TeacherProfileUpdate = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
                 case 6:
                     if (tag !== 50) {
@@ -710,7 +709,7 @@ exports.TeacherProfileUpdate = {
             last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
             personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
             phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
         };
     },
@@ -729,7 +728,7 @@ exports.TeacherProfileUpdate = {
             obj.personalEmail = message.personal_email;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         if (message.phone_number !== undefined) {
             obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
@@ -752,27 +751,6 @@ exports.TeacherProfileUpdate = {
         return message;
     },
 };
-function toTimestamp(date) {
-    const seconds = Math.trunc(date.getTime() / 1_000);
-    const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { seconds, nanos };
-}
-function fromTimestamp(t) {
-    let millis = (t.seconds || 0) * 1_000;
-    millis += (t.nanos || 0) / 1_000_000;
-    return new globalThis.Date(millis);
-}
-function fromJsonTimestamp(o) {
-    if (o instanceof globalThis.Date) {
-        return o;
-    }
-    else if (typeof o === "string") {
-        return new globalThis.Date(o);
-    }
-    else {
-        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
-    }
-}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

@@ -52,7 +52,8 @@ export interface Student {
     first_name?: string | undefined;
     last_name?: string | undefined;
     gender?: string | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
 }
 /**
  * Student item with school year context (used for student lists with filters)
@@ -77,7 +78,8 @@ export interface SchoolYearStudent {
     grade?: StudentGrade | undefined;
     family_id: ObjectId | undefined;
     has_non_paid_invoices?: boolean | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
     interview_date?: Date | undefined;
     has_enrolled_family?: boolean | undefined;
     has_processing_transactions?: boolean | undefined;
@@ -89,7 +91,8 @@ export interface StudentProfile {
     first_name?: string | undefined;
     last_name?: string | undefined;
     gender?: string | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
 }
 /** Entry in the status history timeline */
 export interface StatusHistoryEntry {

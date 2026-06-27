@@ -304,7 +304,7 @@ exports.Student = {
             writer.uint32(74).string(message.gender);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(90).fork()).join();
+            writer.uint32(90).string(message.date_of_birth);
         }
         return writer;
     },
@@ -379,7 +379,7 @@ exports.Student = {
                     if (tag !== 90) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -401,7 +401,7 @@ exports.Student = {
             first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
             last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
         };
     },
     toJSON(message) {
@@ -437,7 +437,7 @@ exports.Student = {
             obj.gender = message.gender;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         return obj;
     },
@@ -509,7 +509,7 @@ exports.SchoolYearStudent = {
             writer.uint32(64).bool(message.has_non_paid_invoices);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(74).fork()).join();
+            writer.uint32(74).string(message.date_of_birth);
         }
         if (message.interview_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(82).fork()).join();
@@ -587,7 +587,7 @@ exports.SchoolYearStudent = {
                     if (tag !== 74) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
                 case 10:
                     if (tag !== 82) {
@@ -639,7 +639,7 @@ exports.SchoolYearStudent = {
             has_non_paid_invoices: isSet(object.hasNonPaidInvoices)
                 ? globalThis.Boolean(object.hasNonPaidInvoices)
                 : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
             interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
             has_enrolled_family: isSet(object.hasEnrolledFamily) ? globalThis.Boolean(object.hasEnrolledFamily) : undefined,
             has_processing_transactions: isSet(object.hasProcessingTransactions)
@@ -678,7 +678,7 @@ exports.SchoolYearStudent = {
             obj.hasNonPaidInvoices = message.has_non_paid_invoices;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         if (message.interview_date !== undefined) {
             obj.interviewDate = message.interview_date.toISOString();
@@ -736,7 +736,7 @@ exports.StudentProfile = {
             writer.uint32(26).string(message.gender);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
+            writer.uint32(34).string(message.date_of_birth);
         }
         return writer;
     },
@@ -769,7 +769,7 @@ exports.StudentProfile = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -784,7 +784,7 @@ exports.StudentProfile = {
             first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
             last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
         };
     },
     toJSON(message) {
@@ -799,7 +799,7 @@ exports.StudentProfile = {
             obj.gender = message.gender;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         return obj;
     },

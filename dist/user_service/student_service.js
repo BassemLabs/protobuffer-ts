@@ -267,7 +267,7 @@ exports.CreateStudentRequest = {
             object_id_1.ObjectId.encode(message.family_id, writer.uint32(50).fork()).join();
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(58).fork()).join();
+            writer.uint32(58).string(message.date_of_birth);
         }
         if (message.admission_year !== undefined) {
             object_id_1.ObjectId.encode(message.admission_year, writer.uint32(66).fork()).join();
@@ -321,7 +321,7 @@ exports.CreateStudentRequest = {
                     if (tag !== 58) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
                 case 8:
                     if (tag !== 66) {
@@ -345,7 +345,7 @@ exports.CreateStudentRequest = {
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
             family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
             admission_year: isSet(object.admissionYear) ? object_id_1.ObjectId.fromJSON(object.admissionYear) : undefined,
         };
     },
@@ -370,7 +370,7 @@ exports.CreateStudentRequest = {
             obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         if (message.admission_year !== undefined) {
             obj.admissionYear = object_id_1.ObjectId.toJSON(message.admission_year);

@@ -8,7 +8,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.ValidateTeacherUsernameResponse = exports.ValidateTeacherUsernameRequest = exports.SuggestTeacherUsernameResponse = exports.SuggestTeacherUsernameRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
 const request_context_1 = require("../utils/request_context");
@@ -1174,7 +1173,7 @@ exports.CreateTeacherRequest = {
             phone_number_1.PhoneNumber.encode(message.phone_number, writer.uint32(42).fork()).join();
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(50).fork()).join();
+            writer.uint32(50).string(message.date_of_birth);
         }
         if (message.personal_email !== undefined) {
             writer.uint32(58).string(message.personal_email);
@@ -1225,7 +1224,7 @@ exports.CreateTeacherRequest = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -1254,7 +1253,7 @@ exports.CreateTeacherRequest = {
             last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
             gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
             phone_number: isSet(object.phoneNumber) ? phone_number_1.PhoneNumber.fromJSON(object.phoneNumber) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
             personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
             username: isSet(object.username) ? globalThis.String(object.username) : undefined,
         };
@@ -1277,7 +1276,7 @@ exports.CreateTeacherRequest = {
             obj.phoneNumber = phone_number_1.PhoneNumber.toJSON(message.phone_number);
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         if (message.personal_email !== undefined) {
             obj.personalEmail = message.personal_email;
@@ -1322,7 +1321,7 @@ exports.SuggestTeacherUsernameRequest = {
             writer.uint32(26).string(message.last_name);
         }
         if (message.date_of_birth !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
+            writer.uint32(34).string(message.date_of_birth);
         }
         return writer;
     },
@@ -1355,7 +1354,7 @@ exports.SuggestTeacherUsernameRequest = {
                     if (tag !== 34) {
                         break;
                     }
-                    message.date_of_birth = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.date_of_birth = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -1370,7 +1369,7 @@ exports.SuggestTeacherUsernameRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
             last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
-            date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+            date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
         };
     },
     toJSON(message) {
@@ -1385,7 +1384,7 @@ exports.SuggestTeacherUsernameRequest = {
             obj.lastName = message.last_name;
         }
         if (message.date_of_birth !== undefined) {
-            obj.dateOfBirth = message.date_of_birth.toISOString();
+            obj.dateOfBirth = message.date_of_birth;
         }
         return obj;
     },
@@ -2039,27 +2038,6 @@ exports.CheckCanRemoveOrgDomainResponse = {
         return message;
     },
 };
-function toTimestamp(date) {
-    const seconds = Math.trunc(date.getTime() / 1_000);
-    const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { seconds, nanos };
-}
-function fromTimestamp(t) {
-    let millis = (t.seconds || 0) * 1_000;
-    millis += (t.nanos || 0) / 1_000_000;
-    return new globalThis.Date(millis);
-}
-function fromJsonTimestamp(o) {
-    if (o instanceof globalThis.Date) {
-        return o;
-    }
-    else if (typeof o === "string") {
-        return new globalThis.Date(o);
-    }
-    else {
-        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
-    }
-}
 function longToNumber(int64) {
     const num = globalThis.Number(int64.toString());
     if (num > globalThis.Number.MAX_SAFE_INTEGER) {

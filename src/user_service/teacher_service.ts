@@ -6,7 +6,6 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
@@ -109,8 +108,11 @@ export interface CreateTeacherRequest {
   first_name?: string | undefined;
   last_name?: string | undefined;
   gender?: string | undefined;
-  phone_number: PhoneNumber | undefined;
-  date_of_birth: Date | undefined;
+  phone_number:
+    | PhoneNumber
+    | undefined;
+  /** YYYY-MM-DD format for NaiveDate */
+  date_of_birth?: string | undefined;
   personal_email?: string | undefined;
   username?: string | undefined;
 }
@@ -118,8 +120,11 @@ export interface CreateTeacherRequest {
 export interface SuggestTeacherUsernameRequest {
   context: RequestContext | undefined;
   first_name?: string | undefined;
-  last_name?: string | undefined;
-  date_of_birth: Date | undefined;
+  last_name?:
+    | string
+    | undefined;
+  /** YYYY-MM-DD format for NaiveDate */
+  date_of_birth?: string | undefined;
 }
 
 export interface SuggestTeacherUsernameResponse {
@@ -1476,7 +1481,7 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
       PhoneNumber.encode(message.phone_number, writer.uint32(42).fork()).join();
     }
     if (message.date_of_birth !== undefined) {
-      Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.date_of_birth);
     }
     if (message.personal_email !== undefined) {
       writer.uint32(58).string(message.personal_email);
@@ -1534,7 +1539,7 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
             break;
           }
 
-          message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_of_birth = reader.string();
           continue;
         case 7:
           if (tag !== 58) {
@@ -1566,7 +1571,7 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
       last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
       phone_number: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
       personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
       username: isSet(object.username) ? globalThis.String(object.username) : undefined,
     };
@@ -1590,7 +1595,7 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
       obj.phoneNumber = PhoneNumber.toJSON(message.phone_number);
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth;
     }
     if (message.personal_email !== undefined) {
       obj.personalEmail = message.personal_email;
@@ -1638,7 +1643,7 @@ export const SuggestTeacherUsernameRequest: MessageFns<SuggestTeacherUsernameReq
       writer.uint32(26).string(message.last_name);
     }
     if (message.date_of_birth !== undefined) {
-      Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
+      writer.uint32(34).string(message.date_of_birth);
     }
     return writer;
   },
@@ -1676,7 +1681,7 @@ export const SuggestTeacherUsernameRequest: MessageFns<SuggestTeacherUsernameReq
             break;
           }
 
-          message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_of_birth = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1692,7 +1697,7 @@ export const SuggestTeacherUsernameRequest: MessageFns<SuggestTeacherUsernameReq
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
       last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
     };
   },
 
@@ -1708,7 +1713,7 @@ export const SuggestTeacherUsernameRequest: MessageFns<SuggestTeacherUsernameReq
       obj.lastName = message.last_name;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth;
     }
     return obj;
   },
@@ -2461,28 +2466,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = Math.trunc(date.getTime() / 1_000);
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = (t.seconds || 0) * 1_000;
-  millis += (t.nanos || 0) / 1_000_000;
-  return new globalThis.Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof globalThis.Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new globalThis.Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function longToNumber(int64: { toString(): string }): number {
   const num = globalThis.Number(int64.toString());

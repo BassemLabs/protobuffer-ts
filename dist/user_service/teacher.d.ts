@@ -31,7 +31,8 @@ export interface Teacher {
     gender?: string | undefined;
     email?: string | undefined;
     personal_email?: string | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
     phone_number: PhoneNumber | undefined;
     signature_file_id?: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -44,7 +45,8 @@ export interface TeacherProfile {
     gender?: string | undefined;
     email?: string | undefined;
     personal_email?: string | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
     phone_number: PhoneNumber | undefined;
 }
 export interface TeacherProfileUpdate {
@@ -52,7 +54,8 @@ export interface TeacherProfileUpdate {
     last_name?: string | undefined;
     gender?: string | undefined;
     personal_email?: string | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
     phone_number: PhoneNumber | undefined;
 }
 export declare const TeacherBasic: MessageFns<TeacherBasic>;

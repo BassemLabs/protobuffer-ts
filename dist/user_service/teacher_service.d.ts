@@ -76,7 +76,8 @@ export interface CreateTeacherRequest {
     last_name?: string | undefined;
     gender?: string | undefined;
     phone_number: PhoneNumber | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
     personal_email?: string | undefined;
     username?: string | undefined;
 }
@@ -84,7 +85,8 @@ export interface SuggestTeacherUsernameRequest {
     context: RequestContext | undefined;
     first_name?: string | undefined;
     last_name?: string | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
 }
 export interface SuggestTeacherUsernameResponse {
     username?: string | undefined;

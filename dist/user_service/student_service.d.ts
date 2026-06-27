@@ -30,7 +30,8 @@ export interface CreateStudentRequest {
     gender?: string | undefined;
     grade?: StudentGrade | undefined;
     family_id: ObjectId | undefined;
-    date_of_birth: Date | undefined;
+    /** YYYY-MM-DD format for NaiveDate */
+    date_of_birth?: string | undefined;
     admission_year: ObjectId | undefined;
 }
 export interface AddExistingStudentToWaitlistRequest {

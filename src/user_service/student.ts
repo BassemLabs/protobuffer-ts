@@ -270,8 +270,11 @@ export interface Student {
   family_id: ObjectId | undefined;
   first_name?: string | undefined;
   last_name?: string | undefined;
-  gender?: string | undefined;
-  date_of_birth: Date | undefined;
+  gender?:
+    | string
+    | undefined;
+  /** YYYY-MM-DD format for NaiveDate */
+  date_of_birth?: string | undefined;
 }
 
 /**
@@ -300,8 +303,11 @@ export interface SchoolYearStudent {
   /** Grade for the query's school year (or active school year if not specified). Absent if status is NOT_ASSIGNED. */
   grade?: StudentGrade | undefined;
   family_id: ObjectId | undefined;
-  has_non_paid_invoices?: boolean | undefined;
-  date_of_birth: Date | undefined;
+  has_non_paid_invoices?:
+    | boolean
+    | undefined;
+  /** YYYY-MM-DD format for NaiveDate */
+  date_of_birth?: string | undefined;
   interview_date?: Date | undefined;
   has_enrolled_family?: boolean | undefined;
   has_processing_transactions?: boolean | undefined;
@@ -313,8 +319,11 @@ export interface SchoolYearStudent {
 export interface StudentProfile {
   first_name?: string | undefined;
   last_name?: string | undefined;
-  gender?: string | undefined;
-  date_of_birth: Date | undefined;
+  gender?:
+    | string
+    | undefined;
+  /** YYYY-MM-DD format for NaiveDate */
+  date_of_birth?: string | undefined;
 }
 
 /** Entry in the status history timeline */
@@ -389,7 +398,7 @@ export const Student: MessageFns<Student> = {
       writer.uint32(74).string(message.gender);
     }
     if (message.date_of_birth !== undefined) {
-      Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(90).fork()).join();
+      writer.uint32(90).string(message.date_of_birth);
     }
     return writer;
   },
@@ -476,7 +485,7 @@ export const Student: MessageFns<Student> = {
             break;
           }
 
-          message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_of_birth = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -499,7 +508,7 @@ export const Student: MessageFns<Student> = {
       first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
       last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
     };
   },
 
@@ -536,7 +545,7 @@ export const Student: MessageFns<Student> = {
       obj.gender = message.gender;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth;
     }
     return obj;
   },
@@ -611,7 +620,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
       writer.uint32(64).bool(message.has_non_paid_invoices);
     }
     if (message.date_of_birth !== undefined) {
-      Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(74).fork()).join();
+      writer.uint32(74).string(message.date_of_birth);
     }
     if (message.interview_date !== undefined) {
       Timestamp.encode(toTimestamp(message.interview_date), writer.uint32(82).fork()).join();
@@ -699,7 +708,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
             break;
           }
 
-          message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_of_birth = reader.string();
           continue;
         case 10:
           if (tag !== 82) {
@@ -757,7 +766,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
       has_non_paid_invoices: isSet(object.hasNonPaidInvoices)
         ? globalThis.Boolean(object.hasNonPaidInvoices)
         : undefined,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
       interview_date: isSet(object.interviewDate) ? fromJsonTimestamp(object.interviewDate) : undefined,
       has_enrolled_family: isSet(object.hasEnrolledFamily) ? globalThis.Boolean(object.hasEnrolledFamily) : undefined,
       has_processing_transactions: isSet(object.hasProcessingTransactions)
@@ -797,7 +806,7 @@ export const SchoolYearStudent: MessageFns<SchoolYearStudent> = {
       obj.hasNonPaidInvoices = message.has_non_paid_invoices;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth;
     }
     if (message.interview_date !== undefined) {
       obj.interviewDate = message.interview_date.toISOString();
@@ -858,7 +867,7 @@ export const StudentProfile: MessageFns<StudentProfile> = {
       writer.uint32(26).string(message.gender);
     }
     if (message.date_of_birth !== undefined) {
-      Timestamp.encode(toTimestamp(message.date_of_birth), writer.uint32(34).fork()).join();
+      writer.uint32(34).string(message.date_of_birth);
     }
     return writer;
   },
@@ -896,7 +905,7 @@ export const StudentProfile: MessageFns<StudentProfile> = {
             break;
           }
 
-          message.date_of_birth = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.date_of_birth = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -912,7 +921,7 @@ export const StudentProfile: MessageFns<StudentProfile> = {
       first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
       last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
       gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
-      date_of_birth: isSet(object.dateOfBirth) ? fromJsonTimestamp(object.dateOfBirth) : undefined,
+      date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
     };
   },
 
@@ -928,7 +937,7 @@ export const StudentProfile: MessageFns<StudentProfile> = {
       obj.gender = message.gender;
     }
     if (message.date_of_birth !== undefined) {
-      obj.dateOfBirth = message.date_of_birth.toISOString();
+      obj.dateOfBirth = message.date_of_birth;
     }
     return obj;
   },
