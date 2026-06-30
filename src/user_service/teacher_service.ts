@@ -115,6 +115,7 @@ export interface CreateTeacherRequest {
   date_of_birth?: string | undefined;
   personal_email?: string | undefined;
   username?: string | undefined;
+  create_directory_account?: boolean | undefined;
 }
 
 export interface SuggestTeacherUsernameRequest {
@@ -1460,6 +1461,7 @@ function createBaseCreateTeacherRequest(): CreateTeacherRequest {
     date_of_birth: undefined,
     personal_email: undefined,
     username: undefined,
+    create_directory_account: undefined,
   };
 }
 
@@ -1488,6 +1490,9 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
     }
     if (message.username !== undefined) {
       writer.uint32(66).string(message.username);
+    }
+    if (message.create_directory_account !== undefined) {
+      writer.uint32(72).bool(message.create_directory_account);
     }
     return writer;
   },
@@ -1555,6 +1560,13 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
 
           message.username = reader.string();
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.create_directory_account = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1574,6 +1586,9 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
       date_of_birth: isSet(object.dateOfBirth) ? globalThis.String(object.dateOfBirth) : undefined,
       personal_email: isSet(object.personalEmail) ? globalThis.String(object.personalEmail) : undefined,
       username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      create_directory_account: isSet(object.createDirectoryAccount)
+        ? globalThis.Boolean(object.createDirectoryAccount)
+        : undefined,
     };
   },
 
@@ -1603,6 +1618,9 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
     if (message.username !== undefined) {
       obj.username = message.username;
     }
+    if (message.create_directory_account !== undefined) {
+      obj.createDirectoryAccount = message.create_directory_account;
+    }
     return obj;
   },
 
@@ -1623,6 +1641,7 @@ export const CreateTeacherRequest: MessageFns<CreateTeacherRequest> = {
     message.date_of_birth = object.date_of_birth ?? undefined;
     message.personal_email = object.personal_email ?? undefined;
     message.username = object.username ?? undefined;
+    message.create_directory_account = object.create_directory_account ?? undefined;
     return message;
   },
 };

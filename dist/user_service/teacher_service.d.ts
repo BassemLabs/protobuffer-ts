@@ -80,6 +80,7 @@ export interface CreateTeacherRequest {
     date_of_birth?: string | undefined;
     personal_email?: string | undefined;
     username?: string | undefined;
+    create_directory_account?: boolean | undefined;
 }
 export interface SuggestTeacherUsernameRequest {
     context: RequestContext | undefined;
