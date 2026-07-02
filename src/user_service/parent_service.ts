@@ -9,7 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Parent, ParentProfile } from "./parent";
-import { Student } from "./student";
+import { Student, StudentSchoolYearInformation } from "./student";
 
 export const protobufPackage = "user_service";
 
@@ -49,6 +49,19 @@ export interface GetParentStudentsResponse {
 
 export interface GetParentStudentsFromContextRequest {
   context: RequestContext | undefined;
+}
+
+export interface GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+  context: RequestContext | undefined;
+}
+
+export interface ParentStudentWithSchoolYearInfo {
+  student: Student | undefined;
+  latest_school_year_info?: StudentSchoolYearInformation | undefined;
+}
+
+export interface GetParentStudentsWithLatestSchoolYearInfoResponse {
+  students: ParentStudentWithSchoolYearInfo[];
 }
 
 export interface GetParentStudentIdsRequest {
@@ -680,6 +693,230 @@ export const GetParentStudentsFromContextRequest: MessageFns<GetParentStudentsFr
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetParentStudentsWithLatestSchoolYearInfoFromContextRequest(): GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+  return { context: undefined };
+}
+
+export const GetParentStudentsWithLatestSchoolYearInfoFromContextRequest: MessageFns<
+  GetParentStudentsWithLatestSchoolYearInfoFromContextRequest
+> = {
+  encode(
+    message: GetParentStudentsWithLatestSchoolYearInfoFromContextRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(
+    input: BinaryReader | Uint8Array,
+    length?: number,
+  ): GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetParentStudentsWithLatestSchoolYearInfoFromContextRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetParentStudentsWithLatestSchoolYearInfoFromContextRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetParentStudentsWithLatestSchoolYearInfoFromContextRequest>, I>>(
+    base?: I,
+  ): GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+    return GetParentStudentsWithLatestSchoolYearInfoFromContextRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetParentStudentsWithLatestSchoolYearInfoFromContextRequest>, I>>(
+    object: I,
+  ): GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+    const message = createBaseGetParentStudentsWithLatestSchoolYearInfoFromContextRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseParentStudentWithSchoolYearInfo(): ParentStudentWithSchoolYearInfo {
+  return { student: undefined, latest_school_year_info: undefined };
+}
+
+export const ParentStudentWithSchoolYearInfo: MessageFns<ParentStudentWithSchoolYearInfo> = {
+  encode(message: ParentStudentWithSchoolYearInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student !== undefined) {
+      Student.encode(message.student, writer.uint32(10).fork()).join();
+    }
+    if (message.latest_school_year_info !== undefined) {
+      StudentSchoolYearInformation.encode(message.latest_school_year_info, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ParentStudentWithSchoolYearInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParentStudentWithSchoolYearInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student = Student.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.latest_school_year_info = StudentSchoolYearInformation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ParentStudentWithSchoolYearInfo {
+    return {
+      student: isSet(object.student) ? Student.fromJSON(object.student) : undefined,
+      latest_school_year_info: isSet(object.latestSchoolYearInfo)
+        ? StudentSchoolYearInformation.fromJSON(object.latestSchoolYearInfo)
+        : undefined,
+    };
+  },
+
+  toJSON(message: ParentStudentWithSchoolYearInfo): unknown {
+    const obj: any = {};
+    if (message.student !== undefined) {
+      obj.student = Student.toJSON(message.student);
+    }
+    if (message.latest_school_year_info !== undefined) {
+      obj.latestSchoolYearInfo = StudentSchoolYearInformation.toJSON(message.latest_school_year_info);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ParentStudentWithSchoolYearInfo>, I>>(base?: I): ParentStudentWithSchoolYearInfo {
+    return ParentStudentWithSchoolYearInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ParentStudentWithSchoolYearInfo>, I>>(
+    object: I,
+  ): ParentStudentWithSchoolYearInfo {
+    const message = createBaseParentStudentWithSchoolYearInfo();
+    message.student = (object.student !== undefined && object.student !== null)
+      ? Student.fromPartial(object.student)
+      : undefined;
+    message.latest_school_year_info =
+      (object.latest_school_year_info !== undefined && object.latest_school_year_info !== null)
+        ? StudentSchoolYearInformation.fromPartial(object.latest_school_year_info)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseGetParentStudentsWithLatestSchoolYearInfoResponse(): GetParentStudentsWithLatestSchoolYearInfoResponse {
+  return { students: [] };
+}
+
+export const GetParentStudentsWithLatestSchoolYearInfoResponse: MessageFns<
+  GetParentStudentsWithLatestSchoolYearInfoResponse
+> = {
+  encode(
+    message: GetParentStudentsWithLatestSchoolYearInfoResponse,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.students) {
+      ParentStudentWithSchoolYearInfo.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetParentStudentsWithLatestSchoolYearInfoResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetParentStudentsWithLatestSchoolYearInfoResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.students.push(ParentStudentWithSchoolYearInfo.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetParentStudentsWithLatestSchoolYearInfoResponse {
+    return {
+      students: globalThis.Array.isArray(object?.students)
+        ? object.students.map((e: any) => ParentStudentWithSchoolYearInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetParentStudentsWithLatestSchoolYearInfoResponse): unknown {
+    const obj: any = {};
+    if (message.students?.length) {
+      obj.students = message.students.map((e) => ParentStudentWithSchoolYearInfo.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetParentStudentsWithLatestSchoolYearInfoResponse>, I>>(
+    base?: I,
+  ): GetParentStudentsWithLatestSchoolYearInfoResponse {
+    return GetParentStudentsWithLatestSchoolYearInfoResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetParentStudentsWithLatestSchoolYearInfoResponse>, I>>(
+    object: I,
+  ): GetParentStudentsWithLatestSchoolYearInfoResponse {
+    const message = createBaseGetParentStudentsWithLatestSchoolYearInfoResponse();
+    message.students = object.students?.map((e) => ParentStudentWithSchoolYearInfo.fromPartial(e)) || [];
     return message;
   },
 };

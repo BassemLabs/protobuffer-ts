@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Parent, ParentProfile } from "./parent";
-import { Student } from "./student";
+import { Student, StudentSchoolYearInformation } from "./student";
 export declare const protobufPackage = "user_service";
 export interface GetParentRequest {
     context: RequestContext | undefined;
@@ -33,6 +33,16 @@ export interface GetParentStudentsResponse {
 }
 export interface GetParentStudentsFromContextRequest {
     context: RequestContext | undefined;
+}
+export interface GetParentStudentsWithLatestSchoolYearInfoFromContextRequest {
+    context: RequestContext | undefined;
+}
+export interface ParentStudentWithSchoolYearInfo {
+    student: Student | undefined;
+    latest_school_year_info?: StudentSchoolYearInformation | undefined;
+}
+export interface GetParentStudentsWithLatestSchoolYearInfoResponse {
+    students: ParentStudentWithSchoolYearInfo[];
 }
 export interface GetParentStudentIdsRequest {
     context: RequestContext | undefined;
@@ -111,6 +121,9 @@ export declare const GetParentsByEmailResponse: MessageFns<GetParentsByEmailResp
 export declare const GetParentStudentsRequest: MessageFns<GetParentStudentsRequest>;
 export declare const GetParentStudentsResponse: MessageFns<GetParentStudentsResponse>;
 export declare const GetParentStudentsFromContextRequest: MessageFns<GetParentStudentsFromContextRequest>;
+export declare const GetParentStudentsWithLatestSchoolYearInfoFromContextRequest: MessageFns<GetParentStudentsWithLatestSchoolYearInfoFromContextRequest>;
+export declare const ParentStudentWithSchoolYearInfo: MessageFns<ParentStudentWithSchoolYearInfo>;
+export declare const GetParentStudentsWithLatestSchoolYearInfoResponse: MessageFns<GetParentStudentsWithLatestSchoolYearInfoResponse>;
 export declare const GetParentStudentIdsRequest: MessageFns<GetParentStudentIdsRequest>;
 export declare const GetParentStudentIdsResponse: MessageFns<GetParentStudentIdsResponse>;
 export declare const GetContextActiveSchoolYearEnrolledStudentIdsRequest: MessageFns<GetContextActiveSchoolYearEnrolledStudentIdsRequest>;

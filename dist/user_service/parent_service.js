@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/parent_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.AuthenticateParentForOrgRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.protobufPackage = void 0;
+exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.AuthenticateParentForOrgRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -496,6 +496,185 @@ exports.GetParentStudentsFromContextRequest = {
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetParentStudentsWithLatestSchoolYearInfoFromContextRequest() {
+    return { context: undefined };
+}
+exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetParentStudentsWithLatestSchoolYearInfoFromContextRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetParentStudentsWithLatestSchoolYearInfoFromContextRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseParentStudentWithSchoolYearInfo() {
+    return { student: undefined, latest_school_year_info: undefined };
+}
+exports.ParentStudentWithSchoolYearInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student !== undefined) {
+            student_1.Student.encode(message.student, writer.uint32(10).fork()).join();
+        }
+        if (message.latest_school_year_info !== undefined) {
+            student_1.StudentSchoolYearInformation.encode(message.latest_school_year_info, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentStudentWithSchoolYearInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student = student_1.Student.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.latest_school_year_info = student_1.StudentSchoolYearInformation.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
+            latest_school_year_info: isSet(object.latestSchoolYearInfo)
+                ? student_1.StudentSchoolYearInformation.fromJSON(object.latestSchoolYearInfo)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student !== undefined) {
+            obj.student = student_1.Student.toJSON(message.student);
+        }
+        if (message.latest_school_year_info !== undefined) {
+            obj.latestSchoolYearInfo = student_1.StudentSchoolYearInformation.toJSON(message.latest_school_year_info);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentStudentWithSchoolYearInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentStudentWithSchoolYearInfo();
+        message.student = (object.student !== undefined && object.student !== null)
+            ? student_1.Student.fromPartial(object.student)
+            : undefined;
+        message.latest_school_year_info =
+            (object.latest_school_year_info !== undefined && object.latest_school_year_info !== null)
+                ? student_1.StudentSchoolYearInformation.fromPartial(object.latest_school_year_info)
+                : undefined;
+        return message;
+    },
+};
+function createBaseGetParentStudentsWithLatestSchoolYearInfoResponse() {
+    return { students: [] };
+}
+exports.GetParentStudentsWithLatestSchoolYearInfoResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.students) {
+            exports.ParentStudentWithSchoolYearInfo.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetParentStudentsWithLatestSchoolYearInfoResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.students.push(exports.ParentStudentWithSchoolYearInfo.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            students: globalThis.Array.isArray(object?.students)
+                ? object.students.map((e) => exports.ParentStudentWithSchoolYearInfo.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.students?.length) {
+            obj.students = message.students.map((e) => exports.ParentStudentWithSchoolYearInfo.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetParentStudentsWithLatestSchoolYearInfoResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetParentStudentsWithLatestSchoolYearInfoResponse();
+        message.students = object.students?.map((e) => exports.ParentStudentWithSchoolYearInfo.fromPartial(e)) || [];
         return message;
     },
 };
