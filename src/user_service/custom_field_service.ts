@@ -228,6 +228,10 @@ export interface GetParentGroupsWithFieldsRequest {
   context: RequestContext | undefined;
 }
 
+export interface GetTeacherGroupsWithFieldsRequest {
+  context: RequestContext | undefined;
+}
+
 export interface ReorderCustomFieldsGroupsRequest {
   context: RequestContext | undefined;
   user_type?: UserType | undefined;
@@ -3217,6 +3221,69 @@ export const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFie
     object: I,
   ): GetParentGroupsWithFieldsRequest {
     const message = createBaseGetParentGroupsWithFieldsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeacherGroupsWithFieldsRequest(): GetTeacherGroupsWithFieldsRequest {
+  return { context: undefined };
+}
+
+export const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithFieldsRequest> = {
+  encode(message: GetTeacherGroupsWithFieldsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherGroupsWithFieldsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherGroupsWithFieldsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherGroupsWithFieldsRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetTeacherGroupsWithFieldsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherGroupsWithFieldsRequest>, I>>(
+    base?: I,
+  ): GetTeacherGroupsWithFieldsRequest {
+    return GetTeacherGroupsWithFieldsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherGroupsWithFieldsRequest>, I>>(
+    object: I,
+  ): GetTeacherGroupsWithFieldsRequest {
+    const message = createBaseGetTeacherGroupsWithFieldsRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;

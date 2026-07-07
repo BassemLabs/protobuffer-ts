@@ -164,6 +164,9 @@ export interface GetStudentGroupsWithFieldsRequest {
 export interface GetParentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
 }
+export interface GetTeacherGroupsWithFieldsRequest {
+    context: RequestContext | undefined;
+}
 export interface ReorderCustomFieldsGroupsRequest {
     context: RequestContext | undefined;
     user_type?: UserType | undefined;
@@ -269,6 +272,7 @@ export declare const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAcces
 export declare const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns<GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest>;
 export declare const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithFieldsRequest>;
 export declare const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFieldsRequest>;
+export declare const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithFieldsRequest>;
 export declare const ReorderCustomFieldsGroupsRequest: MessageFns<ReorderCustomFieldsGroupsRequest>;
 export declare const ReorderCustomFieldsRequest: MessageFns<ReorderCustomFieldsRequest>;
 export declare const GetCustomFieldsGroupsWithFieldsResponse: MessageFns<GetCustomFieldsGroupsWithFieldsResponse>;
