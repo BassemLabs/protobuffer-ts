@@ -11,6 +11,7 @@ import { Campus } from "../organization_service/campus";
 import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { TeacherBasic } from "../user_service/teacher";
 import { ObjectId } from "../utils/object_id";
+import { Uuid } from "../utils/uuid";
 import { AbstractCourse } from "./abstract_course";
 import { Semester } from "./semester";
 
@@ -27,6 +28,7 @@ export enum SchedulingPreparationStep {
   SCHEDULING_PREPARATION_STEP_PREVIEW_EXPORT = "SCHEDULING_PREPARATION_STEP_PREVIEW_EXPORT",
   SCHEDULING_PREPARATION_STEP_ADJUSTMENTS = "SCHEDULING_PREPARATION_STEP_ADJUSTMENTS",
   SCHEDULING_PREPARATION_STEP_OFFERED_GRADES = "SCHEDULING_PREPARATION_STEP_OFFERED_GRADES",
+  SCHEDULING_PREPARATION_STEP_CLASS_GROUPS = "SCHEDULING_PREPARATION_STEP_CLASS_GROUPS",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -62,6 +64,9 @@ export function schedulingPreparationStepFromJSON(object: any): SchedulingPrepar
     case 10:
     case "SCHEDULING_PREPARATION_STEP_OFFERED_GRADES":
       return SchedulingPreparationStep.SCHEDULING_PREPARATION_STEP_OFFERED_GRADES;
+    case 11:
+    case "SCHEDULING_PREPARATION_STEP_CLASS_GROUPS":
+      return SchedulingPreparationStep.SCHEDULING_PREPARATION_STEP_CLASS_GROUPS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -91,6 +96,8 @@ export function schedulingPreparationStepToJSON(object: SchedulingPreparationSte
       return "SCHEDULING_PREPARATION_STEP_ADJUSTMENTS";
     case SchedulingPreparationStep.SCHEDULING_PREPARATION_STEP_OFFERED_GRADES:
       return "SCHEDULING_PREPARATION_STEP_OFFERED_GRADES";
+    case SchedulingPreparationStep.SCHEDULING_PREPARATION_STEP_CLASS_GROUPS:
+      return "SCHEDULING_PREPARATION_STEP_CLASS_GROUPS";
     case SchedulingPreparationStep.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -119,6 +126,8 @@ export function schedulingPreparationStepToNumber(object: SchedulingPreparationS
       return 9;
     case SchedulingPreparationStep.SCHEDULING_PREPARATION_STEP_OFFERED_GRADES:
       return 10;
+    case SchedulingPreparationStep.SCHEDULING_PREPARATION_STEP_CLASS_GROUPS:
+      return 11;
     case SchedulingPreparationStep.UNRECOGNIZED:
     default:
       return -1;
@@ -170,8 +179,224 @@ export function schedulingPreparationStepStatusToNumber(object: SchedulingPrepar
   }
 }
 
+/** How a subject/course may use back-to-back (double) periods during generation. */
+export enum SchedulingDoublePeriodMode {
+  /** SCHEDULING_DOUBLE_PERIOD_MODE_NONE - Never schedule two consecutive periods of this class on the same day. */
+  SCHEDULING_DOUBLE_PERIOD_MODE_NONE = "SCHEDULING_DOUBLE_PERIOD_MODE_NONE",
+  /** SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW - Consecutive periods are permitted but not required. */
+  SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW = "SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW",
+  /** SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE - Weekly periods must be scheduled as consecutive pairs (requires an even count). */
+  SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE = "SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingDoublePeriodModeFromJSON(object: any): SchedulingDoublePeriodMode {
+  switch (object) {
+    case 1:
+    case "SCHEDULING_DOUBLE_PERIOD_MODE_NONE":
+      return SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_NONE;
+    case 2:
+    case "SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW":
+      return SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW;
+    case 3:
+    case "SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE":
+      return SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingDoublePeriodMode.UNRECOGNIZED;
+  }
+}
+
+export function schedulingDoublePeriodModeToJSON(object: SchedulingDoublePeriodMode): string {
+  switch (object) {
+    case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_NONE:
+      return "SCHEDULING_DOUBLE_PERIOD_MODE_NONE";
+    case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW:
+      return "SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW";
+    case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE:
+      return "SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE";
+    case SchedulingDoublePeriodMode.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingDoublePeriodModeToNumber(object: SchedulingDoublePeriodMode): number {
+  switch (object) {
+    case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_NONE:
+      return 1;
+    case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_ALLOW:
+      return 2;
+    case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE:
+      return 3;
+    case SchedulingDoublePeriodMode.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+/**
+ * Lifecycle of one generation run. Terminal states are SUCCEEDED and FAILED;
+ * CANCELLED is reserved for future use (nothing sets it yet).
+ */
+export enum SchedulingGenerationRunStatus {
+  /** SCHEDULING_GENERATION_RUN_STATUS_PENDING - Created, not yet picked up by the background executor. */
+  SCHEDULING_GENERATION_RUN_STATUS_PENDING = "SCHEDULING_GENERATION_RUN_STATUS_PENDING",
+  /** SCHEDULING_GENERATION_RUN_STATUS_RUNNING - Preflight/solve in progress. */
+  SCHEDULING_GENERATION_RUN_STATUS_RUNNING = "SCHEDULING_GENERATION_RUN_STATUS_RUNNING",
+  /** SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED - Solver produced a schedule (see generated_schedule_id). */
+  SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED = "SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED",
+  /** SCHEDULING_GENERATION_RUN_STATUS_FAILED - Preflight blocked, solver infeasible/timed out, or an internal error (see error_message/blockers). */
+  SCHEDULING_GENERATION_RUN_STATUS_FAILED = "SCHEDULING_GENERATION_RUN_STATUS_FAILED",
+  /** SCHEDULING_GENERATION_RUN_STATUS_CANCELLED - Reserved for future cancellation support. */
+  SCHEDULING_GENERATION_RUN_STATUS_CANCELLED = "SCHEDULING_GENERATION_RUN_STATUS_CANCELLED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingGenerationRunStatusFromJSON(object: any): SchedulingGenerationRunStatus {
+  switch (object) {
+    case 1:
+    case "SCHEDULING_GENERATION_RUN_STATUS_PENDING":
+      return SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_PENDING;
+    case 2:
+    case "SCHEDULING_GENERATION_RUN_STATUS_RUNNING":
+      return SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_RUNNING;
+    case 3:
+    case "SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED":
+      return SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED;
+    case 4:
+    case "SCHEDULING_GENERATION_RUN_STATUS_FAILED":
+      return SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_FAILED;
+    case 5:
+    case "SCHEDULING_GENERATION_RUN_STATUS_CANCELLED":
+      return SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_CANCELLED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingGenerationRunStatus.UNRECOGNIZED;
+  }
+}
+
+export function schedulingGenerationRunStatusToJSON(object: SchedulingGenerationRunStatus): string {
+  switch (object) {
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_PENDING:
+      return "SCHEDULING_GENERATION_RUN_STATUS_PENDING";
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_RUNNING:
+      return "SCHEDULING_GENERATION_RUN_STATUS_RUNNING";
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED:
+      return "SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED";
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_FAILED:
+      return "SCHEDULING_GENERATION_RUN_STATUS_FAILED";
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_CANCELLED:
+      return "SCHEDULING_GENERATION_RUN_STATUS_CANCELLED";
+    case SchedulingGenerationRunStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingGenerationRunStatusToNumber(object: SchedulingGenerationRunStatus): number {
+  switch (object) {
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_PENDING:
+      return 1;
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_RUNNING:
+      return 2;
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_SUCCEEDED:
+      return 3;
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_FAILED:
+      return 4;
+    case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_CANCELLED:
+      return 5;
+    case SchedulingGenerationRunStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+/**
+ * The setup step a review section maps back to, so an issue can deep-link the user to
+ * the exact page to fix.
+ */
+export enum SchedulingReviewSectionType {
+  SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES = "SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES",
+  SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES = "SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES",
+  SCHEDULING_REVIEW_SECTION_TYPE_CLASSES = "SCHEDULING_REVIEW_SECTION_TYPE_CLASSES",
+  SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS = "SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS",
+  SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS = "SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS",
+  SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS = "SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingReviewSectionTypeFromJSON(object: any): SchedulingReviewSectionType {
+  switch (object) {
+    case 1:
+    case "SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES":
+      return SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES;
+    case 2:
+    case "SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES":
+      return SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES;
+    case 3:
+    case "SCHEDULING_REVIEW_SECTION_TYPE_CLASSES":
+      return SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASSES;
+    case 4:
+    case "SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS":
+      return SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS;
+    case 5:
+    case "SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS":
+      return SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS;
+    case 6:
+    case "SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS":
+      return SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingReviewSectionType.UNRECOGNIZED;
+  }
+}
+
+export function schedulingReviewSectionTypeToJSON(object: SchedulingReviewSectionType): string {
+  switch (object) {
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES:
+      return "SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES";
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES:
+      return "SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES";
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASSES:
+      return "SCHEDULING_REVIEW_SECTION_TYPE_CLASSES";
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS:
+      return "SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS";
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS:
+      return "SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS";
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS:
+      return "SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS";
+    case SchedulingReviewSectionType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingReviewSectionTypeToNumber(object: SchedulingReviewSectionType): number {
+  switch (object) {
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_SEMESTERS_GRADES:
+      return 1;
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_PERIOD_TIMES:
+      return 2;
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASSES:
+      return 3;
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_TEACHERS:
+      return 4;
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASS_ASSIGNMENTS:
+      return 5;
+    case SchedulingReviewSectionType.SCHEDULING_REVIEW_SECTION_TYPE_CLASS_GROUPS:
+      return 6;
+    case SchedulingReviewSectionType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface SchedulingWorkspace {
-  id: ObjectId | undefined;
+  id: Uuid | undefined;
   organization: ObjectId | undefined;
   school_year: ObjectId | undefined;
   completed_steps: SchedulingPreparationStep[];
@@ -202,9 +427,9 @@ export interface SchedulingPeriodDefinition {
 }
 
 export interface SchedulingOfferedGrade {
-  id: ObjectId | undefined;
+  id: Uuid | undefined;
   organization: ObjectId | undefined;
-  scheduling_workspace: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
   campus_id: ObjectId | undefined;
   grade?: StudentGrade | undefined;
   semester_ids: ObjectId[];
@@ -217,19 +442,19 @@ export interface SchedulingOfferedGradeSetup {
 }
 
 export interface SchedulingPeriodTimeSetupTemplate {
-  id: ObjectId | undefined;
+  id: Uuid | undefined;
   organization: ObjectId | undefined;
-  scheduling_workspace: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
   name?: string | undefined;
   periods: SchedulingPeriodDefinition[];
 }
 
 export interface SchedulingSemesterPeriodTimeSetup {
-  id: ObjectId | undefined;
+  id: Uuid | undefined;
   organization: ObjectId | undefined;
-  scheduling_workspace: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
   semester: ObjectId | undefined;
-  period_time_setup_template: ObjectId | undefined;
+  period_time_setup_template: Uuid | undefined;
 }
 
 export interface SchedulingWeekdayPreviewDay {
@@ -245,9 +470,9 @@ export interface SchedulingPeriodTimeSetup {
 }
 
 export interface SchedulingTeacherProfile {
-  id: ObjectId | undefined;
+  id: Uuid | undefined;
   organization: ObjectId | undefined;
-  scheduling_workspace: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
   teacher_id: ObjectId | undefined;
   abstract_course_ids: ObjectId[];
   /** When false, semester_ids is ignored and the teacher can teach in any semester. */
@@ -273,24 +498,258 @@ export interface SchedulingTeacherSetup {
 }
 
 export interface SchedulingHighSchoolCourseSetup {
-  id: ObjectId | undefined;
+  id: Uuid | undefined;
   organization: ObjectId | undefined;
-  scheduling_workspace: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
   abstract_course_id: ObjectId | undefined;
   is_offered?: boolean | undefined;
   semester_option_groups: SchedulingSemesterOptionGroup[];
 }
 
+/**
+ * One selectable semester option for a high-school course offering. Generation
+ * schedules the offering in exactly one semester chosen from `semester_ids`.
+ */
 export interface SchedulingSemesterOptionGroup {
+  /** Candidate semesters for this offering; generation picks one. */
   semester_ids: ObjectId[];
+  id:
+    | ObjectId
+    | undefined;
+  /** When set, generation must use this teacher for the offering. */
+  teacher_id?: ObjectId | undefined;
 }
 
+/**
+ * A per-day restriction on which period sequences a class may occupy. Rules expand
+ * into a class's allowed slots when its instructional requirement is applied.
+ */
+export interface SchedulingCoursePeriodRule {
+  /** Absent day makes this the every-day rule; days with their own rule override it. */
+  day?:
+    | DayOfWeek
+    | undefined;
+  /** Allowed period sequences. Empty with a day set means no meetings on that day. */
+  allowed_periods: number[];
+}
+
+/**
+ * How much instruction a subject (at a grade) or high-school course needs per week,
+ * plus its double-period and allowed-period rules. This is the curriculum demand the
+ * solver must satisfy.
+ */
+export interface SchedulingInstructionalRequirement {
+  id: Uuid | undefined;
+  organization: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
+  abstract_course_id:
+    | ObjectId
+    | undefined;
+  /** Set for a subject-at-grade requirement; absent for a high-school course requirement. */
+  grade?: StudentGrade | undefined;
+  periods_per_week?: number | undefined;
+  double_period_mode?:
+    | SchedulingDoublePeriodMode
+    | undefined;
+  /** Optional per-day allowed-period restrictions; empty means no slot restriction. */
+  period_rules: SchedulingCoursePeriodRule[];
+}
+
+/**
+ * Full state of the Classes setup step: the curriculum catalog plus its configured
+ * offerings and instructional requirements.
+ */
 export interface SchedulingClassesSetup {
   subjects: AbstractCourse[];
   high_school_courses: AbstractCourse[];
   semesters: Semester[];
   high_school_course_setups: SchedulingHighSchoolCourseSetup[];
   offered_grades: StudentGrade[];
+  instructional_requirements: SchedulingInstructionalRequirement[];
+}
+
+/** A student selectable for a high-school course roster (display fields included). */
+export interface SchedulingStudentAssignmentOption {
+  student_id: ObjectId | undefined;
+  first_name?: string | undefined;
+  last_name?: string | undefined;
+  grade?: StudentGrade | undefined;
+}
+
+/**
+ * Read-only summary of the elementary/middle subjects a grade takes, with its student
+ * count. These rosters are implied by the grade (no manual student selection).
+ */
+export interface SchedulingSubjectAssignmentPreview {
+  grade?: StudentGrade | undefined;
+  subjects: AbstractCourse[];
+  student_count?: number | undefined;
+  students: SchedulingStudentAssignmentOption[];
+}
+
+/** The stored student roster for one high-school course offering. */
+export interface SchedulingHighSchoolCourseStudentAssignment {
+  id: Uuid | undefined;
+  organization: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
+  abstract_course_id: ObjectId | undefined;
+  student_ids: ObjectId[];
+  offering_id: ObjectId | undefined;
+}
+
+/**
+ * Full state of the Class Assignment step: read-only subject previews (elementary/
+ * middle) plus the editable high-school course rosters and their catalog.
+ */
+export interface SchedulingClassAssignmentSetup {
+  subject_previews: SchedulingSubjectAssignmentPreview[];
+  high_school_courses: AbstractCourse[];
+  high_school_course_setups: SchedulingHighSchoolCourseSetup[];
+  high_school_course_assignments: SchedulingHighSchoolCourseStudentAssignment[];
+  high_school_students: SchedulingStudentAssignmentOption[];
+  semesters: Semester[];
+}
+
+/**
+ * An elementary/middle grade-semester cohort. The group is the solver's student proxy:
+ * its classes cannot collide in the same slot.
+ */
+export interface SchedulingClassGroup {
+  id: Uuid | undefined;
+  organization: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
+  campus_id: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+  semester_id:
+    | ObjectId
+    | undefined;
+  /** Human-readable group name, e.g. "Grade 3 - Fall". */
+  label?:
+    | string
+    | undefined;
+  /** True when the group's campus/grade is no longer offered; the user removes stale groups. */
+  stale?: boolean | undefined;
+}
+
+/**
+ * The teacher assigned to teach one subject within one class group. Generation must
+ * honor this assignment (it fixes the class's teacher).
+ */
+export interface SchedulingClassGroupTeacherAssignment {
+  id: Uuid | undefined;
+  organization: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
+  class_group_id: Uuid | undefined;
+  abstract_course_id: ObjectId | undefined;
+  teacher_id: ObjectId | undefined;
+}
+
+/**
+ * Full state of the Class Groups step: the groups, the subjects each needs, and their
+ * teacher assignments, plus the catalog needed to render the assignment UI.
+ */
+export interface SchedulingClassGroupSetup {
+  groups: SchedulingClassGroup[];
+  subjects: AbstractCourse[];
+  assignments: SchedulingClassGroupTeacherAssignment[];
+  teachers: TeacherBasic[];
+  teacher_profiles: SchedulingTeacherProfile[];
+  semesters: Semester[];
+  high_school_courses: AbstractCourse[];
+  high_school_course_setups: SchedulingHighSchoolCourseSetup[];
+  high_school_course_assignments: SchedulingHighSchoolCourseStudentAssignment[];
+}
+
+/** A preflight problem that prevents generation from starting. */
+export interface SchedulingGenerationBlocker {
+  /** Admin-readable explanation of the problem and how to resolve it. */
+  message?:
+    | string
+    | undefined;
+  /** Stable machine-readable identifier for frontend behavior and localization. */
+  code?: string | undefined;
+}
+
+/**
+ * One schedule-generation attempt. A run is bound to the immutable solver-input
+ * snapshot it used, so a failed run can always be inspected against its exact input.
+ */
+export interface SchedulingGenerationRun {
+  id: Uuid | undefined;
+  organization: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
+  school_year:
+    | ObjectId
+    | undefined;
+  /** The frozen input this run solved against. */
+  solver_input_snapshot_id:
+    | Uuid
+    | undefined;
+  /** Snapshot schema version, copied onto the run for compatibility auditing. */
+  schema_version?: number | undefined;
+  status?:
+    | SchedulingGenerationRunStatus
+    | undefined;
+  /** RFC3339; set once the run starts executing. */
+  started_at?:
+    | string
+    | undefined;
+  /** RFC3339; set on any terminal state. */
+  finished_at?:
+    | string
+    | undefined;
+  /** Admin-readable failure summary; present on FAILED runs. */
+  error_message?:
+    | string
+    | undefined;
+  /** Preflight blockers; present when preflight failed the run. */
+  blockers: SchedulingGenerationBlocker[];
+  /** Set on SUCCEEDED runs, referencing the stored generated schedule. */
+  generated_schedule_id?: ObjectId | undefined;
+  created_by:
+    | ObjectId
+    | undefined;
+  /** RFC3339 creation time; also the sort key for the runs list. */
+  created_at?: string | undefined;
+}
+
+/** Runs for a workspace, newest first (used for status polling and history). */
+export interface SchedulingGenerationRunList {
+  runs: SchedulingGenerationRun[];
+}
+
+/** A headline count shown on a review section (e.g. "Teachers", 12). */
+export interface SchedulingReviewMetric {
+  label?: string | undefined;
+  value?: number | undefined;
+}
+
+/** A single readiness problem, with the step the user should open to resolve it. */
+export interface SchedulingReviewIssue {
+  action_step?: SchedulingPreparationStep | undefined;
+  message?:
+    | string
+    | undefined;
+  /** Stable machine-readable identifier for frontend behavior and localization. */
+  code?: string | undefined;
+}
+
+/** One setup area's review: its summary metrics and any outstanding issues. */
+export interface SchedulingReviewSection {
+  section?: SchedulingReviewSectionType | undefined;
+  metrics: SchedulingReviewMetric[];
+  issues: SchedulingReviewIssue[];
+}
+
+/**
+ * Whole-workspace readiness. `ready` is true only when no section or cross-step issue
+ * remains; generation should be gated on it.
+ */
+export interface SchedulingReview {
+  sections: SchedulingReviewSection[];
+  /** Issues spanning multiple steps (not attributable to a single section). */
+  cross_step_issues: SchedulingReviewIssue[];
+  ready?: boolean | undefined;
 }
 
 function createBaseSchedulingWorkspace(): SchedulingWorkspace {
@@ -300,7 +759,7 @@ function createBaseSchedulingWorkspace(): SchedulingWorkspace {
 export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
   encode(message: SchedulingWorkspace, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
@@ -328,7 +787,7 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.id = Uuid.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -372,7 +831,7 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
 
   fromJSON(object: any): SchedulingWorkspace {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       completed_steps: globalThis.Array.isArray(object?.completedSteps)
@@ -384,7 +843,7 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
   toJSON(message: SchedulingWorkspace): unknown {
     const obj: any = {};
     if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+      obj.id = Uuid.toJSON(message.id);
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
@@ -403,7 +862,7 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
   },
   fromPartial<I extends Exact<DeepPartial<SchedulingWorkspace>, I>>(object: I): SchedulingWorkspace {
     const message = createBaseSchedulingWorkspace();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
@@ -793,13 +1252,13 @@ function createBaseSchedulingOfferedGrade(): SchedulingOfferedGrade {
 export const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade> = {
   encode(message: SchedulingOfferedGrade, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
     if (message.scheduling_workspace !== undefined) {
-      ObjectId.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
     }
     if (message.campus_id !== undefined) {
       ObjectId.encode(message.campus_id, writer.uint32(34).fork()).join();
@@ -825,7 +1284,7 @@ export const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade> = {
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.id = Uuid.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -839,7 +1298,7 @@ export const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade> = {
             break;
           }
 
-          message.scheduling_workspace = ObjectId.decode(reader, reader.uint32());
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -873,11 +1332,9 @@ export const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade> = {
 
   fromJSON(object: any): SchedulingOfferedGrade {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      scheduling_workspace: isSet(object.schedulingWorkspace)
-        ? ObjectId.fromJSON(object.schedulingWorkspace)
-        : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
       campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       semester_ids: globalThis.Array.isArray(object?.semesterIds)
@@ -889,13 +1346,13 @@ export const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade> = {
   toJSON(message: SchedulingOfferedGrade): unknown {
     const obj: any = {};
     if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+      obj.id = Uuid.toJSON(message.id);
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.scheduling_workspace !== undefined) {
-      obj.schedulingWorkspace = ObjectId.toJSON(message.scheduling_workspace);
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
     }
     if (message.campus_id !== undefined) {
       obj.campusId = ObjectId.toJSON(message.campus_id);
@@ -914,12 +1371,12 @@ export const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade> = {
   },
   fromPartial<I extends Exact<DeepPartial<SchedulingOfferedGrade>, I>>(object: I): SchedulingOfferedGrade {
     const message = createBaseSchedulingOfferedGrade();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
-      ? ObjectId.fromPartial(object.scheduling_workspace)
+      ? Uuid.fromPartial(object.scheduling_workspace)
       : undefined;
     message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
       ? ObjectId.fromPartial(object.campus_id)
@@ -1030,13 +1487,13 @@ function createBaseSchedulingPeriodTimeSetupTemplate(): SchedulingPeriodTimeSetu
 export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeSetupTemplate> = {
   encode(message: SchedulingPeriodTimeSetupTemplate, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
     if (message.scheduling_workspace !== undefined) {
-      ObjectId.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
     }
     if (message.name !== undefined) {
       writer.uint32(34).string(message.name);
@@ -1059,7 +1516,7 @@ export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeS
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.id = Uuid.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -1073,7 +1530,7 @@ export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeS
             break;
           }
 
-          message.scheduling_workspace = ObjectId.decode(reader, reader.uint32());
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -1100,11 +1557,9 @@ export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeS
 
   fromJSON(object: any): SchedulingPeriodTimeSetupTemplate {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      scheduling_workspace: isSet(object.schedulingWorkspace)
-        ? ObjectId.fromJSON(object.schedulingWorkspace)
-        : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       periods: globalThis.Array.isArray(object?.periods)
         ? object.periods.map((e: any) => SchedulingPeriodDefinition.fromJSON(e))
@@ -1115,13 +1570,13 @@ export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeS
   toJSON(message: SchedulingPeriodTimeSetupTemplate): unknown {
     const obj: any = {};
     if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+      obj.id = Uuid.toJSON(message.id);
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.scheduling_workspace !== undefined) {
-      obj.schedulingWorkspace = ObjectId.toJSON(message.scheduling_workspace);
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
     }
     if (message.name !== undefined) {
       obj.name = message.name;
@@ -1141,12 +1596,12 @@ export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeS
     object: I,
   ): SchedulingPeriodTimeSetupTemplate {
     const message = createBaseSchedulingPeriodTimeSetupTemplate();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
-      ? ObjectId.fromPartial(object.scheduling_workspace)
+      ? Uuid.fromPartial(object.scheduling_workspace)
       : undefined;
     message.name = object.name ?? undefined;
     message.periods = object.periods?.map((e) => SchedulingPeriodDefinition.fromPartial(e)) || [];
@@ -1167,19 +1622,19 @@ function createBaseSchedulingSemesterPeriodTimeSetup(): SchedulingSemesterPeriod
 export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPeriodTimeSetup> = {
   encode(message: SchedulingSemesterPeriodTimeSetup, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
     if (message.scheduling_workspace !== undefined) {
-      ObjectId.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
     }
     if (message.semester !== undefined) {
       ObjectId.encode(message.semester, writer.uint32(34).fork()).join();
     }
     if (message.period_time_setup_template !== undefined) {
-      ObjectId.encode(message.period_time_setup_template, writer.uint32(42).fork()).join();
+      Uuid.encode(message.period_time_setup_template, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -1196,7 +1651,7 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.id = Uuid.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -1210,7 +1665,7 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
             break;
           }
 
-          message.scheduling_workspace = ObjectId.decode(reader, reader.uint32());
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -1224,7 +1679,7 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
             break;
           }
 
-          message.period_time_setup_template = ObjectId.decode(reader, reader.uint32());
+          message.period_time_setup_template = Uuid.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1237,14 +1692,12 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
 
   fromJSON(object: any): SchedulingSemesterPeriodTimeSetup {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      scheduling_workspace: isSet(object.schedulingWorkspace)
-        ? ObjectId.fromJSON(object.schedulingWorkspace)
-        : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
       semester: isSet(object.semester) ? ObjectId.fromJSON(object.semester) : undefined,
       period_time_setup_template: isSet(object.periodTimeSetupTemplate)
-        ? ObjectId.fromJSON(object.periodTimeSetupTemplate)
+        ? Uuid.fromJSON(object.periodTimeSetupTemplate)
         : undefined,
     };
   },
@@ -1252,19 +1705,19 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
   toJSON(message: SchedulingSemesterPeriodTimeSetup): unknown {
     const obj: any = {};
     if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+      obj.id = Uuid.toJSON(message.id);
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.scheduling_workspace !== undefined) {
-      obj.schedulingWorkspace = ObjectId.toJSON(message.scheduling_workspace);
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
     }
     if (message.semester !== undefined) {
       obj.semester = ObjectId.toJSON(message.semester);
     }
     if (message.period_time_setup_template !== undefined) {
-      obj.periodTimeSetupTemplate = ObjectId.toJSON(message.period_time_setup_template);
+      obj.periodTimeSetupTemplate = Uuid.toJSON(message.period_time_setup_template);
     }
     return obj;
   },
@@ -1278,19 +1731,19 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
     object: I,
   ): SchedulingSemesterPeriodTimeSetup {
     const message = createBaseSchedulingSemesterPeriodTimeSetup();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
-      ? ObjectId.fromPartial(object.scheduling_workspace)
+      ? Uuid.fromPartial(object.scheduling_workspace)
       : undefined;
     message.semester = (object.semester !== undefined && object.semester !== null)
       ? ObjectId.fromPartial(object.semester)
       : undefined;
     message.period_time_setup_template =
       (object.period_time_setup_template !== undefined && object.period_time_setup_template !== null)
-        ? ObjectId.fromPartial(object.period_time_setup_template)
+        ? Uuid.fromPartial(object.period_time_setup_template)
         : undefined;
     return message;
   },
@@ -1500,13 +1953,13 @@ function createBaseSchedulingTeacherProfile(): SchedulingTeacherProfile {
 export const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile> = {
   encode(message: SchedulingTeacherProfile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
     if (message.scheduling_workspace !== undefined) {
-      ObjectId.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
     }
     if (message.teacher_id !== undefined) {
       ObjectId.encode(message.teacher_id, writer.uint32(34).fork()).join();
@@ -1541,7 +1994,7 @@ export const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile> = {
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.id = Uuid.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -1555,7 +2008,7 @@ export const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile> = {
             break;
           }
 
-          message.scheduling_workspace = ObjectId.decode(reader, reader.uint32());
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -1610,11 +2063,9 @@ export const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile> = {
 
   fromJSON(object: any): SchedulingTeacherProfile {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      scheduling_workspace: isSet(object.schedulingWorkspace)
-        ? ObjectId.fromJSON(object.schedulingWorkspace)
-        : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
       teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
       abstract_course_ids: globalThis.Array.isArray(object?.abstractCourseIds)
         ? object.abstractCourseIds.map((e: any) => ObjectId.fromJSON(e))
@@ -1637,13 +2088,13 @@ export const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile> = {
   toJSON(message: SchedulingTeacherProfile): unknown {
     const obj: any = {};
     if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+      obj.id = Uuid.toJSON(message.id);
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.scheduling_workspace !== undefined) {
-      obj.schedulingWorkspace = ObjectId.toJSON(message.scheduling_workspace);
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
     }
     if (message.teacher_id !== undefined) {
       obj.teacherId = ObjectId.toJSON(message.teacher_id);
@@ -1671,12 +2122,12 @@ export const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile> = {
   },
   fromPartial<I extends Exact<DeepPartial<SchedulingTeacherProfile>, I>>(object: I): SchedulingTeacherProfile {
     const message = createBaseSchedulingTeacherProfile();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
-      ? ObjectId.fromPartial(object.scheduling_workspace)
+      ? Uuid.fromPartial(object.scheduling_workspace)
       : undefined;
     message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
       ? ObjectId.fromPartial(object.teacher_id)
@@ -1939,13 +2390,13 @@ function createBaseSchedulingHighSchoolCourseSetup(): SchedulingHighSchoolCourse
 export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCourseSetup> = {
   encode(message: SchedulingHighSchoolCourseSetup, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== undefined) {
-      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
     }
     if (message.scheduling_workspace !== undefined) {
-      ObjectId.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
     }
     if (message.abstract_course_id !== undefined) {
       ObjectId.encode(message.abstract_course_id, writer.uint32(34).fork()).join();
@@ -1971,7 +2422,7 @@ export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCou
             break;
           }
 
-          message.id = ObjectId.decode(reader, reader.uint32());
+          message.id = Uuid.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
@@ -1985,7 +2436,7 @@ export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCou
             break;
           }
 
-          message.scheduling_workspace = ObjectId.decode(reader, reader.uint32());
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -2019,11 +2470,9 @@ export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCou
 
   fromJSON(object: any): SchedulingHighSchoolCourseSetup {
     return {
-      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      scheduling_workspace: isSet(object.schedulingWorkspace)
-        ? ObjectId.fromJSON(object.schedulingWorkspace)
-        : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
       abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
       is_offered: isSet(object.isOffered) ? globalThis.Boolean(object.isOffered) : undefined,
       semester_option_groups: globalThis.Array.isArray(object?.semesterOptionGroups)
@@ -2035,13 +2484,13 @@ export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCou
   toJSON(message: SchedulingHighSchoolCourseSetup): unknown {
     const obj: any = {};
     if (message.id !== undefined) {
-      obj.id = ObjectId.toJSON(message.id);
+      obj.id = Uuid.toJSON(message.id);
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
     }
     if (message.scheduling_workspace !== undefined) {
-      obj.schedulingWorkspace = ObjectId.toJSON(message.scheduling_workspace);
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
     }
     if (message.abstract_course_id !== undefined) {
       obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
@@ -2062,12 +2511,12 @@ export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCou
     object: I,
   ): SchedulingHighSchoolCourseSetup {
     const message = createBaseSchedulingHighSchoolCourseSetup();
-    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
     message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
-      ? ObjectId.fromPartial(object.scheduling_workspace)
+      ? Uuid.fromPartial(object.scheduling_workspace)
       : undefined;
     message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
       ? ObjectId.fromPartial(object.abstract_course_id)
@@ -2080,13 +2529,19 @@ export const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCou
 };
 
 function createBaseSchedulingSemesterOptionGroup(): SchedulingSemesterOptionGroup {
-  return { semester_ids: [] };
+  return { semester_ids: [], id: undefined, teacher_id: undefined };
 }
 
 export const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionGroup> = {
   encode(message: SchedulingSemesterOptionGroup, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.semester_ids) {
       ObjectId.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(18).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -2105,6 +2560,20 @@ export const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionG
 
           message.semester_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2119,6 +2588,8 @@ export const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionG
       semester_ids: globalThis.Array.isArray(object?.semesterIds)
         ? object.semesterIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
     };
   },
 
@@ -2126,6 +2597,12 @@ export const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionG
     const obj: any = {};
     if (message.semester_ids?.length) {
       obj.semesterIds = message.semester_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -2138,12 +2615,298 @@ export const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionG
   ): SchedulingSemesterOptionGroup {
     const message = createBaseSchedulingSemesterOptionGroup();
     message.semester_ids = object.semester_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingCoursePeriodRule(): SchedulingCoursePeriodRule {
+  return { day: undefined, allowed_periods: [] };
+}
+
+export const SchedulingCoursePeriodRule: MessageFns<SchedulingCoursePeriodRule> = {
+  encode(message: SchedulingCoursePeriodRule, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.day !== undefined) {
+      writer.uint32(8).int32(dayOfWeekToNumber(message.day));
+    }
+    writer.uint32(18).fork();
+    for (const v of message.allowed_periods) {
+      writer.int32(v);
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingCoursePeriodRule {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingCoursePeriodRule();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.day = dayOfWeekFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.allowed_periods.push(reader.int32());
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.allowed_periods.push(reader.int32());
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingCoursePeriodRule {
+    return {
+      day: isSet(object.day) ? dayOfWeekFromJSON(object.day) : undefined,
+      allowed_periods: globalThis.Array.isArray(object?.allowedPeriods)
+        ? object.allowedPeriods.map((e: any) => globalThis.Number(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingCoursePeriodRule): unknown {
+    const obj: any = {};
+    if (message.day !== undefined) {
+      obj.day = dayOfWeekToJSON(message.day);
+    }
+    if (message.allowed_periods?.length) {
+      obj.allowedPeriods = message.allowed_periods.map((e) => Math.round(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingCoursePeriodRule>, I>>(base?: I): SchedulingCoursePeriodRule {
+    return SchedulingCoursePeriodRule.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingCoursePeriodRule>, I>>(object: I): SchedulingCoursePeriodRule {
+    const message = createBaseSchedulingCoursePeriodRule();
+    message.day = object.day ?? undefined;
+    message.allowed_periods = object.allowed_periods?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingInstructionalRequirement(): SchedulingInstructionalRequirement {
+  return {
+    id: undefined,
+    organization: undefined,
+    scheduling_workspace: undefined,
+    abstract_course_id: undefined,
+    grade: undefined,
+    periods_per_week: undefined,
+    double_period_mode: undefined,
+    period_rules: [],
+  };
+}
+
+export const SchedulingInstructionalRequirement: MessageFns<SchedulingInstructionalRequirement> = {
+  encode(message: SchedulingInstructionalRequirement, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.scheduling_workspace !== undefined) {
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(34).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(40).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.periods_per_week !== undefined) {
+      writer.uint32(48).uint32(message.periods_per_week);
+    }
+    if (message.double_period_mode !== undefined) {
+      writer.uint32(56).int32(schedulingDoublePeriodModeToNumber(message.double_period_mode));
+    }
+    for (const v of message.period_rules) {
+      SchedulingCoursePeriodRule.encode(v!, writer.uint32(66).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingInstructionalRequirement {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingInstructionalRequirement();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.periods_per_week = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.double_period_mode = schedulingDoublePeriodModeFromJSON(reader.int32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.period_rules.push(SchedulingCoursePeriodRule.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingInstructionalRequirement {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      periods_per_week: isSet(object.periodsPerWeek) ? globalThis.Number(object.periodsPerWeek) : undefined,
+      double_period_mode: isSet(object.doublePeriodMode)
+        ? schedulingDoublePeriodModeFromJSON(object.doublePeriodMode)
+        : undefined,
+      period_rules: globalThis.Array.isArray(object?.periodRules)
+        ? object.periodRules.map((e: any) => SchedulingCoursePeriodRule.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingInstructionalRequirement): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.scheduling_workspace !== undefined) {
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.periods_per_week !== undefined) {
+      obj.periodsPerWeek = Math.round(message.periods_per_week);
+    }
+    if (message.double_period_mode !== undefined) {
+      obj.doublePeriodMode = schedulingDoublePeriodModeToJSON(message.double_period_mode);
+    }
+    if (message.period_rules?.length) {
+      obj.periodRules = message.period_rules.map((e) => SchedulingCoursePeriodRule.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingInstructionalRequirement>, I>>(
+    base?: I,
+  ): SchedulingInstructionalRequirement {
+    return SchedulingInstructionalRequirement.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingInstructionalRequirement>, I>>(
+    object: I,
+  ): SchedulingInstructionalRequirement {
+    const message = createBaseSchedulingInstructionalRequirement();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+      ? Uuid.fromPartial(object.scheduling_workspace)
+      : undefined;
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
+    message.periods_per_week = object.periods_per_week ?? undefined;
+    message.double_period_mode = object.double_period_mode ?? undefined;
+    message.period_rules = object.period_rules?.map((e) => SchedulingCoursePeriodRule.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseSchedulingClassesSetup(): SchedulingClassesSetup {
-  return { subjects: [], high_school_courses: [], semesters: [], high_school_course_setups: [], offered_grades: [] };
+  return {
+    subjects: [],
+    high_school_courses: [],
+    semesters: [],
+    high_school_course_setups: [],
+    offered_grades: [],
+    instructional_requirements: [],
+  };
 }
 
 export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
@@ -2165,6 +2928,9 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
       writer.int32(studentGradeToNumber(v));
     }
     writer.join();
+    for (const v of message.instructional_requirements) {
+      SchedulingInstructionalRequirement.encode(v!, writer.uint32(50).fork()).join();
+    }
     return writer;
   },
 
@@ -2220,6 +2986,13 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
           }
 
           break;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.instructional_requirements.push(SchedulingInstructionalRequirement.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2246,6 +3019,9 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
       offered_grades: globalThis.Array.isArray(object?.offeredGrades)
         ? object.offeredGrades.map((e: any) => studentGradeFromJSON(e))
         : [],
+      instructional_requirements: globalThis.Array.isArray(object?.instructionalRequirements)
+        ? object.instructionalRequirements.map((e: any) => SchedulingInstructionalRequirement.fromJSON(e))
+        : [],
     };
   },
 
@@ -2268,6 +3044,11 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
     if (message.offered_grades?.length) {
       obj.offeredGrades = message.offered_grades.map((e) => studentGradeToJSON(e));
     }
+    if (message.instructional_requirements?.length) {
+      obj.instructionalRequirements = message.instructional_requirements.map((e) =>
+        SchedulingInstructionalRequirement.toJSON(e)
+      );
+    }
     return obj;
   },
 
@@ -2282,6 +3063,1879 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
     message.high_school_course_setups =
       object.high_school_course_setups?.map((e) => SchedulingHighSchoolCourseSetup.fromPartial(e)) || [];
     message.offered_grades = object.offered_grades?.map((e) => e) || [];
+    message.instructional_requirements =
+      object.instructional_requirements?.map((e) => SchedulingInstructionalRequirement.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingStudentAssignmentOption(): SchedulingStudentAssignmentOption {
+  return { student_id: undefined, first_name: undefined, last_name: undefined, grade: undefined };
+}
+
+export const SchedulingStudentAssignmentOption: MessageFns<SchedulingStudentAssignmentOption> = {
+  encode(message: SchedulingStudentAssignmentOption, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.first_name !== undefined) {
+      writer.uint32(18).string(message.first_name);
+    }
+    if (message.last_name !== undefined) {
+      writer.uint32(26).string(message.last_name);
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingStudentAssignmentOption {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingStudentAssignmentOption();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.first_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.last_name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingStudentAssignmentOption {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingStudentAssignmentOption): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.first_name !== undefined) {
+      obj.firstName = message.first_name;
+    }
+    if (message.last_name !== undefined) {
+      obj.lastName = message.last_name;
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingStudentAssignmentOption>, I>>(
+    base?: I,
+  ): SchedulingStudentAssignmentOption {
+    return SchedulingStudentAssignmentOption.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingStudentAssignmentOption>, I>>(
+    object: I,
+  ): SchedulingStudentAssignmentOption {
+    const message = createBaseSchedulingStudentAssignmentOption();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.first_name = object.first_name ?? undefined;
+    message.last_name = object.last_name ?? undefined;
+    message.grade = object.grade ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingSubjectAssignmentPreview(): SchedulingSubjectAssignmentPreview {
+  return { grade: undefined, subjects: [], student_count: undefined, students: [] };
+}
+
+export const SchedulingSubjectAssignmentPreview: MessageFns<SchedulingSubjectAssignmentPreview> = {
+  encode(message: SchedulingSubjectAssignmentPreview, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.grade !== undefined) {
+      writer.uint32(8).int32(studentGradeToNumber(message.grade));
+    }
+    for (const v of message.subjects) {
+      AbstractCourse.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.student_count !== undefined) {
+      writer.uint32(24).uint32(message.student_count);
+    }
+    for (const v of message.students) {
+      SchedulingStudentAssignmentOption.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingSubjectAssignmentPreview {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingSubjectAssignmentPreview();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.subjects.push(AbstractCourse.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.student_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.students.push(SchedulingStudentAssignmentOption.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingSubjectAssignmentPreview {
+    return {
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      subjects: globalThis.Array.isArray(object?.subjects)
+        ? object.subjects.map((e: any) => AbstractCourse.fromJSON(e))
+        : [],
+      student_count: isSet(object.studentCount) ? globalThis.Number(object.studentCount) : undefined,
+      students: globalThis.Array.isArray(object?.students)
+        ? object.students.map((e: any) => SchedulingStudentAssignmentOption.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingSubjectAssignmentPreview): unknown {
+    const obj: any = {};
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.subjects?.length) {
+      obj.subjects = message.subjects.map((e) => AbstractCourse.toJSON(e));
+    }
+    if (message.student_count !== undefined) {
+      obj.studentCount = Math.round(message.student_count);
+    }
+    if (message.students?.length) {
+      obj.students = message.students.map((e) => SchedulingStudentAssignmentOption.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingSubjectAssignmentPreview>, I>>(
+    base?: I,
+  ): SchedulingSubjectAssignmentPreview {
+    return SchedulingSubjectAssignmentPreview.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingSubjectAssignmentPreview>, I>>(
+    object: I,
+  ): SchedulingSubjectAssignmentPreview {
+    const message = createBaseSchedulingSubjectAssignmentPreview();
+    message.grade = object.grade ?? undefined;
+    message.subjects = object.subjects?.map((e) => AbstractCourse.fromPartial(e)) || [];
+    message.student_count = object.student_count ?? undefined;
+    message.students = object.students?.map((e) => SchedulingStudentAssignmentOption.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingHighSchoolCourseStudentAssignment(): SchedulingHighSchoolCourseStudentAssignment {
+  return {
+    id: undefined,
+    organization: undefined,
+    scheduling_workspace: undefined,
+    abstract_course_id: undefined,
+    student_ids: [],
+    offering_id: undefined,
+  };
+}
+
+export const SchedulingHighSchoolCourseStudentAssignment: MessageFns<SchedulingHighSchoolCourseStudentAssignment> = {
+  encode(
+    message: SchedulingHighSchoolCourseStudentAssignment,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.scheduling_workspace !== undefined) {
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(42).fork()).join();
+    }
+    if (message.offering_id !== undefined) {
+      ObjectId.encode(message.offering_id, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingHighSchoolCourseStudentAssignment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingHighSchoolCourseStudentAssignment();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.offering_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingHighSchoolCourseStudentAssignment {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      offering_id: isSet(object.offeringId) ? ObjectId.fromJSON(object.offeringId) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingHighSchoolCourseStudentAssignment): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.scheduling_workspace !== undefined) {
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.offering_id !== undefined) {
+      obj.offeringId = ObjectId.toJSON(message.offering_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingHighSchoolCourseStudentAssignment>, I>>(
+    base?: I,
+  ): SchedulingHighSchoolCourseStudentAssignment {
+    return SchedulingHighSchoolCourseStudentAssignment.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingHighSchoolCourseStudentAssignment>, I>>(
+    object: I,
+  ): SchedulingHighSchoolCourseStudentAssignment {
+    const message = createBaseSchedulingHighSchoolCourseStudentAssignment();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+      ? Uuid.fromPartial(object.scheduling_workspace)
+      : undefined;
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.offering_id = (object.offering_id !== undefined && object.offering_id !== null)
+      ? ObjectId.fromPartial(object.offering_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingClassAssignmentSetup(): SchedulingClassAssignmentSetup {
+  return {
+    subject_previews: [],
+    high_school_courses: [],
+    high_school_course_setups: [],
+    high_school_course_assignments: [],
+    high_school_students: [],
+    semesters: [],
+  };
+}
+
+export const SchedulingClassAssignmentSetup: MessageFns<SchedulingClassAssignmentSetup> = {
+  encode(message: SchedulingClassAssignmentSetup, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.subject_previews) {
+      SchedulingSubjectAssignmentPreview.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.high_school_courses) {
+      AbstractCourse.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.high_school_course_setups) {
+      SchedulingHighSchoolCourseSetup.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.high_school_course_assignments) {
+      SchedulingHighSchoolCourseStudentAssignment.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.high_school_students) {
+      SchedulingStudentAssignmentOption.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.semesters) {
+      Semester.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingClassAssignmentSetup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingClassAssignmentSetup();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.subject_previews.push(SchedulingSubjectAssignmentPreview.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.high_school_courses.push(AbstractCourse.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.high_school_course_setups.push(SchedulingHighSchoolCourseSetup.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.high_school_course_assignments.push(
+            SchedulingHighSchoolCourseStudentAssignment.decode(reader, reader.uint32()),
+          );
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.high_school_students.push(SchedulingStudentAssignmentOption.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.semesters.push(Semester.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingClassAssignmentSetup {
+    return {
+      subject_previews: globalThis.Array.isArray(object?.subjectPreviews)
+        ? object.subjectPreviews.map((e: any) => SchedulingSubjectAssignmentPreview.fromJSON(e))
+        : [],
+      high_school_courses: globalThis.Array.isArray(object?.highSchoolCourses)
+        ? object.highSchoolCourses.map((e: any) => AbstractCourse.fromJSON(e))
+        : [],
+      high_school_course_setups: globalThis.Array.isArray(object?.highSchoolCourseSetups)
+        ? object.highSchoolCourseSetups.map((e: any) => SchedulingHighSchoolCourseSetup.fromJSON(e))
+        : [],
+      high_school_course_assignments: globalThis.Array.isArray(object?.highSchoolCourseAssignments)
+        ? object.highSchoolCourseAssignments.map((e: any) => SchedulingHighSchoolCourseStudentAssignment.fromJSON(e))
+        : [],
+      high_school_students: globalThis.Array.isArray(object?.highSchoolStudents)
+        ? object.highSchoolStudents.map((e: any) => SchedulingStudentAssignmentOption.fromJSON(e))
+        : [],
+      semesters: globalThis.Array.isArray(object?.semesters)
+        ? object.semesters.map((e: any) => Semester.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingClassAssignmentSetup): unknown {
+    const obj: any = {};
+    if (message.subject_previews?.length) {
+      obj.subjectPreviews = message.subject_previews.map((e) => SchedulingSubjectAssignmentPreview.toJSON(e));
+    }
+    if (message.high_school_courses?.length) {
+      obj.highSchoolCourses = message.high_school_courses.map((e) => AbstractCourse.toJSON(e));
+    }
+    if (message.high_school_course_setups?.length) {
+      obj.highSchoolCourseSetups = message.high_school_course_setups.map((e) =>
+        SchedulingHighSchoolCourseSetup.toJSON(e)
+      );
+    }
+    if (message.high_school_course_assignments?.length) {
+      obj.highSchoolCourseAssignments = message.high_school_course_assignments.map((e) =>
+        SchedulingHighSchoolCourseStudentAssignment.toJSON(e)
+      );
+    }
+    if (message.high_school_students?.length) {
+      obj.highSchoolStudents = message.high_school_students.map((e) => SchedulingStudentAssignmentOption.toJSON(e));
+    }
+    if (message.semesters?.length) {
+      obj.semesters = message.semesters.map((e) => Semester.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingClassAssignmentSetup>, I>>(base?: I): SchedulingClassAssignmentSetup {
+    return SchedulingClassAssignmentSetup.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingClassAssignmentSetup>, I>>(
+    object: I,
+  ): SchedulingClassAssignmentSetup {
+    const message = createBaseSchedulingClassAssignmentSetup();
+    message.subject_previews = object.subject_previews?.map((e) => SchedulingSubjectAssignmentPreview.fromPartial(e)) ||
+      [];
+    message.high_school_courses = object.high_school_courses?.map((e) => AbstractCourse.fromPartial(e)) || [];
+    message.high_school_course_setups =
+      object.high_school_course_setups?.map((e) => SchedulingHighSchoolCourseSetup.fromPartial(e)) || [];
+    message.high_school_course_assignments =
+      object.high_school_course_assignments?.map((e) => SchedulingHighSchoolCourseStudentAssignment.fromPartial(e)) ||
+      [];
+    message.high_school_students =
+      object.high_school_students?.map((e) => SchedulingStudentAssignmentOption.fromPartial(e)) || [];
+    message.semesters = object.semesters?.map((e) => Semester.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingClassGroup(): SchedulingClassGroup {
+  return {
+    id: undefined,
+    organization: undefined,
+    scheduling_workspace: undefined,
+    campus_id: undefined,
+    grade: undefined,
+    semester_id: undefined,
+    label: undefined,
+    stale: undefined,
+  };
+}
+
+export const SchedulingClassGroup: MessageFns<SchedulingClassGroup> = {
+  encode(message: SchedulingClassGroup, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.scheduling_workspace !== undefined) {
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(34).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(40).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(50).fork()).join();
+    }
+    if (message.label !== undefined) {
+      writer.uint32(58).string(message.label);
+    }
+    if (message.stale !== undefined) {
+      writer.uint32(64).bool(message.stale);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingClassGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingClassGroup();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.stale = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingClassGroup {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+      stale: isSet(object.stale) ? globalThis.Boolean(object.stale) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingClassGroup): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.scheduling_workspace !== undefined) {
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.label !== undefined) {
+      obj.label = message.label;
+    }
+    if (message.stale !== undefined) {
+      obj.stale = message.stale;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingClassGroup>, I>>(base?: I): SchedulingClassGroup {
+    return SchedulingClassGroup.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingClassGroup>, I>>(object: I): SchedulingClassGroup {
+    const message = createBaseSchedulingClassGroup();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+      ? Uuid.fromPartial(object.scheduling_workspace)
+      : undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.label = object.label ?? undefined;
+    message.stale = object.stale ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingClassGroupTeacherAssignment(): SchedulingClassGroupTeacherAssignment {
+  return {
+    id: undefined,
+    organization: undefined,
+    scheduling_workspace: undefined,
+    class_group_id: undefined,
+    abstract_course_id: undefined,
+    teacher_id: undefined,
+  };
+}
+
+export const SchedulingClassGroupTeacherAssignment: MessageFns<SchedulingClassGroupTeacherAssignment> = {
+  encode(message: SchedulingClassGroupTeacherAssignment, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.scheduling_workspace !== undefined) {
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+    }
+    if (message.class_group_id !== undefined) {
+      Uuid.encode(message.class_group_id, writer.uint32(34).fork()).join();
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(42).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingClassGroupTeacherAssignment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingClassGroupTeacherAssignment();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.class_group_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingClassGroupTeacherAssignment {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+      class_group_id: isSet(object.classGroupId) ? Uuid.fromJSON(object.classGroupId) : undefined,
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingClassGroupTeacherAssignment): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.scheduling_workspace !== undefined) {
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
+    }
+    if (message.class_group_id !== undefined) {
+      obj.classGroupId = Uuid.toJSON(message.class_group_id);
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingClassGroupTeacherAssignment>, I>>(
+    base?: I,
+  ): SchedulingClassGroupTeacherAssignment {
+    return SchedulingClassGroupTeacherAssignment.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingClassGroupTeacherAssignment>, I>>(
+    object: I,
+  ): SchedulingClassGroupTeacherAssignment {
+    const message = createBaseSchedulingClassGroupTeacherAssignment();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+      ? Uuid.fromPartial(object.scheduling_workspace)
+      : undefined;
+    message.class_group_id = (object.class_group_id !== undefined && object.class_group_id !== null)
+      ? Uuid.fromPartial(object.class_group_id)
+      : undefined;
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingClassGroupSetup(): SchedulingClassGroupSetup {
+  return {
+    groups: [],
+    subjects: [],
+    assignments: [],
+    teachers: [],
+    teacher_profiles: [],
+    semesters: [],
+    high_school_courses: [],
+    high_school_course_setups: [],
+    high_school_course_assignments: [],
+  };
+}
+
+export const SchedulingClassGroupSetup: MessageFns<SchedulingClassGroupSetup> = {
+  encode(message: SchedulingClassGroupSetup, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.groups) {
+      SchedulingClassGroup.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.subjects) {
+      AbstractCourse.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.assignments) {
+      SchedulingClassGroupTeacherAssignment.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.teachers) {
+      TeacherBasic.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.teacher_profiles) {
+      SchedulingTeacherProfile.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.semesters) {
+      Semester.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.high_school_courses) {
+      AbstractCourse.encode(v!, writer.uint32(58).fork()).join();
+    }
+    for (const v of message.high_school_course_setups) {
+      SchedulingHighSchoolCourseSetup.encode(v!, writer.uint32(66).fork()).join();
+    }
+    for (const v of message.high_school_course_assignments) {
+      SchedulingHighSchoolCourseStudentAssignment.encode(v!, writer.uint32(74).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingClassGroupSetup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingClassGroupSetup();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groups.push(SchedulingClassGroup.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.subjects.push(AbstractCourse.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.assignments.push(SchedulingClassGroupTeacherAssignment.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.teachers.push(TeacherBasic.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.teacher_profiles.push(SchedulingTeacherProfile.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.semesters.push(Semester.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.high_school_courses.push(AbstractCourse.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.high_school_course_setups.push(SchedulingHighSchoolCourseSetup.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.high_school_course_assignments.push(
+            SchedulingHighSchoolCourseStudentAssignment.decode(reader, reader.uint32()),
+          );
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingClassGroupSetup {
+    return {
+      groups: globalThis.Array.isArray(object?.groups)
+        ? object.groups.map((e: any) => SchedulingClassGroup.fromJSON(e))
+        : [],
+      subjects: globalThis.Array.isArray(object?.subjects)
+        ? object.subjects.map((e: any) => AbstractCourse.fromJSON(e))
+        : [],
+      assignments: globalThis.Array.isArray(object?.assignments)
+        ? object.assignments.map((e: any) => SchedulingClassGroupTeacherAssignment.fromJSON(e))
+        : [],
+      teachers: globalThis.Array.isArray(object?.teachers)
+        ? object.teachers.map((e: any) => TeacherBasic.fromJSON(e))
+        : [],
+      teacher_profiles: globalThis.Array.isArray(object?.teacherProfiles)
+        ? object.teacherProfiles.map((e: any) => SchedulingTeacherProfile.fromJSON(e))
+        : [],
+      semesters: globalThis.Array.isArray(object?.semesters)
+        ? object.semesters.map((e: any) => Semester.fromJSON(e))
+        : [],
+      high_school_courses: globalThis.Array.isArray(object?.highSchoolCourses)
+        ? object.highSchoolCourses.map((e: any) => AbstractCourse.fromJSON(e))
+        : [],
+      high_school_course_setups: globalThis.Array.isArray(object?.highSchoolCourseSetups)
+        ? object.highSchoolCourseSetups.map((e: any) => SchedulingHighSchoolCourseSetup.fromJSON(e))
+        : [],
+      high_school_course_assignments: globalThis.Array.isArray(object?.highSchoolCourseAssignments)
+        ? object.highSchoolCourseAssignments.map((e: any) => SchedulingHighSchoolCourseStudentAssignment.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingClassGroupSetup): unknown {
+    const obj: any = {};
+    if (message.groups?.length) {
+      obj.groups = message.groups.map((e) => SchedulingClassGroup.toJSON(e));
+    }
+    if (message.subjects?.length) {
+      obj.subjects = message.subjects.map((e) => AbstractCourse.toJSON(e));
+    }
+    if (message.assignments?.length) {
+      obj.assignments = message.assignments.map((e) => SchedulingClassGroupTeacherAssignment.toJSON(e));
+    }
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => TeacherBasic.toJSON(e));
+    }
+    if (message.teacher_profiles?.length) {
+      obj.teacherProfiles = message.teacher_profiles.map((e) => SchedulingTeacherProfile.toJSON(e));
+    }
+    if (message.semesters?.length) {
+      obj.semesters = message.semesters.map((e) => Semester.toJSON(e));
+    }
+    if (message.high_school_courses?.length) {
+      obj.highSchoolCourses = message.high_school_courses.map((e) => AbstractCourse.toJSON(e));
+    }
+    if (message.high_school_course_setups?.length) {
+      obj.highSchoolCourseSetups = message.high_school_course_setups.map((e) =>
+        SchedulingHighSchoolCourseSetup.toJSON(e)
+      );
+    }
+    if (message.high_school_course_assignments?.length) {
+      obj.highSchoolCourseAssignments = message.high_school_course_assignments.map((e) =>
+        SchedulingHighSchoolCourseStudentAssignment.toJSON(e)
+      );
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingClassGroupSetup>, I>>(base?: I): SchedulingClassGroupSetup {
+    return SchedulingClassGroupSetup.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingClassGroupSetup>, I>>(object: I): SchedulingClassGroupSetup {
+    const message = createBaseSchedulingClassGroupSetup();
+    message.groups = object.groups?.map((e) => SchedulingClassGroup.fromPartial(e)) || [];
+    message.subjects = object.subjects?.map((e) => AbstractCourse.fromPartial(e)) || [];
+    message.assignments = object.assignments?.map((e) => SchedulingClassGroupTeacherAssignment.fromPartial(e)) || [];
+    message.teachers = object.teachers?.map((e) => TeacherBasic.fromPartial(e)) || [];
+    message.teacher_profiles = object.teacher_profiles?.map((e) => SchedulingTeacherProfile.fromPartial(e)) || [];
+    message.semesters = object.semesters?.map((e) => Semester.fromPartial(e)) || [];
+    message.high_school_courses = object.high_school_courses?.map((e) => AbstractCourse.fromPartial(e)) || [];
+    message.high_school_course_setups =
+      object.high_school_course_setups?.map((e) => SchedulingHighSchoolCourseSetup.fromPartial(e)) || [];
+    message.high_school_course_assignments =
+      object.high_school_course_assignments?.map((e) => SchedulingHighSchoolCourseStudentAssignment.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+function createBaseSchedulingGenerationBlocker(): SchedulingGenerationBlocker {
+  return { message: undefined, code: undefined };
+}
+
+export const SchedulingGenerationBlocker: MessageFns<SchedulingGenerationBlocker> = {
+  encode(message: SchedulingGenerationBlocker, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.message !== undefined) {
+      writer.uint32(10).string(message.message);
+    }
+    if (message.code !== undefined) {
+      writer.uint32(18).string(message.code);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGenerationBlocker {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGenerationBlocker();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.code = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGenerationBlocker {
+    return {
+      message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+      code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGenerationBlocker): unknown {
+    const obj: any = {};
+    if (message.message !== undefined) {
+      obj.message = message.message;
+    }
+    if (message.code !== undefined) {
+      obj.code = message.code;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGenerationBlocker>, I>>(base?: I): SchedulingGenerationBlocker {
+    return SchedulingGenerationBlocker.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGenerationBlocker>, I>>(object: I): SchedulingGenerationBlocker {
+    const message = createBaseSchedulingGenerationBlocker();
+    message.message = object.message ?? undefined;
+    message.code = object.code ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingGenerationRun(): SchedulingGenerationRun {
+  return {
+    id: undefined,
+    organization: undefined,
+    scheduling_workspace: undefined,
+    school_year: undefined,
+    solver_input_snapshot_id: undefined,
+    schema_version: undefined,
+    status: undefined,
+    started_at: undefined,
+    finished_at: undefined,
+    error_message: undefined,
+    blockers: [],
+    generated_schedule_id: undefined,
+    created_by: undefined,
+    created_at: undefined,
+  };
+}
+
+export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
+  encode(message: SchedulingGenerationRun, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.scheduling_workspace !== undefined) {
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+    }
+    if (message.solver_input_snapshot_id !== undefined) {
+      Uuid.encode(message.solver_input_snapshot_id, writer.uint32(42).fork()).join();
+    }
+    if (message.schema_version !== undefined) {
+      writer.uint32(48).uint32(message.schema_version);
+    }
+    if (message.status !== undefined) {
+      writer.uint32(56).int32(schedulingGenerationRunStatusToNumber(message.status));
+    }
+    if (message.started_at !== undefined) {
+      writer.uint32(66).string(message.started_at);
+    }
+    if (message.finished_at !== undefined) {
+      writer.uint32(74).string(message.finished_at);
+    }
+    if (message.error_message !== undefined) {
+      writer.uint32(82).string(message.error_message);
+    }
+    for (const v of message.blockers) {
+      SchedulingGenerationBlocker.encode(v!, writer.uint32(90).fork()).join();
+    }
+    if (message.generated_schedule_id !== undefined) {
+      ObjectId.encode(message.generated_schedule_id, writer.uint32(98).fork()).join();
+    }
+    if (message.created_by !== undefined) {
+      ObjectId.encode(message.created_by, writer.uint32(106).fork()).join();
+    }
+    if (message.created_at !== undefined) {
+      writer.uint32(114).string(message.created_at);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGenerationRun {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGenerationRun();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.solver_input_snapshot_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.schema_version = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.status = schedulingGenerationRunStatusFromJSON(reader.int32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.started_at = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.finished_at = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.error_message = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.blockers.push(SchedulingGenerationBlocker.decode(reader, reader.uint32()));
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.generated_schedule_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.created_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.created_at = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGenerationRun {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      solver_input_snapshot_id: isSet(object.solverInputSnapshotId)
+        ? Uuid.fromJSON(object.solverInputSnapshotId)
+        : undefined,
+      schema_version: isSet(object.schemaVersion) ? globalThis.Number(object.schemaVersion) : undefined,
+      status: isSet(object.status) ? schedulingGenerationRunStatusFromJSON(object.status) : undefined,
+      started_at: isSet(object.startedAt) ? globalThis.String(object.startedAt) : undefined,
+      finished_at: isSet(object.finishedAt) ? globalThis.String(object.finishedAt) : undefined,
+      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : undefined,
+      blockers: globalThis.Array.isArray(object?.blockers)
+        ? object.blockers.map((e: any) => SchedulingGenerationBlocker.fromJSON(e))
+        : [],
+      generated_schedule_id: isSet(object.generatedScheduleId)
+        ? ObjectId.fromJSON(object.generatedScheduleId)
+        : undefined,
+      created_by: isSet(object.createdBy) ? ObjectId.fromJSON(object.createdBy) : undefined,
+      created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGenerationRun): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.scheduling_workspace !== undefined) {
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.solver_input_snapshot_id !== undefined) {
+      obj.solverInputSnapshotId = Uuid.toJSON(message.solver_input_snapshot_id);
+    }
+    if (message.schema_version !== undefined) {
+      obj.schemaVersion = Math.round(message.schema_version);
+    }
+    if (message.status !== undefined) {
+      obj.status = schedulingGenerationRunStatusToJSON(message.status);
+    }
+    if (message.started_at !== undefined) {
+      obj.startedAt = message.started_at;
+    }
+    if (message.finished_at !== undefined) {
+      obj.finishedAt = message.finished_at;
+    }
+    if (message.error_message !== undefined) {
+      obj.errorMessage = message.error_message;
+    }
+    if (message.blockers?.length) {
+      obj.blockers = message.blockers.map((e) => SchedulingGenerationBlocker.toJSON(e));
+    }
+    if (message.generated_schedule_id !== undefined) {
+      obj.generatedScheduleId = ObjectId.toJSON(message.generated_schedule_id);
+    }
+    if (message.created_by !== undefined) {
+      obj.createdBy = ObjectId.toJSON(message.created_by);
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGenerationRun>, I>>(base?: I): SchedulingGenerationRun {
+    return SchedulingGenerationRun.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGenerationRun>, I>>(object: I): SchedulingGenerationRun {
+    const message = createBaseSchedulingGenerationRun();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+      ? Uuid.fromPartial(object.scheduling_workspace)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    message.solver_input_snapshot_id =
+      (object.solver_input_snapshot_id !== undefined && object.solver_input_snapshot_id !== null)
+        ? Uuid.fromPartial(object.solver_input_snapshot_id)
+        : undefined;
+    message.schema_version = object.schema_version ?? undefined;
+    message.status = object.status ?? undefined;
+    message.started_at = object.started_at ?? undefined;
+    message.finished_at = object.finished_at ?? undefined;
+    message.error_message = object.error_message ?? undefined;
+    message.blockers = object.blockers?.map((e) => SchedulingGenerationBlocker.fromPartial(e)) || [];
+    message.generated_schedule_id =
+      (object.generated_schedule_id !== undefined && object.generated_schedule_id !== null)
+        ? ObjectId.fromPartial(object.generated_schedule_id)
+        : undefined;
+    message.created_by = (object.created_by !== undefined && object.created_by !== null)
+      ? ObjectId.fromPartial(object.created_by)
+      : undefined;
+    message.created_at = object.created_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingGenerationRunList(): SchedulingGenerationRunList {
+  return { runs: [] };
+}
+
+export const SchedulingGenerationRunList: MessageFns<SchedulingGenerationRunList> = {
+  encode(message: SchedulingGenerationRunList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.runs) {
+      SchedulingGenerationRun.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGenerationRunList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGenerationRunList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.runs.push(SchedulingGenerationRun.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGenerationRunList {
+    return {
+      runs: globalThis.Array.isArray(object?.runs)
+        ? object.runs.map((e: any) => SchedulingGenerationRun.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingGenerationRunList): unknown {
+    const obj: any = {};
+    if (message.runs?.length) {
+      obj.runs = message.runs.map((e) => SchedulingGenerationRun.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGenerationRunList>, I>>(base?: I): SchedulingGenerationRunList {
+    return SchedulingGenerationRunList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGenerationRunList>, I>>(object: I): SchedulingGenerationRunList {
+    const message = createBaseSchedulingGenerationRunList();
+    message.runs = object.runs?.map((e) => SchedulingGenerationRun.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingReviewMetric(): SchedulingReviewMetric {
+  return { label: undefined, value: undefined };
+}
+
+export const SchedulingReviewMetric: MessageFns<SchedulingReviewMetric> = {
+  encode(message: SchedulingReviewMetric, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.label !== undefined) {
+      writer.uint32(10).string(message.label);
+    }
+    if (message.value !== undefined) {
+      writer.uint32(16).uint32(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingReviewMetric {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingReviewMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.value = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingReviewMetric {
+    return {
+      label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+      value: isSet(object.value) ? globalThis.Number(object.value) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingReviewMetric): unknown {
+    const obj: any = {};
+    if (message.label !== undefined) {
+      obj.label = message.label;
+    }
+    if (message.value !== undefined) {
+      obj.value = Math.round(message.value);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingReviewMetric>, I>>(base?: I): SchedulingReviewMetric {
+    return SchedulingReviewMetric.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingReviewMetric>, I>>(object: I): SchedulingReviewMetric {
+    const message = createBaseSchedulingReviewMetric();
+    message.label = object.label ?? undefined;
+    message.value = object.value ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingReviewIssue(): SchedulingReviewIssue {
+  return { action_step: undefined, message: undefined, code: undefined };
+}
+
+export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
+  encode(message: SchedulingReviewIssue, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.action_step !== undefined) {
+      writer.uint32(8).int32(schedulingPreparationStepToNumber(message.action_step));
+    }
+    if (message.message !== undefined) {
+      writer.uint32(18).string(message.message);
+    }
+    if (message.code !== undefined) {
+      writer.uint32(26).string(message.code);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingReviewIssue {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingReviewIssue();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.action_step = schedulingPreparationStepFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.code = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingReviewIssue {
+    return {
+      action_step: isSet(object.actionStep) ? schedulingPreparationStepFromJSON(object.actionStep) : undefined,
+      message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+      code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingReviewIssue): unknown {
+    const obj: any = {};
+    if (message.action_step !== undefined) {
+      obj.actionStep = schedulingPreparationStepToJSON(message.action_step);
+    }
+    if (message.message !== undefined) {
+      obj.message = message.message;
+    }
+    if (message.code !== undefined) {
+      obj.code = message.code;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingReviewIssue>, I>>(base?: I): SchedulingReviewIssue {
+    return SchedulingReviewIssue.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingReviewIssue>, I>>(object: I): SchedulingReviewIssue {
+    const message = createBaseSchedulingReviewIssue();
+    message.action_step = object.action_step ?? undefined;
+    message.message = object.message ?? undefined;
+    message.code = object.code ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingReviewSection(): SchedulingReviewSection {
+  return { section: undefined, metrics: [], issues: [] };
+}
+
+export const SchedulingReviewSection: MessageFns<SchedulingReviewSection> = {
+  encode(message: SchedulingReviewSection, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.section !== undefined) {
+      writer.uint32(8).int32(schedulingReviewSectionTypeToNumber(message.section));
+    }
+    for (const v of message.metrics) {
+      SchedulingReviewMetric.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.issues) {
+      SchedulingReviewIssue.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingReviewSection {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingReviewSection();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.section = schedulingReviewSectionTypeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.metrics.push(SchedulingReviewMetric.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.issues.push(SchedulingReviewIssue.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingReviewSection {
+    return {
+      section: isSet(object.section) ? schedulingReviewSectionTypeFromJSON(object.section) : undefined,
+      metrics: globalThis.Array.isArray(object?.metrics)
+        ? object.metrics.map((e: any) => SchedulingReviewMetric.fromJSON(e))
+        : [],
+      issues: globalThis.Array.isArray(object?.issues)
+        ? object.issues.map((e: any) => SchedulingReviewIssue.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingReviewSection): unknown {
+    const obj: any = {};
+    if (message.section !== undefined) {
+      obj.section = schedulingReviewSectionTypeToJSON(message.section);
+    }
+    if (message.metrics?.length) {
+      obj.metrics = message.metrics.map((e) => SchedulingReviewMetric.toJSON(e));
+    }
+    if (message.issues?.length) {
+      obj.issues = message.issues.map((e) => SchedulingReviewIssue.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingReviewSection>, I>>(base?: I): SchedulingReviewSection {
+    return SchedulingReviewSection.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingReviewSection>, I>>(object: I): SchedulingReviewSection {
+    const message = createBaseSchedulingReviewSection();
+    message.section = object.section ?? undefined;
+    message.metrics = object.metrics?.map((e) => SchedulingReviewMetric.fromPartial(e)) || [];
+    message.issues = object.issues?.map((e) => SchedulingReviewIssue.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingReview(): SchedulingReview {
+  return { sections: [], cross_step_issues: [], ready: undefined };
+}
+
+export const SchedulingReview: MessageFns<SchedulingReview> = {
+  encode(message: SchedulingReview, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.sections) {
+      SchedulingReviewSection.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.cross_step_issues) {
+      SchedulingReviewIssue.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.ready !== undefined) {
+      writer.uint32(24).bool(message.ready);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingReview {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingReview();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.sections.push(SchedulingReviewSection.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.cross_step_issues.push(SchedulingReviewIssue.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.ready = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingReview {
+    return {
+      sections: globalThis.Array.isArray(object?.sections)
+        ? object.sections.map((e: any) => SchedulingReviewSection.fromJSON(e))
+        : [],
+      cross_step_issues: globalThis.Array.isArray(object?.crossStepIssues)
+        ? object.crossStepIssues.map((e: any) => SchedulingReviewIssue.fromJSON(e))
+        : [],
+      ready: isSet(object.ready) ? globalThis.Boolean(object.ready) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingReview): unknown {
+    const obj: any = {};
+    if (message.sections?.length) {
+      obj.sections = message.sections.map((e) => SchedulingReviewSection.toJSON(e));
+    }
+    if (message.cross_step_issues?.length) {
+      obj.crossStepIssues = message.cross_step_issues.map((e) => SchedulingReviewIssue.toJSON(e));
+    }
+    if (message.ready !== undefined) {
+      obj.ready = message.ready;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingReview>, I>>(base?: I): SchedulingReview {
+    return SchedulingReview.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingReview>, I>>(object: I): SchedulingReview {
+    const message = createBaseSchedulingReview();
+    message.sections = object.sections?.map((e) => SchedulingReviewSection.fromPartial(e)) || [];
+    message.cross_step_issues = object.cross_step_issues?.map((e) => SchedulingReviewIssue.fromPartial(e)) || [];
+    message.ready = object.ready ?? undefined;
     return message;
   },
 };

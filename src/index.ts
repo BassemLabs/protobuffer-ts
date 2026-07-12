@@ -147,6 +147,8 @@ import * as Request_context from './utils/request_context';
 export { Request_context };
 import * as Object_id from './utils/object_id';
 export { Object_id };
+import * as Uuid from './utils/uuid';
+export { Uuid };
 import * as Phone_number from './utils/phone_number';
 export { Phone_number };
 import * as Notification_type from './utils/notification_type';

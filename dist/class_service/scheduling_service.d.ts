@@ -2,7 +2,8 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingTeacherAvailabilityWindow } from "./scheduling";
+import { Uuid } from "../utils/uuid";
+import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingTeacherAvailabilityWindow } from "./scheduling";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -47,7 +48,7 @@ export interface CreateSchedulingPeriodTimeSetupTemplateRequest {
 export interface UpdateSchedulingPeriodTimeSetupTemplateRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
-    template_id: ObjectId | undefined;
+    template_id: Uuid | undefined;
     name?: string | undefined;
     periods: SchedulingPeriodDefinition[];
 }
@@ -55,7 +56,7 @@ export interface AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
     semester_id: ObjectId | undefined;
-    template_id: ObjectId | undefined;
+    template_id: Uuid | undefined;
 }
 export interface GetSchedulingTeacherSetupRequest {
     context: RequestContext | undefined;
@@ -84,6 +85,51 @@ export interface UpsertSchedulingHighSchoolCourseSetupRequest {
     is_offered?: boolean | undefined;
     semester_option_groups: SchedulingSemesterOptionGroup[];
 }
+export interface UpsertSchedulingInstructionalRequirementRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    abstract_course_id: ObjectId | undefined;
+    grade?: StudentGrade | undefined;
+    periods_per_week?: number | undefined;
+    double_period_mode?: SchedulingDoublePeriodMode | undefined;
+    period_rules: SchedulingCoursePeriodRule[];
+}
+export interface GetSchedulingClassGroupSetupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    class_group_id: Uuid | undefined;
+    abstract_course_id: ObjectId | undefined;
+    /** When absent, the stored assignment is cleared. */
+    teacher_id?: ObjectId | undefined;
+}
+export interface DeleteSchedulingClassGroupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    class_group_id: Uuid | undefined;
+}
+export interface GetSchedulingClassAssignmentSetupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface UpsertSchedulingHighSchoolCourseStudentAssignmentRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    abstract_course_id: ObjectId | undefined;
+    offering_id: ObjectId | undefined;
+    student_ids: ObjectId[];
+}
+export interface StartSchedulingGenerationRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetSchedulingGenerationRunsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
 export declare const GetSchedulingPreparationRequest: MessageFns<GetSchedulingPreparationRequest>;
 export declare const CreateSchedulingWorkspaceRequest: MessageFns<CreateSchedulingWorkspaceRequest>;
 export declare const CompleteSchedulingPreparationStepRequest: MessageFns<CompleteSchedulingPreparationStepRequest>;
@@ -98,6 +144,14 @@ export declare const GetSchedulingTeacherSetupRequest: MessageFns<GetSchedulingT
 export declare const UpsertSchedulingTeacherProfileRequest: MessageFns<UpsertSchedulingTeacherProfileRequest>;
 export declare const GetSchedulingClassesSetupRequest: MessageFns<GetSchedulingClassesSetupRequest>;
 export declare const UpsertSchedulingHighSchoolCourseSetupRequest: MessageFns<UpsertSchedulingHighSchoolCourseSetupRequest>;
+export declare const UpsertSchedulingInstructionalRequirementRequest: MessageFns<UpsertSchedulingInstructionalRequirementRequest>;
+export declare const GetSchedulingClassGroupSetupRequest: MessageFns<GetSchedulingClassGroupSetupRequest>;
+export declare const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<UpsertSchedulingClassGroupTeacherAssignmentRequest>;
+export declare const DeleteSchedulingClassGroupRequest: MessageFns<DeleteSchedulingClassGroupRequest>;
+export declare const GetSchedulingClassAssignmentSetupRequest: MessageFns<GetSchedulingClassAssignmentSetupRequest>;
+export declare const UpsertSchedulingHighSchoolCourseStudentAssignmentRequest: MessageFns<UpsertSchedulingHighSchoolCourseStudentAssignmentRequest>;
+export declare const StartSchedulingGenerationRequest: MessageFns<StartSchedulingGenerationRequest>;
+export declare const GetSchedulingGenerationRunsRequest: MessageFns<GetSchedulingGenerationRunsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
