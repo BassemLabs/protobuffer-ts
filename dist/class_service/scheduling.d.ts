@@ -267,7 +267,7 @@ export interface SchedulingClassAssignmentSetup {
     semesters: Semester[];
 }
 /**
- * An elementary/middle grade-semester cohort. The group is the solver's student proxy:
+ * An elementary/middle grade-semester section. The group is the solver's student proxy:
  * its classes cannot collide in the same slot.
  */
 export interface SchedulingClassGroup {

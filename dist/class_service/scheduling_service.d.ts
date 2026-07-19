@@ -98,6 +98,18 @@ export interface GetSchedulingClassGroupSetupRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
 }
+export interface CreateSchedulingClassGroupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    campus_id: ObjectId | undefined;
+    grade?: StudentGrade | undefined;
+}
+export interface RenameSchedulingClassGroupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    class_group_id: Uuid | undefined;
+    label?: string | undefined;
+}
 export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
@@ -146,6 +158,8 @@ export declare const GetSchedulingClassesSetupRequest: MessageFns<GetSchedulingC
 export declare const UpsertSchedulingHighSchoolCourseSetupRequest: MessageFns<UpsertSchedulingHighSchoolCourseSetupRequest>;
 export declare const UpsertSchedulingInstructionalRequirementRequest: MessageFns<UpsertSchedulingInstructionalRequirementRequest>;
 export declare const GetSchedulingClassGroupSetupRequest: MessageFns<GetSchedulingClassGroupSetupRequest>;
+export declare const CreateSchedulingClassGroupRequest: MessageFns<CreateSchedulingClassGroupRequest>;
+export declare const RenameSchedulingClassGroupRequest: MessageFns<RenameSchedulingClassGroupRequest>;
 export declare const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<UpsertSchedulingClassGroupTeacherAssignmentRequest>;
 export declare const DeleteSchedulingClassGroupRequest: MessageFns<DeleteSchedulingClassGroupRequest>;
 export declare const GetSchedulingClassAssignmentSetupRequest: MessageFns<GetSchedulingClassAssignmentSetupRequest>;

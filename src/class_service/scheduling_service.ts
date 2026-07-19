@@ -136,6 +136,20 @@ export interface GetSchedulingClassGroupSetupRequest {
   school_year_id: ObjectId | undefined;
 }
 
+export interface CreateSchedulingClassGroupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  campus_id: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+}
+
+export interface RenameSchedulingClassGroupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  class_group_id: Uuid | undefined;
+  label?: string | undefined;
+}
+
 export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
@@ -1973,6 +1987,234 @@ export const GetSchedulingClassGroupSetupRequest: MessageFns<GetSchedulingClassG
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateSchedulingClassGroupRequest(): CreateSchedulingClassGroupRequest {
+  return { context: undefined, school_year_id: undefined, campus_id: undefined, grade: undefined };
+}
+
+export const CreateSchedulingClassGroupRequest: MessageFns<CreateSchedulingClassGroupRequest> = {
+  encode(message: CreateSchedulingClassGroupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(32).int32(studentGradeToNumber(message.grade));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateSchedulingClassGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSchedulingClassGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSchedulingClassGroupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+    };
+  },
+
+  toJSON(message: CreateSchedulingClassGroupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSchedulingClassGroupRequest>, I>>(
+    base?: I,
+  ): CreateSchedulingClassGroupRequest {
+    return CreateSchedulingClassGroupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateSchedulingClassGroupRequest>, I>>(
+    object: I,
+  ): CreateSchedulingClassGroupRequest {
+    const message = createBaseCreateSchedulingClassGroupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
+    return message;
+  },
+};
+
+function createBaseRenameSchedulingClassGroupRequest(): RenameSchedulingClassGroupRequest {
+  return { context: undefined, school_year_id: undefined, class_group_id: undefined, label: undefined };
+}
+
+export const RenameSchedulingClassGroupRequest: MessageFns<RenameSchedulingClassGroupRequest> = {
+  encode(message: RenameSchedulingClassGroupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.class_group_id !== undefined) {
+      Uuid.encode(message.class_group_id, writer.uint32(26).fork()).join();
+    }
+    if (message.label !== undefined) {
+      writer.uint32(34).string(message.label);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RenameSchedulingClassGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRenameSchedulingClassGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_group_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RenameSchedulingClassGroupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      class_group_id: isSet(object.classGroupId) ? Uuid.fromJSON(object.classGroupId) : undefined,
+      label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+    };
+  },
+
+  toJSON(message: RenameSchedulingClassGroupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.class_group_id !== undefined) {
+      obj.classGroupId = Uuid.toJSON(message.class_group_id);
+    }
+    if (message.label !== undefined) {
+      obj.label = message.label;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RenameSchedulingClassGroupRequest>, I>>(
+    base?: I,
+  ): RenameSchedulingClassGroupRequest {
+    return RenameSchedulingClassGroupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RenameSchedulingClassGroupRequest>, I>>(
+    object: I,
+  ): RenameSchedulingClassGroupRequest {
+    const message = createBaseRenameSchedulingClassGroupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.class_group_id = (object.class_group_id !== undefined && object.class_group_id !== null)
+      ? Uuid.fromPartial(object.class_group_id)
+      : undefined;
+    message.label = object.label ?? undefined;
     return message;
   },
 };
