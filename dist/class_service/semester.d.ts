@@ -1,16 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-import { ReportCheckBoxLayout } from "./report_layout";
+import { ReportCheckBoxLayout, ReportType } from "./report_layout";
 export declare const protobufPackage = "class_service";
-export declare enum ReportType {
-    Progress = "Progress",
-    Midterm = "Midterm",
-    Final = "Final",
-    UNRECOGNIZED = "UNRECOGNIZED"
-}
-export declare function reportTypeFromJSON(object: any): ReportType;
-export declare function reportTypeToJSON(object: ReportType): string;
-export declare function reportTypeToNumber(object: ReportType): number;
 export interface Semester {
     id: ObjectId | undefined;
     name?: string | undefined;

@@ -8,62 +8,15 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
-import { ReportCheckBoxLayout } from "./report_layout";
+import {
+  ReportCheckBoxLayout,
+  ReportType,
+  reportTypeFromJSON,
+  reportTypeToJSON,
+  reportTypeToNumber,
+} from "./report_layout";
 
 export const protobufPackage = "class_service";
-
-export enum ReportType {
-  Progress = "Progress",
-  Midterm = "Midterm",
-  Final = "Final",
-  UNRECOGNIZED = "UNRECOGNIZED",
-}
-
-export function reportTypeFromJSON(object: any): ReportType {
-  switch (object) {
-    case 1:
-    case "Progress":
-      return ReportType.Progress;
-    case 2:
-    case "Midterm":
-      return ReportType.Midterm;
-    case 3:
-    case "Final":
-      return ReportType.Final;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ReportType.UNRECOGNIZED;
-  }
-}
-
-export function reportTypeToJSON(object: ReportType): string {
-  switch (object) {
-    case ReportType.Progress:
-      return "Progress";
-    case ReportType.Midterm:
-      return "Midterm";
-    case ReportType.Final:
-      return "Final";
-    case ReportType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-export function reportTypeToNumber(object: ReportType): number {
-  switch (object) {
-    case ReportType.Progress:
-      return 1;
-    case ReportType.Midterm:
-      return 2;
-    case ReportType.Final:
-      return 3;
-    case ReportType.UNRECOGNIZED:
-    default:
-      return -1;
-  }
-}
 
 export interface Semester {
   id: ObjectId | undefined;

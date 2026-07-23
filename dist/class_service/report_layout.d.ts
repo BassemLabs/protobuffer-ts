@@ -1,6 +1,15 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "class_service";
+export declare enum ReportType {
+    Progress = "Progress",
+    Midterm = "Midterm",
+    Final = "Final",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportTypeFromJSON(object: any): ReportType;
+export declare function reportTypeToJSON(object: ReportType): string;
+export declare function reportTypeToNumber(object: ReportType): number;
 export interface ReportLayout {
     id: ObjectId | undefined;
     organization_id: ObjectId | undefined;
@@ -9,6 +18,11 @@ export interface ReportLayout {
     sections: ReportLayoutSection[];
     check_boxes: ReportCheckBoxLayout[];
     credit_weight?: number | undefined;
+    report_card_eligibility: ReportCardEligibility | undefined;
+}
+export interface ReportCardEligibility {
+    enabled?: boolean | undefined;
+    enabled_report_types: ReportType[];
 }
 export interface ReportLayoutSection {
     id: ObjectId | undefined;
@@ -19,6 +33,7 @@ export interface ReportCheckBoxLayout {
     name?: string | undefined;
 }
 export declare const ReportLayout: MessageFns<ReportLayout>;
+export declare const ReportCardEligibility: MessageFns<ReportCardEligibility>;
 export declare const ReportLayoutSection: MessageFns<ReportLayoutSection>;
 export declare const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

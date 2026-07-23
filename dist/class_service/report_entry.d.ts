@@ -1,7 +1,8 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Student } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
-import { ReportType, Semester, SemesterReportLayout } from "./semester";
+import { ReportType } from "./report_layout";
+import { Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service";
 export declare enum ReportStatus {
     NOT_FILLED = "NOT_FILLED",

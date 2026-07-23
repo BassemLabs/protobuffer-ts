@@ -3,7 +3,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { ClassRef } from "./class_ref";
 import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
-import { ReportType } from "./semester";
+import { ReportType } from "./report_layout";
 export declare const protobufPackage = "class_service.report_entry_service";
 export declare enum TeacherReportCardHomepageUrgency {
     TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL = "TEACHER_REPORT_CARD_HOMEPAGE_URGENCY_NEUTRAL",
@@ -62,6 +62,14 @@ export declare enum SmartCommentLength {
 export declare function smartCommentLengthFromJSON(object: any): SmartCommentLength;
 export declare function smartCommentLengthToJSON(object: SmartCommentLength): string;
 export declare function smartCommentLengthToNumber(object: SmartCommentLength): number;
+export declare enum ReportEntryUpdateMode {
+    SAVE_DRAFT = "SAVE_DRAFT",
+    SUBMIT_FOR_REVIEW = "SUBMIT_FOR_REVIEW",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportEntryUpdateModeFromJSON(object: any): ReportEntryUpdateMode;
+export declare function reportEntryUpdateModeToJSON(object: ReportEntryUpdateMode): string;
+export declare function reportEntryUpdateModeToNumber(object: ReportEntryUpdateMode): number;
 export interface GetCourseReportEntriesRequest {
     context: RequestContext | undefined;
     course_id: ObjectId | undefined;
@@ -288,6 +296,7 @@ export interface UpdateReportEntryRequest {
     sections: ReportEntrySection[];
     learning_skills: ReportEntryLearningSkill[];
     credit_earned?: boolean | undefined;
+    update_mode?: ReportEntryUpdateMode | undefined;
 }
 export interface ReportEntryViewResponse {
     report_entry: ReportEntryView | undefined;

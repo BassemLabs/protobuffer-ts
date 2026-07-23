@@ -5,66 +5,13 @@
 //   protoc               unknown
 // source: class_service/semester.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.ReportType = exports.protobufPackage = void 0;
-exports.reportTypeFromJSON = reportTypeFromJSON;
-exports.reportTypeToJSON = reportTypeToJSON;
-exports.reportTypeToNumber = reportTypeToNumber;
+exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const report_layout_1 = require("./report_layout");
 exports.protobufPackage = "class_service";
-var ReportType;
-(function (ReportType) {
-    ReportType["Progress"] = "Progress";
-    ReportType["Midterm"] = "Midterm";
-    ReportType["Final"] = "Final";
-    ReportType["UNRECOGNIZED"] = "UNRECOGNIZED";
-})(ReportType || (exports.ReportType = ReportType = {}));
-function reportTypeFromJSON(object) {
-    switch (object) {
-        case 1:
-        case "Progress":
-            return ReportType.Progress;
-        case 2:
-        case "Midterm":
-            return ReportType.Midterm;
-        case 3:
-        case "Final":
-            return ReportType.Final;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return ReportType.UNRECOGNIZED;
-    }
-}
-function reportTypeToJSON(object) {
-    switch (object) {
-        case ReportType.Progress:
-            return "Progress";
-        case ReportType.Midterm:
-            return "Midterm";
-        case ReportType.Final:
-            return "Final";
-        case ReportType.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-function reportTypeToNumber(object) {
-    switch (object) {
-        case ReportType.Progress:
-            return 1;
-        case ReportType.Midterm:
-            return 2;
-        case ReportType.Final:
-            return 3;
-        case ReportType.UNRECOGNIZED:
-        default:
-            return -1;
-    }
-}
 function createBaseSemester() {
     return {
         id: undefined,
@@ -409,7 +356,7 @@ function createBaseReportDates() {
 exports.ReportDates = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.report_type !== undefined) {
-            writer.uint32(8).int32(reportTypeToNumber(message.report_type));
+            writer.uint32(8).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
         }
         if (message.due_date !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(18).fork()).join();
@@ -430,7 +377,7 @@ exports.ReportDates = {
                     if (tag !== 8) {
                         break;
                     }
-                    message.report_type = reportTypeFromJSON(reader.int32());
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
                     continue;
                 case 2:
                     if (tag !== 18) {
@@ -454,7 +401,7 @@ exports.ReportDates = {
     },
     fromJSON(object) {
         return {
-            report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
             distribution_date: isSet(object.distributionDate) ? fromJsonTimestamp(object.distributionDate) : undefined,
         };
@@ -462,7 +409,7 @@ exports.ReportDates = {
     toJSON(message) {
         const obj = {};
         if (message.report_type !== undefined) {
-            obj.reportType = reportTypeToJSON(message.report_type);
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
         }
         if (message.due_date !== undefined) {
             obj.dueDate = message.due_date.toISOString();

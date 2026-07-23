@@ -10,6 +10,59 @@ import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "class_service";
 
+export enum ReportType {
+  Progress = "Progress",
+  Midterm = "Midterm",
+  Final = "Final",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reportTypeFromJSON(object: any): ReportType {
+  switch (object) {
+    case 1:
+    case "Progress":
+      return ReportType.Progress;
+    case 2:
+    case "Midterm":
+      return ReportType.Midterm;
+    case 3:
+    case "Final":
+      return ReportType.Final;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportType.UNRECOGNIZED;
+  }
+}
+
+export function reportTypeToJSON(object: ReportType): string {
+  switch (object) {
+    case ReportType.Progress:
+      return "Progress";
+    case ReportType.Midterm:
+      return "Midterm";
+    case ReportType.Final:
+      return "Final";
+    case ReportType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reportTypeToNumber(object: ReportType): number {
+  switch (object) {
+    case ReportType.Progress:
+      return 1;
+    case ReportType.Midterm:
+      return 2;
+    case ReportType.Final:
+      return 3;
+    case ReportType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface ReportLayout {
   id: ObjectId | undefined;
   organization_id: ObjectId | undefined;
@@ -18,6 +71,12 @@ export interface ReportLayout {
   sections: ReportLayoutSection[];
   check_boxes: ReportCheckBoxLayout[];
   credit_weight?: number | undefined;
+  report_card_eligibility: ReportCardEligibility | undefined;
+}
+
+export interface ReportCardEligibility {
+  enabled?: boolean | undefined;
+  enabled_report_types: ReportType[];
 }
 
 export interface ReportLayoutSection {
@@ -39,6 +98,7 @@ function createBaseReportLayout(): ReportLayout {
     sections: [],
     check_boxes: [],
     credit_weight: undefined,
+    report_card_eligibility: undefined,
   };
 }
 
@@ -64,6 +124,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     }
     if (message.credit_weight !== undefined) {
       writer.uint32(61).float(message.credit_weight);
+    }
+    if (message.report_card_eligibility !== undefined) {
+      ReportCardEligibility.encode(message.report_card_eligibility, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -124,6 +187,13 @@ export const ReportLayout: MessageFns<ReportLayout> = {
 
           message.credit_weight = reader.float();
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.report_card_eligibility = ReportCardEligibility.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -146,6 +216,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
         ? object.checkBoxes.map((e: any) => ReportCheckBoxLayout.fromJSON(e))
         : [],
       credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : undefined,
+      report_card_eligibility: isSet(object.reportCardEligibility)
+        ? ReportCardEligibility.fromJSON(object.reportCardEligibility)
+        : undefined,
     };
   },
 
@@ -172,6 +245,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     if (message.credit_weight !== undefined) {
       obj.creditWeight = message.credit_weight;
     }
+    if (message.report_card_eligibility !== undefined) {
+      obj.reportCardEligibility = ReportCardEligibility.toJSON(message.report_card_eligibility);
+    }
     return obj;
   },
 
@@ -191,6 +267,98 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     message.sections = object.sections?.map((e) => ReportLayoutSection.fromPartial(e)) || [];
     message.check_boxes = object.check_boxes?.map((e) => ReportCheckBoxLayout.fromPartial(e)) || [];
     message.credit_weight = object.credit_weight ?? undefined;
+    message.report_card_eligibility =
+      (object.report_card_eligibility !== undefined && object.report_card_eligibility !== null)
+        ? ReportCardEligibility.fromPartial(object.report_card_eligibility)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseReportCardEligibility(): ReportCardEligibility {
+  return { enabled: undefined, enabled_report_types: [] };
+}
+
+export const ReportCardEligibility: MessageFns<ReportCardEligibility> = {
+  encode(message: ReportCardEligibility, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.enabled !== undefined) {
+      writer.uint32(8).bool(message.enabled);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.enabled_report_types) {
+      writer.int32(reportTypeToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportCardEligibility {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportCardEligibility();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.enabled = reader.bool();
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportCardEligibility {
+    return {
+      enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : undefined,
+      enabled_report_types: globalThis.Array.isArray(object?.enabledReportTypes)
+        ? object.enabledReportTypes.map((e: any) => reportTypeFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReportCardEligibility): unknown {
+    const obj: any = {};
+    if (message.enabled !== undefined) {
+      obj.enabled = message.enabled;
+    }
+    if (message.enabled_report_types?.length) {
+      obj.enabledReportTypes = message.enabled_report_types.map((e) => reportTypeToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportCardEligibility>, I>>(base?: I): ReportCardEligibility {
+    return ReportCardEligibility.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportCardEligibility>, I>>(object: I): ReportCardEligibility {
+    const message = createBaseReportCardEligibility();
+    message.enabled = object.enabled ?? undefined;
+    message.enabled_report_types = object.enabled_report_types?.map((e) => e) || [];
     return message;
   },
 };

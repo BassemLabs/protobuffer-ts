@@ -9,7 +9,8 @@ import { AttendanceCounts } from "./attendance_service";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
 import { GuardianSignature, ReportStatus } from "./report_entry";
-import { ReportType, Semester, SemesterReportLayout } from "./semester";
+import { ReportType } from "./report_layout";
+import { Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service.report_card_export_service";
 export interface GetStudentReportCardExportRequest {
     context: RequestContext | undefined;

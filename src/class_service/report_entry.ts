@@ -9,14 +9,8 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { Student } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
-import {
-  ReportType,
-  reportTypeFromJSON,
-  reportTypeToJSON,
-  reportTypeToNumber,
-  Semester,
-  SemesterReportLayout,
-} from "./semester";
+import { ReportType, reportTypeFromJSON, reportTypeToJSON, reportTypeToNumber } from "./report_layout";
+import { Semester, SemesterReportLayout } from "./semester";
 
 export const protobufPackage = "class_service";
 

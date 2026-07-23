@@ -28,14 +28,8 @@ import {
   reportStatusToJSON,
   reportStatusToNumber,
 } from "./report_entry";
-import {
-  ReportType,
-  reportTypeFromJSON,
-  reportTypeToJSON,
-  reportTypeToNumber,
-  Semester,
-  SemesterReportLayout,
-} from "./semester";
+import { ReportType, reportTypeFromJSON, reportTypeToJSON, reportTypeToNumber } from "./report_layout";
+import { Semester, SemesterReportLayout } from "./semester";
 
 export const protobufPackage = "class_service.report_card_export_service";
 

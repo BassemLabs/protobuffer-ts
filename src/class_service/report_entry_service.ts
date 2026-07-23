@@ -20,7 +20,7 @@ import {
   ReportEntrySection,
   ReportEntryView,
 } from "./report_entry";
-import { ReportType, reportTypeFromJSON, reportTypeToJSON, reportTypeToNumber } from "./semester";
+import { ReportType, reportTypeFromJSON, reportTypeToJSON, reportTypeToNumber } from "./report_layout";
 
 export const protobufPackage = "class_service.report_entry_service";
 
@@ -352,6 +352,51 @@ export function smartCommentLengthToNumber(object: SmartCommentLength): number {
   }
 }
 
+export enum ReportEntryUpdateMode {
+  SAVE_DRAFT = "SAVE_DRAFT",
+  SUBMIT_FOR_REVIEW = "SUBMIT_FOR_REVIEW",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reportEntryUpdateModeFromJSON(object: any): ReportEntryUpdateMode {
+  switch (object) {
+    case 0:
+    case "SAVE_DRAFT":
+      return ReportEntryUpdateMode.SAVE_DRAFT;
+    case 1:
+    case "SUBMIT_FOR_REVIEW":
+      return ReportEntryUpdateMode.SUBMIT_FOR_REVIEW;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportEntryUpdateMode.UNRECOGNIZED;
+  }
+}
+
+export function reportEntryUpdateModeToJSON(object: ReportEntryUpdateMode): string {
+  switch (object) {
+    case ReportEntryUpdateMode.SAVE_DRAFT:
+      return "SAVE_DRAFT";
+    case ReportEntryUpdateMode.SUBMIT_FOR_REVIEW:
+      return "SUBMIT_FOR_REVIEW";
+    case ReportEntryUpdateMode.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reportEntryUpdateModeToNumber(object: ReportEntryUpdateMode): number {
+  switch (object) {
+    case ReportEntryUpdateMode.SAVE_DRAFT:
+      return 0;
+    case ReportEntryUpdateMode.SUBMIT_FOR_REVIEW:
+      return 1;
+    case ReportEntryUpdateMode.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface GetCourseReportEntriesRequest {
   context: RequestContext | undefined;
   course_id: ObjectId | undefined;
@@ -663,6 +708,7 @@ export interface UpdateReportEntryRequest {
   sections: ReportEntrySection[];
   learning_skills: ReportEntryLearningSkill[];
   credit_earned?: boolean | undefined;
+  update_mode?: ReportEntryUpdateMode | undefined;
 }
 
 export interface ReportEntryViewResponse {
@@ -4208,6 +4254,7 @@ function createBaseUpdateReportEntryRequest(): UpdateReportEntryRequest {
     sections: [],
     learning_skills: [],
     credit_earned: undefined,
+    update_mode: undefined,
   };
 }
 
@@ -4242,6 +4289,9 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
     }
     if (message.credit_earned !== undefined) {
       writer.uint32(80).bool(message.credit_earned);
+    }
+    if (message.update_mode !== undefined) {
+      writer.uint32(88).int32(reportEntryUpdateModeToNumber(message.update_mode));
     }
     return writer;
   },
@@ -4323,6 +4373,13 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
 
           message.credit_earned = reader.bool();
           continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.update_mode = reportEntryUpdateModeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4350,6 +4407,7 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
         ? object.learningSkills.map((e: any) => ReportEntryLearningSkill.fromJSON(e))
         : [],
       credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
+      update_mode: isSet(object.updateMode) ? reportEntryUpdateModeFromJSON(object.updateMode) : undefined,
     };
   },
 
@@ -4385,6 +4443,9 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
     if (message.credit_earned !== undefined) {
       obj.creditEarned = message.credit_earned;
     }
+    if (message.update_mode !== undefined) {
+      obj.updateMode = reportEntryUpdateModeToJSON(message.update_mode);
+    }
     return obj;
   },
 
@@ -4411,6 +4472,7 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
     message.sections = object.sections?.map((e) => ReportEntrySection.fromPartial(e)) || [];
     message.learning_skills = object.learning_skills?.map((e) => ReportEntryLearningSkill.fromPartial(e)) || [];
     message.credit_earned = object.credit_earned ?? undefined;
+    message.update_mode = object.update_mode ?? undefined;
     return message;
   },
 };

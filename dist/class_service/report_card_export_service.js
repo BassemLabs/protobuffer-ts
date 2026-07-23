@@ -18,6 +18,7 @@ const attendance_service_1 = require("./attendance_service");
 const course_1 = require("./course");
 const homeroom_1 = require("./homeroom");
 const report_entry_1 = require("./report_entry");
+const report_layout_1 = require("./report_layout");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service.report_card_export_service";
 function createBaseGetStudentReportCardExportRequest() {
@@ -38,7 +39,7 @@ exports.GetStudentReportCardExportRequest = {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
         if (message.report_type !== undefined) {
-            writer.uint32(24).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+            writer.uint32(24).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
         }
         if (message.homeroom_id !== undefined) {
             object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(34).fork()).join();
@@ -71,7 +72,7 @@ exports.GetStudentReportCardExportRequest = {
                     if (tag !== 24) {
                         break;
                     }
-                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -97,7 +98,7 @@ exports.GetStudentReportCardExportRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
         };
@@ -111,7 +112,7 @@ exports.GetStudentReportCardExportRequest = {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
         if (message.report_type !== undefined) {
-            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
         }
         if (message.homeroom_id !== undefined) {
             obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
@@ -562,7 +563,7 @@ exports.ReportCardExportEntry = {
             object_id_1.ObjectId.encode(message.homeroom, writer.uint32(42).fork()).join();
         }
         if (message.report_type !== undefined) {
-            writer.uint32(48).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+            writer.uint32(48).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
         }
         if (message.comment !== undefined) {
             writer.uint32(58).string(message.comment);
@@ -631,7 +632,7 @@ exports.ReportCardExportEntry = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -696,7 +697,7 @@ exports.ReportCardExportEntry = {
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             course: isSet(object.course) ? object_id_1.ObjectId.fromJSON(object.course) : undefined,
             homeroom: isSet(object.homeroom) ? object_id_1.ObjectId.fromJSON(object.homeroom) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
             checkboxes: globalThis.Array.isArray(object?.checkboxes)
                 ? object.checkboxes.map((e) => exports.ReportCardExportEntryCheckBox.fromJSON(e))
@@ -733,7 +734,7 @@ exports.ReportCardExportEntry = {
             obj.homeroom = object_id_1.ObjectId.toJSON(message.homeroom);
         }
         if (message.report_type !== undefined) {
-            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
         }
         if (message.comment !== undefined) {
             obj.comment = message.comment;
@@ -1129,7 +1130,7 @@ exports.ElementaryReportCardExport = {
             homeroom_1.Homeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
         }
         if (message.report_type !== undefined) {
-            writer.uint32(56).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+            writer.uint32(56).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
         }
         if (message.teacher_names !== undefined) {
             writer.uint32(66).string(message.teacher_names);
@@ -1204,7 +1205,7 @@ exports.ElementaryReportCardExport = {
                     if (tag !== 56) {
                         break;
                     }
-                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
                     continue;
                 case 8:
                     if (tag !== 66) {
@@ -1270,7 +1271,7 @@ exports.ElementaryReportCardExport = {
             student_grade: isSet(object.studentGrade) ? (0, student_1.studentGradeFromJSON)(object.studentGrade) : undefined,
             school_year_name: isSet(object.schoolYearName) ? globalThis.String(object.schoolYearName) : undefined,
             homeroom: isSet(object.homeroom) ? homeroom_1.Homeroom.fromJSON(object.homeroom) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             teacher_names: isSet(object.teacherNames) ? globalThis.String(object.teacherNames) : undefined,
             selected_report: isSet(object.selectedReport)
                 ? exports.ReportCardExportEntryView.fromJSON(object.selectedReport)
@@ -1314,7 +1315,7 @@ exports.ElementaryReportCardExport = {
             obj.homeroom = homeroom_1.Homeroom.toJSON(message.homeroom);
         }
         if (message.report_type !== undefined) {
-            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
         }
         if (message.teacher_names !== undefined) {
             obj.teacherNames = message.teacher_names;
@@ -1415,7 +1416,7 @@ exports.SecondaryReportCardExport = {
             semester_1.Semester.encode(message.semester, writer.uint32(42).fork()).join();
         }
         if (message.report_type !== undefined) {
-            writer.uint32(48).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+            writer.uint32(48).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
         }
         for (const v of message.course_rows) {
             exports.SecondaryReportCardCourseRow.encode(v, writer.uint32(58).fork()).join();
@@ -1472,7 +1473,7 @@ exports.SecondaryReportCardExport = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -1513,7 +1514,7 @@ exports.SecondaryReportCardExport = {
             student: isSet(object.student) ? student_1.Student.fromJSON(object.student) : undefined,
             student_grade: isSet(object.studentGrade) ? (0, student_1.studentGradeFromJSON)(object.studentGrade) : undefined,
             semester: isSet(object.semester) ? semester_1.Semester.fromJSON(object.semester) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             course_rows: globalThis.Array.isArray(object?.courseRows)
                 ? object.courseRows.map((e) => exports.SecondaryReportCardCourseRow.fromJSON(e))
                 : [],
@@ -1544,7 +1545,7 @@ exports.SecondaryReportCardExport = {
             obj.semester = semester_1.Semester.toJSON(message.semester);
         }
         if (message.report_type !== undefined) {
-            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
         }
         if (message.course_rows?.length) {
             obj.courseRows = message.course_rows.map((e) => exports.SecondaryReportCardCourseRow.toJSON(e));

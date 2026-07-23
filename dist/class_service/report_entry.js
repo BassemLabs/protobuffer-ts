@@ -14,6 +14,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
+const report_layout_1 = require("./report_layout");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service";
 var ReportStatus;
@@ -597,7 +598,7 @@ exports.ReportEntry = {
             object_id_1.ObjectId.encode(message.homeroom, writer.uint32(42).fork()).join();
         }
         if (message.report_type !== undefined) {
-            writer.uint32(48).int32((0, semester_1.reportTypeToNumber)(message.report_type));
+            writer.uint32(48).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
         }
         if (message.comment !== undefined) {
             writer.uint32(58).string(message.comment);
@@ -666,7 +667,7 @@ exports.ReportEntry = {
                     if (tag !== 48) {
                         break;
                     }
-                    message.report_type = (0, semester_1.reportTypeFromJSON)(reader.int32());
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
                     continue;
                 case 7:
                     if (tag !== 58) {
@@ -731,7 +732,7 @@ exports.ReportEntry = {
             student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
             course: isSet(object.course) ? object_id_1.ObjectId.fromJSON(object.course) : undefined,
             homeroom: isSet(object.homeroom) ? object_id_1.ObjectId.fromJSON(object.homeroom) : undefined,
-            report_type: isSet(object.reportType) ? (0, semester_1.reportTypeFromJSON)(object.reportType) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             comment: isSet(object.comment) ? globalThis.String(object.comment) : undefined,
             checkboxes: globalThis.Array.isArray(object?.checkboxes)
                 ? object.checkboxes.map((e) => exports.ReportEntryCheckBox.fromJSON(e))
@@ -768,7 +769,7 @@ exports.ReportEntry = {
             obj.homeroom = object_id_1.ObjectId.toJSON(message.homeroom);
         }
         if (message.report_type !== undefined) {
-            obj.reportType = (0, semester_1.reportTypeToJSON)(message.report_type);
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
         }
         if (message.comment !== undefined) {
             obj.comment = message.comment;
