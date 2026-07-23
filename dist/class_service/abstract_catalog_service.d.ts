@@ -76,6 +76,7 @@ export interface CreateAbstractCourseRequest {
     mandatory?: boolean | undefined;
     category_ids: ObjectId[];
     grade?: StudentGrade | undefined;
+    color?: string | undefined;
 }
 export interface UpdateAbstractCourseRequest {
     context: RequestContext | undefined;
@@ -86,6 +87,7 @@ export interface UpdateAbstractCourseRequest {
     mandatory?: boolean | undefined;
     category_ids: ObjectId[];
     grade?: StudentGrade | undefined;
+    color?: string | undefined;
 }
 export interface DeleteAbstractCourseRequest {
     context: RequestContext | undefined;

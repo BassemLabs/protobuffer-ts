@@ -343,10 +343,88 @@ export interface SchedulingGenerationRun {
     created_by: ObjectId | undefined;
     /** RFC3339 creation time; also the sort key for the runs list. */
     created_at?: string | undefined;
+    /** Admin-readable infeasibility reasons reported by the solver. */
+    solver_reasons: string[];
 }
 /** Runs for a workspace, newest first (used for status polling and history). */
 export interface SchedulingGenerationRunList {
     runs: SchedulingGenerationRun[];
+}
+/** One immutable placement produced by a successful generation run. */
+export interface SchedulingGeneratedScheduleEntry {
+    class_id?: string | undefined;
+    class_type?: string | undefined;
+    abstract_course_id: ObjectId | undefined;
+    grade_group_id?: Uuid | undefined;
+    offering_id?: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
+    day?: DayOfWeek | undefined;
+    period_sequence?: number | undefined;
+    slot_id?: string | undefined;
+}
+/** The immutable schedule artifact stored for one successful generation run. */
+export interface SchedulingGeneratedSchedule {
+    id: ObjectId | undefined;
+    organization: ObjectId | undefined;
+    scheduling_workspace: Uuid | undefined;
+    school_year: ObjectId | undefined;
+    generation_run_id: Uuid | undefined;
+    solver_input_snapshot_id: Uuid | undefined;
+    created_at?: string | undefined;
+}
+/** Display companions assembled from the run's frozen snapshot at read time. */
+export interface SchedulingScheduleClassInfo {
+    class_id?: string | undefined;
+    name?: string | undefined;
+    class_type?: string | undefined;
+    group_label?: string | undefined;
+    periods_per_week?: number | undefined;
+    student_ids: ObjectId[];
+    color?: string | undefined;
+}
+export interface SchedulingScheduleTeacherInfo {
+    id: ObjectId | undefined;
+    display_name?: string | undefined;
+}
+export interface SchedulingScheduleSlotInfo {
+    slot_id?: string | undefined;
+    semester_id: ObjectId | undefined;
+    day?: DayOfWeek | undefined;
+    period_sequence?: number | undefined;
+    period_label?: string | undefined;
+    start_time?: string | undefined;
+    end_time?: string | undefined;
+}
+export interface SchedulingScheduleSemesterInfo {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    campus_id?: ObjectId | undefined;
+    campus_name?: string | undefined;
+}
+export interface SchedulingScheduleStudentInfo {
+    id: ObjectId | undefined;
+    display_name?: string | undefined;
+    grade?: StudentGrade | undefined;
+}
+export interface SchedulingScheduleSectionInfo {
+    id: Uuid | undefined;
+    campus_id: ObjectId | undefined;
+    grade?: StudentGrade | undefined;
+    semester_id: ObjectId | undefined;
+    label?: string | undefined;
+    campus_name?: string | undefined;
+}
+/** Latest generated schedule plus the frozen display context needed to render it. */
+export interface SchedulingGeneratedScheduleView {
+    schedule: SchedulingGeneratedSchedule | undefined;
+    entries: SchedulingGeneratedScheduleEntry[];
+    classes: SchedulingScheduleClassInfo[];
+    teachers: SchedulingScheduleTeacherInfo[];
+    slots: SchedulingScheduleSlotInfo[];
+    semesters: SchedulingScheduleSemesterInfo[];
+    sections: SchedulingScheduleSectionInfo[];
+    students: SchedulingScheduleStudentInfo[];
 }
 /** A headline count shown on a review section (e.g. "Teachers", 12). */
 export interface SchedulingReviewMetric {
@@ -405,6 +483,15 @@ export declare const SchedulingClassGroupSetup: MessageFns<SchedulingClassGroupS
 export declare const SchedulingGenerationBlocker: MessageFns<SchedulingGenerationBlocker>;
 export declare const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun>;
 export declare const SchedulingGenerationRunList: MessageFns<SchedulingGenerationRunList>;
+export declare const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedScheduleEntry>;
+export declare const SchedulingGeneratedSchedule: MessageFns<SchedulingGeneratedSchedule>;
+export declare const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo>;
+export declare const SchedulingScheduleTeacherInfo: MessageFns<SchedulingScheduleTeacherInfo>;
+export declare const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo>;
+export declare const SchedulingScheduleSemesterInfo: MessageFns<SchedulingScheduleSemesterInfo>;
+export declare const SchedulingScheduleStudentInfo: MessageFns<SchedulingScheduleStudentInfo>;
+export declare const SchedulingScheduleSectionInfo: MessageFns<SchedulingScheduleSectionInfo>;
+export declare const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedScheduleView>;
 export declare const SchedulingReviewMetric: MessageFns<SchedulingReviewMetric>;
 export declare const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue>;
 export declare const SchedulingReviewSection: MessageFns<SchedulingReviewSection>;

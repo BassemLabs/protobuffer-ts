@@ -710,12 +710,101 @@ export interface SchedulingGenerationRun {
     | ObjectId
     | undefined;
   /** RFC3339 creation time; also the sort key for the runs list. */
-  created_at?: string | undefined;
+  created_at?:
+    | string
+    | undefined;
+  /** Admin-readable infeasibility reasons reported by the solver. */
+  solver_reasons: string[];
 }
 
 /** Runs for a workspace, newest first (used for status polling and history). */
 export interface SchedulingGenerationRunList {
   runs: SchedulingGenerationRun[];
+}
+
+/** One immutable placement produced by a successful generation run. */
+export interface SchedulingGeneratedScheduleEntry {
+  class_id?: string | undefined;
+  class_type?: string | undefined;
+  abstract_course_id: ObjectId | undefined;
+  grade_group_id?: Uuid | undefined;
+  offering_id?: ObjectId | undefined;
+  teacher_id: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
+  day?: DayOfWeek | undefined;
+  period_sequence?: number | undefined;
+  slot_id?: string | undefined;
+}
+
+/** The immutable schedule artifact stored for one successful generation run. */
+export interface SchedulingGeneratedSchedule {
+  id: ObjectId | undefined;
+  organization: ObjectId | undefined;
+  scheduling_workspace: Uuid | undefined;
+  school_year: ObjectId | undefined;
+  generation_run_id: Uuid | undefined;
+  solver_input_snapshot_id: Uuid | undefined;
+  created_at?: string | undefined;
+}
+
+/** Display companions assembled from the run's frozen snapshot at read time. */
+export interface SchedulingScheduleClassInfo {
+  class_id?: string | undefined;
+  name?: string | undefined;
+  class_type?: string | undefined;
+  group_label?: string | undefined;
+  periods_per_week?: number | undefined;
+  student_ids: ObjectId[];
+  color?: string | undefined;
+}
+
+export interface SchedulingScheduleTeacherInfo {
+  id: ObjectId | undefined;
+  display_name?: string | undefined;
+}
+
+export interface SchedulingScheduleSlotInfo {
+  slot_id?: string | undefined;
+  semester_id: ObjectId | undefined;
+  day?: DayOfWeek | undefined;
+  period_sequence?: number | undefined;
+  period_label?: string | undefined;
+  start_time?: string | undefined;
+  end_time?: string | undefined;
+}
+
+export interface SchedulingScheduleSemesterInfo {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+  campus_id?: ObjectId | undefined;
+  campus_name?: string | undefined;
+}
+
+export interface SchedulingScheduleStudentInfo {
+  id: ObjectId | undefined;
+  display_name?: string | undefined;
+  grade?: StudentGrade | undefined;
+}
+
+export interface SchedulingScheduleSectionInfo {
+  id: Uuid | undefined;
+  campus_id: ObjectId | undefined;
+  grade?: StudentGrade | undefined;
+  semester_id: ObjectId | undefined;
+  label?: string | undefined;
+  campus_name?: string | undefined;
+}
+
+/** Latest generated schedule plus the frozen display context needed to render it. */
+export interface SchedulingGeneratedScheduleView {
+  schedule: SchedulingGeneratedSchedule | undefined;
+  entries: SchedulingGeneratedScheduleEntry[];
+  classes: SchedulingScheduleClassInfo[];
+  teachers: SchedulingScheduleTeacherInfo[];
+  slots: SchedulingScheduleSlotInfo[];
+  semesters: SchedulingScheduleSemesterInfo[];
+  sections: SchedulingScheduleSectionInfo[];
+  students: SchedulingScheduleStudentInfo[];
 }
 
 /** A headline count shown on a review section (e.g. "Teachers", 12). */
@@ -4257,6 +4346,7 @@ function createBaseSchedulingGenerationRun(): SchedulingGenerationRun {
     generated_schedule_id: undefined,
     created_by: undefined,
     created_at: undefined,
+    solver_reasons: [],
   };
 }
 
@@ -4303,6 +4393,9 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
     }
     if (message.created_at !== undefined) {
       writer.uint32(114).string(message.created_at);
+    }
+    for (const v of message.solver_reasons) {
+      writer.uint32(122).string(v!);
     }
     return writer;
   },
@@ -4412,6 +4505,13 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
 
           message.created_at = reader.string();
           continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.solver_reasons.push(reader.string());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4443,6 +4543,9 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
         : undefined,
       created_by: isSet(object.createdBy) ? ObjectId.fromJSON(object.createdBy) : undefined,
       created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+      solver_reasons: globalThis.Array.isArray(object?.solverReasons)
+        ? object.solverReasons.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -4490,6 +4593,9 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
     if (message.created_at !== undefined) {
       obj.createdAt = message.created_at;
     }
+    if (message.solver_reasons?.length) {
+      obj.solverReasons = message.solver_reasons;
+    }
     return obj;
   },
 
@@ -4526,6 +4632,7 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
       ? ObjectId.fromPartial(object.created_by)
       : undefined;
     message.created_at = object.created_at ?? undefined;
+    message.solver_reasons = object.solver_reasons?.map((e) => e) || [];
     return message;
   },
 };
@@ -4587,6 +4694,1326 @@ export const SchedulingGenerationRunList: MessageFns<SchedulingGenerationRunList
   fromPartial<I extends Exact<DeepPartial<SchedulingGenerationRunList>, I>>(object: I): SchedulingGenerationRunList {
     const message = createBaseSchedulingGenerationRunList();
     message.runs = object.runs?.map((e) => SchedulingGenerationRun.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingGeneratedScheduleEntry(): SchedulingGeneratedScheduleEntry {
+  return {
+    class_id: undefined,
+    class_type: undefined,
+    abstract_course_id: undefined,
+    grade_group_id: undefined,
+    offering_id: undefined,
+    teacher_id: undefined,
+    semester_id: undefined,
+    day: undefined,
+    period_sequence: undefined,
+    slot_id: undefined,
+  };
+}
+
+export const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedScheduleEntry> = {
+  encode(message: SchedulingGeneratedScheduleEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.class_id !== undefined) {
+      writer.uint32(10).string(message.class_id);
+    }
+    if (message.class_type !== undefined) {
+      writer.uint32(18).string(message.class_type);
+    }
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(26).fork()).join();
+    }
+    if (message.grade_group_id !== undefined) {
+      Uuid.encode(message.grade_group_id, writer.uint32(34).fork()).join();
+    }
+    if (message.offering_id !== undefined) {
+      ObjectId.encode(message.offering_id, writer.uint32(42).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(50).fork()).join();
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(58).fork()).join();
+    }
+    if (message.day !== undefined) {
+      writer.uint32(64).int32(dayOfWeekToNumber(message.day));
+    }
+    if (message.period_sequence !== undefined) {
+      writer.uint32(72).int32(message.period_sequence);
+    }
+    if (message.slot_id !== undefined) {
+      writer.uint32(82).string(message.slot_id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGeneratedScheduleEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGeneratedScheduleEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.class_id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.class_type = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.grade_group_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.offering_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.day = dayOfWeekFromJSON(reader.int32());
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.period_sequence = reader.int32();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.slot_id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGeneratedScheduleEntry {
+    return {
+      class_id: isSet(object.classId) ? globalThis.String(object.classId) : undefined,
+      class_type: isSet(object.classType) ? globalThis.String(object.classType) : undefined,
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      grade_group_id: isSet(object.gradeGroupId) ? Uuid.fromJSON(object.gradeGroupId) : undefined,
+      offering_id: isSet(object.offeringId) ? ObjectId.fromJSON(object.offeringId) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      day: isSet(object.day) ? dayOfWeekFromJSON(object.day) : undefined,
+      period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
+      slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGeneratedScheduleEntry): unknown {
+    const obj: any = {};
+    if (message.class_id !== undefined) {
+      obj.classId = message.class_id;
+    }
+    if (message.class_type !== undefined) {
+      obj.classType = message.class_type;
+    }
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.grade_group_id !== undefined) {
+      obj.gradeGroupId = Uuid.toJSON(message.grade_group_id);
+    }
+    if (message.offering_id !== undefined) {
+      obj.offeringId = ObjectId.toJSON(message.offering_id);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.day !== undefined) {
+      obj.day = dayOfWeekToJSON(message.day);
+    }
+    if (message.period_sequence !== undefined) {
+      obj.periodSequence = Math.round(message.period_sequence);
+    }
+    if (message.slot_id !== undefined) {
+      obj.slotId = message.slot_id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGeneratedScheduleEntry>, I>>(
+    base?: I,
+  ): SchedulingGeneratedScheduleEntry {
+    return SchedulingGeneratedScheduleEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGeneratedScheduleEntry>, I>>(
+    object: I,
+  ): SchedulingGeneratedScheduleEntry {
+    const message = createBaseSchedulingGeneratedScheduleEntry();
+    message.class_id = object.class_id ?? undefined;
+    message.class_type = object.class_type ?? undefined;
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.grade_group_id = (object.grade_group_id !== undefined && object.grade_group_id !== null)
+      ? Uuid.fromPartial(object.grade_group_id)
+      : undefined;
+    message.offering_id = (object.offering_id !== undefined && object.offering_id !== null)
+      ? ObjectId.fromPartial(object.offering_id)
+      : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.day = object.day ?? undefined;
+    message.period_sequence = object.period_sequence ?? undefined;
+    message.slot_id = object.slot_id ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingGeneratedSchedule(): SchedulingGeneratedSchedule {
+  return {
+    id: undefined,
+    organization: undefined,
+    scheduling_workspace: undefined,
+    school_year: undefined,
+    generation_run_id: undefined,
+    solver_input_snapshot_id: undefined,
+    created_at: undefined,
+  };
+}
+
+export const SchedulingGeneratedSchedule: MessageFns<SchedulingGeneratedSchedule> = {
+  encode(message: SchedulingGeneratedSchedule, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization !== undefined) {
+      ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+    }
+    if (message.scheduling_workspace !== undefined) {
+      Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+    }
+    if (message.generation_run_id !== undefined) {
+      Uuid.encode(message.generation_run_id, writer.uint32(42).fork()).join();
+    }
+    if (message.solver_input_snapshot_id !== undefined) {
+      Uuid.encode(message.solver_input_snapshot_id, writer.uint32(50).fork()).join();
+    }
+    if (message.created_at !== undefined) {
+      writer.uint32(58).string(message.created_at);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGeneratedSchedule {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGeneratedSchedule();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.scheduling_workspace = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.generation_run_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.solver_input_snapshot_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.created_at = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGeneratedSchedule {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
+      scheduling_workspace: isSet(object.schedulingWorkspace) ? Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      generation_run_id: isSet(object.generationRunId) ? Uuid.fromJSON(object.generationRunId) : undefined,
+      solver_input_snapshot_id: isSet(object.solverInputSnapshotId)
+        ? Uuid.fromJSON(object.solverInputSnapshotId)
+        : undefined,
+      created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGeneratedSchedule): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.organization !== undefined) {
+      obj.organization = ObjectId.toJSON(message.organization);
+    }
+    if (message.scheduling_workspace !== undefined) {
+      obj.schedulingWorkspace = Uuid.toJSON(message.scheduling_workspace);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.generation_run_id !== undefined) {
+      obj.generationRunId = Uuid.toJSON(message.generation_run_id);
+    }
+    if (message.solver_input_snapshot_id !== undefined) {
+      obj.solverInputSnapshotId = Uuid.toJSON(message.solver_input_snapshot_id);
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGeneratedSchedule>, I>>(base?: I): SchedulingGeneratedSchedule {
+    return SchedulingGeneratedSchedule.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGeneratedSchedule>, I>>(object: I): SchedulingGeneratedSchedule {
+    const message = createBaseSchedulingGeneratedSchedule();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.organization = (object.organization !== undefined && object.organization !== null)
+      ? ObjectId.fromPartial(object.organization)
+      : undefined;
+    message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+      ? Uuid.fromPartial(object.scheduling_workspace)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    message.generation_run_id = (object.generation_run_id !== undefined && object.generation_run_id !== null)
+      ? Uuid.fromPartial(object.generation_run_id)
+      : undefined;
+    message.solver_input_snapshot_id =
+      (object.solver_input_snapshot_id !== undefined && object.solver_input_snapshot_id !== null)
+        ? Uuid.fromPartial(object.solver_input_snapshot_id)
+        : undefined;
+    message.created_at = object.created_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingScheduleClassInfo(): SchedulingScheduleClassInfo {
+  return {
+    class_id: undefined,
+    name: undefined,
+    class_type: undefined,
+    group_label: undefined,
+    periods_per_week: undefined,
+    student_ids: [],
+    color: undefined,
+  };
+}
+
+export const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo> = {
+  encode(message: SchedulingScheduleClassInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.class_id !== undefined) {
+      writer.uint32(10).string(message.class_id);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.class_type !== undefined) {
+      writer.uint32(26).string(message.class_type);
+    }
+    if (message.group_label !== undefined) {
+      writer.uint32(34).string(message.group_label);
+    }
+    if (message.periods_per_week !== undefined) {
+      writer.uint32(40).uint32(message.periods_per_week);
+    }
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.color !== undefined) {
+      writer.uint32(58).string(message.color);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleClassInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleClassInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.class_id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.class_type = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.group_label = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.periods_per_week = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.color = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleClassInfo {
+    return {
+      class_id: isSet(object.classId) ? globalThis.String(object.classId) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      class_type: isSet(object.classType) ? globalThis.String(object.classType) : undefined,
+      group_label: isSet(object.groupLabel) ? globalThis.String(object.groupLabel) : undefined,
+      periods_per_week: isSet(object.periodsPerWeek) ? globalThis.Number(object.periodsPerWeek) : undefined,
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleClassInfo): unknown {
+    const obj: any = {};
+    if (message.class_id !== undefined) {
+      obj.classId = message.class_id;
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.class_type !== undefined) {
+      obj.classType = message.class_type;
+    }
+    if (message.group_label !== undefined) {
+      obj.groupLabel = message.group_label;
+    }
+    if (message.periods_per_week !== undefined) {
+      obj.periodsPerWeek = Math.round(message.periods_per_week);
+    }
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.color !== undefined) {
+      obj.color = message.color;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleClassInfo>, I>>(base?: I): SchedulingScheduleClassInfo {
+    return SchedulingScheduleClassInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleClassInfo>, I>>(object: I): SchedulingScheduleClassInfo {
+    const message = createBaseSchedulingScheduleClassInfo();
+    message.class_id = object.class_id ?? undefined;
+    message.name = object.name ?? undefined;
+    message.class_type = object.class_type ?? undefined;
+    message.group_label = object.group_label ?? undefined;
+    message.periods_per_week = object.periods_per_week ?? undefined;
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.color = object.color ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingScheduleTeacherInfo(): SchedulingScheduleTeacherInfo {
+  return { id: undefined, display_name: undefined };
+}
+
+export const SchedulingScheduleTeacherInfo: MessageFns<SchedulingScheduleTeacherInfo> = {
+  encode(message: SchedulingScheduleTeacherInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.display_name !== undefined) {
+      writer.uint32(18).string(message.display_name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleTeacherInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleTeacherInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.display_name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleTeacherInfo {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleTeacherInfo): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.display_name !== undefined) {
+      obj.displayName = message.display_name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleTeacherInfo>, I>>(base?: I): SchedulingScheduleTeacherInfo {
+    return SchedulingScheduleTeacherInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleTeacherInfo>, I>>(
+    object: I,
+  ): SchedulingScheduleTeacherInfo {
+    const message = createBaseSchedulingScheduleTeacherInfo();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.display_name = object.display_name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingScheduleSlotInfo(): SchedulingScheduleSlotInfo {
+  return {
+    slot_id: undefined,
+    semester_id: undefined,
+    day: undefined,
+    period_sequence: undefined,
+    period_label: undefined,
+    start_time: undefined,
+    end_time: undefined,
+  };
+}
+
+export const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo> = {
+  encode(message: SchedulingScheduleSlotInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.slot_id !== undefined) {
+      writer.uint32(10).string(message.slot_id);
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
+    }
+    if (message.day !== undefined) {
+      writer.uint32(24).int32(dayOfWeekToNumber(message.day));
+    }
+    if (message.period_sequence !== undefined) {
+      writer.uint32(32).int32(message.period_sequence);
+    }
+    if (message.period_label !== undefined) {
+      writer.uint32(42).string(message.period_label);
+    }
+    if (message.start_time !== undefined) {
+      writer.uint32(50).string(message.start_time);
+    }
+    if (message.end_time !== undefined) {
+      writer.uint32(58).string(message.end_time);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleSlotInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleSlotInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.slot_id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.day = dayOfWeekFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.period_sequence = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.period_label = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.start_time = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.end_time = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleSlotInfo {
+    return {
+      slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      day: isSet(object.day) ? dayOfWeekFromJSON(object.day) : undefined,
+      period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
+      period_label: isSet(object.periodLabel) ? globalThis.String(object.periodLabel) : undefined,
+      start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
+      end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleSlotInfo): unknown {
+    const obj: any = {};
+    if (message.slot_id !== undefined) {
+      obj.slotId = message.slot_id;
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.day !== undefined) {
+      obj.day = dayOfWeekToJSON(message.day);
+    }
+    if (message.period_sequence !== undefined) {
+      obj.periodSequence = Math.round(message.period_sequence);
+    }
+    if (message.period_label !== undefined) {
+      obj.periodLabel = message.period_label;
+    }
+    if (message.start_time !== undefined) {
+      obj.startTime = message.start_time;
+    }
+    if (message.end_time !== undefined) {
+      obj.endTime = message.end_time;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleSlotInfo>, I>>(base?: I): SchedulingScheduleSlotInfo {
+    return SchedulingScheduleSlotInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleSlotInfo>, I>>(object: I): SchedulingScheduleSlotInfo {
+    const message = createBaseSchedulingScheduleSlotInfo();
+    message.slot_id = object.slot_id ?? undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.day = object.day ?? undefined;
+    message.period_sequence = object.period_sequence ?? undefined;
+    message.period_label = object.period_label ?? undefined;
+    message.start_time = object.start_time ?? undefined;
+    message.end_time = object.end_time ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingScheduleSemesterInfo(): SchedulingScheduleSemesterInfo {
+  return { id: undefined, name: undefined, campus_id: undefined, campus_name: undefined };
+}
+
+export const SchedulingScheduleSemesterInfo: MessageFns<SchedulingScheduleSemesterInfo> = {
+  encode(message: SchedulingScheduleSemesterInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+    }
+    if (message.campus_name !== undefined) {
+      writer.uint32(34).string(message.campus_name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleSemesterInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleSemesterInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.campus_name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleSemesterInfo {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      campus_name: isSet(object.campusName) ? globalThis.String(object.campusName) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleSemesterInfo): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.campus_name !== undefined) {
+      obj.campusName = message.campus_name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleSemesterInfo>, I>>(base?: I): SchedulingScheduleSemesterInfo {
+    return SchedulingScheduleSemesterInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleSemesterInfo>, I>>(
+    object: I,
+  ): SchedulingScheduleSemesterInfo {
+    const message = createBaseSchedulingScheduleSemesterInfo();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.campus_name = object.campus_name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingScheduleStudentInfo(): SchedulingScheduleStudentInfo {
+  return { id: undefined, display_name: undefined, grade: undefined };
+}
+
+export const SchedulingScheduleStudentInfo: MessageFns<SchedulingScheduleStudentInfo> = {
+  encode(message: SchedulingScheduleStudentInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.display_name !== undefined) {
+      writer.uint32(18).string(message.display_name);
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(24).int32(studentGradeToNumber(message.grade));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleStudentInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleStudentInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.display_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleStudentInfo {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleStudentInfo): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.display_name !== undefined) {
+      obj.displayName = message.display_name;
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleStudentInfo>, I>>(base?: I): SchedulingScheduleStudentInfo {
+    return SchedulingScheduleStudentInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleStudentInfo>, I>>(
+    object: I,
+  ): SchedulingScheduleStudentInfo {
+    const message = createBaseSchedulingScheduleStudentInfo();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.display_name = object.display_name ?? undefined;
+    message.grade = object.grade ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingScheduleSectionInfo(): SchedulingScheduleSectionInfo {
+  return {
+    id: undefined,
+    campus_id: undefined,
+    grade: undefined,
+    semester_id: undefined,
+    label: undefined,
+    campus_name: undefined,
+  };
+}
+
+export const SchedulingScheduleSectionInfo: MessageFns<SchedulingScheduleSectionInfo> = {
+  encode(message: SchedulingScheduleSectionInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(18).fork()).join();
+    }
+    if (message.grade !== undefined) {
+      writer.uint32(24).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+    }
+    if (message.label !== undefined) {
+      writer.uint32(42).string(message.label);
+    }
+    if (message.campus_name !== undefined) {
+      writer.uint32(50).string(message.campus_name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleSectionInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleSectionInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.campus_name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleSectionInfo {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+      campus_name: isSet(object.campusName) ? globalThis.String(object.campusName) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleSectionInfo): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.label !== undefined) {
+      obj.label = message.label;
+    }
+    if (message.campus_name !== undefined) {
+      obj.campusName = message.campus_name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleSectionInfo>, I>>(base?: I): SchedulingScheduleSectionInfo {
+    return SchedulingScheduleSectionInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleSectionInfo>, I>>(
+    object: I,
+  ): SchedulingScheduleSectionInfo {
+    const message = createBaseSchedulingScheduleSectionInfo();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.grade = object.grade ?? undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.label = object.label ?? undefined;
+    message.campus_name = object.campus_name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingGeneratedScheduleView(): SchedulingGeneratedScheduleView {
+  return {
+    schedule: undefined,
+    entries: [],
+    classes: [],
+    teachers: [],
+    slots: [],
+    semesters: [],
+    sections: [],
+    students: [],
+  };
+}
+
+export const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedScheduleView> = {
+  encode(message: SchedulingGeneratedScheduleView, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.schedule !== undefined) {
+      SchedulingGeneratedSchedule.encode(message.schedule, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.entries) {
+      SchedulingGeneratedScheduleEntry.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.classes) {
+      SchedulingScheduleClassInfo.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.teachers) {
+      SchedulingScheduleTeacherInfo.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.slots) {
+      SchedulingScheduleSlotInfo.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.semesters) {
+      SchedulingScheduleSemesterInfo.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.sections) {
+      SchedulingScheduleSectionInfo.encode(v!, writer.uint32(58).fork()).join();
+    }
+    for (const v of message.students) {
+      SchedulingScheduleStudentInfo.encode(v!, writer.uint32(66).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGeneratedScheduleView {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGeneratedScheduleView();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.schedule = SchedulingGeneratedSchedule.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entries.push(SchedulingGeneratedScheduleEntry.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.classes.push(SchedulingScheduleClassInfo.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.teachers.push(SchedulingScheduleTeacherInfo.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.slots.push(SchedulingScheduleSlotInfo.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.semesters.push(SchedulingScheduleSemesterInfo.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.sections.push(SchedulingScheduleSectionInfo.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.students.push(SchedulingScheduleStudentInfo.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGeneratedScheduleView {
+    return {
+      schedule: isSet(object.schedule) ? SchedulingGeneratedSchedule.fromJSON(object.schedule) : undefined,
+      entries: globalThis.Array.isArray(object?.entries)
+        ? object.entries.map((e: any) => SchedulingGeneratedScheduleEntry.fromJSON(e))
+        : [],
+      classes: globalThis.Array.isArray(object?.classes)
+        ? object.classes.map((e: any) => SchedulingScheduleClassInfo.fromJSON(e))
+        : [],
+      teachers: globalThis.Array.isArray(object?.teachers)
+        ? object.teachers.map((e: any) => SchedulingScheduleTeacherInfo.fromJSON(e))
+        : [],
+      slots: globalThis.Array.isArray(object?.slots)
+        ? object.slots.map((e: any) => SchedulingScheduleSlotInfo.fromJSON(e))
+        : [],
+      semesters: globalThis.Array.isArray(object?.semesters)
+        ? object.semesters.map((e: any) => SchedulingScheduleSemesterInfo.fromJSON(e))
+        : [],
+      sections: globalThis.Array.isArray(object?.sections)
+        ? object.sections.map((e: any) => SchedulingScheduleSectionInfo.fromJSON(e))
+        : [],
+      students: globalThis.Array.isArray(object?.students)
+        ? object.students.map((e: any) => SchedulingScheduleStudentInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingGeneratedScheduleView): unknown {
+    const obj: any = {};
+    if (message.schedule !== undefined) {
+      obj.schedule = SchedulingGeneratedSchedule.toJSON(message.schedule);
+    }
+    if (message.entries?.length) {
+      obj.entries = message.entries.map((e) => SchedulingGeneratedScheduleEntry.toJSON(e));
+    }
+    if (message.classes?.length) {
+      obj.classes = message.classes.map((e) => SchedulingScheduleClassInfo.toJSON(e));
+    }
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => SchedulingScheduleTeacherInfo.toJSON(e));
+    }
+    if (message.slots?.length) {
+      obj.slots = message.slots.map((e) => SchedulingScheduleSlotInfo.toJSON(e));
+    }
+    if (message.semesters?.length) {
+      obj.semesters = message.semesters.map((e) => SchedulingScheduleSemesterInfo.toJSON(e));
+    }
+    if (message.sections?.length) {
+      obj.sections = message.sections.map((e) => SchedulingScheduleSectionInfo.toJSON(e));
+    }
+    if (message.students?.length) {
+      obj.students = message.students.map((e) => SchedulingScheduleStudentInfo.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGeneratedScheduleView>, I>>(base?: I): SchedulingGeneratedScheduleView {
+    return SchedulingGeneratedScheduleView.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGeneratedScheduleView>, I>>(
+    object: I,
+  ): SchedulingGeneratedScheduleView {
+    const message = createBaseSchedulingGeneratedScheduleView();
+    message.schedule = (object.schedule !== undefined && object.schedule !== null)
+      ? SchedulingGeneratedSchedule.fromPartial(object.schedule)
+      : undefined;
+    message.entries = object.entries?.map((e) => SchedulingGeneratedScheduleEntry.fromPartial(e)) || [];
+    message.classes = object.classes?.map((e) => SchedulingScheduleClassInfo.fromPartial(e)) || [];
+    message.teachers = object.teachers?.map((e) => SchedulingScheduleTeacherInfo.fromPartial(e)) || [];
+    message.slots = object.slots?.map((e) => SchedulingScheduleSlotInfo.fromPartial(e)) || [];
+    message.semesters = object.semesters?.map((e) => SchedulingScheduleSemesterInfo.fromPartial(e)) || [];
+    message.sections = object.sections?.map((e) => SchedulingScheduleSectionInfo.fromPartial(e)) || [];
+    message.students = object.students?.map((e) => SchedulingScheduleStudentInfo.fromPartial(e)) || [];
     return message;
   },
 };

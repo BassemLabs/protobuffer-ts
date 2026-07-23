@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -3539,6 +3539,7 @@ function createBaseSchedulingGenerationRun() {
         generated_schedule_id: undefined,
         created_by: undefined,
         created_at: undefined,
+        solver_reasons: [],
     };
 }
 exports.SchedulingGenerationRun = {
@@ -3584,6 +3585,9 @@ exports.SchedulingGenerationRun = {
         }
         if (message.created_at !== undefined) {
             writer.uint32(114).string(message.created_at);
+        }
+        for (const v of message.solver_reasons) {
+            writer.uint32(122).string(v);
         }
         return writer;
     },
@@ -3678,6 +3682,12 @@ exports.SchedulingGenerationRun = {
                     }
                     message.created_at = reader.string();
                     continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.solver_reasons.push(reader.string());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3708,6 +3718,9 @@ exports.SchedulingGenerationRun = {
                 : undefined,
             created_by: isSet(object.createdBy) ? object_id_1.ObjectId.fromJSON(object.createdBy) : undefined,
             created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+            solver_reasons: globalThis.Array.isArray(object?.solverReasons)
+                ? object.solverReasons.map((e) => globalThis.String(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -3754,6 +3767,9 @@ exports.SchedulingGenerationRun = {
         if (message.created_at !== undefined) {
             obj.createdAt = message.created_at;
         }
+        if (message.solver_reasons?.length) {
+            obj.solverReasons = message.solver_reasons;
+        }
         return obj;
     },
     create(base) {
@@ -3789,6 +3805,7 @@ exports.SchedulingGenerationRun = {
             ? object_id_1.ObjectId.fromPartial(object.created_by)
             : undefined;
         message.created_at = object.created_at ?? undefined;
+        message.solver_reasons = object.solver_reasons?.map((e) => e) || [];
         return message;
     },
 };
@@ -3843,6 +3860,1204 @@ exports.SchedulingGenerationRunList = {
     fromPartial(object) {
         const message = createBaseSchedulingGenerationRunList();
         message.runs = object.runs?.map((e) => exports.SchedulingGenerationRun.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSchedulingGeneratedScheduleEntry() {
+    return {
+        class_id: undefined,
+        class_type: undefined,
+        abstract_course_id: undefined,
+        grade_group_id: undefined,
+        offering_id: undefined,
+        teacher_id: undefined,
+        semester_id: undefined,
+        day: undefined,
+        period_sequence: undefined,
+        slot_id: undefined,
+    };
+}
+exports.SchedulingGeneratedScheduleEntry = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.class_id !== undefined) {
+            writer.uint32(10).string(message.class_id);
+        }
+        if (message.class_type !== undefined) {
+            writer.uint32(18).string(message.class_type);
+        }
+        if (message.abstract_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_course_id, writer.uint32(26).fork()).join();
+        }
+        if (message.grade_group_id !== undefined) {
+            uuid_1.Uuid.encode(message.grade_group_id, writer.uint32(34).fork()).join();
+        }
+        if (message.offering_id !== undefined) {
+            object_id_1.ObjectId.encode(message.offering_id, writer.uint32(42).fork()).join();
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(50).fork()).join();
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(58).fork()).join();
+        }
+        if (message.day !== undefined) {
+            writer.uint32(64).int32((0, dayofweek_1.dayOfWeekToNumber)(message.day));
+        }
+        if (message.period_sequence !== undefined) {
+            writer.uint32(72).int32(message.period_sequence);
+        }
+        if (message.slot_id !== undefined) {
+            writer.uint32(82).string(message.slot_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGeneratedScheduleEntry();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.class_id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.class_type = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.abstract_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.grade_group_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.offering_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.day = (0, dayofweek_1.dayOfWeekFromJSON)(reader.int32());
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.period_sequence = reader.int32();
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.slot_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            class_id: isSet(object.classId) ? globalThis.String(object.classId) : undefined,
+            class_type: isSet(object.classType) ? globalThis.String(object.classType) : undefined,
+            abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
+            grade_group_id: isSet(object.gradeGroupId) ? uuid_1.Uuid.fromJSON(object.gradeGroupId) : undefined,
+            offering_id: isSet(object.offeringId) ? object_id_1.ObjectId.fromJSON(object.offeringId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            day: isSet(object.day) ? (0, dayofweek_1.dayOfWeekFromJSON)(object.day) : undefined,
+            period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
+            slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.class_id !== undefined) {
+            obj.classId = message.class_id;
+        }
+        if (message.class_type !== undefined) {
+            obj.classType = message.class_type;
+        }
+        if (message.abstract_course_id !== undefined) {
+            obj.abstractCourseId = object_id_1.ObjectId.toJSON(message.abstract_course_id);
+        }
+        if (message.grade_group_id !== undefined) {
+            obj.gradeGroupId = uuid_1.Uuid.toJSON(message.grade_group_id);
+        }
+        if (message.offering_id !== undefined) {
+            obj.offeringId = object_id_1.ObjectId.toJSON(message.offering_id);
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.day !== undefined) {
+            obj.day = (0, dayofweek_1.dayOfWeekToJSON)(message.day);
+        }
+        if (message.period_sequence !== undefined) {
+            obj.periodSequence = Math.round(message.period_sequence);
+        }
+        if (message.slot_id !== undefined) {
+            obj.slotId = message.slot_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGeneratedScheduleEntry.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGeneratedScheduleEntry();
+        message.class_id = object.class_id ?? undefined;
+        message.class_type = object.class_type ?? undefined;
+        message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.abstract_course_id)
+            : undefined;
+        message.grade_group_id = (object.grade_group_id !== undefined && object.grade_group_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.grade_group_id)
+            : undefined;
+        message.offering_id = (object.offering_id !== undefined && object.offering_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.offering_id)
+            : undefined;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.day = object.day ?? undefined;
+        message.period_sequence = object.period_sequence ?? undefined;
+        message.slot_id = object.slot_id ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingGeneratedSchedule() {
+    return {
+        id: undefined,
+        organization: undefined,
+        scheduling_workspace: undefined,
+        school_year: undefined,
+        generation_run_id: undefined,
+        solver_input_snapshot_id: undefined,
+        created_at: undefined,
+    };
+}
+exports.SchedulingGeneratedSchedule = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.organization !== undefined) {
+            object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+        }
+        if (message.scheduling_workspace !== undefined) {
+            uuid_1.Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+        }
+        if (message.generation_run_id !== undefined) {
+            uuid_1.Uuid.encode(message.generation_run_id, writer.uint32(42).fork()).join();
+        }
+        if (message.solver_input_snapshot_id !== undefined) {
+            uuid_1.Uuid.encode(message.solver_input_snapshot_id, writer.uint32(50).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            writer.uint32(58).string(message.created_at);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGeneratedSchedule();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.scheduling_workspace = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.generation_run_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.solver_input_snapshot_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.created_at = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
+            scheduling_workspace: isSet(object.schedulingWorkspace) ? uuid_1.Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            generation_run_id: isSet(object.generationRunId) ? uuid_1.Uuid.fromJSON(object.generationRunId) : undefined,
+            solver_input_snapshot_id: isSet(object.solverInputSnapshotId)
+                ? uuid_1.Uuid.fromJSON(object.solverInputSnapshotId)
+                : undefined,
+            created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.organization !== undefined) {
+            obj.organization = object_id_1.ObjectId.toJSON(message.organization);
+        }
+        if (message.scheduling_workspace !== undefined) {
+            obj.schedulingWorkspace = uuid_1.Uuid.toJSON(message.scheduling_workspace);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.generation_run_id !== undefined) {
+            obj.generationRunId = uuid_1.Uuid.toJSON(message.generation_run_id);
+        }
+        if (message.solver_input_snapshot_id !== undefined) {
+            obj.solverInputSnapshotId = uuid_1.Uuid.toJSON(message.solver_input_snapshot_id);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGeneratedSchedule.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGeneratedSchedule();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.organization = (object.organization !== undefined && object.organization !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization)
+            : undefined;
+        message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+            ? uuid_1.Uuid.fromPartial(object.scheduling_workspace)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.generation_run_id = (object.generation_run_id !== undefined && object.generation_run_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.generation_run_id)
+            : undefined;
+        message.solver_input_snapshot_id =
+            (object.solver_input_snapshot_id !== undefined && object.solver_input_snapshot_id !== null)
+                ? uuid_1.Uuid.fromPartial(object.solver_input_snapshot_id)
+                : undefined;
+        message.created_at = object.created_at ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleClassInfo() {
+    return {
+        class_id: undefined,
+        name: undefined,
+        class_type: undefined,
+        group_label: undefined,
+        periods_per_week: undefined,
+        student_ids: [],
+        color: undefined,
+    };
+}
+exports.SchedulingScheduleClassInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.class_id !== undefined) {
+            writer.uint32(10).string(message.class_id);
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.class_type !== undefined) {
+            writer.uint32(26).string(message.class_type);
+        }
+        if (message.group_label !== undefined) {
+            writer.uint32(34).string(message.group_label);
+        }
+        if (message.periods_per_week !== undefined) {
+            writer.uint32(40).uint32(message.periods_per_week);
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.color !== undefined) {
+            writer.uint32(58).string(message.color);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleClassInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.class_id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.class_type = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.group_label = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.periods_per_week = reader.uint32();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.color = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            class_id: isSet(object.classId) ? globalThis.String(object.classId) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            class_type: isSet(object.classType) ? globalThis.String(object.classType) : undefined,
+            group_label: isSet(object.groupLabel) ? globalThis.String(object.groupLabel) : undefined,
+            periods_per_week: isSet(object.periodsPerWeek) ? globalThis.Number(object.periodsPerWeek) : undefined,
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.class_id !== undefined) {
+            obj.classId = message.class_id;
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.class_type !== undefined) {
+            obj.classType = message.class_type;
+        }
+        if (message.group_label !== undefined) {
+            obj.groupLabel = message.group_label;
+        }
+        if (message.periods_per_week !== undefined) {
+            obj.periodsPerWeek = Math.round(message.periods_per_week);
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.color !== undefined) {
+            obj.color = message.color;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleClassInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleClassInfo();
+        message.class_id = object.class_id ?? undefined;
+        message.name = object.name ?? undefined;
+        message.class_type = object.class_type ?? undefined;
+        message.group_label = object.group_label ?? undefined;
+        message.periods_per_week = object.periods_per_week ?? undefined;
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.color = object.color ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleTeacherInfo() {
+    return { id: undefined, display_name: undefined };
+}
+exports.SchedulingScheduleTeacherInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.display_name !== undefined) {
+            writer.uint32(18).string(message.display_name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleTeacherInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.display_name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.display_name !== undefined) {
+            obj.displayName = message.display_name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleTeacherInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleTeacherInfo();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.display_name = object.display_name ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleSlotInfo() {
+    return {
+        slot_id: undefined,
+        semester_id: undefined,
+        day: undefined,
+        period_sequence: undefined,
+        period_label: undefined,
+        start_time: undefined,
+        end_time: undefined,
+    };
+}
+exports.SchedulingScheduleSlotInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.slot_id !== undefined) {
+            writer.uint32(10).string(message.slot_id);
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(18).fork()).join();
+        }
+        if (message.day !== undefined) {
+            writer.uint32(24).int32((0, dayofweek_1.dayOfWeekToNumber)(message.day));
+        }
+        if (message.period_sequence !== undefined) {
+            writer.uint32(32).int32(message.period_sequence);
+        }
+        if (message.period_label !== undefined) {
+            writer.uint32(42).string(message.period_label);
+        }
+        if (message.start_time !== undefined) {
+            writer.uint32(50).string(message.start_time);
+        }
+        if (message.end_time !== undefined) {
+            writer.uint32(58).string(message.end_time);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleSlotInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.slot_id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.day = (0, dayofweek_1.dayOfWeekFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.period_sequence = reader.int32();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.period_label = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.start_time = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.end_time = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            day: isSet(object.day) ? (0, dayofweek_1.dayOfWeekFromJSON)(object.day) : undefined,
+            period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
+            period_label: isSet(object.periodLabel) ? globalThis.String(object.periodLabel) : undefined,
+            start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
+            end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.slot_id !== undefined) {
+            obj.slotId = message.slot_id;
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.day !== undefined) {
+            obj.day = (0, dayofweek_1.dayOfWeekToJSON)(message.day);
+        }
+        if (message.period_sequence !== undefined) {
+            obj.periodSequence = Math.round(message.period_sequence);
+        }
+        if (message.period_label !== undefined) {
+            obj.periodLabel = message.period_label;
+        }
+        if (message.start_time !== undefined) {
+            obj.startTime = message.start_time;
+        }
+        if (message.end_time !== undefined) {
+            obj.endTime = message.end_time;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleSlotInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleSlotInfo();
+        message.slot_id = object.slot_id ?? undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.day = object.day ?? undefined;
+        message.period_sequence = object.period_sequence ?? undefined;
+        message.period_label = object.period_label ?? undefined;
+        message.start_time = object.start_time ?? undefined;
+        message.end_time = object.end_time ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleSemesterInfo() {
+    return { id: undefined, name: undefined, campus_id: undefined, campus_name: undefined };
+}
+exports.SchedulingScheduleSemesterInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.campus_id !== undefined) {
+            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+        }
+        if (message.campus_name !== undefined) {
+            writer.uint32(34).string(message.campus_name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleSemesterInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.campus_name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            campus_name: isSet(object.campusName) ? globalThis.String(object.campusName) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.campus_id !== undefined) {
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
+        }
+        if (message.campus_name !== undefined) {
+            obj.campusName = message.campus_name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleSemesterInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleSemesterInfo();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? undefined;
+        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.campus_id)
+            : undefined;
+        message.campus_name = object.campus_name ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleStudentInfo() {
+    return { id: undefined, display_name: undefined, grade: undefined };
+}
+exports.SchedulingScheduleStudentInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.display_name !== undefined) {
+            writer.uint32(18).string(message.display_name);
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(24).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleStudentInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.display_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.display_name !== undefined) {
+            obj.displayName = message.display_name;
+        }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleStudentInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleStudentInfo();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.display_name = object.display_name ?? undefined;
+        message.grade = object.grade ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleSectionInfo() {
+    return {
+        id: undefined,
+        campus_id: undefined,
+        grade: undefined,
+        semester_id: undefined,
+        label: undefined,
+        campus_name: undefined,
+    };
+}
+exports.SchedulingScheduleSectionInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            uuid_1.Uuid.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.campus_id !== undefined) {
+            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(18).fork()).join();
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(24).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(34).fork()).join();
+        }
+        if (message.label !== undefined) {
+            writer.uint32(42).string(message.label);
+        }
+        if (message.campus_name !== undefined) {
+            writer.uint32(50).string(message.campus_name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleSectionInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.label = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.campus_name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? uuid_1.Uuid.fromJSON(object.id) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+            campus_name: isSet(object.campusName) ? globalThis.String(object.campusName) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = uuid_1.Uuid.toJSON(message.id);
+        }
+        if (message.campus_id !== undefined) {
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
+        }
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.label !== undefined) {
+            obj.label = message.label;
+        }
+        if (message.campus_name !== undefined) {
+            obj.campusName = message.campus_name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleSectionInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleSectionInfo();
+        message.id = (object.id !== undefined && object.id !== null) ? uuid_1.Uuid.fromPartial(object.id) : undefined;
+        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.campus_id)
+            : undefined;
+        message.grade = object.grade ?? undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.label = object.label ?? undefined;
+        message.campus_name = object.campus_name ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingGeneratedScheduleView() {
+    return {
+        schedule: undefined,
+        entries: [],
+        classes: [],
+        teachers: [],
+        slots: [],
+        semesters: [],
+        sections: [],
+        students: [],
+    };
+}
+exports.SchedulingGeneratedScheduleView = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.schedule !== undefined) {
+            exports.SchedulingGeneratedSchedule.encode(message.schedule, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.entries) {
+            exports.SchedulingGeneratedScheduleEntry.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.classes) {
+            exports.SchedulingScheduleClassInfo.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.teachers) {
+            exports.SchedulingScheduleTeacherInfo.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.slots) {
+            exports.SchedulingScheduleSlotInfo.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.semesters) {
+            exports.SchedulingScheduleSemesterInfo.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.sections) {
+            exports.SchedulingScheduleSectionInfo.encode(v, writer.uint32(58).fork()).join();
+        }
+        for (const v of message.students) {
+            exports.SchedulingScheduleStudentInfo.encode(v, writer.uint32(66).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGeneratedScheduleView();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.schedule = exports.SchedulingGeneratedSchedule.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.entries.push(exports.SchedulingGeneratedScheduleEntry.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.classes.push(exports.SchedulingScheduleClassInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.teachers.push(exports.SchedulingScheduleTeacherInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.slots.push(exports.SchedulingScheduleSlotInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.semesters.push(exports.SchedulingScheduleSemesterInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.sections.push(exports.SchedulingScheduleSectionInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.students.push(exports.SchedulingScheduleStudentInfo.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            schedule: isSet(object.schedule) ? exports.SchedulingGeneratedSchedule.fromJSON(object.schedule) : undefined,
+            entries: globalThis.Array.isArray(object?.entries)
+                ? object.entries.map((e) => exports.SchedulingGeneratedScheduleEntry.fromJSON(e))
+                : [],
+            classes: globalThis.Array.isArray(object?.classes)
+                ? object.classes.map((e) => exports.SchedulingScheduleClassInfo.fromJSON(e))
+                : [],
+            teachers: globalThis.Array.isArray(object?.teachers)
+                ? object.teachers.map((e) => exports.SchedulingScheduleTeacherInfo.fromJSON(e))
+                : [],
+            slots: globalThis.Array.isArray(object?.slots)
+                ? object.slots.map((e) => exports.SchedulingScheduleSlotInfo.fromJSON(e))
+                : [],
+            semesters: globalThis.Array.isArray(object?.semesters)
+                ? object.semesters.map((e) => exports.SchedulingScheduleSemesterInfo.fromJSON(e))
+                : [],
+            sections: globalThis.Array.isArray(object?.sections)
+                ? object.sections.map((e) => exports.SchedulingScheduleSectionInfo.fromJSON(e))
+                : [],
+            students: globalThis.Array.isArray(object?.students)
+                ? object.students.map((e) => exports.SchedulingScheduleStudentInfo.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.schedule !== undefined) {
+            obj.schedule = exports.SchedulingGeneratedSchedule.toJSON(message.schedule);
+        }
+        if (message.entries?.length) {
+            obj.entries = message.entries.map((e) => exports.SchedulingGeneratedScheduleEntry.toJSON(e));
+        }
+        if (message.classes?.length) {
+            obj.classes = message.classes.map((e) => exports.SchedulingScheduleClassInfo.toJSON(e));
+        }
+        if (message.teachers?.length) {
+            obj.teachers = message.teachers.map((e) => exports.SchedulingScheduleTeacherInfo.toJSON(e));
+        }
+        if (message.slots?.length) {
+            obj.slots = message.slots.map((e) => exports.SchedulingScheduleSlotInfo.toJSON(e));
+        }
+        if (message.semesters?.length) {
+            obj.semesters = message.semesters.map((e) => exports.SchedulingScheduleSemesterInfo.toJSON(e));
+        }
+        if (message.sections?.length) {
+            obj.sections = message.sections.map((e) => exports.SchedulingScheduleSectionInfo.toJSON(e));
+        }
+        if (message.students?.length) {
+            obj.students = message.students.map((e) => exports.SchedulingScheduleStudentInfo.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGeneratedScheduleView.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGeneratedScheduleView();
+        message.schedule = (object.schedule !== undefined && object.schedule !== null)
+            ? exports.SchedulingGeneratedSchedule.fromPartial(object.schedule)
+            : undefined;
+        message.entries = object.entries?.map((e) => exports.SchedulingGeneratedScheduleEntry.fromPartial(e)) || [];
+        message.classes = object.classes?.map((e) => exports.SchedulingScheduleClassInfo.fromPartial(e)) || [];
+        message.teachers = object.teachers?.map((e) => exports.SchedulingScheduleTeacherInfo.fromPartial(e)) || [];
+        message.slots = object.slots?.map((e) => exports.SchedulingScheduleSlotInfo.fromPartial(e)) || [];
+        message.semesters = object.semesters?.map((e) => exports.SchedulingScheduleSemesterInfo.fromPartial(e)) || [];
+        message.sections = object.sections?.map((e) => exports.SchedulingScheduleSectionInfo.fromPartial(e)) || [];
+        message.students = object.students?.map((e) => exports.SchedulingScheduleStudentInfo.fromPartial(e)) || [];
         return message;
     },
 };

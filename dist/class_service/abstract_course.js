@@ -22,6 +22,7 @@ function createBaseAbstractCourse() {
         category_ids: [],
         can_delete: undefined,
         grade: undefined,
+        color: undefined,
     };
 }
 exports.AbstractCourse = {
@@ -52,6 +53,9 @@ exports.AbstractCourse = {
         }
         if (message.grade !== undefined) {
             writer.uint32(72).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        if (message.color !== undefined) {
+            writer.uint32(82).string(message.color);
         }
         return writer;
     },
@@ -116,6 +120,12 @@ exports.AbstractCourse = {
                     }
                     message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
                     continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.color = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -137,6 +147,7 @@ exports.AbstractCourse = {
                 : [],
             can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
             grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            color: isSet(object.color) ? globalThis.String(object.color) : undefined,
         };
     },
     toJSON(message) {
@@ -168,6 +179,9 @@ exports.AbstractCourse = {
         if (message.grade !== undefined) {
             obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
         }
+        if (message.color !== undefined) {
+            obj.color = message.color;
+        }
         return obj;
     },
     create(base) {
@@ -186,6 +200,7 @@ exports.AbstractCourse = {
         message.category_ids = object.category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.can_delete = object.can_delete ?? undefined;
         message.grade = object.grade ?? undefined;
+        message.color = object.color ?? undefined;
         return message;
     },
 };

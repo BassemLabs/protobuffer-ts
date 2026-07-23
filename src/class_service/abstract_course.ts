@@ -23,7 +23,11 @@ export interface AbstractCourse {
     | boolean
     | undefined;
   /** this field is only for subject courses */
-  grade?: StudentGrade | undefined;
+  grade?:
+    | StudentGrade
+    | undefined;
+  /** #RRGGBB timetable color */
+  color?: string | undefined;
 }
 
 function createBaseAbstractCourse(): AbstractCourse {
@@ -37,6 +41,7 @@ function createBaseAbstractCourse(): AbstractCourse {
     category_ids: [],
     can_delete: undefined,
     grade: undefined,
+    color: undefined,
   };
 }
 
@@ -68,6 +73,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     }
     if (message.grade !== undefined) {
       writer.uint32(72).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.color !== undefined) {
+      writer.uint32(82).string(message.color);
     }
     return writer;
   },
@@ -142,6 +150,13 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
 
           message.grade = studentGradeFromJSON(reader.int32());
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.color = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -164,6 +179,7 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
         : [],
       can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      color: isSet(object.color) ? globalThis.String(object.color) : undefined,
     };
   },
 
@@ -196,6 +212,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     if (message.grade !== undefined) {
       obj.grade = studentGradeToJSON(message.grade);
     }
+    if (message.color !== undefined) {
+      obj.color = message.color;
+    }
     return obj;
   },
 
@@ -215,6 +234,7 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.can_delete = object.can_delete ?? undefined;
     message.grade = object.grade ?? undefined;
+    message.color = object.color ?? undefined;
     return message;
   },
 };

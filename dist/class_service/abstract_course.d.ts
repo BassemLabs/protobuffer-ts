@@ -13,6 +13,8 @@ export interface AbstractCourse {
     can_delete?: boolean | undefined;
     /** this field is only for subject courses */
     grade?: StudentGrade | undefined;
+    /** #RRGGBB timetable color */
+    color?: string | undefined;
 }
 export declare const AbstractCourse: MessageFns<AbstractCourse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
