@@ -100,6 +100,11 @@ export interface GetStudentPrimaryIdFieldResponse {
   primary_id_field?: StudentPrimaryIdField | undefined;
 }
 
+export interface UpdateStudentPrimaryIdCustomFieldRequest {
+  context: RequestContext | undefined;
+  custom_field_id?: ObjectId | undefined;
+}
+
 export interface GetAllCustomFieldEntriesByUserRequest {
   context:
     | RequestContext
@@ -1321,6 +1326,88 @@ export const GetStudentPrimaryIdFieldResponse: MessageFns<GetStudentPrimaryIdFie
     const message = createBaseGetStudentPrimaryIdFieldResponse();
     message.primary_id_field = (object.primary_id_field !== undefined && object.primary_id_field !== null)
       ? StudentPrimaryIdField.fromPartial(object.primary_id_field)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateStudentPrimaryIdCustomFieldRequest(): UpdateStudentPrimaryIdCustomFieldRequest {
+  return { context: undefined, custom_field_id: undefined };
+}
+
+export const UpdateStudentPrimaryIdCustomFieldRequest: MessageFns<UpdateStudentPrimaryIdCustomFieldRequest> = {
+  encode(message: UpdateStudentPrimaryIdCustomFieldRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateStudentPrimaryIdCustomFieldRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateStudentPrimaryIdCustomFieldRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateStudentPrimaryIdCustomFieldRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateStudentPrimaryIdCustomFieldRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateStudentPrimaryIdCustomFieldRequest>, I>>(
+    base?: I,
+  ): UpdateStudentPrimaryIdCustomFieldRequest {
+    return UpdateStudentPrimaryIdCustomFieldRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateStudentPrimaryIdCustomFieldRequest>, I>>(
+    object: I,
+  ): UpdateStudentPrimaryIdCustomFieldRequest {
+    const message = createBaseUpdateStudentPrimaryIdCustomFieldRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
     return message;
   },

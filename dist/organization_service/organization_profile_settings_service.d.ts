@@ -53,7 +53,7 @@ export interface ReorderProfileSectionsRequest {
 export interface SetStudentPrimaryIdCustomFieldRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
-    student_primary_id_custom_field: ObjectId | undefined;
+    student_primary_id_custom_field?: ObjectId | undefined;
 }
 export interface UpdateGraduationSettingsRequest {
     context: RequestContext | undefined;

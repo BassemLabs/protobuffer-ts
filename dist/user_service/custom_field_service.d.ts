@@ -63,6 +63,10 @@ export interface GetStudentPrimaryIdFieldResponse {
     /** None if no primary ID field is set for the organization */
     primary_id_field?: StudentPrimaryIdField | undefined;
 }
+export interface UpdateStudentPrimaryIdCustomFieldRequest {
+    context: RequestContext | undefined;
+    custom_field_id?: ObjectId | undefined;
+}
 export interface GetAllCustomFieldEntriesByUserRequest {
     context: RequestContext | undefined;
     /** Student/Parent/Teacher ID */
@@ -253,6 +257,7 @@ export declare const CreateCustomFieldRequest: MessageFns<CreateCustomFieldReque
 export declare const UpdateCustomFieldRequest: MessageFns<UpdateCustomFieldRequest>;
 export declare const GetStudentPrimaryIdFieldRequest: MessageFns<GetStudentPrimaryIdFieldRequest>;
 export declare const GetStudentPrimaryIdFieldResponse: MessageFns<GetStudentPrimaryIdFieldResponse>;
+export declare const UpdateStudentPrimaryIdCustomFieldRequest: MessageFns<UpdateStudentPrimaryIdCustomFieldRequest>;
 export declare const GetAllCustomFieldEntriesByUserRequest: MessageFns<GetAllCustomFieldEntriesByUserRequest>;
 export declare const GetAllCustomFieldEntriesByUserResponse: MessageFns<GetAllCustomFieldEntriesByUserResponse>;
 export declare const GetCustomFieldEntriesByUserAndGroupRequest: MessageFns<GetCustomFieldEntriesByUserAndGroupRequest>;
