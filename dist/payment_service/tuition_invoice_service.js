@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckFamilyTuitionInvoiceStatusResponse = exports.CheckFamilyTuitionInvoiceStatusRequest = exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.RegenerateTuitionInvoiceRequest = exports.ModifyTuitionInvoiceRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
+exports.CheckFamilyTuitionInvoiceStatusResponse = exports.CheckFamilyTuitionInvoiceStatusRequest = exports.ListFamilyTuitionAdjustmentsResponse = exports.ListFamilyTuitionAdjustmentsRequest = exports.ListFamilyTuitionRemindersResponse = exports.ListFamilyTuitionRemindersRequest = exports.SendTuitionRemindersResponse = exports.SendTuitionRemindersRequest = exports.ListFamilyTuitionNotesResponse = exports.ListFamilyTuitionNotesRequest = exports.UpdateFamilyTuitionNoteRequest = exports.CreateFamilyTuitionNoteRequest = exports.FamilyWithTuitionInvoice = exports.ListFamiliesWithTuitionInvoicesResponse = exports.ListFamiliesWithTuitionInvoicesRequest = exports.RegenerateTuitionInvoiceRequest = exports.ModifyTuitionInvoiceRequest = exports.GenerateTuitionInvoiceRequest = exports.GetFamilyTuitionInvoiceRequest = exports.StudentObj = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -14,6 +14,7 @@ const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const tuition_invoice_1 = require("./tuition_invoice");
+const tuition_manager_1 = require("./tuition_manager");
 exports.protobufPackage = "payment_service";
 function createBaseStudentObj() {
     return { id: undefined, name: undefined, grade: undefined };
@@ -616,6 +617,9 @@ function createBaseFamilyWithTuitionInvoice() {
         total_paid: undefined,
         status: undefined,
         total_invoices_amount: undefined,
+        remaining_amount: undefined,
+        overdue_amount: undefined,
+        post_generation_discount_amount: undefined,
     };
 }
 exports.FamilyWithTuitionInvoice = {
@@ -637,6 +641,15 @@ exports.FamilyWithTuitionInvoice = {
         }
         if (message.total_invoices_amount !== undefined) {
             writer.uint32(49).double(message.total_invoices_amount);
+        }
+        if (message.remaining_amount !== undefined) {
+            writer.uint32(57).double(message.remaining_amount);
+        }
+        if (message.overdue_amount !== undefined) {
+            writer.uint32(65).double(message.overdue_amount);
+        }
+        if (message.post_generation_discount_amount !== undefined) {
+            writer.uint32(73).double(message.post_generation_discount_amount);
         }
         return writer;
     },
@@ -683,6 +696,24 @@ exports.FamilyWithTuitionInvoice = {
                     }
                     message.total_invoices_amount = reader.double();
                     continue;
+                case 7:
+                    if (tag !== 57) {
+                        break;
+                    }
+                    message.remaining_amount = reader.double();
+                    continue;
+                case 8:
+                    if (tag !== 65) {
+                        break;
+                    }
+                    message.overdue_amount = reader.double();
+                    continue;
+                case 9:
+                    if (tag !== 73) {
+                        break;
+                    }
+                    message.post_generation_discount_amount = reader.double();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -700,6 +731,11 @@ exports.FamilyWithTuitionInvoice = {
             status: isSet(object.status) ? (0, tuition_invoice_1.tuitionInvoiceStatusFromJSON)(object.status) : undefined,
             total_invoices_amount: isSet(object.totalInvoicesAmount)
                 ? globalThis.Number(object.totalInvoicesAmount)
+                : undefined,
+            remaining_amount: isSet(object.remainingAmount) ? globalThis.Number(object.remainingAmount) : undefined,
+            overdue_amount: isSet(object.overdueAmount) ? globalThis.Number(object.overdueAmount) : undefined,
+            post_generation_discount_amount: isSet(object.postGenerationDiscountAmount)
+                ? globalThis.Number(object.postGenerationDiscountAmount)
                 : undefined,
         };
     },
@@ -723,6 +759,15 @@ exports.FamilyWithTuitionInvoice = {
         if (message.total_invoices_amount !== undefined) {
             obj.totalInvoicesAmount = message.total_invoices_amount;
         }
+        if (message.remaining_amount !== undefined) {
+            obj.remainingAmount = message.remaining_amount;
+        }
+        if (message.overdue_amount !== undefined) {
+            obj.overdueAmount = message.overdue_amount;
+        }
+        if (message.post_generation_discount_amount !== undefined) {
+            obj.postGenerationDiscountAmount = message.post_generation_discount_amount;
+        }
         return obj;
     },
     create(base) {
@@ -740,6 +785,843 @@ exports.FamilyWithTuitionInvoice = {
         message.total_paid = object.total_paid ?? undefined;
         message.status = object.status ?? undefined;
         message.total_invoices_amount = object.total_invoices_amount ?? undefined;
+        message.remaining_amount = object.remaining_amount ?? undefined;
+        message.overdue_amount = object.overdue_amount ?? undefined;
+        message.post_generation_discount_amount = object.post_generation_discount_amount ?? undefined;
+        return message;
+    },
+};
+function createBaseCreateFamilyTuitionNoteRequest() {
+    return { context: undefined, family: undefined, school_year: undefined, body: undefined };
+}
+exports.CreateFamilyTuitionNoteRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        if (message.body !== undefined) {
+            writer.uint32(34).string(message.body);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateFamilyTuitionNoteRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateFamilyTuitionNoteRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateFamilyTuitionNoteRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.body = object.body ?? undefined;
+        return message;
+    },
+};
+function createBaseUpdateFamilyTuitionNoteRequest() {
+    return { context: undefined, family: undefined, school_year: undefined, note: undefined, body: undefined };
+}
+exports.UpdateFamilyTuitionNoteRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        if (message.note !== undefined) {
+            object_id_1.ObjectId.encode(message.note, writer.uint32(34).fork()).join();
+        }
+        if (message.body !== undefined) {
+            writer.uint32(42).string(message.body);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateFamilyTuitionNoteRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.note = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            note: isSet(object.note) ? object_id_1.ObjectId.fromJSON(object.note) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.note !== undefined) {
+            obj.note = object_id_1.ObjectId.toJSON(message.note);
+        }
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateFamilyTuitionNoteRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateFamilyTuitionNoteRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.note = (object.note !== undefined && object.note !== null) ? object_id_1.ObjectId.fromPartial(object.note) : undefined;
+        message.body = object.body ?? undefined;
+        return message;
+    },
+};
+function createBaseListFamilyTuitionNotesRequest() {
+    return { context: undefined, family: undefined, school_year: undefined };
+}
+exports.ListFamilyTuitionNotesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamilyTuitionNotesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamilyTuitionNotesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamilyTuitionNotesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        return message;
+    },
+};
+function createBaseListFamilyTuitionNotesResponse() {
+    return { notes: [] };
+}
+exports.ListFamilyTuitionNotesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.notes) {
+            tuition_manager_1.TuitionFamilyNote.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamilyTuitionNotesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.notes.push(tuition_manager_1.TuitionFamilyNote.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            notes: globalThis.Array.isArray(object?.notes) ? object.notes.map((e) => tuition_manager_1.TuitionFamilyNote.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.notes?.length) {
+            obj.notes = message.notes.map((e) => tuition_manager_1.TuitionFamilyNote.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamilyTuitionNotesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamilyTuitionNotesResponse();
+        message.notes = object.notes?.map((e) => tuition_manager_1.TuitionFamilyNote.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSendTuitionRemindersRequest() {
+    return {
+        context: undefined,
+        school_year: undefined,
+        families: [],
+        title: undefined,
+        header: undefined,
+        body: undefined,
+        footer: undefined,
+    };
+}
+exports.SendTuitionRemindersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.families) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        if (message.title !== undefined) {
+            writer.uint32(34).string(message.title);
+        }
+        if (message.header !== undefined) {
+            writer.uint32(42).string(message.header);
+        }
+        if (message.body !== undefined) {
+            writer.uint32(50).string(message.body);
+        }
+        if (message.footer !== undefined) {
+            writer.uint32(58).string(message.footer);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSendTuitionRemindersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.families.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.header = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.footer = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            families: globalThis.Array.isArray(object?.families) ? object.families.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.families?.length) {
+            obj.families = message.families.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.header !== undefined) {
+            obj.header = message.header;
+        }
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        if (message.footer !== undefined) {
+            obj.footer = message.footer;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SendTuitionRemindersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSendTuitionRemindersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.families = object.families?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.title = object.title ?? undefined;
+        message.header = object.header ?? undefined;
+        message.body = object.body ?? undefined;
+        message.footer = object.footer ?? undefined;
+        return message;
+    },
+};
+function createBaseSendTuitionRemindersResponse() {
+    return { reminders: [] };
+}
+exports.SendTuitionRemindersResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.reminders) {
+            tuition_manager_1.TuitionReminder.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSendTuitionRemindersResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.reminders.push(tuition_manager_1.TuitionReminder.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            reminders: globalThis.Array.isArray(object?.reminders)
+                ? object.reminders.map((e) => tuition_manager_1.TuitionReminder.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.reminders?.length) {
+            obj.reminders = message.reminders.map((e) => tuition_manager_1.TuitionReminder.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SendTuitionRemindersResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSendTuitionRemindersResponse();
+        message.reminders = object.reminders?.map((e) => tuition_manager_1.TuitionReminder.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseListFamilyTuitionRemindersRequest() {
+    return { context: undefined, family: undefined, school_year: undefined };
+}
+exports.ListFamilyTuitionRemindersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamilyTuitionRemindersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamilyTuitionRemindersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamilyTuitionRemindersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        return message;
+    },
+};
+function createBaseListFamilyTuitionRemindersResponse() {
+    return { reminders: [] };
+}
+exports.ListFamilyTuitionRemindersResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.reminders) {
+            tuition_manager_1.TuitionReminder.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamilyTuitionRemindersResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.reminders.push(tuition_manager_1.TuitionReminder.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            reminders: globalThis.Array.isArray(object?.reminders)
+                ? object.reminders.map((e) => tuition_manager_1.TuitionReminder.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.reminders?.length) {
+            obj.reminders = message.reminders.map((e) => tuition_manager_1.TuitionReminder.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamilyTuitionRemindersResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamilyTuitionRemindersResponse();
+        message.reminders = object.reminders?.map((e) => tuition_manager_1.TuitionReminder.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseListFamilyTuitionAdjustmentsRequest() {
+    return { context: undefined, family: undefined, school_year: undefined };
+}
+exports.ListFamilyTuitionAdjustmentsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family !== undefined) {
+            object_id_1.ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamilyTuitionAdjustmentsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family !== undefined) {
+            obj.family = object_id_1.ObjectId.toJSON(message.family);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamilyTuitionAdjustmentsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamilyTuitionAdjustmentsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family = (object.family !== undefined && object.family !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        return message;
+    },
+};
+function createBaseListFamilyTuitionAdjustmentsResponse() {
+    return { adjustments: [] };
+}
+exports.ListFamilyTuitionAdjustmentsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.adjustments) {
+            tuition_manager_1.TuitionAdjustmentEntry.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListFamilyTuitionAdjustmentsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.adjustments.push(tuition_manager_1.TuitionAdjustmentEntry.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            adjustments: globalThis.Array.isArray(object?.adjustments)
+                ? object.adjustments.map((e) => tuition_manager_1.TuitionAdjustmentEntry.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.adjustments?.length) {
+            obj.adjustments = message.adjustments.map((e) => tuition_manager_1.TuitionAdjustmentEntry.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListFamilyTuitionAdjustmentsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListFamilyTuitionAdjustmentsResponse();
+        message.adjustments = object.adjustments?.map((e) => tuition_manager_1.TuitionAdjustmentEntry.fromPartial(e)) || [];
         return message;
     },
 };

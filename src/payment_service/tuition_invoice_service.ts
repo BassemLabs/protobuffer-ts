@@ -18,6 +18,7 @@ import {
   tuitionInvoiceStatusToJSON,
   tuitionInvoiceStatusToNumber,
 } from "./tuition_invoice";
+import { TuitionAdjustmentEntry, TuitionFamilyNote, TuitionReminder } from "./tuition_manager";
 
 export const protobufPackage = "payment_service";
 
@@ -71,6 +72,68 @@ export interface FamilyWithTuitionInvoice {
   total_paid?: number | undefined;
   status?: TuitionInvoiceStatus | undefined;
   total_invoices_amount?: number | undefined;
+  remaining_amount?: number | undefined;
+  overdue_amount?: number | undefined;
+  post_generation_discount_amount?: number | undefined;
+}
+
+export interface CreateFamilyTuitionNoteRequest {
+  context: RequestContext | undefined;
+  family: ObjectId | undefined;
+  school_year: ObjectId | undefined;
+  body?: string | undefined;
+}
+
+export interface UpdateFamilyTuitionNoteRequest {
+  context: RequestContext | undefined;
+  family: ObjectId | undefined;
+  school_year: ObjectId | undefined;
+  note: ObjectId | undefined;
+  body?: string | undefined;
+}
+
+export interface ListFamilyTuitionNotesRequest {
+  context: RequestContext | undefined;
+  family: ObjectId | undefined;
+  school_year: ObjectId | undefined;
+}
+
+export interface ListFamilyTuitionNotesResponse {
+  notes: TuitionFamilyNote[];
+}
+
+export interface SendTuitionRemindersRequest {
+  context: RequestContext | undefined;
+  school_year: ObjectId | undefined;
+  families: ObjectId[];
+  title?: string | undefined;
+  header?: string | undefined;
+  body?: string | undefined;
+  footer?: string | undefined;
+}
+
+export interface SendTuitionRemindersResponse {
+  reminders: TuitionReminder[];
+}
+
+export interface ListFamilyTuitionRemindersRequest {
+  context: RequestContext | undefined;
+  family: ObjectId | undefined;
+  school_year: ObjectId | undefined;
+}
+
+export interface ListFamilyTuitionRemindersResponse {
+  reminders: TuitionReminder[];
+}
+
+export interface ListFamilyTuitionAdjustmentsRequest {
+  context: RequestContext | undefined;
+  family: ObjectId | undefined;
+  school_year: ObjectId | undefined;
+}
+
+export interface ListFamilyTuitionAdjustmentsResponse {
+  adjustments: TuitionAdjustmentEntry[];
 }
 
 export interface CheckFamilyTuitionInvoiceStatusRequest {
@@ -763,6 +826,9 @@ function createBaseFamilyWithTuitionInvoice(): FamilyWithTuitionInvoice {
     total_paid: undefined,
     status: undefined,
     total_invoices_amount: undefined,
+    remaining_amount: undefined,
+    overdue_amount: undefined,
+    post_generation_discount_amount: undefined,
   };
 }
 
@@ -785,6 +851,15 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
     }
     if (message.total_invoices_amount !== undefined) {
       writer.uint32(49).double(message.total_invoices_amount);
+    }
+    if (message.remaining_amount !== undefined) {
+      writer.uint32(57).double(message.remaining_amount);
+    }
+    if (message.overdue_amount !== undefined) {
+      writer.uint32(65).double(message.overdue_amount);
+    }
+    if (message.post_generation_discount_amount !== undefined) {
+      writer.uint32(73).double(message.post_generation_discount_amount);
     }
     return writer;
   },
@@ -838,6 +913,27 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
 
           message.total_invoices_amount = reader.double();
           continue;
+        case 7:
+          if (tag !== 57) {
+            break;
+          }
+
+          message.remaining_amount = reader.double();
+          continue;
+        case 8:
+          if (tag !== 65) {
+            break;
+          }
+
+          message.overdue_amount = reader.double();
+          continue;
+        case 9:
+          if (tag !== 73) {
+            break;
+          }
+
+          message.post_generation_discount_amount = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -856,6 +952,11 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
       status: isSet(object.status) ? tuitionInvoiceStatusFromJSON(object.status) : undefined,
       total_invoices_amount: isSet(object.totalInvoicesAmount)
         ? globalThis.Number(object.totalInvoicesAmount)
+        : undefined,
+      remaining_amount: isSet(object.remainingAmount) ? globalThis.Number(object.remainingAmount) : undefined,
+      overdue_amount: isSet(object.overdueAmount) ? globalThis.Number(object.overdueAmount) : undefined,
+      post_generation_discount_amount: isSet(object.postGenerationDiscountAmount)
+        ? globalThis.Number(object.postGenerationDiscountAmount)
         : undefined,
     };
   },
@@ -880,6 +981,15 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
     if (message.total_invoices_amount !== undefined) {
       obj.totalInvoicesAmount = message.total_invoices_amount;
     }
+    if (message.remaining_amount !== undefined) {
+      obj.remainingAmount = message.remaining_amount;
+    }
+    if (message.overdue_amount !== undefined) {
+      obj.overdueAmount = message.overdue_amount;
+    }
+    if (message.post_generation_discount_amount !== undefined) {
+      obj.postGenerationDiscountAmount = message.post_generation_discount_amount;
+    }
     return obj;
   },
 
@@ -898,6 +1008,956 @@ export const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice> = {
     message.total_paid = object.total_paid ?? undefined;
     message.status = object.status ?? undefined;
     message.total_invoices_amount = object.total_invoices_amount ?? undefined;
+    message.remaining_amount = object.remaining_amount ?? undefined;
+    message.overdue_amount = object.overdue_amount ?? undefined;
+    message.post_generation_discount_amount = object.post_generation_discount_amount ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCreateFamilyTuitionNoteRequest(): CreateFamilyTuitionNoteRequest {
+  return { context: undefined, family: undefined, school_year: undefined, body: undefined };
+}
+
+export const CreateFamilyTuitionNoteRequest: MessageFns<CreateFamilyTuitionNoteRequest> = {
+  encode(message: CreateFamilyTuitionNoteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family !== undefined) {
+      ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    if (message.body !== undefined) {
+      writer.uint32(34).string(message.body);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateFamilyTuitionNoteRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFamilyTuitionNoteRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFamilyTuitionNoteRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+    };
+  },
+
+  toJSON(message: CreateFamilyTuitionNoteRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family !== undefined) {
+      obj.family = ObjectId.toJSON(message.family);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.body !== undefined) {
+      obj.body = message.body;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateFamilyTuitionNoteRequest>, I>>(base?: I): CreateFamilyTuitionNoteRequest {
+    return CreateFamilyTuitionNoteRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateFamilyTuitionNoteRequest>, I>>(
+    object: I,
+  ): CreateFamilyTuitionNoteRequest {
+    const message = createBaseCreateFamilyTuitionNoteRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family = (object.family !== undefined && object.family !== null)
+      ? ObjectId.fromPartial(object.family)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    message.body = object.body ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateFamilyTuitionNoteRequest(): UpdateFamilyTuitionNoteRequest {
+  return { context: undefined, family: undefined, school_year: undefined, note: undefined, body: undefined };
+}
+
+export const UpdateFamilyTuitionNoteRequest: MessageFns<UpdateFamilyTuitionNoteRequest> = {
+  encode(message: UpdateFamilyTuitionNoteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family !== undefined) {
+      ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    if (message.note !== undefined) {
+      ObjectId.encode(message.note, writer.uint32(34).fork()).join();
+    }
+    if (message.body !== undefined) {
+      writer.uint32(42).string(message.body);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateFamilyTuitionNoteRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateFamilyTuitionNoteRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.note = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateFamilyTuitionNoteRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      note: isSet(object.note) ? ObjectId.fromJSON(object.note) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateFamilyTuitionNoteRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family !== undefined) {
+      obj.family = ObjectId.toJSON(message.family);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.note !== undefined) {
+      obj.note = ObjectId.toJSON(message.note);
+    }
+    if (message.body !== undefined) {
+      obj.body = message.body;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateFamilyTuitionNoteRequest>, I>>(base?: I): UpdateFamilyTuitionNoteRequest {
+    return UpdateFamilyTuitionNoteRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateFamilyTuitionNoteRequest>, I>>(
+    object: I,
+  ): UpdateFamilyTuitionNoteRequest {
+    const message = createBaseUpdateFamilyTuitionNoteRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family = (object.family !== undefined && object.family !== null)
+      ? ObjectId.fromPartial(object.family)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    message.note = (object.note !== undefined && object.note !== null) ? ObjectId.fromPartial(object.note) : undefined;
+    message.body = object.body ?? undefined;
+    return message;
+  },
+};
+
+function createBaseListFamilyTuitionNotesRequest(): ListFamilyTuitionNotesRequest {
+  return { context: undefined, family: undefined, school_year: undefined };
+}
+
+export const ListFamilyTuitionNotesRequest: MessageFns<ListFamilyTuitionNotesRequest> = {
+  encode(message: ListFamilyTuitionNotesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family !== undefined) {
+      ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamilyTuitionNotesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamilyTuitionNotesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamilyTuitionNotesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: ListFamilyTuitionNotesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family !== undefined) {
+      obj.family = ObjectId.toJSON(message.family);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamilyTuitionNotesRequest>, I>>(base?: I): ListFamilyTuitionNotesRequest {
+    return ListFamilyTuitionNotesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamilyTuitionNotesRequest>, I>>(
+    object: I,
+  ): ListFamilyTuitionNotesRequest {
+    const message = createBaseListFamilyTuitionNotesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family = (object.family !== undefined && object.family !== null)
+      ? ObjectId.fromPartial(object.family)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseListFamilyTuitionNotesResponse(): ListFamilyTuitionNotesResponse {
+  return { notes: [] };
+}
+
+export const ListFamilyTuitionNotesResponse: MessageFns<ListFamilyTuitionNotesResponse> = {
+  encode(message: ListFamilyTuitionNotesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.notes) {
+      TuitionFamilyNote.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamilyTuitionNotesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamilyTuitionNotesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.notes.push(TuitionFamilyNote.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamilyTuitionNotesResponse {
+    return {
+      notes: globalThis.Array.isArray(object?.notes) ? object.notes.map((e: any) => TuitionFamilyNote.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: ListFamilyTuitionNotesResponse): unknown {
+    const obj: any = {};
+    if (message.notes?.length) {
+      obj.notes = message.notes.map((e) => TuitionFamilyNote.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamilyTuitionNotesResponse>, I>>(base?: I): ListFamilyTuitionNotesResponse {
+    return ListFamilyTuitionNotesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamilyTuitionNotesResponse>, I>>(
+    object: I,
+  ): ListFamilyTuitionNotesResponse {
+    const message = createBaseListFamilyTuitionNotesResponse();
+    message.notes = object.notes?.map((e) => TuitionFamilyNote.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSendTuitionRemindersRequest(): SendTuitionRemindersRequest {
+  return {
+    context: undefined,
+    school_year: undefined,
+    families: [],
+    title: undefined,
+    header: undefined,
+    body: undefined,
+    footer: undefined,
+  };
+}
+
+export const SendTuitionRemindersRequest: MessageFns<SendTuitionRemindersRequest> = {
+  encode(message: SendTuitionRemindersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.families) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.title !== undefined) {
+      writer.uint32(34).string(message.title);
+    }
+    if (message.header !== undefined) {
+      writer.uint32(42).string(message.header);
+    }
+    if (message.body !== undefined) {
+      writer.uint32(50).string(message.body);
+    }
+    if (message.footer !== undefined) {
+      writer.uint32(58).string(message.footer);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendTuitionRemindersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendTuitionRemindersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.families.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.header = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.footer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendTuitionRemindersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      families: globalThis.Array.isArray(object?.families) ? object.families.map((e: any) => ObjectId.fromJSON(e)) : [],
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
+    };
+  },
+
+  toJSON(message: SendTuitionRemindersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.families?.length) {
+      obj.families = message.families.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.title !== undefined) {
+      obj.title = message.title;
+    }
+    if (message.header !== undefined) {
+      obj.header = message.header;
+    }
+    if (message.body !== undefined) {
+      obj.body = message.body;
+    }
+    if (message.footer !== undefined) {
+      obj.footer = message.footer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SendTuitionRemindersRequest>, I>>(base?: I): SendTuitionRemindersRequest {
+    return SendTuitionRemindersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SendTuitionRemindersRequest>, I>>(object: I): SendTuitionRemindersRequest {
+    const message = createBaseSendTuitionRemindersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    message.families = object.families?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.title = object.title ?? undefined;
+    message.header = object.header ?? undefined;
+    message.body = object.body ?? undefined;
+    message.footer = object.footer ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSendTuitionRemindersResponse(): SendTuitionRemindersResponse {
+  return { reminders: [] };
+}
+
+export const SendTuitionRemindersResponse: MessageFns<SendTuitionRemindersResponse> = {
+  encode(message: SendTuitionRemindersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.reminders) {
+      TuitionReminder.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendTuitionRemindersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendTuitionRemindersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reminders.push(TuitionReminder.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendTuitionRemindersResponse {
+    return {
+      reminders: globalThis.Array.isArray(object?.reminders)
+        ? object.reminders.map((e: any) => TuitionReminder.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SendTuitionRemindersResponse): unknown {
+    const obj: any = {};
+    if (message.reminders?.length) {
+      obj.reminders = message.reminders.map((e) => TuitionReminder.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SendTuitionRemindersResponse>, I>>(base?: I): SendTuitionRemindersResponse {
+    return SendTuitionRemindersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SendTuitionRemindersResponse>, I>>(object: I): SendTuitionRemindersResponse {
+    const message = createBaseSendTuitionRemindersResponse();
+    message.reminders = object.reminders?.map((e) => TuitionReminder.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListFamilyTuitionRemindersRequest(): ListFamilyTuitionRemindersRequest {
+  return { context: undefined, family: undefined, school_year: undefined };
+}
+
+export const ListFamilyTuitionRemindersRequest: MessageFns<ListFamilyTuitionRemindersRequest> = {
+  encode(message: ListFamilyTuitionRemindersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family !== undefined) {
+      ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamilyTuitionRemindersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamilyTuitionRemindersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamilyTuitionRemindersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: ListFamilyTuitionRemindersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family !== undefined) {
+      obj.family = ObjectId.toJSON(message.family);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamilyTuitionRemindersRequest>, I>>(
+    base?: I,
+  ): ListFamilyTuitionRemindersRequest {
+    return ListFamilyTuitionRemindersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamilyTuitionRemindersRequest>, I>>(
+    object: I,
+  ): ListFamilyTuitionRemindersRequest {
+    const message = createBaseListFamilyTuitionRemindersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family = (object.family !== undefined && object.family !== null)
+      ? ObjectId.fromPartial(object.family)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseListFamilyTuitionRemindersResponse(): ListFamilyTuitionRemindersResponse {
+  return { reminders: [] };
+}
+
+export const ListFamilyTuitionRemindersResponse: MessageFns<ListFamilyTuitionRemindersResponse> = {
+  encode(message: ListFamilyTuitionRemindersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.reminders) {
+      TuitionReminder.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamilyTuitionRemindersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamilyTuitionRemindersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reminders.push(TuitionReminder.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamilyTuitionRemindersResponse {
+    return {
+      reminders: globalThis.Array.isArray(object?.reminders)
+        ? object.reminders.map((e: any) => TuitionReminder.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ListFamilyTuitionRemindersResponse): unknown {
+    const obj: any = {};
+    if (message.reminders?.length) {
+      obj.reminders = message.reminders.map((e) => TuitionReminder.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamilyTuitionRemindersResponse>, I>>(
+    base?: I,
+  ): ListFamilyTuitionRemindersResponse {
+    return ListFamilyTuitionRemindersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamilyTuitionRemindersResponse>, I>>(
+    object: I,
+  ): ListFamilyTuitionRemindersResponse {
+    const message = createBaseListFamilyTuitionRemindersResponse();
+    message.reminders = object.reminders?.map((e) => TuitionReminder.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListFamilyTuitionAdjustmentsRequest(): ListFamilyTuitionAdjustmentsRequest {
+  return { context: undefined, family: undefined, school_year: undefined };
+}
+
+export const ListFamilyTuitionAdjustmentsRequest: MessageFns<ListFamilyTuitionAdjustmentsRequest> = {
+  encode(message: ListFamilyTuitionAdjustmentsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family !== undefined) {
+      ObjectId.encode(message.family, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamilyTuitionAdjustmentsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamilyTuitionAdjustmentsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamilyTuitionAdjustmentsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+    };
+  },
+
+  toJSON(message: ListFamilyTuitionAdjustmentsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family !== undefined) {
+      obj.family = ObjectId.toJSON(message.family);
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamilyTuitionAdjustmentsRequest>, I>>(
+    base?: I,
+  ): ListFamilyTuitionAdjustmentsRequest {
+    return ListFamilyTuitionAdjustmentsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamilyTuitionAdjustmentsRequest>, I>>(
+    object: I,
+  ): ListFamilyTuitionAdjustmentsRequest {
+    const message = createBaseListFamilyTuitionAdjustmentsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family = (object.family !== undefined && object.family !== null)
+      ? ObjectId.fromPartial(object.family)
+      : undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseListFamilyTuitionAdjustmentsResponse(): ListFamilyTuitionAdjustmentsResponse {
+  return { adjustments: [] };
+}
+
+export const ListFamilyTuitionAdjustmentsResponse: MessageFns<ListFamilyTuitionAdjustmentsResponse> = {
+  encode(message: ListFamilyTuitionAdjustmentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.adjustments) {
+      TuitionAdjustmentEntry.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListFamilyTuitionAdjustmentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFamilyTuitionAdjustmentsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.adjustments.push(TuitionAdjustmentEntry.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListFamilyTuitionAdjustmentsResponse {
+    return {
+      adjustments: globalThis.Array.isArray(object?.adjustments)
+        ? object.adjustments.map((e: any) => TuitionAdjustmentEntry.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ListFamilyTuitionAdjustmentsResponse): unknown {
+    const obj: any = {};
+    if (message.adjustments?.length) {
+      obj.adjustments = message.adjustments.map((e) => TuitionAdjustmentEntry.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFamilyTuitionAdjustmentsResponse>, I>>(
+    base?: I,
+  ): ListFamilyTuitionAdjustmentsResponse {
+    return ListFamilyTuitionAdjustmentsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListFamilyTuitionAdjustmentsResponse>, I>>(
+    object: I,
+  ): ListFamilyTuitionAdjustmentsResponse {
+    const message = createBaseListFamilyTuitionAdjustmentsResponse();
+    message.adjustments = object.adjustments?.map((e) => TuitionAdjustmentEntry.fromPartial(e)) || [];
     return message;
   },
 };

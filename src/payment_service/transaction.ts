@@ -8,6 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { Currency, currencyFromJSON, currencyToJSON, currencyToNumber } from "../organization_service/organization";
+import { AuditActor } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "payment_service_transaction";
@@ -232,6 +233,9 @@ export interface Transaction {
     | undefined;
   /** this is for the percentage */
   invoice_surcharge?: number | undefined;
+  other_payment_method?: string | undefined;
+  admin_note?: string | undefined;
+  created_by?: AuditActor | undefined;
 }
 
 export interface RefundTransaction {
@@ -282,6 +286,9 @@ function createBaseTransaction(): Transaction {
     processing_fee_amount: undefined,
     bassem_labs_fee: undefined,
     invoice_surcharge: undefined,
+    other_payment_method: undefined,
+    admin_note: undefined,
+    created_by: undefined,
   };
 }
 
@@ -325,6 +332,15 @@ export const Transaction: MessageFns<Transaction> = {
     }
     if (message.invoice_surcharge !== undefined) {
       writer.uint32(105).double(message.invoice_surcharge);
+    }
+    if (message.other_payment_method !== undefined) {
+      writer.uint32(114).string(message.other_payment_method);
+    }
+    if (message.admin_note !== undefined) {
+      writer.uint32(122).string(message.admin_note);
+    }
+    if (message.created_by !== undefined) {
+      AuditActor.encode(message.created_by, writer.uint32(130).fork()).join();
     }
     return writer;
   },
@@ -427,6 +443,27 @@ export const Transaction: MessageFns<Transaction> = {
 
           message.invoice_surcharge = reader.double();
           continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.other_payment_method = reader.string();
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.admin_note = reader.string();
+          continue;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.created_by = AuditActor.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -455,6 +492,9 @@ export const Transaction: MessageFns<Transaction> = {
         : undefined,
       bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : undefined,
       invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : undefined,
+      other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
+      admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
+      created_by: isSet(object.createdBy) ? AuditActor.fromJSON(object.createdBy) : undefined,
     };
   },
 
@@ -499,6 +539,15 @@ export const Transaction: MessageFns<Transaction> = {
     if (message.invoice_surcharge !== undefined) {
       obj.invoiceSurcharge = message.invoice_surcharge;
     }
+    if (message.other_payment_method !== undefined) {
+      obj.otherPaymentMethod = message.other_payment_method;
+    }
+    if (message.admin_note !== undefined) {
+      obj.adminNote = message.admin_note;
+    }
+    if (message.created_by !== undefined) {
+      obj.createdBy = AuditActor.toJSON(message.created_by);
+    }
     return obj;
   },
 
@@ -524,6 +573,11 @@ export const Transaction: MessageFns<Transaction> = {
     message.processing_fee_amount = object.processing_fee_amount ?? undefined;
     message.bassem_labs_fee = object.bassem_labs_fee ?? undefined;
     message.invoice_surcharge = object.invoice_surcharge ?? undefined;
+    message.other_payment_method = object.other_payment_method ?? undefined;
+    message.admin_note = object.admin_note ?? undefined;
+    message.created_by = (object.created_by !== undefined && object.created_by !== null)
+      ? AuditActor.fromPartial(object.created_by)
+      : undefined;
     return message;
   },
 };

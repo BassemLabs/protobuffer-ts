@@ -205,8 +205,12 @@ import * as Tuition_application_service from './payment_service/tuition_applicat
 export { Tuition_application_service };
 import * as Transaction from './payment_service/transaction';
 export { Transaction };
+import * as Tuition_manager from './payment_service/tuition_manager';
+export { Tuition_manager };
 import * as Request_context from './utils/request_context';
 export { Request_context };
+import * as Audit_actor from './utils/audit_actor';
+export { Audit_actor };
 import * as Phone_number from './utils/phone_number';
 export { Phone_number };
 import * as Object_id from './utils/object_id';

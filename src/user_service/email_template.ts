@@ -39,6 +39,8 @@ export enum EmailTemplateKey {
   PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL = "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL",
   /** REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL - Re-registration enrollment confirmation template */
   REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL = "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL",
+  /** PAYMENT_REMINDER_EMAIL - Tuition payment reminder template */
+  PAYMENT_REMINDER_EMAIL = "PAYMENT_REMINDER_EMAIL",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -104,6 +106,9 @@ export function emailTemplateKeyFromJSON(object: any): EmailTemplateKey {
     case 20:
     case "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL":
       return EmailTemplateKey.REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL;
+    case 21:
+    case "PAYMENT_REMINDER_EMAIL":
+      return EmailTemplateKey.PAYMENT_REMINDER_EMAIL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -153,6 +158,8 @@ export function emailTemplateKeyToJSON(object: EmailTemplateKey): string {
       return "PARENT_WITHDRAW_REREGISTRATION_STUDENT_EMAIL";
     case EmailTemplateKey.REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL:
       return "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL";
+    case EmailTemplateKey.PAYMENT_REMINDER_EMAIL:
+      return "PAYMENT_REMINDER_EMAIL";
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -201,6 +208,8 @@ export function emailTemplateKeyToNumber(object: EmailTemplateKey): number {
       return 19;
     case EmailTemplateKey.REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL:
       return 20;
+    case EmailTemplateKey.PAYMENT_REMINDER_EMAIL:
+      return 21;
     case EmailTemplateKey.UNRECOGNIZED:
     default:
       return -1;

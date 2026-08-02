@@ -4,6 +4,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { TuitionInvoice, TuitionInvoiceStatus } from "./tuition_invoice";
+import { TuitionAdjustmentEntry, TuitionFamilyNote, TuitionReminder } from "./tuition_manager";
 export declare const protobufPackage = "payment_service";
 /** TODO: Remove this once we move into payment service and call user service */
 export interface StudentObj {
@@ -48,6 +49,58 @@ export interface FamilyWithTuitionInvoice {
     total_paid?: number | undefined;
     status?: TuitionInvoiceStatus | undefined;
     total_invoices_amount?: number | undefined;
+    remaining_amount?: number | undefined;
+    overdue_amount?: number | undefined;
+    post_generation_discount_amount?: number | undefined;
+}
+export interface CreateFamilyTuitionNoteRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+    body?: string | undefined;
+}
+export interface UpdateFamilyTuitionNoteRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+    note: ObjectId | undefined;
+    body?: string | undefined;
+}
+export interface ListFamilyTuitionNotesRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+}
+export interface ListFamilyTuitionNotesResponse {
+    notes: TuitionFamilyNote[];
+}
+export interface SendTuitionRemindersRequest {
+    context: RequestContext | undefined;
+    school_year: ObjectId | undefined;
+    families: ObjectId[];
+    title?: string | undefined;
+    header?: string | undefined;
+    body?: string | undefined;
+    footer?: string | undefined;
+}
+export interface SendTuitionRemindersResponse {
+    reminders: TuitionReminder[];
+}
+export interface ListFamilyTuitionRemindersRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+}
+export interface ListFamilyTuitionRemindersResponse {
+    reminders: TuitionReminder[];
+}
+export interface ListFamilyTuitionAdjustmentsRequest {
+    context: RequestContext | undefined;
+    family: ObjectId | undefined;
+    school_year: ObjectId | undefined;
+}
+export interface ListFamilyTuitionAdjustmentsResponse {
+    adjustments: TuitionAdjustmentEntry[];
 }
 export interface CheckFamilyTuitionInvoiceStatusRequest {
     context: RequestContext | undefined;
@@ -67,6 +120,16 @@ export declare const RegenerateTuitionInvoiceRequest: MessageFns<RegenerateTuiti
 export declare const ListFamiliesWithTuitionInvoicesRequest: MessageFns<ListFamiliesWithTuitionInvoicesRequest>;
 export declare const ListFamiliesWithTuitionInvoicesResponse: MessageFns<ListFamiliesWithTuitionInvoicesResponse>;
 export declare const FamilyWithTuitionInvoice: MessageFns<FamilyWithTuitionInvoice>;
+export declare const CreateFamilyTuitionNoteRequest: MessageFns<CreateFamilyTuitionNoteRequest>;
+export declare const UpdateFamilyTuitionNoteRequest: MessageFns<UpdateFamilyTuitionNoteRequest>;
+export declare const ListFamilyTuitionNotesRequest: MessageFns<ListFamilyTuitionNotesRequest>;
+export declare const ListFamilyTuitionNotesResponse: MessageFns<ListFamilyTuitionNotesResponse>;
+export declare const SendTuitionRemindersRequest: MessageFns<SendTuitionRemindersRequest>;
+export declare const SendTuitionRemindersResponse: MessageFns<SendTuitionRemindersResponse>;
+export declare const ListFamilyTuitionRemindersRequest: MessageFns<ListFamilyTuitionRemindersRequest>;
+export declare const ListFamilyTuitionRemindersResponse: MessageFns<ListFamilyTuitionRemindersResponse>;
+export declare const ListFamilyTuitionAdjustmentsRequest: MessageFns<ListFamilyTuitionAdjustmentsRequest>;
+export declare const ListFamilyTuitionAdjustmentsResponse: MessageFns<ListFamilyTuitionAdjustmentsResponse>;
 export declare const CheckFamilyTuitionInvoiceStatusRequest: MessageFns<CheckFamilyTuitionInvoiceStatusRequest>;
 export declare const CheckFamilyTuitionInvoiceStatusResponse: MessageFns<CheckFamilyTuitionInvoiceStatusResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

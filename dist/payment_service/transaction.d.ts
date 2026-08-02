@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Currency } from "../organization_service/organization";
+import { AuditActor } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "payment_service_transaction";
 export declare enum TransactionStatus {
@@ -51,6 +52,9 @@ export interface Transaction {
     bassem_labs_fee?: number | undefined;
     /** this is for the percentage */
     invoice_surcharge?: number | undefined;
+    other_payment_method?: string | undefined;
+    admin_note?: string | undefined;
+    created_by?: AuditActor | undefined;
 }
 export interface RefundTransaction {
     id: ObjectId | undefined;

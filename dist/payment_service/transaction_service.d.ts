@@ -20,6 +20,8 @@ export interface CreateManualTransactionRequest {
     payment_type?: PaymentType | undefined;
     invoice_id: ObjectId | undefined;
     amount?: number | undefined;
+    other_payment_method?: string | undefined;
+    admin_note?: string | undefined;
 }
 export interface IssueRefundRequest {
     context: RequestContext | undefined;

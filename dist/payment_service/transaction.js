@@ -19,6 +19,7 @@ exports.refundTransactionStatusToNumber = refundTransactionStatusToNumber;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const organization_1 = require("../organization_service/organization");
+const audit_actor_1 = require("../utils/audit_actor");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "payment_service_transaction";
 var TransactionStatus;
@@ -227,6 +228,9 @@ function createBaseTransaction() {
         processing_fee_amount: undefined,
         bassem_labs_fee: undefined,
         invoice_surcharge: undefined,
+        other_payment_method: undefined,
+        admin_note: undefined,
+        created_by: undefined,
     };
 }
 exports.Transaction = {
@@ -269,6 +273,15 @@ exports.Transaction = {
         }
         if (message.invoice_surcharge !== undefined) {
             writer.uint32(105).double(message.invoice_surcharge);
+        }
+        if (message.other_payment_method !== undefined) {
+            writer.uint32(114).string(message.other_payment_method);
+        }
+        if (message.admin_note !== undefined) {
+            writer.uint32(122).string(message.admin_note);
+        }
+        if (message.created_by !== undefined) {
+            audit_actor_1.AuditActor.encode(message.created_by, writer.uint32(130).fork()).join();
         }
         return writer;
     },
@@ -357,6 +370,24 @@ exports.Transaction = {
                     }
                     message.invoice_surcharge = reader.double();
                     continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.other_payment_method = reader.string();
+                    continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.admin_note = reader.string();
+                    continue;
+                case 16:
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.created_by = audit_actor_1.AuditActor.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -384,6 +415,9 @@ exports.Transaction = {
                 : undefined,
             bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : undefined,
             invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : undefined,
+            other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
+            admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
+            created_by: isSet(object.createdBy) ? audit_actor_1.AuditActor.fromJSON(object.createdBy) : undefined,
         };
     },
     toJSON(message) {
@@ -427,6 +461,15 @@ exports.Transaction = {
         if (message.invoice_surcharge !== undefined) {
             obj.invoiceSurcharge = message.invoice_surcharge;
         }
+        if (message.other_payment_method !== undefined) {
+            obj.otherPaymentMethod = message.other_payment_method;
+        }
+        if (message.admin_note !== undefined) {
+            obj.adminNote = message.admin_note;
+        }
+        if (message.created_by !== undefined) {
+            obj.createdBy = audit_actor_1.AuditActor.toJSON(message.created_by);
+        }
         return obj;
     },
     create(base) {
@@ -451,6 +494,11 @@ exports.Transaction = {
         message.processing_fee_amount = object.processing_fee_amount ?? undefined;
         message.bassem_labs_fee = object.bassem_labs_fee ?? undefined;
         message.invoice_surcharge = object.invoice_surcharge ?? undefined;
+        message.other_payment_method = object.other_payment_method ?? undefined;
+        message.admin_note = object.admin_note ?? undefined;
+        message.created_by = (object.created_by !== undefined && object.created_by !== null)
+            ? audit_actor_1.AuditActor.fromPartial(object.created_by)
+            : undefined;
         return message;
     },
 };

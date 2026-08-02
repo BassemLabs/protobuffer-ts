@@ -5,10 +5,13 @@
 //   protoc               unknown
 // source: payment_service/invoice.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutoPaymentAttempt = exports.InvoiceFilter = exports.InvoiceResponse = exports.Invoice = exports.OrganizationInvoiceDetails = exports.Coupon = exports.InvoiceItem = exports.AutoPaymentStatus = exports.InvoiceStatus = exports.protobufPackage = void 0;
+exports.AutoPaymentAttempt = exports.InvoiceFilter = exports.InvoiceResponse = exports.Invoice = exports.OrganizationInvoiceDetails = exports.TuitionDiscountAuditEntry = exports.Coupon = exports.InvoiceItem = exports.AutoPaymentStatus = exports.TuitionDiscountAdjustmentType = exports.InvoiceStatus = exports.protobufPackage = void 0;
 exports.invoiceStatusFromJSON = invoiceStatusFromJSON;
 exports.invoiceStatusToJSON = invoiceStatusToJSON;
 exports.invoiceStatusToNumber = invoiceStatusToNumber;
+exports.tuitionDiscountAdjustmentTypeFromJSON = tuitionDiscountAdjustmentTypeFromJSON;
+exports.tuitionDiscountAdjustmentTypeToJSON = tuitionDiscountAdjustmentTypeToJSON;
+exports.tuitionDiscountAdjustmentTypeToNumber = tuitionDiscountAdjustmentTypeToNumber;
 exports.autoPaymentStatusFromJSON = autoPaymentStatusFromJSON;
 exports.autoPaymentStatusToJSON = autoPaymentStatusToJSON;
 exports.autoPaymentStatusToNumber = autoPaymentStatusToNumber;
@@ -16,6 +19,7 @@ exports.autoPaymentStatusToNumber = autoPaymentStatusToNumber;
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const student_1 = require("../user_service/student");
+const audit_actor_1 = require("../utils/audit_actor");
 const object_id_1 = require("../utils/object_id");
 const transaction_1 = require("./transaction");
 const tuition_1 = require("./tuition");
@@ -82,6 +86,48 @@ function invoiceStatusToNumber(object) {
         case InvoiceStatus.Processing:
             return 5;
         case InvoiceStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var TuitionDiscountAdjustmentType;
+(function (TuitionDiscountAdjustmentType) {
+    TuitionDiscountAdjustmentType["TUITION_DISCOUNT_APPLIED"] = "TUITION_DISCOUNT_APPLIED";
+    TuitionDiscountAdjustmentType["TUITION_DISCOUNT_REVERSED"] = "TUITION_DISCOUNT_REVERSED";
+    TuitionDiscountAdjustmentType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(TuitionDiscountAdjustmentType || (exports.TuitionDiscountAdjustmentType = TuitionDiscountAdjustmentType = {}));
+function tuitionDiscountAdjustmentTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "TUITION_DISCOUNT_APPLIED":
+            return TuitionDiscountAdjustmentType.TUITION_DISCOUNT_APPLIED;
+        case 1:
+        case "TUITION_DISCOUNT_REVERSED":
+            return TuitionDiscountAdjustmentType.TUITION_DISCOUNT_REVERSED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return TuitionDiscountAdjustmentType.UNRECOGNIZED;
+    }
+}
+function tuitionDiscountAdjustmentTypeToJSON(object) {
+    switch (object) {
+        case TuitionDiscountAdjustmentType.TUITION_DISCOUNT_APPLIED:
+            return "TUITION_DISCOUNT_APPLIED";
+        case TuitionDiscountAdjustmentType.TUITION_DISCOUNT_REVERSED:
+            return "TUITION_DISCOUNT_REVERSED";
+        case TuitionDiscountAdjustmentType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function tuitionDiscountAdjustmentTypeToNumber(object) {
+    switch (object) {
+        case TuitionDiscountAdjustmentType.TUITION_DISCOUNT_APPLIED:
+            return 0;
+        case TuitionDiscountAdjustmentType.TUITION_DISCOUNT_REVERSED:
+            return 1;
+        case TuitionDiscountAdjustmentType.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -369,6 +415,173 @@ exports.Coupon = {
         return message;
     },
 };
+function createBaseTuitionDiscountAuditEntry() {
+    return {
+        id: undefined,
+        previous_discount_amount: undefined,
+        new_discount_amount: undefined,
+        discount_delta: undefined,
+        coupon_titles: [],
+        created_by: undefined,
+        created_at: undefined,
+        adjustment_type: undefined,
+    };
+}
+exports.TuitionDiscountAuditEntry = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.previous_discount_amount !== undefined) {
+            writer.uint32(17).double(message.previous_discount_amount);
+        }
+        if (message.new_discount_amount !== undefined) {
+            writer.uint32(25).double(message.new_discount_amount);
+        }
+        if (message.discount_delta !== undefined) {
+            writer.uint32(33).double(message.discount_delta);
+        }
+        for (const v of message.coupon_titles) {
+            writer.uint32(42).string(v);
+        }
+        if (message.created_by !== undefined) {
+            audit_actor_1.AuditActor.encode(message.created_by, writer.uint32(50).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.created_at), writer.uint32(58).fork()).join();
+        }
+        if (message.adjustment_type !== undefined) {
+            writer.uint32(64).int32(tuitionDiscountAdjustmentTypeToNumber(message.adjustment_type));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTuitionDiscountAuditEntry();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 17) {
+                        break;
+                    }
+                    message.previous_discount_amount = reader.double();
+                    continue;
+                case 3:
+                    if (tag !== 25) {
+                        break;
+                    }
+                    message.new_discount_amount = reader.double();
+                    continue;
+                case 4:
+                    if (tag !== 33) {
+                        break;
+                    }
+                    message.discount_delta = reader.double();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.coupon_titles.push(reader.string());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.created_by = audit_actor_1.AuditActor.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.created_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.adjustment_type = tuitionDiscountAdjustmentTypeFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            previous_discount_amount: isSet(object.previousDiscountAmount)
+                ? globalThis.Number(object.previousDiscountAmount)
+                : undefined,
+            new_discount_amount: isSet(object.newDiscountAmount) ? globalThis.Number(object.newDiscountAmount) : undefined,
+            discount_delta: isSet(object.discountDelta) ? globalThis.Number(object.discountDelta) : undefined,
+            coupon_titles: globalThis.Array.isArray(object?.couponTitles)
+                ? object.couponTitles.map((e) => globalThis.String(e))
+                : [],
+            created_by: isSet(object.createdBy) ? audit_actor_1.AuditActor.fromJSON(object.createdBy) : undefined,
+            created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+            adjustment_type: isSet(object.adjustmentType)
+                ? tuitionDiscountAdjustmentTypeFromJSON(object.adjustmentType)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.previous_discount_amount !== undefined) {
+            obj.previousDiscountAmount = message.previous_discount_amount;
+        }
+        if (message.new_discount_amount !== undefined) {
+            obj.newDiscountAmount = message.new_discount_amount;
+        }
+        if (message.discount_delta !== undefined) {
+            obj.discountDelta = message.discount_delta;
+        }
+        if (message.coupon_titles?.length) {
+            obj.couponTitles = message.coupon_titles;
+        }
+        if (message.created_by !== undefined) {
+            obj.createdBy = audit_actor_1.AuditActor.toJSON(message.created_by);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at.toISOString();
+        }
+        if (message.adjustment_type !== undefined) {
+            obj.adjustmentType = tuitionDiscountAdjustmentTypeToJSON(message.adjustment_type);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TuitionDiscountAuditEntry.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTuitionDiscountAuditEntry();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.previous_discount_amount = object.previous_discount_amount ?? undefined;
+        message.new_discount_amount = object.new_discount_amount ?? undefined;
+        message.discount_delta = object.discount_delta ?? undefined;
+        message.coupon_titles = object.coupon_titles?.map((e) => e) || [];
+        message.created_by = (object.created_by !== undefined && object.created_by !== null)
+            ? audit_actor_1.AuditActor.fromPartial(object.created_by)
+            : undefined;
+        message.created_at = object.created_at ?? undefined;
+        message.adjustment_type = object.adjustment_type ?? undefined;
+        return message;
+    },
+};
 function createBaseOrganizationInvoiceDetails() {
     return {
         period_start_date: undefined,
@@ -511,6 +724,7 @@ function createBaseInvoice() {
         organization_invoice_details: undefined,
         auto_payment_retry_count: undefined,
         auto_payment_next_retry_at: undefined,
+        tuition_discount_audit: [],
     };
 }
 exports.Invoice = {
@@ -580,6 +794,9 @@ exports.Invoice = {
         }
         if (message.auto_payment_next_retry_at !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.auto_payment_next_retry_at), writer.uint32(178).fork()).join();
+        }
+        for (const v of message.tuition_discount_audit) {
+            exports.TuitionDiscountAuditEntry.encode(v, writer.uint32(186).fork()).join();
         }
         return writer;
     },
@@ -722,6 +939,12 @@ exports.Invoice = {
                     }
                     message.auto_payment_next_retry_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 23:
+                    if (tag !== 186) {
+                        break;
+                    }
+                    message.tuition_discount_audit.push(exports.TuitionDiscountAuditEntry.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -764,6 +987,9 @@ exports.Invoice = {
             auto_payment_next_retry_at: isSet(object.autoPaymentNextRetryAt)
                 ? fromJsonTimestamp(object.autoPaymentNextRetryAt)
                 : undefined,
+            tuition_discount_audit: globalThis.Array.isArray(object?.tuitionDiscountAudit)
+                ? object.tuitionDiscountAudit.map((e) => exports.TuitionDiscountAuditEntry.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -834,6 +1060,9 @@ exports.Invoice = {
         if (message.auto_payment_next_retry_at !== undefined) {
             obj.autoPaymentNextRetryAt = message.auto_payment_next_retry_at.toISOString();
         }
+        if (message.tuition_discount_audit?.length) {
+            obj.tuitionDiscountAudit = message.tuition_discount_audit.map((e) => exports.TuitionDiscountAuditEntry.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -873,6 +1102,8 @@ exports.Invoice = {
                 : undefined;
         message.auto_payment_retry_count = object.auto_payment_retry_count ?? undefined;
         message.auto_payment_next_retry_at = object.auto_payment_next_retry_at ?? undefined;
+        message.tuition_discount_audit =
+            object.tuition_discount_audit?.map((e) => exports.TuitionDiscountAuditEntry.fromPartial(e)) || [];
         return message;
     },
 };

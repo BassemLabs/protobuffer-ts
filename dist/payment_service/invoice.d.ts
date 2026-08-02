@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { StudentStatus } from "../user_service/student";
+import { AuditActor } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
 import { RefundTransaction, Transaction } from "./transaction";
 import { DiscountValueType } from "./tuition";
@@ -15,6 +16,14 @@ export declare enum InvoiceStatus {
 export declare function invoiceStatusFromJSON(object: any): InvoiceStatus;
 export declare function invoiceStatusToJSON(object: InvoiceStatus): string;
 export declare function invoiceStatusToNumber(object: InvoiceStatus): number;
+export declare enum TuitionDiscountAdjustmentType {
+    TUITION_DISCOUNT_APPLIED = "TUITION_DISCOUNT_APPLIED",
+    TUITION_DISCOUNT_REVERSED = "TUITION_DISCOUNT_REVERSED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function tuitionDiscountAdjustmentTypeFromJSON(object: any): TuitionDiscountAdjustmentType;
+export declare function tuitionDiscountAdjustmentTypeToJSON(object: TuitionDiscountAdjustmentType): string;
+export declare function tuitionDiscountAdjustmentTypeToNumber(object: TuitionDiscountAdjustmentType): number;
 export declare enum AutoPaymentStatus {
     /** AutoPayPending - Pending to be paid, not yet queued */
     AutoPayPending = "AutoPayPending",
@@ -47,6 +56,17 @@ export interface Coupon {
     value_type?: DiscountValueType | undefined;
     /** percentage or amount value */
     value?: number | undefined;
+}
+export interface TuitionDiscountAuditEntry {
+    id: ObjectId | undefined;
+    previous_discount_amount?: number | undefined;
+    new_discount_amount?: number | undefined;
+    /** Positive values reduce the tuition obligation; negative values reverse a discount. */
+    discount_delta?: number | undefined;
+    coupon_titles: string[];
+    created_by: AuditActor | undefined;
+    created_at: Date | undefined;
+    adjustment_type?: TuitionDiscountAdjustmentType | undefined;
 }
 export interface OrganizationInvoiceDetails {
     period_start_date: Date | undefined;
@@ -90,6 +110,7 @@ export interface Invoice {
     auto_payment_retry_count?: number | undefined;
     /** Timestamp for the next scheduled retry attempt (used for scheduling job queries) */
     auto_payment_next_retry_at?: Date | undefined;
+    tuition_discount_audit: TuitionDiscountAuditEntry[];
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;
@@ -129,6 +150,7 @@ export interface AutoPaymentAttempt {
 }
 export declare const InvoiceItem: MessageFns<InvoiceItem>;
 export declare const Coupon: MessageFns<Coupon>;
+export declare const TuitionDiscountAuditEntry: MessageFns<TuitionDiscountAuditEntry>;
 export declare const OrganizationInvoiceDetails: MessageFns<OrganizationInvoiceDetails>;
 export declare const Invoice: MessageFns<Invoice>;
 export declare const InvoiceResponse: MessageFns<InvoiceResponse>;

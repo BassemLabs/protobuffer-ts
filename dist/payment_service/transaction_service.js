@@ -217,7 +217,14 @@ exports.GetTransactionsResponse = {
     },
 };
 function createBaseCreateManualTransactionRequest() {
-    return { context: undefined, payment_type: undefined, invoice_id: undefined, amount: undefined };
+    return {
+        context: undefined,
+        payment_type: undefined,
+        invoice_id: undefined,
+        amount: undefined,
+        other_payment_method: undefined,
+        admin_note: undefined,
+    };
 }
 exports.CreateManualTransactionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -232,6 +239,12 @@ exports.CreateManualTransactionRequest = {
         }
         if (message.amount !== undefined) {
             writer.uint32(33).double(message.amount);
+        }
+        if (message.other_payment_method !== undefined) {
+            writer.uint32(42).string(message.other_payment_method);
+        }
+        if (message.admin_note !== undefined) {
+            writer.uint32(50).string(message.admin_note);
         }
         return writer;
     },
@@ -266,6 +279,18 @@ exports.CreateManualTransactionRequest = {
                     }
                     message.amount = reader.double();
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.other_payment_method = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.admin_note = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -280,6 +305,8 @@ exports.CreateManualTransactionRequest = {
             payment_type: isSet(object.paymentType) ? (0, transaction_1.paymentTypeFromJSON)(object.paymentType) : undefined,
             invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
+            other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
+            admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
         };
     },
     toJSON(message) {
@@ -296,6 +323,12 @@ exports.CreateManualTransactionRequest = {
         if (message.amount !== undefined) {
             obj.amount = message.amount;
         }
+        if (message.other_payment_method !== undefined) {
+            obj.otherPaymentMethod = message.other_payment_method;
+        }
+        if (message.admin_note !== undefined) {
+            obj.adminNote = message.admin_note;
+        }
         return obj;
     },
     create(base) {
@@ -311,6 +344,8 @@ exports.CreateManualTransactionRequest = {
             ? object_id_1.ObjectId.fromPartial(object.invoice_id)
             : undefined;
         message.amount = object.amount ?? undefined;
+        message.other_payment_method = object.other_payment_method ?? undefined;
+        message.admin_note = object.admin_note ?? undefined;
         return message;
     },
 };
