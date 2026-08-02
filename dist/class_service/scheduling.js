@@ -5,7 +5,8 @@
 //   protoc               unknown
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReview = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -15,6 +16,9 @@ exports.schedulingPreparationStepStatusToNumber = schedulingPreparationStepStatu
 exports.schedulingDoublePeriodModeFromJSON = schedulingDoublePeriodModeFromJSON;
 exports.schedulingDoublePeriodModeToJSON = schedulingDoublePeriodModeToJSON;
 exports.schedulingDoublePeriodModeToNumber = schedulingDoublePeriodModeToNumber;
+exports.schedulingGradeWeeklyAllocationStatusFromJSON = schedulingGradeWeeklyAllocationStatusFromJSON;
+exports.schedulingGradeWeeklyAllocationStatusToJSON = schedulingGradeWeeklyAllocationStatusToJSON;
+exports.schedulingGradeWeeklyAllocationStatusToNumber = schedulingGradeWeeklyAllocationStatusToNumber;
 exports.schedulingGenerationRunStatusFromJSON = schedulingGenerationRunStatusFromJSON;
 exports.schedulingGenerationRunStatusToJSON = schedulingGenerationRunStatusToJSON;
 exports.schedulingGenerationRunStatusToNumber = schedulingGenerationRunStatusToNumber;
@@ -238,6 +242,80 @@ function schedulingDoublePeriodModeToNumber(object) {
         case SchedulingDoublePeriodMode.SCHEDULING_DOUBLE_PERIOD_MODE_REQUIRE:
             return 3;
         case SchedulingDoublePeriodMode.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingGradeWeeklyAllocationStatus;
+(function (SchedulingGradeWeeklyAllocationStatus) {
+    SchedulingGradeWeeklyAllocationStatus["SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP"] = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP";
+    SchedulingGradeWeeklyAllocationStatus["SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS"] = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS";
+    SchedulingGradeWeeklyAllocationStatus["SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT"] = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT";
+    SchedulingGradeWeeklyAllocationStatus["SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED"] = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED";
+    SchedulingGradeWeeklyAllocationStatus["SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED"] = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED";
+    SchedulingGradeWeeklyAllocationStatus["SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED"] = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED";
+    SchedulingGradeWeeklyAllocationStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingGradeWeeklyAllocationStatus || (exports.SchedulingGradeWeeklyAllocationStatus = SchedulingGradeWeeklyAllocationStatus = {}));
+function schedulingGradeWeeklyAllocationStatusFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP":
+            return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP;
+        case 2:
+        case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS":
+            return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS;
+        case 3:
+        case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT":
+            return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT;
+        case 4:
+        case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED":
+            return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED;
+        case 5:
+        case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED":
+            return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED;
+        case 6:
+        case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED":
+            return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingGradeWeeklyAllocationStatus.UNRECOGNIZED;
+    }
+}
+function schedulingGradeWeeklyAllocationStatusToJSON(object) {
+    switch (object) {
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP:
+            return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP";
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS:
+            return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS";
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT:
+            return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT";
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED:
+            return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED";
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED:
+            return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED";
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED:
+            return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED";
+        case SchedulingGradeWeeklyAllocationStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingGradeWeeklyAllocationStatusToNumber(object) {
+    switch (object) {
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP:
+            return 1;
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS:
+            return 2;
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT:
+            return 3;
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED:
+            return 4;
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED:
+            return 5;
+        case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED:
+            return 6;
+        case SchedulingGradeWeeklyAllocationStatus.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -2325,6 +2403,208 @@ exports.SchedulingInstructionalRequirement = {
         return message;
     },
 };
+function createBaseSchedulingGradeCampusWeeklyCapacity() {
+    return { campus_id: undefined, weekly_capacity: undefined };
+}
+exports.SchedulingGradeCampusWeeklyCapacity = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.campus_id !== undefined) {
+            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(10).fork()).join();
+        }
+        if (message.weekly_capacity !== undefined) {
+            writer.uint32(16).uint32(message.weekly_capacity);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGradeCampusWeeklyCapacity();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.weekly_capacity = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            weekly_capacity: isSet(object.weeklyCapacity) ? globalThis.Number(object.weeklyCapacity) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.campus_id !== undefined) {
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
+        }
+        if (message.weekly_capacity !== undefined) {
+            obj.weeklyCapacity = Math.round(message.weekly_capacity);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGradeCampusWeeklyCapacity.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGradeCampusWeeklyCapacity();
+        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.campus_id)
+            : undefined;
+        message.weekly_capacity = object.weekly_capacity ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingGradeWeeklyAllocation() {
+    return {
+        grade: undefined,
+        assigned_periods: undefined,
+        weekly_capacity: undefined,
+        missing_requirement_count: undefined,
+        campus_capacities: [],
+        status: undefined,
+    };
+}
+exports.SchedulingGradeWeeklyAllocation = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.grade !== undefined) {
+            writer.uint32(8).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        if (message.assigned_periods !== undefined) {
+            writer.uint32(16).uint32(message.assigned_periods);
+        }
+        if (message.weekly_capacity !== undefined) {
+            writer.uint32(24).uint32(message.weekly_capacity);
+        }
+        if (message.missing_requirement_count !== undefined) {
+            writer.uint32(32).uint32(message.missing_requirement_count);
+        }
+        for (const v of message.campus_capacities) {
+            exports.SchedulingGradeCampusWeeklyCapacity.encode(v, writer.uint32(42).fork()).join();
+        }
+        if (message.status !== undefined) {
+            writer.uint32(48).int32(schedulingGradeWeeklyAllocationStatusToNumber(message.status));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGradeWeeklyAllocation();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.assigned_periods = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.weekly_capacity = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.missing_requirement_count = reader.uint32();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.campus_capacities.push(exports.SchedulingGradeCampusWeeklyCapacity.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.status = schedulingGradeWeeklyAllocationStatusFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            assigned_periods: isSet(object.assignedPeriods) ? globalThis.Number(object.assignedPeriods) : undefined,
+            weekly_capacity: isSet(object.weeklyCapacity) ? globalThis.Number(object.weeklyCapacity) : undefined,
+            missing_requirement_count: isSet(object.missingRequirementCount)
+                ? globalThis.Number(object.missingRequirementCount)
+                : undefined,
+            campus_capacities: globalThis.Array.isArray(object?.campusCapacities)
+                ? object.campusCapacities.map((e) => exports.SchedulingGradeCampusWeeklyCapacity.fromJSON(e))
+                : [],
+            status: isSet(object.status) ? schedulingGradeWeeklyAllocationStatusFromJSON(object.status) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
+        if (message.assigned_periods !== undefined) {
+            obj.assignedPeriods = Math.round(message.assigned_periods);
+        }
+        if (message.weekly_capacity !== undefined) {
+            obj.weeklyCapacity = Math.round(message.weekly_capacity);
+        }
+        if (message.missing_requirement_count !== undefined) {
+            obj.missingRequirementCount = Math.round(message.missing_requirement_count);
+        }
+        if (message.campus_capacities?.length) {
+            obj.campusCapacities = message.campus_capacities.map((e) => exports.SchedulingGradeCampusWeeklyCapacity.toJSON(e));
+        }
+        if (message.status !== undefined) {
+            obj.status = schedulingGradeWeeklyAllocationStatusToJSON(message.status);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGradeWeeklyAllocation.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGradeWeeklyAllocation();
+        message.grade = object.grade ?? undefined;
+        message.assigned_periods = object.assigned_periods ?? undefined;
+        message.weekly_capacity = object.weekly_capacity ?? undefined;
+        message.missing_requirement_count = object.missing_requirement_count ?? undefined;
+        message.campus_capacities =
+            object.campus_capacities?.map((e) => exports.SchedulingGradeCampusWeeklyCapacity.fromPartial(e)) || [];
+        message.status = object.status ?? undefined;
+        return message;
+    },
+};
 function createBaseSchedulingClassesSetup() {
     return {
         subjects: [],
@@ -2333,6 +2613,7 @@ function createBaseSchedulingClassesSetup() {
         high_school_course_setups: [],
         offered_grades: [],
         instructional_requirements: [],
+        grade_weekly_allocations: [],
     };
 }
 exports.SchedulingClassesSetup = {
@@ -2356,6 +2637,9 @@ exports.SchedulingClassesSetup = {
         writer.join();
         for (const v of message.instructional_requirements) {
             exports.SchedulingInstructionalRequirement.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.grade_weekly_allocations) {
+            exports.SchedulingGradeWeeklyAllocation.encode(v, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -2409,6 +2693,12 @@ exports.SchedulingClassesSetup = {
                     }
                     message.instructional_requirements.push(exports.SchedulingInstructionalRequirement.decode(reader, reader.uint32()));
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.grade_weekly_allocations.push(exports.SchedulingGradeWeeklyAllocation.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2437,6 +2727,9 @@ exports.SchedulingClassesSetup = {
             instructional_requirements: globalThis.Array.isArray(object?.instructionalRequirements)
                 ? object.instructionalRequirements.map((e) => exports.SchedulingInstructionalRequirement.fromJSON(e))
                 : [],
+            grade_weekly_allocations: globalThis.Array.isArray(object?.gradeWeeklyAllocations)
+                ? object.gradeWeeklyAllocations.map((e) => exports.SchedulingGradeWeeklyAllocation.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -2459,6 +2752,9 @@ exports.SchedulingClassesSetup = {
         if (message.instructional_requirements?.length) {
             obj.instructionalRequirements = message.instructional_requirements.map((e) => exports.SchedulingInstructionalRequirement.toJSON(e));
         }
+        if (message.grade_weekly_allocations?.length) {
+            obj.gradeWeeklyAllocations = message.grade_weekly_allocations.map((e) => exports.SchedulingGradeWeeklyAllocation.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -2474,6 +2770,8 @@ exports.SchedulingClassesSetup = {
         message.offered_grades = object.offered_grades?.map((e) => e) || [];
         message.instructional_requirements =
             object.instructional_requirements?.map((e) => exports.SchedulingInstructionalRequirement.fromPartial(e)) || [];
+        message.grade_weekly_allocations =
+            object.grade_weekly_allocations?.map((e) => exports.SchedulingGradeWeeklyAllocation.fromPartial(e)) || [];
         return message;
     },
 };

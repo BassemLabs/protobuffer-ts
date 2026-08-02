@@ -236,6 +236,87 @@ export function schedulingDoublePeriodModeToNumber(object: SchedulingDoublePerio
   }
 }
 
+export enum SchedulingGradeWeeklyAllocationStatus {
+  SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP =
+    "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP",
+  SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS =
+    "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS",
+  SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT =
+    "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT",
+  SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED =
+    "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED",
+  SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED",
+  SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingGradeWeeklyAllocationStatusFromJSON(object: any): SchedulingGradeWeeklyAllocationStatus {
+  switch (object) {
+    case 1:
+    case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP":
+      return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP;
+    case 2:
+    case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS":
+      return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS;
+    case 3:
+    case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT":
+      return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT;
+    case 4:
+    case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED":
+      return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED;
+    case 5:
+    case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED":
+      return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED;
+    case 6:
+    case "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED":
+      return SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingGradeWeeklyAllocationStatus.UNRECOGNIZED;
+  }
+}
+
+export function schedulingGradeWeeklyAllocationStatusToJSON(object: SchedulingGradeWeeklyAllocationStatus): string {
+  switch (object) {
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP:
+      return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP";
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS:
+      return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS";
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT:
+      return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT";
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED:
+      return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED";
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED:
+      return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED";
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED:
+      return "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED";
+    case SchedulingGradeWeeklyAllocationStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingGradeWeeklyAllocationStatusToNumber(object: SchedulingGradeWeeklyAllocationStatus): number {
+  switch (object) {
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP:
+      return 1;
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS:
+      return 2;
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT:
+      return 3;
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED:
+      return 4;
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED:
+      return 5;
+    case SchedulingGradeWeeklyAllocationStatus.SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED:
+      return 6;
+    case SchedulingGradeWeeklyAllocationStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 /**
  * Lifecycle of one generation run. Terminal states are SUCCEEDED and FAILED;
  * CANCELLED is reserved for future use (nothing sets it yet).
@@ -555,6 +636,20 @@ export interface SchedulingInstructionalRequirement {
   period_rules: SchedulingCoursePeriodRule[];
 }
 
+export interface SchedulingGradeCampusWeeklyCapacity {
+  campus_id: ObjectId | undefined;
+  weekly_capacity?: number | undefined;
+}
+
+export interface SchedulingGradeWeeklyAllocation {
+  grade?: StudentGrade | undefined;
+  assigned_periods?: number | undefined;
+  weekly_capacity?: number | undefined;
+  missing_requirement_count?: number | undefined;
+  campus_capacities: SchedulingGradeCampusWeeklyCapacity[];
+  status?: SchedulingGradeWeeklyAllocationStatus | undefined;
+}
+
 /**
  * Full state of the Classes setup step: the curriculum catalog plus its configured
  * offerings and instructional requirements.
@@ -566,6 +661,7 @@ export interface SchedulingClassesSetup {
   high_school_course_setups: SchedulingHighSchoolCourseSetup[];
   offered_grades: StudentGrade[];
   instructional_requirements: SchedulingInstructionalRequirement[];
+  grade_weekly_allocations: SchedulingGradeWeeklyAllocation[];
 }
 
 /** A student selectable for a high-school course roster (display fields included). */
@@ -2987,6 +3083,234 @@ export const SchedulingInstructionalRequirement: MessageFns<SchedulingInstructio
   },
 };
 
+function createBaseSchedulingGradeCampusWeeklyCapacity(): SchedulingGradeCampusWeeklyCapacity {
+  return { campus_id: undefined, weekly_capacity: undefined };
+}
+
+export const SchedulingGradeCampusWeeklyCapacity: MessageFns<SchedulingGradeCampusWeeklyCapacity> = {
+  encode(message: SchedulingGradeCampusWeeklyCapacity, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(10).fork()).join();
+    }
+    if (message.weekly_capacity !== undefined) {
+      writer.uint32(16).uint32(message.weekly_capacity);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGradeCampusWeeklyCapacity {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGradeCampusWeeklyCapacity();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.weekly_capacity = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGradeCampusWeeklyCapacity {
+    return {
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      weekly_capacity: isSet(object.weeklyCapacity) ? globalThis.Number(object.weeklyCapacity) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGradeCampusWeeklyCapacity): unknown {
+    const obj: any = {};
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.weekly_capacity !== undefined) {
+      obj.weeklyCapacity = Math.round(message.weekly_capacity);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGradeCampusWeeklyCapacity>, I>>(
+    base?: I,
+  ): SchedulingGradeCampusWeeklyCapacity {
+    return SchedulingGradeCampusWeeklyCapacity.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGradeCampusWeeklyCapacity>, I>>(
+    object: I,
+  ): SchedulingGradeCampusWeeklyCapacity {
+    const message = createBaseSchedulingGradeCampusWeeklyCapacity();
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.weekly_capacity = object.weekly_capacity ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingGradeWeeklyAllocation(): SchedulingGradeWeeklyAllocation {
+  return {
+    grade: undefined,
+    assigned_periods: undefined,
+    weekly_capacity: undefined,
+    missing_requirement_count: undefined,
+    campus_capacities: [],
+    status: undefined,
+  };
+}
+
+export const SchedulingGradeWeeklyAllocation: MessageFns<SchedulingGradeWeeklyAllocation> = {
+  encode(message: SchedulingGradeWeeklyAllocation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.grade !== undefined) {
+      writer.uint32(8).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.assigned_periods !== undefined) {
+      writer.uint32(16).uint32(message.assigned_periods);
+    }
+    if (message.weekly_capacity !== undefined) {
+      writer.uint32(24).uint32(message.weekly_capacity);
+    }
+    if (message.missing_requirement_count !== undefined) {
+      writer.uint32(32).uint32(message.missing_requirement_count);
+    }
+    for (const v of message.campus_capacities) {
+      SchedulingGradeCampusWeeklyCapacity.encode(v!, writer.uint32(42).fork()).join();
+    }
+    if (message.status !== undefined) {
+      writer.uint32(48).int32(schedulingGradeWeeklyAllocationStatusToNumber(message.status));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGradeWeeklyAllocation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGradeWeeklyAllocation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.assigned_periods = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.weekly_capacity = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.missing_requirement_count = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.campus_capacities.push(SchedulingGradeCampusWeeklyCapacity.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.status = schedulingGradeWeeklyAllocationStatusFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGradeWeeklyAllocation {
+    return {
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      assigned_periods: isSet(object.assignedPeriods) ? globalThis.Number(object.assignedPeriods) : undefined,
+      weekly_capacity: isSet(object.weeklyCapacity) ? globalThis.Number(object.weeklyCapacity) : undefined,
+      missing_requirement_count: isSet(object.missingRequirementCount)
+        ? globalThis.Number(object.missingRequirementCount)
+        : undefined,
+      campus_capacities: globalThis.Array.isArray(object?.campusCapacities)
+        ? object.campusCapacities.map((e: any) => SchedulingGradeCampusWeeklyCapacity.fromJSON(e))
+        : [],
+      status: isSet(object.status) ? schedulingGradeWeeklyAllocationStatusFromJSON(object.status) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGradeWeeklyAllocation): unknown {
+    const obj: any = {};
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.assigned_periods !== undefined) {
+      obj.assignedPeriods = Math.round(message.assigned_periods);
+    }
+    if (message.weekly_capacity !== undefined) {
+      obj.weeklyCapacity = Math.round(message.weekly_capacity);
+    }
+    if (message.missing_requirement_count !== undefined) {
+      obj.missingRequirementCount = Math.round(message.missing_requirement_count);
+    }
+    if (message.campus_capacities?.length) {
+      obj.campusCapacities = message.campus_capacities.map((e) => SchedulingGradeCampusWeeklyCapacity.toJSON(e));
+    }
+    if (message.status !== undefined) {
+      obj.status = schedulingGradeWeeklyAllocationStatusToJSON(message.status);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGradeWeeklyAllocation>, I>>(base?: I): SchedulingGradeWeeklyAllocation {
+    return SchedulingGradeWeeklyAllocation.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGradeWeeklyAllocation>, I>>(
+    object: I,
+  ): SchedulingGradeWeeklyAllocation {
+    const message = createBaseSchedulingGradeWeeklyAllocation();
+    message.grade = object.grade ?? undefined;
+    message.assigned_periods = object.assigned_periods ?? undefined;
+    message.weekly_capacity = object.weekly_capacity ?? undefined;
+    message.missing_requirement_count = object.missing_requirement_count ?? undefined;
+    message.campus_capacities =
+      object.campus_capacities?.map((e) => SchedulingGradeCampusWeeklyCapacity.fromPartial(e)) || [];
+    message.status = object.status ?? undefined;
+    return message;
+  },
+};
+
 function createBaseSchedulingClassesSetup(): SchedulingClassesSetup {
   return {
     subjects: [],
@@ -2995,6 +3319,7 @@ function createBaseSchedulingClassesSetup(): SchedulingClassesSetup {
     high_school_course_setups: [],
     offered_grades: [],
     instructional_requirements: [],
+    grade_weekly_allocations: [],
   };
 }
 
@@ -3019,6 +3344,9 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
     writer.join();
     for (const v of message.instructional_requirements) {
       SchedulingInstructionalRequirement.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.grade_weekly_allocations) {
+      SchedulingGradeWeeklyAllocation.encode(v!, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -3082,6 +3410,13 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
 
           message.instructional_requirements.push(SchedulingInstructionalRequirement.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.grade_weekly_allocations.push(SchedulingGradeWeeklyAllocation.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3111,6 +3446,9 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
       instructional_requirements: globalThis.Array.isArray(object?.instructionalRequirements)
         ? object.instructionalRequirements.map((e: any) => SchedulingInstructionalRequirement.fromJSON(e))
         : [],
+      grade_weekly_allocations: globalThis.Array.isArray(object?.gradeWeeklyAllocations)
+        ? object.gradeWeeklyAllocations.map((e: any) => SchedulingGradeWeeklyAllocation.fromJSON(e))
+        : [],
     };
   },
 
@@ -3138,6 +3476,11 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
         SchedulingInstructionalRequirement.toJSON(e)
       );
     }
+    if (message.grade_weekly_allocations?.length) {
+      obj.gradeWeeklyAllocations = message.grade_weekly_allocations.map((e) =>
+        SchedulingGradeWeeklyAllocation.toJSON(e)
+      );
+    }
     return obj;
   },
 
@@ -3154,6 +3497,8 @@ export const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup> = {
     message.offered_grades = object.offered_grades?.map((e) => e) || [];
     message.instructional_requirements =
       object.instructional_requirements?.map((e) => SchedulingInstructionalRequirement.fromPartial(e)) || [];
+    message.grade_weekly_allocations =
+      object.grade_weekly_allocations?.map((e) => SchedulingGradeWeeklyAllocation.fromPartial(e)) || [];
     return message;
   },
 };

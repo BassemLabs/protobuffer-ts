@@ -46,6 +46,18 @@ export declare enum SchedulingDoublePeriodMode {
 export declare function schedulingDoublePeriodModeFromJSON(object: any): SchedulingDoublePeriodMode;
 export declare function schedulingDoublePeriodModeToJSON(object: SchedulingDoublePeriodMode): string;
 export declare function schedulingDoublePeriodModeToNumber(object: SchedulingDoublePeriodMode): number;
+export declare enum SchedulingGradeWeeklyAllocationStatus {
+    SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_PERIOD_SETUP",
+    SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_AWAITING_REQUIREMENTS",
+    SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_CAMPUS_CAPACITY_CONFLICT",
+    SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_UNDER_ALLOCATED",
+    SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_BALANCED",
+    SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED = "SCHEDULING_GRADE_WEEKLY_ALLOCATION_STATUS_OVER_ALLOCATED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingGradeWeeklyAllocationStatusFromJSON(object: any): SchedulingGradeWeeklyAllocationStatus;
+export declare function schedulingGradeWeeklyAllocationStatusToJSON(object: SchedulingGradeWeeklyAllocationStatus): string;
+export declare function schedulingGradeWeeklyAllocationStatusToNumber(object: SchedulingGradeWeeklyAllocationStatus): number;
 /**
  * Lifecycle of one generation run. Terminal states are SUCCEEDED and FAILED;
  * CANCELLED is reserved for future use (nothing sets it yet).
@@ -216,6 +228,18 @@ export interface SchedulingInstructionalRequirement {
     /** Optional per-day allowed-period restrictions; empty means no slot restriction. */
     period_rules: SchedulingCoursePeriodRule[];
 }
+export interface SchedulingGradeCampusWeeklyCapacity {
+    campus_id: ObjectId | undefined;
+    weekly_capacity?: number | undefined;
+}
+export interface SchedulingGradeWeeklyAllocation {
+    grade?: StudentGrade | undefined;
+    assigned_periods?: number | undefined;
+    weekly_capacity?: number | undefined;
+    missing_requirement_count?: number | undefined;
+    campus_capacities: SchedulingGradeCampusWeeklyCapacity[];
+    status?: SchedulingGradeWeeklyAllocationStatus | undefined;
+}
 /**
  * Full state of the Classes setup step: the curriculum catalog plus its configured
  * offerings and instructional requirements.
@@ -227,6 +251,7 @@ export interface SchedulingClassesSetup {
     high_school_course_setups: SchedulingHighSchoolCourseSetup[];
     offered_grades: StudentGrade[];
     instructional_requirements: SchedulingInstructionalRequirement[];
+    grade_weekly_allocations: SchedulingGradeWeeklyAllocation[];
 }
 /** A student selectable for a high-school course roster (display fields included). */
 export interface SchedulingStudentAssignmentOption {
@@ -472,6 +497,8 @@ export declare const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighS
 export declare const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionGroup>;
 export declare const SchedulingCoursePeriodRule: MessageFns<SchedulingCoursePeriodRule>;
 export declare const SchedulingInstructionalRequirement: MessageFns<SchedulingInstructionalRequirement>;
+export declare const SchedulingGradeCampusWeeklyCapacity: MessageFns<SchedulingGradeCampusWeeklyCapacity>;
+export declare const SchedulingGradeWeeklyAllocation: MessageFns<SchedulingGradeWeeklyAllocation>;
 export declare const SchedulingClassesSetup: MessageFns<SchedulingClassesSetup>;
 export declare const SchedulingStudentAssignmentOption: MessageFns<SchedulingStudentAssignmentOption>;
 export declare const SchedulingSubjectAssignmentPreview: MessageFns<SchedulingSubjectAssignmentPreview>;
