@@ -505,6 +505,7 @@ export interface SchedulingPeriodDefinition {
   label?: string | undefined;
   start_time?: string | undefined;
   end_time?: string | undefined;
+  is_rest_period?: boolean | undefined;
 }
 
 export interface SchedulingOfferedGrade {
@@ -867,6 +868,7 @@ export interface SchedulingScheduleSlotInfo {
   period_label?: string | undefined;
   start_time?: string | undefined;
   end_time?: string | undefined;
+  is_rest_period?: boolean | undefined;
 }
 
 export interface SchedulingScheduleSemesterInfo {
@@ -1320,7 +1322,13 @@ export const SchedulingPreparation: MessageFns<SchedulingPreparation> = {
 };
 
 function createBaseSchedulingPeriodDefinition(): SchedulingPeriodDefinition {
-  return { sequence: undefined, label: undefined, start_time: undefined, end_time: undefined };
+  return {
+    sequence: undefined,
+    label: undefined,
+    start_time: undefined,
+    end_time: undefined,
+    is_rest_period: undefined,
+  };
 }
 
 export const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefinition> = {
@@ -1336,6 +1344,9 @@ export const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefinition> 
     }
     if (message.end_time !== undefined) {
       writer.uint32(34).string(message.end_time);
+    }
+    if (message.is_rest_period !== undefined) {
+      writer.uint32(40).bool(message.is_rest_period);
     }
     return writer;
   },
@@ -1375,6 +1386,13 @@ export const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefinition> 
 
           message.end_time = reader.string();
           continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.is_rest_period = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1390,6 +1408,7 @@ export const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefinition> 
       label: isSet(object.label) ? globalThis.String(object.label) : undefined,
       start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
       end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
+      is_rest_period: isSet(object.isRestPeriod) ? globalThis.Boolean(object.isRestPeriod) : undefined,
     };
   },
 
@@ -1407,6 +1426,9 @@ export const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefinition> 
     if (message.end_time !== undefined) {
       obj.endTime = message.end_time;
     }
+    if (message.is_rest_period !== undefined) {
+      obj.isRestPeriod = message.is_rest_period;
+    }
     return obj;
   },
 
@@ -1419,6 +1441,7 @@ export const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefinition> 
     message.label = object.label ?? undefined;
     message.start_time = object.start_time ?? undefined;
     message.end_time = object.end_time ?? undefined;
+    message.is_rest_period = object.is_rest_period ?? undefined;
     return message;
   },
 };
@@ -5676,6 +5699,7 @@ function createBaseSchedulingScheduleSlotInfo(): SchedulingScheduleSlotInfo {
     period_label: undefined,
     start_time: undefined,
     end_time: undefined,
+    is_rest_period: undefined,
   };
 }
 
@@ -5701,6 +5725,9 @@ export const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo> 
     }
     if (message.end_time !== undefined) {
       writer.uint32(58).string(message.end_time);
+    }
+    if (message.is_rest_period !== undefined) {
+      writer.uint32(64).bool(message.is_rest_period);
     }
     return writer;
   },
@@ -5761,6 +5788,13 @@ export const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo> 
 
           message.end_time = reader.string();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.is_rest_period = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5779,6 +5813,7 @@ export const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo> 
       period_label: isSet(object.periodLabel) ? globalThis.String(object.periodLabel) : undefined,
       start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
       end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
+      is_rest_period: isSet(object.isRestPeriod) ? globalThis.Boolean(object.isRestPeriod) : undefined,
     };
   },
 
@@ -5805,6 +5840,9 @@ export const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo> 
     if (message.end_time !== undefined) {
       obj.endTime = message.end_time;
     }
+    if (message.is_rest_period !== undefined) {
+      obj.isRestPeriod = message.is_rest_period;
+    }
     return obj;
   },
 
@@ -5822,6 +5860,7 @@ export const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo> 
     message.period_label = object.period_label ?? undefined;
     message.start_time = object.start_time ?? undefined;
     message.end_time = object.end_time ?? undefined;
+    message.is_rest_period = object.is_rest_period ?? undefined;
     return message;
   },
 };

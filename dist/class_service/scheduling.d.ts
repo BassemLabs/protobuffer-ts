@@ -119,6 +119,7 @@ export interface SchedulingPeriodDefinition {
     label?: string | undefined;
     start_time?: string | undefined;
     end_time?: string | undefined;
+    is_rest_period?: boolean | undefined;
 }
 export interface SchedulingOfferedGrade {
     id: Uuid | undefined;
@@ -420,6 +421,7 @@ export interface SchedulingScheduleSlotInfo {
     period_label?: string | undefined;
     start_time?: string | undefined;
     end_time?: string | undefined;
+    is_rest_period?: boolean | undefined;
 }
 export interface SchedulingScheduleSemesterInfo {
     id: ObjectId | undefined;
