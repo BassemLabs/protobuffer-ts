@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.StudentInvoices = exports.GetNonPaidOnboardingInvoicesForStudentsResponse = exports.GetNonPaidOnboardingInvoicesForStudentsRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.PaginatedListInvoicesResponse = exports.AggregationResponse = exports.ListInvoicesRequest = exports.DeleteStudentWaitlistInvoicesRequest = exports.ValidateStudentDeletionFinancialEligibilityRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
-exports.ResetAutoPaymentForRetryRequest = void 0;
+exports.GetOrganizationInvoicesRequest = exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.StudentInvoices = exports.GetNonPaidOnboardingInvoicesForStudentsResponse = exports.GetNonPaidOnboardingInvoicesForStudentsRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.AggregationResponse = exports.ArchiveInvoicesRequest = exports.CancelInvoicesRequest = exports.SendInvoiceRemindersResponse = exports.SendInvoiceRemindersRequest = exports.MarkInvoiceViewedRequest = exports.ListInvoiceActivityResponse = exports.ListInvoiceActivityRequest = exports.ListInvoiceManagerRequest = exports.DeleteStudentWaitlistInvoicesRequest = exports.ValidateStudentDeletionFinancialEligibilityRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
+exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -14,6 +14,7 @@ const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const invoice_1 = require("./invoice");
+const invoice_manager_1 = require("./invoice_manager");
 exports.protobufPackage = "payment_service";
 function createBaseInvoices() {
     return { invoices: [] };
@@ -779,23 +780,23 @@ exports.DeleteStudentWaitlistInvoicesRequest = {
         return message;
     },
 };
-function createBaseListInvoicesRequest() {
+function createBaseListInvoiceManagerRequest() {
     return { context: undefined, filter: undefined };
 }
-exports.ListInvoicesRequest = {
+exports.ListInvoiceManagerRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
         }
         if (message.filter !== undefined) {
-            invoice_1.InvoiceFilter.encode(message.filter, writer.uint32(18).fork()).join();
+            invoice_manager_1.InvoiceManagerFilter.encode(message.filter, writer.uint32(18).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseListInvoicesRequest();
+        const message = createBaseListInvoiceManagerRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -809,7 +810,7 @@ exports.ListInvoicesRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.filter = invoice_1.InvoiceFilter.decode(reader, reader.uint32());
+                    message.filter = invoice_manager_1.InvoiceManagerFilter.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -822,7 +823,7 @@ exports.ListInvoicesRequest = {
     fromJSON(object) {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            filter: isSet(object.filter) ? invoice_1.InvoiceFilter.fromJSON(object.filter) : undefined,
+            filter: isSet(object.filter) ? invoice_manager_1.InvoiceManagerFilter.fromJSON(object.filter) : undefined,
         };
     },
     toJSON(message) {
@@ -831,21 +832,598 @@ exports.ListInvoicesRequest = {
             obj.context = request_context_1.RequestContext.toJSON(message.context);
         }
         if (message.filter !== undefined) {
-            obj.filter = invoice_1.InvoiceFilter.toJSON(message.filter);
+            obj.filter = invoice_manager_1.InvoiceManagerFilter.toJSON(message.filter);
         }
         return obj;
     },
     create(base) {
-        return exports.ListInvoicesRequest.fromPartial(base ?? {});
+        return exports.ListInvoiceManagerRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseListInvoicesRequest();
+        const message = createBaseListInvoiceManagerRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.filter = (object.filter !== undefined && object.filter !== null)
-            ? invoice_1.InvoiceFilter.fromPartial(object.filter)
+            ? invoice_manager_1.InvoiceManagerFilter.fromPartial(object.filter)
             : undefined;
+        return message;
+    },
+};
+function createBaseListInvoiceActivityRequest() {
+    return { context: undefined, invoice_id: undefined, per_page: undefined, page: undefined };
+}
+exports.ListInvoiceActivityRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(18).fork()).join();
+        }
+        if (message.per_page !== undefined) {
+            writer.uint32(24).uint32(message.per_page);
+        }
+        if (message.page !== undefined) {
+            writer.uint32(32).uint32(message.page);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListInvoiceActivityRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.per_page = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.page = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+        }
+        if (message.per_page !== undefined) {
+            obj.perPage = Math.round(message.per_page);
+        }
+        if (message.page !== undefined) {
+            obj.page = Math.round(message.page);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListInvoiceActivityRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListInvoiceActivityRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
+            : undefined;
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
+        return message;
+    },
+};
+function createBaseListInvoiceActivityResponse() {
+    return { entries: [], entries_count: undefined };
+}
+exports.ListInvoiceActivityResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.entries) {
+            invoice_manager_1.InvoiceActivityEntry.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.entries_count !== undefined) {
+            writer.uint32(16).uint32(message.entries_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListInvoiceActivityResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.entries.push(invoice_manager_1.InvoiceActivityEntry.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.entries_count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            entries: globalThis.Array.isArray(object?.entries)
+                ? object.entries.map((e) => invoice_manager_1.InvoiceActivityEntry.fromJSON(e))
+                : [],
+            entries_count: isSet(object.entriesCount) ? globalThis.Number(object.entriesCount) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.entries?.length) {
+            obj.entries = message.entries.map((e) => invoice_manager_1.InvoiceActivityEntry.toJSON(e));
+        }
+        if (message.entries_count !== undefined) {
+            obj.entriesCount = Math.round(message.entries_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListInvoiceActivityResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListInvoiceActivityResponse();
+        message.entries = object.entries?.map((e) => invoice_manager_1.InvoiceActivityEntry.fromPartial(e)) || [];
+        message.entries_count = object.entries_count ?? undefined;
+        return message;
+    },
+};
+function createBaseMarkInvoiceViewedRequest() {
+    return { context: undefined, invoice_id: undefined };
+}
+exports.MarkInvoiceViewedRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.invoice_id !== undefined) {
+            object_id_1.ObjectId.encode(message.invoice_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseMarkInvoiceViewedRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoice_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoice_id: isSet(object.invoiceId) ? object_id_1.ObjectId.fromJSON(object.invoiceId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoice_id !== undefined) {
+            obj.invoiceId = object_id_1.ObjectId.toJSON(message.invoice_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.MarkInvoiceViewedRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseMarkInvoiceViewedRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.invoice_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSendInvoiceRemindersRequest() {
+    return {
+        context: undefined,
+        invoice_ids: [],
+        title: undefined,
+        header: undefined,
+        body: undefined,
+        footer: undefined,
+    };
+}
+exports.SendInvoiceRemindersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.invoice_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        if (message.title !== undefined) {
+            writer.uint32(26).string(message.title);
+        }
+        if (message.header !== undefined) {
+            writer.uint32(34).string(message.header);
+        }
+        if (message.body !== undefined) {
+            writer.uint32(42).string(message.body);
+        }
+        if (message.footer !== undefined) {
+            writer.uint32(50).string(message.footer);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSendInvoiceRemindersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoice_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.header = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.footer = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+                ? object.invoiceIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoice_ids?.length) {
+            obj.invoiceIds = message.invoice_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.header !== undefined) {
+            obj.header = message.header;
+        }
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        if (message.footer !== undefined) {
+            obj.footer = message.footer;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SendInvoiceRemindersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSendInvoiceRemindersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoice_ids = object.invoice_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.title = object.title ?? undefined;
+        message.header = object.header ?? undefined;
+        message.body = object.body ?? undefined;
+        message.footer = object.footer ?? undefined;
+        return message;
+    },
+};
+function createBaseSendInvoiceRemindersResponse() {
+    return { results: [] };
+}
+exports.SendInvoiceRemindersResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.results) {
+            invoice_manager_1.InvoiceReminderResult.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSendInvoiceRemindersResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.results.push(invoice_manager_1.InvoiceReminderResult.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            results: globalThis.Array.isArray(object?.results)
+                ? object.results.map((e) => invoice_manager_1.InvoiceReminderResult.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.results?.length) {
+            obj.results = message.results.map((e) => invoice_manager_1.InvoiceReminderResult.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SendInvoiceRemindersResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSendInvoiceRemindersResponse();
+        message.results = object.results?.map((e) => invoice_manager_1.InvoiceReminderResult.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCancelInvoicesRequest() {
+    return { context: undefined, invoice_ids: [], reason: undefined };
+}
+exports.CancelInvoicesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.invoice_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        if (message.reason !== undefined) {
+            writer.uint32(26).string(message.reason);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCancelInvoicesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoice_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.reason = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+                ? object.invoiceIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoice_ids?.length) {
+            obj.invoiceIds = message.invoice_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.reason !== undefined) {
+            obj.reason = message.reason;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CancelInvoicesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCancelInvoicesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoice_ids = object.invoice_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.reason = object.reason ?? undefined;
+        return message;
+    },
+};
+function createBaseArchiveInvoicesRequest() {
+    return { context: undefined, invoice_ids: [] };
+}
+exports.ArchiveInvoicesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.invoice_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseArchiveInvoicesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoice_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+                ? object.invoiceIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.invoice_ids?.length) {
+            obj.invoiceIds = message.invoice_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ArchiveInvoicesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseArchiveInvoicesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.invoice_ids = object.invoice_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -911,74 +1489,6 @@ exports.AggregationResponse = {
     fromPartial(object) {
         const message = createBaseAggregationResponse();
         message.invoices = object.invoices?.map((e) => invoice_1.Invoice.fromPartial(e)) || [];
-        message.invoices_count = object.invoices_count ?? undefined;
-        return message;
-    },
-};
-function createBasePaginatedListInvoicesResponse() {
-    return { invoices: [], invoices_count: undefined };
-}
-exports.PaginatedListInvoicesResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        for (const v of message.invoices) {
-            invoice_1.InvoiceResponse.encode(v, writer.uint32(10).fork()).join();
-        }
-        if (message.invoices_count !== undefined) {
-            writer.uint32(16).int32(message.invoices_count);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBasePaginatedListInvoicesResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.invoices.push(invoice_1.InvoiceResponse.decode(reader, reader.uint32()));
-                    continue;
-                case 2:
-                    if (tag !== 16) {
-                        break;
-                    }
-                    message.invoices_count = reader.int32();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            invoices: globalThis.Array.isArray(object?.invoices)
-                ? object.invoices.map((e) => invoice_1.InvoiceResponse.fromJSON(e))
-                : [],
-            invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.invoices?.length) {
-            obj.invoices = message.invoices.map((e) => invoice_1.InvoiceResponse.toJSON(e));
-        }
-        if (message.invoices_count !== undefined) {
-            obj.invoicesCount = Math.round(message.invoices_count);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.PaginatedListInvoicesResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBasePaginatedListInvoicesResponse();
-        message.invoices = object.invoices?.map((e) => invoice_1.InvoiceResponse.fromPartial(e)) || [];
         message.invoices_count = object.invoices_count ?? undefined;
         return message;
     },

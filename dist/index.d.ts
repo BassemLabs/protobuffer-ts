@@ -186,6 +186,8 @@ import * as Tuition_service from './payment_service/tuition_service';
 export { Tuition_service };
 import * as Organization_payment_plan_service from './payment_service/organization_payment_plan_service';
 export { Organization_payment_plan_service };
+import * as Payment_reminder from './payment_service/payment_reminder';
+export { Payment_reminder };
 import * as Tuition_invoice from './payment_service/tuition_invoice';
 export { Tuition_invoice };
 import * as Processing_fees from './payment_service/processing_fees';
@@ -200,6 +202,8 @@ import * as Tuition_invoice_service from './payment_service/tuition_invoice_serv
 export { Tuition_invoice_service };
 import * as Invoice_service from './payment_service/invoice_service';
 export { Invoice_service };
+import * as Invoice_manager from './payment_service/invoice_manager';
+export { Invoice_manager };
 import * as Tuition_application_service from './payment_service/tuition_application_service';
 export { Tuition_application_service };
 import * as Transaction from './payment_service/transaction';

@@ -5,13 +5,14 @@
 //   protoc               unknown
 // source: payment_service/tuition_manager.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TuitionAdjustmentEntry = exports.AuditedTuitionAdjustment = exports.LegacyTuitionAdjustment = exports.TuitionReminder = exports.TuitionReminderRecipient = exports.TuitionFamilyNote = exports.TuitionFamilyNoteEdit = exports.protobufPackage = void 0;
+exports.TuitionAdjustmentEntry = exports.AuditedTuitionAdjustment = exports.LegacyTuitionAdjustment = exports.TuitionReminder = exports.TuitionFamilyNote = exports.TuitionFamilyNoteEdit = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const audit_actor_1 = require("../utils/audit_actor");
 const object_id_1 = require("../utils/object_id");
 const invoice_1 = require("./invoice");
+const payment_reminder_1 = require("./payment_reminder");
 exports.protobufPackage = "payment_service";
 function createBaseTuitionFamilyNoteEdit() {
     return { updated_by: undefined, updated_at: undefined };
@@ -250,139 +251,15 @@ exports.TuitionFamilyNote = {
         return message;
     },
 };
-function createBaseTuitionReminderRecipient() {
-    return {
-        parent_id: undefined,
-        parent_name: undefined,
-        parent_email: undefined,
-        rendered_title: undefined,
-        rendered_body: undefined,
-    };
-}
-exports.TuitionReminderRecipient = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.parent_id !== undefined) {
-            object_id_1.ObjectId.encode(message.parent_id, writer.uint32(10).fork()).join();
-        }
-        if (message.parent_name !== undefined) {
-            writer.uint32(18).string(message.parent_name);
-        }
-        if (message.parent_email !== undefined) {
-            writer.uint32(26).string(message.parent_email);
-        }
-        if (message.rendered_title !== undefined) {
-            writer.uint32(34).string(message.rendered_title);
-        }
-        if (message.rendered_body !== undefined) {
-            writer.uint32(42).string(message.rendered_body);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseTuitionReminderRecipient();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.parent_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.parent_name = reader.string();
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.parent_email = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.rendered_title = reader.string();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.rendered_body = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            parent_id: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
-            parent_name: isSet(object.parentName) ? globalThis.String(object.parentName) : undefined,
-            parent_email: isSet(object.parentEmail) ? globalThis.String(object.parentEmail) : undefined,
-            rendered_title: isSet(object.renderedTitle) ? globalThis.String(object.renderedTitle) : undefined,
-            rendered_body: isSet(object.renderedBody) ? globalThis.String(object.renderedBody) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.parent_id !== undefined) {
-            obj.parentId = object_id_1.ObjectId.toJSON(message.parent_id);
-        }
-        if (message.parent_name !== undefined) {
-            obj.parentName = message.parent_name;
-        }
-        if (message.parent_email !== undefined) {
-            obj.parentEmail = message.parent_email;
-        }
-        if (message.rendered_title !== undefined) {
-            obj.renderedTitle = message.rendered_title;
-        }
-        if (message.rendered_body !== undefined) {
-            obj.renderedBody = message.rendered_body;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.TuitionReminderRecipient.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseTuitionReminderRecipient();
-        message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.parent_id)
-            : undefined;
-        message.parent_name = object.parent_name ?? undefined;
-        message.parent_email = object.parent_email ?? undefined;
-        message.rendered_title = object.rendered_title ?? undefined;
-        message.rendered_body = object.rendered_body ?? undefined;
-        return message;
-    },
-};
 function createBaseTuitionReminder() {
     return {
         id: undefined,
         organization: undefined,
         family: undefined,
         school_year: undefined,
-        title: undefined,
-        header: undefined,
-        body: undefined,
-        footer: undefined,
-        total_amount: undefined,
-        paid_amount: undefined,
-        remaining_amount: undefined,
-        overdue_amount: undefined,
         created_by: undefined,
         created_at: undefined,
-        recipients: [],
+        snapshot: undefined,
     };
 }
 exports.TuitionReminder = {
@@ -399,38 +276,14 @@ exports.TuitionReminder = {
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
         }
-        if (message.title !== undefined) {
-            writer.uint32(42).string(message.title);
-        }
-        if (message.header !== undefined) {
-            writer.uint32(50).string(message.header);
-        }
-        if (message.body !== undefined) {
-            writer.uint32(58).string(message.body);
-        }
-        if (message.footer !== undefined) {
-            writer.uint32(66).string(message.footer);
-        }
-        if (message.total_amount !== undefined) {
-            writer.uint32(73).double(message.total_amount);
-        }
-        if (message.paid_amount !== undefined) {
-            writer.uint32(81).double(message.paid_amount);
-        }
-        if (message.remaining_amount !== undefined) {
-            writer.uint32(89).double(message.remaining_amount);
-        }
-        if (message.overdue_amount !== undefined) {
-            writer.uint32(97).double(message.overdue_amount);
-        }
         if (message.created_by !== undefined) {
-            audit_actor_1.AuditActor.encode(message.created_by, writer.uint32(106).fork()).join();
+            audit_actor_1.AuditActor.encode(message.created_by, writer.uint32(42).fork()).join();
         }
         if (message.created_at !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.created_at), writer.uint32(114).fork()).join();
+            timestamp_1.Timestamp.encode(toTimestamp(message.created_at), writer.uint32(50).fork()).join();
         }
-        for (const v of message.recipients) {
-            exports.TuitionReminderRecipient.encode(v, writer.uint32(122).fork()).join();
+        if (message.snapshot !== undefined) {
+            payment_reminder_1.PaymentReminderSnapshot.encode(message.snapshot, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -469,67 +322,19 @@ exports.TuitionReminder = {
                     if (tag !== 42) {
                         break;
                     }
-                    message.title = reader.string();
+                    message.created_by = audit_actor_1.AuditActor.decode(reader, reader.uint32());
                     continue;
                 case 6:
                     if (tag !== 50) {
                         break;
                     }
-                    message.header = reader.string();
+                    message.created_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
                 case 7:
                     if (tag !== 58) {
                         break;
                     }
-                    message.body = reader.string();
-                    continue;
-                case 8:
-                    if (tag !== 66) {
-                        break;
-                    }
-                    message.footer = reader.string();
-                    continue;
-                case 9:
-                    if (tag !== 73) {
-                        break;
-                    }
-                    message.total_amount = reader.double();
-                    continue;
-                case 10:
-                    if (tag !== 81) {
-                        break;
-                    }
-                    message.paid_amount = reader.double();
-                    continue;
-                case 11:
-                    if (tag !== 89) {
-                        break;
-                    }
-                    message.remaining_amount = reader.double();
-                    continue;
-                case 12:
-                    if (tag !== 97) {
-                        break;
-                    }
-                    message.overdue_amount = reader.double();
-                    continue;
-                case 13:
-                    if (tag !== 106) {
-                        break;
-                    }
-                    message.created_by = audit_actor_1.AuditActor.decode(reader, reader.uint32());
-                    continue;
-                case 14:
-                    if (tag !== 114) {
-                        break;
-                    }
-                    message.created_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-                case 15:
-                    if (tag !== 122) {
-                        break;
-                    }
-                    message.recipients.push(exports.TuitionReminderRecipient.decode(reader, reader.uint32()));
+                    message.snapshot = payment_reminder_1.PaymentReminderSnapshot.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -545,19 +350,9 @@ exports.TuitionReminder = {
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-            header: isSet(object.header) ? globalThis.String(object.header) : undefined,
-            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
-            footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
-            total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : undefined,
-            paid_amount: isSet(object.paidAmount) ? globalThis.Number(object.paidAmount) : undefined,
-            remaining_amount: isSet(object.remainingAmount) ? globalThis.Number(object.remainingAmount) : undefined,
-            overdue_amount: isSet(object.overdueAmount) ? globalThis.Number(object.overdueAmount) : undefined,
             created_by: isSet(object.createdBy) ? audit_actor_1.AuditActor.fromJSON(object.createdBy) : undefined,
             created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
-            recipients: globalThis.Array.isArray(object?.recipients)
-                ? object.recipients.map((e) => exports.TuitionReminderRecipient.fromJSON(e))
-                : [],
+            snapshot: isSet(object.snapshot) ? payment_reminder_1.PaymentReminderSnapshot.fromJSON(object.snapshot) : undefined,
         };
     },
     toJSON(message) {
@@ -574,38 +369,14 @@ exports.TuitionReminder = {
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
-        if (message.title !== undefined) {
-            obj.title = message.title;
-        }
-        if (message.header !== undefined) {
-            obj.header = message.header;
-        }
-        if (message.body !== undefined) {
-            obj.body = message.body;
-        }
-        if (message.footer !== undefined) {
-            obj.footer = message.footer;
-        }
-        if (message.total_amount !== undefined) {
-            obj.totalAmount = message.total_amount;
-        }
-        if (message.paid_amount !== undefined) {
-            obj.paidAmount = message.paid_amount;
-        }
-        if (message.remaining_amount !== undefined) {
-            obj.remainingAmount = message.remaining_amount;
-        }
-        if (message.overdue_amount !== undefined) {
-            obj.overdueAmount = message.overdue_amount;
-        }
         if (message.created_by !== undefined) {
             obj.createdBy = audit_actor_1.AuditActor.toJSON(message.created_by);
         }
         if (message.created_at !== undefined) {
             obj.createdAt = message.created_at.toISOString();
         }
-        if (message.recipients?.length) {
-            obj.recipients = message.recipients.map((e) => exports.TuitionReminderRecipient.toJSON(e));
+        if (message.snapshot !== undefined) {
+            obj.snapshot = payment_reminder_1.PaymentReminderSnapshot.toJSON(message.snapshot);
         }
         return obj;
     },
@@ -624,19 +395,13 @@ exports.TuitionReminder = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
-        message.title = object.title ?? undefined;
-        message.header = object.header ?? undefined;
-        message.body = object.body ?? undefined;
-        message.footer = object.footer ?? undefined;
-        message.total_amount = object.total_amount ?? undefined;
-        message.paid_amount = object.paid_amount ?? undefined;
-        message.remaining_amount = object.remaining_amount ?? undefined;
-        message.overdue_amount = object.overdue_amount ?? undefined;
         message.created_by = (object.created_by !== undefined && object.created_by !== null)
             ? audit_actor_1.AuditActor.fromPartial(object.created_by)
             : undefined;
         message.created_at = object.created_at ?? undefined;
-        message.recipients = object.recipients?.map((e) => exports.TuitionReminderRecipient.fromPartial(e)) || [];
+        message.snapshot = (object.snapshot !== undefined && object.snapshot !== null)
+            ? payment_reminder_1.PaymentReminderSnapshot.fromPartial(object.snapshot)
+            : undefined;
         return message;
     },
 };

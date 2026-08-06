@@ -23,10 +23,10 @@ import {
   autoPaymentStatusToNumber,
   Coupon,
   Invoice,
-  InvoiceFilter,
   InvoiceItem,
   InvoiceResponse,
 } from "./invoice";
+import { InvoiceActivityEntry, InvoiceManagerFilter, InvoiceReminderResult } from "./invoice_manager";
 
 export const protobufPackage = "payment_service";
 
@@ -86,18 +86,54 @@ export interface DeleteStudentWaitlistInvoicesRequest {
   student_id: ObjectId | undefined;
 }
 
-export interface ListInvoicesRequest {
+export interface ListInvoiceManagerRequest {
   context: RequestContext | undefined;
-  filter: InvoiceFilter | undefined;
+  filter: InvoiceManagerFilter | undefined;
+}
+
+export interface ListInvoiceActivityRequest {
+  context: RequestContext | undefined;
+  invoice_id: ObjectId | undefined;
+  per_page?: number | undefined;
+  page?: number | undefined;
+}
+
+export interface ListInvoiceActivityResponse {
+  entries: InvoiceActivityEntry[];
+  entries_count?: number | undefined;
+}
+
+export interface MarkInvoiceViewedRequest {
+  context: RequestContext | undefined;
+  invoice_id: ObjectId | undefined;
+}
+
+export interface SendInvoiceRemindersRequest {
+  context: RequestContext | undefined;
+  invoice_ids: ObjectId[];
+  title?: string | undefined;
+  header?: string | undefined;
+  body?: string | undefined;
+  footer?: string | undefined;
+}
+
+export interface SendInvoiceRemindersResponse {
+  results: InvoiceReminderResult[];
+}
+
+export interface CancelInvoicesRequest {
+  context: RequestContext | undefined;
+  invoice_ids: ObjectId[];
+  reason?: string | undefined;
+}
+
+export interface ArchiveInvoicesRequest {
+  context: RequestContext | undefined;
+  invoice_ids: ObjectId[];
 }
 
 export interface AggregationResponse {
   invoices: Invoice[];
-  invoices_count?: number | undefined;
-}
-
-export interface PaginatedListInvoicesResponse {
-  invoices: InvoiceResponse[];
   invoices_count?: number | undefined;
 }
 
@@ -1208,25 +1244,25 @@ export const DeleteStudentWaitlistInvoicesRequest: MessageFns<DeleteStudentWaitl
   },
 };
 
-function createBaseListInvoicesRequest(): ListInvoicesRequest {
+function createBaseListInvoiceManagerRequest(): ListInvoiceManagerRequest {
   return { context: undefined, filter: undefined };
 }
 
-export const ListInvoicesRequest: MessageFns<ListInvoicesRequest> = {
-  encode(message: ListInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const ListInvoiceManagerRequest: MessageFns<ListInvoiceManagerRequest> = {
+  encode(message: ListInvoiceManagerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.filter !== undefined) {
-      InvoiceFilter.encode(message.filter, writer.uint32(18).fork()).join();
+      InvoiceManagerFilter.encode(message.filter, writer.uint32(18).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): ListInvoicesRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): ListInvoiceManagerRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListInvoicesRequest();
+    const message = createBaseListInvoiceManagerRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1242,7 +1278,7 @@ export const ListInvoicesRequest: MessageFns<ListInvoicesRequest> = {
             break;
           }
 
-          message.filter = InvoiceFilter.decode(reader, reader.uint32());
+          message.filter = InvoiceManagerFilter.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1253,35 +1289,674 @@ export const ListInvoicesRequest: MessageFns<ListInvoicesRequest> = {
     return message;
   },
 
-  fromJSON(object: any): ListInvoicesRequest {
+  fromJSON(object: any): ListInvoiceManagerRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      filter: isSet(object.filter) ? InvoiceFilter.fromJSON(object.filter) : undefined,
+      filter: isSet(object.filter) ? InvoiceManagerFilter.fromJSON(object.filter) : undefined,
     };
   },
 
-  toJSON(message: ListInvoicesRequest): unknown {
+  toJSON(message: ListInvoiceManagerRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
     }
     if (message.filter !== undefined) {
-      obj.filter = InvoiceFilter.toJSON(message.filter);
+      obj.filter = InvoiceManagerFilter.toJSON(message.filter);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListInvoicesRequest>, I>>(base?: I): ListInvoicesRequest {
-    return ListInvoicesRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<ListInvoiceManagerRequest>, I>>(base?: I): ListInvoiceManagerRequest {
+    return ListInvoiceManagerRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<ListInvoicesRequest>, I>>(object: I): ListInvoicesRequest {
-    const message = createBaseListInvoicesRequest();
+  fromPartial<I extends Exact<DeepPartial<ListInvoiceManagerRequest>, I>>(object: I): ListInvoiceManagerRequest {
+    const message = createBaseListInvoiceManagerRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.filter = (object.filter !== undefined && object.filter !== null)
-      ? InvoiceFilter.fromPartial(object.filter)
+      ? InvoiceManagerFilter.fromPartial(object.filter)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseListInvoiceActivityRequest(): ListInvoiceActivityRequest {
+  return { context: undefined, invoice_id: undefined, per_page: undefined, page: undefined };
+}
+
+export const ListInvoiceActivityRequest: MessageFns<ListInvoiceActivityRequest> = {
+  encode(message: ListInvoiceActivityRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.invoice_id !== undefined) {
+      ObjectId.encode(message.invoice_id, writer.uint32(18).fork()).join();
+    }
+    if (message.per_page !== undefined) {
+      writer.uint32(24).uint32(message.per_page);
+    }
+    if (message.page !== undefined) {
+      writer.uint32(32).uint32(message.page);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListInvoiceActivityRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListInvoiceActivityRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoice_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.per_page = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.page = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListInvoiceActivityRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+    };
+  },
+
+  toJSON(message: ListInvoiceActivityRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoice_id !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+    }
+    if (message.per_page !== undefined) {
+      obj.perPage = Math.round(message.per_page);
+    }
+    if (message.page !== undefined) {
+      obj.page = Math.round(message.page);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListInvoiceActivityRequest>, I>>(base?: I): ListInvoiceActivityRequest {
+    return ListInvoiceActivityRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListInvoiceActivityRequest>, I>>(object: I): ListInvoiceActivityRequest {
+    const message = createBaseListInvoiceActivityRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+      ? ObjectId.fromPartial(object.invoice_id)
+      : undefined;
+    message.per_page = object.per_page ?? undefined;
+    message.page = object.page ?? undefined;
+    return message;
+  },
+};
+
+function createBaseListInvoiceActivityResponse(): ListInvoiceActivityResponse {
+  return { entries: [], entries_count: undefined };
+}
+
+export const ListInvoiceActivityResponse: MessageFns<ListInvoiceActivityResponse> = {
+  encode(message: ListInvoiceActivityResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.entries) {
+      InvoiceActivityEntry.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.entries_count !== undefined) {
+      writer.uint32(16).uint32(message.entries_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListInvoiceActivityResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListInvoiceActivityResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entries.push(InvoiceActivityEntry.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.entries_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListInvoiceActivityResponse {
+    return {
+      entries: globalThis.Array.isArray(object?.entries)
+        ? object.entries.map((e: any) => InvoiceActivityEntry.fromJSON(e))
+        : [],
+      entries_count: isSet(object.entriesCount) ? globalThis.Number(object.entriesCount) : undefined,
+    };
+  },
+
+  toJSON(message: ListInvoiceActivityResponse): unknown {
+    const obj: any = {};
+    if (message.entries?.length) {
+      obj.entries = message.entries.map((e) => InvoiceActivityEntry.toJSON(e));
+    }
+    if (message.entries_count !== undefined) {
+      obj.entriesCount = Math.round(message.entries_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListInvoiceActivityResponse>, I>>(base?: I): ListInvoiceActivityResponse {
+    return ListInvoiceActivityResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListInvoiceActivityResponse>, I>>(object: I): ListInvoiceActivityResponse {
+    const message = createBaseListInvoiceActivityResponse();
+    message.entries = object.entries?.map((e) => InvoiceActivityEntry.fromPartial(e)) || [];
+    message.entries_count = object.entries_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseMarkInvoiceViewedRequest(): MarkInvoiceViewedRequest {
+  return { context: undefined, invoice_id: undefined };
+}
+
+export const MarkInvoiceViewedRequest: MessageFns<MarkInvoiceViewedRequest> = {
+  encode(message: MarkInvoiceViewedRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.invoice_id !== undefined) {
+      ObjectId.encode(message.invoice_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): MarkInvoiceViewedRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMarkInvoiceViewedRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoice_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MarkInvoiceViewedRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoice_id: isSet(object.invoiceId) ? ObjectId.fromJSON(object.invoiceId) : undefined,
+    };
+  },
+
+  toJSON(message: MarkInvoiceViewedRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoice_id !== undefined) {
+      obj.invoiceId = ObjectId.toJSON(message.invoice_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MarkInvoiceViewedRequest>, I>>(base?: I): MarkInvoiceViewedRequest {
+    return MarkInvoiceViewedRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MarkInvoiceViewedRequest>, I>>(object: I): MarkInvoiceViewedRequest {
+    const message = createBaseMarkInvoiceViewedRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
+      ? ObjectId.fromPartial(object.invoice_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSendInvoiceRemindersRequest(): SendInvoiceRemindersRequest {
+  return {
+    context: undefined,
+    invoice_ids: [],
+    title: undefined,
+    header: undefined,
+    body: undefined,
+    footer: undefined,
+  };
+}
+
+export const SendInvoiceRemindersRequest: MessageFns<SendInvoiceRemindersRequest> = {
+  encode(message: SendInvoiceRemindersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.invoice_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.title !== undefined) {
+      writer.uint32(26).string(message.title);
+    }
+    if (message.header !== undefined) {
+      writer.uint32(34).string(message.header);
+    }
+    if (message.body !== undefined) {
+      writer.uint32(42).string(message.body);
+    }
+    if (message.footer !== undefined) {
+      writer.uint32(50).string(message.footer);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendInvoiceRemindersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendInvoiceRemindersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoice_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.header = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.footer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendInvoiceRemindersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+        ? object.invoiceIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
+    };
+  },
+
+  toJSON(message: SendInvoiceRemindersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoice_ids?.length) {
+      obj.invoiceIds = message.invoice_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.title !== undefined) {
+      obj.title = message.title;
+    }
+    if (message.header !== undefined) {
+      obj.header = message.header;
+    }
+    if (message.body !== undefined) {
+      obj.body = message.body;
+    }
+    if (message.footer !== undefined) {
+      obj.footer = message.footer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SendInvoiceRemindersRequest>, I>>(base?: I): SendInvoiceRemindersRequest {
+    return SendInvoiceRemindersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SendInvoiceRemindersRequest>, I>>(object: I): SendInvoiceRemindersRequest {
+    const message = createBaseSendInvoiceRemindersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoice_ids = object.invoice_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.title = object.title ?? undefined;
+    message.header = object.header ?? undefined;
+    message.body = object.body ?? undefined;
+    message.footer = object.footer ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSendInvoiceRemindersResponse(): SendInvoiceRemindersResponse {
+  return { results: [] };
+}
+
+export const SendInvoiceRemindersResponse: MessageFns<SendInvoiceRemindersResponse> = {
+  encode(message: SendInvoiceRemindersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.results) {
+      InvoiceReminderResult.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendInvoiceRemindersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendInvoiceRemindersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.results.push(InvoiceReminderResult.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendInvoiceRemindersResponse {
+    return {
+      results: globalThis.Array.isArray(object?.results)
+        ? object.results.map((e: any) => InvoiceReminderResult.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SendInvoiceRemindersResponse): unknown {
+    const obj: any = {};
+    if (message.results?.length) {
+      obj.results = message.results.map((e) => InvoiceReminderResult.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SendInvoiceRemindersResponse>, I>>(base?: I): SendInvoiceRemindersResponse {
+    return SendInvoiceRemindersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SendInvoiceRemindersResponse>, I>>(object: I): SendInvoiceRemindersResponse {
+    const message = createBaseSendInvoiceRemindersResponse();
+    message.results = object.results?.map((e) => InvoiceReminderResult.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCancelInvoicesRequest(): CancelInvoicesRequest {
+  return { context: undefined, invoice_ids: [], reason: undefined };
+}
+
+export const CancelInvoicesRequest: MessageFns<CancelInvoicesRequest> = {
+  encode(message: CancelInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.invoice_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.reason !== undefined) {
+      writer.uint32(26).string(message.reason);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CancelInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCancelInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoice_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CancelInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+        ? object.invoiceIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+    };
+  },
+
+  toJSON(message: CancelInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoice_ids?.length) {
+      obj.invoiceIds = message.invoice_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.reason !== undefined) {
+      obj.reason = message.reason;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CancelInvoicesRequest>, I>>(base?: I): CancelInvoicesRequest {
+    return CancelInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CancelInvoicesRequest>, I>>(object: I): CancelInvoicesRequest {
+    const message = createBaseCancelInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoice_ids = object.invoice_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.reason = object.reason ?? undefined;
+    return message;
+  },
+};
+
+function createBaseArchiveInvoicesRequest(): ArchiveInvoicesRequest {
+  return { context: undefined, invoice_ids: [] };
+}
+
+export const ArchiveInvoicesRequest: MessageFns<ArchiveInvoicesRequest> = {
+  encode(message: ArchiveInvoicesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.invoice_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ArchiveInvoicesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseArchiveInvoicesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.invoice_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ArchiveInvoicesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+        ? object.invoiceIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ArchiveInvoicesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.invoice_ids?.length) {
+      obj.invoiceIds = message.invoice_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ArchiveInvoicesRequest>, I>>(base?: I): ArchiveInvoicesRequest {
+    return ArchiveInvoicesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ArchiveInvoicesRequest>, I>>(object: I): ArchiveInvoicesRequest {
+    const message = createBaseArchiveInvoicesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.invoice_ids = object.invoice_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1355,84 +2030,6 @@ export const AggregationResponse: MessageFns<AggregationResponse> = {
   fromPartial<I extends Exact<DeepPartial<AggregationResponse>, I>>(object: I): AggregationResponse {
     const message = createBaseAggregationResponse();
     message.invoices = object.invoices?.map((e) => Invoice.fromPartial(e)) || [];
-    message.invoices_count = object.invoices_count ?? undefined;
-    return message;
-  },
-};
-
-function createBasePaginatedListInvoicesResponse(): PaginatedListInvoicesResponse {
-  return { invoices: [], invoices_count: undefined };
-}
-
-export const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResponse> = {
-  encode(message: PaginatedListInvoicesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.invoices) {
-      InvoiceResponse.encode(v!, writer.uint32(10).fork()).join();
-    }
-    if (message.invoices_count !== undefined) {
-      writer.uint32(16).int32(message.invoices_count);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): PaginatedListInvoicesResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePaginatedListInvoicesResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.invoices.push(InvoiceResponse.decode(reader, reader.uint32()));
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.invoices_count = reader.int32();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): PaginatedListInvoicesResponse {
-    return {
-      invoices: globalThis.Array.isArray(object?.invoices)
-        ? object.invoices.map((e: any) => InvoiceResponse.fromJSON(e))
-        : [],
-      invoices_count: isSet(object.invoicesCount) ? globalThis.Number(object.invoicesCount) : undefined,
-    };
-  },
-
-  toJSON(message: PaginatedListInvoicesResponse): unknown {
-    const obj: any = {};
-    if (message.invoices?.length) {
-      obj.invoices = message.invoices.map((e) => InvoiceResponse.toJSON(e));
-    }
-    if (message.invoices_count !== undefined) {
-      obj.invoicesCount = Math.round(message.invoices_count);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<PaginatedListInvoicesResponse>, I>>(base?: I): PaginatedListInvoicesResponse {
-    return PaginatedListInvoicesResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<PaginatedListInvoicesResponse>, I>>(
-    object: I,
-  ): PaginatedListInvoicesResponse {
-    const message = createBasePaginatedListInvoicesResponse();
-    message.invoices = object.invoices?.map((e) => InvoiceResponse.fromPartial(e)) || [];
     message.invoices_count = object.invoices_count ?? undefined;
     return message;
   },

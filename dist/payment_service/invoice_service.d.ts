@@ -2,7 +2,8 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { StudentStatus } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceFilter, InvoiceItem, InvoiceResponse } from "./invoice";
+import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceItem, InvoiceResponse } from "./invoice";
+import { InvoiceActivityEntry, InvoiceManagerFilter, InvoiceReminderResult } from "./invoice_manager";
 export declare const protobufPackage = "payment_service";
 /** Invoice messages */
 export interface Invoices {
@@ -49,16 +50,46 @@ export interface DeleteStudentWaitlistInvoicesRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
 }
-export interface ListInvoicesRequest {
+export interface ListInvoiceManagerRequest {
     context: RequestContext | undefined;
-    filter: InvoiceFilter | undefined;
+    filter: InvoiceManagerFilter | undefined;
+}
+export interface ListInvoiceActivityRequest {
+    context: RequestContext | undefined;
+    invoice_id: ObjectId | undefined;
+    per_page?: number | undefined;
+    page?: number | undefined;
+}
+export interface ListInvoiceActivityResponse {
+    entries: InvoiceActivityEntry[];
+    entries_count?: number | undefined;
+}
+export interface MarkInvoiceViewedRequest {
+    context: RequestContext | undefined;
+    invoice_id: ObjectId | undefined;
+}
+export interface SendInvoiceRemindersRequest {
+    context: RequestContext | undefined;
+    invoice_ids: ObjectId[];
+    title?: string | undefined;
+    header?: string | undefined;
+    body?: string | undefined;
+    footer?: string | undefined;
+}
+export interface SendInvoiceRemindersResponse {
+    results: InvoiceReminderResult[];
+}
+export interface CancelInvoicesRequest {
+    context: RequestContext | undefined;
+    invoice_ids: ObjectId[];
+    reason?: string | undefined;
+}
+export interface ArchiveInvoicesRequest {
+    context: RequestContext | undefined;
+    invoice_ids: ObjectId[];
 }
 export interface AggregationResponse {
     invoices: Invoice[];
-    invoices_count?: number | undefined;
-}
-export interface PaginatedListInvoicesResponse {
-    invoices: InvoiceResponse[];
     invoices_count?: number | undefined;
 }
 export interface ListInvoicesResponse {
@@ -268,9 +299,15 @@ export declare const StudentHasNoUnpaidInvoicesRequest: MessageFns<StudentHasNoU
 export declare const StudentHasNoUnpaidInvoicesResponse: MessageFns<StudentHasNoUnpaidInvoicesResponse>;
 export declare const ValidateStudentDeletionFinancialEligibilityRequest: MessageFns<ValidateStudentDeletionFinancialEligibilityRequest>;
 export declare const DeleteStudentWaitlistInvoicesRequest: MessageFns<DeleteStudentWaitlistInvoicesRequest>;
-export declare const ListInvoicesRequest: MessageFns<ListInvoicesRequest>;
+export declare const ListInvoiceManagerRequest: MessageFns<ListInvoiceManagerRequest>;
+export declare const ListInvoiceActivityRequest: MessageFns<ListInvoiceActivityRequest>;
+export declare const ListInvoiceActivityResponse: MessageFns<ListInvoiceActivityResponse>;
+export declare const MarkInvoiceViewedRequest: MessageFns<MarkInvoiceViewedRequest>;
+export declare const SendInvoiceRemindersRequest: MessageFns<SendInvoiceRemindersRequest>;
+export declare const SendInvoiceRemindersResponse: MessageFns<SendInvoiceRemindersResponse>;
+export declare const CancelInvoicesRequest: MessageFns<CancelInvoicesRequest>;
+export declare const ArchiveInvoicesRequest: MessageFns<ArchiveInvoicesRequest>;
 export declare const AggregationResponse: MessageFns<AggregationResponse>;
-export declare const PaginatedListInvoicesResponse: MessageFns<PaginatedListInvoicesResponse>;
 export declare const ListInvoicesResponse: MessageFns<ListInvoicesResponse>;
 export declare const IsInvoicePaidRequest: MessageFns<IsInvoicePaidRequest>;
 export declare const IsInvoicePaidResponse: MessageFns<IsInvoicePaidResponse>;

@@ -122,6 +122,29 @@ export interface GetFamiliesByStudentStatusResponse {
   families: FamilyWithStudentCount[];
 }
 
+export interface SearchInvoiceIdentitiesRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  prefix?: string | undefined;
+}
+
+export interface SearchInvoiceIdentitiesResponse {
+  student_ids: ObjectId[];
+  family_ids: ObjectId[];
+  access_student_ids: ObjectId[];
+  access_family_ids: ObjectId[];
+}
+
+export interface GetInvoiceViewScopeRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface GetInvoiceViewScopeResponse {
+  student_ids: ObjectId[];
+  family_ids: ObjectId[];
+}
+
 export interface CreateFamilyRequest {
   context: RequestContext | undefined;
   name?:
@@ -1633,6 +1656,371 @@ export const GetFamiliesByStudentStatusResponse: MessageFns<GetFamiliesByStudent
   ): GetFamiliesByStudentStatusResponse {
     const message = createBaseGetFamiliesByStudentStatusResponse();
     message.families = object.families?.map((e) => FamilyWithStudentCount.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSearchInvoiceIdentitiesRequest(): SearchInvoiceIdentitiesRequest {
+  return { context: undefined, school_year_id: undefined, prefix: undefined };
+}
+
+export const SearchInvoiceIdentitiesRequest: MessageFns<SearchInvoiceIdentitiesRequest> = {
+  encode(message: SearchInvoiceIdentitiesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.prefix !== undefined) {
+      writer.uint32(26).string(message.prefix);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchInvoiceIdentitiesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchInvoiceIdentitiesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.prefix = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchInvoiceIdentitiesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      prefix: isSet(object.prefix) ? globalThis.String(object.prefix) : undefined,
+    };
+  },
+
+  toJSON(message: SearchInvoiceIdentitiesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.prefix !== undefined) {
+      obj.prefix = message.prefix;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchInvoiceIdentitiesRequest>, I>>(base?: I): SearchInvoiceIdentitiesRequest {
+    return SearchInvoiceIdentitiesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchInvoiceIdentitiesRequest>, I>>(
+    object: I,
+  ): SearchInvoiceIdentitiesRequest {
+    const message = createBaseSearchInvoiceIdentitiesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.prefix = object.prefix ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSearchInvoiceIdentitiesResponse(): SearchInvoiceIdentitiesResponse {
+  return { student_ids: [], family_ids: [], access_student_ids: [], access_family_ids: [] };
+}
+
+export const SearchInvoiceIdentitiesResponse: MessageFns<SearchInvoiceIdentitiesResponse> = {
+  encode(message: SearchInvoiceIdentitiesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.family_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.access_student_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.access_family_ids) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchInvoiceIdentitiesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchInvoiceIdentitiesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.access_student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.access_family_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchInvoiceIdentitiesResponse {
+    return {
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      family_ids: globalThis.Array.isArray(object?.familyIds)
+        ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      access_student_ids: globalThis.Array.isArray(object?.accessStudentIds)
+        ? object.accessStudentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      access_family_ids: globalThis.Array.isArray(object?.accessFamilyIds)
+        ? object.accessFamilyIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SearchInvoiceIdentitiesResponse): unknown {
+    const obj: any = {};
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.family_ids?.length) {
+      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.access_student_ids?.length) {
+      obj.accessStudentIds = message.access_student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.access_family_ids?.length) {
+      obj.accessFamilyIds = message.access_family_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchInvoiceIdentitiesResponse>, I>>(base?: I): SearchInvoiceIdentitiesResponse {
+    return SearchInvoiceIdentitiesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchInvoiceIdentitiesResponse>, I>>(
+    object: I,
+  ): SearchInvoiceIdentitiesResponse {
+    const message = createBaseSearchInvoiceIdentitiesResponse();
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.family_ids = object.family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.access_student_ids = object.access_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.access_family_ids = object.access_family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetInvoiceViewScopeRequest(): GetInvoiceViewScopeRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetInvoiceViewScopeRequest: MessageFns<GetInvoiceViewScopeRequest> = {
+  encode(message: GetInvoiceViewScopeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetInvoiceViewScopeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInvoiceViewScopeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInvoiceViewScopeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetInvoiceViewScopeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetInvoiceViewScopeRequest>, I>>(base?: I): GetInvoiceViewScopeRequest {
+    return GetInvoiceViewScopeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetInvoiceViewScopeRequest>, I>>(object: I): GetInvoiceViewScopeRequest {
+    const message = createBaseGetInvoiceViewScopeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetInvoiceViewScopeResponse(): GetInvoiceViewScopeResponse {
+  return { student_ids: [], family_ids: [] };
+}
+
+export const GetInvoiceViewScopeResponse: MessageFns<GetInvoiceViewScopeResponse> = {
+  encode(message: GetInvoiceViewScopeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.family_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetInvoiceViewScopeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInvoiceViewScopeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInvoiceViewScopeResponse {
+    return {
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      family_ids: globalThis.Array.isArray(object?.familyIds)
+        ? object.familyIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetInvoiceViewScopeResponse): unknown {
+    const obj: any = {};
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.family_ids?.length) {
+      obj.familyIds = message.family_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetInvoiceViewScopeResponse>, I>>(base?: I): GetInvoiceViewScopeResponse {
+    return GetInvoiceViewScopeResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetInvoiceViewScopeResponse>, I>>(object: I): GetInvoiceViewScopeResponse {
+    const message = createBaseGetInvoiceViewScopeResponse();
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.family_ids = object.family_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

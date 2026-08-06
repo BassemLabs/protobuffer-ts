@@ -86,6 +86,25 @@ export interface GetFamiliesByStudentStatusResponse {
     /** Families with their student counts */
     families: FamilyWithStudentCount[];
 }
+export interface SearchInvoiceIdentitiesRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    prefix?: string | undefined;
+}
+export interface SearchInvoiceIdentitiesResponse {
+    student_ids: ObjectId[];
+    family_ids: ObjectId[];
+    access_student_ids: ObjectId[];
+    access_family_ids: ObjectId[];
+}
+export interface GetInvoiceViewScopeRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetInvoiceViewScopeResponse {
+    student_ids: ObjectId[];
+    family_ids: ObjectId[];
+}
 export interface CreateFamilyRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
@@ -146,6 +165,10 @@ export declare const GetAdmittedStudentsForFamilyResponse: MessageFns<GetAdmitte
 export declare const GetFamiliesByStudentStatusRequest: MessageFns<GetFamiliesByStudentStatusRequest>;
 export declare const FamilyWithStudentCount: MessageFns<FamilyWithStudentCount>;
 export declare const GetFamiliesByStudentStatusResponse: MessageFns<GetFamiliesByStudentStatusResponse>;
+export declare const SearchInvoiceIdentitiesRequest: MessageFns<SearchInvoiceIdentitiesRequest>;
+export declare const SearchInvoiceIdentitiesResponse: MessageFns<SearchInvoiceIdentitiesResponse>;
+export declare const GetInvoiceViewScopeRequest: MessageFns<GetInvoiceViewScopeRequest>;
+export declare const GetInvoiceViewScopeResponse: MessageFns<GetInvoiceViewScopeResponse>;
 export declare const CreateFamilyRequest: MessageFns<CreateFamilyRequest>;
 export declare const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest>;
 export declare const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest>;

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/family_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
+exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetInvoiceViewScopeResponse = exports.GetInvoiceViewScopeRequest = exports.SearchInvoiceIdentitiesResponse = exports.SearchInvoiceIdentitiesRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -1295,6 +1295,332 @@ exports.GetFamiliesByStudentStatusResponse = {
     fromPartial(object) {
         const message = createBaseGetFamiliesByStudentStatusResponse();
         message.families = object.families?.map((e) => exports.FamilyWithStudentCount.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSearchInvoiceIdentitiesRequest() {
+    return { context: undefined, school_year_id: undefined, prefix: undefined };
+}
+exports.SearchInvoiceIdentitiesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.prefix !== undefined) {
+            writer.uint32(26).string(message.prefix);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchInvoiceIdentitiesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.prefix = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            prefix: isSet(object.prefix) ? globalThis.String(object.prefix) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.prefix !== undefined) {
+            obj.prefix = message.prefix;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchInvoiceIdentitiesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchInvoiceIdentitiesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.prefix = object.prefix ?? undefined;
+        return message;
+    },
+};
+function createBaseSearchInvoiceIdentitiesResponse() {
+    return { student_ids: [], family_ids: [], access_student_ids: [], access_family_ids: [] };
+}
+exports.SearchInvoiceIdentitiesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.family_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.access_student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.access_family_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchInvoiceIdentitiesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.access_student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.access_family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            family_ids: globalThis.Array.isArray(object?.familyIds)
+                ? object.familyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            access_student_ids: globalThis.Array.isArray(object?.accessStudentIds)
+                ? object.accessStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            access_family_ids: globalThis.Array.isArray(object?.accessFamilyIds)
+                ? object.accessFamilyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.family_ids?.length) {
+            obj.familyIds = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.access_student_ids?.length) {
+            obj.accessStudentIds = message.access_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.access_family_ids?.length) {
+            obj.accessFamilyIds = message.access_family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchInvoiceIdentitiesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchInvoiceIdentitiesResponse();
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.family_ids = object.family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.access_student_ids = object.access_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.access_family_ids = object.access_family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetInvoiceViewScopeRequest() {
+    return { context: undefined, school_year_id: undefined };
+}
+exports.GetInvoiceViewScopeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetInvoiceViewScopeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetInvoiceViewScopeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetInvoiceViewScopeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetInvoiceViewScopeResponse() {
+    return { student_ids: [], family_ids: [] };
+}
+exports.GetInvoiceViewScopeResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.family_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetInvoiceViewScopeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            family_ids: globalThis.Array.isArray(object?.familyIds)
+                ? object.familyIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.family_ids?.length) {
+            obj.familyIds = message.family_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetInvoiceViewScopeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetInvoiceViewScopeResponse();
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.family_ids = object.family_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

@@ -15,7 +15,7 @@ import {
 } from "../user_service/student";
 import { AuditActor } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
-import { RefundTransaction, Transaction } from "./transaction";
+import { RefundTransaction, Transaction, TransactionStaffDetails } from "./transaction";
 import {
   DiscountValueType,
   discountValueTypeFromJSON,
@@ -25,70 +25,176 @@ import {
 
 export const protobufPackage = "payment_service";
 
-export enum InvoiceStatus {
-  Paid = "Paid",
-  NotPaid = "NotPaid",
-  Overdue = "Overdue",
-  Refunded = "Refunded",
-  Processing = "Processing",
+export enum InvoiceLifecycleStatus {
+  InvoiceLifecycleActive = "InvoiceLifecycleActive",
+  InvoiceLifecycleCancelled = "InvoiceLifecycleCancelled",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-export function invoiceStatusFromJSON(object: any): InvoiceStatus {
+export function invoiceLifecycleStatusFromJSON(object: any): InvoiceLifecycleStatus {
   switch (object) {
+    case 0:
+    case "InvoiceLifecycleActive":
+      return InvoiceLifecycleStatus.InvoiceLifecycleActive;
     case 1:
-    case "Paid":
-      return InvoiceStatus.Paid;
-    case 2:
-    case "NotPaid":
-      return InvoiceStatus.NotPaid;
-    case 3:
-    case "Overdue":
-      return InvoiceStatus.Overdue;
-    case 4:
-    case "Refunded":
-      return InvoiceStatus.Refunded;
-    case 5:
-    case "Processing":
-      return InvoiceStatus.Processing;
+    case "InvoiceLifecycleCancelled":
+      return InvoiceLifecycleStatus.InvoiceLifecycleCancelled;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return InvoiceStatus.UNRECOGNIZED;
+      return InvoiceLifecycleStatus.UNRECOGNIZED;
   }
 }
 
-export function invoiceStatusToJSON(object: InvoiceStatus): string {
+export function invoiceLifecycleStatusToJSON(object: InvoiceLifecycleStatus): string {
   switch (object) {
-    case InvoiceStatus.Paid:
-      return "Paid";
-    case InvoiceStatus.NotPaid:
-      return "NotPaid";
-    case InvoiceStatus.Overdue:
-      return "Overdue";
-    case InvoiceStatus.Refunded:
-      return "Refunded";
-    case InvoiceStatus.Processing:
-      return "Processing";
-    case InvoiceStatus.UNRECOGNIZED:
+    case InvoiceLifecycleStatus.InvoiceLifecycleActive:
+      return "InvoiceLifecycleActive";
+    case InvoiceLifecycleStatus.InvoiceLifecycleCancelled:
+      return "InvoiceLifecycleCancelled";
+    case InvoiceLifecycleStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
-export function invoiceStatusToNumber(object: InvoiceStatus): number {
+export function invoiceLifecycleStatusToNumber(object: InvoiceLifecycleStatus): number {
   switch (object) {
-    case InvoiceStatus.Paid:
+    case InvoiceLifecycleStatus.InvoiceLifecycleActive:
+      return 0;
+    case InvoiceLifecycleStatus.InvoiceLifecycleCancelled:
       return 1;
-    case InvoiceStatus.NotPaid:
+    case InvoiceLifecycleStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum InvoicePaymentStatus {
+  InvoicePaymentUnpaid = "InvoicePaymentUnpaid",
+  InvoicePaymentPartiallyPaid = "InvoicePaymentPartiallyPaid",
+  InvoicePaymentPaid = "InvoicePaymentPaid",
+  InvoicePaymentProcessing = "InvoicePaymentProcessing",
+  InvoicePaymentRefunded = "InvoicePaymentRefunded",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function invoicePaymentStatusFromJSON(object: any): InvoicePaymentStatus {
+  switch (object) {
+    case 0:
+    case "InvoicePaymentUnpaid":
+      return InvoicePaymentStatus.InvoicePaymentUnpaid;
+    case 1:
+    case "InvoicePaymentPartiallyPaid":
+      return InvoicePaymentStatus.InvoicePaymentPartiallyPaid;
+    case 2:
+    case "InvoicePaymentPaid":
+      return InvoicePaymentStatus.InvoicePaymentPaid;
+    case 3:
+    case "InvoicePaymentProcessing":
+      return InvoicePaymentStatus.InvoicePaymentProcessing;
+    case 4:
+    case "InvoicePaymentRefunded":
+      return InvoicePaymentStatus.InvoicePaymentRefunded;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return InvoicePaymentStatus.UNRECOGNIZED;
+  }
+}
+
+export function invoicePaymentStatusToJSON(object: InvoicePaymentStatus): string {
+  switch (object) {
+    case InvoicePaymentStatus.InvoicePaymentUnpaid:
+      return "InvoicePaymentUnpaid";
+    case InvoicePaymentStatus.InvoicePaymentPartiallyPaid:
+      return "InvoicePaymentPartiallyPaid";
+    case InvoicePaymentStatus.InvoicePaymentPaid:
+      return "InvoicePaymentPaid";
+    case InvoicePaymentStatus.InvoicePaymentProcessing:
+      return "InvoicePaymentProcessing";
+    case InvoicePaymentStatus.InvoicePaymentRefunded:
+      return "InvoicePaymentRefunded";
+    case InvoicePaymentStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function invoicePaymentStatusToNumber(object: InvoicePaymentStatus): number {
+  switch (object) {
+    case InvoicePaymentStatus.InvoicePaymentUnpaid:
+      return 0;
+    case InvoicePaymentStatus.InvoicePaymentPartiallyPaid:
+      return 1;
+    case InvoicePaymentStatus.InvoicePaymentPaid:
       return 2;
-    case InvoiceStatus.Overdue:
+    case InvoicePaymentStatus.InvoicePaymentProcessing:
       return 3;
-    case InvoiceStatus.Refunded:
+    case InvoicePaymentStatus.InvoicePaymentRefunded:
       return 4;
-    case InvoiceStatus.Processing:
-      return 5;
-    case InvoiceStatus.UNRECOGNIZED:
+    case InvoicePaymentStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum InvoiceDueStatus {
+  InvoiceDueNoDueDate = "InvoiceDueNoDueDate",
+  InvoiceDueUpcoming = "InvoiceDueUpcoming",
+  InvoiceDueToday = "InvoiceDueToday",
+  InvoiceDueOverdue = "InvoiceDueOverdue",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function invoiceDueStatusFromJSON(object: any): InvoiceDueStatus {
+  switch (object) {
+    case 0:
+    case "InvoiceDueNoDueDate":
+      return InvoiceDueStatus.InvoiceDueNoDueDate;
+    case 1:
+    case "InvoiceDueUpcoming":
+      return InvoiceDueStatus.InvoiceDueUpcoming;
+    case 2:
+    case "InvoiceDueToday":
+      return InvoiceDueStatus.InvoiceDueToday;
+    case 3:
+    case "InvoiceDueOverdue":
+      return InvoiceDueStatus.InvoiceDueOverdue;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return InvoiceDueStatus.UNRECOGNIZED;
+  }
+}
+
+export function invoiceDueStatusToJSON(object: InvoiceDueStatus): string {
+  switch (object) {
+    case InvoiceDueStatus.InvoiceDueNoDueDate:
+      return "InvoiceDueNoDueDate";
+    case InvoiceDueStatus.InvoiceDueUpcoming:
+      return "InvoiceDueUpcoming";
+    case InvoiceDueStatus.InvoiceDueToday:
+      return "InvoiceDueToday";
+    case InvoiceDueStatus.InvoiceDueOverdue:
+      return "InvoiceDueOverdue";
+    case InvoiceDueStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function invoiceDueStatusToNumber(object: InvoiceDueStatus): number {
+  switch (object) {
+    case InvoiceDueStatus.InvoiceDueNoDueDate:
+      return 0;
+    case InvoiceDueStatus.InvoiceDueUpcoming:
+      return 1;
+    case InvoiceDueStatus.InvoiceDueToday:
+      return 2;
+    case InvoiceDueStatus.InvoiceDueOverdue:
+      return 3;
+    case InvoiceDueStatus.UNRECOGNIZED:
     default:
       return -1;
   }
@@ -318,6 +424,8 @@ export interface Invoice {
   /** Timestamp for the next scheduled retry attempt (used for scheduling job queries) */
   auto_payment_next_retry_at?: Date | undefined;
   tuition_discount_audit: TuitionDiscountAuditEntry[];
+  created_at: Date | undefined;
+  lifecycle_status?: InvoiceLifecycleStatus | undefined;
 }
 
 export interface InvoiceResponse {
@@ -329,7 +437,6 @@ export interface InvoiceResponse {
     | undefined;
   /** Total amount paid towards the invoice, excludes refunds, processing fees, (includes bassemlabs fees) */
   gross_amount_paid?: number | undefined;
-  status?: InvoiceStatus | undefined;
   bill_to_name?: string | undefined;
   refund_transactions: RefundTransaction[];
   /** Total amount refunded */
@@ -338,19 +445,11 @@ export interface InvoiceResponse {
     | undefined;
   /** total_amount_paid - total_amount_refunded */
   net_amount_paid?: number | undefined;
-}
-
-export interface InvoiceFilter {
-  per_page?: number | undefined;
-  page?: number | undefined;
-  title?: string | undefined;
-  status?: InvoiceStatus | undefined;
-  archived?: boolean | undefined;
-  user?: ObjectId | undefined;
-  family?: ObjectId | undefined;
-  school_year?: ObjectId | undefined;
-  due_before?: Date | undefined;
-  include_tuition?: boolean | undefined;
+  remaining_amount?: number | undefined;
+  overdue_amount?: number | undefined;
+  payment_status?: InvoicePaymentStatus | undefined;
+  due_status?: InvoiceDueStatus | undefined;
+  transaction_staff_details: TransactionStaffDetails[];
 }
 
 export interface AutoPaymentAttempt {
@@ -912,6 +1011,8 @@ function createBaseInvoice(): Invoice {
     auto_payment_retry_count: undefined,
     auto_payment_next_retry_at: undefined,
     tuition_discount_audit: [],
+    created_at: undefined,
+    lifecycle_status: undefined,
   };
 }
 
@@ -985,6 +1086,12 @@ export const Invoice: MessageFns<Invoice> = {
     }
     for (const v of message.tuition_discount_audit) {
       TuitionDiscountAuditEntry.encode(v!, writer.uint32(186).fork()).join();
+    }
+    if (message.created_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.created_at), writer.uint32(194).fork()).join();
+    }
+    if (message.lifecycle_status !== undefined) {
+      writer.uint32(200).int32(invoiceLifecycleStatusToNumber(message.lifecycle_status));
     }
     return writer;
   },
@@ -1157,6 +1264,20 @@ export const Invoice: MessageFns<Invoice> = {
 
           message.tuition_discount_audit.push(TuitionDiscountAuditEntry.decode(reader, reader.uint32()));
           continue;
+        case 24:
+          if (tag !== 194) {
+            break;
+          }
+
+          message.created_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 25:
+          if (tag !== 200) {
+            break;
+          }
+
+          message.lifecycle_status = invoiceLifecycleStatusFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1203,6 +1324,10 @@ export const Invoice: MessageFns<Invoice> = {
       tuition_discount_audit: globalThis.Array.isArray(object?.tuitionDiscountAudit)
         ? object.tuitionDiscountAudit.map((e: any) => TuitionDiscountAuditEntry.fromJSON(e))
         : [],
+      created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      lifecycle_status: isSet(object.lifecycleStatus)
+        ? invoiceLifecycleStatusFromJSON(object.lifecycleStatus)
+        : undefined,
     };
   },
 
@@ -1279,6 +1404,12 @@ export const Invoice: MessageFns<Invoice> = {
     if (message.tuition_discount_audit?.length) {
       obj.tuitionDiscountAudit = message.tuition_discount_audit.map((e) => TuitionDiscountAuditEntry.toJSON(e));
     }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at.toISOString();
+    }
+    if (message.lifecycle_status !== undefined) {
+      obj.lifecycleStatus = invoiceLifecycleStatusToJSON(message.lifecycle_status);
+    }
     return obj;
   },
 
@@ -1321,6 +1452,8 @@ export const Invoice: MessageFns<Invoice> = {
     message.auto_payment_next_retry_at = object.auto_payment_next_retry_at ?? undefined;
     message.tuition_discount_audit =
       object.tuition_discount_audit?.map((e) => TuitionDiscountAuditEntry.fromPartial(e)) || [];
+    message.created_at = object.created_at ?? undefined;
+    message.lifecycle_status = object.lifecycle_status ?? undefined;
     return message;
   },
 };
@@ -1331,11 +1464,15 @@ function createBaseInvoiceResponse(): InvoiceResponse {
     transactions: [],
     total_amount: undefined,
     gross_amount_paid: undefined,
-    status: undefined,
     bill_to_name: undefined,
     refund_transactions: [],
     total_amount_refunded: undefined,
     net_amount_paid: undefined,
+    remaining_amount: undefined,
+    overdue_amount: undefined,
+    payment_status: undefined,
+    due_status: undefined,
+    transaction_staff_details: [],
   };
 }
 
@@ -1353,9 +1490,6 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
     if (message.gross_amount_paid !== undefined) {
       writer.uint32(33).double(message.gross_amount_paid);
     }
-    if (message.status !== undefined) {
-      writer.uint32(40).int32(invoiceStatusToNumber(message.status));
-    }
     if (message.bill_to_name !== undefined) {
       writer.uint32(50).string(message.bill_to_name);
     }
@@ -1367,6 +1501,21 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
     }
     if (message.net_amount_paid !== undefined) {
       writer.uint32(73).double(message.net_amount_paid);
+    }
+    if (message.remaining_amount !== undefined) {
+      writer.uint32(81).double(message.remaining_amount);
+    }
+    if (message.overdue_amount !== undefined) {
+      writer.uint32(89).double(message.overdue_amount);
+    }
+    if (message.payment_status !== undefined) {
+      writer.uint32(96).int32(invoicePaymentStatusToNumber(message.payment_status));
+    }
+    if (message.due_status !== undefined) {
+      writer.uint32(104).int32(invoiceDueStatusToNumber(message.due_status));
+    }
+    for (const v of message.transaction_staff_details) {
+      TransactionStaffDetails.encode(v!, writer.uint32(114).fork()).join();
     }
     return writer;
   },
@@ -1406,13 +1555,6 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
 
           message.gross_amount_paid = reader.double();
           continue;
-        case 5:
-          if (tag !== 40) {
-            break;
-          }
-
-          message.status = invoiceStatusFromJSON(reader.int32());
-          continue;
         case 6:
           if (tag !== 50) {
             break;
@@ -1441,6 +1583,41 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
 
           message.net_amount_paid = reader.double();
           continue;
+        case 10:
+          if (tag !== 81) {
+            break;
+          }
+
+          message.remaining_amount = reader.double();
+          continue;
+        case 11:
+          if (tag !== 89) {
+            break;
+          }
+
+          message.overdue_amount = reader.double();
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.payment_status = invoicePaymentStatusFromJSON(reader.int32());
+          continue;
+        case 13:
+          if (tag !== 104) {
+            break;
+          }
+
+          message.due_status = invoiceDueStatusFromJSON(reader.int32());
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.transaction_staff_details.push(TransactionStaffDetails.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1458,7 +1635,6 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
         : [],
       total_amount: isSet(object.totalAmount) ? globalThis.Number(object.totalAmount) : undefined,
       gross_amount_paid: isSet(object.grossAmountPaid) ? globalThis.Number(object.grossAmountPaid) : undefined,
-      status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : undefined,
       bill_to_name: isSet(object.billToName) ? globalThis.String(object.billToName) : undefined,
       refund_transactions: globalThis.Array.isArray(object?.refundTransactions)
         ? object.refundTransactions.map((e: any) => RefundTransaction.fromJSON(e))
@@ -1467,6 +1643,13 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
         ? globalThis.Number(object.totalAmountRefunded)
         : undefined,
       net_amount_paid: isSet(object.netAmountPaid) ? globalThis.Number(object.netAmountPaid) : undefined,
+      remaining_amount: isSet(object.remainingAmount) ? globalThis.Number(object.remainingAmount) : undefined,
+      overdue_amount: isSet(object.overdueAmount) ? globalThis.Number(object.overdueAmount) : undefined,
+      payment_status: isSet(object.paymentStatus) ? invoicePaymentStatusFromJSON(object.paymentStatus) : undefined,
+      due_status: isSet(object.dueStatus) ? invoiceDueStatusFromJSON(object.dueStatus) : undefined,
+      transaction_staff_details: globalThis.Array.isArray(object?.transactionStaffDetails)
+        ? object.transactionStaffDetails.map((e: any) => TransactionStaffDetails.fromJSON(e))
+        : [],
     };
   },
 
@@ -1484,9 +1667,6 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
     if (message.gross_amount_paid !== undefined) {
       obj.grossAmountPaid = message.gross_amount_paid;
     }
-    if (message.status !== undefined) {
-      obj.status = invoiceStatusToJSON(message.status);
-    }
     if (message.bill_to_name !== undefined) {
       obj.billToName = message.bill_to_name;
     }
@@ -1498,6 +1678,21 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
     }
     if (message.net_amount_paid !== undefined) {
       obj.netAmountPaid = message.net_amount_paid;
+    }
+    if (message.remaining_amount !== undefined) {
+      obj.remainingAmount = message.remaining_amount;
+    }
+    if (message.overdue_amount !== undefined) {
+      obj.overdueAmount = message.overdue_amount;
+    }
+    if (message.payment_status !== undefined) {
+      obj.paymentStatus = invoicePaymentStatusToJSON(message.payment_status);
+    }
+    if (message.due_status !== undefined) {
+      obj.dueStatus = invoiceDueStatusToJSON(message.due_status);
+    }
+    if (message.transaction_staff_details?.length) {
+      obj.transactionStaffDetails = message.transaction_staff_details.map((e) => TransactionStaffDetails.toJSON(e));
     }
     return obj;
   },
@@ -1513,220 +1708,16 @@ export const InvoiceResponse: MessageFns<InvoiceResponse> = {
     message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
     message.total_amount = object.total_amount ?? undefined;
     message.gross_amount_paid = object.gross_amount_paid ?? undefined;
-    message.status = object.status ?? undefined;
     message.bill_to_name = object.bill_to_name ?? undefined;
     message.refund_transactions = object.refund_transactions?.map((e) => RefundTransaction.fromPartial(e)) || [];
     message.total_amount_refunded = object.total_amount_refunded ?? undefined;
     message.net_amount_paid = object.net_amount_paid ?? undefined;
-    return message;
-  },
-};
-
-function createBaseInvoiceFilter(): InvoiceFilter {
-  return {
-    per_page: undefined,
-    page: undefined,
-    title: undefined,
-    status: undefined,
-    archived: undefined,
-    user: undefined,
-    family: undefined,
-    school_year: undefined,
-    due_before: undefined,
-    include_tuition: undefined,
-  };
-}
-
-export const InvoiceFilter: MessageFns<InvoiceFilter> = {
-  encode(message: InvoiceFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.per_page !== undefined) {
-      writer.uint32(8).int32(message.per_page);
-    }
-    if (message.page !== undefined) {
-      writer.uint32(16).int32(message.page);
-    }
-    if (message.title !== undefined) {
-      writer.uint32(26).string(message.title);
-    }
-    if (message.status !== undefined) {
-      writer.uint32(32).int32(invoiceStatusToNumber(message.status));
-    }
-    if (message.archived !== undefined) {
-      writer.uint32(40).bool(message.archived);
-    }
-    if (message.user !== undefined) {
-      ObjectId.encode(message.user, writer.uint32(50).fork()).join();
-    }
-    if (message.family !== undefined) {
-      ObjectId.encode(message.family, writer.uint32(58).fork()).join();
-    }
-    if (message.school_year !== undefined) {
-      ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
-    }
-    if (message.due_before !== undefined) {
-      Timestamp.encode(toTimestamp(message.due_before), writer.uint32(74).fork()).join();
-    }
-    if (message.include_tuition !== undefined) {
-      writer.uint32(80).bool(message.include_tuition);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): InvoiceFilter {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseInvoiceFilter();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.per_page = reader.int32();
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.page = reader.int32();
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.title = reader.string();
-          continue;
-        case 4:
-          if (tag !== 32) {
-            break;
-          }
-
-          message.status = invoiceStatusFromJSON(reader.int32());
-          continue;
-        case 5:
-          if (tag !== 40) {
-            break;
-          }
-
-          message.archived = reader.bool();
-          continue;
-        case 6:
-          if (tag !== 50) {
-            break;
-          }
-
-          message.user = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 7:
-          if (tag !== 58) {
-            break;
-          }
-
-          message.family = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.school_year = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.due_before = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-        case 10:
-          if (tag !== 80) {
-            break;
-          }
-
-          message.include_tuition = reader.bool();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): InvoiceFilter {
-    return {
-      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
-      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-      status: isSet(object.status) ? invoiceStatusFromJSON(object.status) : undefined,
-      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
-      user: isSet(object.user) ? ObjectId.fromJSON(object.user) : undefined,
-      family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
-      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
-      due_before: isSet(object.dueBefore) ? fromJsonTimestamp(object.dueBefore) : undefined,
-      include_tuition: isSet(object.includeTuition) ? globalThis.Boolean(object.includeTuition) : undefined,
-    };
-  },
-
-  toJSON(message: InvoiceFilter): unknown {
-    const obj: any = {};
-    if (message.per_page !== undefined) {
-      obj.perPage = Math.round(message.per_page);
-    }
-    if (message.page !== undefined) {
-      obj.page = Math.round(message.page);
-    }
-    if (message.title !== undefined) {
-      obj.title = message.title;
-    }
-    if (message.status !== undefined) {
-      obj.status = invoiceStatusToJSON(message.status);
-    }
-    if (message.archived !== undefined) {
-      obj.archived = message.archived;
-    }
-    if (message.user !== undefined) {
-      obj.user = ObjectId.toJSON(message.user);
-    }
-    if (message.family !== undefined) {
-      obj.family = ObjectId.toJSON(message.family);
-    }
-    if (message.school_year !== undefined) {
-      obj.schoolYear = ObjectId.toJSON(message.school_year);
-    }
-    if (message.due_before !== undefined) {
-      obj.dueBefore = message.due_before.toISOString();
-    }
-    if (message.include_tuition !== undefined) {
-      obj.includeTuition = message.include_tuition;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<InvoiceFilter>, I>>(base?: I): InvoiceFilter {
-    return InvoiceFilter.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<InvoiceFilter>, I>>(object: I): InvoiceFilter {
-    const message = createBaseInvoiceFilter();
-    message.per_page = object.per_page ?? undefined;
-    message.page = object.page ?? undefined;
-    message.title = object.title ?? undefined;
-    message.status = object.status ?? undefined;
-    message.archived = object.archived ?? undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? ObjectId.fromPartial(object.user) : undefined;
-    message.family = (object.family !== undefined && object.family !== null)
-      ? ObjectId.fromPartial(object.family)
-      : undefined;
-    message.school_year = (object.school_year !== undefined && object.school_year !== null)
-      ? ObjectId.fromPartial(object.school_year)
-      : undefined;
-    message.due_before = object.due_before ?? undefined;
-    message.include_tuition = object.include_tuition ?? undefined;
+    message.remaining_amount = object.remaining_amount ?? undefined;
+    message.overdue_amount = object.overdue_amount ?? undefined;
+    message.payment_status = object.payment_status ?? undefined;
+    message.due_status = object.due_status ?? undefined;
+    message.transaction_staff_details =
+      object.transaction_staff_details?.map((e) => TransactionStaffDetails.fromPartial(e)) || [];
     return message;
   },
 };

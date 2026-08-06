@@ -8,7 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { Currency, currencyFromJSON, currencyToJSON, currencyToNumber } from "../organization_service/organization";
-import { AuditActor } from "../utils/audit_actor";
+import { AuditPrincipal } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "payment_service_transaction";
@@ -234,8 +234,16 @@ export interface Transaction {
   /** this is for the percentage */
   invoice_surcharge?: number | undefined;
   other_payment_method?: string | undefined;
+}
+
+/**
+ * Staff-only metadata is separated so parent-facing transaction history never
+ * exposes internal notes or the recording actor.
+ */
+export interface TransactionStaffDetails {
+  transaction_id: ObjectId | undefined;
+  recorded_by: AuditPrincipal | undefined;
   admin_note?: string | undefined;
-  created_by?: AuditActor | undefined;
 }
 
 export interface RefundTransaction {
@@ -287,8 +295,6 @@ function createBaseTransaction(): Transaction {
     bassem_labs_fee: undefined,
     invoice_surcharge: undefined,
     other_payment_method: undefined,
-    admin_note: undefined,
-    created_by: undefined,
   };
 }
 
@@ -335,12 +341,6 @@ export const Transaction: MessageFns<Transaction> = {
     }
     if (message.other_payment_method !== undefined) {
       writer.uint32(114).string(message.other_payment_method);
-    }
-    if (message.admin_note !== undefined) {
-      writer.uint32(122).string(message.admin_note);
-    }
-    if (message.created_by !== undefined) {
-      AuditActor.encode(message.created_by, writer.uint32(130).fork()).join();
     }
     return writer;
   },
@@ -450,20 +450,6 @@ export const Transaction: MessageFns<Transaction> = {
 
           message.other_payment_method = reader.string();
           continue;
-        case 15:
-          if (tag !== 122) {
-            break;
-          }
-
-          message.admin_note = reader.string();
-          continue;
-        case 16:
-          if (tag !== 130) {
-            break;
-          }
-
-          message.created_by = AuditActor.decode(reader, reader.uint32());
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -493,8 +479,6 @@ export const Transaction: MessageFns<Transaction> = {
       bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : undefined,
       invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : undefined,
       other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
-      admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
-      created_by: isSet(object.createdBy) ? AuditActor.fromJSON(object.createdBy) : undefined,
     };
   },
 
@@ -542,12 +526,6 @@ export const Transaction: MessageFns<Transaction> = {
     if (message.other_payment_method !== undefined) {
       obj.otherPaymentMethod = message.other_payment_method;
     }
-    if (message.admin_note !== undefined) {
-      obj.adminNote = message.admin_note;
-    }
-    if (message.created_by !== undefined) {
-      obj.createdBy = AuditActor.toJSON(message.created_by);
-    }
     return obj;
   },
 
@@ -574,10 +552,99 @@ export const Transaction: MessageFns<Transaction> = {
     message.bassem_labs_fee = object.bassem_labs_fee ?? undefined;
     message.invoice_surcharge = object.invoice_surcharge ?? undefined;
     message.other_payment_method = object.other_payment_method ?? undefined;
-    message.admin_note = object.admin_note ?? undefined;
-    message.created_by = (object.created_by !== undefined && object.created_by !== null)
-      ? AuditActor.fromPartial(object.created_by)
+    return message;
+  },
+};
+
+function createBaseTransactionStaffDetails(): TransactionStaffDetails {
+  return { transaction_id: undefined, recorded_by: undefined, admin_note: undefined };
+}
+
+export const TransactionStaffDetails: MessageFns<TransactionStaffDetails> = {
+  encode(message: TransactionStaffDetails, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.transaction_id !== undefined) {
+      ObjectId.encode(message.transaction_id, writer.uint32(10).fork()).join();
+    }
+    if (message.recorded_by !== undefined) {
+      AuditPrincipal.encode(message.recorded_by, writer.uint32(18).fork()).join();
+    }
+    if (message.admin_note !== undefined) {
+      writer.uint32(26).string(message.admin_note);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TransactionStaffDetails {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransactionStaffDetails();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.transaction_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.recorded_by = AuditPrincipal.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.admin_note = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransactionStaffDetails {
+    return {
+      transaction_id: isSet(object.transactionId) ? ObjectId.fromJSON(object.transactionId) : undefined,
+      recorded_by: isSet(object.recordedBy) ? AuditPrincipal.fromJSON(object.recordedBy) : undefined,
+      admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
+    };
+  },
+
+  toJSON(message: TransactionStaffDetails): unknown {
+    const obj: any = {};
+    if (message.transaction_id !== undefined) {
+      obj.transactionId = ObjectId.toJSON(message.transaction_id);
+    }
+    if (message.recorded_by !== undefined) {
+      obj.recordedBy = AuditPrincipal.toJSON(message.recorded_by);
+    }
+    if (message.admin_note !== undefined) {
+      obj.adminNote = message.admin_note;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionStaffDetails>, I>>(base?: I): TransactionStaffDetails {
+    return TransactionStaffDetails.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TransactionStaffDetails>, I>>(object: I): TransactionStaffDetails {
+    const message = createBaseTransactionStaffDetails();
+    message.transaction_id = (object.transaction_id !== undefined && object.transaction_id !== null)
+      ? ObjectId.fromPartial(object.transaction_id)
       : undefined;
+    message.recorded_by = (object.recorded_by !== undefined && object.recorded_by !== null)
+      ? AuditPrincipal.fromPartial(object.recorded_by)
+      : undefined;
+    message.admin_note = object.admin_note ?? undefined;
     return message;
   },
 };

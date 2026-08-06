@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/transaction.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RefundTransaction = exports.Transaction = exports.RefundTransactionStatus = exports.PaymentType = exports.TransactionStatus = exports.protobufPackage = void 0;
+exports.RefundTransaction = exports.TransactionStaffDetails = exports.Transaction = exports.RefundTransactionStatus = exports.PaymentType = exports.TransactionStatus = exports.protobufPackage = void 0;
 exports.transactionStatusFromJSON = transactionStatusFromJSON;
 exports.transactionStatusToJSON = transactionStatusToJSON;
 exports.transactionStatusToNumber = transactionStatusToNumber;
@@ -229,8 +229,6 @@ function createBaseTransaction() {
         bassem_labs_fee: undefined,
         invoice_surcharge: undefined,
         other_payment_method: undefined,
-        admin_note: undefined,
-        created_by: undefined,
     };
 }
 exports.Transaction = {
@@ -276,12 +274,6 @@ exports.Transaction = {
         }
         if (message.other_payment_method !== undefined) {
             writer.uint32(114).string(message.other_payment_method);
-        }
-        if (message.admin_note !== undefined) {
-            writer.uint32(122).string(message.admin_note);
-        }
-        if (message.created_by !== undefined) {
-            audit_actor_1.AuditActor.encode(message.created_by, writer.uint32(130).fork()).join();
         }
         return writer;
     },
@@ -376,18 +368,6 @@ exports.Transaction = {
                     }
                     message.other_payment_method = reader.string();
                     continue;
-                case 15:
-                    if (tag !== 122) {
-                        break;
-                    }
-                    message.admin_note = reader.string();
-                    continue;
-                case 16:
-                    if (tag !== 130) {
-                        break;
-                    }
-                    message.created_by = audit_actor_1.AuditActor.decode(reader, reader.uint32());
-                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -416,8 +396,6 @@ exports.Transaction = {
             bassem_labs_fee: isSet(object.bassemLabsFee) ? globalThis.Number(object.bassemLabsFee) : undefined,
             invoice_surcharge: isSet(object.invoiceSurcharge) ? globalThis.Number(object.invoiceSurcharge) : undefined,
             other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
-            admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
-            created_by: isSet(object.createdBy) ? audit_actor_1.AuditActor.fromJSON(object.createdBy) : undefined,
         };
     },
     toJSON(message) {
@@ -464,12 +442,6 @@ exports.Transaction = {
         if (message.other_payment_method !== undefined) {
             obj.otherPaymentMethod = message.other_payment_method;
         }
-        if (message.admin_note !== undefined) {
-            obj.adminNote = message.admin_note;
-        }
-        if (message.created_by !== undefined) {
-            obj.createdBy = audit_actor_1.AuditActor.toJSON(message.created_by);
-        }
         return obj;
     },
     create(base) {
@@ -495,10 +467,90 @@ exports.Transaction = {
         message.bassem_labs_fee = object.bassem_labs_fee ?? undefined;
         message.invoice_surcharge = object.invoice_surcharge ?? undefined;
         message.other_payment_method = object.other_payment_method ?? undefined;
-        message.admin_note = object.admin_note ?? undefined;
-        message.created_by = (object.created_by !== undefined && object.created_by !== null)
-            ? audit_actor_1.AuditActor.fromPartial(object.created_by)
+        return message;
+    },
+};
+function createBaseTransactionStaffDetails() {
+    return { transaction_id: undefined, recorded_by: undefined, admin_note: undefined };
+}
+exports.TransactionStaffDetails = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.transaction_id !== undefined) {
+            object_id_1.ObjectId.encode(message.transaction_id, writer.uint32(10).fork()).join();
+        }
+        if (message.recorded_by !== undefined) {
+            audit_actor_1.AuditPrincipal.encode(message.recorded_by, writer.uint32(18).fork()).join();
+        }
+        if (message.admin_note !== undefined) {
+            writer.uint32(26).string(message.admin_note);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTransactionStaffDetails();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.transaction_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.recorded_by = audit_actor_1.AuditPrincipal.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.admin_note = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            transaction_id: isSet(object.transactionId) ? object_id_1.ObjectId.fromJSON(object.transactionId) : undefined,
+            recorded_by: isSet(object.recordedBy) ? audit_actor_1.AuditPrincipal.fromJSON(object.recordedBy) : undefined,
+            admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.transaction_id !== undefined) {
+            obj.transactionId = object_id_1.ObjectId.toJSON(message.transaction_id);
+        }
+        if (message.recorded_by !== undefined) {
+            obj.recordedBy = audit_actor_1.AuditPrincipal.toJSON(message.recorded_by);
+        }
+        if (message.admin_note !== undefined) {
+            obj.adminNote = message.admin_note;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TransactionStaffDetails.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTransactionStaffDetails();
+        message.transaction_id = (object.transaction_id !== undefined && object.transaction_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.transaction_id)
             : undefined;
+        message.recorded_by = (object.recorded_by !== undefined && object.recorded_by !== null)
+            ? audit_actor_1.AuditPrincipal.fromPartial(object.recorded_by)
+            : undefined;
+        message.admin_note = object.admin_note ?? undefined;
         return message;
     },
 };

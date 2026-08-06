@@ -8,7 +8,14 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { PaymentType, paymentTypeFromJSON, paymentTypeToJSON, paymentTypeToNumber, Transaction } from "./transaction";
+import {
+  PaymentType,
+  paymentTypeFromJSON,
+  paymentTypeToJSON,
+  paymentTypeToNumber,
+  Transaction,
+  TransactionStaffDetails,
+} from "./transaction";
 
 export const protobufPackage = "payment_service_transaction";
 
@@ -25,6 +32,7 @@ export interface GetTransactionsRequest {
 
 export interface GetTransactionsResponse {
   transactions: Transaction[];
+  staff_details: TransactionStaffDetails[];
 }
 
 export interface CreateManualTransactionRequest {
@@ -212,13 +220,16 @@ export const GetTransactionsRequest: MessageFns<GetTransactionsRequest> = {
 };
 
 function createBaseGetTransactionsResponse(): GetTransactionsResponse {
-  return { transactions: [] };
+  return { transactions: [], staff_details: [] };
 }
 
 export const GetTransactionsResponse: MessageFns<GetTransactionsResponse> = {
   encode(message: GetTransactionsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.transactions) {
       Transaction.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.staff_details) {
+      TransactionStaffDetails.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -237,6 +248,13 @@ export const GetTransactionsResponse: MessageFns<GetTransactionsResponse> = {
 
           message.transactions.push(Transaction.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.staff_details.push(TransactionStaffDetails.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -251,6 +269,9 @@ export const GetTransactionsResponse: MessageFns<GetTransactionsResponse> = {
       transactions: globalThis.Array.isArray(object?.transactions)
         ? object.transactions.map((e: any) => Transaction.fromJSON(e))
         : [],
+      staff_details: globalThis.Array.isArray(object?.staffDetails)
+        ? object.staffDetails.map((e: any) => TransactionStaffDetails.fromJSON(e))
+        : [],
     };
   },
 
@@ -258,6 +279,9 @@ export const GetTransactionsResponse: MessageFns<GetTransactionsResponse> = {
     const obj: any = {};
     if (message.transactions?.length) {
       obj.transactions = message.transactions.map((e) => Transaction.toJSON(e));
+    }
+    if (message.staff_details?.length) {
+      obj.staffDetails = message.staff_details.map((e) => TransactionStaffDetails.toJSON(e));
     }
     return obj;
   },
@@ -268,6 +292,7 @@ export const GetTransactionsResponse: MessageFns<GetTransactionsResponse> = {
   fromPartial<I extends Exact<DeepPartial<GetTransactionsResponse>, I>>(object: I): GetTransactionsResponse {
     const message = createBaseGetTransactionsResponse();
     message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
+    message.staff_details = object.staff_details?.map((e) => TransactionStaffDetails.fromPartial(e)) || [];
     return message;
   },
 };

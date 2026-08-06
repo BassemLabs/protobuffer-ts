@@ -122,6 +122,16 @@ export interface GetStudentCoursesRequest {
   school_year_id?: ObjectId | undefined;
 }
 
+export interface GetTeacherStudentScopeRequest {
+  context: RequestContext | undefined;
+  teacher_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface GetTeacherStudentScopeResponse {
+  student_ids: ObjectId[];
+}
+
 export interface GetStudentProfileClassScopeRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
@@ -1012,6 +1022,166 @@ export const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest> = {
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeacherStudentScopeRequest(): GetTeacherStudentScopeRequest {
+  return { context: undefined, teacher_id: undefined, school_year_id: undefined };
+}
+
+export const GetTeacherStudentScopeRequest: MessageFns<GetTeacherStudentScopeRequest> = {
+  encode(message: GetTeacherStudentScopeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherStudentScopeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherStudentScopeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherStudentScopeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetTeacherStudentScopeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherStudentScopeRequest>, I>>(base?: I): GetTeacherStudentScopeRequest {
+    return GetTeacherStudentScopeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherStudentScopeRequest>, I>>(
+    object: I,
+  ): GetTeacherStudentScopeRequest {
+    const message = createBaseGetTeacherStudentScopeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeacherStudentScopeResponse(): GetTeacherStudentScopeResponse {
+  return { student_ids: [] };
+}
+
+export const GetTeacherStudentScopeResponse: MessageFns<GetTeacherStudentScopeResponse> = {
+  encode(message: GetTeacherStudentScopeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.student_ids) {
+      ObjectId.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherStudentScopeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherStudentScopeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherStudentScopeResponse {
+    return {
+      student_ids: globalThis.Array.isArray(object?.studentIds)
+        ? object.studentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetTeacherStudentScopeResponse): unknown {
+    const obj: any = {};
+    if (message.student_ids?.length) {
+      obj.studentIds = message.student_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherStudentScopeResponse>, I>>(base?: I): GetTeacherStudentScopeResponse {
+    return GetTeacherStudentScopeResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherStudentScopeResponse>, I>>(
+    object: I,
+  ): GetTeacherStudentScopeResponse {
+    const message = createBaseGetTeacherStudentScopeResponse();
+    message.student_ids = object.student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

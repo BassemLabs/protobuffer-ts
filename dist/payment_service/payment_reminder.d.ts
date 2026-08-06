@@ -1,29 +1,26 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ObjectId } from "./object_id";
-import { UserType } from "./user_type";
-export declare const protobufPackage = "utils";
-export interface AuditActor {
-    id: ObjectId | undefined;
-    user_type?: UserType | undefined;
-    name?: string | undefined;
+import { ObjectId } from "../utils/object_id";
+export declare const protobufPackage = "payment_service";
+export interface PaymentReminderRecipient {
+    parent_id: ObjectId | undefined;
+    parent_name?: string | undefined;
+    parent_email?: string | undefined;
+    rendered_title?: string | undefined;
+    rendered_body?: string | undefined;
 }
-/** Keep system and legacy as messages so actor-specific metadata can be added without changing AuditPrincipal. */
-export interface SystemAuditActor {
-    name?: string | undefined;
+export interface PaymentReminderSnapshot {
+    title?: string | undefined;
+    header?: string | undefined;
+    body?: string | undefined;
+    footer?: string | undefined;
+    total_amount?: number | undefined;
+    paid_amount?: number | undefined;
+    remaining_amount?: number | undefined;
+    overdue_amount?: number | undefined;
+    recipients: PaymentReminderRecipient[];
 }
-export interface LegacyAuditActor {
-    name?: string | undefined;
-}
-/** Service and persistence boundaries must reject an unset principal. */
-export interface AuditPrincipal {
-    user?: AuditActor | undefined;
-    system?: SystemAuditActor | undefined;
-    legacy?: LegacyAuditActor | undefined;
-}
-export declare const AuditActor: MessageFns<AuditActor>;
-export declare const SystemAuditActor: MessageFns<SystemAuditActor>;
-export declare const LegacyAuditActor: MessageFns<LegacyAuditActor>;
-export declare const AuditPrincipal: MessageFns<AuditPrincipal>;
+export declare const PaymentReminderRecipient: MessageFns<PaymentReminderRecipient>;
+export declare const PaymentReminderSnapshot: MessageFns<PaymentReminderSnapshot>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

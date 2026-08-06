@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { PaymentType, Transaction } from "./transaction";
+import { PaymentType, Transaction, TransactionStaffDetails } from "./transaction";
 export declare const protobufPackage = "payment_service_transaction";
 export interface GetPaidTransactionRequest {
     context: RequestContext | undefined;
@@ -14,6 +14,7 @@ export interface GetTransactionsRequest {
 }
 export interface GetTransactionsResponse {
     transactions: Transaction[];
+    staff_details: TransactionStaffDetails[];
 }
 export interface CreateManualTransactionRequest {
     context: RequestContext | undefined;

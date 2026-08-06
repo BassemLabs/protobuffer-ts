@@ -52,6 +52,14 @@ export interface GetStudentCoursesRequest {
     include_archived?: boolean | undefined;
     school_year_id?: ObjectId | undefined;
 }
+export interface GetTeacherStudentScopeRequest {
+    context: RequestContext | undefined;
+    teacher_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetTeacherStudentScopeResponse {
+    student_ids: ObjectId[];
+}
 export interface GetStudentProfileClassScopeRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
@@ -210,6 +218,8 @@ export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
 export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;
 export declare const GetStudentLmsCalendarResponse: MessageFns<GetStudentLmsCalendarResponse>;
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
+export declare const GetTeacherStudentScopeRequest: MessageFns<GetTeacherStudentScopeRequest>;
+export declare const GetTeacherStudentScopeResponse: MessageFns<GetTeacherStudentScopeResponse>;
 export declare const GetStudentProfileClassScopeRequest: MessageFns<GetStudentProfileClassScopeRequest>;
 export declare const GetStudentProfileClassScopeResponse: MessageFns<GetStudentProfileClassScopeResponse>;
 export declare const GetStudentLmsCalendarRequest: MessageFns<GetStudentLmsCalendarRequest>;

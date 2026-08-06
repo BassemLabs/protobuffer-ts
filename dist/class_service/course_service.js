@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentLmsCalendarRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetStudentCoursesRequest = exports.GetStudentLmsCalendarResponse = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.ValidateStudentDeletionAcademicEligibilityRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
+exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentLmsCalendarRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetTeacherStudentScopeResponse = exports.GetTeacherStudentScopeRequest = exports.GetStudentCoursesRequest = exports.GetStudentLmsCalendarResponse = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.ValidateStudentDeletionAcademicEligibilityRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
 exports.studentProfileFeatureScopeFromJSON = studentProfileFeatureScopeFromJSON;
 exports.studentProfileFeatureScopeToJSON = studentProfileFeatureScopeToJSON;
 exports.studentProfileFeatureScopeToNumber = studentProfileFeatureScopeToNumber;
@@ -703,6 +703,146 @@ exports.GetStudentCoursesRequest = {
         message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseGetTeacherStudentScopeRequest() {
+    return { context: undefined, teacher_id: undefined, school_year_id: undefined };
+}
+exports.GetTeacherStudentScopeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeacherStudentScopeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeacherStudentScopeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeacherStudentScopeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetTeacherStudentScopeResponse() {
+    return { student_ids: [] };
+}
+exports.GetTeacherStudentScopeResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeacherStudentScopeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeacherStudentScopeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeacherStudentScopeResponse();
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

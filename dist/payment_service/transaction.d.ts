@@ -1,6 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Currency } from "../organization_service/organization";
-import { AuditActor } from "../utils/audit_actor";
+import { AuditPrincipal } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "payment_service_transaction";
 export declare enum TransactionStatus {
@@ -53,8 +53,15 @@ export interface Transaction {
     /** this is for the percentage */
     invoice_surcharge?: number | undefined;
     other_payment_method?: string | undefined;
+}
+/**
+ * Staff-only metadata is separated so parent-facing transaction history never
+ * exposes internal notes or the recording actor.
+ */
+export interface TransactionStaffDetails {
+    transaction_id: ObjectId | undefined;
+    recorded_by: AuditPrincipal | undefined;
     admin_note?: string | undefined;
-    created_by?: AuditActor | undefined;
 }
 export interface RefundTransaction {
     id: ObjectId | undefined;
@@ -77,6 +84,7 @@ export interface RefundTransaction {
     reason?: string | undefined;
 }
 export declare const Transaction: MessageFns<Transaction>;
+export declare const TransactionStaffDetails: MessageFns<TransactionStaffDetails>;
 export declare const RefundTransaction: MessageFns<RefundTransaction>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

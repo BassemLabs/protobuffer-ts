@@ -163,12 +163,15 @@ exports.GetTransactionsRequest = {
     },
 };
 function createBaseGetTransactionsResponse() {
-    return { transactions: [] };
+    return { transactions: [], staff_details: [] };
 }
 exports.GetTransactionsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.transactions) {
             transaction_1.Transaction.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.staff_details) {
+            transaction_1.TransactionStaffDetails.encode(v, writer.uint32(18).fork()).join();
         }
         return writer;
     },
@@ -185,6 +188,12 @@ exports.GetTransactionsResponse = {
                     }
                     message.transactions.push(transaction_1.Transaction.decode(reader, reader.uint32()));
                     continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.staff_details.push(transaction_1.TransactionStaffDetails.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -198,12 +207,18 @@ exports.GetTransactionsResponse = {
             transactions: globalThis.Array.isArray(object?.transactions)
                 ? object.transactions.map((e) => transaction_1.Transaction.fromJSON(e))
                 : [],
+            staff_details: globalThis.Array.isArray(object?.staffDetails)
+                ? object.staffDetails.map((e) => transaction_1.TransactionStaffDetails.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.transactions?.length) {
             obj.transactions = message.transactions.map((e) => transaction_1.Transaction.toJSON(e));
+        }
+        if (message.staff_details?.length) {
+            obj.staffDetails = message.staff_details.map((e) => transaction_1.TransactionStaffDetails.toJSON(e));
         }
         return obj;
     },
@@ -213,6 +228,7 @@ exports.GetTransactionsResponse = {
     fromPartial(object) {
         const message = createBaseGetTransactionsResponse();
         message.transactions = object.transactions?.map((e) => transaction_1.Transaction.fromPartial(e)) || [];
+        message.staff_details = object.staff_details?.map((e) => transaction_1.TransactionStaffDetails.fromPartial(e)) || [];
         return message;
     },
 };

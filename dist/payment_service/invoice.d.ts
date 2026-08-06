@@ -2,20 +2,38 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { StudentStatus } from "../user_service/student";
 import { AuditActor } from "../utils/audit_actor";
 import { ObjectId } from "../utils/object_id";
-import { RefundTransaction, Transaction } from "./transaction";
+import { RefundTransaction, Transaction, TransactionStaffDetails } from "./transaction";
 import { DiscountValueType } from "./tuition";
 export declare const protobufPackage = "payment_service";
-export declare enum InvoiceStatus {
-    Paid = "Paid",
-    NotPaid = "NotPaid",
-    Overdue = "Overdue",
-    Refunded = "Refunded",
-    Processing = "Processing",
+export declare enum InvoiceLifecycleStatus {
+    InvoiceLifecycleActive = "InvoiceLifecycleActive",
+    InvoiceLifecycleCancelled = "InvoiceLifecycleCancelled",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
-export declare function invoiceStatusFromJSON(object: any): InvoiceStatus;
-export declare function invoiceStatusToJSON(object: InvoiceStatus): string;
-export declare function invoiceStatusToNumber(object: InvoiceStatus): number;
+export declare function invoiceLifecycleStatusFromJSON(object: any): InvoiceLifecycleStatus;
+export declare function invoiceLifecycleStatusToJSON(object: InvoiceLifecycleStatus): string;
+export declare function invoiceLifecycleStatusToNumber(object: InvoiceLifecycleStatus): number;
+export declare enum InvoicePaymentStatus {
+    InvoicePaymentUnpaid = "InvoicePaymentUnpaid",
+    InvoicePaymentPartiallyPaid = "InvoicePaymentPartiallyPaid",
+    InvoicePaymentPaid = "InvoicePaymentPaid",
+    InvoicePaymentProcessing = "InvoicePaymentProcessing",
+    InvoicePaymentRefunded = "InvoicePaymentRefunded",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function invoicePaymentStatusFromJSON(object: any): InvoicePaymentStatus;
+export declare function invoicePaymentStatusToJSON(object: InvoicePaymentStatus): string;
+export declare function invoicePaymentStatusToNumber(object: InvoicePaymentStatus): number;
+export declare enum InvoiceDueStatus {
+    InvoiceDueNoDueDate = "InvoiceDueNoDueDate",
+    InvoiceDueUpcoming = "InvoiceDueUpcoming",
+    InvoiceDueToday = "InvoiceDueToday",
+    InvoiceDueOverdue = "InvoiceDueOverdue",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function invoiceDueStatusFromJSON(object: any): InvoiceDueStatus;
+export declare function invoiceDueStatusToJSON(object: InvoiceDueStatus): string;
+export declare function invoiceDueStatusToNumber(object: InvoiceDueStatus): number;
 export declare enum TuitionDiscountAdjustmentType {
     TUITION_DISCOUNT_APPLIED = "TUITION_DISCOUNT_APPLIED",
     TUITION_DISCOUNT_REVERSED = "TUITION_DISCOUNT_REVERSED",
@@ -111,6 +129,8 @@ export interface Invoice {
     /** Timestamp for the next scheduled retry attempt (used for scheduling job queries) */
     auto_payment_next_retry_at?: Date | undefined;
     tuition_discount_audit: TuitionDiscountAuditEntry[];
+    created_at: Date | undefined;
+    lifecycle_status?: InvoiceLifecycleStatus | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;
@@ -119,25 +139,17 @@ export interface InvoiceResponse {
     total_amount?: number | undefined;
     /** Total amount paid towards the invoice, excludes refunds, processing fees, (includes bassemlabs fees) */
     gross_amount_paid?: number | undefined;
-    status?: InvoiceStatus | undefined;
     bill_to_name?: string | undefined;
     refund_transactions: RefundTransaction[];
     /** Total amount refunded */
     total_amount_refunded?: number | undefined;
     /** total_amount_paid - total_amount_refunded */
     net_amount_paid?: number | undefined;
-}
-export interface InvoiceFilter {
-    per_page?: number | undefined;
-    page?: number | undefined;
-    title?: string | undefined;
-    status?: InvoiceStatus | undefined;
-    archived?: boolean | undefined;
-    user?: ObjectId | undefined;
-    family?: ObjectId | undefined;
-    school_year?: ObjectId | undefined;
-    due_before?: Date | undefined;
-    include_tuition?: boolean | undefined;
+    remaining_amount?: number | undefined;
+    overdue_amount?: number | undefined;
+    payment_status?: InvoicePaymentStatus | undefined;
+    due_status?: InvoiceDueStatus | undefined;
+    transaction_staff_details: TransactionStaffDetails[];
 }
 export interface AutoPaymentAttempt {
     id: ObjectId | undefined;
@@ -154,7 +166,6 @@ export declare const TuitionDiscountAuditEntry: MessageFns<TuitionDiscountAuditE
 export declare const OrganizationInvoiceDetails: MessageFns<OrganizationInvoiceDetails>;
 export declare const Invoice: MessageFns<Invoice>;
 export declare const InvoiceResponse: MessageFns<InvoiceResponse>;
-export declare const InvoiceFilter: MessageFns<InvoiceFilter>;
 export declare const AutoPaymentAttempt: MessageFns<AutoPaymentAttempt>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

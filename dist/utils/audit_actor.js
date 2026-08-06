@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: utils/audit_actor.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuditActor = exports.protobufPackage = void 0;
+exports.AuditPrincipal = exports.LegacyAuditActor = exports.SystemAuditActor = exports.AuditActor = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("./object_id");
@@ -88,6 +88,192 @@ exports.AuditActor = {
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.user_type = object.user_type ?? undefined;
         message.name = object.name ?? undefined;
+        return message;
+    },
+};
+function createBaseSystemAuditActor() {
+    return { name: undefined };
+}
+exports.SystemAuditActor = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.name !== undefined) {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSystemAuditActor();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { name: isSet(object.name) ? globalThis.String(object.name) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SystemAuditActor.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSystemAuditActor();
+        message.name = object.name ?? undefined;
+        return message;
+    },
+};
+function createBaseLegacyAuditActor() {
+    return { name: undefined };
+}
+exports.LegacyAuditActor = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.name !== undefined) {
+            writer.uint32(10).string(message.name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLegacyAuditActor();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { name: isSet(object.name) ? globalThis.String(object.name) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LegacyAuditActor.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLegacyAuditActor();
+        message.name = object.name ?? undefined;
+        return message;
+    },
+};
+function createBaseAuditPrincipal() {
+    return { user: undefined, system: undefined, legacy: undefined };
+}
+exports.AuditPrincipal = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.user !== undefined) {
+            exports.AuditActor.encode(message.user, writer.uint32(10).fork()).join();
+        }
+        if (message.system !== undefined) {
+            exports.SystemAuditActor.encode(message.system, writer.uint32(18).fork()).join();
+        }
+        if (message.legacy !== undefined) {
+            exports.LegacyAuditActor.encode(message.legacy, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseAuditPrincipal();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.user = exports.AuditActor.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.system = exports.SystemAuditActor.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.legacy = exports.LegacyAuditActor.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            user: isSet(object.user) ? exports.AuditActor.fromJSON(object.user) : undefined,
+            system: isSet(object.system) ? exports.SystemAuditActor.fromJSON(object.system) : undefined,
+            legacy: isSet(object.legacy) ? exports.LegacyAuditActor.fromJSON(object.legacy) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.user !== undefined) {
+            obj.user = exports.AuditActor.toJSON(message.user);
+        }
+        if (message.system !== undefined) {
+            obj.system = exports.SystemAuditActor.toJSON(message.system);
+        }
+        if (message.legacy !== undefined) {
+            obj.legacy = exports.LegacyAuditActor.toJSON(message.legacy);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.AuditPrincipal.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseAuditPrincipal();
+        message.user = (object.user !== undefined && object.user !== null)
+            ? exports.AuditActor.fromPartial(object.user)
+            : undefined;
+        message.system = (object.system !== undefined && object.system !== null)
+            ? exports.SystemAuditActor.fromPartial(object.system)
+            : undefined;
+        message.legacy = (object.legacy !== undefined && object.legacy !== null)
+            ? exports.LegacyAuditActor.fromPartial(object.legacy)
+            : undefined;
         return message;
     },
 };

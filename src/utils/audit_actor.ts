@@ -17,6 +17,22 @@ export interface AuditActor {
   name?: string | undefined;
 }
 
+/** Keep system and legacy as messages so actor-specific metadata can be added without changing AuditPrincipal. */
+export interface SystemAuditActor {
+  name?: string | undefined;
+}
+
+export interface LegacyAuditActor {
+  name?: string | undefined;
+}
+
+/** Service and persistence boundaries must reject an unset principal. */
+export interface AuditPrincipal {
+  user?: AuditActor | undefined;
+  system?: SystemAuditActor | undefined;
+  legacy?: LegacyAuditActor | undefined;
+}
+
 function createBaseAuditActor(): AuditActor {
   return { id: undefined, user_type: undefined, name: undefined };
 }
@@ -102,6 +118,215 @@ export const AuditActor: MessageFns<AuditActor> = {
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.user_type = object.user_type ?? undefined;
     message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSystemAuditActor(): SystemAuditActor {
+  return { name: undefined };
+}
+
+export const SystemAuditActor: MessageFns<SystemAuditActor> = {
+  encode(message: SystemAuditActor, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== undefined) {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SystemAuditActor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSystemAuditActor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SystemAuditActor {
+    return { name: isSet(object.name) ? globalThis.String(object.name) : undefined };
+  },
+
+  toJSON(message: SystemAuditActor): unknown {
+    const obj: any = {};
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SystemAuditActor>, I>>(base?: I): SystemAuditActor {
+    return SystemAuditActor.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SystemAuditActor>, I>>(object: I): SystemAuditActor {
+    const message = createBaseSystemAuditActor();
+    message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLegacyAuditActor(): LegacyAuditActor {
+  return { name: undefined };
+}
+
+export const LegacyAuditActor: MessageFns<LegacyAuditActor> = {
+  encode(message: LegacyAuditActor, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== undefined) {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LegacyAuditActor {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLegacyAuditActor();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LegacyAuditActor {
+    return { name: isSet(object.name) ? globalThis.String(object.name) : undefined };
+  },
+
+  toJSON(message: LegacyAuditActor): unknown {
+    const obj: any = {};
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LegacyAuditActor>, I>>(base?: I): LegacyAuditActor {
+    return LegacyAuditActor.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LegacyAuditActor>, I>>(object: I): LegacyAuditActor {
+    const message = createBaseLegacyAuditActor();
+    message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAuditPrincipal(): AuditPrincipal {
+  return { user: undefined, system: undefined, legacy: undefined };
+}
+
+export const AuditPrincipal: MessageFns<AuditPrincipal> = {
+  encode(message: AuditPrincipal, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.user !== undefined) {
+      AuditActor.encode(message.user, writer.uint32(10).fork()).join();
+    }
+    if (message.system !== undefined) {
+      SystemAuditActor.encode(message.system, writer.uint32(18).fork()).join();
+    }
+    if (message.legacy !== undefined) {
+      LegacyAuditActor.encode(message.legacy, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AuditPrincipal {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAuditPrincipal();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.user = AuditActor.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.system = SystemAuditActor.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.legacy = LegacyAuditActor.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AuditPrincipal {
+    return {
+      user: isSet(object.user) ? AuditActor.fromJSON(object.user) : undefined,
+      system: isSet(object.system) ? SystemAuditActor.fromJSON(object.system) : undefined,
+      legacy: isSet(object.legacy) ? LegacyAuditActor.fromJSON(object.legacy) : undefined,
+    };
+  },
+
+  toJSON(message: AuditPrincipal): unknown {
+    const obj: any = {};
+    if (message.user !== undefined) {
+      obj.user = AuditActor.toJSON(message.user);
+    }
+    if (message.system !== undefined) {
+      obj.system = SystemAuditActor.toJSON(message.system);
+    }
+    if (message.legacy !== undefined) {
+      obj.legacy = LegacyAuditActor.toJSON(message.legacy);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AuditPrincipal>, I>>(base?: I): AuditPrincipal {
+    return AuditPrincipal.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AuditPrincipal>, I>>(object: I): AuditPrincipal {
+    const message = createBaseAuditPrincipal();
+    message.user = (object.user !== undefined && object.user !== null)
+      ? AuditActor.fromPartial(object.user)
+      : undefined;
+    message.system = (object.system !== undefined && object.system !== null)
+      ? SystemAuditActor.fromPartial(object.system)
+      : undefined;
+    message.legacy = (object.legacy !== undefined && object.legacy !== null)
+      ? LegacyAuditActor.fromPartial(object.legacy)
+      : undefined;
     return message;
   },
 };
