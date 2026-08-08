@@ -27,6 +27,7 @@ export interface CreateHomeroomRequest {
     teacher_ids: ObjectId[];
     grades: StudentGrade[];
     lms_provider?: LmsProviderType | undefined;
+    abstract_course_ids: ObjectId[];
 }
 export interface CloneHomeroomRequest {
     context: RequestContext | undefined;
