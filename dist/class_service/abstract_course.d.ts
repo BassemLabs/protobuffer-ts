@@ -15,6 +15,12 @@ export interface AbstractCourse {
     grade?: StudentGrade | undefined;
     /** #RRGGBB timetable color */
     color?: string | undefined;
+    /**
+     * organization_service.RoomCategory ids this course may be scheduled in (OR semantics).
+     * Empty means no special room is required: high-school courses use any general
+     * high-school room; elementary/middle subjects are not room-constrained at all.
+     */
+    eligible_special_room_category_ids: ObjectId[];
 }
 export declare const AbstractCourse: MessageFns<AbstractCourse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

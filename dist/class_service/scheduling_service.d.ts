@@ -142,6 +142,11 @@ export interface GetSchedulingGenerationRunsRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
 }
+export interface UpdateSchedulingRoomEnforcementRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    enforce_room_assignments?: boolean | undefined;
+}
 export declare const GetSchedulingPreparationRequest: MessageFns<GetSchedulingPreparationRequest>;
 export declare const CreateSchedulingWorkspaceRequest: MessageFns<CreateSchedulingWorkspaceRequest>;
 export declare const CompleteSchedulingPreparationStepRequest: MessageFns<CompleteSchedulingPreparationStepRequest>;
@@ -166,6 +171,7 @@ export declare const GetSchedulingClassAssignmentSetupRequest: MessageFns<GetSch
 export declare const UpsertSchedulingHighSchoolCourseStudentAssignmentRequest: MessageFns<UpsertSchedulingHighSchoolCourseStudentAssignmentRequest>;
 export declare const StartSchedulingGenerationRequest: MessageFns<StartSchedulingGenerationRequest>;
 export declare const GetSchedulingGenerationRunsRequest: MessageFns<GetSchedulingGenerationRunsRequest>;
+export declare const UpdateSchedulingRoomEnforcementRequest: MessageFns<UpdateSchedulingRoomEnforcementRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -77,6 +77,7 @@ export interface CreateAbstractCourseRequest {
     category_ids: ObjectId[];
     grade?: StudentGrade | undefined;
     color?: string | undefined;
+    eligible_special_room_category_ids: ObjectId[];
 }
 export interface UpdateAbstractCourseRequest {
     context: RequestContext | undefined;
@@ -88,6 +89,7 @@ export interface UpdateAbstractCourseRequest {
     category_ids: ObjectId[];
     grade?: StudentGrade | undefined;
     color?: string | undefined;
+    eligible_special_room_category_ids: ObjectId[];
 }
 export interface DeleteAbstractCourseRequest {
     context: RequestContext | undefined;

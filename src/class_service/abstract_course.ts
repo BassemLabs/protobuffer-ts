@@ -27,7 +27,15 @@ export interface AbstractCourse {
     | StudentGrade
     | undefined;
   /** #RRGGBB timetable color */
-  color?: string | undefined;
+  color?:
+    | string
+    | undefined;
+  /**
+   * organization_service.RoomCategory ids this course may be scheduled in (OR semantics).
+   * Empty means no special room is required: high-school courses use any general
+   * high-school room; elementary/middle subjects are not room-constrained at all.
+   */
+  eligible_special_room_category_ids: ObjectId[];
 }
 
 function createBaseAbstractCourse(): AbstractCourse {
@@ -42,6 +50,7 @@ function createBaseAbstractCourse(): AbstractCourse {
     can_delete: undefined,
     grade: undefined,
     color: undefined,
+    eligible_special_room_category_ids: [],
   };
 }
 
@@ -76,6 +85,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     }
     if (message.color !== undefined) {
       writer.uint32(82).string(message.color);
+    }
+    for (const v of message.eligible_special_room_category_ids) {
+      ObjectId.encode(v!, writer.uint32(90).fork()).join();
     }
     return writer;
   },
@@ -157,6 +169,13 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
 
           message.color = reader.string();
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.eligible_special_room_category_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -180,6 +199,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
       can_delete: isSet(object.canDelete) ? globalThis.Boolean(object.canDelete) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+      eligible_special_room_category_ids: globalThis.Array.isArray(object?.eligibleSpecialRoomCategoryIds)
+        ? object.eligibleSpecialRoomCategoryIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -215,6 +237,9 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     if (message.color !== undefined) {
       obj.color = message.color;
     }
+    if (message.eligible_special_room_category_ids?.length) {
+      obj.eligibleSpecialRoomCategoryIds = message.eligible_special_room_category_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -235,6 +260,8 @@ export const AbstractCourse: MessageFns<AbstractCourse> = {
     message.can_delete = object.can_delete ?? undefined;
     message.grade = object.grade ?? undefined;
     message.color = object.color ?? undefined;
+    message.eligible_special_room_category_ids =
+      object.eligible_special_room_category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

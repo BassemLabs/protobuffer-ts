@@ -94,11 +94,33 @@ export declare enum SchedulingReviewSectionType {
 export declare function schedulingReviewSectionTypeFromJSON(object: any): SchedulingReviewSectionType;
 export declare function schedulingReviewSectionTypeToJSON(object: SchedulingReviewSectionType): string;
 export declare function schedulingReviewSectionTypeToNumber(object: SchedulingReviewSectionType): number;
+/**
+ * Where the user must go to resolve a review issue that cannot be fixed inside
+ * the scheduling preparation wizard.
+ */
+export declare enum SchedulingReviewActionDestination {
+    /** SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP - Default: open the preparation step named by action_step. */
+    SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP = "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP",
+    /** SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS - Organization settings -> Rooms (missing/archived rooms or categories). */
+    SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS = "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS",
+    /** SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG - Classes -> abstract catalog (course room-eligibility problems). */
+    SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG = "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingReviewActionDestinationFromJSON(object: any): SchedulingReviewActionDestination;
+export declare function schedulingReviewActionDestinationToJSON(object: SchedulingReviewActionDestination): string;
+export declare function schedulingReviewActionDestinationToNumber(object: SchedulingReviewActionDestination): number;
 export interface SchedulingWorkspace {
     id: Uuid | undefined;
     organization: ObjectId | undefined;
     school_year: ObjectId | undefined;
     completed_steps: SchedulingPreparationStep[];
+    /**
+     * Whether this year's generation enforces room assignments. When false, room
+     * setup is advisory: Review reports room problems as warnings and the solver
+     * input carries no room data.
+     */
+    enforce_room_assignments?: boolean | undefined;
 }
 export interface SchedulingPreparationIssue {
     message?: string | undefined;
@@ -388,6 +410,11 @@ export interface SchedulingGeneratedScheduleEntry {
     day?: DayOfWeek | undefined;
     period_sequence?: number | undefined;
     slot_id?: string | undefined;
+    /**
+     * Room hosting this meeting. Absent for placements generated without room
+     * enforcement and for ordinary elementary/middle meetings.
+     */
+    room_id?: ObjectId | undefined;
 }
 /** The immutable schedule artifact stored for one successful generation run. */
 export interface SchedulingGeneratedSchedule {
@@ -434,6 +461,14 @@ export interface SchedulingScheduleStudentInfo {
     display_name?: string | undefined;
     grade?: StudentGrade | undefined;
 }
+/** Frozen room display data from the run's snapshot, never live room records. */
+export interface SchedulingScheduleRoomInfo {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    campus_id: ObjectId | undefined;
+    /** Frozen category name when the room was a special room at snapshot time. */
+    category_name?: string | undefined;
+}
 export interface SchedulingScheduleSectionInfo {
     id: Uuid | undefined;
     campus_id: ObjectId | undefined;
@@ -452,6 +487,9 @@ export interface SchedulingGeneratedScheduleView {
     semesters: SchedulingScheduleSemesterInfo[];
     sections: SchedulingScheduleSectionInfo[];
     students: SchedulingScheduleStudentInfo[];
+    rooms: SchedulingScheduleRoomInfo[];
+    /** Immutable room-enforcement setting captured when this schedule was generated. */
+    room_assignments_enforced?: boolean | undefined;
 }
 /** A headline count shown on a review section (e.g. "Teachers", 12). */
 export interface SchedulingReviewMetric {
@@ -464,6 +502,13 @@ export interface SchedulingReviewIssue {
     message?: string | undefined;
     /** Stable machine-readable identifier for frontend behavior and localization. */
     code?: string | undefined;
+    /** Absent means PREPARATION_STEP (resolve via action_step). */
+    destination?: SchedulingReviewActionDestination | undefined;
+    /**
+     * True when the issue is advisory only (room enforcement disabled) and must
+     * not block Review completion or generation.
+     */
+    warning_only?: boolean | undefined;
 }
 /** One setup area's review: its summary metrics and any outstanding issues. */
 export interface SchedulingReviewSection {
@@ -519,6 +564,7 @@ export declare const SchedulingScheduleTeacherInfo: MessageFns<SchedulingSchedul
 export declare const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo>;
 export declare const SchedulingScheduleSemesterInfo: MessageFns<SchedulingScheduleSemesterInfo>;
 export declare const SchedulingScheduleStudentInfo: MessageFns<SchedulingScheduleStudentInfo>;
+export declare const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo>;
 export declare const SchedulingScheduleSectionInfo: MessageFns<SchedulingScheduleSectionInfo>;
 export declare const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedScheduleView>;
 export declare const SchedulingReviewMetric: MessageFns<SchedulingReviewMetric>;

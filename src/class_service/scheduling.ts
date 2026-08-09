@@ -476,11 +476,77 @@ export function schedulingReviewSectionTypeToNumber(object: SchedulingReviewSect
   }
 }
 
+/**
+ * Where the user must go to resolve a review issue that cannot be fixed inside
+ * the scheduling preparation wizard.
+ */
+export enum SchedulingReviewActionDestination {
+  /** SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP - Default: open the preparation step named by action_step. */
+  SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP = "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP",
+  /** SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS - Organization settings -> Rooms (missing/archived rooms or categories). */
+  SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS = "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS",
+  /** SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG - Classes -> abstract catalog (course room-eligibility problems). */
+  SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG = "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingReviewActionDestinationFromJSON(object: any): SchedulingReviewActionDestination {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP":
+      return SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP;
+    case 1:
+    case "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS":
+      return SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS;
+    case 2:
+    case "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG":
+      return SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingReviewActionDestination.UNRECOGNIZED;
+  }
+}
+
+export function schedulingReviewActionDestinationToJSON(object: SchedulingReviewActionDestination): string {
+  switch (object) {
+    case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP:
+      return "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP";
+    case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS:
+      return "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS";
+    case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG:
+      return "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG";
+    case SchedulingReviewActionDestination.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingReviewActionDestinationToNumber(object: SchedulingReviewActionDestination): number {
+  switch (object) {
+    case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP:
+      return 0;
+    case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS:
+      return 1;
+    case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG:
+      return 2;
+    case SchedulingReviewActionDestination.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface SchedulingWorkspace {
   id: Uuid | undefined;
   organization: ObjectId | undefined;
   school_year: ObjectId | undefined;
   completed_steps: SchedulingPreparationStep[];
+  /**
+   * Whether this year's generation enforces room assignments. When false, room
+   * setup is advisory: Review reports room problems as warnings and the solver
+   * input carries no room data.
+   */
+  enforce_room_assignments?: boolean | undefined;
 }
 
 export interface SchedulingPreparationIssue {
@@ -830,7 +896,14 @@ export interface SchedulingGeneratedScheduleEntry {
   semester_id: ObjectId | undefined;
   day?: DayOfWeek | undefined;
   period_sequence?: number | undefined;
-  slot_id?: string | undefined;
+  slot_id?:
+    | string
+    | undefined;
+  /**
+   * Room hosting this meeting. Absent for placements generated without room
+   * enforcement and for ordinary elementary/middle meetings.
+   */
+  room_id?: ObjectId | undefined;
 }
 
 /** The immutable schedule artifact stored for one successful generation run. */
@@ -884,6 +957,17 @@ export interface SchedulingScheduleStudentInfo {
   grade?: StudentGrade | undefined;
 }
 
+/** Frozen room display data from the run's snapshot, never live room records. */
+export interface SchedulingScheduleRoomInfo {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+  campus_id:
+    | ObjectId
+    | undefined;
+  /** Frozen category name when the room was a special room at snapshot time. */
+  category_name?: string | undefined;
+}
+
 export interface SchedulingScheduleSectionInfo {
   id: Uuid | undefined;
   campus_id: ObjectId | undefined;
@@ -903,6 +987,9 @@ export interface SchedulingGeneratedScheduleView {
   semesters: SchedulingScheduleSemesterInfo[];
   sections: SchedulingScheduleSectionInfo[];
   students: SchedulingScheduleStudentInfo[];
+  rooms: SchedulingScheduleRoomInfo[];
+  /** Immutable room-enforcement setting captured when this schedule was generated. */
+  room_assignments_enforced?: boolean | undefined;
 }
 
 /** A headline count shown on a review section (e.g. "Teachers", 12). */
@@ -918,7 +1005,18 @@ export interface SchedulingReviewIssue {
     | string
     | undefined;
   /** Stable machine-readable identifier for frontend behavior and localization. */
-  code?: string | undefined;
+  code?:
+    | string
+    | undefined;
+  /** Absent means PREPARATION_STEP (resolve via action_step). */
+  destination?:
+    | SchedulingReviewActionDestination
+    | undefined;
+  /**
+   * True when the issue is advisory only (room enforcement disabled) and must
+   * not block Review completion or generation.
+   */
+  warning_only?: boolean | undefined;
 }
 
 /** One setup area's review: its summary metrics and any outstanding issues. */
@@ -940,7 +1038,13 @@ export interface SchedulingReview {
 }
 
 function createBaseSchedulingWorkspace(): SchedulingWorkspace {
-  return { id: undefined, organization: undefined, school_year: undefined, completed_steps: [] };
+  return {
+    id: undefined,
+    organization: undefined,
+    school_year: undefined,
+    completed_steps: [],
+    enforce_room_assignments: undefined,
+  };
 }
 
 export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
@@ -959,6 +1063,9 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
       writer.int32(schedulingPreparationStepToNumber(v));
     }
     writer.join();
+    if (message.enforce_room_assignments !== undefined) {
+      writer.uint32(40).bool(message.enforce_room_assignments);
+    }
     return writer;
   },
 
@@ -1007,6 +1114,13 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
           }
 
           break;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.enforce_room_assignments = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1024,6 +1138,9 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
       completed_steps: globalThis.Array.isArray(object?.completedSteps)
         ? object.completedSteps.map((e: any) => schedulingPreparationStepFromJSON(e))
         : [],
+      enforce_room_assignments: isSet(object.enforceRoomAssignments)
+        ? globalThis.Boolean(object.enforceRoomAssignments)
+        : undefined,
     };
   },
 
@@ -1041,6 +1158,9 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
     if (message.completed_steps?.length) {
       obj.completedSteps = message.completed_steps.map((e) => schedulingPreparationStepToJSON(e));
     }
+    if (message.enforce_room_assignments !== undefined) {
+      obj.enforceRoomAssignments = message.enforce_room_assignments;
+    }
     return obj;
   },
 
@@ -1057,6 +1177,7 @@ export const SchedulingWorkspace: MessageFns<SchedulingWorkspace> = {
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
     message.completed_steps = object.completed_steps?.map((e) => e) || [];
+    message.enforce_room_assignments = object.enforce_room_assignments ?? undefined;
     return message;
   },
 };
@@ -5078,6 +5199,7 @@ function createBaseSchedulingGeneratedScheduleEntry(): SchedulingGeneratedSchedu
     day: undefined,
     period_sequence: undefined,
     slot_id: undefined,
+    room_id: undefined,
   };
 }
 
@@ -5112,6 +5234,9 @@ export const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedSch
     }
     if (message.slot_id !== undefined) {
       writer.uint32(82).string(message.slot_id);
+    }
+    if (message.room_id !== undefined) {
+      ObjectId.encode(message.room_id, writer.uint32(90).fork()).join();
     }
     return writer;
   },
@@ -5193,6 +5318,13 @@ export const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedSch
 
           message.slot_id = reader.string();
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.room_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5214,6 +5346,7 @@ export const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedSch
       day: isSet(object.day) ? dayOfWeekFromJSON(object.day) : undefined,
       period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
       slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+      room_id: isSet(object.roomId) ? ObjectId.fromJSON(object.roomId) : undefined,
     };
   },
 
@@ -5249,6 +5382,9 @@ export const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedSch
     if (message.slot_id !== undefined) {
       obj.slotId = message.slot_id;
     }
+    if (message.room_id !== undefined) {
+      obj.roomId = ObjectId.toJSON(message.room_id);
+    }
     return obj;
   },
 
@@ -5281,6 +5417,9 @@ export const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedSch
     message.day = object.day ?? undefined;
     message.period_sequence = object.period_sequence ?? undefined;
     message.slot_id = object.slot_id ?? undefined;
+    message.room_id = (object.room_id !== undefined && object.room_id !== null)
+      ? ObjectId.fromPartial(object.room_id)
+      : undefined;
     return message;
   },
 };
@@ -6064,6 +6203,112 @@ export const SchedulingScheduleStudentInfo: MessageFns<SchedulingScheduleStudent
   },
 };
 
+function createBaseSchedulingScheduleRoomInfo(): SchedulingScheduleRoomInfo {
+  return { id: undefined, name: undefined, campus_id: undefined, category_name: undefined };
+}
+
+export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> = {
+  encode(message: SchedulingScheduleRoomInfo, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+    }
+    if (message.category_name !== undefined) {
+      writer.uint32(34).string(message.category_name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleRoomInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleRoomInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.category_name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleRoomInfo {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      category_name: isSet(object.categoryName) ? globalThis.String(object.categoryName) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleRoomInfo): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    if (message.category_name !== undefined) {
+      obj.categoryName = message.category_name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleRoomInfo>, I>>(base?: I): SchedulingScheduleRoomInfo {
+    return SchedulingScheduleRoomInfo.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleRoomInfo>, I>>(object: I): SchedulingScheduleRoomInfo {
+    const message = createBaseSchedulingScheduleRoomInfo();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.category_name = object.category_name ?? undefined;
+    return message;
+  },
+};
+
 function createBaseSchedulingScheduleSectionInfo(): SchedulingScheduleSectionInfo {
   return {
     id: undefined,
@@ -6221,6 +6466,8 @@ function createBaseSchedulingGeneratedScheduleView(): SchedulingGeneratedSchedul
     semesters: [],
     sections: [],
     students: [],
+    rooms: [],
+    room_assignments_enforced: undefined,
   };
 }
 
@@ -6249,6 +6496,12 @@ export const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedSche
     }
     for (const v of message.students) {
       SchedulingScheduleStudentInfo.encode(v!, writer.uint32(66).fork()).join();
+    }
+    for (const v of message.rooms) {
+      SchedulingScheduleRoomInfo.encode(v!, writer.uint32(74).fork()).join();
+    }
+    if (message.room_assignments_enforced !== undefined) {
+      writer.uint32(80).bool(message.room_assignments_enforced);
     }
     return writer;
   },
@@ -6316,6 +6569,20 @@ export const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedSche
 
           message.students.push(SchedulingScheduleStudentInfo.decode(reader, reader.uint32()));
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.rooms.push(SchedulingScheduleRoomInfo.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.room_assignments_enforced = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -6349,6 +6616,12 @@ export const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedSche
       students: globalThis.Array.isArray(object?.students)
         ? object.students.map((e: any) => SchedulingScheduleStudentInfo.fromJSON(e))
         : [],
+      rooms: globalThis.Array.isArray(object?.rooms)
+        ? object.rooms.map((e: any) => SchedulingScheduleRoomInfo.fromJSON(e))
+        : [],
+      room_assignments_enforced: isSet(object.roomAssignmentsEnforced)
+        ? globalThis.Boolean(object.roomAssignmentsEnforced)
+        : undefined,
     };
   },
 
@@ -6378,6 +6651,12 @@ export const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedSche
     if (message.students?.length) {
       obj.students = message.students.map((e) => SchedulingScheduleStudentInfo.toJSON(e));
     }
+    if (message.rooms?.length) {
+      obj.rooms = message.rooms.map((e) => SchedulingScheduleRoomInfo.toJSON(e));
+    }
+    if (message.room_assignments_enforced !== undefined) {
+      obj.roomAssignmentsEnforced = message.room_assignments_enforced;
+    }
     return obj;
   },
 
@@ -6398,6 +6677,8 @@ export const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedSche
     message.semesters = object.semesters?.map((e) => SchedulingScheduleSemesterInfo.fromPartial(e)) || [];
     message.sections = object.sections?.map((e) => SchedulingScheduleSectionInfo.fromPartial(e)) || [];
     message.students = object.students?.map((e) => SchedulingScheduleStudentInfo.fromPartial(e)) || [];
+    message.rooms = object.rooms?.map((e) => SchedulingScheduleRoomInfo.fromPartial(e)) || [];
+    message.room_assignments_enforced = object.room_assignments_enforced ?? undefined;
     return message;
   },
 };
@@ -6477,7 +6758,13 @@ export const SchedulingReviewMetric: MessageFns<SchedulingReviewMetric> = {
 };
 
 function createBaseSchedulingReviewIssue(): SchedulingReviewIssue {
-  return { action_step: undefined, message: undefined, code: undefined };
+  return {
+    action_step: undefined,
+    message: undefined,
+    code: undefined,
+    destination: undefined,
+    warning_only: undefined,
+  };
 }
 
 export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
@@ -6490,6 +6777,12 @@ export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
     }
     if (message.code !== undefined) {
       writer.uint32(26).string(message.code);
+    }
+    if (message.destination !== undefined) {
+      writer.uint32(32).int32(schedulingReviewActionDestinationToNumber(message.destination));
+    }
+    if (message.warning_only !== undefined) {
+      writer.uint32(40).bool(message.warning_only);
     }
     return writer;
   },
@@ -6522,6 +6815,20 @@ export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
 
           message.code = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.destination = schedulingReviewActionDestinationFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.warning_only = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -6536,6 +6843,10 @@ export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
       action_step: isSet(object.actionStep) ? schedulingPreparationStepFromJSON(object.actionStep) : undefined,
       message: isSet(object.message) ? globalThis.String(object.message) : undefined,
       code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+      destination: isSet(object.destination)
+        ? schedulingReviewActionDestinationFromJSON(object.destination)
+        : undefined,
+      warning_only: isSet(object.warningOnly) ? globalThis.Boolean(object.warningOnly) : undefined,
     };
   },
 
@@ -6550,6 +6861,12 @@ export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
     if (message.code !== undefined) {
       obj.code = message.code;
     }
+    if (message.destination !== undefined) {
+      obj.destination = schedulingReviewActionDestinationToJSON(message.destination);
+    }
+    if (message.warning_only !== undefined) {
+      obj.warningOnly = message.warning_only;
+    }
     return obj;
   },
 
@@ -6561,6 +6878,8 @@ export const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue> = {
     message.action_step = object.action_step ?? undefined;
     message.message = object.message ?? undefined;
     message.code = object.code ?? undefined;
+    message.destination = object.destination ?? undefined;
+    message.warning_only = object.warning_only ?? undefined;
     return message;
   },
 };

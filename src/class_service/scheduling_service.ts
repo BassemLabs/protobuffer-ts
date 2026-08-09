@@ -190,6 +190,12 @@ export interface GetSchedulingGenerationRunsRequest {
   school_year_id: ObjectId | undefined;
 }
 
+export interface UpdateSchedulingRoomEnforcementRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  enforce_room_assignments?: boolean | undefined;
+}
+
 function createBaseGetSchedulingPreparationRequest(): GetSchedulingPreparationRequest {
   return { context: undefined, school_year_id: undefined };
 }
@@ -2848,6 +2854,105 @@ export const GetSchedulingGenerationRunsRequest: MessageFns<GetSchedulingGenerat
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateSchedulingRoomEnforcementRequest(): UpdateSchedulingRoomEnforcementRequest {
+  return { context: undefined, school_year_id: undefined, enforce_room_assignments: undefined };
+}
+
+export const UpdateSchedulingRoomEnforcementRequest: MessageFns<UpdateSchedulingRoomEnforcementRequest> = {
+  encode(message: UpdateSchedulingRoomEnforcementRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.enforce_room_assignments !== undefined) {
+      writer.uint32(24).bool(message.enforce_room_assignments);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateSchedulingRoomEnforcementRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSchedulingRoomEnforcementRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.enforce_room_assignments = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSchedulingRoomEnforcementRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      enforce_room_assignments: isSet(object.enforceRoomAssignments)
+        ? globalThis.Boolean(object.enforceRoomAssignments)
+        : undefined,
+    };
+  },
+
+  toJSON(message: UpdateSchedulingRoomEnforcementRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.enforce_room_assignments !== undefined) {
+      obj.enforceRoomAssignments = message.enforce_room_assignments;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateSchedulingRoomEnforcementRequest>, I>>(
+    base?: I,
+  ): UpdateSchedulingRoomEnforcementRequest {
+    return UpdateSchedulingRoomEnforcementRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateSchedulingRoomEnforcementRequest>, I>>(
+    object: I,
+  ): UpdateSchedulingRoomEnforcementRequest {
+    const message = createBaseUpdateSchedulingRoomEnforcementRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.enforce_room_assignments = object.enforce_room_assignments ?? undefined;
     return message;
   },
 };

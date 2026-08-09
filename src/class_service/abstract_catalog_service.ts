@@ -101,6 +101,7 @@ export interface CreateAbstractCourseRequest {
   category_ids: ObjectId[];
   grade?: StudentGrade | undefined;
   color?: string | undefined;
+  eligible_special_room_category_ids: ObjectId[];
 }
 
 export interface UpdateAbstractCourseRequest {
@@ -113,6 +114,7 @@ export interface UpdateAbstractCourseRequest {
   category_ids: ObjectId[];
   grade?: StudentGrade | undefined;
   color?: string | undefined;
+  eligible_special_room_category_ids: ObjectId[];
 }
 
 export interface DeleteAbstractCourseRequest {
@@ -1316,6 +1318,7 @@ function createBaseCreateAbstractCourseRequest(): CreateAbstractCourseRequest {
     category_ids: [],
     grade: undefined,
     color: undefined,
+    eligible_special_room_category_ids: [],
   };
 }
 
@@ -1344,6 +1347,9 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     }
     if (message.color !== undefined) {
       writer.uint32(66).string(message.color);
+    }
+    for (const v of message.eligible_special_room_category_ids) {
+      ObjectId.encode(v!, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -1411,6 +1417,13 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
 
           message.color = reader.string();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.eligible_special_room_category_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1432,6 +1445,9 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
         : [],
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+      eligible_special_room_category_ids: globalThis.Array.isArray(object?.eligibleSpecialRoomCategoryIds)
+        ? object.eligibleSpecialRoomCategoryIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -1461,6 +1477,9 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     if (message.color !== undefined) {
       obj.color = message.color;
     }
+    if (message.eligible_special_room_category_ids?.length) {
+      obj.eligibleSpecialRoomCategoryIds = message.eligible_special_room_category_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -1479,6 +1498,8 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.grade = object.grade ?? undefined;
     message.color = object.color ?? undefined;
+    message.eligible_special_room_category_ids =
+      object.eligible_special_room_category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1494,6 +1515,7 @@ function createBaseUpdateAbstractCourseRequest(): UpdateAbstractCourseRequest {
     category_ids: [],
     grade: undefined,
     color: undefined,
+    eligible_special_room_category_ids: [],
   };
 }
 
@@ -1525,6 +1547,9 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     }
     if (message.color !== undefined) {
       writer.uint32(74).string(message.color);
+    }
+    for (const v of message.eligible_special_room_category_ids) {
+      ObjectId.encode(v!, writer.uint32(82).fork()).join();
     }
     return writer;
   },
@@ -1599,6 +1624,13 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
 
           message.color = reader.string();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.eligible_special_room_category_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1621,6 +1653,9 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
         : [],
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
       color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+      eligible_special_room_category_ids: globalThis.Array.isArray(object?.eligibleSpecialRoomCategoryIds)
+        ? object.eligibleSpecialRoomCategoryIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -1653,6 +1688,9 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     if (message.color !== undefined) {
       obj.color = message.color;
     }
+    if (message.eligible_special_room_category_ids?.length) {
+      obj.eligibleSpecialRoomCategoryIds = message.eligible_special_room_category_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -1674,6 +1712,8 @@ export const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest
     message.category_ids = object.category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.grade = object.grade ?? undefined;
     message.color = object.color ?? undefined;
+    message.eligible_special_room_category_ids =
+      object.eligible_special_room_category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

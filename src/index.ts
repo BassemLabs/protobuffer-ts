@@ -31,6 +31,8 @@ import * as Organization_owner_service from './organization_service/organization
 export { Organization_owner_service };
 import * as Announcement from './organization_service/announcement';
 export { Announcement };
+import * as Room_service from './organization_service/room_service';
+export { Room_service };
 import * as Bassem_labs_staff_service from './organization_service/bassem_labs_staff_service';
 export { Bassem_labs_staff_service };
 import * as Organization from './organization_service/organization';
@@ -39,6 +41,8 @@ import * as Campus from './organization_service/campus';
 export { Campus };
 import * as Onboarding_steps from './organization_service/onboarding_steps';
 export { Onboarding_steps };
+import * as Room from './organization_service/room';
+export { Room };
 import * as Organization_service from './organization_service/organization_service';
 export { Organization_service };
 import * as Kms_service from './organization_service/kms_service';

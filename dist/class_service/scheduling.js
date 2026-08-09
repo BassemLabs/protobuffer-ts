@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
-exports.SchedulingReview = void 0;
+exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -25,6 +25,9 @@ exports.schedulingGenerationRunStatusToNumber = schedulingGenerationRunStatusToN
 exports.schedulingReviewSectionTypeFromJSON = schedulingReviewSectionTypeFromJSON;
 exports.schedulingReviewSectionTypeToJSON = schedulingReviewSectionTypeToJSON;
 exports.schedulingReviewSectionTypeToNumber = schedulingReviewSectionTypeToNumber;
+exports.schedulingReviewActionDestinationFromJSON = schedulingReviewActionDestinationFromJSON;
+exports.schedulingReviewActionDestinationToJSON = schedulingReviewActionDestinationToJSON;
+exports.schedulingReviewActionDestinationToNumber = schedulingReviewActionDestinationToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const dayofweek_1 = require("../google/type/dayofweek");
@@ -473,8 +476,71 @@ function schedulingReviewSectionTypeToNumber(object) {
             return -1;
     }
 }
+/**
+ * Where the user must go to resolve a review issue that cannot be fixed inside
+ * the scheduling preparation wizard.
+ */
+var SchedulingReviewActionDestination;
+(function (SchedulingReviewActionDestination) {
+    /** SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP - Default: open the preparation step named by action_step. */
+    SchedulingReviewActionDestination["SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP"] = "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP";
+    /** SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS - Organization settings -> Rooms (missing/archived rooms or categories). */
+    SchedulingReviewActionDestination["SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS"] = "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS";
+    /** SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG - Classes -> abstract catalog (course room-eligibility problems). */
+    SchedulingReviewActionDestination["SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG"] = "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG";
+    SchedulingReviewActionDestination["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingReviewActionDestination || (exports.SchedulingReviewActionDestination = SchedulingReviewActionDestination = {}));
+function schedulingReviewActionDestinationFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP":
+            return SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP;
+        case 1:
+        case "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS":
+            return SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS;
+        case 2:
+        case "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG":
+            return SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingReviewActionDestination.UNRECOGNIZED;
+    }
+}
+function schedulingReviewActionDestinationToJSON(object) {
+    switch (object) {
+        case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP:
+            return "SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP";
+        case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS:
+            return "SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS";
+        case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG:
+            return "SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG";
+        case SchedulingReviewActionDestination.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingReviewActionDestinationToNumber(object) {
+    switch (object) {
+        case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_PREPARATION_STEP:
+            return 0;
+        case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ORGANIZATION_ROOMS:
+            return 1;
+        case SchedulingReviewActionDestination.SCHEDULING_REVIEW_ACTION_DESTINATION_ABSTRACT_CATALOG:
+            return 2;
+        case SchedulingReviewActionDestination.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseSchedulingWorkspace() {
-    return { id: undefined, organization: undefined, school_year: undefined, completed_steps: [] };
+    return {
+        id: undefined,
+        organization: undefined,
+        school_year: undefined,
+        completed_steps: [],
+        enforce_room_assignments: undefined,
+    };
 }
 exports.SchedulingWorkspace = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -492,6 +558,9 @@ exports.SchedulingWorkspace = {
             writer.int32(schedulingPreparationStepToNumber(v));
         }
         writer.join();
+        if (message.enforce_room_assignments !== undefined) {
+            writer.uint32(40).bool(message.enforce_room_assignments);
+        }
         return writer;
     },
     decode(input, length) {
@@ -532,6 +601,12 @@ exports.SchedulingWorkspace = {
                         continue;
                     }
                     break;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.enforce_room_assignments = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -548,6 +623,9 @@ exports.SchedulingWorkspace = {
             completed_steps: globalThis.Array.isArray(object?.completedSteps)
                 ? object.completedSteps.map((e) => schedulingPreparationStepFromJSON(e))
                 : [],
+            enforce_room_assignments: isSet(object.enforceRoomAssignments)
+                ? globalThis.Boolean(object.enforceRoomAssignments)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -564,6 +642,9 @@ exports.SchedulingWorkspace = {
         if (message.completed_steps?.length) {
             obj.completedSteps = message.completed_steps.map((e) => schedulingPreparationStepToJSON(e));
         }
+        if (message.enforce_room_assignments !== undefined) {
+            obj.enforceRoomAssignments = message.enforce_room_assignments;
+        }
         return obj;
     },
     create(base) {
@@ -579,6 +660,7 @@ exports.SchedulingWorkspace = {
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
         message.completed_steps = object.completed_steps?.map((e) => e) || [];
+        message.enforce_room_assignments = object.enforce_room_assignments ?? undefined;
         return message;
     },
 };
@@ -4193,6 +4275,7 @@ function createBaseSchedulingGeneratedScheduleEntry() {
         day: undefined,
         period_sequence: undefined,
         slot_id: undefined,
+        room_id: undefined,
     };
 }
 exports.SchedulingGeneratedScheduleEntry = {
@@ -4226,6 +4309,9 @@ exports.SchedulingGeneratedScheduleEntry = {
         }
         if (message.slot_id !== undefined) {
             writer.uint32(82).string(message.slot_id);
+        }
+        if (message.room_id !== undefined) {
+            object_id_1.ObjectId.encode(message.room_id, writer.uint32(90).fork()).join();
         }
         return writer;
     },
@@ -4296,6 +4382,12 @@ exports.SchedulingGeneratedScheduleEntry = {
                     }
                     message.slot_id = reader.string();
                     continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.room_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4316,6 +4408,7 @@ exports.SchedulingGeneratedScheduleEntry = {
             day: isSet(object.day) ? (0, dayofweek_1.dayOfWeekFromJSON)(object.day) : undefined,
             period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
             slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+            room_id: isSet(object.roomId) ? object_id_1.ObjectId.fromJSON(object.roomId) : undefined,
         };
     },
     toJSON(message) {
@@ -4350,6 +4443,9 @@ exports.SchedulingGeneratedScheduleEntry = {
         if (message.slot_id !== undefined) {
             obj.slotId = message.slot_id;
         }
+        if (message.room_id !== undefined) {
+            obj.roomId = object_id_1.ObjectId.toJSON(message.room_id);
+        }
         return obj;
     },
     create(base) {
@@ -4377,6 +4473,9 @@ exports.SchedulingGeneratedScheduleEntry = {
         message.day = object.day ?? undefined;
         message.period_sequence = object.period_sequence ?? undefined;
         message.slot_id = object.slot_id ?? undefined;
+        message.room_id = (object.room_id !== undefined && object.room_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.room_id)
+            : undefined;
         return message;
     },
 };
@@ -5086,6 +5185,102 @@ exports.SchedulingScheduleStudentInfo = {
         return message;
     },
 };
+function createBaseSchedulingScheduleRoomInfo() {
+    return { id: undefined, name: undefined, campus_id: undefined, category_name: undefined };
+}
+exports.SchedulingScheduleRoomInfo = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.campus_id !== undefined) {
+            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
+        }
+        if (message.category_name !== undefined) {
+            writer.uint32(34).string(message.category_name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleRoomInfo();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.category_name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            category_name: isSet(object.categoryName) ? globalThis.String(object.categoryName) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.campus_id !== undefined) {
+            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
+        }
+        if (message.category_name !== undefined) {
+            obj.categoryName = message.category_name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleRoomInfo.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleRoomInfo();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? undefined;
+        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.campus_id)
+            : undefined;
+        message.category_name = object.category_name ?? undefined;
+        return message;
+    },
+};
 function createBaseSchedulingScheduleSectionInfo() {
     return {
         id: undefined,
@@ -5229,6 +5424,8 @@ function createBaseSchedulingGeneratedScheduleView() {
         semesters: [],
         sections: [],
         students: [],
+        rooms: [],
+        room_assignments_enforced: undefined,
     };
 }
 exports.SchedulingGeneratedScheduleView = {
@@ -5256,6 +5453,12 @@ exports.SchedulingGeneratedScheduleView = {
         }
         for (const v of message.students) {
             exports.SchedulingScheduleStudentInfo.encode(v, writer.uint32(66).fork()).join();
+        }
+        for (const v of message.rooms) {
+            exports.SchedulingScheduleRoomInfo.encode(v, writer.uint32(74).fork()).join();
+        }
+        if (message.room_assignments_enforced !== undefined) {
+            writer.uint32(80).bool(message.room_assignments_enforced);
         }
         return writer;
     },
@@ -5314,6 +5517,18 @@ exports.SchedulingGeneratedScheduleView = {
                     }
                     message.students.push(exports.SchedulingScheduleStudentInfo.decode(reader, reader.uint32()));
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.rooms.push(exports.SchedulingScheduleRoomInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.room_assignments_enforced = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -5346,6 +5561,12 @@ exports.SchedulingGeneratedScheduleView = {
             students: globalThis.Array.isArray(object?.students)
                 ? object.students.map((e) => exports.SchedulingScheduleStudentInfo.fromJSON(e))
                 : [],
+            rooms: globalThis.Array.isArray(object?.rooms)
+                ? object.rooms.map((e) => exports.SchedulingScheduleRoomInfo.fromJSON(e))
+                : [],
+            room_assignments_enforced: isSet(object.roomAssignmentsEnforced)
+                ? globalThis.Boolean(object.roomAssignmentsEnforced)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -5374,6 +5595,12 @@ exports.SchedulingGeneratedScheduleView = {
         if (message.students?.length) {
             obj.students = message.students.map((e) => exports.SchedulingScheduleStudentInfo.toJSON(e));
         }
+        if (message.rooms?.length) {
+            obj.rooms = message.rooms.map((e) => exports.SchedulingScheduleRoomInfo.toJSON(e));
+        }
+        if (message.room_assignments_enforced !== undefined) {
+            obj.roomAssignmentsEnforced = message.room_assignments_enforced;
+        }
         return obj;
     },
     create(base) {
@@ -5391,6 +5618,8 @@ exports.SchedulingGeneratedScheduleView = {
         message.semesters = object.semesters?.map((e) => exports.SchedulingScheduleSemesterInfo.fromPartial(e)) || [];
         message.sections = object.sections?.map((e) => exports.SchedulingScheduleSectionInfo.fromPartial(e)) || [];
         message.students = object.students?.map((e) => exports.SchedulingScheduleStudentInfo.fromPartial(e)) || [];
+        message.rooms = object.rooms?.map((e) => exports.SchedulingScheduleRoomInfo.fromPartial(e)) || [];
+        message.room_assignments_enforced = object.room_assignments_enforced ?? undefined;
         return message;
     },
 };
@@ -5461,7 +5690,13 @@ exports.SchedulingReviewMetric = {
     },
 };
 function createBaseSchedulingReviewIssue() {
-    return { action_step: undefined, message: undefined, code: undefined };
+    return {
+        action_step: undefined,
+        message: undefined,
+        code: undefined,
+        destination: undefined,
+        warning_only: undefined,
+    };
 }
 exports.SchedulingReviewIssue = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -5473,6 +5708,12 @@ exports.SchedulingReviewIssue = {
         }
         if (message.code !== undefined) {
             writer.uint32(26).string(message.code);
+        }
+        if (message.destination !== undefined) {
+            writer.uint32(32).int32(schedulingReviewActionDestinationToNumber(message.destination));
+        }
+        if (message.warning_only !== undefined) {
+            writer.uint32(40).bool(message.warning_only);
         }
         return writer;
     },
@@ -5501,6 +5742,18 @@ exports.SchedulingReviewIssue = {
                     }
                     message.code = reader.string();
                     continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.destination = schedulingReviewActionDestinationFromJSON(reader.int32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.warning_only = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -5514,6 +5767,10 @@ exports.SchedulingReviewIssue = {
             action_step: isSet(object.actionStep) ? schedulingPreparationStepFromJSON(object.actionStep) : undefined,
             message: isSet(object.message) ? globalThis.String(object.message) : undefined,
             code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+            destination: isSet(object.destination)
+                ? schedulingReviewActionDestinationFromJSON(object.destination)
+                : undefined,
+            warning_only: isSet(object.warningOnly) ? globalThis.Boolean(object.warningOnly) : undefined,
         };
     },
     toJSON(message) {
@@ -5527,6 +5784,12 @@ exports.SchedulingReviewIssue = {
         if (message.code !== undefined) {
             obj.code = message.code;
         }
+        if (message.destination !== undefined) {
+            obj.destination = schedulingReviewActionDestinationToJSON(message.destination);
+        }
+        if (message.warning_only !== undefined) {
+            obj.warningOnly = message.warning_only;
+        }
         return obj;
     },
     create(base) {
@@ -5537,6 +5800,8 @@ exports.SchedulingReviewIssue = {
         message.action_step = object.action_step ?? undefined;
         message.message = object.message ?? undefined;
         message.code = object.code ?? undefined;
+        message.destination = object.destination ?? undefined;
+        message.warning_only = object.warning_only ?? undefined;
         return message;
     },
 };

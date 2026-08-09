@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/scheduling_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
+exports.UpdateSchedulingRoomEnforcementRequest = exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -2316,6 +2316,92 @@ exports.GetSchedulingGenerationRunsRequest = {
         message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseUpdateSchedulingRoomEnforcementRequest() {
+    return { context: undefined, school_year_id: undefined, enforce_room_assignments: undefined };
+}
+exports.UpdateSchedulingRoomEnforcementRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.enforce_room_assignments !== undefined) {
+            writer.uint32(24).bool(message.enforce_room_assignments);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateSchedulingRoomEnforcementRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.enforce_room_assignments = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            enforce_room_assignments: isSet(object.enforceRoomAssignments)
+                ? globalThis.Boolean(object.enforceRoomAssignments)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.enforce_room_assignments !== undefined) {
+            obj.enforceRoomAssignments = message.enforce_room_assignments;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateSchedulingRoomEnforcementRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateSchedulingRoomEnforcementRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.enforce_room_assignments = object.enforce_room_assignments ?? undefined;
         return message;
     },
 };
