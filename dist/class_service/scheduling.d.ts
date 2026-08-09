@@ -377,6 +377,7 @@ export interface SchedulingClassGroupSetup {
     high_school_course_setups: SchedulingHighSchoolCourseSetup[];
     high_school_course_assignments: SchedulingHighSchoolCourseStudentAssignment[];
     teacher_period_allocations: SchedulingClassGroupTeacherPeriodAllocation[];
+    instructional_requirements: SchedulingInstructionalRequirement[];
 }
 /** A preflight problem that prevents generation from starting. */
 export interface SchedulingGenerationBlocker {

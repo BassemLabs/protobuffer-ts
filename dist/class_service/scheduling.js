@@ -3913,6 +3913,7 @@ function createBaseSchedulingClassGroupSetup() {
         high_school_course_setups: [],
         high_school_course_assignments: [],
         teacher_period_allocations: [],
+        instructional_requirements: [],
     };
 }
 exports.SchedulingClassGroupSetup = {
@@ -3946,6 +3947,9 @@ exports.SchedulingClassGroupSetup = {
         }
         for (const v of message.teacher_period_allocations) {
             exports.SchedulingClassGroupTeacherPeriodAllocation.encode(v, writer.uint32(82).fork()).join();
+        }
+        for (const v of message.instructional_requirements) {
+            exports.SchedulingInstructionalRequirement.encode(v, writer.uint32(90).fork()).join();
         }
         return writer;
     },
@@ -4016,6 +4020,12 @@ exports.SchedulingClassGroupSetup = {
                     }
                     message.teacher_period_allocations.push(exports.SchedulingClassGroupTeacherPeriodAllocation.decode(reader, reader.uint32()));
                     continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.instructional_requirements.push(exports.SchedulingInstructionalRequirement.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4056,6 +4066,9 @@ exports.SchedulingClassGroupSetup = {
             teacher_period_allocations: globalThis.Array.isArray(object?.teacherPeriodAllocations)
                 ? object.teacherPeriodAllocations.map((e) => exports.SchedulingClassGroupTeacherPeriodAllocation.fromJSON(e))
                 : [],
+            instructional_requirements: globalThis.Array.isArray(object?.instructionalRequirements)
+                ? object.instructionalRequirements.map((e) => exports.SchedulingInstructionalRequirement.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -4090,6 +4103,9 @@ exports.SchedulingClassGroupSetup = {
         if (message.teacher_period_allocations?.length) {
             obj.teacherPeriodAllocations = message.teacher_period_allocations.map((e) => exports.SchedulingClassGroupTeacherPeriodAllocation.toJSON(e));
         }
+        if (message.instructional_requirements?.length) {
+            obj.instructionalRequirements = message.instructional_requirements.map((e) => exports.SchedulingInstructionalRequirement.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -4111,6 +4127,8 @@ exports.SchedulingClassGroupSetup = {
                 [];
         message.teacher_period_allocations =
             object.teacher_period_allocations?.map((e) => exports.SchedulingClassGroupTeacherPeriodAllocation.fromPartial(e)) || [];
+        message.instructional_requirements =
+            object.instructional_requirements?.map((e) => exports.SchedulingInstructionalRequirement.fromPartial(e)) || [];
         return message;
     },
 };
