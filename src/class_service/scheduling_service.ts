@@ -23,6 +23,7 @@ import {
   schedulingPreparationStepToNumber,
   SchedulingSemesterOptionGroup,
   SchedulingTeacherAvailabilityWindow,
+  SchedulingTeacherPeriodAllocation,
 } from "./scheduling";
 
 export const protobufPackage = "class_service.scheduling_service";
@@ -157,8 +158,13 @@ export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
   abstract_course_id:
     | ObjectId
     | undefined;
-  /** When absent, the stored assignment is cleared. */
+  /**
+   * Mutually exclusive modes: teacher_id fixes one teacher for every period;
+   * two or more allocations must sum exactly to the weekly requirement; leaving
+   * both empty selects Auto.
+   */
   teacher_id?: ObjectId | undefined;
+  teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
 }
 
 export interface DeleteSchedulingClassGroupRequest {
@@ -2232,6 +2238,7 @@ function createBaseUpsertSchedulingClassGroupTeacherAssignmentRequest(): UpsertS
     class_group_id: undefined,
     abstract_course_id: undefined,
     teacher_id: undefined,
+    teacher_period_allocations: [],
   };
 }
 
@@ -2256,6 +2263,9 @@ export const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<
     }
     if (message.teacher_id !== undefined) {
       ObjectId.encode(message.teacher_id, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.teacher_period_allocations) {
+      SchedulingTeacherPeriodAllocation.encode(v!, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -2302,6 +2312,13 @@ export const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<
 
           message.teacher_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.teacher_period_allocations.push(SchedulingTeacherPeriodAllocation.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2318,6 +2335,9 @@ export const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<
       class_group_id: isSet(object.classGroupId) ? Uuid.fromJSON(object.classGroupId) : undefined,
       abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
       teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      teacher_period_allocations: globalThis.Array.isArray(object?.teacherPeriodAllocations)
+        ? object.teacherPeriodAllocations.map((e: any) => SchedulingTeacherPeriodAllocation.fromJSON(e))
+        : [],
     };
   },
 
@@ -2337,6 +2357,11 @@ export const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<
     }
     if (message.teacher_id !== undefined) {
       obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.teacher_period_allocations?.length) {
+      obj.teacherPeriodAllocations = message.teacher_period_allocations.map((e) =>
+        SchedulingTeacherPeriodAllocation.toJSON(e)
+      );
     }
     return obj;
   },
@@ -2365,6 +2390,8 @@ export const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<
     message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
       ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
+    message.teacher_period_allocations =
+      object.teacher_period_allocations?.map((e) => SchedulingTeacherPeriodAllocation.fromPartial(e)) || [];
     return message;
   },
 };

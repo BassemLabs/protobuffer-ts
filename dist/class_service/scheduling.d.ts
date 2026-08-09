@@ -205,6 +205,11 @@ export interface SchedulingTeacherSetup {
     profiles: SchedulingTeacherProfile[];
     offered_grades: StudentGrade[];
 }
+/** One teacher's exact scheduling-only share of a class's weekly periods. */
+export interface SchedulingTeacherPeriodAllocation {
+    teacher_id: ObjectId | undefined;
+    periods_per_week?: number | undefined;
+}
 export interface SchedulingHighSchoolCourseSetup {
     id: Uuid | undefined;
     organization: ObjectId | undefined;
@@ -221,8 +226,13 @@ export interface SchedulingSemesterOptionGroup {
     /** Candidate semesters for this offering; generation picks one. */
     semester_ids: ObjectId[];
     id: ObjectId | undefined;
-    /** When set, generation must use this teacher for the offering. */
+    /**
+     * Mutually exclusive teacher modes: teacher_id fixes one teacher for every
+     * period; two or more allocations split the exact weekly total; leaving both
+     * empty selects Auto.
+     */
     teacher_id?: ObjectId | undefined;
+    teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
 }
 /**
  * A per-day restriction on which period sequences a class may occupy. Rules expand
@@ -342,9 +352,19 @@ export interface SchedulingClassGroupTeacherAssignment {
     abstract_course_id: ObjectId | undefined;
     teacher_id: ObjectId | undefined;
 }
+/** One teacher's persisted exact share of a class-group subject's weekly periods. */
+export interface SchedulingClassGroupTeacherPeriodAllocation {
+    id: Uuid | undefined;
+    organization: ObjectId | undefined;
+    scheduling_workspace: Uuid | undefined;
+    class_group_id: Uuid | undefined;
+    abstract_course_id: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
+    periods_per_week?: number | undefined;
+}
 /**
  * Full state of the Class Groups step: the groups, the subjects each needs, and their
- * teacher assignments, plus the catalog needed to render the assignment UI.
+ * single-teacher assignments or exact split allocations, plus the UI catalog.
  */
 export interface SchedulingClassGroupSetup {
     groups: SchedulingClassGroup[];
@@ -356,6 +376,7 @@ export interface SchedulingClassGroupSetup {
     high_school_courses: AbstractCourse[];
     high_school_course_setups: SchedulingHighSchoolCourseSetup[];
     high_school_course_assignments: SchedulingHighSchoolCourseStudentAssignment[];
+    teacher_period_allocations: SchedulingClassGroupTeacherPeriodAllocation[];
 }
 /** A preflight problem that prevents generation from starting. */
 export interface SchedulingGenerationBlocker {
@@ -540,6 +561,7 @@ export declare const SchedulingPeriodTimeSetup: MessageFns<SchedulingPeriodTimeS
 export declare const SchedulingTeacherProfile: MessageFns<SchedulingTeacherProfile>;
 export declare const SchedulingTeacherAvailabilityWindow: MessageFns<SchedulingTeacherAvailabilityWindow>;
 export declare const SchedulingTeacherSetup: MessageFns<SchedulingTeacherSetup>;
+export declare const SchedulingTeacherPeriodAllocation: MessageFns<SchedulingTeacherPeriodAllocation>;
 export declare const SchedulingHighSchoolCourseSetup: MessageFns<SchedulingHighSchoolCourseSetup>;
 export declare const SchedulingSemesterOptionGroup: MessageFns<SchedulingSemesterOptionGroup>;
 export declare const SchedulingCoursePeriodRule: MessageFns<SchedulingCoursePeriodRule>;
@@ -553,6 +575,7 @@ export declare const SchedulingHighSchoolCourseStudentAssignment: MessageFns<Sch
 export declare const SchedulingClassAssignmentSetup: MessageFns<SchedulingClassAssignmentSetup>;
 export declare const SchedulingClassGroup: MessageFns<SchedulingClassGroup>;
 export declare const SchedulingClassGroupTeacherAssignment: MessageFns<SchedulingClassGroupTeacherAssignment>;
+export declare const SchedulingClassGroupTeacherPeriodAllocation: MessageFns<SchedulingClassGroupTeacherPeriodAllocation>;
 export declare const SchedulingClassGroupSetup: MessageFns<SchedulingClassGroupSetup>;
 export declare const SchedulingGenerationBlocker: MessageFns<SchedulingGenerationBlocker>;
 export declare const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun>;

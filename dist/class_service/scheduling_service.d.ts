@@ -3,7 +3,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Uuid } from "../utils/uuid";
-import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingTeacherAvailabilityWindow } from "./scheduling";
+import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -115,8 +115,13 @@ export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
     school_year_id: ObjectId | undefined;
     class_group_id: Uuid | undefined;
     abstract_course_id: ObjectId | undefined;
-    /** When absent, the stored assignment is cleared. */
+    /**
+     * Mutually exclusive modes: teacher_id fixes one teacher for every period;
+     * two or more allocations must sum exactly to the weekly requirement; leaving
+     * both empty selects Auto.
+     */
     teacher_id?: ObjectId | undefined;
+    teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
 }
 export interface DeleteSchedulingClassGroupRequest {
     context: RequestContext | undefined;

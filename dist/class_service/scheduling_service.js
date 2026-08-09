@@ -1782,6 +1782,7 @@ function createBaseUpsertSchedulingClassGroupTeacherAssignmentRequest() {
         class_group_id: undefined,
         abstract_course_id: undefined,
         teacher_id: undefined,
+        teacher_period_allocations: [],
     };
 }
 exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = {
@@ -1800,6 +1801,9 @@ exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = {
         }
         if (message.teacher_id !== undefined) {
             object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.teacher_period_allocations) {
+            scheduling_1.SchedulingTeacherPeriodAllocation.encode(v, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -1840,6 +1844,12 @@ exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = {
                     }
                     message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.teacher_period_allocations.push(scheduling_1.SchedulingTeacherPeriodAllocation.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1855,6 +1865,9 @@ exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = {
             class_group_id: isSet(object.classGroupId) ? uuid_1.Uuid.fromJSON(object.classGroupId) : undefined,
             abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
             teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            teacher_period_allocations: globalThis.Array.isArray(object?.teacherPeriodAllocations)
+                ? object.teacherPeriodAllocations.map((e) => scheduling_1.SchedulingTeacherPeriodAllocation.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -1873,6 +1886,9 @@ exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = {
         }
         if (message.teacher_id !== undefined) {
             obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.teacher_period_allocations?.length) {
+            obj.teacherPeriodAllocations = message.teacher_period_allocations.map((e) => scheduling_1.SchedulingTeacherPeriodAllocation.toJSON(e));
         }
         return obj;
     },
@@ -1896,6 +1912,8 @@ exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = {
         message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.teacher_id)
             : undefined;
+        message.teacher_period_allocations =
+            object.teacher_period_allocations?.map((e) => scheduling_1.SchedulingTeacherPeriodAllocation.fromPartial(e)) || [];
         return message;
     },
 };
