@@ -3,7 +3,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Uuid } from "../utils/uuid";
-import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
+import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -123,6 +123,26 @@ export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
     teacher_id?: ObjectId | undefined;
     teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
 }
+export interface CreateSchedulingSharedLessonRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    members: SchedulingSharedLessonMember[];
+    teacher_id?: ObjectId | undefined;
+    teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
+}
+export interface UpdateSchedulingSharedLessonRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    shared_lesson_id: Uuid | undefined;
+    members: SchedulingSharedLessonMember[];
+    teacher_id?: ObjectId | undefined;
+    teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
+}
+export interface DeleteSchedulingSharedLessonRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    shared_lesson_id: Uuid | undefined;
+}
 export interface DeleteSchedulingClassGroupRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
@@ -171,6 +191,9 @@ export declare const GetSchedulingClassGroupSetupRequest: MessageFns<GetScheduli
 export declare const CreateSchedulingClassGroupRequest: MessageFns<CreateSchedulingClassGroupRequest>;
 export declare const RenameSchedulingClassGroupRequest: MessageFns<RenameSchedulingClassGroupRequest>;
 export declare const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<UpsertSchedulingClassGroupTeacherAssignmentRequest>;
+export declare const CreateSchedulingSharedLessonRequest: MessageFns<CreateSchedulingSharedLessonRequest>;
+export declare const UpdateSchedulingSharedLessonRequest: MessageFns<UpdateSchedulingSharedLessonRequest>;
+export declare const DeleteSchedulingSharedLessonRequest: MessageFns<DeleteSchedulingSharedLessonRequest>;
 export declare const DeleteSchedulingClassGroupRequest: MessageFns<DeleteSchedulingClassGroupRequest>;
 export declare const GetSchedulingClassAssignmentSetupRequest: MessageFns<GetSchedulingClassAssignmentSetupRequest>;
 export declare const UpsertSchedulingHighSchoolCourseStudentAssignmentRequest: MessageFns<UpsertSchedulingHighSchoolCourseStudentAssignmentRequest>;

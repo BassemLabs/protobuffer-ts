@@ -22,6 +22,7 @@ import {
   schedulingPreparationStepToJSON,
   schedulingPreparationStepToNumber,
   SchedulingSemesterOptionGroup,
+  SchedulingSharedLessonMember,
   SchedulingTeacherAvailabilityWindow,
   SchedulingTeacherPeriodAllocation,
 } from "./scheduling";
@@ -165,6 +166,29 @@ export interface UpsertSchedulingClassGroupTeacherAssignmentRequest {
    */
   teacher_id?: ObjectId | undefined;
   teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
+}
+
+export interface CreateSchedulingSharedLessonRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  members: SchedulingSharedLessonMember[];
+  teacher_id?: ObjectId | undefined;
+  teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
+}
+
+export interface UpdateSchedulingSharedLessonRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  shared_lesson_id: Uuid | undefined;
+  members: SchedulingSharedLessonMember[];
+  teacher_id?: ObjectId | undefined;
+  teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
+}
+
+export interface DeleteSchedulingSharedLessonRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  shared_lesson_id: Uuid | undefined;
 }
 
 export interface DeleteSchedulingClassGroupRequest {
@@ -2392,6 +2416,407 @@ export const UpsertSchedulingClassGroupTeacherAssignmentRequest: MessageFns<
       : undefined;
     message.teacher_period_allocations =
       object.teacher_period_allocations?.map((e) => SchedulingTeacherPeriodAllocation.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateSchedulingSharedLessonRequest(): CreateSchedulingSharedLessonRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    members: [],
+    teacher_id: undefined,
+    teacher_period_allocations: [],
+  };
+}
+
+export const CreateSchedulingSharedLessonRequest: MessageFns<CreateSchedulingSharedLessonRequest> = {
+  encode(message: CreateSchedulingSharedLessonRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.members) {
+      SchedulingSharedLessonMember.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.teacher_period_allocations) {
+      SchedulingTeacherPeriodAllocation.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateSchedulingSharedLessonRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSchedulingSharedLessonRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.members.push(SchedulingSharedLessonMember.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.teacher_period_allocations.push(SchedulingTeacherPeriodAllocation.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSchedulingSharedLessonRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      members: globalThis.Array.isArray(object?.members)
+        ? object.members.map((e: any) => SchedulingSharedLessonMember.fromJSON(e))
+        : [],
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      teacher_period_allocations: globalThis.Array.isArray(object?.teacherPeriodAllocations)
+        ? object.teacherPeriodAllocations.map((e: any) => SchedulingTeacherPeriodAllocation.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateSchedulingSharedLessonRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.members?.length) {
+      obj.members = message.members.map((e) => SchedulingSharedLessonMember.toJSON(e));
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.teacher_period_allocations?.length) {
+      obj.teacherPeriodAllocations = message.teacher_period_allocations.map((e) =>
+        SchedulingTeacherPeriodAllocation.toJSON(e)
+      );
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSchedulingSharedLessonRequest>, I>>(
+    base?: I,
+  ): CreateSchedulingSharedLessonRequest {
+    return CreateSchedulingSharedLessonRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateSchedulingSharedLessonRequest>, I>>(
+    object: I,
+  ): CreateSchedulingSharedLessonRequest {
+    const message = createBaseCreateSchedulingSharedLessonRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.members = object.members?.map((e) => SchedulingSharedLessonMember.fromPartial(e)) || [];
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.teacher_period_allocations =
+      object.teacher_period_allocations?.map((e) => SchedulingTeacherPeriodAllocation.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateSchedulingSharedLessonRequest(): UpdateSchedulingSharedLessonRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    shared_lesson_id: undefined,
+    members: [],
+    teacher_id: undefined,
+    teacher_period_allocations: [],
+  };
+}
+
+export const UpdateSchedulingSharedLessonRequest: MessageFns<UpdateSchedulingSharedLessonRequest> = {
+  encode(message: UpdateSchedulingSharedLessonRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.shared_lesson_id !== undefined) {
+      Uuid.encode(message.shared_lesson_id, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.members) {
+      SchedulingSharedLessonMember.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.teacher_period_allocations) {
+      SchedulingTeacherPeriodAllocation.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateSchedulingSharedLessonRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSchedulingSharedLessonRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.shared_lesson_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.members.push(SchedulingSharedLessonMember.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.teacher_period_allocations.push(SchedulingTeacherPeriodAllocation.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSchedulingSharedLessonRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      shared_lesson_id: isSet(object.sharedLessonId) ? Uuid.fromJSON(object.sharedLessonId) : undefined,
+      members: globalThis.Array.isArray(object?.members)
+        ? object.members.map((e: any) => SchedulingSharedLessonMember.fromJSON(e))
+        : [],
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      teacher_period_allocations: globalThis.Array.isArray(object?.teacherPeriodAllocations)
+        ? object.teacherPeriodAllocations.map((e: any) => SchedulingTeacherPeriodAllocation.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpdateSchedulingSharedLessonRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.shared_lesson_id !== undefined) {
+      obj.sharedLessonId = Uuid.toJSON(message.shared_lesson_id);
+    }
+    if (message.members?.length) {
+      obj.members = message.members.map((e) => SchedulingSharedLessonMember.toJSON(e));
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.teacher_period_allocations?.length) {
+      obj.teacherPeriodAllocations = message.teacher_period_allocations.map((e) =>
+        SchedulingTeacherPeriodAllocation.toJSON(e)
+      );
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateSchedulingSharedLessonRequest>, I>>(
+    base?: I,
+  ): UpdateSchedulingSharedLessonRequest {
+    return UpdateSchedulingSharedLessonRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateSchedulingSharedLessonRequest>, I>>(
+    object: I,
+  ): UpdateSchedulingSharedLessonRequest {
+    const message = createBaseUpdateSchedulingSharedLessonRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.shared_lesson_id = (object.shared_lesson_id !== undefined && object.shared_lesson_id !== null)
+      ? Uuid.fromPartial(object.shared_lesson_id)
+      : undefined;
+    message.members = object.members?.map((e) => SchedulingSharedLessonMember.fromPartial(e)) || [];
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.teacher_period_allocations =
+      object.teacher_period_allocations?.map((e) => SchedulingTeacherPeriodAllocation.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteSchedulingSharedLessonRequest(): DeleteSchedulingSharedLessonRequest {
+  return { context: undefined, school_year_id: undefined, shared_lesson_id: undefined };
+}
+
+export const DeleteSchedulingSharedLessonRequest: MessageFns<DeleteSchedulingSharedLessonRequest> = {
+  encode(message: DeleteSchedulingSharedLessonRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.shared_lesson_id !== undefined) {
+      Uuid.encode(message.shared_lesson_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteSchedulingSharedLessonRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteSchedulingSharedLessonRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.shared_lesson_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteSchedulingSharedLessonRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      shared_lesson_id: isSet(object.sharedLessonId) ? Uuid.fromJSON(object.sharedLessonId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteSchedulingSharedLessonRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.shared_lesson_id !== undefined) {
+      obj.sharedLessonId = Uuid.toJSON(message.shared_lesson_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteSchedulingSharedLessonRequest>, I>>(
+    base?: I,
+  ): DeleteSchedulingSharedLessonRequest {
+    return DeleteSchedulingSharedLessonRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteSchedulingSharedLessonRequest>, I>>(
+    object: I,
+  ): DeleteSchedulingSharedLessonRequest {
+    const message = createBaseDeleteSchedulingSharedLessonRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.shared_lesson_id = (object.shared_lesson_id !== undefined && object.shared_lesson_id !== null)
+      ? Uuid.fromPartial(object.shared_lesson_id)
+      : undefined;
     return message;
   },
 };

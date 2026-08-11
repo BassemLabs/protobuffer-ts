@@ -362,9 +362,27 @@ export interface SchedulingClassGroupTeacherPeriodAllocation {
     teacher_id: ObjectId | undefined;
     periods_per_week?: number | undefined;
 }
+/** One elementary/middle subject taught together across two or more class groups. */
+export interface SchedulingSharedLessonMember {
+    class_group_id: Uuid | undefined;
+    abstract_course_id: ObjectId | undefined;
+}
+/**
+ * The complete shared-lesson aggregate. Teacher modes match class-group subjects:
+ * absent teacher_id plus no allocations is Auto; teacher_id selects one teacher;
+ * two or more allocations define an exact weekly split.
+ */
+export interface SchedulingSharedLesson {
+    id: Uuid | undefined;
+    organization: ObjectId | undefined;
+    scheduling_workspace: Uuid | undefined;
+    members: SchedulingSharedLessonMember[];
+    teacher_id?: ObjectId | undefined;
+    teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
+}
 /**
  * Full state of the Class Groups step: the groups, the subjects each needs, and their
- * single-teacher assignments or exact split allocations, plus the UI catalog.
+ * standalone or shared teacher rules, plus the UI catalog.
  */
 export interface SchedulingClassGroupSetup {
     groups: SchedulingClassGroup[];
@@ -378,6 +396,7 @@ export interface SchedulingClassGroupSetup {
     high_school_course_assignments: SchedulingHighSchoolCourseStudentAssignment[];
     teacher_period_allocations: SchedulingClassGroupTeacherPeriodAllocation[];
     instructional_requirements: SchedulingInstructionalRequirement[];
+    shared_lessons: SchedulingSharedLesson[];
 }
 /** A preflight problem that prevents generation from starting. */
 export interface SchedulingGenerationBlocker {
@@ -449,6 +468,14 @@ export interface SchedulingGeneratedSchedule {
     created_at?: string | undefined;
 }
 /** Display companions assembled from the run's frozen snapshot at read time. */
+export interface SchedulingScheduleSubjectMemberInfo {
+    class_group_id: Uuid | undefined;
+    abstract_course_id: ObjectId | undefined;
+    group_label?: string | undefined;
+    subject_name?: string | undefined;
+    color?: string | undefined;
+    grade?: StudentGrade | undefined;
+}
 export interface SchedulingScheduleClassInfo {
     class_id?: string | undefined;
     name?: string | undefined;
@@ -457,6 +484,8 @@ export interface SchedulingScheduleClassInfo {
     periods_per_week?: number | undefined;
     student_ids: ObjectId[];
     color?: string | undefined;
+    subject_members: SchedulingScheduleSubjectMemberInfo[];
+    shared_lesson_id?: Uuid | undefined;
 }
 export interface SchedulingScheduleTeacherInfo {
     id: ObjectId | undefined;
@@ -577,12 +606,15 @@ export declare const SchedulingClassAssignmentSetup: MessageFns<SchedulingClassA
 export declare const SchedulingClassGroup: MessageFns<SchedulingClassGroup>;
 export declare const SchedulingClassGroupTeacherAssignment: MessageFns<SchedulingClassGroupTeacherAssignment>;
 export declare const SchedulingClassGroupTeacherPeriodAllocation: MessageFns<SchedulingClassGroupTeacherPeriodAllocation>;
+export declare const SchedulingSharedLessonMember: MessageFns<SchedulingSharedLessonMember>;
+export declare const SchedulingSharedLesson: MessageFns<SchedulingSharedLesson>;
 export declare const SchedulingClassGroupSetup: MessageFns<SchedulingClassGroupSetup>;
 export declare const SchedulingGenerationBlocker: MessageFns<SchedulingGenerationBlocker>;
 export declare const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun>;
 export declare const SchedulingGenerationRunList: MessageFns<SchedulingGenerationRunList>;
 export declare const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedScheduleEntry>;
 export declare const SchedulingGeneratedSchedule: MessageFns<SchedulingGeneratedSchedule>;
+export declare const SchedulingScheduleSubjectMemberInfo: MessageFns<SchedulingScheduleSubjectMemberInfo>;
 export declare const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo>;
 export declare const SchedulingScheduleTeacherInfo: MessageFns<SchedulingScheduleTeacherInfo>;
 export declare const SchedulingScheduleSlotInfo: MessageFns<SchedulingScheduleSlotInfo>;
