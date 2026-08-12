@@ -163,12 +163,18 @@ export interface SchedulingPeriodTimeSetupTemplate {
     name?: string | undefined;
     periods: SchedulingPeriodDefinition[];
 }
+export interface SchedulingPeriodTimeSetupWeekdayOverride {
+    day?: DayOfWeek | undefined;
+    period_time_setup_template: Uuid | undefined;
+}
 export interface SchedulingSemesterPeriodTimeSetup {
     id: Uuid | undefined;
     organization: ObjectId | undefined;
     scheduling_workspace: Uuid | undefined;
     semester: ObjectId | undefined;
+    /** Default template for every active weekday without an override. */
     period_time_setup_template: Uuid | undefined;
+    weekday_overrides: SchedulingPeriodTimeSetupWeekdayOverride[];
 }
 export interface SchedulingWeekdayPreviewDay {
     day?: DayOfWeek | undefined;
@@ -585,6 +591,7 @@ export declare const SchedulingPeriodDefinition: MessageFns<SchedulingPeriodDefi
 export declare const SchedulingOfferedGrade: MessageFns<SchedulingOfferedGrade>;
 export declare const SchedulingOfferedGradeSetup: MessageFns<SchedulingOfferedGradeSetup>;
 export declare const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeSetupTemplate>;
+export declare const SchedulingPeriodTimeSetupWeekdayOverride: MessageFns<SchedulingPeriodTimeSetupWeekdayOverride>;
 export declare const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPeriodTimeSetup>;
 export declare const SchedulingWeekdayPreviewDay: MessageFns<SchedulingWeekdayPreviewDay>;
 export declare const SchedulingPeriodTimeSetup: MessageFns<SchedulingPeriodTimeSetup>;

@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
-exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = void 0;
+exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupWeekdayOverride = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -1345,6 +1345,77 @@ exports.SchedulingPeriodTimeSetupTemplate = {
         return message;
     },
 };
+function createBaseSchedulingPeriodTimeSetupWeekdayOverride() {
+    return { day: undefined, period_time_setup_template: undefined };
+}
+exports.SchedulingPeriodTimeSetupWeekdayOverride = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.day !== undefined) {
+            writer.uint32(8).int32((0, dayofweek_1.dayOfWeekToNumber)(message.day));
+        }
+        if (message.period_time_setup_template !== undefined) {
+            uuid_1.Uuid.encode(message.period_time_setup_template, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingPeriodTimeSetupWeekdayOverride();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.day = (0, dayofweek_1.dayOfWeekFromJSON)(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.period_time_setup_template = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            day: isSet(object.day) ? (0, dayofweek_1.dayOfWeekFromJSON)(object.day) : undefined,
+            period_time_setup_template: isSet(object.periodTimeSetupTemplate)
+                ? uuid_1.Uuid.fromJSON(object.periodTimeSetupTemplate)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.day !== undefined) {
+            obj.day = (0, dayofweek_1.dayOfWeekToJSON)(message.day);
+        }
+        if (message.period_time_setup_template !== undefined) {
+            obj.periodTimeSetupTemplate = uuid_1.Uuid.toJSON(message.period_time_setup_template);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingPeriodTimeSetupWeekdayOverride.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingPeriodTimeSetupWeekdayOverride();
+        message.day = object.day ?? undefined;
+        message.period_time_setup_template =
+            (object.period_time_setup_template !== undefined && object.period_time_setup_template !== null)
+                ? uuid_1.Uuid.fromPartial(object.period_time_setup_template)
+                : undefined;
+        return message;
+    },
+};
 function createBaseSchedulingSemesterPeriodTimeSetup() {
     return {
         id: undefined,
@@ -1352,6 +1423,7 @@ function createBaseSchedulingSemesterPeriodTimeSetup() {
         scheduling_workspace: undefined,
         semester: undefined,
         period_time_setup_template: undefined,
+        weekday_overrides: [],
     };
 }
 exports.SchedulingSemesterPeriodTimeSetup = {
@@ -1370,6 +1442,9 @@ exports.SchedulingSemesterPeriodTimeSetup = {
         }
         if (message.period_time_setup_template !== undefined) {
             uuid_1.Uuid.encode(message.period_time_setup_template, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.weekday_overrides) {
+            exports.SchedulingPeriodTimeSetupWeekdayOverride.encode(v, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -1410,6 +1485,12 @@ exports.SchedulingSemesterPeriodTimeSetup = {
                     }
                     message.period_time_setup_template = uuid_1.Uuid.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.weekday_overrides.push(exports.SchedulingPeriodTimeSetupWeekdayOverride.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1427,6 +1508,9 @@ exports.SchedulingSemesterPeriodTimeSetup = {
             period_time_setup_template: isSet(object.periodTimeSetupTemplate)
                 ? uuid_1.Uuid.fromJSON(object.periodTimeSetupTemplate)
                 : undefined,
+            weekday_overrides: globalThis.Array.isArray(object?.weekdayOverrides)
+                ? object.weekdayOverrides.map((e) => exports.SchedulingPeriodTimeSetupWeekdayOverride.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -1445,6 +1529,9 @@ exports.SchedulingSemesterPeriodTimeSetup = {
         }
         if (message.period_time_setup_template !== undefined) {
             obj.periodTimeSetupTemplate = uuid_1.Uuid.toJSON(message.period_time_setup_template);
+        }
+        if (message.weekday_overrides?.length) {
+            obj.weekdayOverrides = message.weekday_overrides.map((e) => exports.SchedulingPeriodTimeSetupWeekdayOverride.toJSON(e));
         }
         return obj;
     },
@@ -1467,6 +1554,8 @@ exports.SchedulingSemesterPeriodTimeSetup = {
             (object.period_time_setup_template !== undefined && object.period_time_setup_template !== null)
                 ? uuid_1.Uuid.fromPartial(object.period_time_setup_template)
                 : undefined;
+        message.weekday_overrides =
+            object.weekday_overrides?.map((e) => exports.SchedulingPeriodTimeSetupWeekdayOverride.fromPartial(e)) || [];
         return message;
     },
 };

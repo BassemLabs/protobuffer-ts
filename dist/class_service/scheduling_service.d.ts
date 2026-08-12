@@ -3,7 +3,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Uuid } from "../utils/uuid";
-import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
+import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPeriodTimeSetupWeekdayOverride, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -57,6 +57,13 @@ export interface AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
     school_year_id: ObjectId | undefined;
     semester_id: ObjectId | undefined;
     template_id: Uuid | undefined;
+}
+export interface UpsertSemesterSchedulingPeriodTimeSetupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
+    default_template_id: Uuid | undefined;
+    weekday_overrides: SchedulingPeriodTimeSetupWeekdayOverride[];
 }
 export interface GetSchedulingTeacherSetupRequest {
     context: RequestContext | undefined;
@@ -182,6 +189,7 @@ export declare const GetSchedulingPeriodTimeSetupRequest: MessageFns<GetScheduli
 export declare const CreateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<CreateSchedulingPeriodTimeSetupTemplateRequest>;
 export declare const UpdateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<UpdateSchedulingPeriodTimeSetupTemplateRequest>;
 export declare const AssignSemesterSchedulingPeriodTimeSetupTemplateRequest: MessageFns<AssignSemesterSchedulingPeriodTimeSetupTemplateRequest>;
+export declare const UpsertSemesterSchedulingPeriodTimeSetupRequest: MessageFns<UpsertSemesterSchedulingPeriodTimeSetupRequest>;
 export declare const GetSchedulingTeacherSetupRequest: MessageFns<GetSchedulingTeacherSetupRequest>;
 export declare const UpsertSchedulingTeacherProfileRequest: MessageFns<UpsertSchedulingTeacherProfileRequest>;
 export declare const GetSchedulingClassesSetupRequest: MessageFns<GetSchedulingClassesSetupRequest>;

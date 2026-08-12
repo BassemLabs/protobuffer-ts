@@ -17,6 +17,7 @@ import {
   schedulingDoublePeriodModeToJSON,
   schedulingDoublePeriodModeToNumber,
   SchedulingPeriodDefinition,
+  SchedulingPeriodTimeSetupWeekdayOverride,
   SchedulingPreparationStep,
   schedulingPreparationStepFromJSON,
   schedulingPreparationStepToJSON,
@@ -90,6 +91,14 @@ export interface AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
   school_year_id: ObjectId | undefined;
   semester_id: ObjectId | undefined;
   template_id: Uuid | undefined;
+}
+
+export interface UpsertSemesterSchedulingPeriodTimeSetupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
+  default_template_id: Uuid | undefined;
+  weekday_overrides: SchedulingPeriodTimeSetupWeekdayOverride[];
 }
 
 export interface GetSchedulingTeacherSetupRequest {
@@ -1266,6 +1275,151 @@ export const AssignSemesterSchedulingPeriodTimeSetupTemplateRequest: MessageFns<
     message.template_id = (object.template_id !== undefined && object.template_id !== null)
       ? Uuid.fromPartial(object.template_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseUpsertSemesterSchedulingPeriodTimeSetupRequest(): UpsertSemesterSchedulingPeriodTimeSetupRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    semester_id: undefined,
+    default_template_id: undefined,
+    weekday_overrides: [],
+  };
+}
+
+export const UpsertSemesterSchedulingPeriodTimeSetupRequest: MessageFns<
+  UpsertSemesterSchedulingPeriodTimeSetupRequest
+> = {
+  encode(
+    message: UpsertSemesterSchedulingPeriodTimeSetupRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+    }
+    if (message.default_template_id !== undefined) {
+      Uuid.encode(message.default_template_id, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.weekday_overrides) {
+      SchedulingPeriodTimeSetupWeekdayOverride.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertSemesterSchedulingPeriodTimeSetupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertSemesterSchedulingPeriodTimeSetupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.default_template_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.weekday_overrides.push(SchedulingPeriodTimeSetupWeekdayOverride.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpsertSemesterSchedulingPeriodTimeSetupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      default_template_id: isSet(object.defaultTemplateId) ? Uuid.fromJSON(object.defaultTemplateId) : undefined,
+      weekday_overrides: globalThis.Array.isArray(object?.weekdayOverrides)
+        ? object.weekdayOverrides.map((e: any) => SchedulingPeriodTimeSetupWeekdayOverride.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpsertSemesterSchedulingPeriodTimeSetupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.default_template_id !== undefined) {
+      obj.defaultTemplateId = Uuid.toJSON(message.default_template_id);
+    }
+    if (message.weekday_overrides?.length) {
+      obj.weekdayOverrides = message.weekday_overrides.map((e) => SchedulingPeriodTimeSetupWeekdayOverride.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpsertSemesterSchedulingPeriodTimeSetupRequest>, I>>(
+    base?: I,
+  ): UpsertSemesterSchedulingPeriodTimeSetupRequest {
+    return UpsertSemesterSchedulingPeriodTimeSetupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpsertSemesterSchedulingPeriodTimeSetupRequest>, I>>(
+    object: I,
+  ): UpsertSemesterSchedulingPeriodTimeSetupRequest {
+    const message = createBaseUpsertSemesterSchedulingPeriodTimeSetupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.default_template_id = (object.default_template_id !== undefined && object.default_template_id !== null)
+      ? Uuid.fromPartial(object.default_template_id)
+      : undefined;
+    message.weekday_overrides =
+      object.weekday_overrides?.map((e) => SchedulingPeriodTimeSetupWeekdayOverride.fromPartial(e)) || [];
     return message;
   },
 };

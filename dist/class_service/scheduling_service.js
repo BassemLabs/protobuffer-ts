@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/scheduling_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateSchedulingRoomEnforcementRequest = exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.DeleteSchedulingSharedLessonRequest = exports.UpdateSchedulingSharedLessonRequest = exports.CreateSchedulingSharedLessonRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
+exports.UpdateSchedulingRoomEnforcementRequest = exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.DeleteSchedulingSharedLessonRequest = exports.UpdateSchedulingSharedLessonRequest = exports.CreateSchedulingSharedLessonRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.UpsertSemesterSchedulingPeriodTimeSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -909,6 +909,131 @@ exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = {
         message.template_id = (object.template_id !== undefined && object.template_id !== null)
             ? uuid_1.Uuid.fromPartial(object.template_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseUpsertSemesterSchedulingPeriodTimeSetupRequest() {
+    return {
+        context: undefined,
+        school_year_id: undefined,
+        semester_id: undefined,
+        default_template_id: undefined,
+        weekday_overrides: [],
+    };
+}
+exports.UpsertSemesterSchedulingPeriodTimeSetupRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.semester_id !== undefined) {
+            object_id_1.ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+        }
+        if (message.default_template_id !== undefined) {
+            uuid_1.Uuid.encode(message.default_template_id, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.weekday_overrides) {
+            scheduling_1.SchedulingPeriodTimeSetupWeekdayOverride.encode(v, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpsertSemesterSchedulingPeriodTimeSetupRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.default_template_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.weekday_overrides.push(scheduling_1.SchedulingPeriodTimeSetupWeekdayOverride.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            default_template_id: isSet(object.defaultTemplateId) ? uuid_1.Uuid.fromJSON(object.defaultTemplateId) : undefined,
+            weekday_overrides: globalThis.Array.isArray(object?.weekdayOverrides)
+                ? object.weekdayOverrides.map((e) => scheduling_1.SchedulingPeriodTimeSetupWeekdayOverride.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.semester_id !== undefined) {
+            obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.default_template_id !== undefined) {
+            obj.defaultTemplateId = uuid_1.Uuid.toJSON(message.default_template_id);
+        }
+        if (message.weekday_overrides?.length) {
+            obj.weekdayOverrides = message.weekday_overrides.map((e) => scheduling_1.SchedulingPeriodTimeSetupWeekdayOverride.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpsertSemesterSchedulingPeriodTimeSetupRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpsertSemesterSchedulingPeriodTimeSetupRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.default_template_id = (object.default_template_id !== undefined && object.default_template_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.default_template_id)
+            : undefined;
+        message.weekday_overrides =
+            object.weekday_overrides?.map((e) => scheduling_1.SchedulingPeriodTimeSetupWeekdayOverride.fromPartial(e)) || [];
         return message;
     },
 };

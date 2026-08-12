@@ -597,12 +597,21 @@ export interface SchedulingPeriodTimeSetupTemplate {
   periods: SchedulingPeriodDefinition[];
 }
 
+export interface SchedulingPeriodTimeSetupWeekdayOverride {
+  day?: DayOfWeek | undefined;
+  period_time_setup_template: Uuid | undefined;
+}
+
 export interface SchedulingSemesterPeriodTimeSetup {
   id: Uuid | undefined;
   organization: ObjectId | undefined;
   scheduling_workspace: Uuid | undefined;
-  semester: ObjectId | undefined;
+  semester:
+    | ObjectId
+    | undefined;
+  /** Default template for every active weekday without an override. */
   period_time_setup_template: Uuid | undefined;
+  weekday_overrides: SchedulingPeriodTimeSetupWeekdayOverride[];
 }
 
 export interface SchedulingWeekdayPreviewDay {
@@ -1994,6 +2003,89 @@ export const SchedulingPeriodTimeSetupTemplate: MessageFns<SchedulingPeriodTimeS
   },
 };
 
+function createBaseSchedulingPeriodTimeSetupWeekdayOverride(): SchedulingPeriodTimeSetupWeekdayOverride {
+  return { day: undefined, period_time_setup_template: undefined };
+}
+
+export const SchedulingPeriodTimeSetupWeekdayOverride: MessageFns<SchedulingPeriodTimeSetupWeekdayOverride> = {
+  encode(message: SchedulingPeriodTimeSetupWeekdayOverride, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.day !== undefined) {
+      writer.uint32(8).int32(dayOfWeekToNumber(message.day));
+    }
+    if (message.period_time_setup_template !== undefined) {
+      Uuid.encode(message.period_time_setup_template, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPeriodTimeSetupWeekdayOverride {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPeriodTimeSetupWeekdayOverride();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.day = dayOfWeekFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.period_time_setup_template = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPeriodTimeSetupWeekdayOverride {
+    return {
+      day: isSet(object.day) ? dayOfWeekFromJSON(object.day) : undefined,
+      period_time_setup_template: isSet(object.periodTimeSetupTemplate)
+        ? Uuid.fromJSON(object.periodTimeSetupTemplate)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPeriodTimeSetupWeekdayOverride): unknown {
+    const obj: any = {};
+    if (message.day !== undefined) {
+      obj.day = dayOfWeekToJSON(message.day);
+    }
+    if (message.period_time_setup_template !== undefined) {
+      obj.periodTimeSetupTemplate = Uuid.toJSON(message.period_time_setup_template);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPeriodTimeSetupWeekdayOverride>, I>>(
+    base?: I,
+  ): SchedulingPeriodTimeSetupWeekdayOverride {
+    return SchedulingPeriodTimeSetupWeekdayOverride.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPeriodTimeSetupWeekdayOverride>, I>>(
+    object: I,
+  ): SchedulingPeriodTimeSetupWeekdayOverride {
+    const message = createBaseSchedulingPeriodTimeSetupWeekdayOverride();
+    message.day = object.day ?? undefined;
+    message.period_time_setup_template =
+      (object.period_time_setup_template !== undefined && object.period_time_setup_template !== null)
+        ? Uuid.fromPartial(object.period_time_setup_template)
+        : undefined;
+    return message;
+  },
+};
+
 function createBaseSchedulingSemesterPeriodTimeSetup(): SchedulingSemesterPeriodTimeSetup {
   return {
     id: undefined,
@@ -2001,6 +2093,7 @@ function createBaseSchedulingSemesterPeriodTimeSetup(): SchedulingSemesterPeriod
     scheduling_workspace: undefined,
     semester: undefined,
     period_time_setup_template: undefined,
+    weekday_overrides: [],
   };
 }
 
@@ -2020,6 +2113,9 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
     }
     if (message.period_time_setup_template !== undefined) {
       Uuid.encode(message.period_time_setup_template, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.weekday_overrides) {
+      SchedulingPeriodTimeSetupWeekdayOverride.encode(v!, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -2066,6 +2162,13 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
 
           message.period_time_setup_template = Uuid.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.weekday_overrides.push(SchedulingPeriodTimeSetupWeekdayOverride.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2084,6 +2187,9 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
       period_time_setup_template: isSet(object.periodTimeSetupTemplate)
         ? Uuid.fromJSON(object.periodTimeSetupTemplate)
         : undefined,
+      weekday_overrides: globalThis.Array.isArray(object?.weekdayOverrides)
+        ? object.weekdayOverrides.map((e: any) => SchedulingPeriodTimeSetupWeekdayOverride.fromJSON(e))
+        : [],
     };
   },
 
@@ -2103,6 +2209,9 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
     }
     if (message.period_time_setup_template !== undefined) {
       obj.periodTimeSetupTemplate = Uuid.toJSON(message.period_time_setup_template);
+    }
+    if (message.weekday_overrides?.length) {
+      obj.weekdayOverrides = message.weekday_overrides.map((e) => SchedulingPeriodTimeSetupWeekdayOverride.toJSON(e));
     }
     return obj;
   },
@@ -2130,6 +2239,8 @@ export const SchedulingSemesterPeriodTimeSetup: MessageFns<SchedulingSemesterPer
       (object.period_time_setup_template !== undefined && object.period_time_setup_template !== null)
         ? Uuid.fromPartial(object.period_time_setup_template)
         : undefined;
+    message.weekday_overrides =
+      object.weekday_overrides?.map((e) => SchedulingPeriodTimeSetupWeekdayOverride.fromPartial(e)) || [];
     return message;
   },
 };
