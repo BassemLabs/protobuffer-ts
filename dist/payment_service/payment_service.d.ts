@@ -25,6 +25,12 @@ export interface GetSetupAutoIntentRequest {
 export interface GetSetupAutoIntentResponse {
     setup_auto_intent_secret?: string | undefined;
 }
+export interface CreateAutoPayBankSetupSessionRequest {
+    context: RequestContext | undefined;
+}
+export interface CreateAutoPayBankSetupSessionResponse {
+    checkout_url?: string | undefined;
+}
 export interface VerifyMicroDepositsRequest {
     context: RequestContext | undefined;
     first?: number | undefined;
@@ -53,6 +59,8 @@ export declare const HandleWebhookRequest: MessageFns<HandleWebhookRequest>;
 export declare const HandleWebhookResponse: MessageFns<HandleWebhookResponse>;
 export declare const GetSetupAutoIntentRequest: MessageFns<GetSetupAutoIntentRequest>;
 export declare const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse>;
+export declare const CreateAutoPayBankSetupSessionRequest: MessageFns<CreateAutoPayBankSetupSessionRequest>;
+export declare const CreateAutoPayBankSetupSessionResponse: MessageFns<CreateAutoPayBankSetupSessionResponse>;
 export declare const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest>;
 export declare const VerifyMicroDepositsResponse: MessageFns<VerifyMicroDepositsResponse>;
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;

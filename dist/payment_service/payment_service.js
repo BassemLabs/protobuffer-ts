@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/payment_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OnboardOrganizationStripeAccountResponse = exports.OnboardOrganizationStripeAccountRequest = exports.CreatePaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.VerifyMicroDepositsResponse = exports.VerifyMicroDepositsRequest = exports.GetSetupAutoIntentResponse = exports.GetSetupAutoIntentRequest = exports.HandleWebhookResponse = exports.HandleWebhookRequest = exports.SetupAutoPaymentMethod = exports.protobufPackage = void 0;
+exports.OnboardOrganizationStripeAccountResponse = exports.OnboardOrganizationStripeAccountRequest = exports.CreatePaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.VerifyMicroDepositsResponse = exports.VerifyMicroDepositsRequest = exports.CreateAutoPayBankSetupSessionResponse = exports.CreateAutoPayBankSetupSessionRequest = exports.GetSetupAutoIntentResponse = exports.GetSetupAutoIntentRequest = exports.HandleWebhookResponse = exports.HandleWebhookRequest = exports.SetupAutoPaymentMethod = exports.protobufPackage = void 0;
 exports.setupAutoPaymentMethodFromJSON = setupAutoPaymentMethodFromJSON;
 exports.setupAutoPaymentMethodToJSON = setupAutoPaymentMethodToJSON;
 exports.setupAutoPaymentMethodToNumber = setupAutoPaymentMethodToNumber;
@@ -294,6 +294,108 @@ exports.GetSetupAutoIntentResponse = {
     fromPartial(object) {
         const message = createBaseGetSetupAutoIntentResponse();
         message.setup_auto_intent_secret = object.setup_auto_intent_secret ?? undefined;
+        return message;
+    },
+};
+function createBaseCreateAutoPayBankSetupSessionRequest() {
+    return { context: undefined };
+}
+exports.CreateAutoPayBankSetupSessionRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateAutoPayBankSetupSessionRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateAutoPayBankSetupSessionRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateAutoPayBankSetupSessionRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseCreateAutoPayBankSetupSessionResponse() {
+    return { checkout_url: undefined };
+}
+exports.CreateAutoPayBankSetupSessionResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.checkout_url !== undefined) {
+            writer.uint32(10).string(message.checkout_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateAutoPayBankSetupSessionResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.checkout_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { checkout_url: isSet(object.checkoutUrl) ? globalThis.String(object.checkoutUrl) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.checkout_url !== undefined) {
+            obj.checkoutUrl = message.checkout_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateAutoPayBankSetupSessionResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateAutoPayBankSetupSessionResponse();
+        message.checkout_url = object.checkout_url ?? undefined;
         return message;
     },
 };

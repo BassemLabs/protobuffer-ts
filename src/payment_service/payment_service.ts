@@ -75,6 +75,14 @@ export interface GetSetupAutoIntentResponse {
   setup_auto_intent_secret?: string | undefined;
 }
 
+export interface CreateAutoPayBankSetupSessionRequest {
+  context: RequestContext | undefined;
+}
+
+export interface CreateAutoPayBankSetupSessionResponse {
+  checkout_url?: string | undefined;
+}
+
 export interface VerifyMicroDepositsRequest {
   context: RequestContext | undefined;
   first?: number | undefined;
@@ -371,6 +379,130 @@ export const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentResponse> 
   fromPartial<I extends Exact<DeepPartial<GetSetupAutoIntentResponse>, I>>(object: I): GetSetupAutoIntentResponse {
     const message = createBaseGetSetupAutoIntentResponse();
     message.setup_auto_intent_secret = object.setup_auto_intent_secret ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCreateAutoPayBankSetupSessionRequest(): CreateAutoPayBankSetupSessionRequest {
+  return { context: undefined };
+}
+
+export const CreateAutoPayBankSetupSessionRequest: MessageFns<CreateAutoPayBankSetupSessionRequest> = {
+  encode(message: CreateAutoPayBankSetupSessionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateAutoPayBankSetupSessionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAutoPayBankSetupSessionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAutoPayBankSetupSessionRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: CreateAutoPayBankSetupSessionRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateAutoPayBankSetupSessionRequest>, I>>(
+    base?: I,
+  ): CreateAutoPayBankSetupSessionRequest {
+    return CreateAutoPayBankSetupSessionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateAutoPayBankSetupSessionRequest>, I>>(
+    object: I,
+  ): CreateAutoPayBankSetupSessionRequest {
+    const message = createBaseCreateAutoPayBankSetupSessionRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateAutoPayBankSetupSessionResponse(): CreateAutoPayBankSetupSessionResponse {
+  return { checkout_url: undefined };
+}
+
+export const CreateAutoPayBankSetupSessionResponse: MessageFns<CreateAutoPayBankSetupSessionResponse> = {
+  encode(message: CreateAutoPayBankSetupSessionResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.checkout_url !== undefined) {
+      writer.uint32(10).string(message.checkout_url);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateAutoPayBankSetupSessionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAutoPayBankSetupSessionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.checkout_url = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAutoPayBankSetupSessionResponse {
+    return { checkout_url: isSet(object.checkoutUrl) ? globalThis.String(object.checkoutUrl) : undefined };
+  },
+
+  toJSON(message: CreateAutoPayBankSetupSessionResponse): unknown {
+    const obj: any = {};
+    if (message.checkout_url !== undefined) {
+      obj.checkoutUrl = message.checkout_url;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateAutoPayBankSetupSessionResponse>, I>>(
+    base?: I,
+  ): CreateAutoPayBankSetupSessionResponse {
+    return CreateAutoPayBankSetupSessionResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateAutoPayBankSetupSessionResponse>, I>>(
+    object: I,
+  ): CreateAutoPayBankSetupSessionResponse {
+    const message = createBaseCreateAutoPayBankSetupSessionResponse();
+    message.checkout_url = object.checkout_url ?? undefined;
     return message;
   },
 };
