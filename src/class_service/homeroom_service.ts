@@ -38,6 +38,11 @@ export interface ListHomeroomsRequest {
   teacher_id?: ObjectId | undefined;
 }
 
+export interface HomeroomCourseAssignment {
+  abstract_course_id: ObjectId | undefined;
+  teacher_id: ObjectId | undefined;
+}
+
 export interface CreateHomeroomRequest {
   context: RequestContext | undefined;
   name?: string | undefined;
@@ -45,7 +50,7 @@ export interface CreateHomeroomRequest {
   teacher_ids: ObjectId[];
   grades: StudentGrade[];
   lms_provider?: LmsProviderType | undefined;
-  abstract_course_ids: ObjectId[];
+  course_assignments: HomeroomCourseAssignment[];
 }
 
 export interface CloneHomeroomRequest {
@@ -436,6 +441,84 @@ export const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest> = {
   },
 };
 
+function createBaseHomeroomCourseAssignment(): HomeroomCourseAssignment {
+  return { abstract_course_id: undefined, teacher_id: undefined };
+}
+
+export const HomeroomCourseAssignment: MessageFns<HomeroomCourseAssignment> = {
+  encode(message: HomeroomCourseAssignment, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.abstract_course_id !== undefined) {
+      ObjectId.encode(message.abstract_course_id, writer.uint32(10).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HomeroomCourseAssignment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHomeroomCourseAssignment();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.abstract_course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HomeroomCourseAssignment {
+    return {
+      abstract_course_id: isSet(object.abstractCourseId) ? ObjectId.fromJSON(object.abstractCourseId) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+    };
+  },
+
+  toJSON(message: HomeroomCourseAssignment): unknown {
+    const obj: any = {};
+    if (message.abstract_course_id !== undefined) {
+      obj.abstractCourseId = ObjectId.toJSON(message.abstract_course_id);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HomeroomCourseAssignment>, I>>(base?: I): HomeroomCourseAssignment {
+    return HomeroomCourseAssignment.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HomeroomCourseAssignment>, I>>(object: I): HomeroomCourseAssignment {
+    const message = createBaseHomeroomCourseAssignment();
+    message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+      ? ObjectId.fromPartial(object.abstract_course_id)
+      : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseCreateHomeroomRequest(): CreateHomeroomRequest {
   return {
     context: undefined,
@@ -444,7 +527,7 @@ function createBaseCreateHomeroomRequest(): CreateHomeroomRequest {
     teacher_ids: [],
     grades: [],
     lms_provider: undefined,
-    abstract_course_ids: [],
+    course_assignments: [],
   };
 }
 
@@ -470,8 +553,8 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     if (message.lms_provider !== undefined) {
       writer.uint32(48).int32(lmsProviderTypeToNumber(message.lms_provider));
     }
-    for (const v of message.abstract_course_ids) {
-      ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    for (const v of message.course_assignments) {
+      HomeroomCourseAssignment.encode(v!, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -535,12 +618,12 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
 
           message.lms_provider = lmsProviderTypeFromJSON(reader.int32());
           continue;
-        case 7:
-          if (tag !== 58) {
+        case 8:
+          if (tag !== 66) {
             break;
           }
 
-          message.abstract_course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          message.course_assignments.push(HomeroomCourseAssignment.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -561,8 +644,8 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
         : [],
       grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => studentGradeFromJSON(e)) : [],
       lms_provider: isSet(object.lmsProvider) ? lmsProviderTypeFromJSON(object.lmsProvider) : undefined,
-      abstract_course_ids: globalThis.Array.isArray(object?.abstractCourseIds)
-        ? object.abstractCourseIds.map((e: any) => ObjectId.fromJSON(e))
+      course_assignments: globalThis.Array.isArray(object?.courseAssignments)
+        ? object.courseAssignments.map((e: any) => HomeroomCourseAssignment.fromJSON(e))
         : [],
     };
   },
@@ -587,8 +670,8 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     if (message.lms_provider !== undefined) {
       obj.lmsProvider = lmsProviderTypeToJSON(message.lms_provider);
     }
-    if (message.abstract_course_ids?.length) {
-      obj.abstractCourseIds = message.abstract_course_ids.map((e) => ObjectId.toJSON(e));
+    if (message.course_assignments?.length) {
+      obj.courseAssignments = message.course_assignments.map((e) => HomeroomCourseAssignment.toJSON(e));
     }
     return obj;
   },
@@ -608,7 +691,7 @@ export const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest> = {
     message.teacher_ids = object.teacher_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.grades = object.grades?.map((e) => e) || [];
     message.lms_provider = object.lms_provider ?? undefined;
-    message.abstract_course_ids = object.abstract_course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.course_assignments = object.course_assignments?.map((e) => HomeroomCourseAssignment.fromPartial(e)) || [];
     return message;
   },
 };

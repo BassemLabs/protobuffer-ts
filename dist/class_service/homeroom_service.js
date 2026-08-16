@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/homeroom_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SetOwnerTeacherRequest = exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
+exports.SetOwnerTeacherRequest = exports.LmsStudentSubmissionResponse = exports.GetStudentLmsCourseWorkRequest = exports.LmsCourseWorkResponse = exports.GetLmsCourseWorkRequest = exports.GetAllAttendanceClassesResponse = exports.GetAllAttendanceClassesRequest = exports.GetAttendanceClassesResponse = exports.GetAttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateHomeroomRequest = exports.ArchiveHomeroomRequest = exports.GetStudentHomeroomsResponse = exports.GetStudentHomeroomsRequest = exports.GetHomeroomCoursesResponse = exports.GetHomeroomCoursesRequest = exports.CloneHomeroomRequest = exports.CreateHomeroomRequest = exports.HomeroomCourseAssignment = exports.ListHomeroomsRequest = exports.GetHomeroomRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -252,6 +252,76 @@ exports.ListHomeroomsRequest = {
         return message;
     },
 };
+function createBaseHomeroomCourseAssignment() {
+    return { abstract_course_id: undefined, teacher_id: undefined };
+}
+exports.HomeroomCourseAssignment = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.abstract_course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.abstract_course_id, writer.uint32(10).fork()).join();
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseHomeroomCourseAssignment();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.abstract_course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            abstract_course_id: isSet(object.abstractCourseId) ? object_id_1.ObjectId.fromJSON(object.abstractCourseId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.abstract_course_id !== undefined) {
+            obj.abstractCourseId = object_id_1.ObjectId.toJSON(message.abstract_course_id);
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.HomeroomCourseAssignment.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseHomeroomCourseAssignment();
+        message.abstract_course_id = (object.abstract_course_id !== undefined && object.abstract_course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.abstract_course_id)
+            : undefined;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        return message;
+    },
+};
 function createBaseCreateHomeroomRequest() {
     return {
         context: undefined,
@@ -260,7 +330,7 @@ function createBaseCreateHomeroomRequest() {
         teacher_ids: [],
         grades: [],
         lms_provider: undefined,
-        abstract_course_ids: [],
+        course_assignments: [],
     };
 }
 exports.CreateHomeroomRequest = {
@@ -285,8 +355,8 @@ exports.CreateHomeroomRequest = {
         if (message.lms_provider !== undefined) {
             writer.uint32(48).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.lms_provider));
         }
-        for (const v of message.abstract_course_ids) {
-            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        for (const v of message.course_assignments) {
+            exports.HomeroomCourseAssignment.encode(v, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -340,11 +410,11 @@ exports.CreateHomeroomRequest = {
                     }
                     message.lms_provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
                     continue;
-                case 7:
-                    if (tag !== 58) {
+                case 8:
+                    if (tag !== 66) {
                         break;
                     }
-                    message.abstract_course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    message.course_assignments.push(exports.HomeroomCourseAssignment.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -364,8 +434,8 @@ exports.CreateHomeroomRequest = {
                 : [],
             grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e) => (0, student_1.studentGradeFromJSON)(e)) : [],
             lms_provider: isSet(object.lmsProvider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.lmsProvider) : undefined,
-            abstract_course_ids: globalThis.Array.isArray(object?.abstractCourseIds)
-                ? object.abstractCourseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+            course_assignments: globalThis.Array.isArray(object?.courseAssignments)
+                ? object.courseAssignments.map((e) => exports.HomeroomCourseAssignment.fromJSON(e))
                 : [],
         };
     },
@@ -389,8 +459,8 @@ exports.CreateHomeroomRequest = {
         if (message.lms_provider !== undefined) {
             obj.lmsProvider = (0, lms_course_1.lmsProviderTypeToJSON)(message.lms_provider);
         }
-        if (message.abstract_course_ids?.length) {
-            obj.abstractCourseIds = message.abstract_course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        if (message.course_assignments?.length) {
+            obj.courseAssignments = message.course_assignments.map((e) => exports.HomeroomCourseAssignment.toJSON(e));
         }
         return obj;
     },
@@ -409,7 +479,7 @@ exports.CreateHomeroomRequest = {
         message.teacher_ids = object.teacher_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.grades = object.grades?.map((e) => e) || [];
         message.lms_provider = object.lms_provider ?? undefined;
-        message.abstract_course_ids = object.abstract_course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.course_assignments = object.course_assignments?.map((e) => exports.HomeroomCourseAssignment.fromPartial(e)) || [];
         return message;
     },
 };

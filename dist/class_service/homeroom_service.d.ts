@@ -20,6 +20,10 @@ export interface ListHomeroomsRequest {
     archived?: boolean | undefined;
     teacher_id?: ObjectId | undefined;
 }
+export interface HomeroomCourseAssignment {
+    abstract_course_id: ObjectId | undefined;
+    teacher_id: ObjectId | undefined;
+}
 export interface CreateHomeroomRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
@@ -27,7 +31,7 @@ export interface CreateHomeroomRequest {
     teacher_ids: ObjectId[];
     grades: StudentGrade[];
     lms_provider?: LmsProviderType | undefined;
-    abstract_course_ids: ObjectId[];
+    course_assignments: HomeroomCourseAssignment[];
 }
 export interface CloneHomeroomRequest {
     context: RequestContext | undefined;
@@ -136,6 +140,7 @@ export interface SetOwnerTeacherRequest {
 }
 export declare const GetHomeroomRequest: MessageFns<GetHomeroomRequest>;
 export declare const ListHomeroomsRequest: MessageFns<ListHomeroomsRequest>;
+export declare const HomeroomCourseAssignment: MessageFns<HomeroomCourseAssignment>;
 export declare const CreateHomeroomRequest: MessageFns<CreateHomeroomRequest>;
 export declare const CloneHomeroomRequest: MessageFns<CloneHomeroomRequest>;
 export declare const GetHomeroomCoursesRequest: MessageFns<GetHomeroomCoursesRequest>;
