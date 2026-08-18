@@ -33,12 +33,58 @@ import { Semester, SemesterReportLayout } from "./semester";
 
 export const protobufPackage = "class_service.report_card_export_service";
 
+export enum ReportCardExportMode {
+  PUBLISHED = "PUBLISHED",
+  PREVIEW = "PREVIEW",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reportCardExportModeFromJSON(object: any): ReportCardExportMode {
+  switch (object) {
+    case 0:
+    case "PUBLISHED":
+      return ReportCardExportMode.PUBLISHED;
+    case 1:
+    case "PREVIEW":
+      return ReportCardExportMode.PREVIEW;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportCardExportMode.UNRECOGNIZED;
+  }
+}
+
+export function reportCardExportModeToJSON(object: ReportCardExportMode): string {
+  switch (object) {
+    case ReportCardExportMode.PUBLISHED:
+      return "PUBLISHED";
+    case ReportCardExportMode.PREVIEW:
+      return "PREVIEW";
+    case ReportCardExportMode.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reportCardExportModeToNumber(object: ReportCardExportMode): number {
+  switch (object) {
+    case ReportCardExportMode.PUBLISHED:
+      return 0;
+    case ReportCardExportMode.PREVIEW:
+      return 1;
+    case ReportCardExportMode.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface GetStudentReportCardExportRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
   report_type?: ReportType | undefined;
   homeroom_id?: ObjectId | undefined;
   semester_id?: ObjectId | undefined;
+  mode?: ReportCardExportMode | undefined;
 }
 
 export interface ReportCardSignature {
@@ -149,6 +195,7 @@ function createBaseGetStudentReportCardExportRequest(): GetStudentReportCardExpo
     report_type: undefined,
     homeroom_id: undefined,
     semester_id: undefined,
+    mode: undefined,
   };
 }
 
@@ -168,6 +215,9 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
     }
     if (message.semester_id !== undefined) {
       ObjectId.encode(message.semester_id, writer.uint32(42).fork()).join();
+    }
+    if (message.mode !== undefined) {
+      writer.uint32(48).int32(reportCardExportModeToNumber(message.mode));
     }
     return writer;
   },
@@ -214,6 +264,13 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
 
           message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.mode = reportCardExportModeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -230,6 +287,7 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
       report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
       homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      mode: isSet(object.mode) ? reportCardExportModeFromJSON(object.mode) : undefined,
     };
   },
 
@@ -249,6 +307,9 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
     }
     if (message.semester_id !== undefined) {
       obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.mode !== undefined) {
+      obj.mode = reportCardExportModeToJSON(message.mode);
     }
     return obj;
   },
@@ -275,6 +336,7 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
     message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
       ? ObjectId.fromPartial(object.semester_id)
       : undefined;
+    message.mode = object.mode ?? undefined;
     return message;
   },
 };

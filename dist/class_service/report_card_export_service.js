@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: class_service/report_card_export_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentReportCardExportResponse = exports.SecondaryReportCardExport = exports.ElementaryReportCardExport = exports.SecondaryReportCardCourseRow = exports.ElementaryReportCardCourseRow = exports.ReportCardExportEntryView = exports.ReportCardExportEntry = exports.ReportCardExportEntryLearningSkill = exports.ReportCardExportEntrySection = exports.ReportCardExportEntryCheckBox = exports.ReportCardAttendanceSummary = exports.ReportCardSignature = exports.GetStudentReportCardExportRequest = exports.protobufPackage = void 0;
+exports.GetStudentReportCardExportResponse = exports.SecondaryReportCardExport = exports.ElementaryReportCardExport = exports.SecondaryReportCardCourseRow = exports.ElementaryReportCardCourseRow = exports.ReportCardExportEntryView = exports.ReportCardExportEntry = exports.ReportCardExportEntryLearningSkill = exports.ReportCardExportEntrySection = exports.ReportCardExportEntryCheckBox = exports.ReportCardAttendanceSummary = exports.ReportCardSignature = exports.GetStudentReportCardExportRequest = exports.ReportCardExportMode = exports.protobufPackage = void 0;
+exports.reportCardExportModeFromJSON = reportCardExportModeFromJSON;
+exports.reportCardExportModeToJSON = reportCardExportModeToJSON;
+exports.reportCardExportModeToNumber = reportCardExportModeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const campus_1 = require("../organization_service/campus");
@@ -21,6 +24,48 @@ const report_entry_1 = require("./report_entry");
 const report_layout_1 = require("./report_layout");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service.report_card_export_service";
+var ReportCardExportMode;
+(function (ReportCardExportMode) {
+    ReportCardExportMode["PUBLISHED"] = "PUBLISHED";
+    ReportCardExportMode["PREVIEW"] = "PREVIEW";
+    ReportCardExportMode["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportCardExportMode || (exports.ReportCardExportMode = ReportCardExportMode = {}));
+function reportCardExportModeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "PUBLISHED":
+            return ReportCardExportMode.PUBLISHED;
+        case 1:
+        case "PREVIEW":
+            return ReportCardExportMode.PREVIEW;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportCardExportMode.UNRECOGNIZED;
+    }
+}
+function reportCardExportModeToJSON(object) {
+    switch (object) {
+        case ReportCardExportMode.PUBLISHED:
+            return "PUBLISHED";
+        case ReportCardExportMode.PREVIEW:
+            return "PREVIEW";
+        case ReportCardExportMode.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportCardExportModeToNumber(object) {
+    switch (object) {
+        case ReportCardExportMode.PUBLISHED:
+            return 0;
+        case ReportCardExportMode.PREVIEW:
+            return 1;
+        case ReportCardExportMode.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetStudentReportCardExportRequest() {
     return {
         context: undefined,
@@ -28,6 +73,7 @@ function createBaseGetStudentReportCardExportRequest() {
         report_type: undefined,
         homeroom_id: undefined,
         semester_id: undefined,
+        mode: undefined,
     };
 }
 exports.GetStudentReportCardExportRequest = {
@@ -46,6 +92,9 @@ exports.GetStudentReportCardExportRequest = {
         }
         if (message.semester_id !== undefined) {
             object_id_1.ObjectId.encode(message.semester_id, writer.uint32(42).fork()).join();
+        }
+        if (message.mode !== undefined) {
+            writer.uint32(48).int32(reportCardExportModeToNumber(message.mode));
         }
         return writer;
     },
@@ -86,6 +135,12 @@ exports.GetStudentReportCardExportRequest = {
                     }
                     message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.mode = reportCardExportModeFromJSON(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -101,6 +156,7 @@ exports.GetStudentReportCardExportRequest = {
             report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            mode: isSet(object.mode) ? reportCardExportModeFromJSON(object.mode) : undefined,
         };
     },
     toJSON(message) {
@@ -119,6 +175,9 @@ exports.GetStudentReportCardExportRequest = {
         }
         if (message.semester_id !== undefined) {
             obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.mode !== undefined) {
+            obj.mode = reportCardExportModeToJSON(message.mode);
         }
         return obj;
     },
@@ -140,6 +199,7 @@ exports.GetStudentReportCardExportRequest = {
         message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
             : undefined;
+        message.mode = object.mode ?? undefined;
         return message;
     },
 };

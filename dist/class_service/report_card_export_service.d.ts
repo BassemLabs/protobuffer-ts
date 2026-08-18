@@ -12,12 +12,21 @@ import { GuardianSignature, ReportStatus } from "./report_entry";
 import { ReportType } from "./report_layout";
 import { Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service.report_card_export_service";
+export declare enum ReportCardExportMode {
+    PUBLISHED = "PUBLISHED",
+    PREVIEW = "PREVIEW",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportCardExportModeFromJSON(object: any): ReportCardExportMode;
+export declare function reportCardExportModeToJSON(object: ReportCardExportMode): string;
+export declare function reportCardExportModeToNumber(object: ReportCardExportMode): number;
 export interface GetStudentReportCardExportRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
     report_type?: ReportType | undefined;
     homeroom_id?: ObjectId | undefined;
     semester_id?: ObjectId | undefined;
+    mode?: ReportCardExportMode | undefined;
 }
 export interface ReportCardSignature {
     title?: string | undefined;
