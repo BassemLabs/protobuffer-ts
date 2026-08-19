@@ -78,6 +78,69 @@ export declare enum SchedulingGenerationRunStatus {
 export declare function schedulingGenerationRunStatusFromJSON(object: any): SchedulingGenerationRunStatus;
 export declare function schedulingGenerationRunStatusToJSON(object: SchedulingGenerationRunStatus): string;
 export declare function schedulingGenerationRunStatusToNumber(object: SchedulingGenerationRunStatus): number;
+export declare enum SchedulingGenerationPurpose {
+    SCHEDULING_GENERATION_PURPOSE_CANDIDATE = "SCHEDULING_GENERATION_PURPOSE_CANDIDATE",
+    SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL = "SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingGenerationPurposeFromJSON(object: any): SchedulingGenerationPurpose;
+export declare function schedulingGenerationPurposeToJSON(object: SchedulingGenerationPurpose): string;
+export declare function schedulingGenerationPurposeToNumber(object: SchedulingGenerationPurpose): number;
+export declare enum SchedulingScheduleSetupCompatibility {
+    /** SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT - The schedule's validation snapshot matches the currently reviewed setup. */
+    SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT = "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT",
+    /** SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED - Preparation data changed after this schedule was validated. */
+    SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED = "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED",
+    /** SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED - Review is not currently ready, so compatibility cannot be established. */
+    SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED = "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingScheduleSetupCompatibilityFromJSON(object: any): SchedulingScheduleSetupCompatibility;
+export declare function schedulingScheduleSetupCompatibilityToJSON(object: SchedulingScheduleSetupCompatibility): string;
+export declare function schedulingScheduleSetupCompatibilityToNumber(object: SchedulingScheduleSetupCompatibility): number;
+export declare enum SchedulingScheduleRevisionKind {
+    SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED = "SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED",
+    SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED = "SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED",
+    SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED = "SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED",
+    SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT = "SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT",
+    /** SCHEDULING_SCHEDULE_REVISION_KIND_MOVE - Preserved so historical move revisions remain readable. */
+    SCHEDULING_SCHEDULE_REVISION_KIND_MOVE = "SCHEDULING_SCHEDULE_REVISION_KIND_MOVE",
+    SCHEDULING_SCHEDULE_REVISION_KIND_SWAP = "SCHEDULING_SCHEDULE_REVISION_KIND_SWAP",
+    SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED = "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED",
+    SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED = "SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED",
+    SCHEDULING_SCHEDULE_REVISION_KIND_UNDO = "SCHEDULING_SCHEDULE_REVISION_KIND_UNDO",
+    SCHEDULING_SCHEDULE_REVISION_KIND_REDO = "SCHEDULING_SCHEDULE_REVISION_KIND_REDO",
+    SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED = "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED",
+    SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED = "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingScheduleRevisionKindFromJSON(object: any): SchedulingScheduleRevisionKind;
+export declare function schedulingScheduleRevisionKindToJSON(object: SchedulingScheduleRevisionKind): string;
+export declare function schedulingScheduleRevisionKindToNumber(object: SchedulingScheduleRevisionKind): number;
+export declare enum SchedulingScheduleAdjustmentIssueSeverity {
+    SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING = "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING",
+    SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING = "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingScheduleAdjustmentIssueSeverityFromJSON(object: any): SchedulingScheduleAdjustmentIssueSeverity;
+export declare function schedulingScheduleAdjustmentIssueSeverityToJSON(object: SchedulingScheduleAdjustmentIssueSeverity): string;
+export declare function schedulingScheduleAdjustmentIssueSeverityToNumber(object: SchedulingScheduleAdjustmentIssueSeverity): number;
+export declare enum SchedulingScheduleAdjustmentKind {
+    SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP = "SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingScheduleAdjustmentKindFromJSON(object: any): SchedulingScheduleAdjustmentKind;
+export declare function schedulingScheduleAdjustmentKindToJSON(object: SchedulingScheduleAdjustmentKind): string;
+export declare function schedulingScheduleAdjustmentKindToNumber(object: SchedulingScheduleAdjustmentKind): number;
+export declare enum SchedulingSchedulePinScope {
+    SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT = "SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT",
+    SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS = "SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS",
+    SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION = "SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function schedulingSchedulePinScopeFromJSON(object: any): SchedulingSchedulePinScope;
+export declare function schedulingSchedulePinScopeToJSON(object: SchedulingSchedulePinScope): string;
+export declare function schedulingSchedulePinScopeToNumber(object: SchedulingSchedulePinScope): number;
 /**
  * The setup step a review section maps back to, so an issue can deep-link the user to
  * the exact page to fix.
@@ -440,6 +503,13 @@ export interface SchedulingGenerationRun {
     created_at?: string | undefined;
     /** Admin-readable infeasibility reasons reported by the solver. */
     solver_reasons: string[];
+    /**
+     * Global generation creates a candidate. Pinned working-schedule regeneration
+     * creates a hidden proposal that can be applied as a revision after preview.
+     */
+    purpose?: SchedulingGenerationPurpose | undefined;
+    source_working_revision_id?: Uuid | undefined;
+    pin_count?: number | undefined;
 }
 /** Runs for a workspace, newest first (used for status polling and history). */
 export interface SchedulingGenerationRunList {
@@ -462,6 +532,11 @@ export interface SchedulingGeneratedScheduleEntry {
      * enforcement and for ordinary elementary/middle meetings.
      */
     room_id?: ObjectId | undefined;
+    /**
+     * Stable identity for this recurring weekly placement. The same value is
+     * preserved when the placement is copied into working-schedule revisions.
+     */
+    id?: Uuid | undefined;
 }
 /** The immutable schedule artifact stored for one successful generation run. */
 export interface SchedulingGeneratedSchedule {
@@ -472,6 +547,77 @@ export interface SchedulingGeneratedSchedule {
     generation_run_id: Uuid | undefined;
     solver_input_snapshot_id: Uuid | undefined;
     created_at?: string | undefined;
+    /** Display metadata may change; placements and provenance remain immutable. */
+    name?: string | undefined;
+    note?: string | undefined;
+    /** Canonical hash of sorted class/slot/teacher/room placement tuples. */
+    content_hash?: string | undefined;
+    updated_by?: ObjectId | undefined;
+    updated_at?: string | undefined;
+}
+/**
+ * The one editable pre-publication schedule for a workspace. Phase 1 changes
+ * its current revision only through explicit base selection, revalidation, or
+ * restore operations.
+ */
+export interface SchedulingWorkingSchedule {
+    id: Uuid | undefined;
+    organization: ObjectId | undefined;
+    scheduling_workspace: Uuid | undefined;
+    school_year: ObjectId | undefined;
+    base_generated_schedule_id: ObjectId | undefined;
+    validation_snapshot_id: Uuid | undefined;
+    current_revision_id: Uuid | undefined;
+    version?: number | undefined;
+    created_by: ObjectId | undefined;
+    created_at?: string | undefined;
+    updated_by: ObjectId | undefined;
+    updated_at?: string | undefined;
+}
+export interface SchedulingScheduleRevision {
+    id: Uuid | undefined;
+    working_schedule_id: Uuid | undefined;
+    base_generated_schedule_id: ObjectId | undefined;
+    validation_snapshot_id: Uuid | undefined;
+    kind?: SchedulingScheduleRevisionKind | undefined;
+    sequence?: number | undefined;
+    summary?: string | undefined;
+    label?: string | undefined;
+    created_by: ObjectId | undefined;
+    created_at?: string | undefined;
+    copied_from_revision_id?: Uuid | undefined;
+    undone_revision_id?: Uuid | undefined;
+}
+export interface SchedulingScheduleReference {
+    generated_schedule_id?: ObjectId | undefined;
+    working_revision_id?: Uuid | undefined;
+}
+export interface SchedulingScheduleSource {
+    reference: SchedulingScheduleReference | undefined;
+    generated_schedule?: SchedulingGeneratedSchedule | undefined;
+    working_schedule?: SchedulingWorkingSchedule | undefined;
+    working_revision?: SchedulingScheduleRevision | undefined;
+}
+export interface SchedulingGeneratedScheduleSummary {
+    schedule: SchedulingGeneratedSchedule | undefined;
+    input_hash?: string | undefined;
+    setup_compatibility?: SchedulingScheduleSetupCompatibility | undefined;
+    is_working_base?: boolean | undefined;
+    placement_count?: number | undefined;
+    /** Present when an older result has the same input and placement hashes. */
+    duplicate_of_schedule_id?: ObjectId | undefined;
+}
+export interface SchedulingGeneratedSchedulePage {
+    schedules: SchedulingGeneratedScheduleSummary[];
+    next_cursor?: string | undefined;
+}
+export interface SchedulingScheduleRevisionPage {
+    revisions: SchedulingScheduleRevision[];
+    next_cursor?: string | undefined;
+}
+export interface SchedulingScheduleCompatibilityIssue {
+    code?: string | undefined;
+    message?: string | undefined;
 }
 /** Display companions assembled from the run's frozen snapshot at read time. */
 export interface SchedulingScheduleSubjectMemberInfo {
@@ -548,6 +694,121 @@ export interface SchedulingGeneratedScheduleView {
     /** Immutable room-enforcement setting captured when this schedule was generated. */
     room_assignments_enforced?: boolean | undefined;
 }
+/**
+ * Common explicit schedule view used by both generated history and the current
+ * working revision. Display companions always come from the immutable snapshot
+ * referenced by the source.
+ */
+export interface SchedulingScheduleView {
+    source: SchedulingScheduleSource | undefined;
+    entries: SchedulingGeneratedScheduleEntry[];
+    classes: SchedulingScheduleClassInfo[];
+    teachers: SchedulingScheduleTeacherInfo[];
+    slots: SchedulingScheduleSlotInfo[];
+    semesters: SchedulingScheduleSemesterInfo[];
+    sections: SchedulingScheduleSectionInfo[];
+    students: SchedulingScheduleStudentInfo[];
+    rooms: SchedulingScheduleRoomInfo[];
+    room_assignments_enforced?: boolean | undefined;
+    setup_compatibility?: SchedulingScheduleSetupCompatibility | undefined;
+}
+/** Empty when no working schedule has been selected yet. */
+export interface SchedulingWorkingScheduleState {
+    working_schedule?: SchedulingWorkingSchedule | undefined;
+    current_revision?: SchedulingScheduleRevision | undefined;
+    view?: SchedulingScheduleView | undefined;
+    can_undo?: boolean | undefined;
+    can_redo?: boolean | undefined;
+}
+/**
+ * Selection, revalidation, and restore are expected compatibility operations:
+ * an unapplied result carries guided issues without partially changing state.
+ */
+export interface SchedulingWorkingScheduleMutationResult {
+    applied?: boolean | undefined;
+    state?: SchedulingWorkingScheduleState | undefined;
+    issues: SchedulingScheduleCompatibilityIssue[];
+}
+export interface SchedulingScheduleSwap {
+    /** Swaps always exchange the two individually selected scheduled periods. */
+    placement_id: Uuid | undefined;
+    target_placement_id: Uuid | undefined;
+}
+export interface SchedulingScheduleAdjustmentOperation {
+    swap?: SchedulingScheduleSwap | undefined;
+}
+export interface SchedulingScheduleAdjustmentIssue {
+    code?: string | undefined;
+    message?: string | undefined;
+    severity?: SchedulingScheduleAdjustmentIssueSeverity | undefined;
+    placement_ids: Uuid[];
+    resource_ids: string[];
+}
+export interface SchedulingScheduleCellChange {
+    placement_id: Uuid | undefined;
+    class_id?: string | undefined;
+    from_slot_id?: string | undefined;
+    to_slot_id?: string | undefined;
+}
+export interface SchedulingScheduleAdjustmentImpact {
+    cell_changes: SchedulingScheduleCellChange[];
+    class_ids: string[];
+    section_ids: Uuid[];
+    teacher_ids: ObjectId[];
+    student_ids: ObjectId[];
+    room_ids: ObjectId[];
+}
+export interface SchedulingScheduleAdjustmentOption {
+    kind?: SchedulingScheduleAdjustmentKind | undefined;
+    target_placement_id?: Uuid | undefined;
+    valid?: boolean | undefined;
+    primary_issue?: SchedulingScheduleAdjustmentIssue | undefined;
+}
+export interface SchedulingScheduleAdjustmentOptions {
+    source_placement_ids: Uuid[];
+    options: SchedulingScheduleAdjustmentOption[];
+}
+export interface SchedulingScheduleAdjustmentPreview {
+    valid?: boolean | undefined;
+    current_revision_id: Uuid | undefined;
+    proposed_entries: SchedulingGeneratedScheduleEntry[];
+    issues: SchedulingScheduleAdjustmentIssue[];
+    impact: SchedulingScheduleAdjustmentImpact | undefined;
+}
+export interface SchedulingScheduleAdjustmentMutationResult {
+    applied?: boolean | undefined;
+    state?: SchedulingWorkingScheduleState | undefined;
+    issues: SchedulingScheduleAdjustmentIssue[];
+    impact?: SchedulingScheduleAdjustmentImpact | undefined;
+}
+export interface SchedulingSchedulePin {
+    id: Uuid | undefined;
+    pin_group_id: Uuid | undefined;
+    placement_id: Uuid | undefined;
+    class_id?: string | undefined;
+    slot_id?: string | undefined;
+    teacher_id: ObjectId | undefined;
+    room_id?: ObjectId | undefined;
+}
+export interface SchedulingSchedulePinGroup {
+    id: Uuid | undefined;
+    working_schedule_id: Uuid | undefined;
+    revision_id: Uuid | undefined;
+    scope?: SchedulingSchedulePinScope | undefined;
+    label?: string | undefined;
+    pins: SchedulingSchedulePin[];
+    created_by: ObjectId | undefined;
+    created_at?: string | undefined;
+}
+export interface SchedulingSchedulePinGroupList {
+    groups: SchedulingSchedulePinGroup[];
+    current_revision_id: Uuid | undefined;
+}
+export interface SchedulingPinnedRegenerationProposal {
+    run: SchedulingGenerationRun | undefined;
+    proposed_view?: SchedulingScheduleView | undefined;
+    issues: SchedulingScheduleAdjustmentIssue[];
+}
 /** A headline count shown on a review section (e.g. "Teachers", 12). */
 export interface SchedulingReviewMetric {
     label?: string | undefined;
@@ -621,6 +882,14 @@ export declare const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun
 export declare const SchedulingGenerationRunList: MessageFns<SchedulingGenerationRunList>;
 export declare const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedScheduleEntry>;
 export declare const SchedulingGeneratedSchedule: MessageFns<SchedulingGeneratedSchedule>;
+export declare const SchedulingWorkingSchedule: MessageFns<SchedulingWorkingSchedule>;
+export declare const SchedulingScheduleRevision: MessageFns<SchedulingScheduleRevision>;
+export declare const SchedulingScheduleReference: MessageFns<SchedulingScheduleReference>;
+export declare const SchedulingScheduleSource: MessageFns<SchedulingScheduleSource>;
+export declare const SchedulingGeneratedScheduleSummary: MessageFns<SchedulingGeneratedScheduleSummary>;
+export declare const SchedulingGeneratedSchedulePage: MessageFns<SchedulingGeneratedSchedulePage>;
+export declare const SchedulingScheduleRevisionPage: MessageFns<SchedulingScheduleRevisionPage>;
+export declare const SchedulingScheduleCompatibilityIssue: MessageFns<SchedulingScheduleCompatibilityIssue>;
 export declare const SchedulingScheduleSubjectMemberInfo: MessageFns<SchedulingScheduleSubjectMemberInfo>;
 export declare const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo>;
 export declare const SchedulingScheduleTeacherInfo: MessageFns<SchedulingScheduleTeacherInfo>;
@@ -630,6 +899,22 @@ export declare const SchedulingScheduleStudentInfo: MessageFns<SchedulingSchedul
 export declare const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo>;
 export declare const SchedulingScheduleSectionInfo: MessageFns<SchedulingScheduleSectionInfo>;
 export declare const SchedulingGeneratedScheduleView: MessageFns<SchedulingGeneratedScheduleView>;
+export declare const SchedulingScheduleView: MessageFns<SchedulingScheduleView>;
+export declare const SchedulingWorkingScheduleState: MessageFns<SchedulingWorkingScheduleState>;
+export declare const SchedulingWorkingScheduleMutationResult: MessageFns<SchedulingWorkingScheduleMutationResult>;
+export declare const SchedulingScheduleSwap: MessageFns<SchedulingScheduleSwap>;
+export declare const SchedulingScheduleAdjustmentOperation: MessageFns<SchedulingScheduleAdjustmentOperation>;
+export declare const SchedulingScheduleAdjustmentIssue: MessageFns<SchedulingScheduleAdjustmentIssue>;
+export declare const SchedulingScheduleCellChange: MessageFns<SchedulingScheduleCellChange>;
+export declare const SchedulingScheduleAdjustmentImpact: MessageFns<SchedulingScheduleAdjustmentImpact>;
+export declare const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAdjustmentOption>;
+export declare const SchedulingScheduleAdjustmentOptions: MessageFns<SchedulingScheduleAdjustmentOptions>;
+export declare const SchedulingScheduleAdjustmentPreview: MessageFns<SchedulingScheduleAdjustmentPreview>;
+export declare const SchedulingScheduleAdjustmentMutationResult: MessageFns<SchedulingScheduleAdjustmentMutationResult>;
+export declare const SchedulingSchedulePin: MessageFns<SchedulingSchedulePin>;
+export declare const SchedulingSchedulePinGroup: MessageFns<SchedulingSchedulePinGroup>;
+export declare const SchedulingSchedulePinGroupList: MessageFns<SchedulingSchedulePinGroupList>;
+export declare const SchedulingPinnedRegenerationProposal: MessageFns<SchedulingPinnedRegenerationProposal>;
 export declare const SchedulingReviewMetric: MessageFns<SchedulingReviewMetric>;
 export declare const SchedulingReviewIssue: MessageFns<SchedulingReviewIssue>;
 export declare const SchedulingReviewSection: MessageFns<SchedulingReviewSection>;

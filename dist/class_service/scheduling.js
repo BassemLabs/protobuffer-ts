@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupWeekdayOverride = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
-exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = void 0;
+exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupWeekdayOverride = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingSchedulePinScope = exports.SchedulingScheduleAdjustmentKind = exports.SchedulingScheduleAdjustmentIssueSeverity = exports.SchedulingScheduleRevisionKind = exports.SchedulingScheduleSetupCompatibility = exports.SchedulingGenerationPurpose = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingPinnedRegenerationProposal = exports.SchedulingSchedulePinGroupList = exports.SchedulingSchedulePinGroup = exports.SchedulingSchedulePin = exports.SchedulingScheduleAdjustmentMutationResult = exports.SchedulingScheduleAdjustmentPreview = exports.SchedulingScheduleAdjustmentOptions = exports.SchedulingScheduleAdjustmentOption = exports.SchedulingScheduleAdjustmentImpact = exports.SchedulingScheduleCellChange = exports.SchedulingScheduleAdjustmentIssue = exports.SchedulingScheduleAdjustmentOperation = exports.SchedulingScheduleSwap = exports.SchedulingWorkingScheduleMutationResult = exports.SchedulingWorkingScheduleState = exports.SchedulingScheduleView = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingScheduleCompatibilityIssue = exports.SchedulingScheduleRevisionPage = exports.SchedulingGeneratedSchedulePage = exports.SchedulingGeneratedScheduleSummary = exports.SchedulingScheduleSource = exports.SchedulingScheduleReference = exports.SchedulingScheduleRevision = exports.SchedulingWorkingSchedule = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -22,6 +22,24 @@ exports.schedulingGradeWeeklyAllocationStatusToNumber = schedulingGradeWeeklyAll
 exports.schedulingGenerationRunStatusFromJSON = schedulingGenerationRunStatusFromJSON;
 exports.schedulingGenerationRunStatusToJSON = schedulingGenerationRunStatusToJSON;
 exports.schedulingGenerationRunStatusToNumber = schedulingGenerationRunStatusToNumber;
+exports.schedulingGenerationPurposeFromJSON = schedulingGenerationPurposeFromJSON;
+exports.schedulingGenerationPurposeToJSON = schedulingGenerationPurposeToJSON;
+exports.schedulingGenerationPurposeToNumber = schedulingGenerationPurposeToNumber;
+exports.schedulingScheduleSetupCompatibilityFromJSON = schedulingScheduleSetupCompatibilityFromJSON;
+exports.schedulingScheduleSetupCompatibilityToJSON = schedulingScheduleSetupCompatibilityToJSON;
+exports.schedulingScheduleSetupCompatibilityToNumber = schedulingScheduleSetupCompatibilityToNumber;
+exports.schedulingScheduleRevisionKindFromJSON = schedulingScheduleRevisionKindFromJSON;
+exports.schedulingScheduleRevisionKindToJSON = schedulingScheduleRevisionKindToJSON;
+exports.schedulingScheduleRevisionKindToNumber = schedulingScheduleRevisionKindToNumber;
+exports.schedulingScheduleAdjustmentIssueSeverityFromJSON = schedulingScheduleAdjustmentIssueSeverityFromJSON;
+exports.schedulingScheduleAdjustmentIssueSeverityToJSON = schedulingScheduleAdjustmentIssueSeverityToJSON;
+exports.schedulingScheduleAdjustmentIssueSeverityToNumber = schedulingScheduleAdjustmentIssueSeverityToNumber;
+exports.schedulingScheduleAdjustmentKindFromJSON = schedulingScheduleAdjustmentKindFromJSON;
+exports.schedulingScheduleAdjustmentKindToJSON = schedulingScheduleAdjustmentKindToJSON;
+exports.schedulingScheduleAdjustmentKindToNumber = schedulingScheduleAdjustmentKindToNumber;
+exports.schedulingSchedulePinScopeFromJSON = schedulingSchedulePinScopeFromJSON;
+exports.schedulingSchedulePinScopeToJSON = schedulingSchedulePinScopeToJSON;
+exports.schedulingSchedulePinScopeToNumber = schedulingSchedulePinScopeToNumber;
 exports.schedulingReviewSectionTypeFromJSON = schedulingReviewSectionTypeFromJSON;
 exports.schedulingReviewSectionTypeToJSON = schedulingReviewSectionTypeToJSON;
 exports.schedulingReviewSectionTypeToNumber = schedulingReviewSectionTypeToNumber;
@@ -394,6 +412,350 @@ function schedulingGenerationRunStatusToNumber(object) {
         case SchedulingGenerationRunStatus.SCHEDULING_GENERATION_RUN_STATUS_CANCELLED:
             return 5;
         case SchedulingGenerationRunStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingGenerationPurpose;
+(function (SchedulingGenerationPurpose) {
+    SchedulingGenerationPurpose["SCHEDULING_GENERATION_PURPOSE_CANDIDATE"] = "SCHEDULING_GENERATION_PURPOSE_CANDIDATE";
+    SchedulingGenerationPurpose["SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL"] = "SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL";
+    SchedulingGenerationPurpose["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingGenerationPurpose || (exports.SchedulingGenerationPurpose = SchedulingGenerationPurpose = {}));
+function schedulingGenerationPurposeFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SCHEDULING_GENERATION_PURPOSE_CANDIDATE":
+            return SchedulingGenerationPurpose.SCHEDULING_GENERATION_PURPOSE_CANDIDATE;
+        case 2:
+        case "SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL":
+            return SchedulingGenerationPurpose.SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingGenerationPurpose.UNRECOGNIZED;
+    }
+}
+function schedulingGenerationPurposeToJSON(object) {
+    switch (object) {
+        case SchedulingGenerationPurpose.SCHEDULING_GENERATION_PURPOSE_CANDIDATE:
+            return "SCHEDULING_GENERATION_PURPOSE_CANDIDATE";
+        case SchedulingGenerationPurpose.SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL:
+            return "SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL";
+        case SchedulingGenerationPurpose.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingGenerationPurposeToNumber(object) {
+    switch (object) {
+        case SchedulingGenerationPurpose.SCHEDULING_GENERATION_PURPOSE_CANDIDATE:
+            return 1;
+        case SchedulingGenerationPurpose.SCHEDULING_GENERATION_PURPOSE_WORKING_REVISION_PROPOSAL:
+            return 2;
+        case SchedulingGenerationPurpose.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingScheduleSetupCompatibility;
+(function (SchedulingScheduleSetupCompatibility) {
+    /** SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT - The schedule's validation snapshot matches the currently reviewed setup. */
+    SchedulingScheduleSetupCompatibility["SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT"] = "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT";
+    /** SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED - Preparation data changed after this schedule was validated. */
+    SchedulingScheduleSetupCompatibility["SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED"] = "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED";
+    /** SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED - Review is not currently ready, so compatibility cannot be established. */
+    SchedulingScheduleSetupCompatibility["SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED"] = "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED";
+    SchedulingScheduleSetupCompatibility["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingScheduleSetupCompatibility || (exports.SchedulingScheduleSetupCompatibility = SchedulingScheduleSetupCompatibility = {}));
+function schedulingScheduleSetupCompatibilityFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT":
+            return SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT;
+        case 2:
+        case "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED":
+            return SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED;
+        case 3:
+        case "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED":
+            return SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingScheduleSetupCompatibility.UNRECOGNIZED;
+    }
+}
+function schedulingScheduleSetupCompatibilityToJSON(object) {
+    switch (object) {
+        case SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT:
+            return "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT";
+        case SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED:
+            return "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED";
+        case SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED:
+            return "SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED";
+        case SchedulingScheduleSetupCompatibility.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingScheduleSetupCompatibilityToNumber(object) {
+    switch (object) {
+        case SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_CURRENT:
+            return 1;
+        case SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_SETUP_CHANGED:
+            return 2;
+        case SchedulingScheduleSetupCompatibility.SCHEDULING_SCHEDULE_SETUP_COMPATIBILITY_REVIEW_REQUIRED:
+            return 3;
+        case SchedulingScheduleSetupCompatibility.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingScheduleRevisionKind;
+(function (SchedulingScheduleRevisionKind) {
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT"] = "SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT";
+    /** SCHEDULING_SCHEDULE_REVISION_KIND_MOVE - Preserved so historical move revisions remain readable. */
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_MOVE"] = "SCHEDULING_SCHEDULE_REVISION_KIND_MOVE";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_SWAP"] = "SCHEDULING_SCHEDULE_REVISION_KIND_SWAP";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_UNDO"] = "SCHEDULING_SCHEDULE_REVISION_KIND_UNDO";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_REDO"] = "SCHEDULING_SCHEDULE_REVISION_KIND_REDO";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED";
+    SchedulingScheduleRevisionKind["SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED"] = "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED";
+    SchedulingScheduleRevisionKind["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingScheduleRevisionKind || (exports.SchedulingScheduleRevisionKind = SchedulingScheduleRevisionKind = {}));
+function schedulingScheduleRevisionKindFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED;
+        case 2:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED;
+        case 3:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED;
+        case 4:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT;
+        case 5:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_MOVE":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_MOVE;
+        case 6:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_SWAP":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_SWAP;
+        case 7:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED;
+        case 8:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED;
+        case 9:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_UNDO":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_UNDO;
+        case 10:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_REDO":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_REDO;
+        case 11:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED;
+        case 12:
+        case "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED":
+            return SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingScheduleRevisionKind.UNRECOGNIZED;
+    }
+}
+function schedulingScheduleRevisionKindToJSON(object) {
+    switch (object) {
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_MOVE:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_MOVE";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_SWAP:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_SWAP";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_UNDO:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_UNDO";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_REDO:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_REDO";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED";
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED:
+            return "SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED";
+        case SchedulingScheduleRevisionKind.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingScheduleRevisionKindToNumber(object) {
+    switch (object) {
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_BASE_SELECTED:
+            return 1;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_SETUP_REVALIDATED:
+            return 2;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_RESTORED:
+            return 3;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_CHECKPOINT:
+            return 4;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_MOVE:
+            return 5;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_SWAP:
+            return 6;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REGENERATED:
+            return 7;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_RETURNED:
+            return 8;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_UNDO:
+            return 9;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_REDO:
+            return 10;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_ADDED:
+            return 11;
+        case SchedulingScheduleRevisionKind.SCHEDULING_SCHEDULE_REVISION_KIND_PIN_REMOVED:
+            return 12;
+        case SchedulingScheduleRevisionKind.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingScheduleAdjustmentIssueSeverity;
+(function (SchedulingScheduleAdjustmentIssueSeverity) {
+    SchedulingScheduleAdjustmentIssueSeverity["SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING"] = "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING";
+    SchedulingScheduleAdjustmentIssueSeverity["SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING"] = "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING";
+    SchedulingScheduleAdjustmentIssueSeverity["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingScheduleAdjustmentIssueSeverity || (exports.SchedulingScheduleAdjustmentIssueSeverity = SchedulingScheduleAdjustmentIssueSeverity = {}));
+function schedulingScheduleAdjustmentIssueSeverityFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING":
+            return SchedulingScheduleAdjustmentIssueSeverity.SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING;
+        case 2:
+        case "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING":
+            return SchedulingScheduleAdjustmentIssueSeverity.SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingScheduleAdjustmentIssueSeverity.UNRECOGNIZED;
+    }
+}
+function schedulingScheduleAdjustmentIssueSeverityToJSON(object) {
+    switch (object) {
+        case SchedulingScheduleAdjustmentIssueSeverity.SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING:
+            return "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING";
+        case SchedulingScheduleAdjustmentIssueSeverity.SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING:
+            return "SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING";
+        case SchedulingScheduleAdjustmentIssueSeverity.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingScheduleAdjustmentIssueSeverityToNumber(object) {
+    switch (object) {
+        case SchedulingScheduleAdjustmentIssueSeverity.SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_BLOCKING:
+            return 1;
+        case SchedulingScheduleAdjustmentIssueSeverity.SCHEDULING_SCHEDULE_ADJUSTMENT_ISSUE_SEVERITY_WARNING:
+            return 2;
+        case SchedulingScheduleAdjustmentIssueSeverity.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingScheduleAdjustmentKind;
+(function (SchedulingScheduleAdjustmentKind) {
+    SchedulingScheduleAdjustmentKind["SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP"] = "SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP";
+    SchedulingScheduleAdjustmentKind["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingScheduleAdjustmentKind || (exports.SchedulingScheduleAdjustmentKind = SchedulingScheduleAdjustmentKind = {}));
+function schedulingScheduleAdjustmentKindFromJSON(object) {
+    switch (object) {
+        case 2:
+        case "SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP":
+            return SchedulingScheduleAdjustmentKind.SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingScheduleAdjustmentKind.UNRECOGNIZED;
+    }
+}
+function schedulingScheduleAdjustmentKindToJSON(object) {
+    switch (object) {
+        case SchedulingScheduleAdjustmentKind.SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP:
+            return "SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP";
+        case SchedulingScheduleAdjustmentKind.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingScheduleAdjustmentKindToNumber(object) {
+    switch (object) {
+        case SchedulingScheduleAdjustmentKind.SCHEDULING_SCHEDULE_ADJUSTMENT_KIND_SWAP:
+            return 2;
+        case SchedulingScheduleAdjustmentKind.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var SchedulingSchedulePinScope;
+(function (SchedulingSchedulePinScope) {
+    SchedulingSchedulePinScope["SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT"] = "SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT";
+    SchedulingSchedulePinScope["SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS"] = "SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS";
+    SchedulingSchedulePinScope["SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION"] = "SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION";
+    SchedulingSchedulePinScope["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(SchedulingSchedulePinScope || (exports.SchedulingSchedulePinScope = SchedulingSchedulePinScope = {}));
+function schedulingSchedulePinScopeFromJSON(object) {
+    switch (object) {
+        case 1:
+        case "SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT":
+            return SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT;
+        case 2:
+        case "SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS":
+            return SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS;
+        case 3:
+        case "SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION":
+            return SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return SchedulingSchedulePinScope.UNRECOGNIZED;
+    }
+}
+function schedulingSchedulePinScopeToJSON(object) {
+    switch (object) {
+        case SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT:
+            return "SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT";
+        case SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS:
+            return "SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS";
+        case SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION:
+            return "SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION";
+        case SchedulingSchedulePinScope.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function schedulingSchedulePinScopeToNumber(object) {
+    switch (object) {
+        case SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_PLACEMENT:
+            return 1;
+        case SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_CLASS:
+            return 2;
+        case SchedulingSchedulePinScope.SCHEDULING_SCHEDULE_PIN_SCOPE_SECTION:
+            return 3;
+        case SchedulingSchedulePinScope.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -4531,6 +4893,9 @@ function createBaseSchedulingGenerationRun() {
         created_by: undefined,
         created_at: undefined,
         solver_reasons: [],
+        purpose: undefined,
+        source_working_revision_id: undefined,
+        pin_count: undefined,
     };
 }
 exports.SchedulingGenerationRun = {
@@ -4579,6 +4944,15 @@ exports.SchedulingGenerationRun = {
         }
         for (const v of message.solver_reasons) {
             writer.uint32(122).string(v);
+        }
+        if (message.purpose !== undefined) {
+            writer.uint32(128).int32(schedulingGenerationPurposeToNumber(message.purpose));
+        }
+        if (message.source_working_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.source_working_revision_id, writer.uint32(138).fork()).join();
+        }
+        if (message.pin_count !== undefined) {
+            writer.uint32(144).uint32(message.pin_count);
         }
         return writer;
     },
@@ -4679,6 +5053,24 @@ exports.SchedulingGenerationRun = {
                     }
                     message.solver_reasons.push(reader.string());
                     continue;
+                case 16:
+                    if (tag !== 128) {
+                        break;
+                    }
+                    message.purpose = schedulingGenerationPurposeFromJSON(reader.int32());
+                    continue;
+                case 17:
+                    if (tag !== 138) {
+                        break;
+                    }
+                    message.source_working_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 18:
+                    if (tag !== 144) {
+                        break;
+                    }
+                    message.pin_count = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4712,6 +5104,11 @@ exports.SchedulingGenerationRun = {
             solver_reasons: globalThis.Array.isArray(object?.solverReasons)
                 ? object.solverReasons.map((e) => globalThis.String(e))
                 : [],
+            purpose: isSet(object.purpose) ? schedulingGenerationPurposeFromJSON(object.purpose) : undefined,
+            source_working_revision_id: isSet(object.sourceWorkingRevisionId)
+                ? uuid_1.Uuid.fromJSON(object.sourceWorkingRevisionId)
+                : undefined,
+            pin_count: isSet(object.pinCount) ? globalThis.Number(object.pinCount) : undefined,
         };
     },
     toJSON(message) {
@@ -4761,6 +5158,15 @@ exports.SchedulingGenerationRun = {
         if (message.solver_reasons?.length) {
             obj.solverReasons = message.solver_reasons;
         }
+        if (message.purpose !== undefined) {
+            obj.purpose = schedulingGenerationPurposeToJSON(message.purpose);
+        }
+        if (message.source_working_revision_id !== undefined) {
+            obj.sourceWorkingRevisionId = uuid_1.Uuid.toJSON(message.source_working_revision_id);
+        }
+        if (message.pin_count !== undefined) {
+            obj.pinCount = Math.round(message.pin_count);
+        }
         return obj;
     },
     create(base) {
@@ -4797,6 +5203,12 @@ exports.SchedulingGenerationRun = {
             : undefined;
         message.created_at = object.created_at ?? undefined;
         message.solver_reasons = object.solver_reasons?.map((e) => e) || [];
+        message.purpose = object.purpose ?? undefined;
+        message.source_working_revision_id =
+            (object.source_working_revision_id !== undefined && object.source_working_revision_id !== null)
+                ? uuid_1.Uuid.fromPartial(object.source_working_revision_id)
+                : undefined;
+        message.pin_count = object.pin_count ?? undefined;
         return message;
     },
 };
@@ -4867,6 +5279,7 @@ function createBaseSchedulingGeneratedScheduleEntry() {
         period_sequence: undefined,
         slot_id: undefined,
         room_id: undefined,
+        id: undefined,
     };
 }
 exports.SchedulingGeneratedScheduleEntry = {
@@ -4903,6 +5316,9 @@ exports.SchedulingGeneratedScheduleEntry = {
         }
         if (message.room_id !== undefined) {
             object_id_1.ObjectId.encode(message.room_id, writer.uint32(90).fork()).join();
+        }
+        if (message.id !== undefined) {
+            uuid_1.Uuid.encode(message.id, writer.uint32(98).fork()).join();
         }
         return writer;
     },
@@ -4979,6 +5395,12 @@ exports.SchedulingGeneratedScheduleEntry = {
                     }
                     message.room_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -5000,6 +5422,7 @@ exports.SchedulingGeneratedScheduleEntry = {
             period_sequence: isSet(object.periodSequence) ? globalThis.Number(object.periodSequence) : undefined,
             slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
             room_id: isSet(object.roomId) ? object_id_1.ObjectId.fromJSON(object.roomId) : undefined,
+            id: isSet(object.id) ? uuid_1.Uuid.fromJSON(object.id) : undefined,
         };
     },
     toJSON(message) {
@@ -5037,6 +5460,9 @@ exports.SchedulingGeneratedScheduleEntry = {
         if (message.room_id !== undefined) {
             obj.roomId = object_id_1.ObjectId.toJSON(message.room_id);
         }
+        if (message.id !== undefined) {
+            obj.id = uuid_1.Uuid.toJSON(message.id);
+        }
         return obj;
     },
     create(base) {
@@ -5067,6 +5493,7 @@ exports.SchedulingGeneratedScheduleEntry = {
         message.room_id = (object.room_id !== undefined && object.room_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.room_id)
             : undefined;
+        message.id = (object.id !== undefined && object.id !== null) ? uuid_1.Uuid.fromPartial(object.id) : undefined;
         return message;
     },
 };
@@ -5079,6 +5506,11 @@ function createBaseSchedulingGeneratedSchedule() {
         generation_run_id: undefined,
         solver_input_snapshot_id: undefined,
         created_at: undefined,
+        name: undefined,
+        note: undefined,
+        content_hash: undefined,
+        updated_by: undefined,
+        updated_at: undefined,
     };
 }
 exports.SchedulingGeneratedSchedule = {
@@ -5103,6 +5535,21 @@ exports.SchedulingGeneratedSchedule = {
         }
         if (message.created_at !== undefined) {
             writer.uint32(58).string(message.created_at);
+        }
+        if (message.name !== undefined) {
+            writer.uint32(66).string(message.name);
+        }
+        if (message.note !== undefined) {
+            writer.uint32(74).string(message.note);
+        }
+        if (message.content_hash !== undefined) {
+            writer.uint32(82).string(message.content_hash);
+        }
+        if (message.updated_by !== undefined) {
+            object_id_1.ObjectId.encode(message.updated_by, writer.uint32(90).fork()).join();
+        }
+        if (message.updated_at !== undefined) {
+            writer.uint32(98).string(message.updated_at);
         }
         return writer;
     },
@@ -5155,6 +5602,36 @@ exports.SchedulingGeneratedSchedule = {
                     }
                     message.created_at = reader.string();
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.note = reader.string();
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.content_hash = reader.string();
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.updated_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.updated_at = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -5174,6 +5651,11 @@ exports.SchedulingGeneratedSchedule = {
                 ? uuid_1.Uuid.fromJSON(object.solverInputSnapshotId)
                 : undefined,
             created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            note: isSet(object.note) ? globalThis.String(object.note) : undefined,
+            content_hash: isSet(object.contentHash) ? globalThis.String(object.contentHash) : undefined,
+            updated_by: isSet(object.updatedBy) ? object_id_1.ObjectId.fromJSON(object.updatedBy) : undefined,
+            updated_at: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : undefined,
         };
     },
     toJSON(message) {
@@ -5198,6 +5680,21 @@ exports.SchedulingGeneratedSchedule = {
         }
         if (message.created_at !== undefined) {
             obj.createdAt = message.created_at;
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.note !== undefined) {
+            obj.note = message.note;
+        }
+        if (message.content_hash !== undefined) {
+            obj.contentHash = message.content_hash;
+        }
+        if (message.updated_by !== undefined) {
+            obj.updatedBy = object_id_1.ObjectId.toJSON(message.updated_by);
+        }
+        if (message.updated_at !== undefined) {
+            obj.updatedAt = message.updated_at;
         }
         return obj;
     },
@@ -5224,6 +5721,1020 @@ exports.SchedulingGeneratedSchedule = {
                 ? uuid_1.Uuid.fromPartial(object.solver_input_snapshot_id)
                 : undefined;
         message.created_at = object.created_at ?? undefined;
+        message.name = object.name ?? undefined;
+        message.note = object.note ?? undefined;
+        message.content_hash = object.content_hash ?? undefined;
+        message.updated_by = (object.updated_by !== undefined && object.updated_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.updated_by)
+            : undefined;
+        message.updated_at = object.updated_at ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingWorkingSchedule() {
+    return {
+        id: undefined,
+        organization: undefined,
+        scheduling_workspace: undefined,
+        school_year: undefined,
+        base_generated_schedule_id: undefined,
+        validation_snapshot_id: undefined,
+        current_revision_id: undefined,
+        version: undefined,
+        created_by: undefined,
+        created_at: undefined,
+        updated_by: undefined,
+        updated_at: undefined,
+    };
+}
+exports.SchedulingWorkingSchedule = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            uuid_1.Uuid.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.organization !== undefined) {
+            object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
+        }
+        if (message.scheduling_workspace !== undefined) {
+            uuid_1.Uuid.encode(message.scheduling_workspace, writer.uint32(26).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(34).fork()).join();
+        }
+        if (message.base_generated_schedule_id !== undefined) {
+            object_id_1.ObjectId.encode(message.base_generated_schedule_id, writer.uint32(42).fork()).join();
+        }
+        if (message.validation_snapshot_id !== undefined) {
+            uuid_1.Uuid.encode(message.validation_snapshot_id, writer.uint32(50).fork()).join();
+        }
+        if (message.current_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.current_revision_id, writer.uint32(58).fork()).join();
+        }
+        if (message.version !== undefined) {
+            writer.uint32(64).uint32(message.version);
+        }
+        if (message.created_by !== undefined) {
+            object_id_1.ObjectId.encode(message.created_by, writer.uint32(74).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            writer.uint32(82).string(message.created_at);
+        }
+        if (message.updated_by !== undefined) {
+            object_id_1.ObjectId.encode(message.updated_by, writer.uint32(90).fork()).join();
+        }
+        if (message.updated_at !== undefined) {
+            writer.uint32(98).string(message.updated_at);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingWorkingSchedule();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.scheduling_workspace = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.base_generated_schedule_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.validation_snapshot_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.current_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.version = reader.uint32();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.created_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.created_at = reader.string();
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.updated_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.updated_at = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? uuid_1.Uuid.fromJSON(object.id) : undefined,
+            organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
+            scheduling_workspace: isSet(object.schedulingWorkspace) ? uuid_1.Uuid.fromJSON(object.schedulingWorkspace) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            base_generated_schedule_id: isSet(object.baseGeneratedScheduleId)
+                ? object_id_1.ObjectId.fromJSON(object.baseGeneratedScheduleId)
+                : undefined,
+            validation_snapshot_id: isSet(object.validationSnapshotId)
+                ? uuid_1.Uuid.fromJSON(object.validationSnapshotId)
+                : undefined,
+            current_revision_id: isSet(object.currentRevisionId) ? uuid_1.Uuid.fromJSON(object.currentRevisionId) : undefined,
+            version: isSet(object.version) ? globalThis.Number(object.version) : undefined,
+            created_by: isSet(object.createdBy) ? object_id_1.ObjectId.fromJSON(object.createdBy) : undefined,
+            created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+            updated_by: isSet(object.updatedBy) ? object_id_1.ObjectId.fromJSON(object.updatedBy) : undefined,
+            updated_at: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = uuid_1.Uuid.toJSON(message.id);
+        }
+        if (message.organization !== undefined) {
+            obj.organization = object_id_1.ObjectId.toJSON(message.organization);
+        }
+        if (message.scheduling_workspace !== undefined) {
+            obj.schedulingWorkspace = uuid_1.Uuid.toJSON(message.scheduling_workspace);
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.base_generated_schedule_id !== undefined) {
+            obj.baseGeneratedScheduleId = object_id_1.ObjectId.toJSON(message.base_generated_schedule_id);
+        }
+        if (message.validation_snapshot_id !== undefined) {
+            obj.validationSnapshotId = uuid_1.Uuid.toJSON(message.validation_snapshot_id);
+        }
+        if (message.current_revision_id !== undefined) {
+            obj.currentRevisionId = uuid_1.Uuid.toJSON(message.current_revision_id);
+        }
+        if (message.version !== undefined) {
+            obj.version = Math.round(message.version);
+        }
+        if (message.created_by !== undefined) {
+            obj.createdBy = object_id_1.ObjectId.toJSON(message.created_by);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at;
+        }
+        if (message.updated_by !== undefined) {
+            obj.updatedBy = object_id_1.ObjectId.toJSON(message.updated_by);
+        }
+        if (message.updated_at !== undefined) {
+            obj.updatedAt = message.updated_at;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingWorkingSchedule.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingWorkingSchedule();
+        message.id = (object.id !== undefined && object.id !== null) ? uuid_1.Uuid.fromPartial(object.id) : undefined;
+        message.organization = (object.organization !== undefined && object.organization !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization)
+            : undefined;
+        message.scheduling_workspace = (object.scheduling_workspace !== undefined && object.scheduling_workspace !== null)
+            ? uuid_1.Uuid.fromPartial(object.scheduling_workspace)
+            : undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.base_generated_schedule_id =
+            (object.base_generated_schedule_id !== undefined && object.base_generated_schedule_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.base_generated_schedule_id)
+                : undefined;
+        message.validation_snapshot_id =
+            (object.validation_snapshot_id !== undefined && object.validation_snapshot_id !== null)
+                ? uuid_1.Uuid.fromPartial(object.validation_snapshot_id)
+                : undefined;
+        message.current_revision_id = (object.current_revision_id !== undefined && object.current_revision_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.current_revision_id)
+            : undefined;
+        message.version = object.version ?? undefined;
+        message.created_by = (object.created_by !== undefined && object.created_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.created_by)
+            : undefined;
+        message.created_at = object.created_at ?? undefined;
+        message.updated_by = (object.updated_by !== undefined && object.updated_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.updated_by)
+            : undefined;
+        message.updated_at = object.updated_at ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleRevision() {
+    return {
+        id: undefined,
+        working_schedule_id: undefined,
+        base_generated_schedule_id: undefined,
+        validation_snapshot_id: undefined,
+        kind: undefined,
+        sequence: undefined,
+        summary: undefined,
+        label: undefined,
+        created_by: undefined,
+        created_at: undefined,
+        copied_from_revision_id: undefined,
+        undone_revision_id: undefined,
+    };
+}
+exports.SchedulingScheduleRevision = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            uuid_1.Uuid.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.working_schedule_id !== undefined) {
+            uuid_1.Uuid.encode(message.working_schedule_id, writer.uint32(18).fork()).join();
+        }
+        if (message.base_generated_schedule_id !== undefined) {
+            object_id_1.ObjectId.encode(message.base_generated_schedule_id, writer.uint32(34).fork()).join();
+        }
+        if (message.validation_snapshot_id !== undefined) {
+            uuid_1.Uuid.encode(message.validation_snapshot_id, writer.uint32(42).fork()).join();
+        }
+        if (message.kind !== undefined) {
+            writer.uint32(48).int32(schedulingScheduleRevisionKindToNumber(message.kind));
+        }
+        if (message.sequence !== undefined) {
+            writer.uint32(56).uint32(message.sequence);
+        }
+        if (message.summary !== undefined) {
+            writer.uint32(66).string(message.summary);
+        }
+        if (message.label !== undefined) {
+            writer.uint32(74).string(message.label);
+        }
+        if (message.created_by !== undefined) {
+            object_id_1.ObjectId.encode(message.created_by, writer.uint32(82).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            writer.uint32(90).string(message.created_at);
+        }
+        if (message.copied_from_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.copied_from_revision_id, writer.uint32(98).fork()).join();
+        }
+        if (message.undone_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.undone_revision_id, writer.uint32(106).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleRevision();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.working_schedule_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.base_generated_schedule_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.validation_snapshot_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.kind = schedulingScheduleRevisionKindFromJSON(reader.int32());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.sequence = reader.uint32();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.summary = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.label = reader.string();
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.created_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.created_at = reader.string();
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.copied_from_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.undone_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? uuid_1.Uuid.fromJSON(object.id) : undefined,
+            working_schedule_id: isSet(object.workingScheduleId) ? uuid_1.Uuid.fromJSON(object.workingScheduleId) : undefined,
+            base_generated_schedule_id: isSet(object.baseGeneratedScheduleId)
+                ? object_id_1.ObjectId.fromJSON(object.baseGeneratedScheduleId)
+                : undefined,
+            validation_snapshot_id: isSet(object.validationSnapshotId)
+                ? uuid_1.Uuid.fromJSON(object.validationSnapshotId)
+                : undefined,
+            kind: isSet(object.kind) ? schedulingScheduleRevisionKindFromJSON(object.kind) : undefined,
+            sequence: isSet(object.sequence) ? globalThis.Number(object.sequence) : undefined,
+            summary: isSet(object.summary) ? globalThis.String(object.summary) : undefined,
+            label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+            created_by: isSet(object.createdBy) ? object_id_1.ObjectId.fromJSON(object.createdBy) : undefined,
+            created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+            copied_from_revision_id: isSet(object.copiedFromRevisionId)
+                ? uuid_1.Uuid.fromJSON(object.copiedFromRevisionId)
+                : undefined,
+            undone_revision_id: isSet(object.undoneRevisionId) ? uuid_1.Uuid.fromJSON(object.undoneRevisionId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = uuid_1.Uuid.toJSON(message.id);
+        }
+        if (message.working_schedule_id !== undefined) {
+            obj.workingScheduleId = uuid_1.Uuid.toJSON(message.working_schedule_id);
+        }
+        if (message.base_generated_schedule_id !== undefined) {
+            obj.baseGeneratedScheduleId = object_id_1.ObjectId.toJSON(message.base_generated_schedule_id);
+        }
+        if (message.validation_snapshot_id !== undefined) {
+            obj.validationSnapshotId = uuid_1.Uuid.toJSON(message.validation_snapshot_id);
+        }
+        if (message.kind !== undefined) {
+            obj.kind = schedulingScheduleRevisionKindToJSON(message.kind);
+        }
+        if (message.sequence !== undefined) {
+            obj.sequence = Math.round(message.sequence);
+        }
+        if (message.summary !== undefined) {
+            obj.summary = message.summary;
+        }
+        if (message.label !== undefined) {
+            obj.label = message.label;
+        }
+        if (message.created_by !== undefined) {
+            obj.createdBy = object_id_1.ObjectId.toJSON(message.created_by);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at;
+        }
+        if (message.copied_from_revision_id !== undefined) {
+            obj.copiedFromRevisionId = uuid_1.Uuid.toJSON(message.copied_from_revision_id);
+        }
+        if (message.undone_revision_id !== undefined) {
+            obj.undoneRevisionId = uuid_1.Uuid.toJSON(message.undone_revision_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleRevision.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleRevision();
+        message.id = (object.id !== undefined && object.id !== null) ? uuid_1.Uuid.fromPartial(object.id) : undefined;
+        message.working_schedule_id = (object.working_schedule_id !== undefined && object.working_schedule_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.working_schedule_id)
+            : undefined;
+        message.base_generated_schedule_id =
+            (object.base_generated_schedule_id !== undefined && object.base_generated_schedule_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.base_generated_schedule_id)
+                : undefined;
+        message.validation_snapshot_id =
+            (object.validation_snapshot_id !== undefined && object.validation_snapshot_id !== null)
+                ? uuid_1.Uuid.fromPartial(object.validation_snapshot_id)
+                : undefined;
+        message.kind = object.kind ?? undefined;
+        message.sequence = object.sequence ?? undefined;
+        message.summary = object.summary ?? undefined;
+        message.label = object.label ?? undefined;
+        message.created_by = (object.created_by !== undefined && object.created_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.created_by)
+            : undefined;
+        message.created_at = object.created_at ?? undefined;
+        message.copied_from_revision_id =
+            (object.copied_from_revision_id !== undefined && object.copied_from_revision_id !== null)
+                ? uuid_1.Uuid.fromPartial(object.copied_from_revision_id)
+                : undefined;
+        message.undone_revision_id = (object.undone_revision_id !== undefined && object.undone_revision_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.undone_revision_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleReference() {
+    return { generated_schedule_id: undefined, working_revision_id: undefined };
+}
+exports.SchedulingScheduleReference = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.generated_schedule_id !== undefined) {
+            object_id_1.ObjectId.encode(message.generated_schedule_id, writer.uint32(10).fork()).join();
+        }
+        if (message.working_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.working_revision_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleReference();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.generated_schedule_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.working_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            generated_schedule_id: isSet(object.generatedScheduleId)
+                ? object_id_1.ObjectId.fromJSON(object.generatedScheduleId)
+                : undefined,
+            working_revision_id: isSet(object.workingRevisionId) ? uuid_1.Uuid.fromJSON(object.workingRevisionId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.generated_schedule_id !== undefined) {
+            obj.generatedScheduleId = object_id_1.ObjectId.toJSON(message.generated_schedule_id);
+        }
+        if (message.working_revision_id !== undefined) {
+            obj.workingRevisionId = uuid_1.Uuid.toJSON(message.working_revision_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleReference.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleReference();
+        message.generated_schedule_id =
+            (object.generated_schedule_id !== undefined && object.generated_schedule_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.generated_schedule_id)
+                : undefined;
+        message.working_revision_id = (object.working_revision_id !== undefined && object.working_revision_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.working_revision_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleSource() {
+    return {
+        reference: undefined,
+        generated_schedule: undefined,
+        working_schedule: undefined,
+        working_revision: undefined,
+    };
+}
+exports.SchedulingScheduleSource = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.reference !== undefined) {
+            exports.SchedulingScheduleReference.encode(message.reference, writer.uint32(10).fork()).join();
+        }
+        if (message.generated_schedule !== undefined) {
+            exports.SchedulingGeneratedSchedule.encode(message.generated_schedule, writer.uint32(18).fork()).join();
+        }
+        if (message.working_schedule !== undefined) {
+            exports.SchedulingWorkingSchedule.encode(message.working_schedule, writer.uint32(26).fork()).join();
+        }
+        if (message.working_revision !== undefined) {
+            exports.SchedulingScheduleRevision.encode(message.working_revision, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleSource();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.reference = exports.SchedulingScheduleReference.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.generated_schedule = exports.SchedulingGeneratedSchedule.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.working_schedule = exports.SchedulingWorkingSchedule.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.working_revision = exports.SchedulingScheduleRevision.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            reference: isSet(object.reference) ? exports.SchedulingScheduleReference.fromJSON(object.reference) : undefined,
+            generated_schedule: isSet(object.generatedSchedule)
+                ? exports.SchedulingGeneratedSchedule.fromJSON(object.generatedSchedule)
+                : undefined,
+            working_schedule: isSet(object.workingSchedule)
+                ? exports.SchedulingWorkingSchedule.fromJSON(object.workingSchedule)
+                : undefined,
+            working_revision: isSet(object.workingRevision)
+                ? exports.SchedulingScheduleRevision.fromJSON(object.workingRevision)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.reference !== undefined) {
+            obj.reference = exports.SchedulingScheduleReference.toJSON(message.reference);
+        }
+        if (message.generated_schedule !== undefined) {
+            obj.generatedSchedule = exports.SchedulingGeneratedSchedule.toJSON(message.generated_schedule);
+        }
+        if (message.working_schedule !== undefined) {
+            obj.workingSchedule = exports.SchedulingWorkingSchedule.toJSON(message.working_schedule);
+        }
+        if (message.working_revision !== undefined) {
+            obj.workingRevision = exports.SchedulingScheduleRevision.toJSON(message.working_revision);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleSource.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleSource();
+        message.reference = (object.reference !== undefined && object.reference !== null)
+            ? exports.SchedulingScheduleReference.fromPartial(object.reference)
+            : undefined;
+        message.generated_schedule = (object.generated_schedule !== undefined && object.generated_schedule !== null)
+            ? exports.SchedulingGeneratedSchedule.fromPartial(object.generated_schedule)
+            : undefined;
+        message.working_schedule = (object.working_schedule !== undefined && object.working_schedule !== null)
+            ? exports.SchedulingWorkingSchedule.fromPartial(object.working_schedule)
+            : undefined;
+        message.working_revision = (object.working_revision !== undefined && object.working_revision !== null)
+            ? exports.SchedulingScheduleRevision.fromPartial(object.working_revision)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingGeneratedScheduleSummary() {
+    return {
+        schedule: undefined,
+        input_hash: undefined,
+        setup_compatibility: undefined,
+        is_working_base: undefined,
+        placement_count: undefined,
+        duplicate_of_schedule_id: undefined,
+    };
+}
+exports.SchedulingGeneratedScheduleSummary = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.schedule !== undefined) {
+            exports.SchedulingGeneratedSchedule.encode(message.schedule, writer.uint32(10).fork()).join();
+        }
+        if (message.input_hash !== undefined) {
+            writer.uint32(18).string(message.input_hash);
+        }
+        if (message.setup_compatibility !== undefined) {
+            writer.uint32(24).int32(schedulingScheduleSetupCompatibilityToNumber(message.setup_compatibility));
+        }
+        if (message.is_working_base !== undefined) {
+            writer.uint32(32).bool(message.is_working_base);
+        }
+        if (message.placement_count !== undefined) {
+            writer.uint32(40).uint32(message.placement_count);
+        }
+        if (message.duplicate_of_schedule_id !== undefined) {
+            object_id_1.ObjectId.encode(message.duplicate_of_schedule_id, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGeneratedScheduleSummary();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.schedule = exports.SchedulingGeneratedSchedule.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.input_hash = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.setup_compatibility = schedulingScheduleSetupCompatibilityFromJSON(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.is_working_base = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.placement_count = reader.uint32();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.duplicate_of_schedule_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            schedule: isSet(object.schedule) ? exports.SchedulingGeneratedSchedule.fromJSON(object.schedule) : undefined,
+            input_hash: isSet(object.inputHash) ? globalThis.String(object.inputHash) : undefined,
+            setup_compatibility: isSet(object.setupCompatibility)
+                ? schedulingScheduleSetupCompatibilityFromJSON(object.setupCompatibility)
+                : undefined,
+            is_working_base: isSet(object.isWorkingBase) ? globalThis.Boolean(object.isWorkingBase) : undefined,
+            placement_count: isSet(object.placementCount) ? globalThis.Number(object.placementCount) : undefined,
+            duplicate_of_schedule_id: isSet(object.duplicateOfScheduleId)
+                ? object_id_1.ObjectId.fromJSON(object.duplicateOfScheduleId)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.schedule !== undefined) {
+            obj.schedule = exports.SchedulingGeneratedSchedule.toJSON(message.schedule);
+        }
+        if (message.input_hash !== undefined) {
+            obj.inputHash = message.input_hash;
+        }
+        if (message.setup_compatibility !== undefined) {
+            obj.setupCompatibility = schedulingScheduleSetupCompatibilityToJSON(message.setup_compatibility);
+        }
+        if (message.is_working_base !== undefined) {
+            obj.isWorkingBase = message.is_working_base;
+        }
+        if (message.placement_count !== undefined) {
+            obj.placementCount = Math.round(message.placement_count);
+        }
+        if (message.duplicate_of_schedule_id !== undefined) {
+            obj.duplicateOfScheduleId = object_id_1.ObjectId.toJSON(message.duplicate_of_schedule_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGeneratedScheduleSummary.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGeneratedScheduleSummary();
+        message.schedule = (object.schedule !== undefined && object.schedule !== null)
+            ? exports.SchedulingGeneratedSchedule.fromPartial(object.schedule)
+            : undefined;
+        message.input_hash = object.input_hash ?? undefined;
+        message.setup_compatibility = object.setup_compatibility ?? undefined;
+        message.is_working_base = object.is_working_base ?? undefined;
+        message.placement_count = object.placement_count ?? undefined;
+        message.duplicate_of_schedule_id =
+            (object.duplicate_of_schedule_id !== undefined && object.duplicate_of_schedule_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.duplicate_of_schedule_id)
+                : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingGeneratedSchedulePage() {
+    return { schedules: [], next_cursor: undefined };
+}
+exports.SchedulingGeneratedSchedulePage = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.schedules) {
+            exports.SchedulingGeneratedScheduleSummary.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.next_cursor !== undefined) {
+            writer.uint32(18).string(message.next_cursor);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGeneratedSchedulePage();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.schedules.push(exports.SchedulingGeneratedScheduleSummary.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.next_cursor = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            schedules: globalThis.Array.isArray(object?.schedules)
+                ? object.schedules.map((e) => exports.SchedulingGeneratedScheduleSummary.fromJSON(e))
+                : [],
+            next_cursor: isSet(object.nextCursor) ? globalThis.String(object.nextCursor) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.schedules?.length) {
+            obj.schedules = message.schedules.map((e) => exports.SchedulingGeneratedScheduleSummary.toJSON(e));
+        }
+        if (message.next_cursor !== undefined) {
+            obj.nextCursor = message.next_cursor;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGeneratedSchedulePage.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGeneratedSchedulePage();
+        message.schedules = object.schedules?.map((e) => exports.SchedulingGeneratedScheduleSummary.fromPartial(e)) || [];
+        message.next_cursor = object.next_cursor ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleRevisionPage() {
+    return { revisions: [], next_cursor: undefined };
+}
+exports.SchedulingScheduleRevisionPage = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.revisions) {
+            exports.SchedulingScheduleRevision.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.next_cursor !== undefined) {
+            writer.uint32(18).string(message.next_cursor);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleRevisionPage();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.revisions.push(exports.SchedulingScheduleRevision.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.next_cursor = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            revisions: globalThis.Array.isArray(object?.revisions)
+                ? object.revisions.map((e) => exports.SchedulingScheduleRevision.fromJSON(e))
+                : [],
+            next_cursor: isSet(object.nextCursor) ? globalThis.String(object.nextCursor) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.revisions?.length) {
+            obj.revisions = message.revisions.map((e) => exports.SchedulingScheduleRevision.toJSON(e));
+        }
+        if (message.next_cursor !== undefined) {
+            obj.nextCursor = message.next_cursor;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleRevisionPage.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleRevisionPage();
+        message.revisions = object.revisions?.map((e) => exports.SchedulingScheduleRevision.fromPartial(e)) || [];
+        message.next_cursor = object.next_cursor ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleCompatibilityIssue() {
+    return { code: undefined, message: undefined };
+}
+exports.SchedulingScheduleCompatibilityIssue = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.code !== undefined) {
+            writer.uint32(10).string(message.code);
+        }
+        if (message.message !== undefined) {
+            writer.uint32(18).string(message.message);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleCompatibilityIssue();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.code = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.message = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+            message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.code !== undefined) {
+            obj.code = message.code;
+        }
+        if (message.message !== undefined) {
+            obj.message = message.message;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleCompatibilityIssue.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleCompatibilityIssue();
+        message.code = object.code ?? undefined;
+        message.message = object.message ?? undefined;
         return message;
     },
 };
@@ -6379,6 +7890,1764 @@ exports.SchedulingGeneratedScheduleView = {
         message.students = object.students?.map((e) => exports.SchedulingScheduleStudentInfo.fromPartial(e)) || [];
         message.rooms = object.rooms?.map((e) => exports.SchedulingScheduleRoomInfo.fromPartial(e)) || [];
         message.room_assignments_enforced = object.room_assignments_enforced ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleView() {
+    return {
+        source: undefined,
+        entries: [],
+        classes: [],
+        teachers: [],
+        slots: [],
+        semesters: [],
+        sections: [],
+        students: [],
+        rooms: [],
+        room_assignments_enforced: undefined,
+        setup_compatibility: undefined,
+    };
+}
+exports.SchedulingScheduleView = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.source !== undefined) {
+            exports.SchedulingScheduleSource.encode(message.source, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.entries) {
+            exports.SchedulingGeneratedScheduleEntry.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.classes) {
+            exports.SchedulingScheduleClassInfo.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.teachers) {
+            exports.SchedulingScheduleTeacherInfo.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.slots) {
+            exports.SchedulingScheduleSlotInfo.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.semesters) {
+            exports.SchedulingScheduleSemesterInfo.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.sections) {
+            exports.SchedulingScheduleSectionInfo.encode(v, writer.uint32(58).fork()).join();
+        }
+        for (const v of message.students) {
+            exports.SchedulingScheduleStudentInfo.encode(v, writer.uint32(66).fork()).join();
+        }
+        for (const v of message.rooms) {
+            exports.SchedulingScheduleRoomInfo.encode(v, writer.uint32(74).fork()).join();
+        }
+        if (message.room_assignments_enforced !== undefined) {
+            writer.uint32(80).bool(message.room_assignments_enforced);
+        }
+        if (message.setup_compatibility !== undefined) {
+            writer.uint32(88).int32(schedulingScheduleSetupCompatibilityToNumber(message.setup_compatibility));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleView();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.source = exports.SchedulingScheduleSource.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.entries.push(exports.SchedulingGeneratedScheduleEntry.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.classes.push(exports.SchedulingScheduleClassInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.teachers.push(exports.SchedulingScheduleTeacherInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.slots.push(exports.SchedulingScheduleSlotInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.semesters.push(exports.SchedulingScheduleSemesterInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.sections.push(exports.SchedulingScheduleSectionInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.students.push(exports.SchedulingScheduleStudentInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.rooms.push(exports.SchedulingScheduleRoomInfo.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.room_assignments_enforced = reader.bool();
+                    continue;
+                case 11:
+                    if (tag !== 88) {
+                        break;
+                    }
+                    message.setup_compatibility = schedulingScheduleSetupCompatibilityFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            source: isSet(object.source) ? exports.SchedulingScheduleSource.fromJSON(object.source) : undefined,
+            entries: globalThis.Array.isArray(object?.entries)
+                ? object.entries.map((e) => exports.SchedulingGeneratedScheduleEntry.fromJSON(e))
+                : [],
+            classes: globalThis.Array.isArray(object?.classes)
+                ? object.classes.map((e) => exports.SchedulingScheduleClassInfo.fromJSON(e))
+                : [],
+            teachers: globalThis.Array.isArray(object?.teachers)
+                ? object.teachers.map((e) => exports.SchedulingScheduleTeacherInfo.fromJSON(e))
+                : [],
+            slots: globalThis.Array.isArray(object?.slots)
+                ? object.slots.map((e) => exports.SchedulingScheduleSlotInfo.fromJSON(e))
+                : [],
+            semesters: globalThis.Array.isArray(object?.semesters)
+                ? object.semesters.map((e) => exports.SchedulingScheduleSemesterInfo.fromJSON(e))
+                : [],
+            sections: globalThis.Array.isArray(object?.sections)
+                ? object.sections.map((e) => exports.SchedulingScheduleSectionInfo.fromJSON(e))
+                : [],
+            students: globalThis.Array.isArray(object?.students)
+                ? object.students.map((e) => exports.SchedulingScheduleStudentInfo.fromJSON(e))
+                : [],
+            rooms: globalThis.Array.isArray(object?.rooms)
+                ? object.rooms.map((e) => exports.SchedulingScheduleRoomInfo.fromJSON(e))
+                : [],
+            room_assignments_enforced: isSet(object.roomAssignmentsEnforced)
+                ? globalThis.Boolean(object.roomAssignmentsEnforced)
+                : undefined,
+            setup_compatibility: isSet(object.setupCompatibility)
+                ? schedulingScheduleSetupCompatibilityFromJSON(object.setupCompatibility)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.source !== undefined) {
+            obj.source = exports.SchedulingScheduleSource.toJSON(message.source);
+        }
+        if (message.entries?.length) {
+            obj.entries = message.entries.map((e) => exports.SchedulingGeneratedScheduleEntry.toJSON(e));
+        }
+        if (message.classes?.length) {
+            obj.classes = message.classes.map((e) => exports.SchedulingScheduleClassInfo.toJSON(e));
+        }
+        if (message.teachers?.length) {
+            obj.teachers = message.teachers.map((e) => exports.SchedulingScheduleTeacherInfo.toJSON(e));
+        }
+        if (message.slots?.length) {
+            obj.slots = message.slots.map((e) => exports.SchedulingScheduleSlotInfo.toJSON(e));
+        }
+        if (message.semesters?.length) {
+            obj.semesters = message.semesters.map((e) => exports.SchedulingScheduleSemesterInfo.toJSON(e));
+        }
+        if (message.sections?.length) {
+            obj.sections = message.sections.map((e) => exports.SchedulingScheduleSectionInfo.toJSON(e));
+        }
+        if (message.students?.length) {
+            obj.students = message.students.map((e) => exports.SchedulingScheduleStudentInfo.toJSON(e));
+        }
+        if (message.rooms?.length) {
+            obj.rooms = message.rooms.map((e) => exports.SchedulingScheduleRoomInfo.toJSON(e));
+        }
+        if (message.room_assignments_enforced !== undefined) {
+            obj.roomAssignmentsEnforced = message.room_assignments_enforced;
+        }
+        if (message.setup_compatibility !== undefined) {
+            obj.setupCompatibility = schedulingScheduleSetupCompatibilityToJSON(message.setup_compatibility);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleView.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleView();
+        message.source = (object.source !== undefined && object.source !== null)
+            ? exports.SchedulingScheduleSource.fromPartial(object.source)
+            : undefined;
+        message.entries = object.entries?.map((e) => exports.SchedulingGeneratedScheduleEntry.fromPartial(e)) || [];
+        message.classes = object.classes?.map((e) => exports.SchedulingScheduleClassInfo.fromPartial(e)) || [];
+        message.teachers = object.teachers?.map((e) => exports.SchedulingScheduleTeacherInfo.fromPartial(e)) || [];
+        message.slots = object.slots?.map((e) => exports.SchedulingScheduleSlotInfo.fromPartial(e)) || [];
+        message.semesters = object.semesters?.map((e) => exports.SchedulingScheduleSemesterInfo.fromPartial(e)) || [];
+        message.sections = object.sections?.map((e) => exports.SchedulingScheduleSectionInfo.fromPartial(e)) || [];
+        message.students = object.students?.map((e) => exports.SchedulingScheduleStudentInfo.fromPartial(e)) || [];
+        message.rooms = object.rooms?.map((e) => exports.SchedulingScheduleRoomInfo.fromPartial(e)) || [];
+        message.room_assignments_enforced = object.room_assignments_enforced ?? undefined;
+        message.setup_compatibility = object.setup_compatibility ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingWorkingScheduleState() {
+    return {
+        working_schedule: undefined,
+        current_revision: undefined,
+        view: undefined,
+        can_undo: undefined,
+        can_redo: undefined,
+    };
+}
+exports.SchedulingWorkingScheduleState = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.working_schedule !== undefined) {
+            exports.SchedulingWorkingSchedule.encode(message.working_schedule, writer.uint32(10).fork()).join();
+        }
+        if (message.current_revision !== undefined) {
+            exports.SchedulingScheduleRevision.encode(message.current_revision, writer.uint32(18).fork()).join();
+        }
+        if (message.view !== undefined) {
+            exports.SchedulingScheduleView.encode(message.view, writer.uint32(26).fork()).join();
+        }
+        if (message.can_undo !== undefined) {
+            writer.uint32(32).bool(message.can_undo);
+        }
+        if (message.can_redo !== undefined) {
+            writer.uint32(40).bool(message.can_redo);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingWorkingScheduleState();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.working_schedule = exports.SchedulingWorkingSchedule.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.current_revision = exports.SchedulingScheduleRevision.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.view = exports.SchedulingScheduleView.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.can_undo = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.can_redo = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            working_schedule: isSet(object.workingSchedule)
+                ? exports.SchedulingWorkingSchedule.fromJSON(object.workingSchedule)
+                : undefined,
+            current_revision: isSet(object.currentRevision)
+                ? exports.SchedulingScheduleRevision.fromJSON(object.currentRevision)
+                : undefined,
+            view: isSet(object.view) ? exports.SchedulingScheduleView.fromJSON(object.view) : undefined,
+            can_undo: isSet(object.canUndo) ? globalThis.Boolean(object.canUndo) : undefined,
+            can_redo: isSet(object.canRedo) ? globalThis.Boolean(object.canRedo) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.working_schedule !== undefined) {
+            obj.workingSchedule = exports.SchedulingWorkingSchedule.toJSON(message.working_schedule);
+        }
+        if (message.current_revision !== undefined) {
+            obj.currentRevision = exports.SchedulingScheduleRevision.toJSON(message.current_revision);
+        }
+        if (message.view !== undefined) {
+            obj.view = exports.SchedulingScheduleView.toJSON(message.view);
+        }
+        if (message.can_undo !== undefined) {
+            obj.canUndo = message.can_undo;
+        }
+        if (message.can_redo !== undefined) {
+            obj.canRedo = message.can_redo;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingWorkingScheduleState.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingWorkingScheduleState();
+        message.working_schedule = (object.working_schedule !== undefined && object.working_schedule !== null)
+            ? exports.SchedulingWorkingSchedule.fromPartial(object.working_schedule)
+            : undefined;
+        message.current_revision = (object.current_revision !== undefined && object.current_revision !== null)
+            ? exports.SchedulingScheduleRevision.fromPartial(object.current_revision)
+            : undefined;
+        message.view = (object.view !== undefined && object.view !== null)
+            ? exports.SchedulingScheduleView.fromPartial(object.view)
+            : undefined;
+        message.can_undo = object.can_undo ?? undefined;
+        message.can_redo = object.can_redo ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingWorkingScheduleMutationResult() {
+    return { applied: undefined, state: undefined, issues: [] };
+}
+exports.SchedulingWorkingScheduleMutationResult = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.applied !== undefined) {
+            writer.uint32(8).bool(message.applied);
+        }
+        if (message.state !== undefined) {
+            exports.SchedulingWorkingScheduleState.encode(message.state, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.issues) {
+            exports.SchedulingScheduleCompatibilityIssue.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingWorkingScheduleMutationResult();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.applied = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.state = exports.SchedulingWorkingScheduleState.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.issues.push(exports.SchedulingScheduleCompatibilityIssue.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            applied: isSet(object.applied) ? globalThis.Boolean(object.applied) : undefined,
+            state: isSet(object.state) ? exports.SchedulingWorkingScheduleState.fromJSON(object.state) : undefined,
+            issues: globalThis.Array.isArray(object?.issues)
+                ? object.issues.map((e) => exports.SchedulingScheduleCompatibilityIssue.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.applied !== undefined) {
+            obj.applied = message.applied;
+        }
+        if (message.state !== undefined) {
+            obj.state = exports.SchedulingWorkingScheduleState.toJSON(message.state);
+        }
+        if (message.issues?.length) {
+            obj.issues = message.issues.map((e) => exports.SchedulingScheduleCompatibilityIssue.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingWorkingScheduleMutationResult.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingWorkingScheduleMutationResult();
+        message.applied = object.applied ?? undefined;
+        message.state = (object.state !== undefined && object.state !== null)
+            ? exports.SchedulingWorkingScheduleState.fromPartial(object.state)
+            : undefined;
+        message.issues = object.issues?.map((e) => exports.SchedulingScheduleCompatibilityIssue.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSchedulingScheduleSwap() {
+    return { placement_id: undefined, target_placement_id: undefined };
+}
+exports.SchedulingScheduleSwap = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.placement_id !== undefined) {
+            uuid_1.Uuid.encode(message.placement_id, writer.uint32(10).fork()).join();
+        }
+        if (message.target_placement_id !== undefined) {
+            uuid_1.Uuid.encode(message.target_placement_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleSwap();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.placement_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.target_placement_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            placement_id: isSet(object.placementId) ? uuid_1.Uuid.fromJSON(object.placementId) : undefined,
+            target_placement_id: isSet(object.targetPlacementId) ? uuid_1.Uuid.fromJSON(object.targetPlacementId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.placement_id !== undefined) {
+            obj.placementId = uuid_1.Uuid.toJSON(message.placement_id);
+        }
+        if (message.target_placement_id !== undefined) {
+            obj.targetPlacementId = uuid_1.Uuid.toJSON(message.target_placement_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleSwap.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleSwap();
+        message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.placement_id)
+            : undefined;
+        message.target_placement_id = (object.target_placement_id !== undefined && object.target_placement_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.target_placement_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentOperation() {
+    return { swap: undefined };
+}
+exports.SchedulingScheduleAdjustmentOperation = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.swap !== undefined) {
+            exports.SchedulingScheduleSwap.encode(message.swap, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentOperation();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.swap = exports.SchedulingScheduleSwap.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { swap: isSet(object.swap) ? exports.SchedulingScheduleSwap.fromJSON(object.swap) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.swap !== undefined) {
+            obj.swap = exports.SchedulingScheduleSwap.toJSON(message.swap);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentOperation.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentOperation();
+        message.swap = (object.swap !== undefined && object.swap !== null)
+            ? exports.SchedulingScheduleSwap.fromPartial(object.swap)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentIssue() {
+    return { code: undefined, message: undefined, severity: undefined, placement_ids: [], resource_ids: [] };
+}
+exports.SchedulingScheduleAdjustmentIssue = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.code !== undefined) {
+            writer.uint32(10).string(message.code);
+        }
+        if (message.message !== undefined) {
+            writer.uint32(18).string(message.message);
+        }
+        if (message.severity !== undefined) {
+            writer.uint32(24).int32(schedulingScheduleAdjustmentIssueSeverityToNumber(message.severity));
+        }
+        for (const v of message.placement_ids) {
+            uuid_1.Uuid.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.resource_ids) {
+            writer.uint32(42).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentIssue();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.code = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.message = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.severity = schedulingScheduleAdjustmentIssueSeverityFromJSON(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.placement_ids.push(uuid_1.Uuid.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.resource_ids.push(reader.string());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+            message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+            severity: isSet(object.severity) ? schedulingScheduleAdjustmentIssueSeverityFromJSON(object.severity) : undefined,
+            placement_ids: globalThis.Array.isArray(object?.placementIds)
+                ? object.placementIds.map((e) => uuid_1.Uuid.fromJSON(e))
+                : [],
+            resource_ids: globalThis.Array.isArray(object?.resourceIds)
+                ? object.resourceIds.map((e) => globalThis.String(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.code !== undefined) {
+            obj.code = message.code;
+        }
+        if (message.message !== undefined) {
+            obj.message = message.message;
+        }
+        if (message.severity !== undefined) {
+            obj.severity = schedulingScheduleAdjustmentIssueSeverityToJSON(message.severity);
+        }
+        if (message.placement_ids?.length) {
+            obj.placementIds = message.placement_ids.map((e) => uuid_1.Uuid.toJSON(e));
+        }
+        if (message.resource_ids?.length) {
+            obj.resourceIds = message.resource_ids;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentIssue.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentIssue();
+        message.code = object.code ?? undefined;
+        message.message = object.message ?? undefined;
+        message.severity = object.severity ?? undefined;
+        message.placement_ids = object.placement_ids?.map((e) => uuid_1.Uuid.fromPartial(e)) || [];
+        message.resource_ids = object.resource_ids?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseSchedulingScheduleCellChange() {
+    return { placement_id: undefined, class_id: undefined, from_slot_id: undefined, to_slot_id: undefined };
+}
+exports.SchedulingScheduleCellChange = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.placement_id !== undefined) {
+            uuid_1.Uuid.encode(message.placement_id, writer.uint32(10).fork()).join();
+        }
+        if (message.class_id !== undefined) {
+            writer.uint32(18).string(message.class_id);
+        }
+        if (message.from_slot_id !== undefined) {
+            writer.uint32(26).string(message.from_slot_id);
+        }
+        if (message.to_slot_id !== undefined) {
+            writer.uint32(34).string(message.to_slot_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleCellChange();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.placement_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.class_id = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.from_slot_id = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.to_slot_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            placement_id: isSet(object.placementId) ? uuid_1.Uuid.fromJSON(object.placementId) : undefined,
+            class_id: isSet(object.classId) ? globalThis.String(object.classId) : undefined,
+            from_slot_id: isSet(object.fromSlotId) ? globalThis.String(object.fromSlotId) : undefined,
+            to_slot_id: isSet(object.toSlotId) ? globalThis.String(object.toSlotId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.placement_id !== undefined) {
+            obj.placementId = uuid_1.Uuid.toJSON(message.placement_id);
+        }
+        if (message.class_id !== undefined) {
+            obj.classId = message.class_id;
+        }
+        if (message.from_slot_id !== undefined) {
+            obj.fromSlotId = message.from_slot_id;
+        }
+        if (message.to_slot_id !== undefined) {
+            obj.toSlotId = message.to_slot_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleCellChange.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleCellChange();
+        message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.placement_id)
+            : undefined;
+        message.class_id = object.class_id ?? undefined;
+        message.from_slot_id = object.from_slot_id ?? undefined;
+        message.to_slot_id = object.to_slot_id ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentImpact() {
+    return { cell_changes: [], class_ids: [], section_ids: [], teacher_ids: [], student_ids: [], room_ids: [] };
+}
+exports.SchedulingScheduleAdjustmentImpact = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.cell_changes) {
+            exports.SchedulingScheduleCellChange.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.class_ids) {
+            writer.uint32(18).string(v);
+        }
+        for (const v of message.section_ids) {
+            uuid_1.Uuid.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.teacher_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.room_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentImpact();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.cell_changes.push(exports.SchedulingScheduleCellChange.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.class_ids.push(reader.string());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.section_ids.push(uuid_1.Uuid.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.teacher_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.room_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            cell_changes: globalThis.Array.isArray(object?.cellChanges)
+                ? object.cellChanges.map((e) => exports.SchedulingScheduleCellChange.fromJSON(e))
+                : [],
+            class_ids: globalThis.Array.isArray(object?.classIds)
+                ? object.classIds.map((e) => globalThis.String(e))
+                : [],
+            section_ids: globalThis.Array.isArray(object?.sectionIds)
+                ? object.sectionIds.map((e) => uuid_1.Uuid.fromJSON(e))
+                : [],
+            teacher_ids: globalThis.Array.isArray(object?.teacherIds)
+                ? object.teacherIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            room_ids: globalThis.Array.isArray(object?.roomIds) ? object.roomIds.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.cell_changes?.length) {
+            obj.cellChanges = message.cell_changes.map((e) => exports.SchedulingScheduleCellChange.toJSON(e));
+        }
+        if (message.class_ids?.length) {
+            obj.classIds = message.class_ids;
+        }
+        if (message.section_ids?.length) {
+            obj.sectionIds = message.section_ids.map((e) => uuid_1.Uuid.toJSON(e));
+        }
+        if (message.teacher_ids?.length) {
+            obj.teacherIds = message.teacher_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.room_ids?.length) {
+            obj.roomIds = message.room_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentImpact.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentImpact();
+        message.cell_changes = object.cell_changes?.map((e) => exports.SchedulingScheduleCellChange.fromPartial(e)) || [];
+        message.class_ids = object.class_ids?.map((e) => e) || [];
+        message.section_ids = object.section_ids?.map((e) => uuid_1.Uuid.fromPartial(e)) || [];
+        message.teacher_ids = object.teacher_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.room_ids = object.room_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentOption() {
+    return { kind: undefined, target_placement_id: undefined, valid: undefined, primary_issue: undefined };
+}
+exports.SchedulingScheduleAdjustmentOption = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.kind !== undefined) {
+            writer.uint32(8).int32(schedulingScheduleAdjustmentKindToNumber(message.kind));
+        }
+        if (message.target_placement_id !== undefined) {
+            uuid_1.Uuid.encode(message.target_placement_id, writer.uint32(26).fork()).join();
+        }
+        if (message.valid !== undefined) {
+            writer.uint32(32).bool(message.valid);
+        }
+        if (message.primary_issue !== undefined) {
+            exports.SchedulingScheduleAdjustmentIssue.encode(message.primary_issue, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentOption();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.kind = schedulingScheduleAdjustmentKindFromJSON(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.target_placement_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.valid = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.primary_issue = exports.SchedulingScheduleAdjustmentIssue.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            kind: isSet(object.kind) ? schedulingScheduleAdjustmentKindFromJSON(object.kind) : undefined,
+            target_placement_id: isSet(object.targetPlacementId) ? uuid_1.Uuid.fromJSON(object.targetPlacementId) : undefined,
+            valid: isSet(object.valid) ? globalThis.Boolean(object.valid) : undefined,
+            primary_issue: isSet(object.primaryIssue)
+                ? exports.SchedulingScheduleAdjustmentIssue.fromJSON(object.primaryIssue)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.kind !== undefined) {
+            obj.kind = schedulingScheduleAdjustmentKindToJSON(message.kind);
+        }
+        if (message.target_placement_id !== undefined) {
+            obj.targetPlacementId = uuid_1.Uuid.toJSON(message.target_placement_id);
+        }
+        if (message.valid !== undefined) {
+            obj.valid = message.valid;
+        }
+        if (message.primary_issue !== undefined) {
+            obj.primaryIssue = exports.SchedulingScheduleAdjustmentIssue.toJSON(message.primary_issue);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentOption.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentOption();
+        message.kind = object.kind ?? undefined;
+        message.target_placement_id = (object.target_placement_id !== undefined && object.target_placement_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.target_placement_id)
+            : undefined;
+        message.valid = object.valid ?? undefined;
+        message.primary_issue = (object.primary_issue !== undefined && object.primary_issue !== null)
+            ? exports.SchedulingScheduleAdjustmentIssue.fromPartial(object.primary_issue)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentOptions() {
+    return { source_placement_ids: [], options: [] };
+}
+exports.SchedulingScheduleAdjustmentOptions = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.source_placement_ids) {
+            uuid_1.Uuid.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.options) {
+            exports.SchedulingScheduleAdjustmentOption.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentOptions();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.source_placement_ids.push(uuid_1.Uuid.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.options.push(exports.SchedulingScheduleAdjustmentOption.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            source_placement_ids: globalThis.Array.isArray(object?.sourcePlacementIds)
+                ? object.sourcePlacementIds.map((e) => uuid_1.Uuid.fromJSON(e))
+                : [],
+            options: globalThis.Array.isArray(object?.options)
+                ? object.options.map((e) => exports.SchedulingScheduleAdjustmentOption.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.source_placement_ids?.length) {
+            obj.sourcePlacementIds = message.source_placement_ids.map((e) => uuid_1.Uuid.toJSON(e));
+        }
+        if (message.options?.length) {
+            obj.options = message.options.map((e) => exports.SchedulingScheduleAdjustmentOption.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentOptions.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentOptions();
+        message.source_placement_ids = object.source_placement_ids?.map((e) => uuid_1.Uuid.fromPartial(e)) || [];
+        message.options = object.options?.map((e) => exports.SchedulingScheduleAdjustmentOption.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentPreview() {
+    return { valid: undefined, current_revision_id: undefined, proposed_entries: [], issues: [], impact: undefined };
+}
+exports.SchedulingScheduleAdjustmentPreview = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.valid !== undefined) {
+            writer.uint32(8).bool(message.valid);
+        }
+        if (message.current_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.current_revision_id, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.proposed_entries) {
+            exports.SchedulingGeneratedScheduleEntry.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.issues) {
+            exports.SchedulingScheduleAdjustmentIssue.encode(v, writer.uint32(34).fork()).join();
+        }
+        if (message.impact !== undefined) {
+            exports.SchedulingScheduleAdjustmentImpact.encode(message.impact, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentPreview();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.valid = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.current_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.proposed_entries.push(exports.SchedulingGeneratedScheduleEntry.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.issues.push(exports.SchedulingScheduleAdjustmentIssue.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.impact = exports.SchedulingScheduleAdjustmentImpact.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            valid: isSet(object.valid) ? globalThis.Boolean(object.valid) : undefined,
+            current_revision_id: isSet(object.currentRevisionId) ? uuid_1.Uuid.fromJSON(object.currentRevisionId) : undefined,
+            proposed_entries: globalThis.Array.isArray(object?.proposedEntries)
+                ? object.proposedEntries.map((e) => exports.SchedulingGeneratedScheduleEntry.fromJSON(e))
+                : [],
+            issues: globalThis.Array.isArray(object?.issues)
+                ? object.issues.map((e) => exports.SchedulingScheduleAdjustmentIssue.fromJSON(e))
+                : [],
+            impact: isSet(object.impact) ? exports.SchedulingScheduleAdjustmentImpact.fromJSON(object.impact) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.valid !== undefined) {
+            obj.valid = message.valid;
+        }
+        if (message.current_revision_id !== undefined) {
+            obj.currentRevisionId = uuid_1.Uuid.toJSON(message.current_revision_id);
+        }
+        if (message.proposed_entries?.length) {
+            obj.proposedEntries = message.proposed_entries.map((e) => exports.SchedulingGeneratedScheduleEntry.toJSON(e));
+        }
+        if (message.issues?.length) {
+            obj.issues = message.issues.map((e) => exports.SchedulingScheduleAdjustmentIssue.toJSON(e));
+        }
+        if (message.impact !== undefined) {
+            obj.impact = exports.SchedulingScheduleAdjustmentImpact.toJSON(message.impact);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentPreview.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentPreview();
+        message.valid = object.valid ?? undefined;
+        message.current_revision_id = (object.current_revision_id !== undefined && object.current_revision_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.current_revision_id)
+            : undefined;
+        message.proposed_entries = object.proposed_entries?.map((e) => exports.SchedulingGeneratedScheduleEntry.fromPartial(e)) ||
+            [];
+        message.issues = object.issues?.map((e) => exports.SchedulingScheduleAdjustmentIssue.fromPartial(e)) || [];
+        message.impact = (object.impact !== undefined && object.impact !== null)
+            ? exports.SchedulingScheduleAdjustmentImpact.fromPartial(object.impact)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingScheduleAdjustmentMutationResult() {
+    return { applied: undefined, state: undefined, issues: [], impact: undefined };
+}
+exports.SchedulingScheduleAdjustmentMutationResult = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.applied !== undefined) {
+            writer.uint32(8).bool(message.applied);
+        }
+        if (message.state !== undefined) {
+            exports.SchedulingWorkingScheduleState.encode(message.state, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.issues) {
+            exports.SchedulingScheduleAdjustmentIssue.encode(v, writer.uint32(26).fork()).join();
+        }
+        if (message.impact !== undefined) {
+            exports.SchedulingScheduleAdjustmentImpact.encode(message.impact, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleAdjustmentMutationResult();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.applied = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.state = exports.SchedulingWorkingScheduleState.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.issues.push(exports.SchedulingScheduleAdjustmentIssue.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.impact = exports.SchedulingScheduleAdjustmentImpact.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            applied: isSet(object.applied) ? globalThis.Boolean(object.applied) : undefined,
+            state: isSet(object.state) ? exports.SchedulingWorkingScheduleState.fromJSON(object.state) : undefined,
+            issues: globalThis.Array.isArray(object?.issues)
+                ? object.issues.map((e) => exports.SchedulingScheduleAdjustmentIssue.fromJSON(e))
+                : [],
+            impact: isSet(object.impact) ? exports.SchedulingScheduleAdjustmentImpact.fromJSON(object.impact) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.applied !== undefined) {
+            obj.applied = message.applied;
+        }
+        if (message.state !== undefined) {
+            obj.state = exports.SchedulingWorkingScheduleState.toJSON(message.state);
+        }
+        if (message.issues?.length) {
+            obj.issues = message.issues.map((e) => exports.SchedulingScheduleAdjustmentIssue.toJSON(e));
+        }
+        if (message.impact !== undefined) {
+            obj.impact = exports.SchedulingScheduleAdjustmentImpact.toJSON(message.impact);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleAdjustmentMutationResult.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleAdjustmentMutationResult();
+        message.applied = object.applied ?? undefined;
+        message.state = (object.state !== undefined && object.state !== null)
+            ? exports.SchedulingWorkingScheduleState.fromPartial(object.state)
+            : undefined;
+        message.issues = object.issues?.map((e) => exports.SchedulingScheduleAdjustmentIssue.fromPartial(e)) || [];
+        message.impact = (object.impact !== undefined && object.impact !== null)
+            ? exports.SchedulingScheduleAdjustmentImpact.fromPartial(object.impact)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingSchedulePin() {
+    return {
+        id: undefined,
+        pin_group_id: undefined,
+        placement_id: undefined,
+        class_id: undefined,
+        slot_id: undefined,
+        teacher_id: undefined,
+        room_id: undefined,
+    };
+}
+exports.SchedulingSchedulePin = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            uuid_1.Uuid.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.pin_group_id !== undefined) {
+            uuid_1.Uuid.encode(message.pin_group_id, writer.uint32(18).fork()).join();
+        }
+        if (message.placement_id !== undefined) {
+            uuid_1.Uuid.encode(message.placement_id, writer.uint32(26).fork()).join();
+        }
+        if (message.class_id !== undefined) {
+            writer.uint32(34).string(message.class_id);
+        }
+        if (message.slot_id !== undefined) {
+            writer.uint32(42).string(message.slot_id);
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(50).fork()).join();
+        }
+        if (message.room_id !== undefined) {
+            object_id_1.ObjectId.encode(message.room_id, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingSchedulePin();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.pin_group_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.placement_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.class_id = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.slot_id = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.room_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? uuid_1.Uuid.fromJSON(object.id) : undefined,
+            pin_group_id: isSet(object.pinGroupId) ? uuid_1.Uuid.fromJSON(object.pinGroupId) : undefined,
+            placement_id: isSet(object.placementId) ? uuid_1.Uuid.fromJSON(object.placementId) : undefined,
+            class_id: isSet(object.classId) ? globalThis.String(object.classId) : undefined,
+            slot_id: isSet(object.slotId) ? globalThis.String(object.slotId) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            room_id: isSet(object.roomId) ? object_id_1.ObjectId.fromJSON(object.roomId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = uuid_1.Uuid.toJSON(message.id);
+        }
+        if (message.pin_group_id !== undefined) {
+            obj.pinGroupId = uuid_1.Uuid.toJSON(message.pin_group_id);
+        }
+        if (message.placement_id !== undefined) {
+            obj.placementId = uuid_1.Uuid.toJSON(message.placement_id);
+        }
+        if (message.class_id !== undefined) {
+            obj.classId = message.class_id;
+        }
+        if (message.slot_id !== undefined) {
+            obj.slotId = message.slot_id;
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.room_id !== undefined) {
+            obj.roomId = object_id_1.ObjectId.toJSON(message.room_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingSchedulePin.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingSchedulePin();
+        message.id = (object.id !== undefined && object.id !== null) ? uuid_1.Uuid.fromPartial(object.id) : undefined;
+        message.pin_group_id = (object.pin_group_id !== undefined && object.pin_group_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.pin_group_id)
+            : undefined;
+        message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.placement_id)
+            : undefined;
+        message.class_id = object.class_id ?? undefined;
+        message.slot_id = object.slot_id ?? undefined;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        message.room_id = (object.room_id !== undefined && object.room_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.room_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingSchedulePinGroup() {
+    return {
+        id: undefined,
+        working_schedule_id: undefined,
+        revision_id: undefined,
+        scope: undefined,
+        label: undefined,
+        pins: [],
+        created_by: undefined,
+        created_at: undefined,
+    };
+}
+exports.SchedulingSchedulePinGroup = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            uuid_1.Uuid.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.working_schedule_id !== undefined) {
+            uuid_1.Uuid.encode(message.working_schedule_id, writer.uint32(18).fork()).join();
+        }
+        if (message.revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.revision_id, writer.uint32(26).fork()).join();
+        }
+        if (message.scope !== undefined) {
+            writer.uint32(32).int32(schedulingSchedulePinScopeToNumber(message.scope));
+        }
+        if (message.label !== undefined) {
+            writer.uint32(42).string(message.label);
+        }
+        for (const v of message.pins) {
+            exports.SchedulingSchedulePin.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.created_by !== undefined) {
+            object_id_1.ObjectId.encode(message.created_by, writer.uint32(58).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            writer.uint32(66).string(message.created_at);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingSchedulePinGroup();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.working_schedule_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.scope = schedulingSchedulePinScopeFromJSON(reader.int32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.label = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.pins.push(exports.SchedulingSchedulePin.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.created_by = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.created_at = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? uuid_1.Uuid.fromJSON(object.id) : undefined,
+            working_schedule_id: isSet(object.workingScheduleId) ? uuid_1.Uuid.fromJSON(object.workingScheduleId) : undefined,
+            revision_id: isSet(object.revisionId) ? uuid_1.Uuid.fromJSON(object.revisionId) : undefined,
+            scope: isSet(object.scope) ? schedulingSchedulePinScopeFromJSON(object.scope) : undefined,
+            label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+            pins: globalThis.Array.isArray(object?.pins)
+                ? object.pins.map((e) => exports.SchedulingSchedulePin.fromJSON(e))
+                : [],
+            created_by: isSet(object.createdBy) ? object_id_1.ObjectId.fromJSON(object.createdBy) : undefined,
+            created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = uuid_1.Uuid.toJSON(message.id);
+        }
+        if (message.working_schedule_id !== undefined) {
+            obj.workingScheduleId = uuid_1.Uuid.toJSON(message.working_schedule_id);
+        }
+        if (message.revision_id !== undefined) {
+            obj.revisionId = uuid_1.Uuid.toJSON(message.revision_id);
+        }
+        if (message.scope !== undefined) {
+            obj.scope = schedulingSchedulePinScopeToJSON(message.scope);
+        }
+        if (message.label !== undefined) {
+            obj.label = message.label;
+        }
+        if (message.pins?.length) {
+            obj.pins = message.pins.map((e) => exports.SchedulingSchedulePin.toJSON(e));
+        }
+        if (message.created_by !== undefined) {
+            obj.createdBy = object_id_1.ObjectId.toJSON(message.created_by);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingSchedulePinGroup.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingSchedulePinGroup();
+        message.id = (object.id !== undefined && object.id !== null) ? uuid_1.Uuid.fromPartial(object.id) : undefined;
+        message.working_schedule_id = (object.working_schedule_id !== undefined && object.working_schedule_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.working_schedule_id)
+            : undefined;
+        message.revision_id = (object.revision_id !== undefined && object.revision_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.revision_id)
+            : undefined;
+        message.scope = object.scope ?? undefined;
+        message.label = object.label ?? undefined;
+        message.pins = object.pins?.map((e) => exports.SchedulingSchedulePin.fromPartial(e)) || [];
+        message.created_by = (object.created_by !== undefined && object.created_by !== null)
+            ? object_id_1.ObjectId.fromPartial(object.created_by)
+            : undefined;
+        message.created_at = object.created_at ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingSchedulePinGroupList() {
+    return { groups: [], current_revision_id: undefined };
+}
+exports.SchedulingSchedulePinGroupList = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.groups) {
+            exports.SchedulingSchedulePinGroup.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.current_revision_id !== undefined) {
+            uuid_1.Uuid.encode(message.current_revision_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingSchedulePinGroupList();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.groups.push(exports.SchedulingSchedulePinGroup.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.current_revision_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            groups: globalThis.Array.isArray(object?.groups)
+                ? object.groups.map((e) => exports.SchedulingSchedulePinGroup.fromJSON(e))
+                : [],
+            current_revision_id: isSet(object.currentRevisionId) ? uuid_1.Uuid.fromJSON(object.currentRevisionId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.groups?.length) {
+            obj.groups = message.groups.map((e) => exports.SchedulingSchedulePinGroup.toJSON(e));
+        }
+        if (message.current_revision_id !== undefined) {
+            obj.currentRevisionId = uuid_1.Uuid.toJSON(message.current_revision_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingSchedulePinGroupList.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingSchedulePinGroupList();
+        message.groups = object.groups?.map((e) => exports.SchedulingSchedulePinGroup.fromPartial(e)) || [];
+        message.current_revision_id = (object.current_revision_id !== undefined && object.current_revision_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.current_revision_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSchedulingPinnedRegenerationProposal() {
+    return { run: undefined, proposed_view: undefined, issues: [] };
+}
+exports.SchedulingPinnedRegenerationProposal = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.run !== undefined) {
+            exports.SchedulingGenerationRun.encode(message.run, writer.uint32(10).fork()).join();
+        }
+        if (message.proposed_view !== undefined) {
+            exports.SchedulingScheduleView.encode(message.proposed_view, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.issues) {
+            exports.SchedulingScheduleAdjustmentIssue.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingPinnedRegenerationProposal();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.run = exports.SchedulingGenerationRun.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.proposed_view = exports.SchedulingScheduleView.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.issues.push(exports.SchedulingScheduleAdjustmentIssue.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            run: isSet(object.run) ? exports.SchedulingGenerationRun.fromJSON(object.run) : undefined,
+            proposed_view: isSet(object.proposedView) ? exports.SchedulingScheduleView.fromJSON(object.proposedView) : undefined,
+            issues: globalThis.Array.isArray(object?.issues)
+                ? object.issues.map((e) => exports.SchedulingScheduleAdjustmentIssue.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.run !== undefined) {
+            obj.run = exports.SchedulingGenerationRun.toJSON(message.run);
+        }
+        if (message.proposed_view !== undefined) {
+            obj.proposedView = exports.SchedulingScheduleView.toJSON(message.proposed_view);
+        }
+        if (message.issues?.length) {
+            obj.issues = message.issues.map((e) => exports.SchedulingScheduleAdjustmentIssue.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingPinnedRegenerationProposal.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingPinnedRegenerationProposal();
+        message.run = (object.run !== undefined && object.run !== null)
+            ? exports.SchedulingGenerationRun.fromPartial(object.run)
+            : undefined;
+        message.proposed_view = (object.proposed_view !== undefined && object.proposed_view !== null)
+            ? exports.SchedulingScheduleView.fromPartial(object.proposed_view)
+            : undefined;
+        message.issues = object.issues?.map((e) => exports.SchedulingScheduleAdjustmentIssue.fromPartial(e)) || [];
         return message;
     },
 };

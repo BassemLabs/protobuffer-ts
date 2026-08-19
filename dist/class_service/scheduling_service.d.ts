@@ -3,7 +3,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Uuid } from "../utils/uuid";
-import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPeriodTimeSetupWeekdayOverride, SchedulingPreparationStep, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
+import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPeriodTimeSetupWeekdayOverride, SchedulingPreparationStep, SchedulingScheduleAdjustmentOperation, SchedulingSchedulePinScope, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -174,6 +174,114 @@ export interface GetSchedulingGenerationRunsRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
 }
+export interface ListSchedulingGeneratedSchedulesRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    page_size?: number | undefined;
+    cursor?: string | undefined;
+}
+export interface GetSchedulingGeneratedScheduleRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    generated_schedule_id: ObjectId | undefined;
+}
+export interface UpdateSchedulingGeneratedScheduleMetadataRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    generated_schedule_id: ObjectId | undefined;
+    name?: string | undefined;
+    /** Replacement semantics: absent clears an existing note. */
+    note?: string | undefined;
+}
+export interface SelectSchedulingWorkingScheduleRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    generated_schedule_id: ObjectId | undefined;
+    /** Omit only when no working schedule exists yet. */
+    expected_current_revision_id?: Uuid | undefined;
+}
+export interface RevalidateSchedulingWorkingScheduleRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
+export interface GetSchedulingScheduleRevisionsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    page_size?: number | undefined;
+    cursor?: string | undefined;
+}
+export interface GetSchedulingScheduleRevisionRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    revision_id: Uuid | undefined;
+}
+export interface ReturnToSchedulingScheduleRevisionRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    revision_id: Uuid | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
+export interface MutateSchedulingWorkingScheduleRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
+export interface GetSchedulingScheduleAdjustmentOptionsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    placement_id: Uuid | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
+export interface PreviewSchedulingScheduleAdjustmentRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+    operation: SchedulingScheduleAdjustmentOperation | undefined;
+}
+export interface ApplySchedulingScheduleAdjustmentRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+    operation: SchedulingScheduleAdjustmentOperation | undefined;
+}
+export interface GetSchedulingSchedulePinsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface CreateSchedulingSchedulePinGroupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+    scope?: SchedulingSchedulePinScope | undefined;
+    /**
+     * All three scopes are selected from a visible placement. The backend expands
+     * its class or section membership from the immutable current revision.
+     */
+    placement_id: Uuid | undefined;
+}
+export interface RemoveSchedulingSchedulePinGroupRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    pin_group_id: Uuid | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
+export interface StartSchedulingPinnedRegenerationRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
+export interface GetSchedulingPinnedRegenerationProposalRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    generation_run_id: Uuid | undefined;
+}
+export interface ApplySchedulingPinnedRegenerationRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    generation_run_id: Uuid | undefined;
+    expected_current_revision_id: Uuid | undefined;
+}
 export interface UpdateSchedulingRoomEnforcementRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
@@ -207,6 +315,24 @@ export declare const GetSchedulingClassAssignmentSetupRequest: MessageFns<GetSch
 export declare const UpsertSchedulingHighSchoolCourseStudentAssignmentRequest: MessageFns<UpsertSchedulingHighSchoolCourseStudentAssignmentRequest>;
 export declare const StartSchedulingGenerationRequest: MessageFns<StartSchedulingGenerationRequest>;
 export declare const GetSchedulingGenerationRunsRequest: MessageFns<GetSchedulingGenerationRunsRequest>;
+export declare const ListSchedulingGeneratedSchedulesRequest: MessageFns<ListSchedulingGeneratedSchedulesRequest>;
+export declare const GetSchedulingGeneratedScheduleRequest: MessageFns<GetSchedulingGeneratedScheduleRequest>;
+export declare const UpdateSchedulingGeneratedScheduleMetadataRequest: MessageFns<UpdateSchedulingGeneratedScheduleMetadataRequest>;
+export declare const SelectSchedulingWorkingScheduleRequest: MessageFns<SelectSchedulingWorkingScheduleRequest>;
+export declare const RevalidateSchedulingWorkingScheduleRequest: MessageFns<RevalidateSchedulingWorkingScheduleRequest>;
+export declare const GetSchedulingScheduleRevisionsRequest: MessageFns<GetSchedulingScheduleRevisionsRequest>;
+export declare const GetSchedulingScheduleRevisionRequest: MessageFns<GetSchedulingScheduleRevisionRequest>;
+export declare const ReturnToSchedulingScheduleRevisionRequest: MessageFns<ReturnToSchedulingScheduleRevisionRequest>;
+export declare const MutateSchedulingWorkingScheduleRequest: MessageFns<MutateSchedulingWorkingScheduleRequest>;
+export declare const GetSchedulingScheduleAdjustmentOptionsRequest: MessageFns<GetSchedulingScheduleAdjustmentOptionsRequest>;
+export declare const PreviewSchedulingScheduleAdjustmentRequest: MessageFns<PreviewSchedulingScheduleAdjustmentRequest>;
+export declare const ApplySchedulingScheduleAdjustmentRequest: MessageFns<ApplySchedulingScheduleAdjustmentRequest>;
+export declare const GetSchedulingSchedulePinsRequest: MessageFns<GetSchedulingSchedulePinsRequest>;
+export declare const CreateSchedulingSchedulePinGroupRequest: MessageFns<CreateSchedulingSchedulePinGroupRequest>;
+export declare const RemoveSchedulingSchedulePinGroupRequest: MessageFns<RemoveSchedulingSchedulePinGroupRequest>;
+export declare const StartSchedulingPinnedRegenerationRequest: MessageFns<StartSchedulingPinnedRegenerationRequest>;
+export declare const GetSchedulingPinnedRegenerationProposalRequest: MessageFns<GetSchedulingPinnedRegenerationProposalRequest>;
+export declare const ApplySchedulingPinnedRegenerationRequest: MessageFns<ApplySchedulingPinnedRegenerationRequest>;
 export declare const UpdateSchedulingRoomEnforcementRequest: MessageFns<UpdateSchedulingRoomEnforcementRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

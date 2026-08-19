@@ -22,6 +22,11 @@ import {
   schedulingPreparationStepFromJSON,
   schedulingPreparationStepToJSON,
   schedulingPreparationStepToNumber,
+  SchedulingScheduleAdjustmentOperation,
+  SchedulingSchedulePinScope,
+  schedulingSchedulePinScopeFromJSON,
+  schedulingSchedulePinScopeToJSON,
+  schedulingSchedulePinScopeToNumber,
   SchedulingSemesterOptionGroup,
   SchedulingSharedLessonMember,
   SchedulingTeacherAvailabilityWindow,
@@ -227,6 +232,138 @@ export interface StartSchedulingGenerationRequest {
 export interface GetSchedulingGenerationRunsRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
+}
+
+export interface ListSchedulingGeneratedSchedulesRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  page_size?: number | undefined;
+  cursor?: string | undefined;
+}
+
+export interface GetSchedulingGeneratedScheduleRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  generated_schedule_id: ObjectId | undefined;
+}
+
+export interface UpdateSchedulingGeneratedScheduleMetadataRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  generated_schedule_id: ObjectId | undefined;
+  name?:
+    | string
+    | undefined;
+  /** Replacement semantics: absent clears an existing note. */
+  note?: string | undefined;
+}
+
+export interface SelectSchedulingWorkingScheduleRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  generated_schedule_id:
+    | ObjectId
+    | undefined;
+  /** Omit only when no working schedule exists yet. */
+  expected_current_revision_id?: Uuid | undefined;
+}
+
+export interface RevalidateSchedulingWorkingScheduleRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+}
+
+export interface GetSchedulingScheduleRevisionsRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  page_size?: number | undefined;
+  cursor?: string | undefined;
+}
+
+export interface GetSchedulingScheduleRevisionRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  revision_id: Uuid | undefined;
+}
+
+export interface ReturnToSchedulingScheduleRevisionRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  revision_id: Uuid | undefined;
+  expected_current_revision_id: Uuid | undefined;
+}
+
+export interface MutateSchedulingWorkingScheduleRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+}
+
+export interface GetSchedulingScheduleAdjustmentOptionsRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  placement_id: Uuid | undefined;
+  expected_current_revision_id: Uuid | undefined;
+}
+
+export interface PreviewSchedulingScheduleAdjustmentRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+  operation: SchedulingScheduleAdjustmentOperation | undefined;
+}
+
+export interface ApplySchedulingScheduleAdjustmentRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+  operation: SchedulingScheduleAdjustmentOperation | undefined;
+}
+
+export interface GetSchedulingSchedulePinsRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface CreateSchedulingSchedulePinGroupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+  scope?:
+    | SchedulingSchedulePinScope
+    | undefined;
+  /**
+   * All three scopes are selected from a visible placement. The backend expands
+   * its class or section membership from the immutable current revision.
+   */
+  placement_id: Uuid | undefined;
+}
+
+export interface RemoveSchedulingSchedulePinGroupRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  pin_group_id: Uuid | undefined;
+  expected_current_revision_id: Uuid | undefined;
+}
+
+export interface StartSchedulingPinnedRegenerationRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+}
+
+export interface GetSchedulingPinnedRegenerationProposalRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  generation_run_id: Uuid | undefined;
+}
+
+export interface ApplySchedulingPinnedRegenerationRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  generation_run_id: Uuid | undefined;
+  expected_current_revision_id: Uuid | undefined;
 }
 
 export interface UpdateSchedulingRoomEnforcementRequest {
@@ -3460,6 +3597,2081 @@ export const GetSchedulingGenerationRunsRequest: MessageFns<GetSchedulingGenerat
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseListSchedulingGeneratedSchedulesRequest(): ListSchedulingGeneratedSchedulesRequest {
+  return { context: undefined, school_year_id: undefined, page_size: undefined, cursor: undefined };
+}
+
+export const ListSchedulingGeneratedSchedulesRequest: MessageFns<ListSchedulingGeneratedSchedulesRequest> = {
+  encode(message: ListSchedulingGeneratedSchedulesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.page_size !== undefined) {
+      writer.uint32(24).uint32(message.page_size);
+    }
+    if (message.cursor !== undefined) {
+      writer.uint32(34).string(message.cursor);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListSchedulingGeneratedSchedulesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListSchedulingGeneratedSchedulesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.page_size = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.cursor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListSchedulingGeneratedSchedulesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      page_size: isSet(object.pageSize) ? globalThis.Number(object.pageSize) : undefined,
+      cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : undefined,
+    };
+  },
+
+  toJSON(message: ListSchedulingGeneratedSchedulesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.page_size !== undefined) {
+      obj.pageSize = Math.round(message.page_size);
+    }
+    if (message.cursor !== undefined) {
+      obj.cursor = message.cursor;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListSchedulingGeneratedSchedulesRequest>, I>>(
+    base?: I,
+  ): ListSchedulingGeneratedSchedulesRequest {
+    return ListSchedulingGeneratedSchedulesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListSchedulingGeneratedSchedulesRequest>, I>>(
+    object: I,
+  ): ListSchedulingGeneratedSchedulesRequest {
+    const message = createBaseListSchedulingGeneratedSchedulesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.page_size = object.page_size ?? undefined;
+    message.cursor = object.cursor ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingGeneratedScheduleRequest(): GetSchedulingGeneratedScheduleRequest {
+  return { context: undefined, school_year_id: undefined, generated_schedule_id: undefined };
+}
+
+export const GetSchedulingGeneratedScheduleRequest: MessageFns<GetSchedulingGeneratedScheduleRequest> = {
+  encode(message: GetSchedulingGeneratedScheduleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.generated_schedule_id !== undefined) {
+      ObjectId.encode(message.generated_schedule_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingGeneratedScheduleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingGeneratedScheduleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.generated_schedule_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingGeneratedScheduleRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      generated_schedule_id: isSet(object.generatedScheduleId)
+        ? ObjectId.fromJSON(object.generatedScheduleId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingGeneratedScheduleRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.generated_schedule_id !== undefined) {
+      obj.generatedScheduleId = ObjectId.toJSON(message.generated_schedule_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingGeneratedScheduleRequest>, I>>(
+    base?: I,
+  ): GetSchedulingGeneratedScheduleRequest {
+    return GetSchedulingGeneratedScheduleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingGeneratedScheduleRequest>, I>>(
+    object: I,
+  ): GetSchedulingGeneratedScheduleRequest {
+    const message = createBaseGetSchedulingGeneratedScheduleRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.generated_schedule_id =
+      (object.generated_schedule_id !== undefined && object.generated_schedule_id !== null)
+        ? ObjectId.fromPartial(object.generated_schedule_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateSchedulingGeneratedScheduleMetadataRequest(): UpdateSchedulingGeneratedScheduleMetadataRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    generated_schedule_id: undefined,
+    name: undefined,
+    note: undefined,
+  };
+}
+
+export const UpdateSchedulingGeneratedScheduleMetadataRequest: MessageFns<
+  UpdateSchedulingGeneratedScheduleMetadataRequest
+> = {
+  encode(
+    message: UpdateSchedulingGeneratedScheduleMetadataRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.generated_schedule_id !== undefined) {
+      ObjectId.encode(message.generated_schedule_id, writer.uint32(26).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(34).string(message.name);
+    }
+    if (message.note !== undefined) {
+      writer.uint32(42).string(message.note);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateSchedulingGeneratedScheduleMetadataRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSchedulingGeneratedScheduleMetadataRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.generated_schedule_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.note = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSchedulingGeneratedScheduleMetadataRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      generated_schedule_id: isSet(object.generatedScheduleId)
+        ? ObjectId.fromJSON(object.generatedScheduleId)
+        : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      note: isSet(object.note) ? globalThis.String(object.note) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateSchedulingGeneratedScheduleMetadataRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.generated_schedule_id !== undefined) {
+      obj.generatedScheduleId = ObjectId.toJSON(message.generated_schedule_id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.note !== undefined) {
+      obj.note = message.note;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateSchedulingGeneratedScheduleMetadataRequest>, I>>(
+    base?: I,
+  ): UpdateSchedulingGeneratedScheduleMetadataRequest {
+    return UpdateSchedulingGeneratedScheduleMetadataRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateSchedulingGeneratedScheduleMetadataRequest>, I>>(
+    object: I,
+  ): UpdateSchedulingGeneratedScheduleMetadataRequest {
+    const message = createBaseUpdateSchedulingGeneratedScheduleMetadataRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.generated_schedule_id =
+      (object.generated_schedule_id !== undefined && object.generated_schedule_id !== null)
+        ? ObjectId.fromPartial(object.generated_schedule_id)
+        : undefined;
+    message.name = object.name ?? undefined;
+    message.note = object.note ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSelectSchedulingWorkingScheduleRequest(): SelectSchedulingWorkingScheduleRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    generated_schedule_id: undefined,
+    expected_current_revision_id: undefined,
+  };
+}
+
+export const SelectSchedulingWorkingScheduleRequest: MessageFns<SelectSchedulingWorkingScheduleRequest> = {
+  encode(message: SelectSchedulingWorkingScheduleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.generated_schedule_id !== undefined) {
+      ObjectId.encode(message.generated_schedule_id, writer.uint32(26).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SelectSchedulingWorkingScheduleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSelectSchedulingWorkingScheduleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.generated_schedule_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SelectSchedulingWorkingScheduleRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      generated_schedule_id: isSet(object.generatedScheduleId)
+        ? ObjectId.fromJSON(object.generatedScheduleId)
+        : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SelectSchedulingWorkingScheduleRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.generated_schedule_id !== undefined) {
+      obj.generatedScheduleId = ObjectId.toJSON(message.generated_schedule_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SelectSchedulingWorkingScheduleRequest>, I>>(
+    base?: I,
+  ): SelectSchedulingWorkingScheduleRequest {
+    return SelectSchedulingWorkingScheduleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SelectSchedulingWorkingScheduleRequest>, I>>(
+    object: I,
+  ): SelectSchedulingWorkingScheduleRequest {
+    const message = createBaseSelectSchedulingWorkingScheduleRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.generated_schedule_id =
+      (object.generated_schedule_id !== undefined && object.generated_schedule_id !== null)
+        ? ObjectId.fromPartial(object.generated_schedule_id)
+        : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseRevalidateSchedulingWorkingScheduleRequest(): RevalidateSchedulingWorkingScheduleRequest {
+  return { context: undefined, school_year_id: undefined, expected_current_revision_id: undefined };
+}
+
+export const RevalidateSchedulingWorkingScheduleRequest: MessageFns<RevalidateSchedulingWorkingScheduleRequest> = {
+  encode(message: RevalidateSchedulingWorkingScheduleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RevalidateSchedulingWorkingScheduleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRevalidateSchedulingWorkingScheduleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RevalidateSchedulingWorkingScheduleRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: RevalidateSchedulingWorkingScheduleRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RevalidateSchedulingWorkingScheduleRequest>, I>>(
+    base?: I,
+  ): RevalidateSchedulingWorkingScheduleRequest {
+    return RevalidateSchedulingWorkingScheduleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RevalidateSchedulingWorkingScheduleRequest>, I>>(
+    object: I,
+  ): RevalidateSchedulingWorkingScheduleRequest {
+    const message = createBaseRevalidateSchedulingWorkingScheduleRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingScheduleRevisionsRequest(): GetSchedulingScheduleRevisionsRequest {
+  return { context: undefined, school_year_id: undefined, page_size: undefined, cursor: undefined };
+}
+
+export const GetSchedulingScheduleRevisionsRequest: MessageFns<GetSchedulingScheduleRevisionsRequest> = {
+  encode(message: GetSchedulingScheduleRevisionsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.page_size !== undefined) {
+      writer.uint32(24).uint32(message.page_size);
+    }
+    if (message.cursor !== undefined) {
+      writer.uint32(34).string(message.cursor);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingScheduleRevisionsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingScheduleRevisionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.page_size = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.cursor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingScheduleRevisionsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      page_size: isSet(object.pageSize) ? globalThis.Number(object.pageSize) : undefined,
+      cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingScheduleRevisionsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.page_size !== undefined) {
+      obj.pageSize = Math.round(message.page_size);
+    }
+    if (message.cursor !== undefined) {
+      obj.cursor = message.cursor;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingScheduleRevisionsRequest>, I>>(
+    base?: I,
+  ): GetSchedulingScheduleRevisionsRequest {
+    return GetSchedulingScheduleRevisionsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingScheduleRevisionsRequest>, I>>(
+    object: I,
+  ): GetSchedulingScheduleRevisionsRequest {
+    const message = createBaseGetSchedulingScheduleRevisionsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.page_size = object.page_size ?? undefined;
+    message.cursor = object.cursor ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingScheduleRevisionRequest(): GetSchedulingScheduleRevisionRequest {
+  return { context: undefined, school_year_id: undefined, revision_id: undefined };
+}
+
+export const GetSchedulingScheduleRevisionRequest: MessageFns<GetSchedulingScheduleRevisionRequest> = {
+  encode(message: GetSchedulingScheduleRevisionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.revision_id !== undefined) {
+      Uuid.encode(message.revision_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingScheduleRevisionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingScheduleRevisionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingScheduleRevisionRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      revision_id: isSet(object.revisionId) ? Uuid.fromJSON(object.revisionId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingScheduleRevisionRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.revision_id !== undefined) {
+      obj.revisionId = Uuid.toJSON(message.revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingScheduleRevisionRequest>, I>>(
+    base?: I,
+  ): GetSchedulingScheduleRevisionRequest {
+    return GetSchedulingScheduleRevisionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingScheduleRevisionRequest>, I>>(
+    object: I,
+  ): GetSchedulingScheduleRevisionRequest {
+    const message = createBaseGetSchedulingScheduleRevisionRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.revision_id = (object.revision_id !== undefined && object.revision_id !== null)
+      ? Uuid.fromPartial(object.revision_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseReturnToSchedulingScheduleRevisionRequest(): ReturnToSchedulingScheduleRevisionRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    revision_id: undefined,
+    expected_current_revision_id: undefined,
+  };
+}
+
+export const ReturnToSchedulingScheduleRevisionRequest: MessageFns<ReturnToSchedulingScheduleRevisionRequest> = {
+  encode(message: ReturnToSchedulingScheduleRevisionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.revision_id !== undefined) {
+      Uuid.encode(message.revision_id, writer.uint32(26).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReturnToSchedulingScheduleRevisionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReturnToSchedulingScheduleRevisionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReturnToSchedulingScheduleRevisionRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      revision_id: isSet(object.revisionId) ? Uuid.fromJSON(object.revisionId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: ReturnToSchedulingScheduleRevisionRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.revision_id !== undefined) {
+      obj.revisionId = Uuid.toJSON(message.revision_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReturnToSchedulingScheduleRevisionRequest>, I>>(
+    base?: I,
+  ): ReturnToSchedulingScheduleRevisionRequest {
+    return ReturnToSchedulingScheduleRevisionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReturnToSchedulingScheduleRevisionRequest>, I>>(
+    object: I,
+  ): ReturnToSchedulingScheduleRevisionRequest {
+    const message = createBaseReturnToSchedulingScheduleRevisionRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.revision_id = (object.revision_id !== undefined && object.revision_id !== null)
+      ? Uuid.fromPartial(object.revision_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseMutateSchedulingWorkingScheduleRequest(): MutateSchedulingWorkingScheduleRequest {
+  return { context: undefined, school_year_id: undefined, expected_current_revision_id: undefined };
+}
+
+export const MutateSchedulingWorkingScheduleRequest: MessageFns<MutateSchedulingWorkingScheduleRequest> = {
+  encode(message: MutateSchedulingWorkingScheduleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): MutateSchedulingWorkingScheduleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMutateSchedulingWorkingScheduleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MutateSchedulingWorkingScheduleRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: MutateSchedulingWorkingScheduleRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MutateSchedulingWorkingScheduleRequest>, I>>(
+    base?: I,
+  ): MutateSchedulingWorkingScheduleRequest {
+    return MutateSchedulingWorkingScheduleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MutateSchedulingWorkingScheduleRequest>, I>>(
+    object: I,
+  ): MutateSchedulingWorkingScheduleRequest {
+    const message = createBaseMutateSchedulingWorkingScheduleRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingScheduleAdjustmentOptionsRequest(): GetSchedulingScheduleAdjustmentOptionsRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    placement_id: undefined,
+    expected_current_revision_id: undefined,
+  };
+}
+
+export const GetSchedulingScheduleAdjustmentOptionsRequest: MessageFns<GetSchedulingScheduleAdjustmentOptionsRequest> =
+  {
+    encode(
+      message: GetSchedulingScheduleAdjustmentOptionsRequest,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.context !== undefined) {
+        RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+      }
+      if (message.school_year_id !== undefined) {
+        ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+      }
+      if (message.placement_id !== undefined) {
+        Uuid.encode(message.placement_id, writer.uint32(26).fork()).join();
+      }
+      if (message.expected_current_revision_id !== undefined) {
+        Uuid.encode(message.expected_current_revision_id, writer.uint32(34).fork()).join();
+      }
+      return writer;
+    },
+
+    decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingScheduleAdjustmentOptionsRequest {
+      const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+      let end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseGetSchedulingScheduleAdjustmentOptionsRequest();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            if (tag !== 10) {
+              break;
+            }
+
+            message.context = RequestContext.decode(reader, reader.uint32());
+            continue;
+          case 2:
+            if (tag !== 18) {
+              break;
+            }
+
+            message.school_year_id = ObjectId.decode(reader, reader.uint32());
+            continue;
+          case 3:
+            if (tag !== 26) {
+              break;
+            }
+
+            message.placement_id = Uuid.decode(reader, reader.uint32());
+            continue;
+          case 4:
+            if (tag !== 34) {
+              break;
+            }
+
+            message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+            continue;
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): GetSchedulingScheduleAdjustmentOptionsRequest {
+      return {
+        context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+        school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+        placement_id: isSet(object.placementId) ? Uuid.fromJSON(object.placementId) : undefined,
+        expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+          ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+          : undefined,
+      };
+    },
+
+    toJSON(message: GetSchedulingScheduleAdjustmentOptionsRequest): unknown {
+      const obj: any = {};
+      if (message.context !== undefined) {
+        obj.context = RequestContext.toJSON(message.context);
+      }
+      if (message.school_year_id !== undefined) {
+        obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+      }
+      if (message.placement_id !== undefined) {
+        obj.placementId = Uuid.toJSON(message.placement_id);
+      }
+      if (message.expected_current_revision_id !== undefined) {
+        obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<GetSchedulingScheduleAdjustmentOptionsRequest>, I>>(
+      base?: I,
+    ): GetSchedulingScheduleAdjustmentOptionsRequest {
+      return GetSchedulingScheduleAdjustmentOptionsRequest.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<I extends Exact<DeepPartial<GetSchedulingScheduleAdjustmentOptionsRequest>, I>>(
+      object: I,
+    ): GetSchedulingScheduleAdjustmentOptionsRequest {
+      const message = createBaseGetSchedulingScheduleAdjustmentOptionsRequest();
+      message.context = (object.context !== undefined && object.context !== null)
+        ? RequestContext.fromPartial(object.context)
+        : undefined;
+      message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+        ? ObjectId.fromPartial(object.school_year_id)
+        : undefined;
+      message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+        ? Uuid.fromPartial(object.placement_id)
+        : undefined;
+      message.expected_current_revision_id =
+        (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+          ? Uuid.fromPartial(object.expected_current_revision_id)
+          : undefined;
+      return message;
+    },
+  };
+
+function createBasePreviewSchedulingScheduleAdjustmentRequest(): PreviewSchedulingScheduleAdjustmentRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    expected_current_revision_id: undefined,
+    operation: undefined,
+  };
+}
+
+export const PreviewSchedulingScheduleAdjustmentRequest: MessageFns<PreviewSchedulingScheduleAdjustmentRequest> = {
+  encode(message: PreviewSchedulingScheduleAdjustmentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    if (message.operation !== undefined) {
+      SchedulingScheduleAdjustmentOperation.encode(message.operation, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreviewSchedulingScheduleAdjustmentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreviewSchedulingScheduleAdjustmentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.operation = SchedulingScheduleAdjustmentOperation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreviewSchedulingScheduleAdjustmentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+      operation: isSet(object.operation) ? SchedulingScheduleAdjustmentOperation.fromJSON(object.operation) : undefined,
+    };
+  },
+
+  toJSON(message: PreviewSchedulingScheduleAdjustmentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    if (message.operation !== undefined) {
+      obj.operation = SchedulingScheduleAdjustmentOperation.toJSON(message.operation);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreviewSchedulingScheduleAdjustmentRequest>, I>>(
+    base?: I,
+  ): PreviewSchedulingScheduleAdjustmentRequest {
+    return PreviewSchedulingScheduleAdjustmentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreviewSchedulingScheduleAdjustmentRequest>, I>>(
+    object: I,
+  ): PreviewSchedulingScheduleAdjustmentRequest {
+    const message = createBasePreviewSchedulingScheduleAdjustmentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    message.operation = (object.operation !== undefined && object.operation !== null)
+      ? SchedulingScheduleAdjustmentOperation.fromPartial(object.operation)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseApplySchedulingScheduleAdjustmentRequest(): ApplySchedulingScheduleAdjustmentRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    expected_current_revision_id: undefined,
+    operation: undefined,
+  };
+}
+
+export const ApplySchedulingScheduleAdjustmentRequest: MessageFns<ApplySchedulingScheduleAdjustmentRequest> = {
+  encode(message: ApplySchedulingScheduleAdjustmentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    if (message.operation !== undefined) {
+      SchedulingScheduleAdjustmentOperation.encode(message.operation, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ApplySchedulingScheduleAdjustmentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApplySchedulingScheduleAdjustmentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.operation = SchedulingScheduleAdjustmentOperation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApplySchedulingScheduleAdjustmentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+      operation: isSet(object.operation) ? SchedulingScheduleAdjustmentOperation.fromJSON(object.operation) : undefined,
+    };
+  },
+
+  toJSON(message: ApplySchedulingScheduleAdjustmentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    if (message.operation !== undefined) {
+      obj.operation = SchedulingScheduleAdjustmentOperation.toJSON(message.operation);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ApplySchedulingScheduleAdjustmentRequest>, I>>(
+    base?: I,
+  ): ApplySchedulingScheduleAdjustmentRequest {
+    return ApplySchedulingScheduleAdjustmentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ApplySchedulingScheduleAdjustmentRequest>, I>>(
+    object: I,
+  ): ApplySchedulingScheduleAdjustmentRequest {
+    const message = createBaseApplySchedulingScheduleAdjustmentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    message.operation = (object.operation !== undefined && object.operation !== null)
+      ? SchedulingScheduleAdjustmentOperation.fromPartial(object.operation)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingSchedulePinsRequest(): GetSchedulingSchedulePinsRequest {
+  return { context: undefined, school_year_id: undefined };
+}
+
+export const GetSchedulingSchedulePinsRequest: MessageFns<GetSchedulingSchedulePinsRequest> = {
+  encode(message: GetSchedulingSchedulePinsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingSchedulePinsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingSchedulePinsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingSchedulePinsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingSchedulePinsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingSchedulePinsRequest>, I>>(
+    base?: I,
+  ): GetSchedulingSchedulePinsRequest {
+    return GetSchedulingSchedulePinsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingSchedulePinsRequest>, I>>(
+    object: I,
+  ): GetSchedulingSchedulePinsRequest {
+    const message = createBaseGetSchedulingSchedulePinsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateSchedulingSchedulePinGroupRequest(): CreateSchedulingSchedulePinGroupRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    expected_current_revision_id: undefined,
+    scope: undefined,
+    placement_id: undefined,
+  };
+}
+
+export const CreateSchedulingSchedulePinGroupRequest: MessageFns<CreateSchedulingSchedulePinGroupRequest> = {
+  encode(message: CreateSchedulingSchedulePinGroupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    if (message.scope !== undefined) {
+      writer.uint32(32).int32(schedulingSchedulePinScopeToNumber(message.scope));
+    }
+    if (message.placement_id !== undefined) {
+      Uuid.encode(message.placement_id, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateSchedulingSchedulePinGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSchedulingSchedulePinGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.scope = schedulingSchedulePinScopeFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.placement_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSchedulingSchedulePinGroupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+      scope: isSet(object.scope) ? schedulingSchedulePinScopeFromJSON(object.scope) : undefined,
+      placement_id: isSet(object.placementId) ? Uuid.fromJSON(object.placementId) : undefined,
+    };
+  },
+
+  toJSON(message: CreateSchedulingSchedulePinGroupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    if (message.scope !== undefined) {
+      obj.scope = schedulingSchedulePinScopeToJSON(message.scope);
+    }
+    if (message.placement_id !== undefined) {
+      obj.placementId = Uuid.toJSON(message.placement_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateSchedulingSchedulePinGroupRequest>, I>>(
+    base?: I,
+  ): CreateSchedulingSchedulePinGroupRequest {
+    return CreateSchedulingSchedulePinGroupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateSchedulingSchedulePinGroupRequest>, I>>(
+    object: I,
+  ): CreateSchedulingSchedulePinGroupRequest {
+    const message = createBaseCreateSchedulingSchedulePinGroupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    message.scope = object.scope ?? undefined;
+    message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+      ? Uuid.fromPartial(object.placement_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseRemoveSchedulingSchedulePinGroupRequest(): RemoveSchedulingSchedulePinGroupRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    pin_group_id: undefined,
+    expected_current_revision_id: undefined,
+  };
+}
+
+export const RemoveSchedulingSchedulePinGroupRequest: MessageFns<RemoveSchedulingSchedulePinGroupRequest> = {
+  encode(message: RemoveSchedulingSchedulePinGroupRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.pin_group_id !== undefined) {
+      Uuid.encode(message.pin_group_id, writer.uint32(26).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveSchedulingSchedulePinGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveSchedulingSchedulePinGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.pin_group_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveSchedulingSchedulePinGroupRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      pin_group_id: isSet(object.pinGroupId) ? Uuid.fromJSON(object.pinGroupId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: RemoveSchedulingSchedulePinGroupRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.pin_group_id !== undefined) {
+      obj.pinGroupId = Uuid.toJSON(message.pin_group_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RemoveSchedulingSchedulePinGroupRequest>, I>>(
+    base?: I,
+  ): RemoveSchedulingSchedulePinGroupRequest {
+    return RemoveSchedulingSchedulePinGroupRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RemoveSchedulingSchedulePinGroupRequest>, I>>(
+    object: I,
+  ): RemoveSchedulingSchedulePinGroupRequest {
+    const message = createBaseRemoveSchedulingSchedulePinGroupRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.pin_group_id = (object.pin_group_id !== undefined && object.pin_group_id !== null)
+      ? Uuid.fromPartial(object.pin_group_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseStartSchedulingPinnedRegenerationRequest(): StartSchedulingPinnedRegenerationRequest {
+  return { context: undefined, school_year_id: undefined, expected_current_revision_id: undefined };
+}
+
+export const StartSchedulingPinnedRegenerationRequest: MessageFns<StartSchedulingPinnedRegenerationRequest> = {
+  encode(message: StartSchedulingPinnedRegenerationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartSchedulingPinnedRegenerationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartSchedulingPinnedRegenerationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartSchedulingPinnedRegenerationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: StartSchedulingPinnedRegenerationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartSchedulingPinnedRegenerationRequest>, I>>(
+    base?: I,
+  ): StartSchedulingPinnedRegenerationRequest {
+    return StartSchedulingPinnedRegenerationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartSchedulingPinnedRegenerationRequest>, I>>(
+    object: I,
+  ): StartSchedulingPinnedRegenerationRequest {
+    const message = createBaseStartSchedulingPinnedRegenerationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingPinnedRegenerationProposalRequest(): GetSchedulingPinnedRegenerationProposalRequest {
+  return { context: undefined, school_year_id: undefined, generation_run_id: undefined };
+}
+
+export const GetSchedulingPinnedRegenerationProposalRequest: MessageFns<
+  GetSchedulingPinnedRegenerationProposalRequest
+> = {
+  encode(
+    message: GetSchedulingPinnedRegenerationProposalRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.generation_run_id !== undefined) {
+      Uuid.encode(message.generation_run_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingPinnedRegenerationProposalRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingPinnedRegenerationProposalRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.generation_run_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingPinnedRegenerationProposalRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      generation_run_id: isSet(object.generationRunId) ? Uuid.fromJSON(object.generationRunId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingPinnedRegenerationProposalRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.generation_run_id !== undefined) {
+      obj.generationRunId = Uuid.toJSON(message.generation_run_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingPinnedRegenerationProposalRequest>, I>>(
+    base?: I,
+  ): GetSchedulingPinnedRegenerationProposalRequest {
+    return GetSchedulingPinnedRegenerationProposalRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingPinnedRegenerationProposalRequest>, I>>(
+    object: I,
+  ): GetSchedulingPinnedRegenerationProposalRequest {
+    const message = createBaseGetSchedulingPinnedRegenerationProposalRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.generation_run_id = (object.generation_run_id !== undefined && object.generation_run_id !== null)
+      ? Uuid.fromPartial(object.generation_run_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseApplySchedulingPinnedRegenerationRequest(): ApplySchedulingPinnedRegenerationRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    generation_run_id: undefined,
+    expected_current_revision_id: undefined,
+  };
+}
+
+export const ApplySchedulingPinnedRegenerationRequest: MessageFns<ApplySchedulingPinnedRegenerationRequest> = {
+  encode(message: ApplySchedulingPinnedRegenerationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.generation_run_id !== undefined) {
+      Uuid.encode(message.generation_run_id, writer.uint32(26).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ApplySchedulingPinnedRegenerationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApplySchedulingPinnedRegenerationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.generation_run_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApplySchedulingPinnedRegenerationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      generation_run_id: isSet(object.generationRunId) ? Uuid.fromJSON(object.generationRunId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: ApplySchedulingPinnedRegenerationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.generation_run_id !== undefined) {
+      obj.generationRunId = Uuid.toJSON(message.generation_run_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ApplySchedulingPinnedRegenerationRequest>, I>>(
+    base?: I,
+  ): ApplySchedulingPinnedRegenerationRequest {
+    return ApplySchedulingPinnedRegenerationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ApplySchedulingPinnedRegenerationRequest>, I>>(
+    object: I,
+  ): ApplySchedulingPinnedRegenerationRequest {
+    const message = createBaseApplySchedulingPinnedRegenerationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.generation_run_id = (object.generation_run_id !== undefined && object.generation_run_id !== null)
+      ? Uuid.fromPartial(object.generation_run_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
     return message;
   },
 };
