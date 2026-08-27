@@ -304,13 +304,19 @@ export interface SchedulingSemesterOptionGroup {
     teacher_period_allocations: SchedulingTeacherPeriodAllocation[];
 }
 /**
- * A per-day restriction on which period sequences a class may occupy. Rules expand
- * into a class's allowed slots when its instructional requirement is applied.
+ * A per-day restriction on which standard instructional periods a class may occupy.
+ * class-service maps these logical period numbers to concrete slots for each
+ * semester, day, and effective period template before building solver input.
  */
 export interface SchedulingCoursePeriodRule {
     /** Absent day makes this the every-day rule; days with their own rule override it. */
     day?: DayOfWeek | undefined;
-    /** Allowed period sequences. Empty with a day set means no meetings on that day. */
+    /**
+     * Standard instructional period numbers (N) from labels formatted as "Period N";
+     * these are not SchedulingPeriodDefinition.sequence values. Slots with nonstandard
+     * labels, including activities and rest periods, are not selected through this rule.
+     * Empty with a day set means no meetings on that day.
+     */
     allowed_periods: number[];
 }
 /**
