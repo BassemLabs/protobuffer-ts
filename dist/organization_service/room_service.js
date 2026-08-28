@@ -19,6 +19,7 @@ function createBaseCreateRoomRequest() {
         name: undefined,
         special_room_category_id: undefined,
         supports_high_school: undefined,
+        capacity: undefined,
     };
 }
 exports.CreateRoomRequest = {
@@ -37,6 +38,9 @@ exports.CreateRoomRequest = {
         }
         if (message.supports_high_school !== undefined) {
             writer.uint32(40).bool(message.supports_high_school);
+        }
+        if (message.capacity !== undefined) {
+            writer.uint32(48).uint32(message.capacity);
         }
         return writer;
     },
@@ -77,6 +81,12 @@ exports.CreateRoomRequest = {
                     }
                     message.supports_high_school = reader.bool();
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.capacity = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -96,6 +106,7 @@ exports.CreateRoomRequest = {
             supports_high_school: isSet(object.supportsHighSchool)
                 ? globalThis.Boolean(object.supportsHighSchool)
                 : undefined,
+            capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
         };
     },
     toJSON(message) {
@@ -114,6 +125,9 @@ exports.CreateRoomRequest = {
         }
         if (message.supports_high_school !== undefined) {
             obj.supportsHighSchool = message.supports_high_school;
+        }
+        if (message.capacity !== undefined) {
+            obj.capacity = Math.round(message.capacity);
         }
         return obj;
     },
@@ -134,6 +148,7 @@ exports.CreateRoomRequest = {
                 ? object_id_1.ObjectId.fromPartial(object.special_room_category_id)
                 : undefined;
         message.supports_high_school = object.supports_high_school ?? undefined;
+        message.capacity = object.capacity ?? undefined;
         return message;
     },
 };
@@ -144,6 +159,7 @@ function createBaseUpdateRoomRequest() {
         name: undefined,
         special_room_category_id: undefined,
         supports_high_school: undefined,
+        capacity: undefined,
     };
 }
 exports.UpdateRoomRequest = {
@@ -162,6 +178,9 @@ exports.UpdateRoomRequest = {
         }
         if (message.supports_high_school !== undefined) {
             writer.uint32(40).bool(message.supports_high_school);
+        }
+        if (message.capacity !== undefined) {
+            writer.uint32(48).uint32(message.capacity);
         }
         return writer;
     },
@@ -202,6 +221,12 @@ exports.UpdateRoomRequest = {
                     }
                     message.supports_high_school = reader.bool();
                     continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.capacity = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -221,6 +246,7 @@ exports.UpdateRoomRequest = {
             supports_high_school: isSet(object.supportsHighSchool)
                 ? globalThis.Boolean(object.supportsHighSchool)
                 : undefined,
+            capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
         };
     },
     toJSON(message) {
@@ -240,6 +266,9 @@ exports.UpdateRoomRequest = {
         if (message.supports_high_school !== undefined) {
             obj.supportsHighSchool = message.supports_high_school;
         }
+        if (message.capacity !== undefined) {
+            obj.capacity = Math.round(message.capacity);
+        }
         return obj;
     },
     create(base) {
@@ -257,6 +286,7 @@ exports.UpdateRoomRequest = {
                 ? object_id_1.ObjectId.fromPartial(object.special_room_category_id)
                 : undefined;
         message.supports_high_school = object.supports_high_school ?? undefined;
+        message.capacity = object.capacity ?? undefined;
         return message;
     },
 };

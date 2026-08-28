@@ -9,6 +9,8 @@ export interface CreateRoomRequest {
     name?: string | undefined;
     special_room_category_id?: ObjectId | undefined;
     supports_high_school?: boolean | undefined;
+    /** Maximum enrolled high-school students. Absent means unlimited. */
+    capacity?: number | undefined;
 }
 export interface UpdateRoomRequest {
     context: RequestContext | undefined;
@@ -16,6 +18,8 @@ export interface UpdateRoomRequest {
     name?: string | undefined;
     special_room_category_id?: ObjectId | undefined;
     supports_high_school?: boolean | undefined;
+    /** Maximum enrolled high-school students. Absent means unlimited. */
+    capacity?: number | undefined;
 }
 export interface GetRoomRequest {
     context: RequestContext | undefined;

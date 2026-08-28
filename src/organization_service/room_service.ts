@@ -17,7 +17,11 @@ export interface CreateRoomRequest {
   campus_id: ObjectId | undefined;
   name?: string | undefined;
   special_room_category_id?: ObjectId | undefined;
-  supports_high_school?: boolean | undefined;
+  supports_high_school?:
+    | boolean
+    | undefined;
+  /** Maximum enrolled high-school students. Absent means unlimited. */
+  capacity?: number | undefined;
 }
 
 export interface UpdateRoomRequest {
@@ -25,7 +29,11 @@ export interface UpdateRoomRequest {
   id: ObjectId | undefined;
   name?: string | undefined;
   special_room_category_id?: ObjectId | undefined;
-  supports_high_school?: boolean | undefined;
+  supports_high_school?:
+    | boolean
+    | undefined;
+  /** Maximum enrolled high-school students. Absent means unlimited. */
+  capacity?: number | undefined;
 }
 
 export interface GetRoomRequest {
@@ -69,6 +77,7 @@ function createBaseCreateRoomRequest(): CreateRoomRequest {
     name: undefined,
     special_room_category_id: undefined,
     supports_high_school: undefined,
+    capacity: undefined,
   };
 }
 
@@ -88,6 +97,9 @@ export const CreateRoomRequest: MessageFns<CreateRoomRequest> = {
     }
     if (message.supports_high_school !== undefined) {
       writer.uint32(40).bool(message.supports_high_school);
+    }
+    if (message.capacity !== undefined) {
+      writer.uint32(48).uint32(message.capacity);
     }
     return writer;
   },
@@ -134,6 +146,13 @@ export const CreateRoomRequest: MessageFns<CreateRoomRequest> = {
 
           message.supports_high_school = reader.bool();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.capacity = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -154,6 +173,7 @@ export const CreateRoomRequest: MessageFns<CreateRoomRequest> = {
       supports_high_school: isSet(object.supportsHighSchool)
         ? globalThis.Boolean(object.supportsHighSchool)
         : undefined,
+      capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
     };
   },
 
@@ -173,6 +193,9 @@ export const CreateRoomRequest: MessageFns<CreateRoomRequest> = {
     }
     if (message.supports_high_school !== undefined) {
       obj.supportsHighSchool = message.supports_high_school;
+    }
+    if (message.capacity !== undefined) {
+      obj.capacity = Math.round(message.capacity);
     }
     return obj;
   },
@@ -194,6 +217,7 @@ export const CreateRoomRequest: MessageFns<CreateRoomRequest> = {
         ? ObjectId.fromPartial(object.special_room_category_id)
         : undefined;
     message.supports_high_school = object.supports_high_school ?? undefined;
+    message.capacity = object.capacity ?? undefined;
     return message;
   },
 };
@@ -205,6 +229,7 @@ function createBaseUpdateRoomRequest(): UpdateRoomRequest {
     name: undefined,
     special_room_category_id: undefined,
     supports_high_school: undefined,
+    capacity: undefined,
   };
 }
 
@@ -224,6 +249,9 @@ export const UpdateRoomRequest: MessageFns<UpdateRoomRequest> = {
     }
     if (message.supports_high_school !== undefined) {
       writer.uint32(40).bool(message.supports_high_school);
+    }
+    if (message.capacity !== undefined) {
+      writer.uint32(48).uint32(message.capacity);
     }
     return writer;
   },
@@ -270,6 +298,13 @@ export const UpdateRoomRequest: MessageFns<UpdateRoomRequest> = {
 
           message.supports_high_school = reader.bool();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.capacity = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -290,6 +325,7 @@ export const UpdateRoomRequest: MessageFns<UpdateRoomRequest> = {
       supports_high_school: isSet(object.supportsHighSchool)
         ? globalThis.Boolean(object.supportsHighSchool)
         : undefined,
+      capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
     };
   },
 
@@ -310,6 +346,9 @@ export const UpdateRoomRequest: MessageFns<UpdateRoomRequest> = {
     if (message.supports_high_school !== undefined) {
       obj.supportsHighSchool = message.supports_high_school;
     }
+    if (message.capacity !== undefined) {
+      obj.capacity = Math.round(message.capacity);
+    }
     return obj;
   },
 
@@ -328,6 +367,7 @@ export const UpdateRoomRequest: MessageFns<UpdateRoomRequest> = {
         ? ObjectId.fromPartial(object.special_room_category_id)
         : undefined;
     message.supports_high_school = object.supports_high_school ?? undefined;
+    message.capacity = object.capacity ?? undefined;
     return message;
   },
 };

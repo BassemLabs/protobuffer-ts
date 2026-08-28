@@ -115,6 +115,7 @@ function createBaseRoom() {
         special_room_category_id: undefined,
         supports_high_school: undefined,
         archived: undefined,
+        capacity: undefined,
     };
 }
 exports.Room = {
@@ -139,6 +140,9 @@ exports.Room = {
         }
         if (message.archived !== undefined) {
             writer.uint32(56).bool(message.archived);
+        }
+        if (message.capacity !== undefined) {
+            writer.uint32(64).uint32(message.capacity);
         }
         return writer;
     },
@@ -191,6 +195,12 @@ exports.Room = {
                     }
                     message.archived = reader.bool();
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.capacity = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -212,6 +222,7 @@ exports.Room = {
                 ? globalThis.Boolean(object.supportsHighSchool)
                 : undefined,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+            capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
         };
     },
     toJSON(message) {
@@ -237,6 +248,9 @@ exports.Room = {
         if (message.archived !== undefined) {
             obj.archived = message.archived;
         }
+        if (message.capacity !== undefined) {
+            obj.capacity = Math.round(message.capacity);
+        }
         return obj;
     },
     create(base) {
@@ -258,6 +272,7 @@ exports.Room = {
                 : undefined;
         message.supports_high_school = object.supports_high_school ?? undefined;
         message.archived = object.archived ?? undefined;
+        message.capacity = object.capacity ?? undefined;
         return message;
     },
 };

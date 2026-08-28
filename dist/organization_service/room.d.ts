@@ -28,6 +28,8 @@ export interface Room {
     /** Whether high-school classes may be scheduled in this room. */
     supports_high_school?: boolean | undefined;
     archived?: boolean | undefined;
+    /** Maximum enrolled high-school students. Absent means unlimited. */
+    capacity?: number | undefined;
 }
 export declare const RoomCategory: MessageFns<RoomCategory>;
 export declare const Room: MessageFns<Room>;
