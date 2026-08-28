@@ -6882,6 +6882,7 @@ function createBaseSchedulingScheduleClassInfo() {
         color: undefined,
         subject_members: [],
         shared_lesson_id: undefined,
+        course_code: undefined,
     };
 }
 exports.SchedulingScheduleClassInfo = {
@@ -6912,6 +6913,9 @@ exports.SchedulingScheduleClassInfo = {
         }
         if (message.shared_lesson_id !== undefined) {
             uuid_1.Uuid.encode(message.shared_lesson_id, writer.uint32(74).fork()).join();
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(82).string(message.course_code);
         }
         return writer;
     },
@@ -6976,6 +6980,12 @@ exports.SchedulingScheduleClassInfo = {
                     }
                     message.shared_lesson_id = uuid_1.Uuid.decode(reader, reader.uint32());
                     continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -6999,6 +7009,7 @@ exports.SchedulingScheduleClassInfo = {
                 ? object.subjectMembers.map((e) => exports.SchedulingScheduleSubjectMemberInfo.fromJSON(e))
                 : [],
             shared_lesson_id: isSet(object.sharedLessonId) ? uuid_1.Uuid.fromJSON(object.sharedLessonId) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
         };
     },
     toJSON(message) {
@@ -7030,6 +7041,9 @@ exports.SchedulingScheduleClassInfo = {
         if (message.shared_lesson_id !== undefined) {
             obj.sharedLessonId = uuid_1.Uuid.toJSON(message.shared_lesson_id);
         }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
         return obj;
     },
     create(base) {
@@ -7049,6 +7063,7 @@ exports.SchedulingScheduleClassInfo = {
         message.shared_lesson_id = (object.shared_lesson_id !== undefined && object.shared_lesson_id !== null)
             ? uuid_1.Uuid.fromPartial(object.shared_lesson_id)
             : undefined;
+        message.course_code = object.course_code ?? undefined;
         return message;
     },
 };

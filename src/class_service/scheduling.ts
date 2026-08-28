@@ -1463,7 +1463,11 @@ export interface SchedulingScheduleClassInfo {
   student_ids: ObjectId[];
   color?: string | undefined;
   subject_members: SchedulingScheduleSubjectMemberInfo[];
-  shared_lesson_id?: Uuid | undefined;
+  shared_lesson_id?:
+    | Uuid
+    | undefined;
+  /** Frozen display code for high-school course schedules. */
+  course_code?: string | undefined;
 }
 
 export interface SchedulingScheduleTeacherInfo {
@@ -8353,6 +8357,7 @@ function createBaseSchedulingScheduleClassInfo(): SchedulingScheduleClassInfo {
     color: undefined,
     subject_members: [],
     shared_lesson_id: undefined,
+    course_code: undefined,
   };
 }
 
@@ -8384,6 +8389,9 @@ export const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo
     }
     if (message.shared_lesson_id !== undefined) {
       Uuid.encode(message.shared_lesson_id, writer.uint32(74).fork()).join();
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(82).string(message.course_code);
     }
     return writer;
   },
@@ -8458,6 +8466,13 @@ export const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo
 
           message.shared_lesson_id = Uuid.decode(reader, reader.uint32());
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -8482,6 +8497,7 @@ export const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo
         ? object.subjectMembers.map((e: any) => SchedulingScheduleSubjectMemberInfo.fromJSON(e))
         : [],
       shared_lesson_id: isSet(object.sharedLessonId) ? Uuid.fromJSON(object.sharedLessonId) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
     };
   },
 
@@ -8514,6 +8530,9 @@ export const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo
     if (message.shared_lesson_id !== undefined) {
       obj.sharedLessonId = Uuid.toJSON(message.shared_lesson_id);
     }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
     return obj;
   },
 
@@ -8534,6 +8553,7 @@ export const SchedulingScheduleClassInfo: MessageFns<SchedulingScheduleClassInfo
     message.shared_lesson_id = (object.shared_lesson_id !== undefined && object.shared_lesson_id !== null)
       ? Uuid.fromPartial(object.shared_lesson_id)
       : undefined;
+    message.course_code = object.course_code ?? undefined;
     return message;
   },
 };

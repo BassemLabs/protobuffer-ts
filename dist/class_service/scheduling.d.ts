@@ -644,6 +644,8 @@ export interface SchedulingScheduleClassInfo {
     color?: string | undefined;
     subject_members: SchedulingScheduleSubjectMemberInfo[];
     shared_lesson_id?: Uuid | undefined;
+    /** Frozen display code for high-school course schedules. */
+    course_code?: string | undefined;
 }
 export interface SchedulingScheduleTeacherInfo {
     id: ObjectId | undefined;
