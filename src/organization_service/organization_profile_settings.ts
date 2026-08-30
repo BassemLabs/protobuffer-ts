@@ -25,6 +25,8 @@ export enum ProfileSection {
   FORMS = "FORMS",
   ROLES = "ROLES",
   SCHEDULE = "SCHEDULE",
+  ASSESSMENT = "ASSESSMENT",
+  /** @deprecated */
   INTERVIEW = "INTERVIEW",
   WAITLIST = "WAITLIST",
   UNRECOGNIZED = "UNRECOGNIZED",
@@ -75,6 +77,9 @@ export function profileSectionFromJSON(object: any): ProfileSection {
     case "SCHEDULE":
       return ProfileSection.SCHEDULE;
     case 14:
+    case "ASSESSMENT":
+      return ProfileSection.ASSESSMENT;
+    case 14:
     case "INTERVIEW":
       return ProfileSection.INTERVIEW;
     case 15:
@@ -117,6 +122,8 @@ export function profileSectionToJSON(object: ProfileSection): string {
       return "ROLES";
     case ProfileSection.SCHEDULE:
       return "SCHEDULE";
+    case ProfileSection.ASSESSMENT:
+      return "ASSESSMENT";
     case ProfileSection.INTERVIEW:
       return "INTERVIEW";
     case ProfileSection.WAITLIST:
@@ -157,6 +164,8 @@ export function profileSectionToNumber(object: ProfileSection): number {
       return 12;
     case ProfileSection.SCHEDULE:
       return 13;
+    case ProfileSection.ASSESSMENT:
+      return 14;
     case ProfileSection.INTERVIEW:
       return 14;
     case ProfileSection.WAITLIST:

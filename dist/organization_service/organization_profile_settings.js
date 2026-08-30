@@ -29,6 +29,8 @@ var ProfileSection;
     ProfileSection["FORMS"] = "FORMS";
     ProfileSection["ROLES"] = "ROLES";
     ProfileSection["SCHEDULE"] = "SCHEDULE";
+    ProfileSection["ASSESSMENT"] = "ASSESSMENT";
+    /** @deprecated */
     ProfileSection["INTERVIEW"] = "INTERVIEW";
     ProfileSection["WAITLIST"] = "WAITLIST";
     ProfileSection["UNRECOGNIZED"] = "UNRECOGNIZED";
@@ -78,6 +80,9 @@ function profileSectionFromJSON(object) {
         case "SCHEDULE":
             return ProfileSection.SCHEDULE;
         case 14:
+        case "ASSESSMENT":
+            return ProfileSection.ASSESSMENT;
+        case 14:
         case "INTERVIEW":
             return ProfileSection.INTERVIEW;
         case 15:
@@ -119,6 +124,8 @@ function profileSectionToJSON(object) {
             return "ROLES";
         case ProfileSection.SCHEDULE:
             return "SCHEDULE";
+        case ProfileSection.ASSESSMENT:
+            return "ASSESSMENT";
         case ProfileSection.INTERVIEW:
             return "INTERVIEW";
         case ProfileSection.WAITLIST:
@@ -158,6 +165,8 @@ function profileSectionToNumber(object) {
             return 12;
         case ProfileSection.SCHEDULE:
             return 13;
+        case ProfileSection.ASSESSMENT:
+            return 14;
         case ProfileSection.INTERVIEW:
             return 14;
         case ProfileSection.WAITLIST:

@@ -16,6 +16,8 @@ export declare enum ProfileSection {
     FORMS = "FORMS",
     ROLES = "ROLES",
     SCHEDULE = "SCHEDULE",
+    ASSESSMENT = "ASSESSMENT",
+    /** @deprecated */
     INTERVIEW = "INTERVIEW",
     WAITLIST = "WAITLIST",
     UNRECOGNIZED = "UNRECOGNIZED"
