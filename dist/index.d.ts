@@ -194,6 +194,8 @@ import * as Organization_payment_plan_service from './payment_service/organizati
 export { Organization_payment_plan_service };
 import * as Organization_payment_plan from './payment_service/organization_payment_plan';
 export { Organization_payment_plan };
+import * as Family_balance from './payment_service/family_balance';
+export { Family_balance };
 import * as Payment_reminder from './payment_service/payment_reminder';
 export { Payment_reminder };
 import * as Payment_service from './payment_service/payment_service';

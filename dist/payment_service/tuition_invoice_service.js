@@ -183,7 +183,13 @@ exports.GetFamilyTuitionInvoiceRequest = {
     },
 };
 function createBaseGenerateTuitionInvoiceRequest() {
-    return { context: undefined, family: undefined, school_year: undefined, tuition_plan: undefined };
+    return {
+        context: undefined,
+        family: undefined,
+        school_year: undefined,
+        tuition_plan: undefined,
+        family_balance_amount: undefined,
+    };
 }
 exports.GenerateTuitionInvoiceRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -198,6 +204,9 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.tuition_plan !== undefined) {
             object_id_1.ObjectId.encode(message.tuition_plan, writer.uint32(34).fork()).join();
+        }
+        if (message.family_balance_amount !== undefined) {
+            writer.uint32(41).double(message.family_balance_amount);
         }
         return writer;
     },
@@ -232,6 +241,12 @@ exports.GenerateTuitionInvoiceRequest = {
                     }
                     message.tuition_plan = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 41) {
+                        break;
+                    }
+                    message.family_balance_amount = reader.double();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -246,6 +261,9 @@ exports.GenerateTuitionInvoiceRequest = {
             family: isSet(object.family) ? object_id_1.ObjectId.fromJSON(object.family) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
             tuition_plan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
+            family_balance_amount: isSet(object.familyBalanceAmount)
+                ? globalThis.Number(object.familyBalanceAmount)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -261,6 +279,9 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.tuition_plan !== undefined) {
             obj.tuitionPlan = object_id_1.ObjectId.toJSON(message.tuition_plan);
+        }
+        if (message.family_balance_amount !== undefined) {
+            obj.familyBalanceAmount = message.family_balance_amount;
         }
         return obj;
     },
@@ -281,6 +302,7 @@ exports.GenerateTuitionInvoiceRequest = {
         message.tuition_plan = (object.tuition_plan !== undefined && object.tuition_plan !== null)
             ? object_id_1.ObjectId.fromPartial(object.tuition_plan)
             : undefined;
+        message.family_balance_amount = object.family_balance_amount ?? undefined;
         return message;
     },
 };

@@ -131,6 +131,8 @@ export interface Invoice {
     tuition_discount_audit: TuitionDiscountAuditEntry[];
     created_at: Date | undefined;
     lifecycle_status?: InvoiceLifecycleStatus | undefined;
+    /** Payments received for this invoice become family balance credit. */
+    adds_to_family_balance?: boolean | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;

@@ -22,6 +22,8 @@ export declare enum PaymentType {
     /** ORGANIZATION_INVOICE - application fee from non-tuition invoice transactions (deferred bassemlabs fee) */
     ORGANIZATION_INVOICE = "ORGANIZATION_INVOICE",
     Other = "Other",
+    /** FAMILY_BALANCE - internal credit application; no new money was collected */
+    FAMILY_BALANCE = "FAMILY_BALANCE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function paymentTypeFromJSON(object: any): PaymentType;

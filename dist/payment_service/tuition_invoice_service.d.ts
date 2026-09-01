@@ -22,6 +22,7 @@ export interface GenerateTuitionInvoiceRequest {
     family: ObjectId | undefined;
     school_year: ObjectId | undefined;
     tuition_plan: ObjectId | undefined;
+    family_balance_amount?: number | undefined;
 }
 export interface ModifyTuitionInvoiceRequest {
     context: RequestContext | undefined;

@@ -97,6 +97,8 @@ var PaymentType;
     /** ORGANIZATION_INVOICE - application fee from non-tuition invoice transactions (deferred bassemlabs fee) */
     PaymentType["ORGANIZATION_INVOICE"] = "ORGANIZATION_INVOICE";
     PaymentType["Other"] = "Other";
+    /** FAMILY_BALANCE - internal credit application; no new money was collected */
+    PaymentType["FAMILY_BALANCE"] = "FAMILY_BALANCE";
     PaymentType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(PaymentType || (exports.PaymentType = PaymentType = {}));
 function paymentTypeFromJSON(object) {
@@ -119,6 +121,9 @@ function paymentTypeFromJSON(object) {
         case 6:
         case "Other":
             return PaymentType.Other;
+        case 7:
+        case "FAMILY_BALANCE":
+            return PaymentType.FAMILY_BALANCE;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -139,6 +144,8 @@ function paymentTypeToJSON(object) {
             return "ORGANIZATION_INVOICE";
         case PaymentType.Other:
             return "Other";
+        case PaymentType.FAMILY_BALANCE:
+            return "FAMILY_BALANCE";
         case PaymentType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -158,6 +165,8 @@ function paymentTypeToNumber(object) {
             return 5;
         case PaymentType.Other:
             return 6;
+        case PaymentType.FAMILY_BALANCE:
+            return 7;
         case PaymentType.UNRECOGNIZED:
         default:
             return -1;

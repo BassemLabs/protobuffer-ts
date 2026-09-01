@@ -40,6 +40,7 @@ export interface GenerateTuitionInvoiceRequest {
   family: ObjectId | undefined;
   school_year: ObjectId | undefined;
   tuition_plan: ObjectId | undefined;
+  family_balance_amount?: number | undefined;
 }
 
 export interface ModifyTuitionInvoiceRequest {
@@ -335,7 +336,13 @@ export const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceR
 };
 
 function createBaseGenerateTuitionInvoiceRequest(): GenerateTuitionInvoiceRequest {
-  return { context: undefined, family: undefined, school_year: undefined, tuition_plan: undefined };
+  return {
+    context: undefined,
+    family: undefined,
+    school_year: undefined,
+    tuition_plan: undefined,
+    family_balance_amount: undefined,
+  };
 }
 
 export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest> = {
@@ -351,6 +358,9 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     }
     if (message.tuition_plan !== undefined) {
       ObjectId.encode(message.tuition_plan, writer.uint32(34).fork()).join();
+    }
+    if (message.family_balance_amount !== undefined) {
+      writer.uint32(41).double(message.family_balance_amount);
     }
     return writer;
   },
@@ -390,6 +400,13 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
 
           message.tuition_plan = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 41) {
+            break;
+          }
+
+          message.family_balance_amount = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -405,6 +422,9 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
       family: isSet(object.family) ? ObjectId.fromJSON(object.family) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
       tuition_plan: isSet(object.tuitionPlan) ? ObjectId.fromJSON(object.tuitionPlan) : undefined,
+      family_balance_amount: isSet(object.familyBalanceAmount)
+        ? globalThis.Number(object.familyBalanceAmount)
+        : undefined,
     };
   },
 
@@ -421,6 +441,9 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     }
     if (message.tuition_plan !== undefined) {
       obj.tuitionPlan = ObjectId.toJSON(message.tuition_plan);
+    }
+    if (message.family_balance_amount !== undefined) {
+      obj.familyBalanceAmount = message.family_balance_amount;
     }
     return obj;
   },
@@ -444,6 +467,7 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     message.tuition_plan = (object.tuition_plan !== undefined && object.tuition_plan !== null)
       ? ObjectId.fromPartial(object.tuition_plan)
       : undefined;
+    message.family_balance_amount = object.family_balance_amount ?? undefined;
     return message;
   },
 };

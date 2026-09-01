@@ -833,6 +833,7 @@ function createBaseInvoice() {
         tuition_discount_audit: [],
         created_at: undefined,
         lifecycle_status: undefined,
+        adds_to_family_balance: undefined,
     };
 }
 exports.Invoice = {
@@ -911,6 +912,9 @@ exports.Invoice = {
         }
         if (message.lifecycle_status !== undefined) {
             writer.uint32(200).int32(invoiceLifecycleStatusToNumber(message.lifecycle_status));
+        }
+        if (message.adds_to_family_balance !== undefined) {
+            writer.uint32(208).bool(message.adds_to_family_balance);
         }
         return writer;
     },
@@ -1071,6 +1075,12 @@ exports.Invoice = {
                     }
                     message.lifecycle_status = invoiceLifecycleStatusFromJSON(reader.int32());
                     continue;
+                case 26:
+                    if (tag !== 208) {
+                        break;
+                    }
+                    message.adds_to_family_balance = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1119,6 +1129,9 @@ exports.Invoice = {
             created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
             lifecycle_status: isSet(object.lifecycleStatus)
                 ? invoiceLifecycleStatusFromJSON(object.lifecycleStatus)
+                : undefined,
+            adds_to_family_balance: isSet(object.addsToFamilyBalance)
+                ? globalThis.Boolean(object.addsToFamilyBalance)
                 : undefined,
         };
     },
@@ -1199,6 +1212,9 @@ exports.Invoice = {
         if (message.lifecycle_status !== undefined) {
             obj.lifecycleStatus = invoiceLifecycleStatusToJSON(message.lifecycle_status);
         }
+        if (message.adds_to_family_balance !== undefined) {
+            obj.addsToFamilyBalance = message.adds_to_family_balance;
+        }
         return obj;
     },
     create(base) {
@@ -1242,6 +1258,7 @@ exports.Invoice = {
             object.tuition_discount_audit?.map((e) => exports.TuitionDiscountAuditEntry.fromPartial(e)) || [];
         message.created_at = object.created_at ?? undefined;
         message.lifecycle_status = object.lifecycle_status ?? undefined;
+        message.adds_to_family_balance = object.adds_to_family_balance ?? undefined;
         return message;
     },
 };

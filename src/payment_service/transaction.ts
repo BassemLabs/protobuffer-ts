@@ -90,6 +90,8 @@ export enum PaymentType {
   /** ORGANIZATION_INVOICE - application fee from non-tuition invoice transactions (deferred bassemlabs fee) */
   ORGANIZATION_INVOICE = "ORGANIZATION_INVOICE",
   Other = "Other",
+  /** FAMILY_BALANCE - internal credit application; no new money was collected */
+  FAMILY_BALANCE = "FAMILY_BALANCE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -113,6 +115,9 @@ export function paymentTypeFromJSON(object: any): PaymentType {
     case 6:
     case "Other":
       return PaymentType.Other;
+    case 7:
+    case "FAMILY_BALANCE":
+      return PaymentType.FAMILY_BALANCE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -134,6 +139,8 @@ export function paymentTypeToJSON(object: PaymentType): string {
       return "ORGANIZATION_INVOICE";
     case PaymentType.Other:
       return "Other";
+    case PaymentType.FAMILY_BALANCE:
+      return "FAMILY_BALANCE";
     case PaymentType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -154,6 +161,8 @@ export function paymentTypeToNumber(object: PaymentType): number {
       return 5;
     case PaymentType.Other:
       return 6;
+    case PaymentType.FAMILY_BALANCE:
+      return 7;
     case PaymentType.UNRECOGNIZED:
     default:
       return -1;
