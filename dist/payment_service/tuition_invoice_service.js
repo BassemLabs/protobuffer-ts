@@ -189,6 +189,8 @@ function createBaseGenerateTuitionInvoiceRequest() {
         school_year: undefined,
         tuition_plan: undefined,
         family_balance_amount: undefined,
+        effective_date: undefined,
+        auto_pay_backdated_installments: undefined,
     };
 }
 exports.GenerateTuitionInvoiceRequest = {
@@ -207,6 +209,12 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.family_balance_amount !== undefined) {
             writer.uint32(41).double(message.family_balance_amount);
+        }
+        if (message.effective_date !== undefined) {
+            writer.uint32(50).string(message.effective_date);
+        }
+        if (message.auto_pay_backdated_installments !== undefined) {
+            writer.uint32(56).bool(message.auto_pay_backdated_installments);
         }
         return writer;
     },
@@ -247,6 +255,18 @@ exports.GenerateTuitionInvoiceRequest = {
                     }
                     message.family_balance_amount = reader.double();
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.effective_date = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.auto_pay_backdated_installments = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -263,6 +283,10 @@ exports.GenerateTuitionInvoiceRequest = {
             tuition_plan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
             family_balance_amount: isSet(object.familyBalanceAmount)
                 ? globalThis.Number(object.familyBalanceAmount)
+                : undefined,
+            effective_date: isSet(object.effectiveDate) ? globalThis.String(object.effectiveDate) : undefined,
+            auto_pay_backdated_installments: isSet(object.autoPayBackdatedInstallments)
+                ? globalThis.Boolean(object.autoPayBackdatedInstallments)
                 : undefined,
         };
     },
@@ -282,6 +306,12 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.family_balance_amount !== undefined) {
             obj.familyBalanceAmount = message.family_balance_amount;
+        }
+        if (message.effective_date !== undefined) {
+            obj.effectiveDate = message.effective_date;
+        }
+        if (message.auto_pay_backdated_installments !== undefined) {
+            obj.autoPayBackdatedInstallments = message.auto_pay_backdated_installments;
         }
         return obj;
     },
@@ -303,6 +333,8 @@ exports.GenerateTuitionInvoiceRequest = {
             ? object_id_1.ObjectId.fromPartial(object.tuition_plan)
             : undefined;
         message.family_balance_amount = object.family_balance_amount ?? undefined;
+        message.effective_date = object.effective_date ?? undefined;
+        message.auto_pay_backdated_installments = object.auto_pay_backdated_installments ?? undefined;
         return message;
     },
 };

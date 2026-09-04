@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: payment_service/tuition_invoice.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TuitionInvoice = exports.TuitionInvoiceLineItem = exports.TuitionPlanSnapshot = exports.TuitionInvoiceStatus = exports.LineType = exports.protobufPackage = void 0;
+exports.TuitionInvoice = exports.TuitionSchedulePreviewEntry = exports.TuitionInvoiceLineItem = exports.TuitionPlanSnapshot = exports.TuitionInvoiceStatus = exports.LineType = exports.protobufPackage = void 0;
 exports.lineTypeFromJSON = lineTypeFromJSON;
 exports.lineTypeToJSON = lineTypeToJSON;
 exports.lineTypeToNumber = lineTypeToNumber;
@@ -397,6 +397,86 @@ exports.TuitionInvoiceLineItem = {
         return message;
     },
 };
+function createBaseTuitionSchedulePreviewEntry() {
+    return { charge_date: undefined, amount: undefined, auto_pay_enabled: undefined };
+}
+exports.TuitionSchedulePreviewEntry = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.charge_date !== undefined) {
+            writer.uint32(10).string(message.charge_date);
+        }
+        if (message.amount !== undefined) {
+            writer.uint32(17).double(message.amount);
+        }
+        if (message.auto_pay_enabled !== undefined) {
+            writer.uint32(24).bool(message.auto_pay_enabled);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTuitionSchedulePreviewEntry();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.charge_date = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 17) {
+                        break;
+                    }
+                    message.amount = reader.double();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.auto_pay_enabled = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            charge_date: isSet(object.chargeDate) ? globalThis.String(object.chargeDate) : undefined,
+            amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
+            auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.charge_date !== undefined) {
+            obj.chargeDate = message.charge_date;
+        }
+        if (message.amount !== undefined) {
+            obj.amount = message.amount;
+        }
+        if (message.auto_pay_enabled !== undefined) {
+            obj.autoPayEnabled = message.auto_pay_enabled;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TuitionSchedulePreviewEntry.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTuitionSchedulePreviewEntry();
+        message.charge_date = object.charge_date ?? undefined;
+        message.amount = object.amount ?? undefined;
+        message.auto_pay_enabled = object.auto_pay_enabled ?? undefined;
+        return message;
+    },
+};
 function createBaseTuitionInvoice() {
     return {
         id: undefined,
@@ -412,6 +492,7 @@ function createBaseTuitionInvoice() {
         total_net_if_all_enrolled: undefined,
         total_gross_if_all_enrolled: undefined,
         total_discounts_if_all_enrolled: undefined,
+        schedule_preview: [],
     };
 }
 exports.TuitionInvoice = {
@@ -454,6 +535,9 @@ exports.TuitionInvoice = {
         }
         if (message.total_discounts_if_all_enrolled !== undefined) {
             writer.uint32(105).double(message.total_discounts_if_all_enrolled);
+        }
+        for (const v of message.schedule_preview) {
+            exports.TuitionSchedulePreviewEntry.encode(v, writer.uint32(114).fork()).join();
         }
         return writer;
     },
@@ -542,6 +626,12 @@ exports.TuitionInvoice = {
                     }
                     message.total_discounts_if_all_enrolled = reader.double();
                     continue;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.schedule_preview.push(exports.TuitionSchedulePreviewEntry.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -573,6 +663,9 @@ exports.TuitionInvoice = {
             total_discounts_if_all_enrolled: isSet(object.totalDiscountsIfAllEnrolled)
                 ? globalThis.Number(object.totalDiscountsIfAllEnrolled)
                 : undefined,
+            schedule_preview: globalThis.Array.isArray(object?.schedulePreview)
+                ? object.schedulePreview.map((e) => exports.TuitionSchedulePreviewEntry.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -616,6 +709,9 @@ exports.TuitionInvoice = {
         if (message.total_discounts_if_all_enrolled !== undefined) {
             obj.totalDiscountsIfAllEnrolled = message.total_discounts_if_all_enrolled;
         }
+        if (message.schedule_preview?.length) {
+            obj.schedulePreview = message.schedule_preview.map((e) => exports.TuitionSchedulePreviewEntry.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -646,6 +742,7 @@ exports.TuitionInvoice = {
         message.total_net_if_all_enrolled = object.total_net_if_all_enrolled ?? undefined;
         message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? undefined;
         message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? undefined;
+        message.schedule_preview = object.schedule_preview?.map((e) => exports.TuitionSchedulePreviewEntry.fromPartial(e)) || [];
         return message;
     },
 };

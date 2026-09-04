@@ -23,6 +23,10 @@ export interface GenerateTuitionInvoiceRequest {
     school_year: ObjectId | undefined;
     tuition_plan: ObjectId | undefined;
     family_balance_amount?: number | undefined;
+    /** Tuition Manager-only, date-only school-local cutoff. Only installments after this date are included. */
+    effective_date?: string | undefined;
+    /** Tuition Manager-only. Defaults to false so past or due-today installments are created with auto-pay paused. */
+    auto_pay_backdated_installments?: boolean | undefined;
 }
 export interface ModifyTuitionInvoiceRequest {
     context: RequestContext | undefined;

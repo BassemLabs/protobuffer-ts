@@ -177,6 +177,16 @@ export interface TuitionInvoiceLineItem {
   student_status?: StudentStatus | undefined;
 }
 
+export interface TuitionSchedulePreviewEntry {
+  /** YYYY-MM-DD in the organization timezone */
+  charge_date?: string | undefined;
+  amount?:
+    | number
+    | undefined;
+  /** Whether the generated installment will participate in auto-pay. */
+  auto_pay_enabled?: boolean | undefined;
+}
+
 export interface TuitionInvoice {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -196,7 +206,11 @@ export interface TuitionInvoice {
   /** Hypothetical totals if all admitted students were enrolled */
   total_net_if_all_enrolled?: number | undefined;
   total_gross_if_all_enrolled?: number | undefined;
-  total_discounts_if_all_enrolled?: number | undefined;
+  total_discounts_if_all_enrolled?:
+    | number
+    | undefined;
+  /** response-only; never persisted */
+  schedule_preview: TuitionSchedulePreviewEntry[];
 }
 
 function createBaseTuitionPlanSnapshot(): TuitionPlanSnapshot {
@@ -485,6 +499,95 @@ export const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem> = {
   },
 };
 
+function createBaseTuitionSchedulePreviewEntry(): TuitionSchedulePreviewEntry {
+  return { charge_date: undefined, amount: undefined, auto_pay_enabled: undefined };
+}
+
+export const TuitionSchedulePreviewEntry: MessageFns<TuitionSchedulePreviewEntry> = {
+  encode(message: TuitionSchedulePreviewEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.charge_date !== undefined) {
+      writer.uint32(10).string(message.charge_date);
+    }
+    if (message.amount !== undefined) {
+      writer.uint32(17).double(message.amount);
+    }
+    if (message.auto_pay_enabled !== undefined) {
+      writer.uint32(24).bool(message.auto_pay_enabled);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TuitionSchedulePreviewEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTuitionSchedulePreviewEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.charge_date = reader.string();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.auto_pay_enabled = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TuitionSchedulePreviewEntry {
+    return {
+      charge_date: isSet(object.chargeDate) ? globalThis.String(object.chargeDate) : undefined,
+      amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
+      auto_pay_enabled: isSet(object.autoPayEnabled) ? globalThis.Boolean(object.autoPayEnabled) : undefined,
+    };
+  },
+
+  toJSON(message: TuitionSchedulePreviewEntry): unknown {
+    const obj: any = {};
+    if (message.charge_date !== undefined) {
+      obj.chargeDate = message.charge_date;
+    }
+    if (message.amount !== undefined) {
+      obj.amount = message.amount;
+    }
+    if (message.auto_pay_enabled !== undefined) {
+      obj.autoPayEnabled = message.auto_pay_enabled;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TuitionSchedulePreviewEntry>, I>>(base?: I): TuitionSchedulePreviewEntry {
+    return TuitionSchedulePreviewEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TuitionSchedulePreviewEntry>, I>>(object: I): TuitionSchedulePreviewEntry {
+    const message = createBaseTuitionSchedulePreviewEntry();
+    message.charge_date = object.charge_date ?? undefined;
+    message.amount = object.amount ?? undefined;
+    message.auto_pay_enabled = object.auto_pay_enabled ?? undefined;
+    return message;
+  },
+};
+
 function createBaseTuitionInvoice(): TuitionInvoice {
   return {
     id: undefined,
@@ -500,6 +603,7 @@ function createBaseTuitionInvoice(): TuitionInvoice {
     total_net_if_all_enrolled: undefined,
     total_gross_if_all_enrolled: undefined,
     total_discounts_if_all_enrolled: undefined,
+    schedule_preview: [],
   };
 }
 
@@ -543,6 +647,9 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     }
     if (message.total_discounts_if_all_enrolled !== undefined) {
       writer.uint32(105).double(message.total_discounts_if_all_enrolled);
+    }
+    for (const v of message.schedule_preview) {
+      TuitionSchedulePreviewEntry.encode(v!, writer.uint32(114).fork()).join();
     }
     return writer;
   },
@@ -645,6 +752,13 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
 
           message.total_discounts_if_all_enrolled = reader.double();
           continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.schedule_preview.push(TuitionSchedulePreviewEntry.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -677,6 +791,9 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
       total_discounts_if_all_enrolled: isSet(object.totalDiscountsIfAllEnrolled)
         ? globalThis.Number(object.totalDiscountsIfAllEnrolled)
         : undefined,
+      schedule_preview: globalThis.Array.isArray(object?.schedulePreview)
+        ? object.schedulePreview.map((e: any) => TuitionSchedulePreviewEntry.fromJSON(e))
+        : [],
     };
   },
 
@@ -721,6 +838,9 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     if (message.total_discounts_if_all_enrolled !== undefined) {
       obj.totalDiscountsIfAllEnrolled = message.total_discounts_if_all_enrolled;
     }
+    if (message.schedule_preview?.length) {
+      obj.schedulePreview = message.schedule_preview.map((e) => TuitionSchedulePreviewEntry.toJSON(e));
+    }
     return obj;
   },
 
@@ -752,6 +872,7 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     message.total_net_if_all_enrolled = object.total_net_if_all_enrolled ?? undefined;
     message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? undefined;
     message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? undefined;
+    message.schedule_preview = object.schedule_preview?.map((e) => TuitionSchedulePreviewEntry.fromPartial(e)) || [];
     return message;
   },
 };

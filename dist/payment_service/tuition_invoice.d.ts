@@ -42,6 +42,13 @@ export interface TuitionInvoiceLineItem {
     /** status at time of invoice creation */
     student_status?: StudentStatus | undefined;
 }
+export interface TuitionSchedulePreviewEntry {
+    /** YYYY-MM-DD in the organization timezone */
+    charge_date?: string | undefined;
+    amount?: number | undefined;
+    /** Whether the generated installment will participate in auto-pay. */
+    auto_pay_enabled?: boolean | undefined;
+}
 export interface TuitionInvoice {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -58,9 +65,12 @@ export interface TuitionInvoice {
     total_net_if_all_enrolled?: number | undefined;
     total_gross_if_all_enrolled?: number | undefined;
     total_discounts_if_all_enrolled?: number | undefined;
+    /** response-only; never persisted */
+    schedule_preview: TuitionSchedulePreviewEntry[];
 }
 export declare const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot>;
 export declare const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem>;
+export declare const TuitionSchedulePreviewEntry: MessageFns<TuitionSchedulePreviewEntry>;
 export declare const TuitionInvoice: MessageFns<TuitionInvoice>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
