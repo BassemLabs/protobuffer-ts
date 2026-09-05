@@ -125,6 +125,10 @@ export interface DeleteOrganizationLogoRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
 }
+export interface DisableStudentDirectoryAccountsRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
 export interface UpdateOrganizationAutoPayRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -321,6 +325,7 @@ export declare const RemoveDomainRequest: MessageFns<RemoveDomainRequest>;
 export declare const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSettingsRequest>;
 export declare const UpdateOrganizationLogoRequest: MessageFns<UpdateOrganizationLogoRequest>;
 export declare const DeleteOrganizationLogoRequest: MessageFns<DeleteOrganizationLogoRequest>;
+export declare const DisableStudentDirectoryAccountsRequest: MessageFns<DisableStudentDirectoryAccountsRequest>;
 export declare const UpdateOrganizationAutoPayRequest: MessageFns<UpdateOrganizationAutoPayRequest>;
 export declare const UpdateAutoPayRetryConfigRequest: MessageFns<UpdateAutoPayRetryConfigRequest>;
 export declare const GetOrganizationsRequest: MessageFns<GetOrganizationsRequest>;

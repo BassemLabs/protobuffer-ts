@@ -42,6 +42,11 @@ export interface Organization {
     timezone?: string | undefined;
     directory_provider?: DirectoryProviderType | undefined;
     logo?: AWSFile | undefined;
+    /**
+     * False permanently disables student directory accounts and all LMS use; teacher directory accounts remain enabled.
+     * Required by the application. Preserve wire presence so consumers reject missing values instead of decoding false.
+     */
+    student_directory_accounts_enabled?: boolean | undefined;
 }
 export interface SchoolYear {
     id: ObjectId | undefined;

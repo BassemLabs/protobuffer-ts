@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
-exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = void 0;
+exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
+exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = void 0;
 exports.reregistrationPhaseFromJSON = reregistrationPhaseFromJSON;
 exports.reregistrationPhaseToJSON = reregistrationPhaseToJSON;
 exports.reregistrationPhaseToNumber = reregistrationPhaseToNumber;
@@ -1293,6 +1293,76 @@ exports.DeleteOrganizationLogoRequest = {
     },
     fromPartial(object) {
         const message = createBaseDeleteOrganizationLogoRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseDisableStudentDirectoryAccountsRequest() {
+    return { context: undefined, organization_id: undefined };
+}
+exports.DisableStudentDirectoryAccountsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDisableStudentDirectoryAccountsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DisableStudentDirectoryAccountsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDisableStudentDirectoryAccountsRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;

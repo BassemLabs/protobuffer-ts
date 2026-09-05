@@ -132,7 +132,14 @@ export interface Organization {
   weekend_days: DayOfWeek[];
   timezone?: string | undefined;
   directory_provider?: DirectoryProviderType | undefined;
-  logo?: AWSFile | undefined;
+  logo?:
+    | AWSFile
+    | undefined;
+  /**
+   * False permanently disables student directory accounts and all LMS use; teacher directory accounts remain enabled.
+   * Required by the application. Preserve wire presence so consumers reject missing values instead of decoding false.
+   */
+  student_directory_accounts_enabled?: boolean | undefined;
 }
 
 export interface SchoolYear {
@@ -190,6 +197,7 @@ function createBaseOrganization(): Organization {
     timezone: undefined,
     directory_provider: undefined,
     logo: undefined,
+    student_directory_accounts_enabled: undefined,
   };
 }
 
@@ -250,6 +258,9 @@ export const Organization: MessageFns<Organization> = {
     }
     if (message.logo !== undefined) {
       AWSFile.encode(message.logo, writer.uint32(146).fork()).join();
+    }
+    if (message.student_directory_accounts_enabled !== undefined) {
+      writer.uint32(152).bool(message.student_directory_accounts_enabled);
     }
     return writer;
   },
@@ -397,6 +408,13 @@ export const Organization: MessageFns<Organization> = {
 
           message.logo = AWSFile.decode(reader, reader.uint32());
           continue;
+        case 19:
+          if (tag !== 152) {
+            break;
+          }
+
+          message.student_directory_accounts_enabled = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -438,6 +456,9 @@ export const Organization: MessageFns<Organization> = {
         ? directoryProviderTypeFromJSON(object.directoryProvider)
         : undefined,
       logo: isSet(object.logo) ? AWSFile.fromJSON(object.logo) : undefined,
+      student_directory_accounts_enabled: isSet(object.studentDirectoryAccountsEnabled)
+        ? globalThis.Boolean(object.studentDirectoryAccountsEnabled)
+        : undefined,
     };
   },
 
@@ -497,6 +518,9 @@ export const Organization: MessageFns<Organization> = {
     if (message.logo !== undefined) {
       obj.logo = AWSFile.toJSON(message.logo);
     }
+    if (message.student_directory_accounts_enabled !== undefined) {
+      obj.studentDirectoryAccountsEnabled = message.student_directory_accounts_enabled;
+    }
     return obj;
   },
 
@@ -537,6 +561,7 @@ export const Organization: MessageFns<Organization> = {
     message.timezone = object.timezone ?? undefined;
     message.directory_provider = object.directory_provider ?? undefined;
     message.logo = (object.logo !== undefined && object.logo !== null) ? AWSFile.fromPartial(object.logo) : undefined;
+    message.student_directory_accounts_enabled = object.student_directory_accounts_enabled ?? undefined;
     return message;
   },
 };

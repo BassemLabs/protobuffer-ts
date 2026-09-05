@@ -134,6 +134,7 @@ function createBaseOrganization() {
         timezone: undefined,
         directory_provider: undefined,
         logo: undefined,
+        student_directory_accounts_enabled: undefined,
     };
 }
 exports.Organization = {
@@ -193,6 +194,9 @@ exports.Organization = {
         }
         if (message.logo !== undefined) {
             aws_file_1.AWSFile.encode(message.logo, writer.uint32(146).fork()).join();
+        }
+        if (message.student_directory_accounts_enabled !== undefined) {
+            writer.uint32(152).bool(message.student_directory_accounts_enabled);
         }
         return writer;
     },
@@ -318,6 +322,12 @@ exports.Organization = {
                     }
                     message.logo = aws_file_1.AWSFile.decode(reader, reader.uint32());
                     continue;
+                case 19:
+                    if (tag !== 152) {
+                        break;
+                    }
+                    message.student_directory_accounts_enabled = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -358,6 +368,9 @@ exports.Organization = {
                 ? directoryProviderTypeFromJSON(object.directoryProvider)
                 : undefined,
             logo: isSet(object.logo) ? aws_file_1.AWSFile.fromJSON(object.logo) : undefined,
+            student_directory_accounts_enabled: isSet(object.studentDirectoryAccountsEnabled)
+                ? globalThis.Boolean(object.studentDirectoryAccountsEnabled)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -416,6 +429,9 @@ exports.Organization = {
         if (message.logo !== undefined) {
             obj.logo = aws_file_1.AWSFile.toJSON(message.logo);
         }
+        if (message.student_directory_accounts_enabled !== undefined) {
+            obj.studentDirectoryAccountsEnabled = message.student_directory_accounts_enabled;
+        }
         return obj;
     },
     create(base) {
@@ -455,6 +471,7 @@ exports.Organization = {
         message.timezone = object.timezone ?? undefined;
         message.directory_provider = object.directory_provider ?? undefined;
         message.logo = (object.logo !== undefined && object.logo !== null) ? aws_file_1.AWSFile.fromPartial(object.logo) : undefined;
+        message.student_directory_accounts_enabled = object.student_directory_accounts_enabled ?? undefined;
         return message;
     },
 };
