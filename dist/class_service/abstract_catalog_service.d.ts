@@ -79,6 +79,20 @@ export interface CreateAbstractCourseRequest {
     color?: string | undefined;
     eligible_special_room_category_ids: ObjectId[];
 }
+export interface CreateAbstractSubjectGrade {
+    grade?: StudentGrade | undefined;
+    color?: string | undefined;
+}
+export interface CreateAbstractSubjectsRequest {
+    context: RequestContext | undefined;
+    official_name?: string | undefined;
+    mandatory?: boolean | undefined;
+    subjects: CreateAbstractSubjectGrade[];
+    eligible_special_room_category_id?: ObjectId | undefined;
+}
+export interface CreateAbstractSubjectsResponse {
+    abstract_courses: AbstractCourse[];
+}
 export interface UpdateAbstractCourseRequest {
     context: RequestContext | undefined;
     abstract_course_id: ObjectId | undefined;
@@ -109,6 +123,9 @@ export declare const CreateAbstractCategoryGroupRequest: MessageFns<CreateAbstra
 export declare const UpdateAbstractCategoryGroupRequest: MessageFns<UpdateAbstractCategoryGroupRequest>;
 export declare const DeleteAbstractCategoryGroupRequest: MessageFns<DeleteAbstractCategoryGroupRequest>;
 export declare const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest>;
+export declare const CreateAbstractSubjectGrade: MessageFns<CreateAbstractSubjectGrade>;
+export declare const CreateAbstractSubjectsRequest: MessageFns<CreateAbstractSubjectsRequest>;
+export declare const CreateAbstractSubjectsResponse: MessageFns<CreateAbstractSubjectsResponse>;
 export declare const UpdateAbstractCourseRequest: MessageFns<UpdateAbstractCourseRequest>;
 export declare const DeleteAbstractCourseRequest: MessageFns<DeleteAbstractCourseRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

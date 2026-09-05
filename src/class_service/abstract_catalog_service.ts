@@ -104,6 +104,23 @@ export interface CreateAbstractCourseRequest {
   eligible_special_room_category_ids: ObjectId[];
 }
 
+export interface CreateAbstractSubjectGrade {
+  grade?: StudentGrade | undefined;
+  color?: string | undefined;
+}
+
+export interface CreateAbstractSubjectsRequest {
+  context: RequestContext | undefined;
+  official_name?: string | undefined;
+  mandatory?: boolean | undefined;
+  subjects: CreateAbstractSubjectGrade[];
+  eligible_special_room_category_id?: ObjectId | undefined;
+}
+
+export interface CreateAbstractSubjectsResponse {
+  abstract_courses: AbstractCourse[];
+}
+
 export interface UpdateAbstractCourseRequest {
   context: RequestContext | undefined;
   abstract_course_id: ObjectId | undefined;
@@ -1500,6 +1517,279 @@ export const CreateAbstractCourseRequest: MessageFns<CreateAbstractCourseRequest
     message.color = object.color ?? undefined;
     message.eligible_special_room_category_ids =
       object.eligible_special_room_category_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateAbstractSubjectGrade(): CreateAbstractSubjectGrade {
+  return { grade: undefined, color: undefined };
+}
+
+export const CreateAbstractSubjectGrade: MessageFns<CreateAbstractSubjectGrade> = {
+  encode(message: CreateAbstractSubjectGrade, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.grade !== undefined) {
+      writer.uint32(8).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.color !== undefined) {
+      writer.uint32(18).string(message.color);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateAbstractSubjectGrade {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAbstractSubjectGrade();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.grade = studentGradeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.color = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAbstractSubjectGrade {
+    return {
+      grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+    };
+  },
+
+  toJSON(message: CreateAbstractSubjectGrade): unknown {
+    const obj: any = {};
+    if (message.grade !== undefined) {
+      obj.grade = studentGradeToJSON(message.grade);
+    }
+    if (message.color !== undefined) {
+      obj.color = message.color;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateAbstractSubjectGrade>, I>>(base?: I): CreateAbstractSubjectGrade {
+    return CreateAbstractSubjectGrade.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateAbstractSubjectGrade>, I>>(object: I): CreateAbstractSubjectGrade {
+    const message = createBaseCreateAbstractSubjectGrade();
+    message.grade = object.grade ?? undefined;
+    message.color = object.color ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCreateAbstractSubjectsRequest(): CreateAbstractSubjectsRequest {
+  return {
+    context: undefined,
+    official_name: undefined,
+    mandatory: undefined,
+    subjects: [],
+    eligible_special_room_category_id: undefined,
+  };
+}
+
+export const CreateAbstractSubjectsRequest: MessageFns<CreateAbstractSubjectsRequest> = {
+  encode(message: CreateAbstractSubjectsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.official_name !== undefined) {
+      writer.uint32(18).string(message.official_name);
+    }
+    if (message.mandatory !== undefined) {
+      writer.uint32(24).bool(message.mandatory);
+    }
+    for (const v of message.subjects) {
+      CreateAbstractSubjectGrade.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.eligible_special_room_category_id !== undefined) {
+      ObjectId.encode(message.eligible_special_room_category_id, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateAbstractSubjectsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAbstractSubjectsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.official_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.mandatory = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.subjects.push(CreateAbstractSubjectGrade.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.eligible_special_room_category_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAbstractSubjectsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : undefined,
+      mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : undefined,
+      subjects: globalThis.Array.isArray(object?.subjects)
+        ? object.subjects.map((e: any) => CreateAbstractSubjectGrade.fromJSON(e))
+        : [],
+      eligible_special_room_category_id: isSet(object.eligibleSpecialRoomCategoryId)
+        ? ObjectId.fromJSON(object.eligibleSpecialRoomCategoryId)
+        : undefined,
+    };
+  },
+
+  toJSON(message: CreateAbstractSubjectsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.official_name !== undefined) {
+      obj.officialName = message.official_name;
+    }
+    if (message.mandatory !== undefined) {
+      obj.mandatory = message.mandatory;
+    }
+    if (message.subjects?.length) {
+      obj.subjects = message.subjects.map((e) => CreateAbstractSubjectGrade.toJSON(e));
+    }
+    if (message.eligible_special_room_category_id !== undefined) {
+      obj.eligibleSpecialRoomCategoryId = ObjectId.toJSON(message.eligible_special_room_category_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateAbstractSubjectsRequest>, I>>(base?: I): CreateAbstractSubjectsRequest {
+    return CreateAbstractSubjectsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateAbstractSubjectsRequest>, I>>(
+    object: I,
+  ): CreateAbstractSubjectsRequest {
+    const message = createBaseCreateAbstractSubjectsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.official_name = object.official_name ?? undefined;
+    message.mandatory = object.mandatory ?? undefined;
+    message.subjects = object.subjects?.map((e) => CreateAbstractSubjectGrade.fromPartial(e)) || [];
+    message.eligible_special_room_category_id =
+      (object.eligible_special_room_category_id !== undefined && object.eligible_special_room_category_id !== null)
+        ? ObjectId.fromPartial(object.eligible_special_room_category_id)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateAbstractSubjectsResponse(): CreateAbstractSubjectsResponse {
+  return { abstract_courses: [] };
+}
+
+export const CreateAbstractSubjectsResponse: MessageFns<CreateAbstractSubjectsResponse> = {
+  encode(message: CreateAbstractSubjectsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.abstract_courses) {
+      AbstractCourse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateAbstractSubjectsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAbstractSubjectsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.abstract_courses.push(AbstractCourse.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAbstractSubjectsResponse {
+    return {
+      abstract_courses: globalThis.Array.isArray(object?.abstractCourses)
+        ? object.abstractCourses.map((e: any) => AbstractCourse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateAbstractSubjectsResponse): unknown {
+    const obj: any = {};
+    if (message.abstract_courses?.length) {
+      obj.abstractCourses = message.abstract_courses.map((e) => AbstractCourse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateAbstractSubjectsResponse>, I>>(base?: I): CreateAbstractSubjectsResponse {
+    return CreateAbstractSubjectsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateAbstractSubjectsResponse>, I>>(
+    object: I,
+  ): CreateAbstractSubjectsResponse {
+    const message = createBaseCreateAbstractSubjectsResponse();
+    message.abstract_courses = object.abstract_courses?.map((e) => AbstractCourse.fromPartial(e)) || [];
     return message;
   },
 };

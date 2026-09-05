@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/abstract_catalog_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteAbstractCourseRequest = exports.UpdateAbstractCourseRequest = exports.CreateAbstractCourseRequest = exports.DeleteAbstractCategoryGroupRequest = exports.UpdateAbstractCategoryGroupRequest = exports.CreateAbstractCategoryGroupRequest = exports.DeleteAbstractCategoryRequest = exports.UpdateAbstractCategoryRequest = exports.CreateAbstractCategoryRequest = exports.GetAbstractCourseRequest = exports.ListAbstractCoursesResponse = exports.ListAbstractCoursesRequest = exports.ListAbstractCategoryGroupsResponse = exports.ListAbstractCategoryGroupsRequest = exports.ListAbstractCategoriesResponse = exports.ListAbstractCategoriesRequest = exports.protobufPackage = void 0;
+exports.DeleteAbstractCourseRequest = exports.UpdateAbstractCourseRequest = exports.CreateAbstractSubjectsResponse = exports.CreateAbstractSubjectsRequest = exports.CreateAbstractSubjectGrade = exports.CreateAbstractCourseRequest = exports.DeleteAbstractCategoryGroupRequest = exports.UpdateAbstractCategoryGroupRequest = exports.CreateAbstractCategoryGroupRequest = exports.DeleteAbstractCategoryRequest = exports.UpdateAbstractCategoryRequest = exports.CreateAbstractCategoryRequest = exports.GetAbstractCourseRequest = exports.ListAbstractCoursesResponse = exports.ListAbstractCoursesRequest = exports.ListAbstractCategoryGroupsResponse = exports.ListAbstractCategoryGroupsRequest = exports.ListAbstractCategoriesResponse = exports.ListAbstractCategoriesRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -1236,6 +1236,249 @@ exports.CreateAbstractCourseRequest = {
         message.color = object.color ?? undefined;
         message.eligible_special_room_category_ids =
             object.eligible_special_room_category_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCreateAbstractSubjectGrade() {
+    return { grade: undefined, color: undefined };
+}
+exports.CreateAbstractSubjectGrade = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.grade !== undefined) {
+            writer.uint32(8).int32((0, student_1.studentGradeToNumber)(message.grade));
+        }
+        if (message.color !== undefined) {
+            writer.uint32(18).string(message.color);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateAbstractSubjectGrade();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.grade = (0, student_1.studentGradeFromJSON)(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.color = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            grade: isSet(object.grade) ? (0, student_1.studentGradeFromJSON)(object.grade) : undefined,
+            color: isSet(object.color) ? globalThis.String(object.color) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.grade !== undefined) {
+            obj.grade = (0, student_1.studentGradeToJSON)(message.grade);
+        }
+        if (message.color !== undefined) {
+            obj.color = message.color;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateAbstractSubjectGrade.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateAbstractSubjectGrade();
+        message.grade = object.grade ?? undefined;
+        message.color = object.color ?? undefined;
+        return message;
+    },
+};
+function createBaseCreateAbstractSubjectsRequest() {
+    return {
+        context: undefined,
+        official_name: undefined,
+        mandatory: undefined,
+        subjects: [],
+        eligible_special_room_category_id: undefined,
+    };
+}
+exports.CreateAbstractSubjectsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.official_name !== undefined) {
+            writer.uint32(18).string(message.official_name);
+        }
+        if (message.mandatory !== undefined) {
+            writer.uint32(24).bool(message.mandatory);
+        }
+        for (const v of message.subjects) {
+            exports.CreateAbstractSubjectGrade.encode(v, writer.uint32(34).fork()).join();
+        }
+        if (message.eligible_special_room_category_id !== undefined) {
+            object_id_1.ObjectId.encode(message.eligible_special_room_category_id, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateAbstractSubjectsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.official_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.mandatory = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.subjects.push(exports.CreateAbstractSubjectGrade.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.eligible_special_room_category_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            official_name: isSet(object.officialName) ? globalThis.String(object.officialName) : undefined,
+            mandatory: isSet(object.mandatory) ? globalThis.Boolean(object.mandatory) : undefined,
+            subjects: globalThis.Array.isArray(object?.subjects)
+                ? object.subjects.map((e) => exports.CreateAbstractSubjectGrade.fromJSON(e))
+                : [],
+            eligible_special_room_category_id: isSet(object.eligibleSpecialRoomCategoryId)
+                ? object_id_1.ObjectId.fromJSON(object.eligibleSpecialRoomCategoryId)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.official_name !== undefined) {
+            obj.officialName = message.official_name;
+        }
+        if (message.mandatory !== undefined) {
+            obj.mandatory = message.mandatory;
+        }
+        if (message.subjects?.length) {
+            obj.subjects = message.subjects.map((e) => exports.CreateAbstractSubjectGrade.toJSON(e));
+        }
+        if (message.eligible_special_room_category_id !== undefined) {
+            obj.eligibleSpecialRoomCategoryId = object_id_1.ObjectId.toJSON(message.eligible_special_room_category_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateAbstractSubjectsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateAbstractSubjectsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.official_name = object.official_name ?? undefined;
+        message.mandatory = object.mandatory ?? undefined;
+        message.subjects = object.subjects?.map((e) => exports.CreateAbstractSubjectGrade.fromPartial(e)) || [];
+        message.eligible_special_room_category_id =
+            (object.eligible_special_room_category_id !== undefined && object.eligible_special_room_category_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.eligible_special_room_category_id)
+                : undefined;
+        return message;
+    },
+};
+function createBaseCreateAbstractSubjectsResponse() {
+    return { abstract_courses: [] };
+}
+exports.CreateAbstractSubjectsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.abstract_courses) {
+            abstract_course_1.AbstractCourse.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateAbstractSubjectsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.abstract_courses.push(abstract_course_1.AbstractCourse.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            abstract_courses: globalThis.Array.isArray(object?.abstractCourses)
+                ? object.abstractCourses.map((e) => abstract_course_1.AbstractCourse.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.abstract_courses?.length) {
+            obj.abstractCourses = message.abstract_courses.map((e) => abstract_course_1.AbstractCourse.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateAbstractSubjectsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateAbstractSubjectsResponse();
+        message.abstract_courses = object.abstract_courses?.map((e) => abstract_course_1.AbstractCourse.fromPartial(e)) || [];
         return message;
     },
 };
