@@ -110,12 +110,12 @@ function createBaseRoom() {
     return {
         id: undefined,
         organization: undefined,
-        campus_id: undefined,
         name: undefined,
         special_room_category_id: undefined,
         supports_high_school: undefined,
         archived: undefined,
         capacity: undefined,
+        campus_ids: [],
     };
 }
 exports.Room = {
@@ -125,9 +125,6 @@ exports.Room = {
         }
         if (message.organization !== undefined) {
             object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
-        }
-        if (message.campus_id !== undefined) {
-            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
         }
         if (message.name !== undefined) {
             writer.uint32(34).string(message.name);
@@ -143,6 +140,9 @@ exports.Room = {
         }
         if (message.capacity !== undefined) {
             writer.uint32(64).uint32(message.capacity);
+        }
+        for (const v of message.campus_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -164,12 +164,6 @@ exports.Room = {
                         break;
                     }
                     message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -201,6 +195,12 @@ exports.Room = {
                     }
                     message.capacity = reader.uint32();
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.campus_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -213,7 +213,6 @@ exports.Room = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             special_room_category_id: isSet(object.specialRoomCategoryId)
                 ? object_id_1.ObjectId.fromJSON(object.specialRoomCategoryId)
@@ -223,6 +222,9 @@ exports.Room = {
                 : undefined,
             archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
             capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
+            campus_ids: globalThis.Array.isArray(object?.campusIds)
+                ? object.campusIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -232,9 +234,6 @@ exports.Room = {
         }
         if (message.organization !== undefined) {
             obj.organization = object_id_1.ObjectId.toJSON(message.organization);
-        }
-        if (message.campus_id !== undefined) {
-            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
         if (message.name !== undefined) {
             obj.name = message.name;
@@ -251,6 +250,9 @@ exports.Room = {
         if (message.capacity !== undefined) {
             obj.capacity = Math.round(message.capacity);
         }
+        if (message.campus_ids?.length) {
+            obj.campusIds = message.campus_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -262,9 +264,6 @@ exports.Room = {
         message.organization = (object.organization !== undefined && object.organization !== null)
             ? object_id_1.ObjectId.fromPartial(object.organization)
             : undefined;
-        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.campus_id)
-            : undefined;
         message.name = object.name ?? undefined;
         message.special_room_category_id =
             (object.special_room_category_id !== undefined && object.special_room_category_id !== null)
@@ -273,6 +272,7 @@ exports.Room = {
         message.supports_high_school = object.supports_high_school ?? undefined;
         message.archived = object.archived ?? undefined;
         message.capacity = object.capacity ?? undefined;
+        message.campus_ids = object.campus_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

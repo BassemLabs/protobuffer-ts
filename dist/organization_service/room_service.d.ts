@@ -5,12 +5,12 @@ import { Room, RoomCategory } from "./room";
 export declare const protobufPackage = "organization_service";
 export interface CreateRoomRequest {
     context: RequestContext | undefined;
-    campus_id: ObjectId | undefined;
     name?: string | undefined;
     special_room_category_id?: ObjectId | undefined;
     supports_high_school?: boolean | undefined;
     /** Maximum enrolled high-school students. Absent means unlimited. */
     capacity?: number | undefined;
+    campus_ids: ObjectId[];
 }
 export interface UpdateRoomRequest {
     context: RequestContext | undefined;
@@ -20,6 +20,7 @@ export interface UpdateRoomRequest {
     supports_high_school?: boolean | undefined;
     /** Maximum enrolled high-school students. Absent means unlimited. */
     capacity?: number | undefined;
+    campus_ids: ObjectId[];
 }
 export interface GetRoomRequest {
     context: RequestContext | undefined;

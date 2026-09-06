@@ -676,9 +676,9 @@ export interface SchedulingScheduleStudentInfo {
 export interface SchedulingScheduleRoomInfo {
     id: ObjectId | undefined;
     name?: string | undefined;
-    campus_id: ObjectId | undefined;
     /** Frozen category name when the room was a special room at snapshot time. */
     category_name?: string | undefined;
+    campus_ids: ObjectId[];
 }
 export interface SchedulingScheduleSectionInfo {
     id: Uuid | undefined;

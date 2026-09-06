@@ -23,17 +23,13 @@ export interface RoomCategory {
 }
 
 /**
- * A physical room belonging to a campus. A room without a category is a
+ * A physical room available at one or more campuses. A room without a category is a
  * general classroom; a room with a category is a restricted special room
  * that only hosts courses requiring that category.
  */
 export interface Room {
   id: ObjectId | undefined;
-  organization:
-    | ObjectId
-    | undefined;
-  /** Immutable after creation; a room cannot move between campuses. */
-  campus_id: ObjectId | undefined;
+  organization: ObjectId | undefined;
   name?:
     | string
     | undefined;
@@ -47,7 +43,11 @@ export interface Room {
     | boolean
     | undefined;
   /** Maximum enrolled high-school students. Absent means unlimited. */
-  capacity?: number | undefined;
+  capacity?:
+    | number
+    | undefined;
+  /** One campus for general classrooms; one or more for categorized special rooms. */
+  campus_ids: ObjectId[];
 }
 
 function createBaseRoomCategory(): RoomCategory {
@@ -160,12 +160,12 @@ function createBaseRoom(): Room {
   return {
     id: undefined,
     organization: undefined,
-    campus_id: undefined,
     name: undefined,
     special_room_category_id: undefined,
     supports_high_school: undefined,
     archived: undefined,
     capacity: undefined,
+    campus_ids: [],
   };
 }
 
@@ -176,9 +176,6 @@ export const Room: MessageFns<Room> = {
     }
     if (message.organization !== undefined) {
       ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
-    }
-    if (message.campus_id !== undefined) {
-      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
     }
     if (message.name !== undefined) {
       writer.uint32(34).string(message.name);
@@ -194,6 +191,9 @@ export const Room: MessageFns<Room> = {
     }
     if (message.capacity !== undefined) {
       writer.uint32(64).uint32(message.capacity);
+    }
+    for (const v of message.campus_ids) {
+      ObjectId.encode(v!, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -218,13 +218,6 @@ export const Room: MessageFns<Room> = {
           }
 
           message.organization = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.campus_id = ObjectId.decode(reader, reader.uint32());
           continue;
         case 4:
           if (tag !== 34) {
@@ -261,6 +254,13 @@ export const Room: MessageFns<Room> = {
 
           message.capacity = reader.uint32();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.campus_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -274,7 +274,6 @@ export const Room: MessageFns<Room> = {
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       organization: isSet(object.organization) ? ObjectId.fromJSON(object.organization) : undefined,
-      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       special_room_category_id: isSet(object.specialRoomCategoryId)
         ? ObjectId.fromJSON(object.specialRoomCategoryId)
@@ -284,6 +283,9 @@ export const Room: MessageFns<Room> = {
         : undefined,
       archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
       capacity: isSet(object.capacity) ? globalThis.Number(object.capacity) : undefined,
+      campus_ids: globalThis.Array.isArray(object?.campusIds)
+        ? object.campusIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -294,9 +296,6 @@ export const Room: MessageFns<Room> = {
     }
     if (message.organization !== undefined) {
       obj.organization = ObjectId.toJSON(message.organization);
-    }
-    if (message.campus_id !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campus_id);
     }
     if (message.name !== undefined) {
       obj.name = message.name;
@@ -313,6 +312,9 @@ export const Room: MessageFns<Room> = {
     if (message.capacity !== undefined) {
       obj.capacity = Math.round(message.capacity);
     }
+    if (message.campus_ids?.length) {
+      obj.campusIds = message.campus_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -325,9 +327,6 @@ export const Room: MessageFns<Room> = {
     message.organization = (object.organization !== undefined && object.organization !== null)
       ? ObjectId.fromPartial(object.organization)
       : undefined;
-    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
-      ? ObjectId.fromPartial(object.campus_id)
-      : undefined;
     message.name = object.name ?? undefined;
     message.special_room_category_id =
       (object.special_room_category_id !== undefined && object.special_room_category_id !== null)
@@ -336,6 +335,7 @@ export const Room: MessageFns<Room> = {
     message.supports_high_school = object.supports_high_school ?? undefined;
     message.archived = object.archived ?? undefined;
     message.capacity = object.capacity ?? undefined;
+    message.campus_ids = object.campus_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

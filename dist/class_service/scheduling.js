@@ -7471,7 +7471,7 @@ exports.SchedulingScheduleStudentInfo = {
     },
 };
 function createBaseSchedulingScheduleRoomInfo() {
-    return { id: undefined, name: undefined, campus_id: undefined, category_name: undefined };
+    return { id: undefined, name: undefined, category_name: undefined, campus_ids: [] };
 }
 exports.SchedulingScheduleRoomInfo = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -7481,11 +7481,11 @@ exports.SchedulingScheduleRoomInfo = {
         if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        if (message.campus_id !== undefined) {
-            object_id_1.ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
-        }
         if (message.category_name !== undefined) {
             writer.uint32(34).string(message.category_name);
+        }
+        for (const v of message.campus_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -7508,17 +7508,17 @@ exports.SchedulingScheduleRoomInfo = {
                     }
                     message.name = reader.string();
                     continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
                     message.category_name = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.campus_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -7532,8 +7532,10 @@ exports.SchedulingScheduleRoomInfo = {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-            campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
             category_name: isSet(object.categoryName) ? globalThis.String(object.categoryName) : undefined,
+            campus_ids: globalThis.Array.isArray(object?.campusIds)
+                ? object.campusIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -7544,11 +7546,11 @@ exports.SchedulingScheduleRoomInfo = {
         if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.campus_id !== undefined) {
-            obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
-        }
         if (message.category_name !== undefined) {
             obj.categoryName = message.category_name;
+        }
+        if (message.campus_ids?.length) {
+            obj.campusIds = message.campus_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
         return obj;
     },
@@ -7559,10 +7561,8 @@ exports.SchedulingScheduleRoomInfo = {
         const message = createBaseSchedulingScheduleRoomInfo();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? undefined;
-        message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.campus_id)
-            : undefined;
         message.category_name = object.category_name ?? undefined;
+        message.campus_ids = object.campus_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

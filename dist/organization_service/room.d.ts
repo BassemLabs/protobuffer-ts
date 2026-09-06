@@ -13,15 +13,13 @@ export interface RoomCategory {
     archived?: boolean | undefined;
 }
 /**
- * A physical room belonging to a campus. A room without a category is a
+ * A physical room available at one or more campuses. A room without a category is a
  * general classroom; a room with a category is a restricted special room
  * that only hosts courses requiring that category.
  */
 export interface Room {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
-    /** Immutable after creation; a room cannot move between campuses. */
-    campus_id: ObjectId | undefined;
     name?: string | undefined;
     /** Absent means general classroom; set means special room of that category. */
     special_room_category_id?: ObjectId | undefined;
@@ -30,6 +28,8 @@ export interface Room {
     archived?: boolean | undefined;
     /** Maximum enrolled high-school students. Absent means unlimited. */
     capacity?: number | undefined;
+    /** One campus for general classrooms; one or more for categorized special rooms. */
+    campus_ids: ObjectId[];
 }
 export declare const RoomCategory: MessageFns<RoomCategory>;
 export declare const Room: MessageFns<Room>;

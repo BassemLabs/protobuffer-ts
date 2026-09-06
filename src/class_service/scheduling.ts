@@ -1502,12 +1502,12 @@ export interface SchedulingScheduleStudentInfo {
 /** Frozen room display data from the run's snapshot, never live room records. */
 export interface SchedulingScheduleRoomInfo {
   id: ObjectId | undefined;
-  name?: string | undefined;
-  campus_id:
-    | ObjectId
+  name?:
+    | string
     | undefined;
   /** Frozen category name when the room was a special room at snapshot time. */
   category_name?: string | undefined;
+  campus_ids: ObjectId[];
 }
 
 export interface SchedulingScheduleSectionInfo {
@@ -9009,7 +9009,7 @@ export const SchedulingScheduleStudentInfo: MessageFns<SchedulingScheduleStudent
 };
 
 function createBaseSchedulingScheduleRoomInfo(): SchedulingScheduleRoomInfo {
-  return { id: undefined, name: undefined, campus_id: undefined, category_name: undefined };
+  return { id: undefined, name: undefined, category_name: undefined, campus_ids: [] };
 }
 
 export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> = {
@@ -9020,11 +9020,11 @@ export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> 
     if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    if (message.campus_id !== undefined) {
-      ObjectId.encode(message.campus_id, writer.uint32(26).fork()).join();
-    }
     if (message.category_name !== undefined) {
       writer.uint32(34).string(message.category_name);
+    }
+    for (const v of message.campus_ids) {
+      ObjectId.encode(v!, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -9050,19 +9050,19 @@ export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> 
 
           message.name = reader.string();
           continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.campus_id = ObjectId.decode(reader, reader.uint32());
-          continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
           message.category_name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.campus_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -9077,8 +9077,10 @@ export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> 
     return {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
       category_name: isSet(object.categoryName) ? globalThis.String(object.categoryName) : undefined,
+      campus_ids: globalThis.Array.isArray(object?.campusIds)
+        ? object.campusIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -9090,11 +9092,11 @@ export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> 
     if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.campus_id !== undefined) {
-      obj.campusId = ObjectId.toJSON(message.campus_id);
-    }
     if (message.category_name !== undefined) {
       obj.categoryName = message.category_name;
+    }
+    if (message.campus_ids?.length) {
+      obj.campusIds = message.campus_ids.map((e) => ObjectId.toJSON(e));
     }
     return obj;
   },
@@ -9106,10 +9108,8 @@ export const SchedulingScheduleRoomInfo: MessageFns<SchedulingScheduleRoomInfo> 
     const message = createBaseSchedulingScheduleRoomInfo();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.name = object.name ?? undefined;
-    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
-      ? ObjectId.fromPartial(object.campus_id)
-      : undefined;
     message.category_name = object.category_name ?? undefined;
+    message.campus_ids = object.campus_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
