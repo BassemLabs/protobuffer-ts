@@ -91,6 +91,12 @@ export interface UpdateSchedulingPeriodTimeSetupTemplateRequest {
   periods: SchedulingPeriodDefinition[];
 }
 
+export interface DeleteSchedulingPeriodTimeSetupTemplateRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  template_id: Uuid | undefined;
+}
+
 export interface AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
@@ -1291,6 +1297,110 @@ export const UpdateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<
       : undefined;
     message.name = object.name ?? undefined;
     message.periods = object.periods?.map((e) => SchedulingPeriodDefinition.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteSchedulingPeriodTimeSetupTemplateRequest(): DeleteSchedulingPeriodTimeSetupTemplateRequest {
+  return { context: undefined, school_year_id: undefined, template_id: undefined };
+}
+
+export const DeleteSchedulingPeriodTimeSetupTemplateRequest: MessageFns<
+  DeleteSchedulingPeriodTimeSetupTemplateRequest
+> = {
+  encode(
+    message: DeleteSchedulingPeriodTimeSetupTemplateRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.template_id !== undefined) {
+      Uuid.encode(message.template_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteSchedulingPeriodTimeSetupTemplateRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteSchedulingPeriodTimeSetupTemplateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.template_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteSchedulingPeriodTimeSetupTemplateRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      template_id: isSet(object.templateId) ? Uuid.fromJSON(object.templateId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteSchedulingPeriodTimeSetupTemplateRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.template_id !== undefined) {
+      obj.templateId = Uuid.toJSON(message.template_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    base?: I,
+  ): DeleteSchedulingPeriodTimeSetupTemplateRequest {
+    return DeleteSchedulingPeriodTimeSetupTemplateRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteSchedulingPeriodTimeSetupTemplateRequest>, I>>(
+    object: I,
+  ): DeleteSchedulingPeriodTimeSetupTemplateRequest {
+    const message = createBaseDeleteSchedulingPeriodTimeSetupTemplateRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.template_id = (object.template_id !== undefined && object.template_id !== null)
+      ? Uuid.fromPartial(object.template_id)
+      : undefined;
     return message;
   },
 };

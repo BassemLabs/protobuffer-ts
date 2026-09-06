@@ -52,6 +52,11 @@ export interface UpdateSchedulingPeriodTimeSetupTemplateRequest {
     name?: string | undefined;
     periods: SchedulingPeriodDefinition[];
 }
+export interface DeleteSchedulingPeriodTimeSetupTemplateRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    template_id: Uuid | undefined;
+}
 export interface AssignSemesterSchedulingPeriodTimeSetupTemplateRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
@@ -296,6 +301,7 @@ export declare const DeleteSchedulingOfferedGradeRequest: MessageFns<DeleteSched
 export declare const GetSchedulingPeriodTimeSetupRequest: MessageFns<GetSchedulingPeriodTimeSetupRequest>;
 export declare const CreateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<CreateSchedulingPeriodTimeSetupTemplateRequest>;
 export declare const UpdateSchedulingPeriodTimeSetupTemplateRequest: MessageFns<UpdateSchedulingPeriodTimeSetupTemplateRequest>;
+export declare const DeleteSchedulingPeriodTimeSetupTemplateRequest: MessageFns<DeleteSchedulingPeriodTimeSetupTemplateRequest>;
 export declare const AssignSemesterSchedulingPeriodTimeSetupTemplateRequest: MessageFns<AssignSemesterSchedulingPeriodTimeSetupTemplateRequest>;
 export declare const UpsertSemesterSchedulingPeriodTimeSetupRequest: MessageFns<UpsertSemesterSchedulingPeriodTimeSetupRequest>;
 export declare const GetSchedulingTeacherSetupRequest: MessageFns<GetSchedulingTeacherSetupRequest>;
