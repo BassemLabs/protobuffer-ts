@@ -170,6 +170,7 @@ export interface GetParentGroupsWithFieldsRequest {
 }
 export interface GetTeacherGroupsWithFieldsRequest {
     context: RequestContext | undefined;
+    teacher_id?: ObjectId | undefined;
 }
 export interface ReorderCustomFieldsGroupsRequest {
     context: RequestContext | undefined;

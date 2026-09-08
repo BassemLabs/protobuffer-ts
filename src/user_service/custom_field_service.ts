@@ -235,6 +235,7 @@ export interface GetParentGroupsWithFieldsRequest {
 
 export interface GetTeacherGroupsWithFieldsRequest {
   context: RequestContext | undefined;
+  teacher_id?: ObjectId | undefined;
 }
 
 export interface ReorderCustomFieldsGroupsRequest {
@@ -3316,13 +3317,16 @@ export const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFie
 };
 
 function createBaseGetTeacherGroupsWithFieldsRequest(): GetTeacherGroupsWithFieldsRequest {
-  return { context: undefined };
+  return { context: undefined, teacher_id: undefined };
 }
 
 export const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithFieldsRequest> = {
   encode(message: GetTeacherGroupsWithFieldsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -3341,6 +3345,13 @@ export const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithF
 
           message.context = RequestContext.decode(reader, reader.uint32());
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3351,13 +3362,19 @@ export const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithF
   },
 
   fromJSON(object: any): GetTeacherGroupsWithFieldsRequest {
-    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+    };
   },
 
   toJSON(message: GetTeacherGroupsWithFieldsRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
     }
     return obj;
   },
@@ -3373,6 +3390,9 @@ export const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithF
     const message = createBaseGetTeacherGroupsWithFieldsRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
       : undefined;
     return message;
   },
