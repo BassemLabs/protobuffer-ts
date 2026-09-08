@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization_profile_settings_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateGraduationSettingsRequest = exports.SetStudentPrimaryIdCustomFieldRequest = exports.ReorderProfileSectionsRequest = exports.RemoveStudentProfileSectionRequest = exports.AddStudentProfileSectionRequest = exports.RemoveTeacherProfileSectionRequest = exports.AddTeacherProfileSectionRequest = exports.RemoveParentProfileSectionRequest = exports.AddParentProfileSectionRequest = exports.GetOrganizationProfileSettingsRequest = exports.protobufPackage = void 0;
+exports.InitializeDataExportSecuritySettingsRequest = exports.GetDataExportSecuritySettingsRequest = exports.UpdateGraduationSettingsRequest = exports.SetStudentPrimaryIdCustomFieldRequest = exports.ReorderProfileSectionsRequest = exports.RemoveStudentProfileSectionRequest = exports.AddStudentProfileSectionRequest = exports.RemoveTeacherProfileSectionRequest = exports.AddTeacherProfileSectionRequest = exports.RemoveParentProfileSectionRequest = exports.AddParentProfileSectionRequest = exports.GetOrganizationProfileSettingsRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -903,6 +903,142 @@ exports.UpdateGraduationSettingsRequest = {
         message.community_involvement_hours_required = object.community_involvement_hours_required ?? undefined;
         message.optional_credits_required = object.optional_credits_required ?? undefined;
         message.online_learning_credits_required = object.online_learning_credits_required ?? undefined;
+        return message;
+    },
+};
+function createBaseGetDataExportSecuritySettingsRequest() {
+    return { context: undefined };
+}
+exports.GetDataExportSecuritySettingsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetDataExportSecuritySettingsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetDataExportSecuritySettingsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetDataExportSecuritySettingsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseInitializeDataExportSecuritySettingsRequest() {
+    return { context: undefined, allowed_networks: [], current_source_ip: undefined };
+}
+exports.InitializeDataExportSecuritySettingsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.allowed_networks) {
+            writer.uint32(18).string(v);
+        }
+        if (message.current_source_ip !== undefined) {
+            writer.uint32(26).string(message.current_source_ip);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseInitializeDataExportSecuritySettingsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.allowed_networks.push(reader.string());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.current_source_ip = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            allowed_networks: globalThis.Array.isArray(object?.allowedNetworks)
+                ? object.allowedNetworks.map((e) => globalThis.String(e))
+                : [],
+            current_source_ip: isSet(object.currentSourceIp) ? globalThis.String(object.currentSourceIp) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.allowed_networks?.length) {
+            obj.allowedNetworks = message.allowed_networks;
+        }
+        if (message.current_source_ip !== undefined) {
+            obj.currentSourceIp = message.current_source_ip;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.InitializeDataExportSecuritySettingsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseInitializeDataExportSecuritySettingsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.allowed_networks = object.allowed_networks?.map((e) => e) || [];
+        message.current_source_ip = object.current_source_ip ?? undefined;
         return message;
     },
 };

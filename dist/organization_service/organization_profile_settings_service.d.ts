@@ -62,6 +62,14 @@ export interface UpdateGraduationSettingsRequest {
     optional_credits_required?: number | undefined;
     online_learning_credits_required?: number | undefined;
 }
+export interface GetDataExportSecuritySettingsRequest {
+    context: RequestContext | undefined;
+}
+export interface InitializeDataExportSecuritySettingsRequest {
+    context: RequestContext | undefined;
+    allowed_networks: string[];
+    current_source_ip?: string | undefined;
+}
 export declare const GetOrganizationProfileSettingsRequest: MessageFns<GetOrganizationProfileSettingsRequest>;
 export declare const AddParentProfileSectionRequest: MessageFns<AddParentProfileSectionRequest>;
 export declare const RemoveParentProfileSectionRequest: MessageFns<RemoveParentProfileSectionRequest>;
@@ -72,6 +80,8 @@ export declare const RemoveStudentProfileSectionRequest: MessageFns<RemoveStuden
 export declare const ReorderProfileSectionsRequest: MessageFns<ReorderProfileSectionsRequest>;
 export declare const SetStudentPrimaryIdCustomFieldRequest: MessageFns<SetStudentPrimaryIdCustomFieldRequest>;
 export declare const UpdateGraduationSettingsRequest: MessageFns<UpdateGraduationSettingsRequest>;
+export declare const GetDataExportSecuritySettingsRequest: MessageFns<GetDataExportSecuritySettingsRequest>;
+export declare const InitializeDataExportSecuritySettingsRequest: MessageFns<InitializeDataExportSecuritySettingsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

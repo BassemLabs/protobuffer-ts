@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: user_service/student_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentsListWithFiltersResponse = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.ExecuteStartSchoolYearPhase3SendEmailsResponse = exports.ExecuteStartSchoolYearPhase3SendEmailsRequest = exports.ExecuteStartSchoolYearPhase1ActivateAccountsResponse = exports.ExecuteStartSchoolYearPhase1ActivateAccountsRequest = exports.ExecuteReregistrationPhase3SendEmailsResponse = exports.ExecuteReregistrationPhase3SendEmailsRequest = exports.ExecuteReregistrationPhase2ResetCustomFieldsResponse = exports.ExecuteReregistrationPhase2ResetCustomFieldsRequest = exports.ExecuteReregistrationPhase1SetupStudentsResponse = exports.ExecuteReregistrationPhase1SetupStudentsRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.ValidateStudentUsernameResponse = exports.ValidateStudentUsernameRequest = exports.SuggestStudentEnrollUsernameResponse = exports.SuggestStudentEnrollUsernameRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.DeleteStudentRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.AddExistingStudentToWaitlistRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
-exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.GetNewStudentsThisYearCountResponse = exports.GetNewStudentsThisYearCountRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = void 0;
+exports.GetStudentExportCatalogRequest = exports.GetStudentsListWithFiltersRequest = exports.CreateDefaultResourceAccessSettingsForOrgResponse = exports.CreateDefaultResourceAccessSettingsForOrgRequest = exports.ExecuteStartSchoolYearPhase3SendEmailsResponse = exports.ExecuteStartSchoolYearPhase3SendEmailsRequest = exports.ExecuteStartSchoolYearPhase1ActivateAccountsResponse = exports.ExecuteStartSchoolYearPhase1ActivateAccountsRequest = exports.ExecuteReregistrationPhase3SendEmailsResponse = exports.ExecuteReregistrationPhase3SendEmailsRequest = exports.ExecuteReregistrationPhase2ResetCustomFieldsResponse = exports.ExecuteReregistrationPhase2ResetCustomFieldsRequest = exports.ExecuteReregistrationPhase1SetupStudentsResponse = exports.ExecuteReregistrationPhase1SetupStudentsRequest = exports.HasStudentsInInterviewStatusResponse = exports.HasStudentsInInterviewStatusRequest = exports.NoReregStudentForActiveSchoolYearResponse = exports.NoReregStudentForActiveSchoolYearRequest = exports.AuthenticateStudentForOrgResponse = exports.AuthenticateStudentForOrgRequest = exports.ResolveTeacherOrStudentResponse = exports.ResolveTeacherOrStudentRequest = exports.GetLatestStudentSchoolYearInfoRequest = exports.GetStudentAllSchoolYearsInfoResponse = exports.GetStudentAllSchoolYearsInfoRequest = exports.GetStudentSchoolYearInfoRequest = exports.UploadStudentsResponse = exports.UploadStudentsRequest = exports.RequireFieldsChangesFromParentsRequest = exports.ToInterviewRequest = exports.ApproveStudentRequest = exports.RejectStudentRequest = exports.ChangeStudentPasswordResponse = exports.ChangeStudentPasswordRequest = exports.WithdrawStudentWithMessageRequest = exports.ValidateStudentUsernameResponse = exports.ValidateStudentUsernameRequest = exports.SuggestStudentEnrollUsernameResponse = exports.SuggestStudentEnrollUsernameRequest = exports.EnrollStudentWithMessageRequest = exports.MoveAdmissionYearRequest = exports.DeleteStudentRequest = exports.UpdateStudentGradeRequest = exports.UpdateStudentProfileRequest = exports.AddExistingStudentToWaitlistRequest = exports.CreateStudentRequest = exports.GetStudentWithSchoolYearInfoResponse = exports.GetStudentWithSchoolYearInfoRequest = exports.GetStudentRequest = exports.protobufPackage = void 0;
+exports.GetAllStudentsForStagingResponse = exports.GetAllStudentsForStagingRequest = exports.GetStudentUploadHeaderResponse = exports.GetStudentUploadHeaderRequest = exports.GetOnboardingCardInformationResponse = exports.GetOnboardingCardInformationRequest = exports.StudentSchoolYear = exports.GetStudentSchoolYearsResponse = exports.GetStudentSchoolYearsRequest = exports.GetFilteredStudentsListResponse = exports.GetFilteredStudentsListRequest = exports.GetNewStudentsThisYearCountResponse = exports.GetNewStudentsThisYearCountRequest = exports.StudentStatusCount = exports.GetStudentsStatusCountsResponse = exports.GetStudentsStatusCountsRequest = exports.GetStudentsByIdsResponse = exports.GetStudentsByIdsRequest = exports.GetStudentsByIdsWithSchoolYearResponse = exports.GetStudentsByIdsWithSchoolYearRequest = exports.GetCourseOrHomeroomStudentsResponse = exports.GetCourseOrHomeroomStudentsRequest = exports.GetStudentsListWithFiltersResponse = exports.GetStudentExportPageResponse = exports.GetStudentExportPageRequest = exports.PreviewStudentExportResponse = exports.PreviewStudentExportRequest = exports.GetStudentExportCatalogResponse = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -3813,6 +3813,472 @@ exports.GetStudentsListWithFiltersRequest = {
             : undefined;
         message.show_all = object.show_all ?? undefined;
         message.new_students_this_year = object.new_students_this_year ?? undefined;
+        return message;
+    },
+};
+function createBaseGetStudentExportCatalogRequest() {
+    return { context: undefined };
+}
+exports.GetStudentExportCatalogRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentExportCatalogRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentExportCatalogRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentExportCatalogRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetStudentExportCatalogResponse() {
+    return { columns: [], allowed_statuses: [] };
+}
+exports.GetStudentExportCatalogResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.columns) {
+            student_1.StudentExportColumnDefinition.encode(v, writer.uint32(10).fork()).join();
+        }
+        writer.uint32(18).fork();
+        for (const v of message.allowed_statuses) {
+            writer.int32((0, student_1.studentStatusToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentExportCatalogResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.columns.push(student_1.StudentExportColumnDefinition.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag === 16) {
+                        message.allowed_statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 18) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.allowed_statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            columns: globalThis.Array.isArray(object?.columns)
+                ? object.columns.map((e) => student_1.StudentExportColumnDefinition.fromJSON(e))
+                : [],
+            allowed_statuses: globalThis.Array.isArray(object?.allowedStatuses)
+                ? object.allowedStatuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.columns?.length) {
+            obj.columns = message.columns.map((e) => student_1.StudentExportColumnDefinition.toJSON(e));
+        }
+        if (message.allowed_statuses?.length) {
+            obj.allowedStatuses = message.allowed_statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentExportCatalogResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentExportCatalogResponse();
+        message.columns = object.columns?.map((e) => student_1.StudentExportColumnDefinition.fromPartial(e)) || [];
+        message.allowed_statuses = object.allowed_statuses?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBasePreviewStudentExportRequest() {
+    return { context: undefined, selection: undefined };
+}
+exports.PreviewStudentExportRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.selection !== undefined) {
+            student_1.StudentExportSelection.encode(message.selection, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePreviewStudentExportRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.selection = student_1.StudentExportSelection.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            selection: isSet(object.selection) ? student_1.StudentExportSelection.fromJSON(object.selection) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.selection !== undefined) {
+            obj.selection = student_1.StudentExportSelection.toJSON(message.selection);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PreviewStudentExportRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePreviewStudentExportRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.selection = (object.selection !== undefined && object.selection !== null)
+            ? student_1.StudentExportSelection.fromPartial(object.selection)
+            : undefined;
+        return message;
+    },
+};
+function createBasePreviewStudentExportResponse() {
+    return { school_year: undefined, statuses: [], columns: [], matching_student_count: undefined };
+}
+exports.PreviewStudentExportResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.school_year !== undefined) {
+            organization_1.SchoolYear.encode(message.school_year, writer.uint32(10).fork()).join();
+        }
+        writer.uint32(18).fork();
+        for (const v of message.statuses) {
+            writer.int32((0, student_1.studentStatusToNumber)(v));
+        }
+        writer.join();
+        for (const v of message.columns) {
+            student_1.StudentExportColumnDefinition.encode(v, writer.uint32(26).fork()).join();
+        }
+        if (message.matching_student_count !== undefined) {
+            writer.uint32(32).uint64(message.matching_student_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePreviewStudentExportResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.school_year = organization_1.SchoolYear.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag === 16) {
+                        message.statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 18) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.statuses.push((0, student_1.studentStatusFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.columns.push(student_1.StudentExportColumnDefinition.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.matching_student_count = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            school_year: isSet(object.schoolYear) ? organization_1.SchoolYear.fromJSON(object.schoolYear) : undefined,
+            statuses: globalThis.Array.isArray(object?.statuses)
+                ? object.statuses.map((e) => (0, student_1.studentStatusFromJSON)(e))
+                : [],
+            columns: globalThis.Array.isArray(object?.columns)
+                ? object.columns.map((e) => student_1.StudentExportColumnDefinition.fromJSON(e))
+                : [],
+            matching_student_count: isSet(object.matchingStudentCount)
+                ? globalThis.Number(object.matchingStudentCount)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.school_year !== undefined) {
+            obj.schoolYear = organization_1.SchoolYear.toJSON(message.school_year);
+        }
+        if (message.statuses?.length) {
+            obj.statuses = message.statuses.map((e) => (0, student_1.studentStatusToJSON)(e));
+        }
+        if (message.columns?.length) {
+            obj.columns = message.columns.map((e) => student_1.StudentExportColumnDefinition.toJSON(e));
+        }
+        if (message.matching_student_count !== undefined) {
+            obj.matchingStudentCount = Math.round(message.matching_student_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PreviewStudentExportResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePreviewStudentExportResponse();
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? organization_1.SchoolYear.fromPartial(object.school_year)
+            : undefined;
+        message.statuses = object.statuses?.map((e) => e) || [];
+        message.columns = object.columns?.map((e) => student_1.StudentExportColumnDefinition.fromPartial(e)) || [];
+        message.matching_student_count = object.matching_student_count ?? undefined;
+        return message;
+    },
+};
+function createBaseGetStudentExportPageRequest() {
+    return { context: undefined, selection: undefined, after_row_id: undefined };
+}
+exports.GetStudentExportPageRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.selection !== undefined) {
+            student_1.StudentExportSelection.encode(message.selection, writer.uint32(18).fork()).join();
+        }
+        if (message.after_row_id !== undefined) {
+            object_id_1.ObjectId.encode(message.after_row_id, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentExportPageRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.selection = student_1.StudentExportSelection.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.after_row_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            selection: isSet(object.selection) ? student_1.StudentExportSelection.fromJSON(object.selection) : undefined,
+            after_row_id: isSet(object.afterRowId) ? object_id_1.ObjectId.fromJSON(object.afterRowId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.selection !== undefined) {
+            obj.selection = student_1.StudentExportSelection.toJSON(message.selection);
+        }
+        if (message.after_row_id !== undefined) {
+            obj.afterRowId = object_id_1.ObjectId.toJSON(message.after_row_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentExportPageRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentExportPageRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.selection = (object.selection !== undefined && object.selection !== null)
+            ? student_1.StudentExportSelection.fromPartial(object.selection)
+            : undefined;
+        message.after_row_id = (object.after_row_id !== undefined && object.after_row_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.after_row_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetStudentExportPageResponse() {
+    return { rows: [], next_cursor: undefined };
+}
+exports.GetStudentExportPageResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.rows) {
+            student_1.StudentExportRow.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.next_cursor !== undefined) {
+            object_id_1.ObjectId.encode(message.next_cursor, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentExportPageResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.rows.push(student_1.StudentExportRow.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.next_cursor = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            rows: globalThis.Array.isArray(object?.rows) ? object.rows.map((e) => student_1.StudentExportRow.fromJSON(e)) : [],
+            next_cursor: isSet(object.nextCursor) ? object_id_1.ObjectId.fromJSON(object.nextCursor) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.rows?.length) {
+            obj.rows = message.rows.map((e) => student_1.StudentExportRow.toJSON(e));
+        }
+        if (message.next_cursor !== undefined) {
+            obj.nextCursor = object_id_1.ObjectId.toJSON(message.next_cursor);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentExportPageResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentExportPageResponse();
+        message.rows = object.rows?.map((e) => student_1.StudentExportRow.fromPartial(e)) || [];
+        message.next_cursor = (object.next_cursor !== undefined && object.next_cursor !== null)
+            ? object_id_1.ObjectId.fromPartial(object.next_cursor)
+            : undefined;
         return message;
     },
 };

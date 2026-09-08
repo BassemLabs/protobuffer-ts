@@ -39,6 +39,36 @@ export declare enum StudentGrade {
 export declare function studentGradeFromJSON(object: any): StudentGrade;
 export declare function studentGradeToJSON(object: StudentGrade): string;
 export declare function studentGradeToNumber(object: StudentGrade): number;
+export declare enum StudentExportColumn {
+    STUDENT_EXPORT_COLUMN_UNSPECIFIED = "STUDENT_EXPORT_COLUMN_UNSPECIFIED",
+    STUDENT_EXPORT_COLUMN_ID_NUMBER = "STUDENT_EXPORT_COLUMN_ID_NUMBER",
+    STUDENT_EXPORT_COLUMN_FIRST_NAME = "STUDENT_EXPORT_COLUMN_FIRST_NAME",
+    STUDENT_EXPORT_COLUMN_LAST_NAME = "STUDENT_EXPORT_COLUMN_LAST_NAME",
+    STUDENT_EXPORT_COLUMN_SCHOOL_YEAR = "STUDENT_EXPORT_COLUMN_SCHOOL_YEAR",
+    STUDENT_EXPORT_COLUMN_STATUS = "STUDENT_EXPORT_COLUMN_STATUS",
+    STUDENT_EXPORT_COLUMN_GRADE = "STUDENT_EXPORT_COLUMN_GRADE",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function studentExportColumnFromJSON(object: any): StudentExportColumn;
+export declare function studentExportColumnToJSON(object: StudentExportColumn): string;
+export declare function studentExportColumnToNumber(object: StudentExportColumn): number;
+export interface StudentExportColumnDefinition {
+    column?: StudentExportColumn | undefined;
+    label?: string | undefined;
+}
+export interface StudentExportSelection {
+    school_year_id: ObjectId | undefined;
+    statuses: StudentStatus[];
+    columns: StudentExportColumn[];
+}
+export interface StudentExportRow {
+    id_number?: string | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    school_year?: string | undefined;
+    status?: StudentStatus | undefined;
+    grade?: StudentGrade | undefined;
+}
 /** Full student model with all fields */
 export interface Student {
     id: ObjectId | undefined;
@@ -113,6 +143,9 @@ export interface StudentSchoolYearInformation {
     has_waitlist_priority?: boolean | undefined;
     interview_date?: Date | undefined;
 }
+export declare const StudentExportColumnDefinition: MessageFns<StudentExportColumnDefinition>;
+export declare const StudentExportSelection: MessageFns<StudentExportSelection>;
+export declare const StudentExportRow: MessageFns<StudentExportRow>;
 export declare const Student: MessageFns<Student>;
 export declare const SchoolYearStudent: MessageFns<SchoolYearStudent>;
 export declare const StudentProfile: MessageFns<StudentProfile>;

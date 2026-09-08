@@ -5,13 +5,16 @@
 //   protoc               unknown
 // source: user_service/student.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StudentSchoolYearInformation = exports.StatusHistoryEntry = exports.StudentProfile = exports.SchoolYearStudent = exports.Student = exports.StudentGrade = exports.StudentStatus = exports.protobufPackage = void 0;
+exports.StudentSchoolYearInformation = exports.StatusHistoryEntry = exports.StudentProfile = exports.SchoolYearStudent = exports.Student = exports.StudentExportRow = exports.StudentExportSelection = exports.StudentExportColumnDefinition = exports.StudentExportColumn = exports.StudentGrade = exports.StudentStatus = exports.protobufPackage = void 0;
 exports.studentStatusFromJSON = studentStatusFromJSON;
 exports.studentStatusToJSON = studentStatusToJSON;
 exports.studentStatusToNumber = studentStatusToNumber;
 exports.studentGradeFromJSON = studentGradeFromJSON;
 exports.studentGradeToJSON = studentGradeToJSON;
 exports.studentGradeToNumber = studentGradeToNumber;
+exports.studentExportColumnFromJSON = studentExportColumnFromJSON;
+exports.studentExportColumnToJSON = studentExportColumnToJSON;
+exports.studentExportColumnToNumber = studentExportColumnToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -256,6 +259,387 @@ function studentGradeToNumber(object) {
             return -1;
     }
 }
+var StudentExportColumn;
+(function (StudentExportColumn) {
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_UNSPECIFIED"] = "STUDENT_EXPORT_COLUMN_UNSPECIFIED";
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_ID_NUMBER"] = "STUDENT_EXPORT_COLUMN_ID_NUMBER";
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_FIRST_NAME"] = "STUDENT_EXPORT_COLUMN_FIRST_NAME";
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_LAST_NAME"] = "STUDENT_EXPORT_COLUMN_LAST_NAME";
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_SCHOOL_YEAR"] = "STUDENT_EXPORT_COLUMN_SCHOOL_YEAR";
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_STATUS"] = "STUDENT_EXPORT_COLUMN_STATUS";
+    StudentExportColumn["STUDENT_EXPORT_COLUMN_GRADE"] = "STUDENT_EXPORT_COLUMN_GRADE";
+    StudentExportColumn["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(StudentExportColumn || (exports.StudentExportColumn = StudentExportColumn = {}));
+function studentExportColumnFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "STUDENT_EXPORT_COLUMN_UNSPECIFIED":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_UNSPECIFIED;
+        case 1:
+        case "STUDENT_EXPORT_COLUMN_ID_NUMBER":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_ID_NUMBER;
+        case 2:
+        case "STUDENT_EXPORT_COLUMN_FIRST_NAME":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_FIRST_NAME;
+        case 3:
+        case "STUDENT_EXPORT_COLUMN_LAST_NAME":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_LAST_NAME;
+        case 4:
+        case "STUDENT_EXPORT_COLUMN_SCHOOL_YEAR":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_SCHOOL_YEAR;
+        case 5:
+        case "STUDENT_EXPORT_COLUMN_STATUS":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_STATUS;
+        case 6:
+        case "STUDENT_EXPORT_COLUMN_GRADE":
+            return StudentExportColumn.STUDENT_EXPORT_COLUMN_GRADE;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return StudentExportColumn.UNRECOGNIZED;
+    }
+}
+function studentExportColumnToJSON(object) {
+    switch (object) {
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_UNSPECIFIED:
+            return "STUDENT_EXPORT_COLUMN_UNSPECIFIED";
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_ID_NUMBER:
+            return "STUDENT_EXPORT_COLUMN_ID_NUMBER";
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_FIRST_NAME:
+            return "STUDENT_EXPORT_COLUMN_FIRST_NAME";
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_LAST_NAME:
+            return "STUDENT_EXPORT_COLUMN_LAST_NAME";
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_SCHOOL_YEAR:
+            return "STUDENT_EXPORT_COLUMN_SCHOOL_YEAR";
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_STATUS:
+            return "STUDENT_EXPORT_COLUMN_STATUS";
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_GRADE:
+            return "STUDENT_EXPORT_COLUMN_GRADE";
+        case StudentExportColumn.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function studentExportColumnToNumber(object) {
+    switch (object) {
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_UNSPECIFIED:
+            return 0;
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_ID_NUMBER:
+            return 1;
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_FIRST_NAME:
+            return 2;
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_LAST_NAME:
+            return 3;
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_SCHOOL_YEAR:
+            return 4;
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_STATUS:
+            return 5;
+        case StudentExportColumn.STUDENT_EXPORT_COLUMN_GRADE:
+            return 6;
+        case StudentExportColumn.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+function createBaseStudentExportColumnDefinition() {
+    return { column: undefined, label: undefined };
+}
+exports.StudentExportColumnDefinition = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.column !== undefined) {
+            writer.uint32(8).int32(studentExportColumnToNumber(message.column));
+        }
+        if (message.label !== undefined) {
+            writer.uint32(18).string(message.label);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStudentExportColumnDefinition();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.column = studentExportColumnFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.label = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            column: isSet(object.column) ? studentExportColumnFromJSON(object.column) : undefined,
+            label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.column !== undefined) {
+            obj.column = studentExportColumnToJSON(message.column);
+        }
+        if (message.label !== undefined) {
+            obj.label = message.label;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StudentExportColumnDefinition.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStudentExportColumnDefinition();
+        message.column = object.column ?? undefined;
+        message.label = object.label ?? undefined;
+        return message;
+    },
+};
+function createBaseStudentExportSelection() {
+    return { school_year_id: undefined, statuses: [], columns: [] };
+}
+exports.StudentExportSelection = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(10).fork()).join();
+        }
+        writer.uint32(18).fork();
+        for (const v of message.statuses) {
+            writer.int32(studentStatusToNumber(v));
+        }
+        writer.join();
+        writer.uint32(26).fork();
+        for (const v of message.columns) {
+            writer.int32(studentExportColumnToNumber(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStudentExportSelection();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag === 16) {
+                        message.statuses.push(studentStatusFromJSON(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 18) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.statuses.push(studentStatusFromJSON(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 3:
+                    if (tag === 24) {
+                        message.columns.push(studentExportColumnFromJSON(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 26) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.columns.push(studentExportColumnFromJSON(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            statuses: globalThis.Array.isArray(object?.statuses)
+                ? object.statuses.map((e) => studentStatusFromJSON(e))
+                : [],
+            columns: globalThis.Array.isArray(object?.columns)
+                ? object.columns.map((e) => studentExportColumnFromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.statuses?.length) {
+            obj.statuses = message.statuses.map((e) => studentStatusToJSON(e));
+        }
+        if (message.columns?.length) {
+            obj.columns = message.columns.map((e) => studentExportColumnToJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StudentExportSelection.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStudentExportSelection();
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.statuses = object.statuses?.map((e) => e) || [];
+        message.columns = object.columns?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseStudentExportRow() {
+    return {
+        id_number: undefined,
+        first_name: undefined,
+        last_name: undefined,
+        school_year: undefined,
+        status: undefined,
+        grade: undefined,
+    };
+}
+exports.StudentExportRow = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id_number !== undefined) {
+            writer.uint32(10).string(message.id_number);
+        }
+        if (message.first_name !== undefined) {
+            writer.uint32(18).string(message.first_name);
+        }
+        if (message.last_name !== undefined) {
+            writer.uint32(26).string(message.last_name);
+        }
+        if (message.school_year !== undefined) {
+            writer.uint32(34).string(message.school_year);
+        }
+        if (message.status !== undefined) {
+            writer.uint32(40).int32(studentStatusToNumber(message.status));
+        }
+        if (message.grade !== undefined) {
+            writer.uint32(48).int32(studentGradeToNumber(message.grade));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStudentExportRow();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id_number = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.first_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.last_name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.school_year = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.status = studentStatusFromJSON(reader.int32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.grade = studentGradeFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id_number: isSet(object.idNumber) ? globalThis.String(object.idNumber) : undefined,
+            first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+            last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+            school_year: isSet(object.schoolYear) ? globalThis.String(object.schoolYear) : undefined,
+            status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
+            grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id_number !== undefined) {
+            obj.idNumber = message.id_number;
+        }
+        if (message.first_name !== undefined) {
+            obj.firstName = message.first_name;
+        }
+        if (message.last_name !== undefined) {
+            obj.lastName = message.last_name;
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = message.school_year;
+        }
+        if (message.status !== undefined) {
+            obj.status = studentStatusToJSON(message.status);
+        }
+        if (message.grade !== undefined) {
+            obj.grade = studentGradeToJSON(message.grade);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StudentExportRow.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStudentExportRow();
+        message.id_number = object.id_number ?? undefined;
+        message.first_name = object.first_name ?? undefined;
+        message.last_name = object.last_name ?? undefined;
+        message.school_year = object.school_year ?? undefined;
+        message.status = object.status ?? undefined;
+        message.grade = object.grade ?? undefined;
+        return message;
+    },
+};
 function createBaseStudent() {
     return {
         id: undefined,

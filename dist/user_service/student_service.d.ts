@@ -8,7 +8,7 @@ import { GroupApprovalStatus } from "./custom_field";
 import { CustomFieldEntry } from "./custom_field_entry";
 import { Family } from "./family";
 import { Parent } from "./parent";
-import { SchoolYearStudent, Student, StudentGrade, StudentProfile, StudentSchoolYearInformation, StudentStatus } from "./student";
+import { SchoolYearStudent, Student, StudentExportColumnDefinition, StudentExportRow, StudentExportSelection, StudentGrade, StudentProfile, StudentSchoolYearInformation, StudentStatus } from "./student";
 import { Teacher } from "./teacher";
 export declare const protobufPackage = "user_service";
 export interface GetStudentRequest {
@@ -248,6 +248,32 @@ export interface GetStudentsListWithFiltersRequest {
     /** only students whose enrolled record is unique to the selected school year */
     new_students_this_year?: boolean | undefined;
 }
+export interface GetStudentExportCatalogRequest {
+    context: RequestContext | undefined;
+}
+export interface GetStudentExportCatalogResponse {
+    columns: StudentExportColumnDefinition[];
+    allowed_statuses: StudentStatus[];
+}
+export interface PreviewStudentExportRequest {
+    context: RequestContext | undefined;
+    selection: StudentExportSelection | undefined;
+}
+export interface PreviewStudentExportResponse {
+    school_year: SchoolYear | undefined;
+    statuses: StudentStatus[];
+    columns: StudentExportColumnDefinition[];
+    matching_student_count?: number | undefined;
+}
+export interface GetStudentExportPageRequest {
+    context: RequestContext | undefined;
+    selection: StudentExportSelection | undefined;
+    after_row_id?: ObjectId | undefined;
+}
+export interface GetStudentExportPageResponse {
+    rows: StudentExportRow[];
+    next_cursor?: ObjectId | undefined;
+}
 export interface GetStudentsListWithFiltersResponse {
     students: SchoolYearStudent[];
     students_count?: number | undefined;
@@ -408,6 +434,12 @@ export declare const ExecuteStartSchoolYearPhase3SendEmailsResponse: MessageFns<
 export declare const CreateDefaultResourceAccessSettingsForOrgRequest: MessageFns<CreateDefaultResourceAccessSettingsForOrgRequest>;
 export declare const CreateDefaultResourceAccessSettingsForOrgResponse: MessageFns<CreateDefaultResourceAccessSettingsForOrgResponse>;
 export declare const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFiltersRequest>;
+export declare const GetStudentExportCatalogRequest: MessageFns<GetStudentExportCatalogRequest>;
+export declare const GetStudentExportCatalogResponse: MessageFns<GetStudentExportCatalogResponse>;
+export declare const PreviewStudentExportRequest: MessageFns<PreviewStudentExportRequest>;
+export declare const PreviewStudentExportResponse: MessageFns<PreviewStudentExportResponse>;
+export declare const GetStudentExportPageRequest: MessageFns<GetStudentExportPageRequest>;
+export declare const GetStudentExportPageResponse: MessageFns<GetStudentExportPageResponse>;
 export declare const GetStudentsListWithFiltersResponse: MessageFns<GetStudentsListWithFiltersResponse>;
 export declare const GetCourseOrHomeroomStudentsRequest: MessageFns<GetCourseOrHomeroomStudentsRequest>;
 export declare const GetCourseOrHomeroomStudentsResponse: MessageFns<GetCourseOrHomeroomStudentsResponse>;

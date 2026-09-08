@@ -19,6 +19,9 @@ import { Parent } from "./parent";
 import {
   SchoolYearStudent,
   Student,
+  StudentExportColumnDefinition,
+  StudentExportRow,
+  StudentExportSelection,
   StudentGrade,
   studentGradeFromJSON,
   studentGradeToJSON,
@@ -333,6 +336,38 @@ export interface GetStudentsListWithFiltersRequest {
     | undefined;
   /** only students whose enrolled record is unique to the selected school year */
   new_students_this_year?: boolean | undefined;
+}
+
+export interface GetStudentExportCatalogRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetStudentExportCatalogResponse {
+  columns: StudentExportColumnDefinition[];
+  allowed_statuses: StudentStatus[];
+}
+
+export interface PreviewStudentExportRequest {
+  context: RequestContext | undefined;
+  selection: StudentExportSelection | undefined;
+}
+
+export interface PreviewStudentExportResponse {
+  school_year: SchoolYear | undefined;
+  statuses: StudentStatus[];
+  columns: StudentExportColumnDefinition[];
+  matching_student_count?: number | undefined;
+}
+
+export interface GetStudentExportPageRequest {
+  context: RequestContext | undefined;
+  selection: StudentExportSelection | undefined;
+  after_row_id?: ObjectId | undefined;
+}
+
+export interface GetStudentExportPageResponse {
+  rows: StudentExportRow[];
+  next_cursor?: ObjectId | undefined;
 }
 
 export interface GetStudentsListWithFiltersResponse {
@@ -4855,6 +4890,532 @@ export const GetStudentsListWithFiltersRequest: MessageFns<GetStudentsListWithFi
       : undefined;
     message.show_all = object.show_all ?? undefined;
     message.new_students_this_year = object.new_students_this_year ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentExportCatalogRequest(): GetStudentExportCatalogRequest {
+  return { context: undefined };
+}
+
+export const GetStudentExportCatalogRequest: MessageFns<GetStudentExportCatalogRequest> = {
+  encode(message: GetStudentExportCatalogRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentExportCatalogRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentExportCatalogRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentExportCatalogRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetStudentExportCatalogRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentExportCatalogRequest>, I>>(base?: I): GetStudentExportCatalogRequest {
+    return GetStudentExportCatalogRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentExportCatalogRequest>, I>>(
+    object: I,
+  ): GetStudentExportCatalogRequest {
+    const message = createBaseGetStudentExportCatalogRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentExportCatalogResponse(): GetStudentExportCatalogResponse {
+  return { columns: [], allowed_statuses: [] };
+}
+
+export const GetStudentExportCatalogResponse: MessageFns<GetStudentExportCatalogResponse> = {
+  encode(message: GetStudentExportCatalogResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.columns) {
+      StudentExportColumnDefinition.encode(v!, writer.uint32(10).fork()).join();
+    }
+    writer.uint32(18).fork();
+    for (const v of message.allowed_statuses) {
+      writer.int32(studentStatusToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentExportCatalogResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentExportCatalogResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.columns.push(StudentExportColumnDefinition.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.allowed_statuses.push(studentStatusFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.allowed_statuses.push(studentStatusFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentExportCatalogResponse {
+    return {
+      columns: globalThis.Array.isArray(object?.columns)
+        ? object.columns.map((e: any) => StudentExportColumnDefinition.fromJSON(e))
+        : [],
+      allowed_statuses: globalThis.Array.isArray(object?.allowedStatuses)
+        ? object.allowedStatuses.map((e: any) => studentStatusFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetStudentExportCatalogResponse): unknown {
+    const obj: any = {};
+    if (message.columns?.length) {
+      obj.columns = message.columns.map((e) => StudentExportColumnDefinition.toJSON(e));
+    }
+    if (message.allowed_statuses?.length) {
+      obj.allowedStatuses = message.allowed_statuses.map((e) => studentStatusToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentExportCatalogResponse>, I>>(base?: I): GetStudentExportCatalogResponse {
+    return GetStudentExportCatalogResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentExportCatalogResponse>, I>>(
+    object: I,
+  ): GetStudentExportCatalogResponse {
+    const message = createBaseGetStudentExportCatalogResponse();
+    message.columns = object.columns?.map((e) => StudentExportColumnDefinition.fromPartial(e)) || [];
+    message.allowed_statuses = object.allowed_statuses?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBasePreviewStudentExportRequest(): PreviewStudentExportRequest {
+  return { context: undefined, selection: undefined };
+}
+
+export const PreviewStudentExportRequest: MessageFns<PreviewStudentExportRequest> = {
+  encode(message: PreviewStudentExportRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.selection !== undefined) {
+      StudentExportSelection.encode(message.selection, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreviewStudentExportRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreviewStudentExportRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.selection = StudentExportSelection.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreviewStudentExportRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      selection: isSet(object.selection) ? StudentExportSelection.fromJSON(object.selection) : undefined,
+    };
+  },
+
+  toJSON(message: PreviewStudentExportRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.selection !== undefined) {
+      obj.selection = StudentExportSelection.toJSON(message.selection);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreviewStudentExportRequest>, I>>(base?: I): PreviewStudentExportRequest {
+    return PreviewStudentExportRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreviewStudentExportRequest>, I>>(object: I): PreviewStudentExportRequest {
+    const message = createBasePreviewStudentExportRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.selection = (object.selection !== undefined && object.selection !== null)
+      ? StudentExportSelection.fromPartial(object.selection)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePreviewStudentExportResponse(): PreviewStudentExportResponse {
+  return { school_year: undefined, statuses: [], columns: [], matching_student_count: undefined };
+}
+
+export const PreviewStudentExportResponse: MessageFns<PreviewStudentExportResponse> = {
+  encode(message: PreviewStudentExportResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.school_year !== undefined) {
+      SchoolYear.encode(message.school_year, writer.uint32(10).fork()).join();
+    }
+    writer.uint32(18).fork();
+    for (const v of message.statuses) {
+      writer.int32(studentStatusToNumber(v));
+    }
+    writer.join();
+    for (const v of message.columns) {
+      StudentExportColumnDefinition.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.matching_student_count !== undefined) {
+      writer.uint32(32).uint64(message.matching_student_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreviewStudentExportResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreviewStudentExportResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.school_year = SchoolYear.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.statuses.push(studentStatusFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.statuses.push(studentStatusFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.columns.push(StudentExportColumnDefinition.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.matching_student_count = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreviewStudentExportResponse {
+    return {
+      school_year: isSet(object.schoolYear) ? SchoolYear.fromJSON(object.schoolYear) : undefined,
+      statuses: globalThis.Array.isArray(object?.statuses)
+        ? object.statuses.map((e: any) => studentStatusFromJSON(e))
+        : [],
+      columns: globalThis.Array.isArray(object?.columns)
+        ? object.columns.map((e: any) => StudentExportColumnDefinition.fromJSON(e))
+        : [],
+      matching_student_count: isSet(object.matchingStudentCount)
+        ? globalThis.Number(object.matchingStudentCount)
+        : undefined,
+    };
+  },
+
+  toJSON(message: PreviewStudentExportResponse): unknown {
+    const obj: any = {};
+    if (message.school_year !== undefined) {
+      obj.schoolYear = SchoolYear.toJSON(message.school_year);
+    }
+    if (message.statuses?.length) {
+      obj.statuses = message.statuses.map((e) => studentStatusToJSON(e));
+    }
+    if (message.columns?.length) {
+      obj.columns = message.columns.map((e) => StudentExportColumnDefinition.toJSON(e));
+    }
+    if (message.matching_student_count !== undefined) {
+      obj.matchingStudentCount = Math.round(message.matching_student_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreviewStudentExportResponse>, I>>(base?: I): PreviewStudentExportResponse {
+    return PreviewStudentExportResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreviewStudentExportResponse>, I>>(object: I): PreviewStudentExportResponse {
+    const message = createBasePreviewStudentExportResponse();
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? SchoolYear.fromPartial(object.school_year)
+      : undefined;
+    message.statuses = object.statuses?.map((e) => e) || [];
+    message.columns = object.columns?.map((e) => StudentExportColumnDefinition.fromPartial(e)) || [];
+    message.matching_student_count = object.matching_student_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentExportPageRequest(): GetStudentExportPageRequest {
+  return { context: undefined, selection: undefined, after_row_id: undefined };
+}
+
+export const GetStudentExportPageRequest: MessageFns<GetStudentExportPageRequest> = {
+  encode(message: GetStudentExportPageRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.selection !== undefined) {
+      StudentExportSelection.encode(message.selection, writer.uint32(18).fork()).join();
+    }
+    if (message.after_row_id !== undefined) {
+      ObjectId.encode(message.after_row_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentExportPageRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentExportPageRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.selection = StudentExportSelection.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.after_row_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentExportPageRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      selection: isSet(object.selection) ? StudentExportSelection.fromJSON(object.selection) : undefined,
+      after_row_id: isSet(object.afterRowId) ? ObjectId.fromJSON(object.afterRowId) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentExportPageRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.selection !== undefined) {
+      obj.selection = StudentExportSelection.toJSON(message.selection);
+    }
+    if (message.after_row_id !== undefined) {
+      obj.afterRowId = ObjectId.toJSON(message.after_row_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentExportPageRequest>, I>>(base?: I): GetStudentExportPageRequest {
+    return GetStudentExportPageRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentExportPageRequest>, I>>(object: I): GetStudentExportPageRequest {
+    const message = createBaseGetStudentExportPageRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.selection = (object.selection !== undefined && object.selection !== null)
+      ? StudentExportSelection.fromPartial(object.selection)
+      : undefined;
+    message.after_row_id = (object.after_row_id !== undefined && object.after_row_id !== null)
+      ? ObjectId.fromPartial(object.after_row_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentExportPageResponse(): GetStudentExportPageResponse {
+  return { rows: [], next_cursor: undefined };
+}
+
+export const GetStudentExportPageResponse: MessageFns<GetStudentExportPageResponse> = {
+  encode(message: GetStudentExportPageResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.rows) {
+      StudentExportRow.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.next_cursor !== undefined) {
+      ObjectId.encode(message.next_cursor, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentExportPageResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentExportPageResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.rows.push(StudentExportRow.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.next_cursor = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentExportPageResponse {
+    return {
+      rows: globalThis.Array.isArray(object?.rows) ? object.rows.map((e: any) => StudentExportRow.fromJSON(e)) : [],
+      next_cursor: isSet(object.nextCursor) ? ObjectId.fromJSON(object.nextCursor) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentExportPageResponse): unknown {
+    const obj: any = {};
+    if (message.rows?.length) {
+      obj.rows = message.rows.map((e) => StudentExportRow.toJSON(e));
+    }
+    if (message.next_cursor !== undefined) {
+      obj.nextCursor = ObjectId.toJSON(message.next_cursor);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentExportPageResponse>, I>>(base?: I): GetStudentExportPageResponse {
+    return GetStudentExportPageResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentExportPageResponse>, I>>(object: I): GetStudentExportPageResponse {
+    const message = createBaseGetStudentExportPageResponse();
+    message.rows = object.rows?.map((e) => StudentExportRow.fromPartial(e)) || [];
+    message.next_cursor = (object.next_cursor !== undefined && object.next_cursor !== null)
+      ? ObjectId.fromPartial(object.next_cursor)
+      : undefined;
     return message;
   },
 };
