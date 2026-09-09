@@ -57,6 +57,128 @@ export function setupAutoPaymentMethodToNumber(object: SetupAutoPaymentMethod): 
   }
 }
 
+export enum BankVerificationStatus {
+  BANK_VERIFICATION_STATUS_UNSPECIFIED = "BANK_VERIFICATION_STATUS_UNSPECIFIED",
+  BANK_VERIFICATION_STATUS_REQUIRES_ACTION = "BANK_VERIFICATION_STATUS_REQUIRES_ACTION",
+  BANK_VERIFICATION_STATUS_SUCCEEDED = "BANK_VERIFICATION_STATUS_SUCCEEDED",
+  BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD = "BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD",
+  BANK_VERIFICATION_STATUS_PROCESSING = "BANK_VERIFICATION_STATUS_PROCESSING",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function bankVerificationStatusFromJSON(object: any): BankVerificationStatus {
+  switch (object) {
+    case 0:
+    case "BANK_VERIFICATION_STATUS_UNSPECIFIED":
+      return BankVerificationStatus.BANK_VERIFICATION_STATUS_UNSPECIFIED;
+    case 1:
+    case "BANK_VERIFICATION_STATUS_REQUIRES_ACTION":
+      return BankVerificationStatus.BANK_VERIFICATION_STATUS_REQUIRES_ACTION;
+    case 2:
+    case "BANK_VERIFICATION_STATUS_SUCCEEDED":
+      return BankVerificationStatus.BANK_VERIFICATION_STATUS_SUCCEEDED;
+    case 3:
+    case "BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD":
+      return BankVerificationStatus.BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD;
+    case 4:
+    case "BANK_VERIFICATION_STATUS_PROCESSING":
+      return BankVerificationStatus.BANK_VERIFICATION_STATUS_PROCESSING;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BankVerificationStatus.UNRECOGNIZED;
+  }
+}
+
+export function bankVerificationStatusToJSON(object: BankVerificationStatus): string {
+  switch (object) {
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_UNSPECIFIED:
+      return "BANK_VERIFICATION_STATUS_UNSPECIFIED";
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_REQUIRES_ACTION:
+      return "BANK_VERIFICATION_STATUS_REQUIRES_ACTION";
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_SUCCEEDED:
+      return "BANK_VERIFICATION_STATUS_SUCCEEDED";
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD:
+      return "BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD";
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_PROCESSING:
+      return "BANK_VERIFICATION_STATUS_PROCESSING";
+    case BankVerificationStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function bankVerificationStatusToNumber(object: BankVerificationStatus): number {
+  switch (object) {
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_UNSPECIFIED:
+      return 0;
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_REQUIRES_ACTION:
+      return 1;
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_SUCCEEDED:
+      return 2;
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD:
+      return 3;
+    case BankVerificationStatus.BANK_VERIFICATION_STATUS_PROCESSING:
+      return 4;
+    case BankVerificationStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum MicrodepositType {
+  MICRODEPOSIT_TYPE_UNSPECIFIED = "MICRODEPOSIT_TYPE_UNSPECIFIED",
+  MICRODEPOSIT_TYPE_AMOUNTS = "MICRODEPOSIT_TYPE_AMOUNTS",
+  MICRODEPOSIT_TYPE_DESCRIPTOR_CODE = "MICRODEPOSIT_TYPE_DESCRIPTOR_CODE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function microdepositTypeFromJSON(object: any): MicrodepositType {
+  switch (object) {
+    case 0:
+    case "MICRODEPOSIT_TYPE_UNSPECIFIED":
+      return MicrodepositType.MICRODEPOSIT_TYPE_UNSPECIFIED;
+    case 1:
+    case "MICRODEPOSIT_TYPE_AMOUNTS":
+      return MicrodepositType.MICRODEPOSIT_TYPE_AMOUNTS;
+    case 2:
+    case "MICRODEPOSIT_TYPE_DESCRIPTOR_CODE":
+      return MicrodepositType.MICRODEPOSIT_TYPE_DESCRIPTOR_CODE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return MicrodepositType.UNRECOGNIZED;
+  }
+}
+
+export function microdepositTypeToJSON(object: MicrodepositType): string {
+  switch (object) {
+    case MicrodepositType.MICRODEPOSIT_TYPE_UNSPECIFIED:
+      return "MICRODEPOSIT_TYPE_UNSPECIFIED";
+    case MicrodepositType.MICRODEPOSIT_TYPE_AMOUNTS:
+      return "MICRODEPOSIT_TYPE_AMOUNTS";
+    case MicrodepositType.MICRODEPOSIT_TYPE_DESCRIPTOR_CODE:
+      return "MICRODEPOSIT_TYPE_DESCRIPTOR_CODE";
+    case MicrodepositType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function microdepositTypeToNumber(object: MicrodepositType): number {
+  switch (object) {
+    case MicrodepositType.MICRODEPOSIT_TYPE_UNSPECIFIED:
+      return 0;
+    case MicrodepositType.MICRODEPOSIT_TYPE_AMOUNTS:
+      return 1;
+    case MicrodepositType.MICRODEPOSIT_TYPE_DESCRIPTOR_CODE:
+      return 2;
+    case MicrodepositType.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface HandleWebhookRequest {
   payload?: string | undefined;
   stripe_signature?: string | undefined;
@@ -87,6 +209,26 @@ export interface VerifyMicroDepositsRequest {
   context: RequestContext | undefined;
   first?: number | undefined;
   second?: number | undefined;
+}
+
+export interface VerifyBankAccountRequest {
+  context: RequestContext | undefined;
+  amounts?: MicrodepositAmounts | undefined;
+  descriptor_code?: string | undefined;
+}
+
+export interface MicrodepositAmounts {
+  first?: number | undefined;
+  second?: number | undefined;
+}
+
+export interface GetBankVerificationRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetBankVerificationResponse {
+  status?: BankVerificationStatus | undefined;
+  microdeposit_type?: MicrodepositType | undefined;
 }
 
 export interface VerifyMicroDepositsResponse {
@@ -594,6 +736,306 @@ export const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest> 
       : undefined;
     message.first = object.first ?? undefined;
     message.second = object.second ?? undefined;
+    return message;
+  },
+};
+
+function createBaseVerifyBankAccountRequest(): VerifyBankAccountRequest {
+  return { context: undefined, amounts: undefined, descriptor_code: undefined };
+}
+
+export const VerifyBankAccountRequest: MessageFns<VerifyBankAccountRequest> = {
+  encode(message: VerifyBankAccountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.amounts !== undefined) {
+      MicrodepositAmounts.encode(message.amounts, writer.uint32(18).fork()).join();
+    }
+    if (message.descriptor_code !== undefined) {
+      writer.uint32(26).string(message.descriptor_code);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): VerifyBankAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVerifyBankAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.amounts = MicrodepositAmounts.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.descriptor_code = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): VerifyBankAccountRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      amounts: isSet(object.amounts) ? MicrodepositAmounts.fromJSON(object.amounts) : undefined,
+      descriptor_code: isSet(object.descriptorCode) ? globalThis.String(object.descriptorCode) : undefined,
+    };
+  },
+
+  toJSON(message: VerifyBankAccountRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.amounts !== undefined) {
+      obj.amounts = MicrodepositAmounts.toJSON(message.amounts);
+    }
+    if (message.descriptor_code !== undefined) {
+      obj.descriptorCode = message.descriptor_code;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<VerifyBankAccountRequest>, I>>(base?: I): VerifyBankAccountRequest {
+    return VerifyBankAccountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<VerifyBankAccountRequest>, I>>(object: I): VerifyBankAccountRequest {
+    const message = createBaseVerifyBankAccountRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.amounts = (object.amounts !== undefined && object.amounts !== null)
+      ? MicrodepositAmounts.fromPartial(object.amounts)
+      : undefined;
+    message.descriptor_code = object.descriptor_code ?? undefined;
+    return message;
+  },
+};
+
+function createBaseMicrodepositAmounts(): MicrodepositAmounts {
+  return { first: undefined, second: undefined };
+}
+
+export const MicrodepositAmounts: MessageFns<MicrodepositAmounts> = {
+  encode(message: MicrodepositAmounts, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.first !== undefined) {
+      writer.uint32(8).uint32(message.first);
+    }
+    if (message.second !== undefined) {
+      writer.uint32(16).uint32(message.second);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): MicrodepositAmounts {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMicrodepositAmounts();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.first = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.second = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MicrodepositAmounts {
+    return {
+      first: isSet(object.first) ? globalThis.Number(object.first) : undefined,
+      second: isSet(object.second) ? globalThis.Number(object.second) : undefined,
+    };
+  },
+
+  toJSON(message: MicrodepositAmounts): unknown {
+    const obj: any = {};
+    if (message.first !== undefined) {
+      obj.first = Math.round(message.first);
+    }
+    if (message.second !== undefined) {
+      obj.second = Math.round(message.second);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MicrodepositAmounts>, I>>(base?: I): MicrodepositAmounts {
+    return MicrodepositAmounts.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MicrodepositAmounts>, I>>(object: I): MicrodepositAmounts {
+    const message = createBaseMicrodepositAmounts();
+    message.first = object.first ?? undefined;
+    message.second = object.second ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetBankVerificationRequest(): GetBankVerificationRequest {
+  return { context: undefined };
+}
+
+export const GetBankVerificationRequest: MessageFns<GetBankVerificationRequest> = {
+  encode(message: GetBankVerificationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetBankVerificationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBankVerificationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetBankVerificationRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetBankVerificationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetBankVerificationRequest>, I>>(base?: I): GetBankVerificationRequest {
+    return GetBankVerificationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetBankVerificationRequest>, I>>(object: I): GetBankVerificationRequest {
+    const message = createBaseGetBankVerificationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetBankVerificationResponse(): GetBankVerificationResponse {
+  return { status: undefined, microdeposit_type: undefined };
+}
+
+export const GetBankVerificationResponse: MessageFns<GetBankVerificationResponse> = {
+  encode(message: GetBankVerificationResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.status !== undefined) {
+      writer.uint32(8).int32(bankVerificationStatusToNumber(message.status));
+    }
+    if (message.microdeposit_type !== undefined) {
+      writer.uint32(16).int32(microdepositTypeToNumber(message.microdeposit_type));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetBankVerificationResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBankVerificationResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.status = bankVerificationStatusFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.microdeposit_type = microdepositTypeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetBankVerificationResponse {
+    return {
+      status: isSet(object.status) ? bankVerificationStatusFromJSON(object.status) : undefined,
+      microdeposit_type: isSet(object.microdepositType) ? microdepositTypeFromJSON(object.microdepositType) : undefined,
+    };
+  },
+
+  toJSON(message: GetBankVerificationResponse): unknown {
+    const obj: any = {};
+    if (message.status !== undefined) {
+      obj.status = bankVerificationStatusToJSON(message.status);
+    }
+    if (message.microdeposit_type !== undefined) {
+      obj.microdepositType = microdepositTypeToJSON(message.microdeposit_type);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetBankVerificationResponse>, I>>(base?: I): GetBankVerificationResponse {
+    return GetBankVerificationResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetBankVerificationResponse>, I>>(object: I): GetBankVerificationResponse {
+    const message = createBaseGetBankVerificationResponse();
+    message.status = object.status ?? undefined;
+    message.microdeposit_type = object.microdeposit_type ?? undefined;
     return message;
   },
 };

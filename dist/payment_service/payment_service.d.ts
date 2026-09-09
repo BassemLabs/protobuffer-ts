@@ -11,6 +11,26 @@ export declare enum SetupAutoPaymentMethod {
 export declare function setupAutoPaymentMethodFromJSON(object: any): SetupAutoPaymentMethod;
 export declare function setupAutoPaymentMethodToJSON(object: SetupAutoPaymentMethod): string;
 export declare function setupAutoPaymentMethodToNumber(object: SetupAutoPaymentMethod): number;
+export declare enum BankVerificationStatus {
+    BANK_VERIFICATION_STATUS_UNSPECIFIED = "BANK_VERIFICATION_STATUS_UNSPECIFIED",
+    BANK_VERIFICATION_STATUS_REQUIRES_ACTION = "BANK_VERIFICATION_STATUS_REQUIRES_ACTION",
+    BANK_VERIFICATION_STATUS_SUCCEEDED = "BANK_VERIFICATION_STATUS_SUCCEEDED",
+    BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD = "BANK_VERIFICATION_STATUS_REQUIRES_PAYMENT_METHOD",
+    BANK_VERIFICATION_STATUS_PROCESSING = "BANK_VERIFICATION_STATUS_PROCESSING",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function bankVerificationStatusFromJSON(object: any): BankVerificationStatus;
+export declare function bankVerificationStatusToJSON(object: BankVerificationStatus): string;
+export declare function bankVerificationStatusToNumber(object: BankVerificationStatus): number;
+export declare enum MicrodepositType {
+    MICRODEPOSIT_TYPE_UNSPECIFIED = "MICRODEPOSIT_TYPE_UNSPECIFIED",
+    MICRODEPOSIT_TYPE_AMOUNTS = "MICRODEPOSIT_TYPE_AMOUNTS",
+    MICRODEPOSIT_TYPE_DESCRIPTOR_CODE = "MICRODEPOSIT_TYPE_DESCRIPTOR_CODE",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function microdepositTypeFromJSON(object: any): MicrodepositType;
+export declare function microdepositTypeToJSON(object: MicrodepositType): string;
+export declare function microdepositTypeToNumber(object: MicrodepositType): number;
 export interface HandleWebhookRequest {
     payload?: string | undefined;
     stripe_signature?: string | undefined;
@@ -35,6 +55,22 @@ export interface VerifyMicroDepositsRequest {
     context: RequestContext | undefined;
     first?: number | undefined;
     second?: number | undefined;
+}
+export interface VerifyBankAccountRequest {
+    context: RequestContext | undefined;
+    amounts?: MicrodepositAmounts | undefined;
+    descriptor_code?: string | undefined;
+}
+export interface MicrodepositAmounts {
+    first?: number | undefined;
+    second?: number | undefined;
+}
+export interface GetBankVerificationRequest {
+    context: RequestContext | undefined;
+}
+export interface GetBankVerificationResponse {
+    status?: BankVerificationStatus | undefined;
+    microdeposit_type?: MicrodepositType | undefined;
 }
 export interface VerifyMicroDepositsResponse {
     success?: boolean | undefined;
@@ -62,6 +98,10 @@ export declare const GetSetupAutoIntentResponse: MessageFns<GetSetupAutoIntentRe
 export declare const CreateAutoPayBankSetupSessionRequest: MessageFns<CreateAutoPayBankSetupSessionRequest>;
 export declare const CreateAutoPayBankSetupSessionResponse: MessageFns<CreateAutoPayBankSetupSessionResponse>;
 export declare const VerifyMicroDepositsRequest: MessageFns<VerifyMicroDepositsRequest>;
+export declare const VerifyBankAccountRequest: MessageFns<VerifyBankAccountRequest>;
+export declare const MicrodepositAmounts: MessageFns<MicrodepositAmounts>;
+export declare const GetBankVerificationRequest: MessageFns<GetBankVerificationRequest>;
+export declare const GetBankVerificationResponse: MessageFns<GetBankVerificationResponse>;
 export declare const VerifyMicroDepositsResponse: MessageFns<VerifyMicroDepositsResponse>;
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;
 export declare const CreatePaymentIntentResponse: MessageFns<CreatePaymentIntentResponse>;
