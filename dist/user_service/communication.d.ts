@@ -54,6 +54,21 @@ export interface PreviewCommunicationResponse {
     sms_recipients?: number | undefined;
     phone_call_recipients?: number | undefined;
     estimated_cost?: number | undefined;
+    recipient_details: CommunicationRecipientPreview[];
+    matching_recipients?: number | undefined;
+    /** People with a registered push device, not verified permission or delivery. */
+    push_registered_recipients?: number | undefined;
+}
+/** All selected audience members, including those without contact information. */
+export interface CommunicationRecipientPreview {
+    user_id: ObjectId | undefined;
+    user_type?: UserType | undefined;
+    name?: string | undefined;
+    /** Contact fields are included only for their selected delivery channels. */
+    email?: string | undefined;
+    phone_number?: PhoneNumber | undefined;
+    /** Absent when PUSH is not selected. Registration does not confirm permission. */
+    push_registered?: boolean | undefined;
 }
 export declare const CommunicationFilters: MessageFns<CommunicationFilters>;
 export declare const CommunicationBroadcast: MessageFns<CommunicationBroadcast>;
@@ -62,6 +77,7 @@ export declare const CommunicationChannelCounts: MessageFns<CommunicationChannel
 export declare const BroadcastList: MessageFns<BroadcastList>;
 export declare const RecipientList: MessageFns<RecipientList>;
 export declare const PreviewCommunicationResponse: MessageFns<PreviewCommunicationResponse>;
+export declare const CommunicationRecipientPreview: MessageFns<CommunicationRecipientPreview>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

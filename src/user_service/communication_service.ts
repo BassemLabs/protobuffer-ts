@@ -29,6 +29,9 @@ export interface PreviewCommunicationRequest {
   context: RequestContext | undefined;
   filters: CommunicationFilters | undefined;
   channels: NotificationType[];
+  page?: number | undefined;
+  per_page?: number | undefined;
+  search?: string | undefined;
 }
 
 export interface SendCommunicationRequest {
@@ -66,7 +69,14 @@ export interface ResolveTargetsResponse {
 }
 
 function createBasePreviewCommunicationRequest(): PreviewCommunicationRequest {
-  return { context: undefined, filters: undefined, channels: [] };
+  return {
+    context: undefined,
+    filters: undefined,
+    channels: [],
+    page: undefined,
+    per_page: undefined,
+    search: undefined,
+  };
 }
 
 export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest> = {
@@ -82,6 +92,15 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
       writer.int32(notificationTypeToNumber(v));
     }
     writer.join();
+    if (message.page !== undefined) {
+      writer.uint32(32).uint64(message.page);
+    }
+    if (message.per_page !== undefined) {
+      writer.uint32(40).uint64(message.per_page);
+    }
+    if (message.search !== undefined) {
+      writer.uint32(50).string(message.search);
+    }
     return writer;
   },
 
@@ -123,6 +142,27 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
           }
 
           break;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.page = longToNumber(reader.uint64());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.per_page = longToNumber(reader.uint64());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.search = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -139,6 +179,9 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
       channels: globalThis.Array.isArray(object?.channels)
         ? object.channels.map((e: any) => notificationTypeFromJSON(e))
         : [],
+      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+      per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+      search: isSet(object.search) ? globalThis.String(object.search) : undefined,
     };
   },
 
@@ -152,6 +195,15 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
     }
     if (message.channels?.length) {
       obj.channels = message.channels.map((e) => notificationTypeToJSON(e));
+    }
+    if (message.page !== undefined) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.per_page !== undefined) {
+      obj.perPage = Math.round(message.per_page);
+    }
+    if (message.search !== undefined) {
+      obj.search = message.search;
     }
     return obj;
   },
@@ -168,6 +220,9 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
       ? CommunicationFilters.fromPartial(object.filters)
       : undefined;
     message.channels = object.channels?.map((e) => e) || [];
+    message.page = object.page ?? undefined;
+    message.per_page = object.per_page ?? undefined;
+    message.search = object.search ?? undefined;
     return message;
   },
 };

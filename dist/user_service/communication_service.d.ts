@@ -8,6 +8,9 @@ export interface PreviewCommunicationRequest {
     context: RequestContext | undefined;
     filters: CommunicationFilters | undefined;
     channels: NotificationType[];
+    page?: number | undefined;
+    per_page?: number | undefined;
+    search?: string | undefined;
 }
 export interface SendCommunicationRequest {
     context: RequestContext | undefined;

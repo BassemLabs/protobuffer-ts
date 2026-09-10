@@ -111,6 +111,28 @@ export interface PreviewCommunicationResponse {
   sms_recipients?: number | undefined;
   phone_call_recipients?: number | undefined;
   estimated_cost?: number | undefined;
+  recipient_details: CommunicationRecipientPreview[];
+  matching_recipients?:
+    | number
+    | undefined;
+  /** People with a registered push device, not verified permission or delivery. */
+  push_registered_recipients?: number | undefined;
+}
+
+/** All selected audience members, including those without contact information. */
+export interface CommunicationRecipientPreview {
+  user_id: ObjectId | undefined;
+  user_type?: UserType | undefined;
+  name?:
+    | string
+    | undefined;
+  /** Contact fields are included only for their selected delivery channels. */
+  email?: string | undefined;
+  phone_number?:
+    | PhoneNumber
+    | undefined;
+  /** Absent when PUSH is not selected. Registration does not confirm permission. */
+  push_registered?: boolean | undefined;
 }
 
 function createBaseCommunicationFilters(): CommunicationFilters {
@@ -795,6 +817,9 @@ function createBasePreviewCommunicationResponse(): PreviewCommunicationResponse 
     sms_recipients: undefined,
     phone_call_recipients: undefined,
     estimated_cost: undefined,
+    recipient_details: [],
+    matching_recipients: undefined,
+    push_registered_recipients: undefined,
   };
 }
 
@@ -814,6 +839,15 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
     }
     if (message.estimated_cost !== undefined) {
       writer.uint32(41).double(message.estimated_cost);
+    }
+    for (const v of message.recipient_details) {
+      CommunicationRecipientPreview.encode(v!, writer.uint32(74).fork()).join();
+    }
+    if (message.matching_recipients !== undefined) {
+      writer.uint32(80).uint32(message.matching_recipients);
+    }
+    if (message.push_registered_recipients !== undefined) {
+      writer.uint32(88).uint32(message.push_registered_recipients);
     }
     return writer;
   },
@@ -860,6 +894,27 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
 
           message.estimated_cost = reader.double();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.recipient_details.push(CommunicationRecipientPreview.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.matching_recipients = reader.uint32();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.push_registered_recipients = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -878,6 +933,13 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
         ? globalThis.Number(object.phoneCallRecipients)
         : undefined,
       estimated_cost: isSet(object.estimatedCost) ? globalThis.Number(object.estimatedCost) : undefined,
+      recipient_details: globalThis.Array.isArray(object?.recipientDetails)
+        ? object.recipientDetails.map((e: any) => CommunicationRecipientPreview.fromJSON(e))
+        : [],
+      matching_recipients: isSet(object.matchingRecipients) ? globalThis.Number(object.matchingRecipients) : undefined,
+      push_registered_recipients: isSet(object.pushRegisteredRecipients)
+        ? globalThis.Number(object.pushRegisteredRecipients)
+        : undefined,
     };
   },
 
@@ -898,6 +960,15 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
     if (message.estimated_cost !== undefined) {
       obj.estimatedCost = message.estimated_cost;
     }
+    if (message.recipient_details?.length) {
+      obj.recipientDetails = message.recipient_details.map((e) => CommunicationRecipientPreview.toJSON(e));
+    }
+    if (message.matching_recipients !== undefined) {
+      obj.matchingRecipients = Math.round(message.matching_recipients);
+    }
+    if (message.push_registered_recipients !== undefined) {
+      obj.pushRegisteredRecipients = Math.round(message.push_registered_recipients);
+    }
     return obj;
   },
 
@@ -911,6 +982,157 @@ export const PreviewCommunicationResponse: MessageFns<PreviewCommunicationRespon
     message.sms_recipients = object.sms_recipients ?? undefined;
     message.phone_call_recipients = object.phone_call_recipients ?? undefined;
     message.estimated_cost = object.estimated_cost ?? undefined;
+    message.recipient_details = object.recipient_details?.map((e) => CommunicationRecipientPreview.fromPartial(e)) ||
+      [];
+    message.matching_recipients = object.matching_recipients ?? undefined;
+    message.push_registered_recipients = object.push_registered_recipients ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCommunicationRecipientPreview(): CommunicationRecipientPreview {
+  return {
+    user_id: undefined,
+    user_type: undefined,
+    name: undefined,
+    email: undefined,
+    phone_number: undefined,
+    push_registered: undefined,
+  };
+}
+
+export const CommunicationRecipientPreview: MessageFns<CommunicationRecipientPreview> = {
+  encode(message: CommunicationRecipientPreview, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(10).fork()).join();
+    }
+    if (message.user_type !== undefined) {
+      writer.uint32(16).int32(userTypeToNumber(message.user_type));
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.email !== undefined) {
+      writer.uint32(34).string(message.email);
+    }
+    if (message.phone_number !== undefined) {
+      PhoneNumber.encode(message.phone_number, writer.uint32(42).fork()).join();
+    }
+    if (message.push_registered !== undefined) {
+      writer.uint32(48).bool(message.push_registered);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CommunicationRecipientPreview {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCommunicationRecipientPreview();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.user_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.user_type = userTypeFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.phone_number = PhoneNumber.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.push_registered = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CommunicationRecipientPreview {
+    return {
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      user_type: isSet(object.userType) ? userTypeFromJSON(object.userType) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      phone_number: isSet(object.phoneNumber) ? PhoneNumber.fromJSON(object.phoneNumber) : undefined,
+      push_registered: isSet(object.pushRegistered) ? globalThis.Boolean(object.pushRegistered) : undefined,
+    };
+  },
+
+  toJSON(message: CommunicationRecipientPreview): unknown {
+    const obj: any = {};
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
+    }
+    if (message.user_type !== undefined) {
+      obj.userType = userTypeToJSON(message.user_type);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
+    if (message.phone_number !== undefined) {
+      obj.phoneNumber = PhoneNumber.toJSON(message.phone_number);
+    }
+    if (message.push_registered !== undefined) {
+      obj.pushRegistered = message.push_registered;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CommunicationRecipientPreview>, I>>(base?: I): CommunicationRecipientPreview {
+    return CommunicationRecipientPreview.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CommunicationRecipientPreview>, I>>(
+    object: I,
+  ): CommunicationRecipientPreview {
+    const message = createBaseCommunicationRecipientPreview();
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
+      : undefined;
+    message.user_type = object.user_type ?? undefined;
+    message.name = object.name ?? undefined;
+    message.email = object.email ?? undefined;
+    message.phone_number = (object.phone_number !== undefined && object.phone_number !== null)
+      ? PhoneNumber.fromPartial(object.phone_number)
+      : undefined;
+    message.push_registered = object.push_registered ?? undefined;
     return message;
   },
 };
