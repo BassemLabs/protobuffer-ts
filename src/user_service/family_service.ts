@@ -22,6 +22,51 @@ import {
 
 export const protobufPackage = "user_service";
 
+export enum CreateFamilyPreferredContact {
+  GUARDIAN_ONE = "GUARDIAN_ONE",
+  GUARDIAN_TWO = "GUARDIAN_TWO",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function createFamilyPreferredContactFromJSON(object: any): CreateFamilyPreferredContact {
+  switch (object) {
+    case 0:
+    case "GUARDIAN_ONE":
+      return CreateFamilyPreferredContact.GUARDIAN_ONE;
+    case 1:
+    case "GUARDIAN_TWO":
+      return CreateFamilyPreferredContact.GUARDIAN_TWO;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return CreateFamilyPreferredContact.UNRECOGNIZED;
+  }
+}
+
+export function createFamilyPreferredContactToJSON(object: CreateFamilyPreferredContact): string {
+  switch (object) {
+    case CreateFamilyPreferredContact.GUARDIAN_ONE:
+      return "GUARDIAN_ONE";
+    case CreateFamilyPreferredContact.GUARDIAN_TWO:
+      return "GUARDIAN_TWO";
+    case CreateFamilyPreferredContact.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function createFamilyPreferredContactToNumber(object: CreateFamilyPreferredContact): number {
+  switch (object) {
+    case CreateFamilyPreferredContact.GUARDIAN_ONE:
+      return 0;
+    case CreateFamilyPreferredContact.GUARDIAN_TWO:
+      return 1;
+    case CreateFamilyPreferredContact.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface GetFamilyRequest {
   context: RequestContext | undefined;
   family_id: ObjectId | undefined;
@@ -147,12 +192,17 @@ export interface GetInvoiceViewScopeResponse {
 
 export interface CreateFamilyRequest {
   context: RequestContext | undefined;
-  name?:
-    | string
-    | undefined;
-  /** Parent ObjectIds */
-  guardians: ObjectId[];
+  name?: string | undefined;
   information: FamilyInformation | undefined;
+  second_guardian?: CreateFamilyGuardian | undefined;
+  preferred_contact_guardian?: CreateFamilyPreferredContact | undefined;
+  guardians_to_not_contact: CreateFamilyPreferredContact[];
+}
+
+export interface CreateFamilyGuardian {
+  name?: string | undefined;
+  email?: string | undefined;
+  phone: PhoneNumber | undefined;
 }
 
 export interface UpdateFamilyRequest {
@@ -2026,7 +2076,14 @@ export const GetInvoiceViewScopeResponse: MessageFns<GetInvoiceViewScopeResponse
 };
 
 function createBaseCreateFamilyRequest(): CreateFamilyRequest {
-  return { context: undefined, name: undefined, guardians: [], information: undefined };
+  return {
+    context: undefined,
+    name: undefined,
+    information: undefined,
+    second_guardian: undefined,
+    preferred_contact_guardian: undefined,
+    guardians_to_not_contact: [],
+  };
 }
 
 export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
@@ -2037,12 +2094,20 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
     if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    for (const v of message.guardians) {
-      ObjectId.encode(v!, writer.uint32(26).fork()).join();
-    }
     if (message.information !== undefined) {
       FamilyInformation.encode(message.information, writer.uint32(34).fork()).join();
     }
+    if (message.second_guardian !== undefined) {
+      CreateFamilyGuardian.encode(message.second_guardian, writer.uint32(42).fork()).join();
+    }
+    if (message.preferred_contact_guardian !== undefined) {
+      writer.uint32(48).int32(createFamilyPreferredContactToNumber(message.preferred_contact_guardian));
+    }
+    writer.uint32(58).fork();
+    for (const v of message.guardians_to_not_contact) {
+      writer.int32(createFamilyPreferredContactToNumber(v));
+    }
+    writer.join();
     return writer;
   },
 
@@ -2067,13 +2132,6 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
 
           message.name = reader.string();
           continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.guardians.push(ObjectId.decode(reader, reader.uint32()));
-          continue;
         case 4:
           if (tag !== 34) {
             break;
@@ -2081,6 +2139,37 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
 
           message.information = FamilyInformation.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.second_guardian = CreateFamilyGuardian.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.preferred_contact_guardian = createFamilyPreferredContactFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag === 56) {
+            message.guardians_to_not_contact.push(createFamilyPreferredContactFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 58) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.guardians_to_not_contact.push(createFamilyPreferredContactFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2094,10 +2183,14 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      guardians: globalThis.Array.isArray(object?.guardians)
-        ? object.guardians.map((e: any) => ObjectId.fromJSON(e))
-        : [],
       information: isSet(object.information) ? FamilyInformation.fromJSON(object.information) : undefined,
+      second_guardian: isSet(object.secondGuardian) ? CreateFamilyGuardian.fromJSON(object.secondGuardian) : undefined,
+      preferred_contact_guardian: isSet(object.preferredContactGuardian)
+        ? createFamilyPreferredContactFromJSON(object.preferredContactGuardian)
+        : undefined,
+      guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
+        ? object.guardiansToNotContact.map((e: any) => createFamilyPreferredContactFromJSON(e))
+        : [],
     };
   },
 
@@ -2109,11 +2202,17 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
     if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.guardians?.length) {
-      obj.guardians = message.guardians.map((e) => ObjectId.toJSON(e));
-    }
     if (message.information !== undefined) {
       obj.information = FamilyInformation.toJSON(message.information);
+    }
+    if (message.second_guardian !== undefined) {
+      obj.secondGuardian = CreateFamilyGuardian.toJSON(message.second_guardian);
+    }
+    if (message.preferred_contact_guardian !== undefined) {
+      obj.preferredContactGuardian = createFamilyPreferredContactToJSON(message.preferred_contact_guardian);
+    }
+    if (message.guardians_to_not_contact?.length) {
+      obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => createFamilyPreferredContactToJSON(e));
     }
     return obj;
   },
@@ -2127,9 +2226,104 @@ export const CreateFamilyRequest: MessageFns<CreateFamilyRequest> = {
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.name = object.name ?? undefined;
-    message.guardians = object.guardians?.map((e) => ObjectId.fromPartial(e)) || [];
     message.information = (object.information !== undefined && object.information !== null)
       ? FamilyInformation.fromPartial(object.information)
+      : undefined;
+    message.second_guardian = (object.second_guardian !== undefined && object.second_guardian !== null)
+      ? CreateFamilyGuardian.fromPartial(object.second_guardian)
+      : undefined;
+    message.preferred_contact_guardian = object.preferred_contact_guardian ?? undefined;
+    message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseCreateFamilyGuardian(): CreateFamilyGuardian {
+  return { name: undefined, email: undefined, phone: undefined };
+}
+
+export const CreateFamilyGuardian: MessageFns<CreateFamilyGuardian> = {
+  encode(message: CreateFamilyGuardian, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== undefined) {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.email !== undefined) {
+      writer.uint32(18).string(message.email);
+    }
+    if (message.phone !== undefined) {
+      PhoneNumber.encode(message.phone, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateFamilyGuardian {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFamilyGuardian();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.phone = PhoneNumber.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFamilyGuardian {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      phone: isSet(object.phone) ? PhoneNumber.fromJSON(object.phone) : undefined,
+    };
+  },
+
+  toJSON(message: CreateFamilyGuardian): unknown {
+    const obj: any = {};
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
+    if (message.phone !== undefined) {
+      obj.phone = PhoneNumber.toJSON(message.phone);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateFamilyGuardian>, I>>(base?: I): CreateFamilyGuardian {
+    return CreateFamilyGuardian.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateFamilyGuardian>, I>>(object: I): CreateFamilyGuardian {
+    const message = createBaseCreateFamilyGuardian();
+    message.name = object.name ?? undefined;
+    message.email = object.email ?? undefined;
+    message.phone = (object.phone !== undefined && object.phone !== null)
+      ? PhoneNumber.fromPartial(object.phone)
       : undefined;
     return message;
   },

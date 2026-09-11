@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: user_service/family_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyRequest = exports.GetInvoiceViewScopeResponse = exports.GetInvoiceViewScopeRequest = exports.SearchInvoiceIdentitiesResponse = exports.SearchInvoiceIdentitiesRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.protobufPackage = void 0;
+exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyGuardian = exports.CreateFamilyRequest = exports.GetInvoiceViewScopeResponse = exports.GetInvoiceViewScopeRequest = exports.SearchInvoiceIdentitiesResponse = exports.SearchInvoiceIdentitiesRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.CreateFamilyPreferredContact = exports.protobufPackage = void 0;
+exports.createFamilyPreferredContactFromJSON = createFamilyPreferredContactFromJSON;
+exports.createFamilyPreferredContactToJSON = createFamilyPreferredContactToJSON;
+exports.createFamilyPreferredContactToNumber = createFamilyPreferredContactToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -15,6 +18,48 @@ const family_1 = require("./family");
 const parent_1 = require("./parent");
 const student_1 = require("./student");
 exports.protobufPackage = "user_service";
+var CreateFamilyPreferredContact;
+(function (CreateFamilyPreferredContact) {
+    CreateFamilyPreferredContact["GUARDIAN_ONE"] = "GUARDIAN_ONE";
+    CreateFamilyPreferredContact["GUARDIAN_TWO"] = "GUARDIAN_TWO";
+    CreateFamilyPreferredContact["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(CreateFamilyPreferredContact || (exports.CreateFamilyPreferredContact = CreateFamilyPreferredContact = {}));
+function createFamilyPreferredContactFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "GUARDIAN_ONE":
+            return CreateFamilyPreferredContact.GUARDIAN_ONE;
+        case 1:
+        case "GUARDIAN_TWO":
+            return CreateFamilyPreferredContact.GUARDIAN_TWO;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return CreateFamilyPreferredContact.UNRECOGNIZED;
+    }
+}
+function createFamilyPreferredContactToJSON(object) {
+    switch (object) {
+        case CreateFamilyPreferredContact.GUARDIAN_ONE:
+            return "GUARDIAN_ONE";
+        case CreateFamilyPreferredContact.GUARDIAN_TWO:
+            return "GUARDIAN_TWO";
+        case CreateFamilyPreferredContact.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function createFamilyPreferredContactToNumber(object) {
+    switch (object) {
+        case CreateFamilyPreferredContact.GUARDIAN_ONE:
+            return 0;
+        case CreateFamilyPreferredContact.GUARDIAN_TWO:
+            return 1;
+        case CreateFamilyPreferredContact.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetFamilyRequest() {
     return { context: undefined, family_id: undefined };
 }
@@ -1625,7 +1670,14 @@ exports.GetInvoiceViewScopeResponse = {
     },
 };
 function createBaseCreateFamilyRequest() {
-    return { context: undefined, name: undefined, guardians: [], information: undefined };
+    return {
+        context: undefined,
+        name: undefined,
+        information: undefined,
+        second_guardian: undefined,
+        preferred_contact_guardian: undefined,
+        guardians_to_not_contact: [],
+    };
 }
 exports.CreateFamilyRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1635,12 +1687,20 @@ exports.CreateFamilyRequest = {
         if (message.name !== undefined) {
             writer.uint32(18).string(message.name);
         }
-        for (const v of message.guardians) {
-            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
-        }
         if (message.information !== undefined) {
             family_1.FamilyInformation.encode(message.information, writer.uint32(34).fork()).join();
         }
+        if (message.second_guardian !== undefined) {
+            exports.CreateFamilyGuardian.encode(message.second_guardian, writer.uint32(42).fork()).join();
+        }
+        if (message.preferred_contact_guardian !== undefined) {
+            writer.uint32(48).int32(createFamilyPreferredContactToNumber(message.preferred_contact_guardian));
+        }
+        writer.uint32(58).fork();
+        for (const v of message.guardians_to_not_contact) {
+            writer.int32(createFamilyPreferredContactToNumber(v));
+        }
+        writer.join();
         return writer;
     },
     decode(input, length) {
@@ -1662,18 +1722,37 @@ exports.CreateFamilyRequest = {
                     }
                     message.name = reader.string();
                     continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.guardians.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
-                    continue;
                 case 4:
                     if (tag !== 34) {
                         break;
                     }
                     message.information = family_1.FamilyInformation.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.second_guardian = exports.CreateFamilyGuardian.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.preferred_contact_guardian = createFamilyPreferredContactFromJSON(reader.int32());
+                    continue;
+                case 7:
+                    if (tag === 56) {
+                        message.guardians_to_not_contact.push(createFamilyPreferredContactFromJSON(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 58) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.guardians_to_not_contact.push(createFamilyPreferredContactFromJSON(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1686,10 +1765,14 @@ exports.CreateFamilyRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-            guardians: globalThis.Array.isArray(object?.guardians)
-                ? object.guardians.map((e) => object_id_1.ObjectId.fromJSON(e))
-                : [],
             information: isSet(object.information) ? family_1.FamilyInformation.fromJSON(object.information) : undefined,
+            second_guardian: isSet(object.secondGuardian) ? exports.CreateFamilyGuardian.fromJSON(object.secondGuardian) : undefined,
+            preferred_contact_guardian: isSet(object.preferredContactGuardian)
+                ? createFamilyPreferredContactFromJSON(object.preferredContactGuardian)
+                : undefined,
+            guardians_to_not_contact: globalThis.Array.isArray(object?.guardiansToNotContact)
+                ? object.guardiansToNotContact.map((e) => createFamilyPreferredContactFromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -1700,11 +1783,17 @@ exports.CreateFamilyRequest = {
         if (message.name !== undefined) {
             obj.name = message.name;
         }
-        if (message.guardians?.length) {
-            obj.guardians = message.guardians.map((e) => object_id_1.ObjectId.toJSON(e));
-        }
         if (message.information !== undefined) {
             obj.information = family_1.FamilyInformation.toJSON(message.information);
+        }
+        if (message.second_guardian !== undefined) {
+            obj.secondGuardian = exports.CreateFamilyGuardian.toJSON(message.second_guardian);
+        }
+        if (message.preferred_contact_guardian !== undefined) {
+            obj.preferredContactGuardian = createFamilyPreferredContactToJSON(message.preferred_contact_guardian);
+        }
+        if (message.guardians_to_not_contact?.length) {
+            obj.guardiansToNotContact = message.guardians_to_not_contact.map((e) => createFamilyPreferredContactToJSON(e));
         }
         return obj;
     },
@@ -1717,9 +1806,95 @@ exports.CreateFamilyRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.name = object.name ?? undefined;
-        message.guardians = object.guardians?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.information = (object.information !== undefined && object.information !== null)
             ? family_1.FamilyInformation.fromPartial(object.information)
+            : undefined;
+        message.second_guardian = (object.second_guardian !== undefined && object.second_guardian !== null)
+            ? exports.CreateFamilyGuardian.fromPartial(object.second_guardian)
+            : undefined;
+        message.preferred_contact_guardian = object.preferred_contact_guardian ?? undefined;
+        message.guardians_to_not_contact = object.guardians_to_not_contact?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseCreateFamilyGuardian() {
+    return { name: undefined, email: undefined, phone: undefined };
+}
+exports.CreateFamilyGuardian = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.name !== undefined) {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.email !== undefined) {
+            writer.uint32(18).string(message.email);
+        }
+        if (message.phone !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.phone, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateFamilyGuardian();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.email = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.phone = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            phone: isSet(object.phone) ? phone_number_1.PhoneNumber.fromJSON(object.phone) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.email !== undefined) {
+            obj.email = message.email;
+        }
+        if (message.phone !== undefined) {
+            obj.phone = phone_number_1.PhoneNumber.toJSON(message.phone);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateFamilyGuardian.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateFamilyGuardian();
+        message.name = object.name ?? undefined;
+        message.email = object.email ?? undefined;
+        message.phone = (object.phone !== undefined && object.phone !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.phone)
             : undefined;
         return message;
     },

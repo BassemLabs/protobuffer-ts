@@ -6,6 +6,14 @@ import { Family, FamilyInformation } from "./family";
 import { Parent } from "./parent";
 import { SchoolYearStudent, Student, StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
+export declare enum CreateFamilyPreferredContact {
+    GUARDIAN_ONE = "GUARDIAN_ONE",
+    GUARDIAN_TWO = "GUARDIAN_TWO",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function createFamilyPreferredContactFromJSON(object: any): CreateFamilyPreferredContact;
+export declare function createFamilyPreferredContactToJSON(object: CreateFamilyPreferredContact): string;
+export declare function createFamilyPreferredContactToNumber(object: CreateFamilyPreferredContact): number;
 export interface GetFamilyRequest {
     context: RequestContext | undefined;
     family_id: ObjectId | undefined;
@@ -108,9 +116,15 @@ export interface GetInvoiceViewScopeResponse {
 export interface CreateFamilyRequest {
     context: RequestContext | undefined;
     name?: string | undefined;
-    /** Parent ObjectIds */
-    guardians: ObjectId[];
     information: FamilyInformation | undefined;
+    second_guardian?: CreateFamilyGuardian | undefined;
+    preferred_contact_guardian?: CreateFamilyPreferredContact | undefined;
+    guardians_to_not_contact: CreateFamilyPreferredContact[];
+}
+export interface CreateFamilyGuardian {
+    name?: string | undefined;
+    email?: string | undefined;
+    phone: PhoneNumber | undefined;
 }
 export interface UpdateFamilyRequest {
     context: RequestContext | undefined;
@@ -170,6 +184,7 @@ export declare const SearchInvoiceIdentitiesResponse: MessageFns<SearchInvoiceId
 export declare const GetInvoiceViewScopeRequest: MessageFns<GetInvoiceViewScopeRequest>;
 export declare const GetInvoiceViewScopeResponse: MessageFns<GetInvoiceViewScopeResponse>;
 export declare const CreateFamilyRequest: MessageFns<CreateFamilyRequest>;
+export declare const CreateFamilyGuardian: MessageFns<CreateFamilyGuardian>;
 export declare const UpdateFamilyRequest: MessageFns<UpdateFamilyRequest>;
 export declare const UpdateFamilyNameRequest: MessageFns<UpdateFamilyNameRequest>;
 export declare const UpdateFamilyAutoPayRequest: MessageFns<UpdateFamilyAutoPayRequest>;
