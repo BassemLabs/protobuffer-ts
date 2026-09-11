@@ -10,6 +10,17 @@ export declare enum ProvisionedAccountStatus {
 export declare function provisionedAccountStatusFromJSON(object: any): ProvisionedAccountStatus;
 export declare function provisionedAccountStatusToJSON(object: ProvisionedAccountStatus): string;
 export declare function provisionedAccountStatusToNumber(object: ProvisionedAccountStatus): number;
+export declare enum LmsAccountReadinessStatus {
+    LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED = "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED",
+    LMS_ACCOUNT_READINESS_STATUS_READY = "LMS_ACCOUNT_READINESS_STATUS_READY",
+    LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED = "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED",
+    LMS_ACCOUNT_READINESS_STATUS_INACTIVE = "LMS_ACCOUNT_READINESS_STATUS_INACTIVE",
+    LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED = "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function lmsAccountReadinessStatusFromJSON(object: any): LmsAccountReadinessStatus;
+export declare function lmsAccountReadinessStatusToJSON(object: LmsAccountReadinessStatus): string;
+export declare function lmsAccountReadinessStatusToNumber(object: LmsAccountReadinessStatus): number;
 export interface ProvisionedAccount {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -18,8 +29,23 @@ export interface ProvisionedAccount {
     provider?: LmsProviderType | undefined;
     status?: ProvisionedAccountStatus | undefined;
     lms_user_id?: string | undefined;
+    externally_managed?: boolean | undefined;
+    canvas_connection?: string | undefined;
+}
+export interface CanvasAccount {
+    id?: string | undefined;
+    name?: string | undefined;
+    login_id?: string | undefined;
+    email?: string | undefined;
+    sis_user_id?: string | undefined;
+}
+export interface LmsAccountReadiness {
+    user_id: ObjectId | undefined;
+    status?: LmsAccountReadinessStatus | undefined;
 }
 export declare const ProvisionedAccount: MessageFns<ProvisionedAccount>;
+export declare const CanvasAccount: MessageFns<CanvasAccount>;
+export declare const LmsAccountReadiness: MessageFns<LmsAccountReadiness>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { LmsProviderType } from "../class_service/lms_course";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { ProvisionedAccount } from "./provisioned_account";
+import { CanvasAccount, LmsAccountReadiness, ProvisionedAccount } from "./provisioned_account";
 export declare const protobufPackage = "user_service";
 export interface ListProvisionedAccountsForStudentRequest {
     context: RequestContext | undefined;
@@ -51,6 +51,32 @@ export interface ResetProvisionedAccountPasswordForTeacherRequest {
     provisioned_account_id: ObjectId | undefined;
     password?: string | undefined;
 }
+export interface SearchCanvasAccountsRequest {
+    context: RequestContext | undefined;
+    user_id: ObjectId | undefined;
+    for_student?: boolean | undefined;
+    search_term?: string | undefined;
+    page?: number | undefined;
+}
+export interface SearchCanvasAccountsResponse {
+    accounts: CanvasAccount[];
+    next_page?: number | undefined;
+}
+export interface LinkCanvasAccountRequest {
+    context: RequestContext | undefined;
+    user_id: ObjectId | undefined;
+    for_student?: boolean | undefined;
+    canvas_user_id?: string | undefined;
+}
+export interface CheckLmsAccountReadinessRequest {
+    context: RequestContext | undefined;
+    user_ids: ObjectId[];
+    for_student?: boolean | undefined;
+    provider?: LmsProviderType | undefined;
+}
+export interface CheckLmsAccountReadinessResponse {
+    accounts: LmsAccountReadiness[];
+}
 export declare const ListProvisionedAccountsForStudentRequest: MessageFns<ListProvisionedAccountsForStudentRequest>;
 export declare const ListProvisionedAccountsForTeacherRequest: MessageFns<ListProvisionedAccountsForTeacherRequest>;
 export declare const ListProvisionedAccountsResponse: MessageFns<ListProvisionedAccountsResponse>;
@@ -62,6 +88,11 @@ export declare const DeactivateProvisionedAccountForStudentRequest: MessageFns<D
 export declare const DeactivateProvisionedAccountForTeacherRequest: MessageFns<DeactivateProvisionedAccountForTeacherRequest>;
 export declare const ResetProvisionedAccountPasswordForStudentRequest: MessageFns<ResetProvisionedAccountPasswordForStudentRequest>;
 export declare const ResetProvisionedAccountPasswordForTeacherRequest: MessageFns<ResetProvisionedAccountPasswordForTeacherRequest>;
+export declare const SearchCanvasAccountsRequest: MessageFns<SearchCanvasAccountsRequest>;
+export declare const SearchCanvasAccountsResponse: MessageFns<SearchCanvasAccountsResponse>;
+export declare const LinkCanvasAccountRequest: MessageFns<LinkCanvasAccountRequest>;
+export declare const CheckLmsAccountReadinessRequest: MessageFns<CheckLmsAccountReadinessRequest>;
+export declare const CheckLmsAccountReadinessResponse: MessageFns<CheckLmsAccountReadinessResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

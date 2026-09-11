@@ -61,6 +61,75 @@ export function provisionedAccountStatusToNumber(object: ProvisionedAccountStatu
   }
 }
 
+export enum LmsAccountReadinessStatus {
+  LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED = "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED",
+  LMS_ACCOUNT_READINESS_STATUS_READY = "LMS_ACCOUNT_READINESS_STATUS_READY",
+  LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED = "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED",
+  LMS_ACCOUNT_READINESS_STATUS_INACTIVE = "LMS_ACCOUNT_READINESS_STATUS_INACTIVE",
+  LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED = "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function lmsAccountReadinessStatusFromJSON(object: any): LmsAccountReadinessStatus {
+  switch (object) {
+    case 0:
+    case "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED":
+      return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED;
+    case 1:
+    case "LMS_ACCOUNT_READINESS_STATUS_READY":
+      return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_READY;
+    case 2:
+    case "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED":
+      return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED;
+    case 3:
+    case "LMS_ACCOUNT_READINESS_STATUS_INACTIVE":
+      return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_INACTIVE;
+    case 4:
+    case "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED":
+      return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return LmsAccountReadinessStatus.UNRECOGNIZED;
+  }
+}
+
+export function lmsAccountReadinessStatusToJSON(object: LmsAccountReadinessStatus): string {
+  switch (object) {
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED:
+      return "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED";
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_READY:
+      return "LMS_ACCOUNT_READINESS_STATUS_READY";
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED:
+      return "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED";
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_INACTIVE:
+      return "LMS_ACCOUNT_READINESS_STATUS_INACTIVE";
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED:
+      return "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED";
+    case LmsAccountReadinessStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function lmsAccountReadinessStatusToNumber(object: LmsAccountReadinessStatus): number {
+  switch (object) {
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED:
+      return 0;
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_READY:
+      return 1;
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED:
+      return 2;
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_INACTIVE:
+      return 3;
+    case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED:
+      return 4;
+    case LmsAccountReadinessStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface ProvisionedAccount {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -69,6 +138,21 @@ export interface ProvisionedAccount {
   provider?: LmsProviderType | undefined;
   status?: ProvisionedAccountStatus | undefined;
   lms_user_id?: string | undefined;
+  externally_managed?: boolean | undefined;
+  canvas_connection?: string | undefined;
+}
+
+export interface CanvasAccount {
+  id?: string | undefined;
+  name?: string | undefined;
+  login_id?: string | undefined;
+  email?: string | undefined;
+  sis_user_id?: string | undefined;
+}
+
+export interface LmsAccountReadiness {
+  user_id: ObjectId | undefined;
+  status?: LmsAccountReadinessStatus | undefined;
 }
 
 function createBaseProvisionedAccount(): ProvisionedAccount {
@@ -80,6 +164,8 @@ function createBaseProvisionedAccount(): ProvisionedAccount {
     provider: undefined,
     status: undefined,
     lms_user_id: undefined,
+    externally_managed: undefined,
+    canvas_connection: undefined,
   };
 }
 
@@ -105,6 +191,12 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
     }
     if (message.lms_user_id !== undefined) {
       writer.uint32(58).string(message.lms_user_id);
+    }
+    if (message.externally_managed !== undefined) {
+      writer.uint32(64).bool(message.externally_managed);
+    }
+    if (message.canvas_connection !== undefined) {
+      writer.uint32(74).string(message.canvas_connection);
     }
     return writer;
   },
@@ -165,6 +257,20 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
 
           message.lms_user_id = reader.string();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.externally_managed = reader.bool();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.canvas_connection = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -183,6 +289,8 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
       provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
       status: isSet(object.status) ? provisionedAccountStatusFromJSON(object.status) : undefined,
       lms_user_id: isSet(object.lmsUserId) ? globalThis.String(object.lmsUserId) : undefined,
+      externally_managed: isSet(object.externallyManaged) ? globalThis.Boolean(object.externallyManaged) : undefined,
+      canvas_connection: isSet(object.canvasConnection) ? globalThis.String(object.canvasConnection) : undefined,
     };
   },
 
@@ -209,6 +317,12 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
     if (message.lms_user_id !== undefined) {
       obj.lmsUserId = message.lms_user_id;
     }
+    if (message.externally_managed !== undefined) {
+      obj.externallyManaged = message.externally_managed;
+    }
+    if (message.canvas_connection !== undefined) {
+      obj.canvasConnection = message.canvas_connection;
+    }
     return obj;
   },
 
@@ -230,6 +344,203 @@ export const ProvisionedAccount: MessageFns<ProvisionedAccount> = {
     message.provider = object.provider ?? undefined;
     message.status = object.status ?? undefined;
     message.lms_user_id = object.lms_user_id ?? undefined;
+    message.externally_managed = object.externally_managed ?? undefined;
+    message.canvas_connection = object.canvas_connection ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCanvasAccount(): CanvasAccount {
+  return { id: undefined, name: undefined, login_id: undefined, email: undefined, sis_user_id: undefined };
+}
+
+export const CanvasAccount: MessageFns<CanvasAccount> = {
+  encode(message: CanvasAccount, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.login_id !== undefined) {
+      writer.uint32(26).string(message.login_id);
+    }
+    if (message.email !== undefined) {
+      writer.uint32(34).string(message.email);
+    }
+    if (message.sis_user_id !== undefined) {
+      writer.uint32(42).string(message.sis_user_id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CanvasAccount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCanvasAccount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.login_id = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.sis_user_id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CanvasAccount {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      sis_user_id: isSet(object.sisUserId) ? globalThis.String(object.sisUserId) : undefined,
+    };
+  },
+
+  toJSON(message: CanvasAccount): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = message.id;
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.login_id !== undefined) {
+      obj.loginId = message.login_id;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
+    if (message.sis_user_id !== undefined) {
+      obj.sisUserId = message.sis_user_id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CanvasAccount>, I>>(base?: I): CanvasAccount {
+    return CanvasAccount.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CanvasAccount>, I>>(object: I): CanvasAccount {
+    const message = createBaseCanvasAccount();
+    message.id = object.id ?? undefined;
+    message.name = object.name ?? undefined;
+    message.login_id = object.login_id ?? undefined;
+    message.email = object.email ?? undefined;
+    message.sis_user_id = object.sis_user_id ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLmsAccountReadiness(): LmsAccountReadiness {
+  return { user_id: undefined, status: undefined };
+}
+
+export const LmsAccountReadiness: MessageFns<LmsAccountReadiness> = {
+  encode(message: LmsAccountReadiness, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.user_id !== undefined) {
+      ObjectId.encode(message.user_id, writer.uint32(10).fork()).join();
+    }
+    if (message.status !== undefined) {
+      writer.uint32(16).int32(lmsAccountReadinessStatusToNumber(message.status));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsAccountReadiness {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLmsAccountReadiness();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.user_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.status = lmsAccountReadinessStatusFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LmsAccountReadiness {
+    return {
+      user_id: isSet(object.userId) ? ObjectId.fromJSON(object.userId) : undefined,
+      status: isSet(object.status) ? lmsAccountReadinessStatusFromJSON(object.status) : undefined,
+    };
+  },
+
+  toJSON(message: LmsAccountReadiness): unknown {
+    const obj: any = {};
+    if (message.user_id !== undefined) {
+      obj.userId = ObjectId.toJSON(message.user_id);
+    }
+    if (message.status !== undefined) {
+      obj.status = lmsAccountReadinessStatusToJSON(message.status);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LmsAccountReadiness>, I>>(base?: I): LmsAccountReadiness {
+    return LmsAccountReadiness.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LmsAccountReadiness>, I>>(object: I): LmsAccountReadiness {
+    const message = createBaseLmsAccountReadiness();
+    message.user_id = (object.user_id !== undefined && object.user_id !== null)
+      ? ObjectId.fromPartial(object.user_id)
+      : undefined;
+    message.status = object.status ?? undefined;
     return message;
   },
 };

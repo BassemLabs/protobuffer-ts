@@ -5,10 +5,13 @@
 //   protoc               unknown
 // source: user_service/provisioned_account.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProvisionedAccount = exports.ProvisionedAccountStatus = exports.protobufPackage = void 0;
+exports.LmsAccountReadiness = exports.CanvasAccount = exports.ProvisionedAccount = exports.LmsAccountReadinessStatus = exports.ProvisionedAccountStatus = exports.protobufPackage = void 0;
 exports.provisionedAccountStatusFromJSON = provisionedAccountStatusFromJSON;
 exports.provisionedAccountStatusToJSON = provisionedAccountStatusToJSON;
 exports.provisionedAccountStatusToNumber = provisionedAccountStatusToNumber;
+exports.lmsAccountReadinessStatusFromJSON = lmsAccountReadinessStatusFromJSON;
+exports.lmsAccountReadinessStatusToJSON = lmsAccountReadinessStatusToJSON;
+exports.lmsAccountReadinessStatusToNumber = lmsAccountReadinessStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const lms_course_1 = require("../class_service/lms_course");
@@ -56,6 +59,72 @@ function provisionedAccountStatusToNumber(object) {
             return -1;
     }
 }
+var LmsAccountReadinessStatus;
+(function (LmsAccountReadinessStatus) {
+    LmsAccountReadinessStatus["LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED"] = "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED";
+    LmsAccountReadinessStatus["LMS_ACCOUNT_READINESS_STATUS_READY"] = "LMS_ACCOUNT_READINESS_STATUS_READY";
+    LmsAccountReadinessStatus["LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED"] = "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED";
+    LmsAccountReadinessStatus["LMS_ACCOUNT_READINESS_STATUS_INACTIVE"] = "LMS_ACCOUNT_READINESS_STATUS_INACTIVE";
+    LmsAccountReadinessStatus["LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED"] = "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED";
+    LmsAccountReadinessStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(LmsAccountReadinessStatus || (exports.LmsAccountReadinessStatus = LmsAccountReadinessStatus = {}));
+function lmsAccountReadinessStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED":
+            return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED;
+        case 1:
+        case "LMS_ACCOUNT_READINESS_STATUS_READY":
+            return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_READY;
+        case 2:
+        case "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED":
+            return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED;
+        case 3:
+        case "LMS_ACCOUNT_READINESS_STATUS_INACTIVE":
+            return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_INACTIVE;
+        case 4:
+        case "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED":
+            return LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return LmsAccountReadinessStatus.UNRECOGNIZED;
+    }
+}
+function lmsAccountReadinessStatusToJSON(object) {
+    switch (object) {
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED:
+            return "LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED";
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_READY:
+            return "LMS_ACCOUNT_READINESS_STATUS_READY";
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED:
+            return "LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED";
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_INACTIVE:
+            return "LMS_ACCOUNT_READINESS_STATUS_INACTIVE";
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED:
+            return "LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED";
+        case LmsAccountReadinessStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function lmsAccountReadinessStatusToNumber(object) {
+    switch (object) {
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_UNSPECIFIED:
+            return 0;
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_READY:
+            return 1;
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_NOT_LINKED:
+            return 2;
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_INACTIVE:
+            return 3;
+        case LmsAccountReadinessStatus.LMS_ACCOUNT_READINESS_STATUS_CONNECTION_CHANGED:
+            return 4;
+        case LmsAccountReadinessStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseProvisionedAccount() {
     return {
         id: undefined,
@@ -65,6 +134,8 @@ function createBaseProvisionedAccount() {
         provider: undefined,
         status: undefined,
         lms_user_id: undefined,
+        externally_managed: undefined,
+        canvas_connection: undefined,
     };
 }
 exports.ProvisionedAccount = {
@@ -89,6 +160,12 @@ exports.ProvisionedAccount = {
         }
         if (message.lms_user_id !== undefined) {
             writer.uint32(58).string(message.lms_user_id);
+        }
+        if (message.externally_managed !== undefined) {
+            writer.uint32(64).bool(message.externally_managed);
+        }
+        if (message.canvas_connection !== undefined) {
+            writer.uint32(74).string(message.canvas_connection);
         }
         return writer;
     },
@@ -141,6 +218,18 @@ exports.ProvisionedAccount = {
                     }
                     message.lms_user_id = reader.string();
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.externally_managed = reader.bool();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.canvas_connection = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -158,6 +247,8 @@ exports.ProvisionedAccount = {
             provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
             status: isSet(object.status) ? provisionedAccountStatusFromJSON(object.status) : undefined,
             lms_user_id: isSet(object.lmsUserId) ? globalThis.String(object.lmsUserId) : undefined,
+            externally_managed: isSet(object.externallyManaged) ? globalThis.Boolean(object.externallyManaged) : undefined,
+            canvas_connection: isSet(object.canvasConnection) ? globalThis.String(object.canvasConnection) : undefined,
         };
     },
     toJSON(message) {
@@ -183,6 +274,12 @@ exports.ProvisionedAccount = {
         if (message.lms_user_id !== undefined) {
             obj.lmsUserId = message.lms_user_id;
         }
+        if (message.externally_managed !== undefined) {
+            obj.externallyManaged = message.externally_managed;
+        }
+        if (message.canvas_connection !== undefined) {
+            obj.canvasConnection = message.canvas_connection;
+        }
         return obj;
     },
     create(base) {
@@ -203,6 +300,184 @@ exports.ProvisionedAccount = {
         message.provider = object.provider ?? undefined;
         message.status = object.status ?? undefined;
         message.lms_user_id = object.lms_user_id ?? undefined;
+        message.externally_managed = object.externally_managed ?? undefined;
+        message.canvas_connection = object.canvas_connection ?? undefined;
+        return message;
+    },
+};
+function createBaseCanvasAccount() {
+    return { id: undefined, name: undefined, login_id: undefined, email: undefined, sis_user_id: undefined };
+}
+exports.CanvasAccount = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.login_id !== undefined) {
+            writer.uint32(26).string(message.login_id);
+        }
+        if (message.email !== undefined) {
+            writer.uint32(34).string(message.email);
+        }
+        if (message.sis_user_id !== undefined) {
+            writer.uint32(42).string(message.sis_user_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCanvasAccount();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.login_id = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.email = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.sis_user_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+            sis_user_id: isSet(object.sisUserId) ? globalThis.String(object.sisUserId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = message.id;
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.login_id !== undefined) {
+            obj.loginId = message.login_id;
+        }
+        if (message.email !== undefined) {
+            obj.email = message.email;
+        }
+        if (message.sis_user_id !== undefined) {
+            obj.sisUserId = message.sis_user_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CanvasAccount.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCanvasAccount();
+        message.id = object.id ?? undefined;
+        message.name = object.name ?? undefined;
+        message.login_id = object.login_id ?? undefined;
+        message.email = object.email ?? undefined;
+        message.sis_user_id = object.sis_user_id ?? undefined;
+        return message;
+    },
+};
+function createBaseLmsAccountReadiness() {
+    return { user_id: undefined, status: undefined };
+}
+exports.LmsAccountReadiness = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.user_id !== undefined) {
+            object_id_1.ObjectId.encode(message.user_id, writer.uint32(10).fork()).join();
+        }
+        if (message.status !== undefined) {
+            writer.uint32(16).int32(lmsAccountReadinessStatusToNumber(message.status));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLmsAccountReadiness();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.user_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.status = lmsAccountReadinessStatusFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            status: isSet(object.status) ? lmsAccountReadinessStatusFromJSON(object.status) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.user_id !== undefined) {
+            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+        }
+        if (message.status !== undefined) {
+            obj.status = lmsAccountReadinessStatusToJSON(message.status);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LmsAccountReadiness.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLmsAccountReadiness();
+        message.user_id = (object.user_id !== undefined && object.user_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.user_id)
+            : undefined;
+        message.status = object.status ?? undefined;
         return message;
     },
 };

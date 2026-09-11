@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/provisioned_account_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResetProvisionedAccountPasswordForTeacherRequest = exports.ResetProvisionedAccountPasswordForStudentRequest = exports.DeactivateProvisionedAccountForTeacherRequest = exports.DeactivateProvisionedAccountForStudentRequest = exports.ActivateProvisionedAccountForTeacherRequest = exports.ActivateProvisionedAccountForStudentRequest = exports.CreateProvisionedAccountForTeacherRequest = exports.CreateProvisionedAccountForStudentRequest = exports.ListProvisionedAccountsResponse = exports.ListProvisionedAccountsForTeacherRequest = exports.ListProvisionedAccountsForStudentRequest = exports.protobufPackage = void 0;
+exports.CheckLmsAccountReadinessResponse = exports.CheckLmsAccountReadinessRequest = exports.LinkCanvasAccountRequest = exports.SearchCanvasAccountsResponse = exports.SearchCanvasAccountsRequest = exports.ResetProvisionedAccountPasswordForTeacherRequest = exports.ResetProvisionedAccountPasswordForStudentRequest = exports.DeactivateProvisionedAccountForTeacherRequest = exports.DeactivateProvisionedAccountForStudentRequest = exports.ActivateProvisionedAccountForTeacherRequest = exports.ActivateProvisionedAccountForStudentRequest = exports.CreateProvisionedAccountForTeacherRequest = exports.CreateProvisionedAccountForStudentRequest = exports.ListProvisionedAccountsResponse = exports.ListProvisionedAccountsForTeacherRequest = exports.ListProvisionedAccountsForStudentRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const lms_course_1 = require("../class_service/lms_course");
@@ -838,6 +838,434 @@ exports.ResetProvisionedAccountPasswordForTeacherRequest = {
                 ? object_id_1.ObjectId.fromPartial(object.provisioned_account_id)
                 : undefined;
         message.password = object.password ?? undefined;
+        return message;
+    },
+};
+function createBaseSearchCanvasAccountsRequest() {
+    return { context: undefined, user_id: undefined, for_student: undefined, search_term: undefined, page: undefined };
+}
+exports.SearchCanvasAccountsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.user_id !== undefined) {
+            object_id_1.ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
+        }
+        if (message.for_student !== undefined) {
+            writer.uint32(24).bool(message.for_student);
+        }
+        if (message.search_term !== undefined) {
+            writer.uint32(34).string(message.search_term);
+        }
+        if (message.page !== undefined) {
+            writer.uint32(40).uint32(message.page);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchCanvasAccountsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.user_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.for_student = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.search_term = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.page = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            for_student: isSet(object.forStudent) ? globalThis.Boolean(object.forStudent) : undefined,
+            search_term: isSet(object.searchTerm) ? globalThis.String(object.searchTerm) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.user_id !== undefined) {
+            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+        }
+        if (message.for_student !== undefined) {
+            obj.forStudent = message.for_student;
+        }
+        if (message.search_term !== undefined) {
+            obj.searchTerm = message.search_term;
+        }
+        if (message.page !== undefined) {
+            obj.page = Math.round(message.page);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchCanvasAccountsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchCanvasAccountsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.user_id = (object.user_id !== undefined && object.user_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.user_id)
+            : undefined;
+        message.for_student = object.for_student ?? undefined;
+        message.search_term = object.search_term ?? undefined;
+        message.page = object.page ?? undefined;
+        return message;
+    },
+};
+function createBaseSearchCanvasAccountsResponse() {
+    return { accounts: [], next_page: undefined };
+}
+exports.SearchCanvasAccountsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.accounts) {
+            provisioned_account_1.CanvasAccount.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.next_page !== undefined) {
+            writer.uint32(16).uint32(message.next_page);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchCanvasAccountsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.accounts.push(provisioned_account_1.CanvasAccount.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.next_page = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            accounts: globalThis.Array.isArray(object?.accounts)
+                ? object.accounts.map((e) => provisioned_account_1.CanvasAccount.fromJSON(e))
+                : [],
+            next_page: isSet(object.nextPage) ? globalThis.Number(object.nextPage) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.accounts?.length) {
+            obj.accounts = message.accounts.map((e) => provisioned_account_1.CanvasAccount.toJSON(e));
+        }
+        if (message.next_page !== undefined) {
+            obj.nextPage = Math.round(message.next_page);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchCanvasAccountsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchCanvasAccountsResponse();
+        message.accounts = object.accounts?.map((e) => provisioned_account_1.CanvasAccount.fromPartial(e)) || [];
+        message.next_page = object.next_page ?? undefined;
+        return message;
+    },
+};
+function createBaseLinkCanvasAccountRequest() {
+    return { context: undefined, user_id: undefined, for_student: undefined, canvas_user_id: undefined };
+}
+exports.LinkCanvasAccountRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.user_id !== undefined) {
+            object_id_1.ObjectId.encode(message.user_id, writer.uint32(18).fork()).join();
+        }
+        if (message.for_student !== undefined) {
+            writer.uint32(24).bool(message.for_student);
+        }
+        if (message.canvas_user_id !== undefined) {
+            writer.uint32(34).string(message.canvas_user_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLinkCanvasAccountRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.user_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.for_student = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.canvas_user_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            user_id: isSet(object.userId) ? object_id_1.ObjectId.fromJSON(object.userId) : undefined,
+            for_student: isSet(object.forStudent) ? globalThis.Boolean(object.forStudent) : undefined,
+            canvas_user_id: isSet(object.canvasUserId) ? globalThis.String(object.canvasUserId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.user_id !== undefined) {
+            obj.userId = object_id_1.ObjectId.toJSON(message.user_id);
+        }
+        if (message.for_student !== undefined) {
+            obj.forStudent = message.for_student;
+        }
+        if (message.canvas_user_id !== undefined) {
+            obj.canvasUserId = message.canvas_user_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LinkCanvasAccountRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLinkCanvasAccountRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.user_id = (object.user_id !== undefined && object.user_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.user_id)
+            : undefined;
+        message.for_student = object.for_student ?? undefined;
+        message.canvas_user_id = object.canvas_user_id ?? undefined;
+        return message;
+    },
+};
+function createBaseCheckLmsAccountReadinessRequest() {
+    return { context: undefined, user_ids: [], for_student: undefined, provider: undefined };
+}
+exports.CheckLmsAccountReadinessRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.user_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        if (message.for_student !== undefined) {
+            writer.uint32(24).bool(message.for_student);
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(32).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCheckLmsAccountReadinessRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.user_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.for_student = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            user_ids: globalThis.Array.isArray(object?.userIds) ? object.userIds.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            for_student: isSet(object.forStudent) ? globalThis.Boolean(object.forStudent) : undefined,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.user_ids?.length) {
+            obj.userIds = message.user_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.for_student !== undefined) {
+            obj.forStudent = message.for_student;
+        }
+        if (message.provider !== undefined) {
+            obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CheckLmsAccountReadinessRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCheckLmsAccountReadinessRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.user_ids = object.user_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.for_student = object.for_student ?? undefined;
+        message.provider = object.provider ?? undefined;
+        return message;
+    },
+};
+function createBaseCheckLmsAccountReadinessResponse() {
+    return { accounts: [] };
+}
+exports.CheckLmsAccountReadinessResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.accounts) {
+            provisioned_account_1.LmsAccountReadiness.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCheckLmsAccountReadinessResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.accounts.push(provisioned_account_1.LmsAccountReadiness.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            accounts: globalThis.Array.isArray(object?.accounts)
+                ? object.accounts.map((e) => provisioned_account_1.LmsAccountReadiness.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.accounts?.length) {
+            obj.accounts = message.accounts.map((e) => provisioned_account_1.LmsAccountReadiness.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CheckLmsAccountReadinessResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCheckLmsAccountReadinessResponse();
+        message.accounts = object.accounts?.map((e) => provisioned_account_1.LmsAccountReadiness.fromPartial(e)) || [];
         return message;
     },
 };
