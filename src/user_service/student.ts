@@ -264,6 +264,8 @@ export enum StudentExportColumn {
   STUDENT_EXPORT_COLUMN_SCHOOL_YEAR = "STUDENT_EXPORT_COLUMN_SCHOOL_YEAR",
   STUDENT_EXPORT_COLUMN_STATUS = "STUDENT_EXPORT_COLUMN_STATUS",
   STUDENT_EXPORT_COLUMN_GRADE = "STUDENT_EXPORT_COLUMN_GRADE",
+  STUDENT_EXPORT_COLUMN_USERNAME = "STUDENT_EXPORT_COLUMN_USERNAME",
+  STUDENT_EXPORT_COLUMN_EMAIL = "STUDENT_EXPORT_COLUMN_EMAIL",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -290,6 +292,12 @@ export function studentExportColumnFromJSON(object: any): StudentExportColumn {
     case 6:
     case "STUDENT_EXPORT_COLUMN_GRADE":
       return StudentExportColumn.STUDENT_EXPORT_COLUMN_GRADE;
+    case 7:
+    case "STUDENT_EXPORT_COLUMN_USERNAME":
+      return StudentExportColumn.STUDENT_EXPORT_COLUMN_USERNAME;
+    case 8:
+    case "STUDENT_EXPORT_COLUMN_EMAIL":
+      return StudentExportColumn.STUDENT_EXPORT_COLUMN_EMAIL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -313,6 +321,10 @@ export function studentExportColumnToJSON(object: StudentExportColumn): string {
       return "STUDENT_EXPORT_COLUMN_STATUS";
     case StudentExportColumn.STUDENT_EXPORT_COLUMN_GRADE:
       return "STUDENT_EXPORT_COLUMN_GRADE";
+    case StudentExportColumn.STUDENT_EXPORT_COLUMN_USERNAME:
+      return "STUDENT_EXPORT_COLUMN_USERNAME";
+    case StudentExportColumn.STUDENT_EXPORT_COLUMN_EMAIL:
+      return "STUDENT_EXPORT_COLUMN_EMAIL";
     case StudentExportColumn.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -335,6 +347,10 @@ export function studentExportColumnToNumber(object: StudentExportColumn): number
       return 5;
     case StudentExportColumn.STUDENT_EXPORT_COLUMN_GRADE:
       return 6;
+    case StudentExportColumn.STUDENT_EXPORT_COLUMN_USERNAME:
+      return 7;
+    case StudentExportColumn.STUDENT_EXPORT_COLUMN_EMAIL:
+      return 8;
     case StudentExportColumn.UNRECOGNIZED:
     default:
       return -1;
@@ -359,6 +375,8 @@ export interface StudentExportRow {
   school_year?: string | undefined;
   status?: StudentStatus | undefined;
   grade?: StudentGrade | undefined;
+  username?: string | undefined;
+  email?: string | undefined;
 }
 
 /** Full student model with all fields */
@@ -657,6 +675,8 @@ function createBaseStudentExportRow(): StudentExportRow {
     school_year: undefined,
     status: undefined,
     grade: undefined,
+    username: undefined,
+    email: undefined,
   };
 }
 
@@ -679,6 +699,12 @@ export const StudentExportRow: MessageFns<StudentExportRow> = {
     }
     if (message.grade !== undefined) {
       writer.uint32(48).int32(studentGradeToNumber(message.grade));
+    }
+    if (message.username !== undefined) {
+      writer.uint32(58).string(message.username);
+    }
+    if (message.email !== undefined) {
+      writer.uint32(66).string(message.email);
     }
     return writer;
   },
@@ -732,6 +758,20 @@ export const StudentExportRow: MessageFns<StudentExportRow> = {
 
           message.grade = studentGradeFromJSON(reader.int32());
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -749,6 +789,8 @@ export const StudentExportRow: MessageFns<StudentExportRow> = {
       school_year: isSet(object.schoolYear) ? globalThis.String(object.schoolYear) : undefined,
       status: isSet(object.status) ? studentStatusFromJSON(object.status) : undefined,
       grade: isSet(object.grade) ? studentGradeFromJSON(object.grade) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
     };
   },
 
@@ -772,6 +814,12 @@ export const StudentExportRow: MessageFns<StudentExportRow> = {
     if (message.grade !== undefined) {
       obj.grade = studentGradeToJSON(message.grade);
     }
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
     return obj;
   },
 
@@ -786,6 +834,8 @@ export const StudentExportRow: MessageFns<StudentExportRow> = {
     message.school_year = object.school_year ?? undefined;
     message.status = object.status ?? undefined;
     message.grade = object.grade ?? undefined;
+    message.username = object.username ?? undefined;
+    message.email = object.email ?? undefined;
     return message;
   },
 };

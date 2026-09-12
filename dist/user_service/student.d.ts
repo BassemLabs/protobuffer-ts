@@ -47,6 +47,8 @@ export declare enum StudentExportColumn {
     STUDENT_EXPORT_COLUMN_SCHOOL_YEAR = "STUDENT_EXPORT_COLUMN_SCHOOL_YEAR",
     STUDENT_EXPORT_COLUMN_STATUS = "STUDENT_EXPORT_COLUMN_STATUS",
     STUDENT_EXPORT_COLUMN_GRADE = "STUDENT_EXPORT_COLUMN_GRADE",
+    STUDENT_EXPORT_COLUMN_USERNAME = "STUDENT_EXPORT_COLUMN_USERNAME",
+    STUDENT_EXPORT_COLUMN_EMAIL = "STUDENT_EXPORT_COLUMN_EMAIL",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function studentExportColumnFromJSON(object: any): StudentExportColumn;
@@ -68,6 +70,8 @@ export interface StudentExportRow {
     school_year?: string | undefined;
     status?: StudentStatus | undefined;
     grade?: StudentGrade | undefined;
+    username?: string | undefined;
+    email?: string | undefined;
 }
 /** Full student model with all fields */
 export interface Student {
