@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/communication_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResolveTargetsResponse = exports.ResolveTargetsRequest = exports.GetRecipientsListRequest = exports.GetBroadcastRequest = exports.GetBroadcastsListRequest = exports.SendCommunicationRequest = exports.PreviewCommunicationRequest = exports.protobufPackage = void 0;
+exports.ResolveTargetsResponse = exports.ResolveTargetsRequest = exports.GetRecipientsListRequest = exports.GetBroadcastRequest = exports.GetBroadcastsListRequest = exports.CommunicationAttachmentDownload = exports.RedeemCommunicationAttachmentRequest = exports.GetCommunicationAttachmentDownloadUrlRequest = exports.DeleteCommunicationAttachmentRequest = exports.UploadCommunicationAttachmentRequest = exports.SendCommunicationRequest = exports.PreviewCommunicationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const notification_type_1 = require("../utils/notification_type");
@@ -158,7 +158,14 @@ exports.PreviewCommunicationRequest = {
     },
 };
 function createBaseSendCommunicationRequest() {
-    return { context: undefined, filters: undefined, channels: [], subject: undefined, body: undefined };
+    return {
+        context: undefined,
+        filters: undefined,
+        channels: [],
+        subject: undefined,
+        body: undefined,
+        attachment_ids: [],
+    };
 }
 exports.SendCommunicationRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -178,6 +185,9 @@ exports.SendCommunicationRequest = {
         }
         if (message.body !== undefined) {
             writer.uint32(42).string(message.body);
+        }
+        for (const v of message.attachment_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -225,6 +235,12 @@ exports.SendCommunicationRequest = {
                     }
                     message.body = reader.string();
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.attachment_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -242,6 +258,9 @@ exports.SendCommunicationRequest = {
                 : [],
             subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
             body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            attachment_ids: globalThis.Array.isArray(object?.attachmentIds)
+                ? object.attachmentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -261,6 +280,9 @@ exports.SendCommunicationRequest = {
         if (message.body !== undefined) {
             obj.body = message.body;
         }
+        if (message.attachment_ids?.length) {
+            obj.attachmentIds = message.attachment_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -277,6 +299,343 @@ exports.SendCommunicationRequest = {
         message.channels = object.channels?.map((e) => e) || [];
         message.subject = object.subject ?? undefined;
         message.body = object.body ?? undefined;
+        message.attachment_ids = object.attachment_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseUploadCommunicationAttachmentRequest() {
+    return { context: undefined, file_name: undefined, content_type: undefined, file_content: undefined };
+}
+exports.UploadCommunicationAttachmentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.file_name !== undefined) {
+            writer.uint32(18).string(message.file_name);
+        }
+        if (message.content_type !== undefined) {
+            writer.uint32(26).string(message.content_type);
+        }
+        if (message.file_content !== undefined) {
+            writer.uint32(34).bytes(message.file_content);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUploadCommunicationAttachmentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.file_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.content_type = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.file_content = reader.bytes();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+            content_type: isSet(object.contentType) ? globalThis.String(object.contentType) : undefined,
+            file_content: isSet(object.fileContent) ? bytesFromBase64(object.fileContent) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.file_name !== undefined) {
+            obj.fileName = message.file_name;
+        }
+        if (message.content_type !== undefined) {
+            obj.contentType = message.content_type;
+        }
+        if (message.file_content !== undefined) {
+            obj.fileContent = base64FromBytes(message.file_content);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UploadCommunicationAttachmentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUploadCommunicationAttachmentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.file_name = object.file_name ?? undefined;
+        message.content_type = object.content_type ?? undefined;
+        message.file_content = object.file_content ?? undefined;
+        return message;
+    },
+};
+function createBaseDeleteCommunicationAttachmentRequest() {
+    return { context: undefined, attachment_id: undefined };
+}
+exports.DeleteCommunicationAttachmentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.attachment_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attachment_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeleteCommunicationAttachmentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.attachment_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            attachment_id: isSet(object.attachmentId) ? object_id_1.ObjectId.fromJSON(object.attachmentId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.attachment_id !== undefined) {
+            obj.attachmentId = object_id_1.ObjectId.toJSON(message.attachment_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeleteCommunicationAttachmentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeleteCommunicationAttachmentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.attachment_id = (object.attachment_id !== undefined && object.attachment_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attachment_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetCommunicationAttachmentDownloadUrlRequest() {
+    return { context: undefined, attachment_id: undefined };
+}
+exports.GetCommunicationAttachmentDownloadUrlRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.attachment_id !== undefined) {
+            object_id_1.ObjectId.encode(message.attachment_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCommunicationAttachmentDownloadUrlRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.attachment_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            attachment_id: isSet(object.attachmentId) ? object_id_1.ObjectId.fromJSON(object.attachmentId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.attachment_id !== undefined) {
+            obj.attachmentId = object_id_1.ObjectId.toJSON(message.attachment_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCommunicationAttachmentDownloadUrlRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCommunicationAttachmentDownloadUrlRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.attachment_id = (object.attachment_id !== undefined && object.attachment_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.attachment_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseRedeemCommunicationAttachmentRequest() {
+    return { download_key: undefined };
+}
+exports.RedeemCommunicationAttachmentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.download_key !== undefined) {
+            writer.uint32(26).string(message.download_key);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRedeemCommunicationAttachmentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.download_key = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { download_key: isSet(object.downloadKey) ? globalThis.String(object.downloadKey) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.download_key !== undefined) {
+            obj.downloadKey = message.download_key;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RedeemCommunicationAttachmentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRedeemCommunicationAttachmentRequest();
+        message.download_key = object.download_key ?? undefined;
+        return message;
+    },
+};
+function createBaseCommunicationAttachmentDownload() {
+    return { download_url: undefined };
+}
+exports.CommunicationAttachmentDownload = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.download_url !== undefined) {
+            writer.uint32(10).string(message.download_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCommunicationAttachmentDownload();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.download_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { download_url: isSet(object.downloadUrl) ? globalThis.String(object.downloadUrl) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.download_url !== undefined) {
+            obj.downloadUrl = message.download_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CommunicationAttachmentDownload.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCommunicationAttachmentDownload();
+        message.download_url = object.download_url ?? undefined;
         return message;
     },
 };
@@ -640,6 +999,21 @@ exports.ResolveTargetsResponse = {
         return message;
     },
 };
+function bytesFromBase64(b64) {
+    const bin = globalThis.atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+        arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+}
+function base64FromBytes(arr) {
+    const bin = [];
+    arr.forEach((byte) => {
+        bin.push(globalThis.String.fromCharCode(byte));
+    });
+    return globalThis.btoa(bin.join(""));
+}
 function longToNumber(int64) {
     const num = globalThis.Number(int64.toString());
     if (num > globalThis.Number.MAX_SAFE_INTEGER) {

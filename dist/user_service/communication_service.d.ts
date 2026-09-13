@@ -18,6 +18,27 @@ export interface SendCommunicationRequest {
     channels: NotificationType[];
     subject?: string | undefined;
     body?: string | undefined;
+    attachment_ids: ObjectId[];
+}
+export interface UploadCommunicationAttachmentRequest {
+    context: RequestContext | undefined;
+    file_name?: string | undefined;
+    content_type?: string | undefined;
+    file_content?: Uint8Array | undefined;
+}
+export interface DeleteCommunicationAttachmentRequest {
+    context: RequestContext | undefined;
+    attachment_id: ObjectId | undefined;
+}
+export interface GetCommunicationAttachmentDownloadUrlRequest {
+    context: RequestContext | undefined;
+    attachment_id: ObjectId | undefined;
+}
+export interface RedeemCommunicationAttachmentRequest {
+    download_key?: string | undefined;
+}
+export interface CommunicationAttachmentDownload {
+    download_url?: string | undefined;
 }
 export interface GetBroadcastsListRequest {
     context: RequestContext | undefined;
@@ -42,6 +63,11 @@ export interface ResolveTargetsResponse {
 }
 export declare const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest>;
 export declare const SendCommunicationRequest: MessageFns<SendCommunicationRequest>;
+export declare const UploadCommunicationAttachmentRequest: MessageFns<UploadCommunicationAttachmentRequest>;
+export declare const DeleteCommunicationAttachmentRequest: MessageFns<DeleteCommunicationAttachmentRequest>;
+export declare const GetCommunicationAttachmentDownloadUrlRequest: MessageFns<GetCommunicationAttachmentDownloadUrlRequest>;
+export declare const RedeemCommunicationAttachmentRequest: MessageFns<RedeemCommunicationAttachmentRequest>;
+export declare const CommunicationAttachmentDownload: MessageFns<CommunicationAttachmentDownload>;
 export declare const GetBroadcastsListRequest: MessageFns<GetBroadcastsListRequest>;
 export declare const GetBroadcastRequest: MessageFns<GetBroadcastRequest>;
 export declare const GetRecipientsListRequest: MessageFns<GetRecipientsListRequest>;

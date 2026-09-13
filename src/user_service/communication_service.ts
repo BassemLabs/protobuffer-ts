@@ -40,6 +40,32 @@ export interface SendCommunicationRequest {
   channels: NotificationType[];
   subject?: string | undefined;
   body?: string | undefined;
+  attachment_ids: ObjectId[];
+}
+
+export interface UploadCommunicationAttachmentRequest {
+  context: RequestContext | undefined;
+  file_name?: string | undefined;
+  content_type?: string | undefined;
+  file_content?: Uint8Array | undefined;
+}
+
+export interface DeleteCommunicationAttachmentRequest {
+  context: RequestContext | undefined;
+  attachment_id: ObjectId | undefined;
+}
+
+export interface GetCommunicationAttachmentDownloadUrlRequest {
+  context: RequestContext | undefined;
+  attachment_id: ObjectId | undefined;
+}
+
+export interface RedeemCommunicationAttachmentRequest {
+  download_key?: string | undefined;
+}
+
+export interface CommunicationAttachmentDownload {
+  download_url?: string | undefined;
 }
 
 export interface GetBroadcastsListRequest {
@@ -228,7 +254,14 @@ export const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest
 };
 
 function createBaseSendCommunicationRequest(): SendCommunicationRequest {
-  return { context: undefined, filters: undefined, channels: [], subject: undefined, body: undefined };
+  return {
+    context: undefined,
+    filters: undefined,
+    channels: [],
+    subject: undefined,
+    body: undefined,
+    attachment_ids: [],
+  };
 }
 
 export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
@@ -249,6 +282,9 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     }
     if (message.body !== undefined) {
       writer.uint32(42).string(message.body);
+    }
+    for (const v of message.attachment_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -305,6 +341,13 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
 
           message.body = reader.string();
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.attachment_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -323,6 +366,9 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
         : [],
       subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
       body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      attachment_ids: globalThis.Array.isArray(object?.attachmentIds)
+        ? object.attachmentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -343,6 +389,9 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     if (message.body !== undefined) {
       obj.body = message.body;
     }
+    if (message.attachment_ids?.length) {
+      obj.attachmentIds = message.attachment_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -360,6 +409,404 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     message.channels = object.channels?.map((e) => e) || [];
     message.subject = object.subject ?? undefined;
     message.body = object.body ?? undefined;
+    message.attachment_ids = object.attachment_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUploadCommunicationAttachmentRequest(): UploadCommunicationAttachmentRequest {
+  return { context: undefined, file_name: undefined, content_type: undefined, file_content: undefined };
+}
+
+export const UploadCommunicationAttachmentRequest: MessageFns<UploadCommunicationAttachmentRequest> = {
+  encode(message: UploadCommunicationAttachmentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.file_name !== undefined) {
+      writer.uint32(18).string(message.file_name);
+    }
+    if (message.content_type !== undefined) {
+      writer.uint32(26).string(message.content_type);
+    }
+    if (message.file_content !== undefined) {
+      writer.uint32(34).bytes(message.file_content);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UploadCommunicationAttachmentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUploadCommunicationAttachmentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.file_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.content_type = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.file_content = reader.bytes();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UploadCommunicationAttachmentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+      content_type: isSet(object.contentType) ? globalThis.String(object.contentType) : undefined,
+      file_content: isSet(object.fileContent) ? bytesFromBase64(object.fileContent) : undefined,
+    };
+  },
+
+  toJSON(message: UploadCommunicationAttachmentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.file_name !== undefined) {
+      obj.fileName = message.file_name;
+    }
+    if (message.content_type !== undefined) {
+      obj.contentType = message.content_type;
+    }
+    if (message.file_content !== undefined) {
+      obj.fileContent = base64FromBytes(message.file_content);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UploadCommunicationAttachmentRequest>, I>>(
+    base?: I,
+  ): UploadCommunicationAttachmentRequest {
+    return UploadCommunicationAttachmentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UploadCommunicationAttachmentRequest>, I>>(
+    object: I,
+  ): UploadCommunicationAttachmentRequest {
+    const message = createBaseUploadCommunicationAttachmentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.file_name = object.file_name ?? undefined;
+    message.content_type = object.content_type ?? undefined;
+    message.file_content = object.file_content ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteCommunicationAttachmentRequest(): DeleteCommunicationAttachmentRequest {
+  return { context: undefined, attachment_id: undefined };
+}
+
+export const DeleteCommunicationAttachmentRequest: MessageFns<DeleteCommunicationAttachmentRequest> = {
+  encode(message: DeleteCommunicationAttachmentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.attachment_id !== undefined) {
+      ObjectId.encode(message.attachment_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteCommunicationAttachmentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteCommunicationAttachmentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.attachment_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteCommunicationAttachmentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      attachment_id: isSet(object.attachmentId) ? ObjectId.fromJSON(object.attachmentId) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteCommunicationAttachmentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.attachment_id !== undefined) {
+      obj.attachmentId = ObjectId.toJSON(message.attachment_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteCommunicationAttachmentRequest>, I>>(
+    base?: I,
+  ): DeleteCommunicationAttachmentRequest {
+    return DeleteCommunicationAttachmentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteCommunicationAttachmentRequest>, I>>(
+    object: I,
+  ): DeleteCommunicationAttachmentRequest {
+    const message = createBaseDeleteCommunicationAttachmentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.attachment_id = (object.attachment_id !== undefined && object.attachment_id !== null)
+      ? ObjectId.fromPartial(object.attachment_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetCommunicationAttachmentDownloadUrlRequest(): GetCommunicationAttachmentDownloadUrlRequest {
+  return { context: undefined, attachment_id: undefined };
+}
+
+export const GetCommunicationAttachmentDownloadUrlRequest: MessageFns<GetCommunicationAttachmentDownloadUrlRequest> = {
+  encode(
+    message: GetCommunicationAttachmentDownloadUrlRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.attachment_id !== undefined) {
+      ObjectId.encode(message.attachment_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCommunicationAttachmentDownloadUrlRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCommunicationAttachmentDownloadUrlRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.attachment_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCommunicationAttachmentDownloadUrlRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      attachment_id: isSet(object.attachmentId) ? ObjectId.fromJSON(object.attachmentId) : undefined,
+    };
+  },
+
+  toJSON(message: GetCommunicationAttachmentDownloadUrlRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.attachment_id !== undefined) {
+      obj.attachmentId = ObjectId.toJSON(message.attachment_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCommunicationAttachmentDownloadUrlRequest>, I>>(
+    base?: I,
+  ): GetCommunicationAttachmentDownloadUrlRequest {
+    return GetCommunicationAttachmentDownloadUrlRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCommunicationAttachmentDownloadUrlRequest>, I>>(
+    object: I,
+  ): GetCommunicationAttachmentDownloadUrlRequest {
+    const message = createBaseGetCommunicationAttachmentDownloadUrlRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.attachment_id = (object.attachment_id !== undefined && object.attachment_id !== null)
+      ? ObjectId.fromPartial(object.attachment_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseRedeemCommunicationAttachmentRequest(): RedeemCommunicationAttachmentRequest {
+  return { download_key: undefined };
+}
+
+export const RedeemCommunicationAttachmentRequest: MessageFns<RedeemCommunicationAttachmentRequest> = {
+  encode(message: RedeemCommunicationAttachmentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.download_key !== undefined) {
+      writer.uint32(26).string(message.download_key);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RedeemCommunicationAttachmentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRedeemCommunicationAttachmentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.download_key = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RedeemCommunicationAttachmentRequest {
+    return { download_key: isSet(object.downloadKey) ? globalThis.String(object.downloadKey) : undefined };
+  },
+
+  toJSON(message: RedeemCommunicationAttachmentRequest): unknown {
+    const obj: any = {};
+    if (message.download_key !== undefined) {
+      obj.downloadKey = message.download_key;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RedeemCommunicationAttachmentRequest>, I>>(
+    base?: I,
+  ): RedeemCommunicationAttachmentRequest {
+    return RedeemCommunicationAttachmentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RedeemCommunicationAttachmentRequest>, I>>(
+    object: I,
+  ): RedeemCommunicationAttachmentRequest {
+    const message = createBaseRedeemCommunicationAttachmentRequest();
+    message.download_key = object.download_key ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCommunicationAttachmentDownload(): CommunicationAttachmentDownload {
+  return { download_url: undefined };
+}
+
+export const CommunicationAttachmentDownload: MessageFns<CommunicationAttachmentDownload> = {
+  encode(message: CommunicationAttachmentDownload, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.download_url !== undefined) {
+      writer.uint32(10).string(message.download_url);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CommunicationAttachmentDownload {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCommunicationAttachmentDownload();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.download_url = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CommunicationAttachmentDownload {
+    return { download_url: isSet(object.downloadUrl) ? globalThis.String(object.downloadUrl) : undefined };
+  },
+
+  toJSON(message: CommunicationAttachmentDownload): unknown {
+    const obj: any = {};
+    if (message.download_url !== undefined) {
+      obj.downloadUrl = message.download_url;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CommunicationAttachmentDownload>, I>>(base?: I): CommunicationAttachmentDownload {
+    return CommunicationAttachmentDownload.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CommunicationAttachmentDownload>, I>>(
+    object: I,
+  ): CommunicationAttachmentDownload {
+    const message = createBaseCommunicationAttachmentDownload();
+    message.download_url = object.download_url ?? undefined;
     return message;
   },
 };
@@ -764,6 +1211,23 @@ export const ResolveTargetsResponse: MessageFns<ResolveTargetsResponse> = {
     return message;
   },
 };
+
+function bytesFromBase64(b64: string): Uint8Array {
+  const bin = globalThis.atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; ++i) {
+    arr[i] = bin.charCodeAt(i);
+  }
+  return arr;
+}
+
+function base64FromBytes(arr: Uint8Array): string {
+  const bin: string[] = [];
+  arr.forEach((byte) => {
+    bin.push(globalThis.String.fromCharCode(byte));
+  });
+  return globalThis.btoa(bin.join(""));
+}
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

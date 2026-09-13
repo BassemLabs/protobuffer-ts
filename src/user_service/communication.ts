@@ -80,6 +80,14 @@ export interface CommunicationBroadcast {
   channels: NotificationType[];
   subject?: string | undefined;
   body?: string | undefined;
+  attachments: CommunicationAttachment[];
+}
+
+export interface CommunicationAttachment {
+  id: ObjectId | undefined;
+  file_name?: string | undefined;
+  content_type?: string | undefined;
+  file_size_bytes?: number | undefined;
 }
 
 export interface CommunicationTarget {
@@ -308,6 +316,7 @@ function createBaseCommunicationBroadcast(): CommunicationBroadcast {
     channels: [],
     subject: undefined,
     body: undefined,
+    attachments: [],
   };
 }
 
@@ -332,6 +341,9 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     }
     if (message.body !== undefined) {
       writer.uint32(50).string(message.body);
+    }
+    for (const v of message.attachments) {
+      CommunicationAttachment.encode(v!, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -395,6 +407,13 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
 
           message.body = reader.string();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.attachments.push(CommunicationAttachment.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -414,6 +433,9 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
         : [],
       subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
       body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      attachments: globalThis.Array.isArray(object?.attachments)
+        ? object.attachments.map((e: any) => CommunicationAttachment.fromJSON(e))
+        : [],
     };
   },
 
@@ -437,6 +459,9 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     if (message.body !== undefined) {
       obj.body = message.body;
     }
+    if (message.attachments?.length) {
+      obj.attachments = message.attachments.map((e) => CommunicationAttachment.toJSON(e));
+    }
     return obj;
   },
 
@@ -455,6 +480,111 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     message.channels = object.channels?.map((e) => e) || [];
     message.subject = object.subject ?? undefined;
     message.body = object.body ?? undefined;
+    message.attachments = object.attachments?.map((e) => CommunicationAttachment.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCommunicationAttachment(): CommunicationAttachment {
+  return { id: undefined, file_name: undefined, content_type: undefined, file_size_bytes: undefined };
+}
+
+export const CommunicationAttachment: MessageFns<CommunicationAttachment> = {
+  encode(message: CommunicationAttachment, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.file_name !== undefined) {
+      writer.uint32(18).string(message.file_name);
+    }
+    if (message.content_type !== undefined) {
+      writer.uint32(26).string(message.content_type);
+    }
+    if (message.file_size_bytes !== undefined) {
+      writer.uint32(32).uint64(message.file_size_bytes);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CommunicationAttachment {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCommunicationAttachment();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.file_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.content_type = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.file_size_bytes = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CommunicationAttachment {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+      content_type: isSet(object.contentType) ? globalThis.String(object.contentType) : undefined,
+      file_size_bytes: isSet(object.fileSizeBytes) ? globalThis.Number(object.fileSizeBytes) : undefined,
+    };
+  },
+
+  toJSON(message: CommunicationAttachment): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.file_name !== undefined) {
+      obj.fileName = message.file_name;
+    }
+    if (message.content_type !== undefined) {
+      obj.contentType = message.content_type;
+    }
+    if (message.file_size_bytes !== undefined) {
+      obj.fileSizeBytes = Math.round(message.file_size_bytes);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CommunicationAttachment>, I>>(base?: I): CommunicationAttachment {
+    return CommunicationAttachment.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CommunicationAttachment>, I>>(object: I): CommunicationAttachment {
+    const message = createBaseCommunicationAttachment();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.file_name = object.file_name ?? undefined;
+    message.content_type = object.content_type ?? undefined;
+    message.file_size_bytes = object.file_size_bytes ?? undefined;
     return message;
   },
 };

@@ -28,6 +28,13 @@ export interface CommunicationBroadcast {
     channels: NotificationType[];
     subject?: string | undefined;
     body?: string | undefined;
+    attachments: CommunicationAttachment[];
+}
+export interface CommunicationAttachment {
+    id: ObjectId | undefined;
+    file_name?: string | undefined;
+    content_type?: string | undefined;
+    file_size_bytes?: number | undefined;
 }
 export interface CommunicationTarget {
     user_type?: UserType | undefined;
@@ -72,6 +79,7 @@ export interface CommunicationRecipientPreview {
 }
 export declare const CommunicationFilters: MessageFns<CommunicationFilters>;
 export declare const CommunicationBroadcast: MessageFns<CommunicationBroadcast>;
+export declare const CommunicationAttachment: MessageFns<CommunicationAttachment>;
 export declare const CommunicationTarget: MessageFns<CommunicationTarget>;
 export declare const CommunicationChannelCounts: MessageFns<CommunicationChannelCounts>;
 export declare const BroadcastList: MessageFns<BroadcastList>;

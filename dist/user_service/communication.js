@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/communication.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommunicationRecipientPreview = exports.PreviewCommunicationResponse = exports.RecipientList = exports.BroadcastList = exports.CommunicationChannelCounts = exports.CommunicationTarget = exports.CommunicationBroadcast = exports.CommunicationFilters = exports.BroadcastListScope = exports.protobufPackage = void 0;
+exports.CommunicationRecipientPreview = exports.PreviewCommunicationResponse = exports.RecipientList = exports.BroadcastList = exports.CommunicationChannelCounts = exports.CommunicationTarget = exports.CommunicationAttachment = exports.CommunicationBroadcast = exports.CommunicationFilters = exports.BroadcastListScope = exports.protobufPackage = void 0;
 exports.broadcastListScopeFromJSON = broadcastListScopeFromJSON;
 exports.broadcastListScopeToJSON = broadcastListScopeToJSON;
 exports.broadcastListScopeToNumber = broadcastListScopeToNumber;
@@ -217,6 +217,7 @@ function createBaseCommunicationBroadcast() {
         channels: [],
         subject: undefined,
         body: undefined,
+        attachments: [],
     };
 }
 exports.CommunicationBroadcast = {
@@ -240,6 +241,9 @@ exports.CommunicationBroadcast = {
         }
         if (message.body !== undefined) {
             writer.uint32(50).string(message.body);
+        }
+        for (const v of message.attachments) {
+            exports.CommunicationAttachment.encode(v, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -293,6 +297,12 @@ exports.CommunicationBroadcast = {
                     }
                     message.body = reader.string();
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.attachments.push(exports.CommunicationAttachment.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -311,6 +321,9 @@ exports.CommunicationBroadcast = {
                 : [],
             subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
             body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            attachments: globalThis.Array.isArray(object?.attachments)
+                ? object.attachments.map((e) => exports.CommunicationAttachment.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -333,6 +346,9 @@ exports.CommunicationBroadcast = {
         if (message.body !== undefined) {
             obj.body = message.body;
         }
+        if (message.attachments?.length) {
+            obj.attachments = message.attachments.map((e) => exports.CommunicationAttachment.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -350,6 +366,101 @@ exports.CommunicationBroadcast = {
         message.channels = object.channels?.map((e) => e) || [];
         message.subject = object.subject ?? undefined;
         message.body = object.body ?? undefined;
+        message.attachments = object.attachments?.map((e) => exports.CommunicationAttachment.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCommunicationAttachment() {
+    return { id: undefined, file_name: undefined, content_type: undefined, file_size_bytes: undefined };
+}
+exports.CommunicationAttachment = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.file_name !== undefined) {
+            writer.uint32(18).string(message.file_name);
+        }
+        if (message.content_type !== undefined) {
+            writer.uint32(26).string(message.content_type);
+        }
+        if (message.file_size_bytes !== undefined) {
+            writer.uint32(32).uint64(message.file_size_bytes);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCommunicationAttachment();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.file_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.content_type = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.file_size_bytes = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            file_name: isSet(object.fileName) ? globalThis.String(object.fileName) : undefined,
+            content_type: isSet(object.contentType) ? globalThis.String(object.contentType) : undefined,
+            file_size_bytes: isSet(object.fileSizeBytes) ? globalThis.Number(object.fileSizeBytes) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.file_name !== undefined) {
+            obj.fileName = message.file_name;
+        }
+        if (message.content_type !== undefined) {
+            obj.contentType = message.content_type;
+        }
+        if (message.file_size_bytes !== undefined) {
+            obj.fileSizeBytes = Math.round(message.file_size_bytes);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CommunicationAttachment.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCommunicationAttachment();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.file_name = object.file_name ?? undefined;
+        message.content_type = object.content_type ?? undefined;
+        message.file_size_bytes = object.file_size_bytes ?? undefined;
         return message;
     },
 };
