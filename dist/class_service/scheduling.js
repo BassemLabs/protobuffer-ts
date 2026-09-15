@@ -6,7 +6,7 @@
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupWeekdayOverride = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingSchedulePinScope = exports.SchedulingScheduleAdjustmentKind = exports.SchedulingScheduleAdjustmentIssueSeverity = exports.SchedulingScheduleRevisionKind = exports.SchedulingScheduleSetupCompatibility = exports.SchedulingGenerationPurpose = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
-exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingPinnedRegenerationProposal = exports.SchedulingSchedulePinGroupList = exports.SchedulingSchedulePinGroup = exports.SchedulingSchedulePin = exports.SchedulingScheduleAdjustmentMutationResult = exports.SchedulingScheduleAdjustmentPreview = exports.SchedulingScheduleAdjustmentOptions = exports.SchedulingScheduleAdjustmentOption = exports.SchedulingScheduleAdjustmentImpact = exports.SchedulingScheduleCellChange = exports.SchedulingScheduleAdjustmentIssue = exports.SchedulingScheduleAdjustmentOperation = exports.SchedulingScheduleSwap = exports.SchedulingWorkingScheduleMutationResult = exports.SchedulingWorkingScheduleState = exports.SchedulingScheduleView = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingScheduleCompatibilityIssue = exports.SchedulingScheduleRevisionPage = exports.SchedulingGeneratedSchedulePage = exports.SchedulingGeneratedScheduleSummary = exports.SchedulingScheduleSource = exports.SchedulingScheduleReference = exports.SchedulingScheduleRevision = exports.SchedulingWorkingSchedule = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = void 0;
+exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingPinnedRegenerationProposal = exports.SchedulingSchedulePinGroupList = exports.SchedulingSchedulePinGroup = exports.SchedulingSchedulePin = exports.SchedulingScheduleAdjustmentMutationResult = exports.SchedulingScheduleAdjustmentPreview = exports.SchedulingScheduleAdjustmentOptions = exports.SchedulingScheduleAdjustmentOption = exports.SchedulingScheduleAdjustmentImpact = exports.SchedulingScheduleCellChange = exports.SchedulingScheduleAdjustmentIssue = exports.SchedulingScheduleAdjustmentOperation = exports.SchedulingScheduleEmptyPeriodSwap = exports.SchedulingScheduleSwap = exports.SchedulingWorkingScheduleMutationResult = exports.SchedulingWorkingScheduleState = exports.SchedulingScheduleView = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingScheduleCompatibilityIssue = exports.SchedulingScheduleRevisionPage = exports.SchedulingGeneratedSchedulePage = exports.SchedulingGeneratedScheduleSummary = exports.SchedulingScheduleSource = exports.SchedulingScheduleReference = exports.SchedulingScheduleRevision = exports.SchedulingWorkingSchedule = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -8412,13 +8412,84 @@ exports.SchedulingScheduleSwap = {
         return message;
     },
 };
+function createBaseSchedulingScheduleEmptyPeriodSwap() {
+    return { placement_id: undefined, target_slot_id: undefined };
+}
+exports.SchedulingScheduleEmptyPeriodSwap = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.placement_id !== undefined) {
+            uuid_1.Uuid.encode(message.placement_id, writer.uint32(10).fork()).join();
+        }
+        if (message.target_slot_id !== undefined) {
+            writer.uint32(18).string(message.target_slot_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingScheduleEmptyPeriodSwap();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.placement_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.target_slot_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            placement_id: isSet(object.placementId) ? uuid_1.Uuid.fromJSON(object.placementId) : undefined,
+            target_slot_id: isSet(object.targetSlotId) ? globalThis.String(object.targetSlotId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.placement_id !== undefined) {
+            obj.placementId = uuid_1.Uuid.toJSON(message.placement_id);
+        }
+        if (message.target_slot_id !== undefined) {
+            obj.targetSlotId = message.target_slot_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingScheduleEmptyPeriodSwap.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingScheduleEmptyPeriodSwap();
+        message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.placement_id)
+            : undefined;
+        message.target_slot_id = object.target_slot_id ?? undefined;
+        return message;
+    },
+};
 function createBaseSchedulingScheduleAdjustmentOperation() {
-    return { swap: undefined };
+    return { swap: undefined, empty_period_swap: undefined };
 }
 exports.SchedulingScheduleAdjustmentOperation = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.swap !== undefined) {
             exports.SchedulingScheduleSwap.encode(message.swap, writer.uint32(18).fork()).join();
+        }
+        if (message.empty_period_swap !== undefined) {
+            exports.SchedulingScheduleEmptyPeriodSwap.encode(message.empty_period_swap, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -8435,6 +8506,12 @@ exports.SchedulingScheduleAdjustmentOperation = {
                     }
                     message.swap = exports.SchedulingScheduleSwap.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.empty_period_swap = exports.SchedulingScheduleEmptyPeriodSwap.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -8444,12 +8521,20 @@ exports.SchedulingScheduleAdjustmentOperation = {
         return message;
     },
     fromJSON(object) {
-        return { swap: isSet(object.swap) ? exports.SchedulingScheduleSwap.fromJSON(object.swap) : undefined };
+        return {
+            swap: isSet(object.swap) ? exports.SchedulingScheduleSwap.fromJSON(object.swap) : undefined,
+            empty_period_swap: isSet(object.emptyPeriodSwap)
+                ? exports.SchedulingScheduleEmptyPeriodSwap.fromJSON(object.emptyPeriodSwap)
+                : undefined,
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.swap !== undefined) {
             obj.swap = exports.SchedulingScheduleSwap.toJSON(message.swap);
+        }
+        if (message.empty_period_swap !== undefined) {
+            obj.emptyPeriodSwap = exports.SchedulingScheduleEmptyPeriodSwap.toJSON(message.empty_period_swap);
         }
         return obj;
     },
@@ -8460,6 +8545,9 @@ exports.SchedulingScheduleAdjustmentOperation = {
         const message = createBaseSchedulingScheduleAdjustmentOperation();
         message.swap = (object.swap !== undefined && object.swap !== null)
             ? exports.SchedulingScheduleSwap.fromPartial(object.swap)
+            : undefined;
+        message.empty_period_swap = (object.empty_period_swap !== undefined && object.empty_period_swap !== null)
+            ? exports.SchedulingScheduleEmptyPeriodSwap.fromPartial(object.empty_period_swap)
             : undefined;
         return message;
     },
@@ -8805,7 +8893,13 @@ exports.SchedulingScheduleAdjustmentImpact = {
     },
 };
 function createBaseSchedulingScheduleAdjustmentOption() {
-    return { kind: undefined, target_placement_id: undefined, valid: undefined, primary_issue: undefined };
+    return {
+        kind: undefined,
+        target_placement_id: undefined,
+        valid: undefined,
+        primary_issue: undefined,
+        target_empty_slot_id: undefined,
+    };
 }
 exports.SchedulingScheduleAdjustmentOption = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -8820,6 +8914,9 @@ exports.SchedulingScheduleAdjustmentOption = {
         }
         if (message.primary_issue !== undefined) {
             exports.SchedulingScheduleAdjustmentIssue.encode(message.primary_issue, writer.uint32(42).fork()).join();
+        }
+        if (message.target_empty_slot_id !== undefined) {
+            writer.uint32(50).string(message.target_empty_slot_id);
         }
         return writer;
     },
@@ -8854,6 +8951,12 @@ exports.SchedulingScheduleAdjustmentOption = {
                     }
                     message.primary_issue = exports.SchedulingScheduleAdjustmentIssue.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.target_empty_slot_id = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -8870,6 +8973,7 @@ exports.SchedulingScheduleAdjustmentOption = {
             primary_issue: isSet(object.primaryIssue)
                 ? exports.SchedulingScheduleAdjustmentIssue.fromJSON(object.primaryIssue)
                 : undefined,
+            target_empty_slot_id: isSet(object.targetEmptySlotId) ? globalThis.String(object.targetEmptySlotId) : undefined,
         };
     },
     toJSON(message) {
@@ -8886,6 +8990,9 @@ exports.SchedulingScheduleAdjustmentOption = {
         if (message.primary_issue !== undefined) {
             obj.primaryIssue = exports.SchedulingScheduleAdjustmentIssue.toJSON(message.primary_issue);
         }
+        if (message.target_empty_slot_id !== undefined) {
+            obj.targetEmptySlotId = message.target_empty_slot_id;
+        }
         return obj;
     },
     create(base) {
@@ -8901,6 +9008,7 @@ exports.SchedulingScheduleAdjustmentOption = {
         message.primary_issue = (object.primary_issue !== undefined && object.primary_issue !== null)
             ? exports.SchedulingScheduleAdjustmentIssue.fromPartial(object.primary_issue)
             : undefined;
+        message.target_empty_slot_id = object.target_empty_slot_id ?? undefined;
         return message;
     },
 };

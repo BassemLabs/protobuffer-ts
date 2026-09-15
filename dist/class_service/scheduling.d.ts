@@ -742,8 +742,14 @@ export interface SchedulingScheduleSwap {
     placement_id: Uuid | undefined;
     target_placement_id: Uuid | undefined;
 }
+export interface SchedulingScheduleEmptyPeriodSwap {
+    /** Empty-period swaps move one high-school placement while keeping its stable identity. */
+    placement_id: Uuid | undefined;
+    target_slot_id?: string | undefined;
+}
 export interface SchedulingScheduleAdjustmentOperation {
     swap?: SchedulingScheduleSwap | undefined;
+    empty_period_swap?: SchedulingScheduleEmptyPeriodSwap | undefined;
 }
 export interface SchedulingScheduleAdjustmentIssue {
     code?: string | undefined;
@@ -771,6 +777,7 @@ export interface SchedulingScheduleAdjustmentOption {
     target_placement_id?: Uuid | undefined;
     valid?: boolean | undefined;
     primary_issue?: SchedulingScheduleAdjustmentIssue | undefined;
+    target_empty_slot_id?: string | undefined;
 }
 export interface SchedulingScheduleAdjustmentOptions {
     source_placement_ids: Uuid[];
@@ -911,6 +918,7 @@ export declare const SchedulingScheduleView: MessageFns<SchedulingScheduleView>;
 export declare const SchedulingWorkingScheduleState: MessageFns<SchedulingWorkingScheduleState>;
 export declare const SchedulingWorkingScheduleMutationResult: MessageFns<SchedulingWorkingScheduleMutationResult>;
 export declare const SchedulingScheduleSwap: MessageFns<SchedulingScheduleSwap>;
+export declare const SchedulingScheduleEmptyPeriodSwap: MessageFns<SchedulingScheduleEmptyPeriodSwap>;
 export declare const SchedulingScheduleAdjustmentOperation: MessageFns<SchedulingScheduleAdjustmentOperation>;
 export declare const SchedulingScheduleAdjustmentIssue: MessageFns<SchedulingScheduleAdjustmentIssue>;
 export declare const SchedulingScheduleCellChange: MessageFns<SchedulingScheduleCellChange>;

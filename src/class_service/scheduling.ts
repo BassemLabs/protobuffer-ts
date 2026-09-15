@@ -1578,8 +1578,15 @@ export interface SchedulingScheduleSwap {
   target_placement_id: Uuid | undefined;
 }
 
+export interface SchedulingScheduleEmptyPeriodSwap {
+  /** Empty-period swaps move one high-school placement while keeping its stable identity. */
+  placement_id: Uuid | undefined;
+  target_slot_id?: string | undefined;
+}
+
 export interface SchedulingScheduleAdjustmentOperation {
   swap?: SchedulingScheduleSwap | undefined;
+  empty_period_swap?: SchedulingScheduleEmptyPeriodSwap | undefined;
 }
 
 export interface SchedulingScheduleAdjustmentIssue {
@@ -1611,6 +1618,7 @@ export interface SchedulingScheduleAdjustmentOption {
   target_placement_id?: Uuid | undefined;
   valid?: boolean | undefined;
   primary_issue?: SchedulingScheduleAdjustmentIssue | undefined;
+  target_empty_slot_id?: string | undefined;
 }
 
 export interface SchedulingScheduleAdjustmentOptions {
@@ -10043,14 +10051,97 @@ export const SchedulingScheduleSwap: MessageFns<SchedulingScheduleSwap> = {
   },
 };
 
+function createBaseSchedulingScheduleEmptyPeriodSwap(): SchedulingScheduleEmptyPeriodSwap {
+  return { placement_id: undefined, target_slot_id: undefined };
+}
+
+export const SchedulingScheduleEmptyPeriodSwap: MessageFns<SchedulingScheduleEmptyPeriodSwap> = {
+  encode(message: SchedulingScheduleEmptyPeriodSwap, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.placement_id !== undefined) {
+      Uuid.encode(message.placement_id, writer.uint32(10).fork()).join();
+    }
+    if (message.target_slot_id !== undefined) {
+      writer.uint32(18).string(message.target_slot_id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingScheduleEmptyPeriodSwap {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingScheduleEmptyPeriodSwap();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.placement_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.target_slot_id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingScheduleEmptyPeriodSwap {
+    return {
+      placement_id: isSet(object.placementId) ? Uuid.fromJSON(object.placementId) : undefined,
+      target_slot_id: isSet(object.targetSlotId) ? globalThis.String(object.targetSlotId) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingScheduleEmptyPeriodSwap): unknown {
+    const obj: any = {};
+    if (message.placement_id !== undefined) {
+      obj.placementId = Uuid.toJSON(message.placement_id);
+    }
+    if (message.target_slot_id !== undefined) {
+      obj.targetSlotId = message.target_slot_id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingScheduleEmptyPeriodSwap>, I>>(
+    base?: I,
+  ): SchedulingScheduleEmptyPeriodSwap {
+    return SchedulingScheduleEmptyPeriodSwap.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingScheduleEmptyPeriodSwap>, I>>(
+    object: I,
+  ): SchedulingScheduleEmptyPeriodSwap {
+    const message = createBaseSchedulingScheduleEmptyPeriodSwap();
+    message.placement_id = (object.placement_id !== undefined && object.placement_id !== null)
+      ? Uuid.fromPartial(object.placement_id)
+      : undefined;
+    message.target_slot_id = object.target_slot_id ?? undefined;
+    return message;
+  },
+};
+
 function createBaseSchedulingScheduleAdjustmentOperation(): SchedulingScheduleAdjustmentOperation {
-  return { swap: undefined };
+  return { swap: undefined, empty_period_swap: undefined };
 }
 
 export const SchedulingScheduleAdjustmentOperation: MessageFns<SchedulingScheduleAdjustmentOperation> = {
   encode(message: SchedulingScheduleAdjustmentOperation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.swap !== undefined) {
       SchedulingScheduleSwap.encode(message.swap, writer.uint32(18).fork()).join();
+    }
+    if (message.empty_period_swap !== undefined) {
+      SchedulingScheduleEmptyPeriodSwap.encode(message.empty_period_swap, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -10069,6 +10160,13 @@ export const SchedulingScheduleAdjustmentOperation: MessageFns<SchedulingSchedul
 
           message.swap = SchedulingScheduleSwap.decode(reader, reader.uint32());
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.empty_period_swap = SchedulingScheduleEmptyPeriodSwap.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -10079,13 +10177,21 @@ export const SchedulingScheduleAdjustmentOperation: MessageFns<SchedulingSchedul
   },
 
   fromJSON(object: any): SchedulingScheduleAdjustmentOperation {
-    return { swap: isSet(object.swap) ? SchedulingScheduleSwap.fromJSON(object.swap) : undefined };
+    return {
+      swap: isSet(object.swap) ? SchedulingScheduleSwap.fromJSON(object.swap) : undefined,
+      empty_period_swap: isSet(object.emptyPeriodSwap)
+        ? SchedulingScheduleEmptyPeriodSwap.fromJSON(object.emptyPeriodSwap)
+        : undefined,
+    };
   },
 
   toJSON(message: SchedulingScheduleAdjustmentOperation): unknown {
     const obj: any = {};
     if (message.swap !== undefined) {
       obj.swap = SchedulingScheduleSwap.toJSON(message.swap);
+    }
+    if (message.empty_period_swap !== undefined) {
+      obj.emptyPeriodSwap = SchedulingScheduleEmptyPeriodSwap.toJSON(message.empty_period_swap);
     }
     return obj;
   },
@@ -10101,6 +10207,9 @@ export const SchedulingScheduleAdjustmentOperation: MessageFns<SchedulingSchedul
     const message = createBaseSchedulingScheduleAdjustmentOperation();
     message.swap = (object.swap !== undefined && object.swap !== null)
       ? SchedulingScheduleSwap.fromPartial(object.swap)
+      : undefined;
+    message.empty_period_swap = (object.empty_period_swap !== undefined && object.empty_period_swap !== null)
+      ? SchedulingScheduleEmptyPeriodSwap.fromPartial(object.empty_period_swap)
       : undefined;
     return message;
   },
@@ -10488,7 +10597,13 @@ export const SchedulingScheduleAdjustmentImpact: MessageFns<SchedulingScheduleAd
 };
 
 function createBaseSchedulingScheduleAdjustmentOption(): SchedulingScheduleAdjustmentOption {
-  return { kind: undefined, target_placement_id: undefined, valid: undefined, primary_issue: undefined };
+  return {
+    kind: undefined,
+    target_placement_id: undefined,
+    valid: undefined,
+    primary_issue: undefined,
+    target_empty_slot_id: undefined,
+  };
 }
 
 export const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAdjustmentOption> = {
@@ -10504,6 +10619,9 @@ export const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAd
     }
     if (message.primary_issue !== undefined) {
       SchedulingScheduleAdjustmentIssue.encode(message.primary_issue, writer.uint32(42).fork()).join();
+    }
+    if (message.target_empty_slot_id !== undefined) {
+      writer.uint32(50).string(message.target_empty_slot_id);
     }
     return writer;
   },
@@ -10543,6 +10661,13 @@ export const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAd
 
           message.primary_issue = SchedulingScheduleAdjustmentIssue.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.target_empty_slot_id = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -10560,6 +10685,7 @@ export const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAd
       primary_issue: isSet(object.primaryIssue)
         ? SchedulingScheduleAdjustmentIssue.fromJSON(object.primaryIssue)
         : undefined,
+      target_empty_slot_id: isSet(object.targetEmptySlotId) ? globalThis.String(object.targetEmptySlotId) : undefined,
     };
   },
 
@@ -10576,6 +10702,9 @@ export const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAd
     }
     if (message.primary_issue !== undefined) {
       obj.primaryIssue = SchedulingScheduleAdjustmentIssue.toJSON(message.primary_issue);
+    }
+    if (message.target_empty_slot_id !== undefined) {
+      obj.targetEmptySlotId = message.target_empty_slot_id;
     }
     return obj;
   },
@@ -10597,6 +10726,7 @@ export const SchedulingScheduleAdjustmentOption: MessageFns<SchedulingScheduleAd
     message.primary_issue = (object.primary_issue !== undefined && object.primary_issue !== null)
       ? SchedulingScheduleAdjustmentIssue.fromPartial(object.primary_issue)
       : undefined;
+    message.target_empty_slot_id = object.target_empty_slot_id ?? undefined;
     return message;
   },
 };
