@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Parent, ParentProfile } from "./parent";
 import { Student, StudentSchoolYearInformation } from "./student";
@@ -64,6 +65,7 @@ export interface AddNewGuardianToFamilyRequest {
     name?: string | undefined;
     email?: string | undefined;
     family_id: ObjectId | undefined;
+    phone?: PhoneNumber | undefined;
 }
 export interface UpdateParentProfileRequest {
     context: RequestContext | undefined;

@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
+import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Parent, ParentProfile } from "./parent";
 import { Student, StudentSchoolYearInformation } from "./student";
@@ -88,6 +89,7 @@ export interface AddNewGuardianToFamilyRequest {
   name?: string | undefined;
   email?: string | undefined;
   family_id: ObjectId | undefined;
+  phone?: PhoneNumber | undefined;
 }
 
 export interface UpdateParentProfileRequest {
@@ -1199,7 +1201,7 @@ export const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<
 };
 
 function createBaseAddNewGuardianToFamilyRequest(): AddNewGuardianToFamilyRequest {
-  return { context: undefined, name: undefined, email: undefined, family_id: undefined };
+  return { context: undefined, name: undefined, email: undefined, family_id: undefined, phone: undefined };
 }
 
 export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyRequest> = {
@@ -1215,6 +1217,9 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
     }
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(34).fork()).join();
+    }
+    if (message.phone !== undefined) {
+      PhoneNumber.encode(message.phone, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -1254,6 +1259,13 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
 
           message.family_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.phone = PhoneNumber.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1269,6 +1281,7 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       email: isSet(object.email) ? globalThis.String(object.email) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      phone: isSet(object.phone) ? PhoneNumber.fromJSON(object.phone) : undefined,
     };
   },
 
@@ -1285,6 +1298,9 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
     }
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    if (message.phone !== undefined) {
+      obj.phone = PhoneNumber.toJSON(message.phone);
     }
     return obj;
   },
@@ -1303,6 +1319,9 @@ export const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyReq
     message.email = object.email ?? undefined;
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    message.phone = (object.phone !== undefined && object.phone !== null)
+      ? PhoneNumber.fromPartial(object.phone)
       : undefined;
     return message;
   },

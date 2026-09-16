@@ -9,6 +9,7 @@ exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
+const phone_number_1 = require("../utils/phone_number");
 const request_context_1 = require("../utils/request_context");
 const parent_1 = require("./parent");
 const student_1 = require("./student");
@@ -909,7 +910,7 @@ exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = {
     },
 };
 function createBaseAddNewGuardianToFamilyRequest() {
-    return { context: undefined, name: undefined, email: undefined, family_id: undefined };
+    return { context: undefined, name: undefined, email: undefined, family_id: undefined, phone: undefined };
 }
 exports.AddNewGuardianToFamilyRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -924,6 +925,9 @@ exports.AddNewGuardianToFamilyRequest = {
         }
         if (message.family_id !== undefined) {
             object_id_1.ObjectId.encode(message.family_id, writer.uint32(34).fork()).join();
+        }
+        if (message.phone !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.phone, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -958,6 +962,12 @@ exports.AddNewGuardianToFamilyRequest = {
                     }
                     message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.phone = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -972,6 +982,7 @@ exports.AddNewGuardianToFamilyRequest = {
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             email: isSet(object.email) ? globalThis.String(object.email) : undefined,
             family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            phone: isSet(object.phone) ? phone_number_1.PhoneNumber.fromJSON(object.phone) : undefined,
         };
     },
     toJSON(message) {
@@ -988,6 +999,9 @@ exports.AddNewGuardianToFamilyRequest = {
         if (message.family_id !== undefined) {
             obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
         }
+        if (message.phone !== undefined) {
+            obj.phone = phone_number_1.PhoneNumber.toJSON(message.phone);
+        }
         return obj;
     },
     create(base) {
@@ -1002,6 +1016,9 @@ exports.AddNewGuardianToFamilyRequest = {
         message.email = object.email ?? undefined;
         message.family_id = (object.family_id !== undefined && object.family_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        message.phone = (object.phone !== undefined && object.phone !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.phone)
             : undefined;
         return message;
     },
