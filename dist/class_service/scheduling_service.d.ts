@@ -3,7 +3,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Uuid } from "../utils/uuid";
-import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPeriodTimeSetupWeekdayOverride, SchedulingPreparationStep, SchedulingScheduleAdjustmentOperation, SchedulingSchedulePinScope, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
+import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPeriodTimeSetupWeekdayOverride, SchedulingPreparationStep, SchedulingScheduleAdjustmentOperation, SchedulingSchedulePinScope, SchedulingScheduleReference, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -175,6 +175,15 @@ export interface StartSchedulingGenerationRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
 }
+export interface StartSchedulingGenerationFromScheduleRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    /**
+     * The immutable schedule whose placements should be preserved where compatible
+     * with the latest reviewed setup. This is a soft preference, not a hard pin.
+     */
+    source_schedule: SchedulingScheduleReference | undefined;
+}
 export interface GetSchedulingGenerationRunsRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
@@ -320,6 +329,7 @@ export declare const DeleteSchedulingClassGroupRequest: MessageFns<DeleteSchedul
 export declare const GetSchedulingClassAssignmentSetupRequest: MessageFns<GetSchedulingClassAssignmentSetupRequest>;
 export declare const UpsertSchedulingHighSchoolCourseStudentAssignmentRequest: MessageFns<UpsertSchedulingHighSchoolCourseStudentAssignmentRequest>;
 export declare const StartSchedulingGenerationRequest: MessageFns<StartSchedulingGenerationRequest>;
+export declare const StartSchedulingGenerationFromScheduleRequest: MessageFns<StartSchedulingGenerationFromScheduleRequest>;
 export declare const GetSchedulingGenerationRunsRequest: MessageFns<GetSchedulingGenerationRunsRequest>;
 export declare const ListSchedulingGeneratedSchedulesRequest: MessageFns<ListSchedulingGeneratedSchedulesRequest>;
 export declare const GetSchedulingGeneratedScheduleRequest: MessageFns<GetSchedulingGeneratedScheduleRequest>;

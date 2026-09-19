@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: class_service/scheduling.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingGenerationRunList = exports.SchedulingGenerationRun = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupWeekdayOverride = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingSchedulePinScope = exports.SchedulingScheduleAdjustmentKind = exports.SchedulingScheduleAdjustmentIssueSeverity = exports.SchedulingScheduleRevisionKind = exports.SchedulingScheduleSetupCompatibility = exports.SchedulingGenerationPurpose = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
-exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingPinnedRegenerationProposal = exports.SchedulingSchedulePinGroupList = exports.SchedulingSchedulePinGroup = exports.SchedulingSchedulePin = exports.SchedulingScheduleAdjustmentMutationResult = exports.SchedulingScheduleAdjustmentPreview = exports.SchedulingScheduleAdjustmentOptions = exports.SchedulingScheduleAdjustmentOption = exports.SchedulingScheduleAdjustmentImpact = exports.SchedulingScheduleCellChange = exports.SchedulingScheduleAdjustmentIssue = exports.SchedulingScheduleAdjustmentOperation = exports.SchedulingScheduleEmptyPeriodSwap = exports.SchedulingScheduleSwap = exports.SchedulingWorkingScheduleMutationResult = exports.SchedulingWorkingScheduleState = exports.SchedulingScheduleView = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingScheduleCompatibilityIssue = exports.SchedulingScheduleRevisionPage = exports.SchedulingGeneratedSchedulePage = exports.SchedulingGeneratedScheduleSummary = exports.SchedulingScheduleSource = exports.SchedulingScheduleReference = exports.SchedulingScheduleRevision = exports.SchedulingWorkingSchedule = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = void 0;
+exports.SchedulingGenerationRun = exports.SchedulingGenerationPreservationMetrics = exports.SchedulingGenerationBlocker = exports.SchedulingClassGroupSetup = exports.SchedulingSharedLesson = exports.SchedulingSharedLessonMember = exports.SchedulingClassGroupTeacherPeriodAllocation = exports.SchedulingClassGroupTeacherAssignment = exports.SchedulingClassGroup = exports.SchedulingClassAssignmentSetup = exports.SchedulingHighSchoolCourseStudentAssignment = exports.SchedulingSubjectAssignmentPreview = exports.SchedulingStudentAssignmentOption = exports.SchedulingClassesSetup = exports.SchedulingGradeWeeklyAllocation = exports.SchedulingGradeCampusWeeklyCapacity = exports.SchedulingInstructionalRequirement = exports.SchedulingCoursePeriodRule = exports.SchedulingSemesterOptionGroup = exports.SchedulingHighSchoolCourseSetup = exports.SchedulingTeacherPeriodAllocation = exports.SchedulingTeacherSetup = exports.SchedulingTeacherAvailabilityWindow = exports.SchedulingTeacherProfile = exports.SchedulingPeriodTimeSetup = exports.SchedulingWeekdayPreviewDay = exports.SchedulingSemesterPeriodTimeSetup = exports.SchedulingPeriodTimeSetupWeekdayOverride = exports.SchedulingPeriodTimeSetupTemplate = exports.SchedulingOfferedGradeSetup = exports.SchedulingOfferedGrade = exports.SchedulingPeriodDefinition = exports.SchedulingPreparation = exports.SchedulingPreparationStepState = exports.SchedulingPreparationIssue = exports.SchedulingWorkspace = exports.SchedulingReviewActionDestination = exports.SchedulingReviewSectionType = exports.SchedulingSchedulePinScope = exports.SchedulingScheduleAdjustmentKind = exports.SchedulingScheduleAdjustmentIssueSeverity = exports.SchedulingScheduleRevisionKind = exports.SchedulingScheduleSetupCompatibility = exports.SchedulingGenerationPurpose = exports.SchedulingGenerationRunStatus = exports.SchedulingGradeWeeklyAllocationStatus = exports.SchedulingDoublePeriodMode = exports.SchedulingPreparationStepStatus = exports.SchedulingPreparationStep = exports.protobufPackage = void 0;
+exports.SchedulingReview = exports.SchedulingReviewSection = exports.SchedulingReviewIssue = exports.SchedulingReviewMetric = exports.SchedulingPinnedRegenerationProposal = exports.SchedulingSchedulePinGroupList = exports.SchedulingSchedulePinGroup = exports.SchedulingSchedulePin = exports.SchedulingScheduleAdjustmentMutationResult = exports.SchedulingScheduleAdjustmentPreview = exports.SchedulingScheduleAdjustmentOptions = exports.SchedulingScheduleAdjustmentOption = exports.SchedulingScheduleAdjustmentImpact = exports.SchedulingScheduleCellChange = exports.SchedulingScheduleAdjustmentIssue = exports.SchedulingScheduleAdjustmentOperation = exports.SchedulingScheduleEmptyPeriodSwap = exports.SchedulingScheduleSwap = exports.SchedulingWorkingScheduleMutationResult = exports.SchedulingWorkingScheduleState = exports.SchedulingScheduleView = exports.SchedulingGeneratedScheduleView = exports.SchedulingScheduleSectionInfo = exports.SchedulingScheduleRoomInfo = exports.SchedulingScheduleStudentInfo = exports.SchedulingScheduleSemesterInfo = exports.SchedulingScheduleSlotInfo = exports.SchedulingScheduleTeacherInfo = exports.SchedulingScheduleClassInfo = exports.SchedulingScheduleSubjectMemberInfo = exports.SchedulingScheduleCompatibilityIssue = exports.SchedulingScheduleRevisionPage = exports.SchedulingGeneratedSchedulePage = exports.SchedulingGeneratedScheduleSummary = exports.SchedulingScheduleSource = exports.SchedulingScheduleReference = exports.SchedulingScheduleRevision = exports.SchedulingWorkingSchedule = exports.SchedulingGeneratedSchedule = exports.SchedulingGeneratedScheduleEntry = exports.SchedulingGenerationRunList = void 0;
 exports.schedulingPreparationStepFromJSON = schedulingPreparationStepFromJSON;
 exports.schedulingPreparationStepToJSON = schedulingPreparationStepToJSON;
 exports.schedulingPreparationStepToNumber = schedulingPreparationStepToNumber;
@@ -4876,6 +4876,188 @@ exports.SchedulingGenerationBlocker = {
         return message;
     },
 };
+function createBaseSchedulingGenerationPreservationMetrics() {
+    return {
+        source_placement_count: undefined,
+        comparable_placement_count: undefined,
+        same_slot_count: undefined,
+        same_teacher_count: undefined,
+        same_room_count: undefined,
+        exact_preserved_count: undefined,
+        removed_count: undefined,
+        added_count: undefined,
+        preservation_optimality_proven: undefined,
+    };
+}
+exports.SchedulingGenerationPreservationMetrics = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.source_placement_count !== undefined) {
+            writer.uint32(8).uint32(message.source_placement_count);
+        }
+        if (message.comparable_placement_count !== undefined) {
+            writer.uint32(16).uint32(message.comparable_placement_count);
+        }
+        if (message.same_slot_count !== undefined) {
+            writer.uint32(24).uint32(message.same_slot_count);
+        }
+        if (message.same_teacher_count !== undefined) {
+            writer.uint32(32).uint32(message.same_teacher_count);
+        }
+        if (message.same_room_count !== undefined) {
+            writer.uint32(40).uint32(message.same_room_count);
+        }
+        if (message.exact_preserved_count !== undefined) {
+            writer.uint32(48).uint32(message.exact_preserved_count);
+        }
+        if (message.removed_count !== undefined) {
+            writer.uint32(56).uint32(message.removed_count);
+        }
+        if (message.added_count !== undefined) {
+            writer.uint32(64).uint32(message.added_count);
+        }
+        if (message.preservation_optimality_proven !== undefined) {
+            writer.uint32(72).bool(message.preservation_optimality_proven);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingGenerationPreservationMetrics();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.source_placement_count = reader.uint32();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.comparable_placement_count = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.same_slot_count = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.same_teacher_count = reader.uint32();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.same_room_count = reader.uint32();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.exact_preserved_count = reader.uint32();
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.removed_count = reader.uint32();
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.added_count = reader.uint32();
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.preservation_optimality_proven = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            source_placement_count: isSet(object.sourcePlacementCount)
+                ? globalThis.Number(object.sourcePlacementCount)
+                : undefined,
+            comparable_placement_count: isSet(object.comparablePlacementCount)
+                ? globalThis.Number(object.comparablePlacementCount)
+                : undefined,
+            same_slot_count: isSet(object.sameSlotCount) ? globalThis.Number(object.sameSlotCount) : undefined,
+            same_teacher_count: isSet(object.sameTeacherCount) ? globalThis.Number(object.sameTeacherCount) : undefined,
+            same_room_count: isSet(object.sameRoomCount) ? globalThis.Number(object.sameRoomCount) : undefined,
+            exact_preserved_count: isSet(object.exactPreservedCount)
+                ? globalThis.Number(object.exactPreservedCount)
+                : undefined,
+            removed_count: isSet(object.removedCount) ? globalThis.Number(object.removedCount) : undefined,
+            added_count: isSet(object.addedCount) ? globalThis.Number(object.addedCount) : undefined,
+            preservation_optimality_proven: isSet(object.preservationOptimalityProven)
+                ? globalThis.Boolean(object.preservationOptimalityProven)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.source_placement_count !== undefined) {
+            obj.sourcePlacementCount = Math.round(message.source_placement_count);
+        }
+        if (message.comparable_placement_count !== undefined) {
+            obj.comparablePlacementCount = Math.round(message.comparable_placement_count);
+        }
+        if (message.same_slot_count !== undefined) {
+            obj.sameSlotCount = Math.round(message.same_slot_count);
+        }
+        if (message.same_teacher_count !== undefined) {
+            obj.sameTeacherCount = Math.round(message.same_teacher_count);
+        }
+        if (message.same_room_count !== undefined) {
+            obj.sameRoomCount = Math.round(message.same_room_count);
+        }
+        if (message.exact_preserved_count !== undefined) {
+            obj.exactPreservedCount = Math.round(message.exact_preserved_count);
+        }
+        if (message.removed_count !== undefined) {
+            obj.removedCount = Math.round(message.removed_count);
+        }
+        if (message.added_count !== undefined) {
+            obj.addedCount = Math.round(message.added_count);
+        }
+        if (message.preservation_optimality_proven !== undefined) {
+            obj.preservationOptimalityProven = message.preservation_optimality_proven;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingGenerationPreservationMetrics.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingGenerationPreservationMetrics();
+        message.source_placement_count = object.source_placement_count ?? undefined;
+        message.comparable_placement_count = object.comparable_placement_count ?? undefined;
+        message.same_slot_count = object.same_slot_count ?? undefined;
+        message.same_teacher_count = object.same_teacher_count ?? undefined;
+        message.same_room_count = object.same_room_count ?? undefined;
+        message.exact_preserved_count = object.exact_preserved_count ?? undefined;
+        message.removed_count = object.removed_count ?? undefined;
+        message.added_count = object.added_count ?? undefined;
+        message.preservation_optimality_proven = object.preservation_optimality_proven ?? undefined;
+        return message;
+    },
+};
 function createBaseSchedulingGenerationRun() {
     return {
         id: undefined,
@@ -4896,6 +5078,8 @@ function createBaseSchedulingGenerationRun() {
         purpose: undefined,
         source_working_revision_id: undefined,
         pin_count: undefined,
+        source_schedule: undefined,
+        preservation_metrics: undefined,
     };
 }
 exports.SchedulingGenerationRun = {
@@ -4953,6 +5137,12 @@ exports.SchedulingGenerationRun = {
         }
         if (message.pin_count !== undefined) {
             writer.uint32(144).uint32(message.pin_count);
+        }
+        if (message.source_schedule !== undefined) {
+            exports.SchedulingScheduleReference.encode(message.source_schedule, writer.uint32(154).fork()).join();
+        }
+        if (message.preservation_metrics !== undefined) {
+            exports.SchedulingGenerationPreservationMetrics.encode(message.preservation_metrics, writer.uint32(162).fork()).join();
         }
         return writer;
     },
@@ -5071,6 +5261,18 @@ exports.SchedulingGenerationRun = {
                     }
                     message.pin_count = reader.uint32();
                     continue;
+                case 19:
+                    if (tag !== 154) {
+                        break;
+                    }
+                    message.source_schedule = exports.SchedulingScheduleReference.decode(reader, reader.uint32());
+                    continue;
+                case 20:
+                    if (tag !== 162) {
+                        break;
+                    }
+                    message.preservation_metrics = exports.SchedulingGenerationPreservationMetrics.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -5109,6 +5311,12 @@ exports.SchedulingGenerationRun = {
                 ? uuid_1.Uuid.fromJSON(object.sourceWorkingRevisionId)
                 : undefined,
             pin_count: isSet(object.pinCount) ? globalThis.Number(object.pinCount) : undefined,
+            source_schedule: isSet(object.sourceSchedule)
+                ? exports.SchedulingScheduleReference.fromJSON(object.sourceSchedule)
+                : undefined,
+            preservation_metrics: isSet(object.preservationMetrics)
+                ? exports.SchedulingGenerationPreservationMetrics.fromJSON(object.preservationMetrics)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -5167,6 +5375,12 @@ exports.SchedulingGenerationRun = {
         if (message.pin_count !== undefined) {
             obj.pinCount = Math.round(message.pin_count);
         }
+        if (message.source_schedule !== undefined) {
+            obj.sourceSchedule = exports.SchedulingScheduleReference.toJSON(message.source_schedule);
+        }
+        if (message.preservation_metrics !== undefined) {
+            obj.preservationMetrics = exports.SchedulingGenerationPreservationMetrics.toJSON(message.preservation_metrics);
+        }
         return obj;
     },
     create(base) {
@@ -5209,6 +5423,12 @@ exports.SchedulingGenerationRun = {
                 ? uuid_1.Uuid.fromPartial(object.source_working_revision_id)
                 : undefined;
         message.pin_count = object.pin_count ?? undefined;
+        message.source_schedule = (object.source_schedule !== undefined && object.source_schedule !== null)
+            ? exports.SchedulingScheduleReference.fromPartial(object.source_schedule)
+            : undefined;
+        message.preservation_metrics = (object.preservation_metrics !== undefined && object.preservation_metrics !== null)
+            ? exports.SchedulingGenerationPreservationMetrics.fromPartial(object.preservation_metrics)
+            : undefined;
         return message;
     },
 };

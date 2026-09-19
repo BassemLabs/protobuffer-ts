@@ -481,6 +481,35 @@ export interface SchedulingGenerationBlocker {
     code?: string | undefined;
 }
 /**
+ * Comparison between a source schedule and the successful generated candidate.
+ * Counts are placement based. A comparable placement still has a current decision
+ * variable for the same class and slot and can participate in preservation scoring.
+ */
+export interface SchedulingGenerationPreservationMetrics {
+    source_placement_count?: number | undefined;
+    comparable_placement_count?: number | undefined;
+    same_slot_count?: number | undefined;
+    same_teacher_count?: number | undefined;
+    same_room_count?: number | undefined;
+    /** Comparable placements whose slot, teacher, and room all remained unchanged. */
+    exact_preserved_count?: number | undefined;
+    /**
+     * Source occurrences removed because the current setup requires fewer periods
+     * for their class. Moving or reassigning a retained period does not count here.
+     */
+    removed_count?: number | undefined;
+    /**
+     * New occurrences added because the current setup requires more periods for a
+     * class. Moving or reassigning a retained period does not count here.
+     */
+    added_count?: number | undefined;
+    /**
+     * True only when the solver proved that no valid schedule could preserve more of
+     * the source under the configured lexicographic preservation objective.
+     */
+    preservation_optimality_proven?: boolean | undefined;
+}
+/**
  * One schedule-generation attempt. A run is bound to the immutable solver-input
  * snapshot it used, so a failed run can always be inspected against its exact input.
  */
@@ -516,6 +545,16 @@ export interface SchedulingGenerationRun {
     purpose?: SchedulingGenerationPurpose | undefined;
     source_working_revision_id?: Uuid | undefined;
     pin_count?: number | undefined;
+    /**
+     * Present for candidate runs started from an immutable schedule. The source is a
+     * soft preservation preference and may use an earlier preparation setup.
+     */
+    source_schedule?: SchedulingScheduleReference | undefined;
+    /**
+     * Present after a source-based run succeeds and its output has been compared with
+     * the source schedule. Ordinary and pinned runs omit these metrics.
+     */
+    preservation_metrics?: SchedulingGenerationPreservationMetrics | undefined;
 }
 /** Runs for a workspace, newest first (used for status polling and history). */
 export interface SchedulingGenerationRunList {
@@ -893,6 +932,7 @@ export declare const SchedulingSharedLessonMember: MessageFns<SchedulingSharedLe
 export declare const SchedulingSharedLesson: MessageFns<SchedulingSharedLesson>;
 export declare const SchedulingClassGroupSetup: MessageFns<SchedulingClassGroupSetup>;
 export declare const SchedulingGenerationBlocker: MessageFns<SchedulingGenerationBlocker>;
+export declare const SchedulingGenerationPreservationMetrics: MessageFns<SchedulingGenerationPreservationMetrics>;
 export declare const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun>;
 export declare const SchedulingGenerationRunList: MessageFns<SchedulingGenerationRunList>;
 export declare const SchedulingGeneratedScheduleEntry: MessageFns<SchedulingGeneratedScheduleEntry>;

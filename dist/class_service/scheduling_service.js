@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/scheduling_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateSchedulingRoomEnforcementRequest = exports.ApplySchedulingPinnedRegenerationRequest = exports.GetSchedulingPinnedRegenerationProposalRequest = exports.StartSchedulingPinnedRegenerationRequest = exports.RemoveSchedulingSchedulePinGroupRequest = exports.CreateSchedulingSchedulePinGroupRequest = exports.GetSchedulingSchedulePinsRequest = exports.ApplySchedulingScheduleAdjustmentRequest = exports.PreviewSchedulingScheduleAdjustmentRequest = exports.GetSchedulingScheduleAdjustmentOptionsRequest = exports.MutateSchedulingWorkingScheduleRequest = exports.ReturnToSchedulingScheduleRevisionRequest = exports.GetSchedulingScheduleRevisionRequest = exports.GetSchedulingScheduleRevisionsRequest = exports.RevalidateSchedulingWorkingScheduleRequest = exports.SelectSchedulingWorkingScheduleRequest = exports.UpdateSchedulingGeneratedScheduleMetadataRequest = exports.GetSchedulingGeneratedScheduleRequest = exports.ListSchedulingGeneratedSchedulesRequest = exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.DeleteSchedulingSharedLessonRequest = exports.UpdateSchedulingSharedLessonRequest = exports.CreateSchedulingSharedLessonRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.UpsertSemesterSchedulingPeriodTimeSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.DeleteSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
+exports.UpdateSchedulingRoomEnforcementRequest = exports.ApplySchedulingPinnedRegenerationRequest = exports.GetSchedulingPinnedRegenerationProposalRequest = exports.StartSchedulingPinnedRegenerationRequest = exports.RemoveSchedulingSchedulePinGroupRequest = exports.CreateSchedulingSchedulePinGroupRequest = exports.GetSchedulingSchedulePinsRequest = exports.ApplySchedulingScheduleAdjustmentRequest = exports.PreviewSchedulingScheduleAdjustmentRequest = exports.GetSchedulingScheduleAdjustmentOptionsRequest = exports.MutateSchedulingWorkingScheduleRequest = exports.ReturnToSchedulingScheduleRevisionRequest = exports.GetSchedulingScheduleRevisionRequest = exports.GetSchedulingScheduleRevisionsRequest = exports.RevalidateSchedulingWorkingScheduleRequest = exports.SelectSchedulingWorkingScheduleRequest = exports.UpdateSchedulingGeneratedScheduleMetadataRequest = exports.GetSchedulingGeneratedScheduleRequest = exports.ListSchedulingGeneratedSchedulesRequest = exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationFromScheduleRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.DeleteSchedulingSharedLessonRequest = exports.UpdateSchedulingSharedLessonRequest = exports.CreateSchedulingSharedLessonRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.UpsertSemesterSchedulingPeriodTimeSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.DeleteSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -2827,6 +2827,94 @@ exports.StartSchedulingGenerationRequest = {
             : undefined;
         message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseStartSchedulingGenerationFromScheduleRequest() {
+    return { context: undefined, school_year_id: undefined, source_schedule: undefined };
+}
+exports.StartSchedulingGenerationFromScheduleRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.source_schedule !== undefined) {
+            scheduling_1.SchedulingScheduleReference.encode(message.source_schedule, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStartSchedulingGenerationFromScheduleRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.source_schedule = scheduling_1.SchedulingScheduleReference.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            source_schedule: isSet(object.sourceSchedule)
+                ? scheduling_1.SchedulingScheduleReference.fromJSON(object.sourceSchedule)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.source_schedule !== undefined) {
+            obj.sourceSchedule = scheduling_1.SchedulingScheduleReference.toJSON(message.source_schedule);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StartSchedulingGenerationFromScheduleRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStartSchedulingGenerationFromScheduleRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.source_schedule = (object.source_schedule !== undefined && object.source_schedule !== null)
+            ? scheduling_1.SchedulingScheduleReference.fromPartial(object.source_schedule)
             : undefined;
         return message;
     },

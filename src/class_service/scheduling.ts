@@ -1262,6 +1262,44 @@ export interface SchedulingGenerationBlocker {
 }
 
 /**
+ * Comparison between a source schedule and the successful generated candidate.
+ * Counts are placement based. A comparable placement still has a current decision
+ * variable for the same class and slot and can participate in preservation scoring.
+ */
+export interface SchedulingGenerationPreservationMetrics {
+  source_placement_count?: number | undefined;
+  comparable_placement_count?: number | undefined;
+  same_slot_count?: number | undefined;
+  same_teacher_count?: number | undefined;
+  same_room_count?:
+    | number
+    | undefined;
+  /** Comparable placements whose slot, teacher, and room all remained unchanged. */
+  exact_preserved_count?:
+    | number
+    | undefined;
+  /**
+   * Source occurrences removed because the current setup requires fewer periods
+   * for their class. Moving or reassigning a retained period does not count here.
+   */
+  removed_count?:
+    | number
+    | undefined;
+  /**
+   * New occurrences added because the current setup requires more periods for a
+   * class. Moving or reassigning a retained period does not count here.
+   */
+  added_count?:
+    | number
+    | undefined;
+  /**
+   * True only when the solver proved that no valid schedule could preserve more of
+   * the source under the configured lexicographic preservation objective.
+   */
+  preservation_optimality_proven?: boolean | undefined;
+}
+
+/**
  * One schedule-generation attempt. A run is bound to the immutable solver-input
  * snapshot it used, so a failed run can always be inspected against its exact input.
  */
@@ -1312,7 +1350,21 @@ export interface SchedulingGenerationRun {
    */
   purpose?: SchedulingGenerationPurpose | undefined;
   source_working_revision_id?: Uuid | undefined;
-  pin_count?: number | undefined;
+  pin_count?:
+    | number
+    | undefined;
+  /**
+   * Present for candidate runs started from an immutable schedule. The source is a
+   * soft preservation preference and may use an earlier preparation setup.
+   */
+  source_schedule?:
+    | SchedulingScheduleReference
+    | undefined;
+  /**
+   * Present after a source-based run succeeds and its output has been compared with
+   * the source schedule. Ordinary and pinned runs omit these metrics.
+   */
+  preservation_metrics?: SchedulingGenerationPreservationMetrics | undefined;
 }
 
 /** Runs for a workspace, newest first (used for status polling and history). */
@@ -6170,6 +6222,207 @@ export const SchedulingGenerationBlocker: MessageFns<SchedulingGenerationBlocker
   },
 };
 
+function createBaseSchedulingGenerationPreservationMetrics(): SchedulingGenerationPreservationMetrics {
+  return {
+    source_placement_count: undefined,
+    comparable_placement_count: undefined,
+    same_slot_count: undefined,
+    same_teacher_count: undefined,
+    same_room_count: undefined,
+    exact_preserved_count: undefined,
+    removed_count: undefined,
+    added_count: undefined,
+    preservation_optimality_proven: undefined,
+  };
+}
+
+export const SchedulingGenerationPreservationMetrics: MessageFns<SchedulingGenerationPreservationMetrics> = {
+  encode(message: SchedulingGenerationPreservationMetrics, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.source_placement_count !== undefined) {
+      writer.uint32(8).uint32(message.source_placement_count);
+    }
+    if (message.comparable_placement_count !== undefined) {
+      writer.uint32(16).uint32(message.comparable_placement_count);
+    }
+    if (message.same_slot_count !== undefined) {
+      writer.uint32(24).uint32(message.same_slot_count);
+    }
+    if (message.same_teacher_count !== undefined) {
+      writer.uint32(32).uint32(message.same_teacher_count);
+    }
+    if (message.same_room_count !== undefined) {
+      writer.uint32(40).uint32(message.same_room_count);
+    }
+    if (message.exact_preserved_count !== undefined) {
+      writer.uint32(48).uint32(message.exact_preserved_count);
+    }
+    if (message.removed_count !== undefined) {
+      writer.uint32(56).uint32(message.removed_count);
+    }
+    if (message.added_count !== undefined) {
+      writer.uint32(64).uint32(message.added_count);
+    }
+    if (message.preservation_optimality_proven !== undefined) {
+      writer.uint32(72).bool(message.preservation_optimality_proven);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingGenerationPreservationMetrics {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingGenerationPreservationMetrics();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.source_placement_count = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.comparable_placement_count = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.same_slot_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.same_teacher_count = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.same_room_count = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.exact_preserved_count = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.removed_count = reader.uint32();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.added_count = reader.uint32();
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.preservation_optimality_proven = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingGenerationPreservationMetrics {
+    return {
+      source_placement_count: isSet(object.sourcePlacementCount)
+        ? globalThis.Number(object.sourcePlacementCount)
+        : undefined,
+      comparable_placement_count: isSet(object.comparablePlacementCount)
+        ? globalThis.Number(object.comparablePlacementCount)
+        : undefined,
+      same_slot_count: isSet(object.sameSlotCount) ? globalThis.Number(object.sameSlotCount) : undefined,
+      same_teacher_count: isSet(object.sameTeacherCount) ? globalThis.Number(object.sameTeacherCount) : undefined,
+      same_room_count: isSet(object.sameRoomCount) ? globalThis.Number(object.sameRoomCount) : undefined,
+      exact_preserved_count: isSet(object.exactPreservedCount)
+        ? globalThis.Number(object.exactPreservedCount)
+        : undefined,
+      removed_count: isSet(object.removedCount) ? globalThis.Number(object.removedCount) : undefined,
+      added_count: isSet(object.addedCount) ? globalThis.Number(object.addedCount) : undefined,
+      preservation_optimality_proven: isSet(object.preservationOptimalityProven)
+        ? globalThis.Boolean(object.preservationOptimalityProven)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingGenerationPreservationMetrics): unknown {
+    const obj: any = {};
+    if (message.source_placement_count !== undefined) {
+      obj.sourcePlacementCount = Math.round(message.source_placement_count);
+    }
+    if (message.comparable_placement_count !== undefined) {
+      obj.comparablePlacementCount = Math.round(message.comparable_placement_count);
+    }
+    if (message.same_slot_count !== undefined) {
+      obj.sameSlotCount = Math.round(message.same_slot_count);
+    }
+    if (message.same_teacher_count !== undefined) {
+      obj.sameTeacherCount = Math.round(message.same_teacher_count);
+    }
+    if (message.same_room_count !== undefined) {
+      obj.sameRoomCount = Math.round(message.same_room_count);
+    }
+    if (message.exact_preserved_count !== undefined) {
+      obj.exactPreservedCount = Math.round(message.exact_preserved_count);
+    }
+    if (message.removed_count !== undefined) {
+      obj.removedCount = Math.round(message.removed_count);
+    }
+    if (message.added_count !== undefined) {
+      obj.addedCount = Math.round(message.added_count);
+    }
+    if (message.preservation_optimality_proven !== undefined) {
+      obj.preservationOptimalityProven = message.preservation_optimality_proven;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingGenerationPreservationMetrics>, I>>(
+    base?: I,
+  ): SchedulingGenerationPreservationMetrics {
+    return SchedulingGenerationPreservationMetrics.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingGenerationPreservationMetrics>, I>>(
+    object: I,
+  ): SchedulingGenerationPreservationMetrics {
+    const message = createBaseSchedulingGenerationPreservationMetrics();
+    message.source_placement_count = object.source_placement_count ?? undefined;
+    message.comparable_placement_count = object.comparable_placement_count ?? undefined;
+    message.same_slot_count = object.same_slot_count ?? undefined;
+    message.same_teacher_count = object.same_teacher_count ?? undefined;
+    message.same_room_count = object.same_room_count ?? undefined;
+    message.exact_preserved_count = object.exact_preserved_count ?? undefined;
+    message.removed_count = object.removed_count ?? undefined;
+    message.added_count = object.added_count ?? undefined;
+    message.preservation_optimality_proven = object.preservation_optimality_proven ?? undefined;
+    return message;
+  },
+};
+
 function createBaseSchedulingGenerationRun(): SchedulingGenerationRun {
   return {
     id: undefined,
@@ -6190,6 +6443,8 @@ function createBaseSchedulingGenerationRun(): SchedulingGenerationRun {
     purpose: undefined,
     source_working_revision_id: undefined,
     pin_count: undefined,
+    source_schedule: undefined,
+    preservation_metrics: undefined,
   };
 }
 
@@ -6248,6 +6503,12 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
     }
     if (message.pin_count !== undefined) {
       writer.uint32(144).uint32(message.pin_count);
+    }
+    if (message.source_schedule !== undefined) {
+      SchedulingScheduleReference.encode(message.source_schedule, writer.uint32(154).fork()).join();
+    }
+    if (message.preservation_metrics !== undefined) {
+      SchedulingGenerationPreservationMetrics.encode(message.preservation_metrics, writer.uint32(162).fork()).join();
     }
     return writer;
   },
@@ -6385,6 +6646,20 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
 
           message.pin_count = reader.uint32();
           continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.source_schedule = SchedulingScheduleReference.decode(reader, reader.uint32());
+          continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.preservation_metrics = SchedulingGenerationPreservationMetrics.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -6424,6 +6699,12 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
         ? Uuid.fromJSON(object.sourceWorkingRevisionId)
         : undefined,
       pin_count: isSet(object.pinCount) ? globalThis.Number(object.pinCount) : undefined,
+      source_schedule: isSet(object.sourceSchedule)
+        ? SchedulingScheduleReference.fromJSON(object.sourceSchedule)
+        : undefined,
+      preservation_metrics: isSet(object.preservationMetrics)
+        ? SchedulingGenerationPreservationMetrics.fromJSON(object.preservationMetrics)
+        : undefined,
     };
   },
 
@@ -6483,6 +6764,12 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
     if (message.pin_count !== undefined) {
       obj.pinCount = Math.round(message.pin_count);
     }
+    if (message.source_schedule !== undefined) {
+      obj.sourceSchedule = SchedulingScheduleReference.toJSON(message.source_schedule);
+    }
+    if (message.preservation_metrics !== undefined) {
+      obj.preservationMetrics = SchedulingGenerationPreservationMetrics.toJSON(message.preservation_metrics);
+    }
     return obj;
   },
 
@@ -6526,6 +6813,12 @@ export const SchedulingGenerationRun: MessageFns<SchedulingGenerationRun> = {
         ? Uuid.fromPartial(object.source_working_revision_id)
         : undefined;
     message.pin_count = object.pin_count ?? undefined;
+    message.source_schedule = (object.source_schedule !== undefined && object.source_schedule !== null)
+      ? SchedulingScheduleReference.fromPartial(object.source_schedule)
+      : undefined;
+    message.preservation_metrics = (object.preservation_metrics !== undefined && object.preservation_metrics !== null)
+      ? SchedulingGenerationPreservationMetrics.fromPartial(object.preservation_metrics)
+      : undefined;
     return message;
   },
 };

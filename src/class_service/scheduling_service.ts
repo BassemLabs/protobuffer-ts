@@ -27,6 +27,7 @@ import {
   schedulingSchedulePinScopeFromJSON,
   schedulingSchedulePinScopeToJSON,
   schedulingSchedulePinScopeToNumber,
+  SchedulingScheduleReference,
   SchedulingSemesterOptionGroup,
   SchedulingSharedLessonMember,
   SchedulingTeacherAvailabilityWindow,
@@ -233,6 +234,18 @@ export interface UpsertSchedulingHighSchoolCourseStudentAssignmentRequest {
 export interface StartSchedulingGenerationRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
+}
+
+export interface StartSchedulingGenerationFromScheduleRequest {
+  context: RequestContext | undefined;
+  school_year_id:
+    | ObjectId
+    | undefined;
+  /**
+   * The immutable schedule whose placements should be preserved where compatible
+   * with the latest reviewed setup. This is a soft preference, not a hard pin.
+   */
+  source_schedule: SchedulingScheduleReference | undefined;
 }
 
 export interface GetSchedulingGenerationRunsRequest {
@@ -3624,6 +3637,110 @@ export const StartSchedulingGenerationRequest: MessageFns<StartSchedulingGenerat
       : undefined;
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseStartSchedulingGenerationFromScheduleRequest(): StartSchedulingGenerationFromScheduleRequest {
+  return { context: undefined, school_year_id: undefined, source_schedule: undefined };
+}
+
+export const StartSchedulingGenerationFromScheduleRequest: MessageFns<StartSchedulingGenerationFromScheduleRequest> = {
+  encode(
+    message: StartSchedulingGenerationFromScheduleRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.source_schedule !== undefined) {
+      SchedulingScheduleReference.encode(message.source_schedule, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartSchedulingGenerationFromScheduleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartSchedulingGenerationFromScheduleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.source_schedule = SchedulingScheduleReference.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartSchedulingGenerationFromScheduleRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      source_schedule: isSet(object.sourceSchedule)
+        ? SchedulingScheduleReference.fromJSON(object.sourceSchedule)
+        : undefined,
+    };
+  },
+
+  toJSON(message: StartSchedulingGenerationFromScheduleRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.source_schedule !== undefined) {
+      obj.sourceSchedule = SchedulingScheduleReference.toJSON(message.source_schedule);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartSchedulingGenerationFromScheduleRequest>, I>>(
+    base?: I,
+  ): StartSchedulingGenerationFromScheduleRequest {
+    return StartSchedulingGenerationFromScheduleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartSchedulingGenerationFromScheduleRequest>, I>>(
+    object: I,
+  ): StartSchedulingGenerationFromScheduleRequest {
+    const message = createBaseStartSchedulingGenerationFromScheduleRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.source_schedule = (object.source_schedule !== undefined && object.source_schedule !== null)
+      ? SchedulingScheduleReference.fromPartial(object.source_schedule)
       : undefined;
     return message;
   },
