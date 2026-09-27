@@ -9,6 +9,8 @@ import * as Campus from './organization_service/campus';
 export { Campus };
 import * as Room_service from './organization_service/room_service';
 export { Room_service };
+import * as Sensitive_operation_security_settings from './organization_service/sensitive_operation_security_settings';
+export { Sensitive_operation_security_settings };
 import * as Bassem_labs_staff from './organization_service/bassem_labs_staff';
 export { Bassem_labs_staff };
 import * as Organization_service from './organization_service/organization_service';
@@ -37,8 +39,6 @@ import * as Username_policy_service from './organization_service/username_policy
 export { Username_policy_service };
 import * as Room from './organization_service/room';
 export { Room };
-import * as Data_export_security_settings from './organization_service/data_export_security_settings';
-export { Data_export_security_settings };
 import * as Kms_service from './organization_service/kms_service';
 export { Kms_service };
 import * as Username_policy from './organization_service/username_policy';
