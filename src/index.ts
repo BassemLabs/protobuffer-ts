@@ -243,6 +243,8 @@ import * as Action_required_by_parents from './user_service/action_required_by_p
 export { Action_required_by_parents };
 import * as Parent from './user_service/parent';
 export { Parent };
+import * as Registration_form from './user_service/registration_form';
+export { Registration_form };
 import * as Family_service from './user_service/family_service';
 export { Family_service };
 import * as Device_token_service from './user_service/device_token_service';
