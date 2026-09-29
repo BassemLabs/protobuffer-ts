@@ -499,6 +499,8 @@ export interface UpdateSchoolYearRequest {
     | undefined;
   /** Grades that are open for registration in this school year. */
   open_grades: StudentGrade[];
+  start_date: Date | undefined;
+  end_date: Date | undefined;
 }
 
 export interface GetSchoolYearOpenGradesRequest {
@@ -2613,6 +2615,8 @@ function createBaseUpdateSchoolYearRequest(): UpdateSchoolYearRequest {
     name: undefined,
     is_open_for_registration: undefined,
     open_grades: [],
+    start_date: undefined,
+    end_date: undefined,
   };
 }
 
@@ -2635,6 +2639,12 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
       writer.int32(studentGradeToNumber(v));
     }
     writer.join();
+    if (message.start_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.start_date), writer.uint32(50).fork()).join();
+    }
+    if (message.end_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.end_date), writer.uint32(58).fork()).join();
+    }
     return writer;
   },
 
@@ -2690,6 +2700,20 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
           }
 
           break;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.start_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.end_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2710,6 +2734,8 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
       open_grades: globalThis.Array.isArray(object?.openGrades)
         ? object.openGrades.map((e: any) => studentGradeFromJSON(e))
         : [],
+      start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -2730,6 +2756,12 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     if (message.open_grades?.length) {
       obj.openGrades = message.open_grades.map((e) => studentGradeToJSON(e));
     }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date.toISOString();
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date.toISOString();
+    }
     return obj;
   },
 
@@ -2747,6 +2779,8 @@ export const UpdateSchoolYearRequest: MessageFns<UpdateSchoolYearRequest> = {
     message.name = object.name ?? undefined;
     message.is_open_for_registration = object.is_open_for_registration ?? undefined;
     message.open_grades = object.open_grades?.map((e) => e) || [];
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
     return message;
   },
 };

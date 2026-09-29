@@ -178,6 +178,8 @@ export interface UpdateSchoolYearRequest {
     is_open_for_registration?: boolean | undefined;
     /** Grades that are open for registration in this school year. */
     open_grades: StudentGrade[];
+    start_date: Date | undefined;
+    end_date: Date | undefined;
 }
 export interface GetSchoolYearOpenGradesRequest {
     context: RequestContext | undefined;
