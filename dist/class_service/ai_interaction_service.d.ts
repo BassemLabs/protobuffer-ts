@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { AiInteractionRecord, AiInteractionRecordStatus } from "./ai_interaction_record";
+import { AiInteractionRecord } from "./ai_interaction_record";
 export declare const protobufPackage = "class_service.ai_interaction_service";
 export interface GetAiInteractionRecordRequest {
     context: RequestContext | undefined;
@@ -21,30 +21,10 @@ export interface ListAiInteractionRecordsResponse {
     ai_interaction_record: AiInteractionRecord[];
     ai_interaction_record_count?: number | undefined;
 }
-export interface PreprocessingRequest {
-    context: RequestContext | undefined;
-    prompt?: string | undefined;
-}
-export interface PreprocessingResponse {
-    ai_interaction_record: AiInteractionRecord | undefined;
-}
-export interface PostprocessingRequest {
-    context: RequestContext | undefined;
-    ai_interaction_record_id: ObjectId | undefined;
-    response?: string | undefined;
-    status?: AiInteractionRecordStatus | undefined;
-}
-export interface PostprocessingResponse {
-    ai_interaction_record: AiInteractionRecord | undefined;
-}
 export declare const GetAiInteractionRecordRequest: MessageFns<GetAiInteractionRecordRequest>;
 export declare const GetAiInteractionRecordResponse: MessageFns<GetAiInteractionRecordResponse>;
 export declare const ListAiInteractionRecordsRequest: MessageFns<ListAiInteractionRecordsRequest>;
 export declare const ListAiInteractionRecordsResponse: MessageFns<ListAiInteractionRecordsResponse>;
-export declare const PreprocessingRequest: MessageFns<PreprocessingRequest>;
-export declare const PreprocessingResponse: MessageFns<PreprocessingResponse>;
-export declare const PostprocessingRequest: MessageFns<PostprocessingRequest>;
-export declare const PostprocessingResponse: MessageFns<PostprocessingResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
