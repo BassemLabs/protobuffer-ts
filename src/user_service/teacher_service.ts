@@ -170,6 +170,14 @@ export interface UploadTeachersResponse {
   error_csv_base64?: string | undefined;
 }
 
+export interface GetTeacherUploadHeaderRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetTeacherUploadHeaderResponse {
+  header: string[];
+}
+
 export interface CheckCanRemoveOrgDomainRequest {
   context: RequestContext | undefined;
   domain?: string | undefined;
@@ -2299,6 +2307,128 @@ export const UploadTeachersResponse: MessageFns<UploadTeachersResponse> = {
     message.success_count = object.success_count ?? undefined;
     message.failed_count = object.failed_count ?? undefined;
     message.error_csv_base64 = object.error_csv_base64 ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeacherUploadHeaderRequest(): GetTeacherUploadHeaderRequest {
+  return { context: undefined };
+}
+
+export const GetTeacherUploadHeaderRequest: MessageFns<GetTeacherUploadHeaderRequest> = {
+  encode(message: GetTeacherUploadHeaderRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherUploadHeaderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherUploadHeaderRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherUploadHeaderRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetTeacherUploadHeaderRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherUploadHeaderRequest>, I>>(base?: I): GetTeacherUploadHeaderRequest {
+    return GetTeacherUploadHeaderRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherUploadHeaderRequest>, I>>(
+    object: I,
+  ): GetTeacherUploadHeaderRequest {
+    const message = createBaseGetTeacherUploadHeaderRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTeacherUploadHeaderResponse(): GetTeacherUploadHeaderResponse {
+  return { header: [] };
+}
+
+export const GetTeacherUploadHeaderResponse: MessageFns<GetTeacherUploadHeaderResponse> = {
+  encode(message: GetTeacherUploadHeaderResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.header) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTeacherUploadHeaderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTeacherUploadHeaderResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.header.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTeacherUploadHeaderResponse {
+    return {
+      header: globalThis.Array.isArray(object?.header) ? object.header.map((e: any) => globalThis.String(e)) : [],
+    };
+  },
+
+  toJSON(message: GetTeacherUploadHeaderResponse): unknown {
+    const obj: any = {};
+    if (message.header?.length) {
+      obj.header = message.header;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTeacherUploadHeaderResponse>, I>>(base?: I): GetTeacherUploadHeaderResponse {
+    return GetTeacherUploadHeaderResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetTeacherUploadHeaderResponse>, I>>(
+    object: I,
+  ): GetTeacherUploadHeaderResponse {
+    const message = createBaseGetTeacherUploadHeaderResponse();
+    message.header = object.header?.map((e) => e) || [];
     return message;
   },
 };

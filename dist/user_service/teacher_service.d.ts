@@ -120,6 +120,12 @@ export interface UploadTeachersResponse {
     /** Base64 encoded CSV with errors (if any) */
     error_csv_base64?: string | undefined;
 }
+export interface GetTeacherUploadHeaderRequest {
+    context: RequestContext | undefined;
+}
+export interface GetTeacherUploadHeaderResponse {
+    header: string[];
+}
 export interface CheckCanRemoveOrgDomainRequest {
     context: RequestContext | undefined;
     domain?: string | undefined;
@@ -154,6 +160,8 @@ export declare const WithdrawTeacherRequest: MessageFns<WithdrawTeacherRequest>;
 export declare const ReactivateTeacherRequest: MessageFns<ReactivateTeacherRequest>;
 export declare const UploadTeachersRequest: MessageFns<UploadTeachersRequest>;
 export declare const UploadTeachersResponse: MessageFns<UploadTeachersResponse>;
+export declare const GetTeacherUploadHeaderRequest: MessageFns<GetTeacherUploadHeaderRequest>;
+export declare const GetTeacherUploadHeaderResponse: MessageFns<GetTeacherUploadHeaderResponse>;
 export declare const CheckCanRemoveOrgDomainRequest: MessageFns<CheckCanRemoveOrgDomainRequest>;
 export declare const CheckCanRemoveOrgDomainResponse: MessageFns<CheckCanRemoveOrgDomainResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
