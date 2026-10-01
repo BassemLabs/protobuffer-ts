@@ -28,6 +28,9 @@ export interface GetUserInvoicesResponse {
 export interface GetFamilyInvoicesRequest {
     context: RequestContext | undefined;
     family_id: ObjectId | undefined;
+    include_students?: boolean | undefined;
+    is_tuition?: boolean | undefined;
+    school_year?: ObjectId | undefined;
 }
 export interface GetParentInvoicesRequest {
     context: RequestContext | undefined;

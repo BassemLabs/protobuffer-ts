@@ -58,6 +58,9 @@ export interface GetUserInvoicesResponse {
 export interface GetFamilyInvoicesRequest {
   context: RequestContext | undefined;
   family_id: ObjectId | undefined;
+  include_students?: boolean | undefined;
+  is_tuition?: boolean | undefined;
+  school_year?: ObjectId | undefined;
 }
 
 export interface GetParentInvoicesRequest {
@@ -741,7 +744,13 @@ export const GetUserInvoicesResponse: MessageFns<GetUserInvoicesResponse> = {
 };
 
 function createBaseGetFamilyInvoicesRequest(): GetFamilyInvoicesRequest {
-  return { context: undefined, family_id: undefined };
+  return {
+    context: undefined,
+    family_id: undefined,
+    include_students: undefined,
+    is_tuition: undefined,
+    school_year: undefined,
+  };
 }
 
 export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
@@ -751,6 +760,15 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
     }
     if (message.family_id !== undefined) {
       ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+    }
+    if (message.include_students !== undefined) {
+      writer.uint32(32).bool(message.include_students);
+    }
+    if (message.is_tuition !== undefined) {
+      writer.uint32(40).bool(message.is_tuition);
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -776,6 +794,27 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
 
           message.family_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.include_students = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.is_tuition = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -789,6 +828,9 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      include_students: isSet(object.includeStudents) ? globalThis.Boolean(object.includeStudents) : undefined,
+      is_tuition: isSet(object.isTuition) ? globalThis.Boolean(object.isTuition) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
     };
   },
 
@@ -799,6 +841,15 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
     }
     if (message.family_id !== undefined) {
       obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    if (message.include_students !== undefined) {
+      obj.includeStudents = message.include_students;
+    }
+    if (message.is_tuition !== undefined) {
+      obj.isTuition = message.is_tuition;
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
     return obj;
   },
@@ -813,6 +864,11 @@ export const GetFamilyInvoicesRequest: MessageFns<GetFamilyInvoicesRequest> = {
       : undefined;
     message.family_id = (object.family_id !== undefined && object.family_id !== null)
       ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    message.include_students = object.include_students ?? undefined;
+    message.is_tuition = object.is_tuition ?? undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
       : undefined;
     return message;
   },
