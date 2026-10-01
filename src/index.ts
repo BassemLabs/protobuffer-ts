@@ -251,5 +251,7 @@ import * as Device_token_service from './user_service/device_token_service';
 export { Device_token_service };
 import * as Student_incident_service from './user_service/student_incident_service';
 export { Student_incident_service };
+import * as Data_export from './user_service/data_export';
+export { Data_export };
 import * as Parent_service from './user_service/parent_service';
 export { Parent_service };
