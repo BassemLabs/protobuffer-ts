@@ -5,7 +5,10 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.GetTeacherUploadHeaderResponse = exports.GetTeacherUploadHeaderRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.ValidateTeacherUsernameResponse = exports.ValidateTeacherUsernameRequest = exports.SuggestTeacherUsernameResponse = exports.SuggestTeacherUsernameRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.protobufPackage = void 0;
+exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.GetTeacherUploadHeaderResponse = exports.GetTeacherUploadHeaderRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.ValidateTeacherUsernameResponse = exports.ValidateTeacherUsernameRequest = exports.SuggestTeacherUsernameResponse = exports.SuggestTeacherUsernameRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.ResolveTeacherSignatureUrlsResponse = exports.TeacherSignatureUrlResolution = exports.ResolveTeacherSignatureUrlsRequest = exports.GetTeacherSignatureUrlResponse = exports.SaveTeacherSignatureResponse = exports.SaveTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.TeacherSignatureResolutionStatus = exports.protobufPackage = void 0;
+exports.teacherSignatureResolutionStatusFromJSON = teacherSignatureResolutionStatusFromJSON;
+exports.teacherSignatureResolutionStatusToJSON = teacherSignatureResolutionStatusToJSON;
+exports.teacherSignatureResolutionStatusToNumber = teacherSignatureResolutionStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -13,6 +16,64 @@ const phone_number_1 = require("../utils/phone_number");
 const request_context_1 = require("../utils/request_context");
 const teacher_1 = require("./teacher");
 exports.protobufPackage = "user_service";
+var TeacherSignatureResolutionStatus;
+(function (TeacherSignatureResolutionStatus) {
+    TeacherSignatureResolutionStatus["UNKNOWN"] = "UNKNOWN";
+    TeacherSignatureResolutionStatus["FOUND"] = "FOUND";
+    TeacherSignatureResolutionStatus["MISSING"] = "MISSING";
+    TeacherSignatureResolutionStatus["DENIED"] = "DENIED";
+    TeacherSignatureResolutionStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(TeacherSignatureResolutionStatus || (exports.TeacherSignatureResolutionStatus = TeacherSignatureResolutionStatus = {}));
+function teacherSignatureResolutionStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "UNKNOWN":
+            return TeacherSignatureResolutionStatus.UNKNOWN;
+        case 1:
+        case "FOUND":
+            return TeacherSignatureResolutionStatus.FOUND;
+        case 2:
+        case "MISSING":
+            return TeacherSignatureResolutionStatus.MISSING;
+        case 3:
+        case "DENIED":
+            return TeacherSignatureResolutionStatus.DENIED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return TeacherSignatureResolutionStatus.UNRECOGNIZED;
+    }
+}
+function teacherSignatureResolutionStatusToJSON(object) {
+    switch (object) {
+        case TeacherSignatureResolutionStatus.UNKNOWN:
+            return "UNKNOWN";
+        case TeacherSignatureResolutionStatus.FOUND:
+            return "FOUND";
+        case TeacherSignatureResolutionStatus.MISSING:
+            return "MISSING";
+        case TeacherSignatureResolutionStatus.DENIED:
+            return "DENIED";
+        case TeacherSignatureResolutionStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function teacherSignatureResolutionStatusToNumber(object) {
+    switch (object) {
+        case TeacherSignatureResolutionStatus.UNKNOWN:
+            return 0;
+        case TeacherSignatureResolutionStatus.FOUND:
+            return 1;
+        case TeacherSignatureResolutionStatus.MISSING:
+            return 2;
+        case TeacherSignatureResolutionStatus.DENIED:
+            return 3;
+        case TeacherSignatureResolutionStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetTeacherRequest() {
     return { context: undefined, teacher_id: undefined };
 }
@@ -798,6 +859,410 @@ exports.GetTeacherSignatureResponse = {
         message.signature_file_id = (object.signature_file_id !== undefined && object.signature_file_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.signature_file_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseSaveTeacherSignatureRequest() {
+    return { context: undefined, teacher_id: undefined, file_mime: undefined, content: undefined };
+}
+exports.SaveTeacherSignatureRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
+        }
+        if (message.file_mime !== undefined) {
+            writer.uint32(26).string(message.file_mime);
+        }
+        if (message.content !== undefined) {
+            writer.uint32(34).bytes(message.content);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSaveTeacherSignatureRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.file_mime = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.content = reader.bytes();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+            file_mime: isSet(object.fileMime) ? globalThis.String(object.fileMime) : undefined,
+            content: isSet(object.content) ? bytesFromBase64(object.content) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        if (message.file_mime !== undefined) {
+            obj.fileMime = message.file_mime;
+        }
+        if (message.content !== undefined) {
+            obj.content = base64FromBytes(message.content);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SaveTeacherSignatureRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSaveTeacherSignatureRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        message.file_mime = object.file_mime ?? undefined;
+        message.content = object.content ?? undefined;
+        return message;
+    },
+};
+function createBaseSaveTeacherSignatureResponse() {
+    return { signature_url: undefined };
+}
+exports.SaveTeacherSignatureResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.signature_url !== undefined) {
+            writer.uint32(10).string(message.signature_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSaveTeacherSignatureResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.signature_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { signature_url: isSet(object.signatureUrl) ? globalThis.String(object.signatureUrl) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.signature_url !== undefined) {
+            obj.signatureUrl = message.signature_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SaveTeacherSignatureResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSaveTeacherSignatureResponse();
+        message.signature_url = object.signature_url ?? undefined;
+        return message;
+    },
+};
+function createBaseGetTeacherSignatureUrlResponse() {
+    return { signature_url: undefined };
+}
+exports.GetTeacherSignatureUrlResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.signature_url !== undefined) {
+            writer.uint32(10).string(message.signature_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeacherSignatureUrlResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.signature_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { signature_url: isSet(object.signatureUrl) ? globalThis.String(object.signatureUrl) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.signature_url !== undefined) {
+            obj.signatureUrl = message.signature_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeacherSignatureUrlResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeacherSignatureUrlResponse();
+        message.signature_url = object.signature_url ?? undefined;
+        return message;
+    },
+};
+function createBaseResolveTeacherSignatureUrlsRequest() {
+    return { context: undefined, signature_file_ids: [] };
+}
+exports.ResolveTeacherSignatureUrlsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.signature_file_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResolveTeacherSignatureUrlsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.signature_file_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            signature_file_ids: globalThis.Array.isArray(object?.signatureFileIds)
+                ? object.signatureFileIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.signature_file_ids?.length) {
+            obj.signatureFileIds = message.signature_file_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResolveTeacherSignatureUrlsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResolveTeacherSignatureUrlsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.signature_file_ids = object.signature_file_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseTeacherSignatureUrlResolution() {
+    return { signature_file_id: undefined, status: undefined, signature_url: undefined };
+}
+exports.TeacherSignatureUrlResolution = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.signature_file_id !== undefined) {
+            object_id_1.ObjectId.encode(message.signature_file_id, writer.uint32(10).fork()).join();
+        }
+        if (message.status !== undefined) {
+            writer.uint32(16).int32(teacherSignatureResolutionStatusToNumber(message.status));
+        }
+        if (message.signature_url !== undefined) {
+            writer.uint32(26).string(message.signature_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTeacherSignatureUrlResolution();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.signature_file_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.status = teacherSignatureResolutionStatusFromJSON(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.signature_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            signature_file_id: isSet(object.signatureFileId) ? object_id_1.ObjectId.fromJSON(object.signatureFileId) : undefined,
+            status: isSet(object.status) ? teacherSignatureResolutionStatusFromJSON(object.status) : undefined,
+            signature_url: isSet(object.signatureUrl) ? globalThis.String(object.signatureUrl) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.signature_file_id !== undefined) {
+            obj.signatureFileId = object_id_1.ObjectId.toJSON(message.signature_file_id);
+        }
+        if (message.status !== undefined) {
+            obj.status = teacherSignatureResolutionStatusToJSON(message.status);
+        }
+        if (message.signature_url !== undefined) {
+            obj.signatureUrl = message.signature_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TeacherSignatureUrlResolution.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTeacherSignatureUrlResolution();
+        message.signature_file_id = (object.signature_file_id !== undefined && object.signature_file_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.signature_file_id)
+            : undefined;
+        message.status = object.status ?? undefined;
+        message.signature_url = object.signature_url ?? undefined;
+        return message;
+    },
+};
+function createBaseResolveTeacherSignatureUrlsResponse() {
+    return { signatures: [] };
+}
+exports.ResolveTeacherSignatureUrlsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.signatures) {
+            exports.TeacherSignatureUrlResolution.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResolveTeacherSignatureUrlsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.signatures.push(exports.TeacherSignatureUrlResolution.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            signatures: globalThis.Array.isArray(object?.signatures)
+                ? object.signatures.map((e) => exports.TeacherSignatureUrlResolution.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.signatures?.length) {
+            obj.signatures = message.signatures.map((e) => exports.TeacherSignatureUrlResolution.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResolveTeacherSignatureUrlsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResolveTeacherSignatureUrlsResponse();
+        message.signatures = object.signatures?.map((e) => exports.TeacherSignatureUrlResolution.fromPartial(e)) || [];
         return message;
     },
 };
@@ -2159,6 +2624,21 @@ exports.CheckCanRemoveOrgDomainResponse = {
         return message;
     },
 };
+function bytesFromBase64(b64) {
+    const bin = globalThis.atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+        arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+}
+function base64FromBytes(arr) {
+    const bin = [];
+    arr.forEach((byte) => {
+        bin.push(globalThis.String.fromCharCode(byte));
+    });
+    return globalThis.btoa(bin.join(""));
+}
 function longToNumber(int64) {
     const num = globalThis.Number(int64.toString());
     if (num > globalThis.Number.MAX_SAFE_INTEGER) {

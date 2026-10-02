@@ -4,6 +4,16 @@ import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
 import { Teacher, TeacherBasic, TeacherProfileUpdate, TeacherStatus } from "./teacher";
 export declare const protobufPackage = "user_service";
+export declare enum TeacherSignatureResolutionStatus {
+    UNKNOWN = "UNKNOWN",
+    FOUND = "FOUND",
+    MISSING = "MISSING",
+    DENIED = "DENIED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function teacherSignatureResolutionStatusFromJSON(object: any): TeacherSignatureResolutionStatus;
+export declare function teacherSignatureResolutionStatusToJSON(object: TeacherSignatureResolutionStatus): string;
+export declare function teacherSignatureResolutionStatusToNumber(object: TeacherSignatureResolutionStatus): number;
 export interface GetTeacherRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
@@ -49,6 +59,30 @@ export interface GetTeacherSignatureRequest {
 }
 export interface GetTeacherSignatureResponse {
     signature_file_id?: ObjectId | undefined;
+}
+export interface SaveTeacherSignatureRequest {
+    context: RequestContext | undefined;
+    teacher_id: ObjectId | undefined;
+    file_mime?: string | undefined;
+    content?: Uint8Array | undefined;
+}
+export interface SaveTeacherSignatureResponse {
+    signature_url?: string | undefined;
+}
+export interface GetTeacherSignatureUrlResponse {
+    signature_url?: string | undefined;
+}
+export interface ResolveTeacherSignatureUrlsRequest {
+    context: RequestContext | undefined;
+    signature_file_ids: ObjectId[];
+}
+export interface TeacherSignatureUrlResolution {
+    signature_file_id: ObjectId | undefined;
+    status?: TeacherSignatureResolutionStatus | undefined;
+    signature_url?: string | undefined;
+}
+export interface ResolveTeacherSignatureUrlsResponse {
+    signatures: TeacherSignatureUrlResolution[];
 }
 export interface UpdateTeacherSignatureRequest {
     context: RequestContext | undefined;
@@ -147,6 +181,12 @@ export declare const GetFullTeachersByIdsRequest: MessageFns<GetFullTeachersById
 export declare const GetFullTeachersByIdsResponse: MessageFns<GetFullTeachersByIdsResponse>;
 export declare const GetTeacherSignatureRequest: MessageFns<GetTeacherSignatureRequest>;
 export declare const GetTeacherSignatureResponse: MessageFns<GetTeacherSignatureResponse>;
+export declare const SaveTeacherSignatureRequest: MessageFns<SaveTeacherSignatureRequest>;
+export declare const SaveTeacherSignatureResponse: MessageFns<SaveTeacherSignatureResponse>;
+export declare const GetTeacherSignatureUrlResponse: MessageFns<GetTeacherSignatureUrlResponse>;
+export declare const ResolveTeacherSignatureUrlsRequest: MessageFns<ResolveTeacherSignatureUrlsRequest>;
+export declare const TeacherSignatureUrlResolution: MessageFns<TeacherSignatureUrlResolution>;
+export declare const ResolveTeacherSignatureUrlsResponse: MessageFns<ResolveTeacherSignatureUrlsResponse>;
 export declare const UpdateTeacherSignatureRequest: MessageFns<UpdateTeacherSignatureRequest>;
 export declare const DeleteTeacherSignatureRequest: MessageFns<DeleteTeacherSignatureRequest>;
 export declare const UpdateTeacherProfileRequest: MessageFns<UpdateTeacherProfileRequest>;
