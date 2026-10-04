@@ -237,6 +237,8 @@ import * as User_role from './user_service/user_role';
 export { User_role };
 import * as Teacher_role_service from './user_service/teacher_role_service';
 export { Teacher_role_service };
+import * as Data_export_request from './user_service/data_export_request';
+export { Data_export_request };
 import * as Resource_access_settings from './user_service/resource_access_settings';
 export { Resource_access_settings };
 import * as Action_required_by_parents from './user_service/action_required_by_parents';
