@@ -666,6 +666,20 @@ export interface StartCurrentStartSchoolYearPhaseRequest {
   phase?: StartSchoolYearPhase | undefined;
 }
 
+export interface GetOrganizationEmailBrandingRequest {
+  context: RequestContext | undefined;
+}
+
+export interface UpdateOrganizationEmailBrandingRequest {
+  context: RequestContext | undefined;
+  organization_id:
+    | ObjectId
+    | undefined;
+  /** Omitted colors restore the neutral layout defaults. */
+  header_background_color?: string | undefined;
+  header_border_color?: string | undefined;
+}
+
 function createBaseGetOrganizationRequest(): GetOrganizationRequest {
   return { context: undefined, organization_id: undefined };
 }
@@ -5446,6 +5460,188 @@ export const StartCurrentStartSchoolYearPhaseRequest: MessageFns<StartCurrentSta
       ? ObjectId.fromPartial(object.organization_id)
       : undefined;
     message.phase = object.phase ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetOrganizationEmailBrandingRequest(): GetOrganizationEmailBrandingRequest {
+  return { context: undefined };
+}
+
+export const GetOrganizationEmailBrandingRequest: MessageFns<GetOrganizationEmailBrandingRequest> = {
+  encode(message: GetOrganizationEmailBrandingRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetOrganizationEmailBrandingRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrganizationEmailBrandingRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrganizationEmailBrandingRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetOrganizationEmailBrandingRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrganizationEmailBrandingRequest>, I>>(
+    base?: I,
+  ): GetOrganizationEmailBrandingRequest {
+    return GetOrganizationEmailBrandingRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrganizationEmailBrandingRequest>, I>>(
+    object: I,
+  ): GetOrganizationEmailBrandingRequest {
+    const message = createBaseGetOrganizationEmailBrandingRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateOrganizationEmailBrandingRequest(): UpdateOrganizationEmailBrandingRequest {
+  return {
+    context: undefined,
+    organization_id: undefined,
+    header_background_color: undefined,
+    header_border_color: undefined,
+  };
+}
+
+export const UpdateOrganizationEmailBrandingRequest: MessageFns<UpdateOrganizationEmailBrandingRequest> = {
+  encode(message: UpdateOrganizationEmailBrandingRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.header_background_color !== undefined) {
+      writer.uint32(26).string(message.header_background_color);
+    }
+    if (message.header_border_color !== undefined) {
+      writer.uint32(34).string(message.header_border_color);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateOrganizationEmailBrandingRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateOrganizationEmailBrandingRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.header_background_color = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.header_border_color = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateOrganizationEmailBrandingRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      header_background_color: isSet(object.headerBackgroundColor)
+        ? globalThis.String(object.headerBackgroundColor)
+        : undefined,
+      header_border_color: isSet(object.headerBorderColor) ? globalThis.String(object.headerBorderColor) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateOrganizationEmailBrandingRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.header_background_color !== undefined) {
+      obj.headerBackgroundColor = message.header_background_color;
+    }
+    if (message.header_border_color !== undefined) {
+      obj.headerBorderColor = message.header_border_color;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateOrganizationEmailBrandingRequest>, I>>(
+    base?: I,
+  ): UpdateOrganizationEmailBrandingRequest {
+    return UpdateOrganizationEmailBrandingRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateOrganizationEmailBrandingRequest>, I>>(
+    object: I,
+  ): UpdateOrganizationEmailBrandingRequest {
+    const message = createBaseUpdateOrganizationEmailBrandingRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.header_background_color = object.header_background_color ?? undefined;
+    message.header_border_color = object.header_border_color ?? undefined;
     return message;
   },
 };

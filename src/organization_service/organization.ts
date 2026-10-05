@@ -177,6 +177,12 @@ export interface AutoPayRetryConfig {
   retry_interval_hours?: number | undefined;
 }
 
+/** Optional email header colors; identity comes from Organization. */
+export interface OrganizationEmailBranding {
+  header_background_color?: string | undefined;
+  header_border_color?: string | undefined;
+}
+
 function createBaseOrganization(): Organization {
   return {
     id: undefined,
@@ -949,6 +955,82 @@ export const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig> = {
     const message = createBaseAutoPayRetryConfig();
     message.max_retries = object.max_retries ?? undefined;
     message.retry_interval_hours = object.retry_interval_hours ?? undefined;
+    return message;
+  },
+};
+
+function createBaseOrganizationEmailBranding(): OrganizationEmailBranding {
+  return { header_background_color: undefined, header_border_color: undefined };
+}
+
+export const OrganizationEmailBranding: MessageFns<OrganizationEmailBranding> = {
+  encode(message: OrganizationEmailBranding, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.header_background_color !== undefined) {
+      writer.uint32(10).string(message.header_background_color);
+    }
+    if (message.header_border_color !== undefined) {
+      writer.uint32(18).string(message.header_border_color);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): OrganizationEmailBranding {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrganizationEmailBranding();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.header_background_color = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.header_border_color = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OrganizationEmailBranding {
+    return {
+      header_background_color: isSet(object.headerBackgroundColor)
+        ? globalThis.String(object.headerBackgroundColor)
+        : undefined,
+      header_border_color: isSet(object.headerBorderColor) ? globalThis.String(object.headerBorderColor) : undefined,
+    };
+  },
+
+  toJSON(message: OrganizationEmailBranding): unknown {
+    const obj: any = {};
+    if (message.header_background_color !== undefined) {
+      obj.headerBackgroundColor = message.header_background_color;
+    }
+    if (message.header_border_color !== undefined) {
+      obj.headerBorderColor = message.header_border_color;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<OrganizationEmailBranding>, I>>(base?: I): OrganizationEmailBranding {
+    return OrganizationEmailBranding.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<OrganizationEmailBranding>, I>>(object: I): OrganizationEmailBranding {
+    const message = createBaseOrganizationEmailBranding();
+    message.header_background_color = object.header_background_color ?? undefined;
+    message.header_border_color = object.header_border_color ?? undefined;
     return message;
   },
 };

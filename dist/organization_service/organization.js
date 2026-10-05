@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: organization_service/organization.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutoPayRetryConfig = exports.PaymentInformation = exports.SchoolYear = exports.Organization = exports.DirectoryProviderType = exports.Currency = exports.protobufPackage = void 0;
+exports.OrganizationEmailBranding = exports.AutoPayRetryConfig = exports.PaymentInformation = exports.SchoolYear = exports.Organization = exports.DirectoryProviderType = exports.Currency = exports.protobufPackage = void 0;
 exports.currencyFromJSON = currencyFromJSON;
 exports.currencyToJSON = currencyToJSON;
 exports.currencyToNumber = currencyToNumber;
@@ -826,6 +826,74 @@ exports.AutoPayRetryConfig = {
         const message = createBaseAutoPayRetryConfig();
         message.max_retries = object.max_retries ?? undefined;
         message.retry_interval_hours = object.retry_interval_hours ?? undefined;
+        return message;
+    },
+};
+function createBaseOrganizationEmailBranding() {
+    return { header_background_color: undefined, header_border_color: undefined };
+}
+exports.OrganizationEmailBranding = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.header_background_color !== undefined) {
+            writer.uint32(10).string(message.header_background_color);
+        }
+        if (message.header_border_color !== undefined) {
+            writer.uint32(18).string(message.header_border_color);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOrganizationEmailBranding();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.header_background_color = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.header_border_color = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            header_background_color: isSet(object.headerBackgroundColor)
+                ? globalThis.String(object.headerBackgroundColor)
+                : undefined,
+            header_border_color: isSet(object.headerBorderColor) ? globalThis.String(object.headerBorderColor) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.header_background_color !== undefined) {
+            obj.headerBackgroundColor = message.header_background_color;
+        }
+        if (message.header_border_color !== undefined) {
+            obj.headerBorderColor = message.header_border_color;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OrganizationEmailBranding.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOrganizationEmailBranding();
+        message.header_background_color = object.header_background_color ?? undefined;
+        message.header_border_color = object.header_border_color ?? undefined;
         return message;
     },
 };

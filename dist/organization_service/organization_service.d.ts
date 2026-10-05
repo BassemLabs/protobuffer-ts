@@ -316,6 +316,16 @@ export interface StartCurrentStartSchoolYearPhaseRequest {
     organization_id: ObjectId | undefined;
     phase?: StartSchoolYearPhase | undefined;
 }
+export interface GetOrganizationEmailBrandingRequest {
+    context: RequestContext | undefined;
+}
+export interface UpdateOrganizationEmailBrandingRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+    /** Omitted colors restore the neutral layout defaults. */
+    header_background_color?: string | undefined;
+    header_border_color?: string | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -366,6 +376,8 @@ export declare const StartSchoolYearRun: MessageFns<StartSchoolYearRun>;
 export declare const GetCurrentStartSchoolYearRunRequest: MessageFns<GetCurrentStartSchoolYearRunRequest>;
 export declare const GetCurrentStartSchoolYearRunResponse: MessageFns<GetCurrentStartSchoolYearRunResponse>;
 export declare const StartCurrentStartSchoolYearPhaseRequest: MessageFns<StartCurrentStartSchoolYearPhaseRequest>;
+export declare const GetOrganizationEmailBrandingRequest: MessageFns<GetOrganizationEmailBrandingRequest>;
+export declare const UpdateOrganizationEmailBrandingRequest: MessageFns<UpdateOrganizationEmailBrandingRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

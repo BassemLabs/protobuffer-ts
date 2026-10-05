@@ -6,7 +6,7 @@
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
-exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = void 0;
+exports.UpdateOrganizationEmailBrandingRequest = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = void 0;
 exports.reregistrationPhaseFromJSON = reregistrationPhaseFromJSON;
 exports.reregistrationPhaseToJSON = reregistrationPhaseToJSON;
 exports.reregistrationPhaseToNumber = reregistrationPhaseToNumber;
@@ -4551,6 +4551,163 @@ exports.StartCurrentStartSchoolYearPhaseRequest = {
             ? object_id_1.ObjectId.fromPartial(object.organization_id)
             : undefined;
         message.phase = object.phase ?? undefined;
+        return message;
+    },
+};
+function createBaseGetOrganizationEmailBrandingRequest() {
+    return { context: undefined };
+}
+exports.GetOrganizationEmailBrandingRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetOrganizationEmailBrandingRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetOrganizationEmailBrandingRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetOrganizationEmailBrandingRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseUpdateOrganizationEmailBrandingRequest() {
+    return {
+        context: undefined,
+        organization_id: undefined,
+        header_background_color: undefined,
+        header_border_color: undefined,
+    };
+}
+exports.UpdateOrganizationEmailBrandingRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.header_background_color !== undefined) {
+            writer.uint32(26).string(message.header_background_color);
+        }
+        if (message.header_border_color !== undefined) {
+            writer.uint32(34).string(message.header_border_color);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateOrganizationEmailBrandingRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.header_background_color = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.header_border_color = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            header_background_color: isSet(object.headerBackgroundColor)
+                ? globalThis.String(object.headerBackgroundColor)
+                : undefined,
+            header_border_color: isSet(object.headerBorderColor) ? globalThis.String(object.headerBorderColor) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.header_background_color !== undefined) {
+            obj.headerBackgroundColor = message.header_background_color;
+        }
+        if (message.header_border_color !== undefined) {
+            obj.headerBorderColor = message.header_border_color;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateOrganizationEmailBrandingRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateOrganizationEmailBrandingRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.header_background_color = object.header_background_color ?? undefined;
+        message.header_border_color = object.header_border_color ?? undefined;
         return message;
     },
 };

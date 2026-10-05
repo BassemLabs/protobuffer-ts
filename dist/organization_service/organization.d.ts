@@ -74,10 +74,16 @@ export interface AutoPayRetryConfig {
     /** Retry interval in hours - retries every N hours until max_retries (default: 24) */
     retry_interval_hours?: number | undefined;
 }
+/** Optional email header colors; identity comes from Organization. */
+export interface OrganizationEmailBranding {
+    header_background_color?: string | undefined;
+    header_border_color?: string | undefined;
+}
 export declare const Organization: MessageFns<Organization>;
 export declare const SchoolYear: MessageFns<SchoolYear>;
 export declare const PaymentInformation: MessageFns<PaymentInformation>;
 export declare const AutoPayRetryConfig: MessageFns<AutoPayRetryConfig>;
+export declare const OrganizationEmailBranding: MessageFns<OrganizationEmailBranding>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
