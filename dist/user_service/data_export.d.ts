@@ -5,7 +5,7 @@ import { StudentGrade, StudentStatus } from "./student";
 import { TeacherStatus } from "./teacher";
 export declare const protobufPackage = "user_service";
 /**
- * These are approved, fixed fields. Custom fields and arbitrary data paths are
+ * These are approved, fixed fields. Arbitrary data paths are
  * deliberately absent. The catalog further limits each dataset's allowed keys.
  */
 export declare enum DataExportDataset {
@@ -170,6 +170,10 @@ export interface DataExportColumnDefinition {
     column?: DataExportColumn | undefined;
     label?: string | undefined;
     group?: string | undefined;
+    /** Custom definitions use UNSPECIFIED for column and carry their field ID. */
+    custom_field_id?: ObjectId | undefined;
+    /** Server-computed definition fingerprint binds approved requests to field meaning. */
+    custom_field_schema_fingerprint?: string | undefined;
 }
 export interface DataExportSortDefinition {
     key?: DataExportSortKey | undefined;
@@ -206,7 +210,7 @@ export interface TeacherDataExportFilters {
 export interface DataExportSelection {
     /**
      * Order determines CSV and preview column order. The server rejects duplicate,
-     * unknown, and dataset-incompatible keys, including all custom fields.
+     * unknown, and dataset-incompatible keys.
      */
     columns: DataExportColumn[];
     /** Rules are applied in order; the server adds stable entity IDs as tie-breakers. */
@@ -214,6 +218,8 @@ export interface DataExportSelection {
     students?: StudentDataExportFilters | undefined;
     parents?: ParentDataExportFilters | undefined;
     teachers?: TeacherDataExportFilters | undefined;
+    /** Custom columns follow standard columns in this order. Access is checked live. */
+    custom_field_ids: ObjectId[];
 }
 export interface DataExportTemplate {
     id: ObjectId | undefined;
@@ -263,6 +269,10 @@ export interface GetDataExportCatalogResponse {
     student_grades: StudentGrade[];
     teacher_statuses: TeacherStatus[];
     genders: string[];
+    /** Active, accessible fields belonging to this dataset only. */
+    custom_fields: DataExportColumnDefinition[];
+    /** Accessible archived field metadata for repairing saved selections, never exportable. */
+    archived_custom_fields: DataExportColumnDefinition[];
 }
 export interface PreviewDataExportRequest {
     context: RequestContext | undefined;

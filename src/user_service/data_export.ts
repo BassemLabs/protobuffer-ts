@@ -24,7 +24,7 @@ import { TeacherStatus, teacherStatusFromJSON, teacherStatusToJSON, teacherStatu
 export const protobufPackage = "user_service";
 
 /**
- * These are approved, fixed fields. Custom fields and arbitrary data paths are
+ * These are approved, fixed fields. Arbitrary data paths are
  * deliberately absent. The catalog further limits each dataset's allowed keys.
  */
 export enum DataExportDataset {
@@ -1177,7 +1177,15 @@ export function dataExportSortDirectionToNumber(object: DataExportSortDirection)
 export interface DataExportColumnDefinition {
   column?: DataExportColumn | undefined;
   label?: string | undefined;
-  group?: string | undefined;
+  group?:
+    | string
+    | undefined;
+  /** Custom definitions use UNSPECIFIED for column and carry their field ID. */
+  custom_field_id?:
+    | ObjectId
+    | undefined;
+  /** Server-computed definition fingerprint binds approved requests to field meaning. */
+  custom_field_schema_fingerprint?: string | undefined;
 }
 
 export interface DataExportSortDefinition {
@@ -1220,14 +1228,18 @@ export interface TeacherDataExportFilters {
 export interface DataExportSelection {
   /**
    * Order determines CSV and preview column order. The server rejects duplicate,
-   * unknown, and dataset-incompatible keys, including all custom fields.
+   * unknown, and dataset-incompatible keys.
    */
   columns: DataExportColumn[];
   /** Rules are applied in order; the server adds stable entity IDs as tie-breakers. */
   sort_rules: DataExportSortRule[];
   students?: StudentDataExportFilters | undefined;
   parents?: ParentDataExportFilters | undefined;
-  teachers?: TeacherDataExportFilters | undefined;
+  teachers?:
+    | TeacherDataExportFilters
+    | undefined;
+  /** Custom columns follow standard columns in this order. Access is checked live. */
+  custom_field_ids: ObjectId[];
 }
 
 export interface DataExportTemplate {
@@ -1288,6 +1300,10 @@ export interface GetDataExportCatalogResponse {
   student_grades: StudentGrade[];
   teacher_statuses: TeacherStatus[];
   genders: string[];
+  /** Active, accessible fields belonging to this dataset only. */
+  custom_fields: DataExportColumnDefinition[];
+  /** Accessible archived field metadata for repairing saved selections, never exportable. */
+  archived_custom_fields: DataExportColumnDefinition[];
 }
 
 export interface PreviewDataExportRequest {
@@ -1325,7 +1341,13 @@ export interface GetDataExportPageResponse {
 }
 
 function createBaseDataExportColumnDefinition(): DataExportColumnDefinition {
-  return { column: undefined, label: undefined, group: undefined };
+  return {
+    column: undefined,
+    label: undefined,
+    group: undefined,
+    custom_field_id: undefined,
+    custom_field_schema_fingerprint: undefined,
+  };
 }
 
 export const DataExportColumnDefinition: MessageFns<DataExportColumnDefinition> = {
@@ -1338,6 +1360,12 @@ export const DataExportColumnDefinition: MessageFns<DataExportColumnDefinition> 
     }
     if (message.group !== undefined) {
       writer.uint32(26).string(message.group);
+    }
+    if (message.custom_field_id !== undefined) {
+      ObjectId.encode(message.custom_field_id, writer.uint32(34).fork()).join();
+    }
+    if (message.custom_field_schema_fingerprint !== undefined) {
+      writer.uint32(42).string(message.custom_field_schema_fingerprint);
     }
     return writer;
   },
@@ -1370,6 +1398,20 @@ export const DataExportColumnDefinition: MessageFns<DataExportColumnDefinition> 
 
           message.group = reader.string();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.custom_field_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.custom_field_schema_fingerprint = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1384,6 +1426,10 @@ export const DataExportColumnDefinition: MessageFns<DataExportColumnDefinition> 
       column: isSet(object.column) ? dataExportColumnFromJSON(object.column) : undefined,
       label: isSet(object.label) ? globalThis.String(object.label) : undefined,
       group: isSet(object.group) ? globalThis.String(object.group) : undefined,
+      custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
+      custom_field_schema_fingerprint: isSet(object.customFieldSchemaFingerprint)
+        ? globalThis.String(object.customFieldSchemaFingerprint)
+        : undefined,
     };
   },
 
@@ -1398,6 +1444,12 @@ export const DataExportColumnDefinition: MessageFns<DataExportColumnDefinition> 
     if (message.group !== undefined) {
       obj.group = message.group;
     }
+    if (message.custom_field_id !== undefined) {
+      obj.customFieldId = ObjectId.toJSON(message.custom_field_id);
+    }
+    if (message.custom_field_schema_fingerprint !== undefined) {
+      obj.customFieldSchemaFingerprint = message.custom_field_schema_fingerprint;
+    }
     return obj;
   },
 
@@ -1409,6 +1461,10 @@ export const DataExportColumnDefinition: MessageFns<DataExportColumnDefinition> 
     message.column = object.column ?? undefined;
     message.label = object.label ?? undefined;
     message.group = object.group ?? undefined;
+    message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+      ? ObjectId.fromPartial(object.custom_field_id)
+      : undefined;
+    message.custom_field_schema_fingerprint = object.custom_field_schema_fingerprint ?? undefined;
     return message;
   },
 };
@@ -2043,7 +2099,14 @@ export const TeacherDataExportFilters: MessageFns<TeacherDataExportFilters> = {
 };
 
 function createBaseDataExportSelection(): DataExportSelection {
-  return { columns: [], sort_rules: [], students: undefined, parents: undefined, teachers: undefined };
+  return {
+    columns: [],
+    sort_rules: [],
+    students: undefined,
+    parents: undefined,
+    teachers: undefined,
+    custom_field_ids: [],
+  };
 }
 
 export const DataExportSelection: MessageFns<DataExportSelection> = {
@@ -2064,6 +2127,9 @@ export const DataExportSelection: MessageFns<DataExportSelection> = {
     }
     if (message.teachers !== undefined) {
       TeacherDataExportFilters.encode(message.teachers, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.custom_field_ids) {
+      ObjectId.encode(v!, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -2120,6 +2186,13 @@ export const DataExportSelection: MessageFns<DataExportSelection> = {
 
           message.teachers = TeacherDataExportFilters.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.custom_field_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2140,6 +2213,9 @@ export const DataExportSelection: MessageFns<DataExportSelection> = {
       students: isSet(object.students) ? StudentDataExportFilters.fromJSON(object.students) : undefined,
       parents: isSet(object.parents) ? ParentDataExportFilters.fromJSON(object.parents) : undefined,
       teachers: isSet(object.teachers) ? TeacherDataExportFilters.fromJSON(object.teachers) : undefined,
+      custom_field_ids: globalThis.Array.isArray(object?.customFieldIds)
+        ? object.customFieldIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -2160,6 +2236,9 @@ export const DataExportSelection: MessageFns<DataExportSelection> = {
     if (message.teachers !== undefined) {
       obj.teachers = TeacherDataExportFilters.toJSON(message.teachers);
     }
+    if (message.custom_field_ids?.length) {
+      obj.customFieldIds = message.custom_field_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -2179,6 +2258,7 @@ export const DataExportSelection: MessageFns<DataExportSelection> = {
     message.teachers = (object.teachers !== undefined && object.teachers !== null)
       ? TeacherDataExportFilters.fromPartial(object.teachers)
       : undefined;
+    message.custom_field_ids = object.custom_field_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2916,6 +2996,8 @@ function createBaseGetDataExportCatalogResponse(): GetDataExportCatalogResponse 
     student_grades: [],
     teacher_statuses: [],
     genders: [],
+    custom_fields: [],
+    archived_custom_fields: [],
   };
 }
 
@@ -2947,6 +3029,12 @@ export const GetDataExportCatalogResponse: MessageFns<GetDataExportCatalogRespon
     writer.join();
     for (const v of message.genders) {
       writer.uint32(58).string(v!);
+    }
+    for (const v of message.custom_fields) {
+      DataExportColumnDefinition.encode(v!, writer.uint32(66).fork()).join();
+    }
+    for (const v of message.archived_custom_fields) {
+      DataExportColumnDefinition.encode(v!, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -3037,6 +3125,20 @@ export const GetDataExportCatalogResponse: MessageFns<GetDataExportCatalogRespon
 
           message.genders.push(reader.string());
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.custom_fields.push(DataExportColumnDefinition.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.archived_custom_fields.push(DataExportColumnDefinition.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3065,6 +3167,12 @@ export const GetDataExportCatalogResponse: MessageFns<GetDataExportCatalogRespon
         ? object.teacherStatuses.map((e: any) => teacherStatusFromJSON(e))
         : [],
       genders: globalThis.Array.isArray(object?.genders) ? object.genders.map((e: any) => globalThis.String(e)) : [],
+      custom_fields: globalThis.Array.isArray(object?.customFields)
+        ? object.customFields.map((e: any) => DataExportColumnDefinition.fromJSON(e))
+        : [],
+      archived_custom_fields: globalThis.Array.isArray(object?.archivedCustomFields)
+        ? object.archivedCustomFields.map((e: any) => DataExportColumnDefinition.fromJSON(e))
+        : [],
     };
   },
 
@@ -3091,6 +3199,12 @@ export const GetDataExportCatalogResponse: MessageFns<GetDataExportCatalogRespon
     if (message.genders?.length) {
       obj.genders = message.genders;
     }
+    if (message.custom_fields?.length) {
+      obj.customFields = message.custom_fields.map((e) => DataExportColumnDefinition.toJSON(e));
+    }
+    if (message.archived_custom_fields?.length) {
+      obj.archivedCustomFields = message.archived_custom_fields.map((e) => DataExportColumnDefinition.toJSON(e));
+    }
     return obj;
   },
 
@@ -3106,6 +3220,9 @@ export const GetDataExportCatalogResponse: MessageFns<GetDataExportCatalogRespon
     message.student_grades = object.student_grades?.map((e) => e) || [];
     message.teacher_statuses = object.teacher_statuses?.map((e) => e) || [];
     message.genders = object.genders?.map((e) => e) || [];
+    message.custom_fields = object.custom_fields?.map((e) => DataExportColumnDefinition.fromPartial(e)) || [];
+    message.archived_custom_fields =
+      object.archived_custom_fields?.map((e) => DataExportColumnDefinition.fromPartial(e)) || [];
     return message;
   },
 };

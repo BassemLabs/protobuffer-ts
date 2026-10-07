@@ -27,7 +27,7 @@ const student_1 = require("./student");
 const teacher_1 = require("./teacher");
 exports.protobufPackage = "user_service";
 /**
- * These are approved, fixed fields. Custom fields and arbitrary data paths are
+ * These are approved, fixed fields. Arbitrary data paths are
  * deliberately absent. The catalog further limits each dataset's allowed keys.
  */
 var DataExportDataset;
@@ -1158,7 +1158,13 @@ function dataExportSortDirectionToNumber(object) {
     }
 }
 function createBaseDataExportColumnDefinition() {
-    return { column: undefined, label: undefined, group: undefined };
+    return {
+        column: undefined,
+        label: undefined,
+        group: undefined,
+        custom_field_id: undefined,
+        custom_field_schema_fingerprint: undefined,
+    };
 }
 exports.DataExportColumnDefinition = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1170,6 +1176,12 @@ exports.DataExportColumnDefinition = {
         }
         if (message.group !== undefined) {
             writer.uint32(26).string(message.group);
+        }
+        if (message.custom_field_id !== undefined) {
+            object_id_1.ObjectId.encode(message.custom_field_id, writer.uint32(34).fork()).join();
+        }
+        if (message.custom_field_schema_fingerprint !== undefined) {
+            writer.uint32(42).string(message.custom_field_schema_fingerprint);
         }
         return writer;
     },
@@ -1198,6 +1210,18 @@ exports.DataExportColumnDefinition = {
                     }
                     message.group = reader.string();
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.custom_field_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.custom_field_schema_fingerprint = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1211,6 +1235,10 @@ exports.DataExportColumnDefinition = {
             column: isSet(object.column) ? dataExportColumnFromJSON(object.column) : undefined,
             label: isSet(object.label) ? globalThis.String(object.label) : undefined,
             group: isSet(object.group) ? globalThis.String(object.group) : undefined,
+            custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
+            custom_field_schema_fingerprint: isSet(object.customFieldSchemaFingerprint)
+                ? globalThis.String(object.customFieldSchemaFingerprint)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -1224,6 +1252,12 @@ exports.DataExportColumnDefinition = {
         if (message.group !== undefined) {
             obj.group = message.group;
         }
+        if (message.custom_field_id !== undefined) {
+            obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
+        }
+        if (message.custom_field_schema_fingerprint !== undefined) {
+            obj.customFieldSchemaFingerprint = message.custom_field_schema_fingerprint;
+        }
         return obj;
     },
     create(base) {
@@ -1234,6 +1268,10 @@ exports.DataExportColumnDefinition = {
         message.column = object.column ?? undefined;
         message.label = object.label ?? undefined;
         message.group = object.group ?? undefined;
+        message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.custom_field_id)
+            : undefined;
+        message.custom_field_schema_fingerprint = object.custom_field_schema_fingerprint ?? undefined;
         return message;
     },
 };
@@ -1803,7 +1841,14 @@ exports.TeacherDataExportFilters = {
     },
 };
 function createBaseDataExportSelection() {
-    return { columns: [], sort_rules: [], students: undefined, parents: undefined, teachers: undefined };
+    return {
+        columns: [],
+        sort_rules: [],
+        students: undefined,
+        parents: undefined,
+        teachers: undefined,
+        custom_field_ids: [],
+    };
 }
 exports.DataExportSelection = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1823,6 +1868,9 @@ exports.DataExportSelection = {
         }
         if (message.teachers !== undefined) {
             exports.TeacherDataExportFilters.encode(message.teachers, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.custom_field_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
         }
         return writer;
     },
@@ -1870,6 +1918,12 @@ exports.DataExportSelection = {
                     }
                     message.teachers = exports.TeacherDataExportFilters.decode(reader, reader.uint32());
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.custom_field_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1889,6 +1943,9 @@ exports.DataExportSelection = {
             students: isSet(object.students) ? exports.StudentDataExportFilters.fromJSON(object.students) : undefined,
             parents: isSet(object.parents) ? exports.ParentDataExportFilters.fromJSON(object.parents) : undefined,
             teachers: isSet(object.teachers) ? exports.TeacherDataExportFilters.fromJSON(object.teachers) : undefined,
+            custom_field_ids: globalThis.Array.isArray(object?.customFieldIds)
+                ? object.customFieldIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -1908,6 +1965,9 @@ exports.DataExportSelection = {
         if (message.teachers !== undefined) {
             obj.teachers = exports.TeacherDataExportFilters.toJSON(message.teachers);
         }
+        if (message.custom_field_ids?.length) {
+            obj.customFieldIds = message.custom_field_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -1926,6 +1986,7 @@ exports.DataExportSelection = {
         message.teachers = (object.teachers !== undefined && object.teachers !== null)
             ? exports.TeacherDataExportFilters.fromPartial(object.teachers)
             : undefined;
+        message.custom_field_ids = object.custom_field_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };
@@ -2582,6 +2643,8 @@ function createBaseGetDataExportCatalogResponse() {
         student_grades: [],
         teacher_statuses: [],
         genders: [],
+        custom_fields: [],
+        archived_custom_fields: [],
     };
 }
 exports.GetDataExportCatalogResponse = {
@@ -2612,6 +2675,12 @@ exports.GetDataExportCatalogResponse = {
         writer.join();
         for (const v of message.genders) {
             writer.uint32(58).string(v);
+        }
+        for (const v of message.custom_fields) {
+            exports.DataExportColumnDefinition.encode(v, writer.uint32(66).fork()).join();
+        }
+        for (const v of message.archived_custom_fields) {
+            exports.DataExportColumnDefinition.encode(v, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -2685,6 +2754,18 @@ exports.GetDataExportCatalogResponse = {
                     }
                     message.genders.push(reader.string());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.custom_fields.push(exports.DataExportColumnDefinition.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.archived_custom_fields.push(exports.DataExportColumnDefinition.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2712,6 +2793,12 @@ exports.GetDataExportCatalogResponse = {
                 ? object.teacherStatuses.map((e) => (0, teacher_1.teacherStatusFromJSON)(e))
                 : [],
             genders: globalThis.Array.isArray(object?.genders) ? object.genders.map((e) => globalThis.String(e)) : [],
+            custom_fields: globalThis.Array.isArray(object?.customFields)
+                ? object.customFields.map((e) => exports.DataExportColumnDefinition.fromJSON(e))
+                : [],
+            archived_custom_fields: globalThis.Array.isArray(object?.archivedCustomFields)
+                ? object.archivedCustomFields.map((e) => exports.DataExportColumnDefinition.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -2737,6 +2824,12 @@ exports.GetDataExportCatalogResponse = {
         if (message.genders?.length) {
             obj.genders = message.genders;
         }
+        if (message.custom_fields?.length) {
+            obj.customFields = message.custom_fields.map((e) => exports.DataExportColumnDefinition.toJSON(e));
+        }
+        if (message.archived_custom_fields?.length) {
+            obj.archivedCustomFields = message.archived_custom_fields.map((e) => exports.DataExportColumnDefinition.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -2751,6 +2844,9 @@ exports.GetDataExportCatalogResponse = {
         message.student_grades = object.student_grades?.map((e) => e) || [];
         message.teacher_statuses = object.teacher_statuses?.map((e) => e) || [];
         message.genders = object.genders?.map((e) => e) || [];
+        message.custom_fields = object.custom_fields?.map((e) => exports.DataExportColumnDefinition.fromPartial(e)) || [];
+        message.archived_custom_fields =
+            object.archived_custom_fields?.map((e) => exports.DataExportColumnDefinition.fromPartial(e)) || [];
         return message;
     },
 };
