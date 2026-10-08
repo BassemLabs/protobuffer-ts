@@ -27,11 +27,17 @@ export interface GenerateTuitionInvoiceRequest {
     effective_date?: string | undefined;
     /** Tuition Manager-only. Defaults to false so past or due-today installments are created with auto-pay paused. */
     auto_pay_backdated_installments?: boolean | undefined;
+    /** Calculation only: preview replacing this existing tuition invoice, including retained payments and discounts. */
+    tuition_invoice?: ObjectId | undefined;
 }
 export interface ModifyTuitionInvoiceRequest {
     context: RequestContext | undefined;
     tuition_invoice: ObjectId | undefined;
     tuition_plan: ObjectId | undefined;
+    /** Tuition Manager-only, date-only school-local cutoff for replacement installments. */
+    effective_date?: string | undefined;
+    /** Defaults to false for replacement installments dated today or earlier when an effective date is supplied. */
+    auto_pay_backdated_installments?: boolean | undefined;
 }
 export interface RegenerateTuitionInvoiceRequest {
     context: RequestContext | undefined;

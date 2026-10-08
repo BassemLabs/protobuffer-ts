@@ -48,13 +48,25 @@ export interface GenerateTuitionInvoiceRequest {
     | string
     | undefined;
   /** Tuition Manager-only. Defaults to false so past or due-today installments are created with auto-pay paused. */
-  auto_pay_backdated_installments?: boolean | undefined;
+  auto_pay_backdated_installments?:
+    | boolean
+    | undefined;
+  /** Calculation only: preview replacing this existing tuition invoice, including retained payments and discounts. */
+  tuition_invoice?: ObjectId | undefined;
 }
 
 export interface ModifyTuitionInvoiceRequest {
   context: RequestContext | undefined;
   tuition_invoice: ObjectId | undefined;
-  tuition_plan: ObjectId | undefined;
+  tuition_plan:
+    | ObjectId
+    | undefined;
+  /** Tuition Manager-only, date-only school-local cutoff for replacement installments. */
+  effective_date?:
+    | string
+    | undefined;
+  /** Defaults to false for replacement installments dated today or earlier when an effective date is supplied. */
+  auto_pay_backdated_installments?: boolean | undefined;
 }
 
 export interface RegenerateTuitionInvoiceRequest {
@@ -352,6 +364,7 @@ function createBaseGenerateTuitionInvoiceRequest(): GenerateTuitionInvoiceReques
     family_balance_amount: undefined,
     effective_date: undefined,
     auto_pay_backdated_installments: undefined,
+    tuition_invoice: undefined,
   };
 }
 
@@ -377,6 +390,9 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     }
     if (message.auto_pay_backdated_installments !== undefined) {
       writer.uint32(56).bool(message.auto_pay_backdated_installments);
+    }
+    if (message.tuition_invoice !== undefined) {
+      ObjectId.encode(message.tuition_invoice, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -437,6 +453,13 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
 
           message.auto_pay_backdated_installments = reader.bool();
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.tuition_invoice = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -459,6 +482,7 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
       auto_pay_backdated_installments: isSet(object.autoPayBackdatedInstallments)
         ? globalThis.Boolean(object.autoPayBackdatedInstallments)
         : undefined,
+      tuition_invoice: isSet(object.tuitionInvoice) ? ObjectId.fromJSON(object.tuitionInvoice) : undefined,
     };
   },
 
@@ -485,6 +509,9 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     if (message.auto_pay_backdated_installments !== undefined) {
       obj.autoPayBackdatedInstallments = message.auto_pay_backdated_installments;
     }
+    if (message.tuition_invoice !== undefined) {
+      obj.tuitionInvoice = ObjectId.toJSON(message.tuition_invoice);
+    }
     return obj;
   },
 
@@ -510,12 +537,21 @@ export const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceReq
     message.family_balance_amount = object.family_balance_amount ?? undefined;
     message.effective_date = object.effective_date ?? undefined;
     message.auto_pay_backdated_installments = object.auto_pay_backdated_installments ?? undefined;
+    message.tuition_invoice = (object.tuition_invoice !== undefined && object.tuition_invoice !== null)
+      ? ObjectId.fromPartial(object.tuition_invoice)
+      : undefined;
     return message;
   },
 };
 
 function createBaseModifyTuitionInvoiceRequest(): ModifyTuitionInvoiceRequest {
-  return { context: undefined, tuition_invoice: undefined, tuition_plan: undefined };
+  return {
+    context: undefined,
+    tuition_invoice: undefined,
+    tuition_plan: undefined,
+    effective_date: undefined,
+    auto_pay_backdated_installments: undefined,
+  };
 }
 
 export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest> = {
@@ -528,6 +564,12 @@ export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest
     }
     if (message.tuition_plan !== undefined) {
       ObjectId.encode(message.tuition_plan, writer.uint32(26).fork()).join();
+    }
+    if (message.effective_date !== undefined) {
+      writer.uint32(34).string(message.effective_date);
+    }
+    if (message.auto_pay_backdated_installments !== undefined) {
+      writer.uint32(40).bool(message.auto_pay_backdated_installments);
     }
     return writer;
   },
@@ -560,6 +602,20 @@ export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest
 
           message.tuition_plan = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.effective_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.auto_pay_backdated_installments = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -574,6 +630,10 @@ export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       tuition_invoice: isSet(object.tuitionInvoice) ? ObjectId.fromJSON(object.tuitionInvoice) : undefined,
       tuition_plan: isSet(object.tuitionPlan) ? ObjectId.fromJSON(object.tuitionPlan) : undefined,
+      effective_date: isSet(object.effectiveDate) ? globalThis.String(object.effectiveDate) : undefined,
+      auto_pay_backdated_installments: isSet(object.autoPayBackdatedInstallments)
+        ? globalThis.Boolean(object.autoPayBackdatedInstallments)
+        : undefined,
     };
   },
 
@@ -587,6 +647,12 @@ export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest
     }
     if (message.tuition_plan !== undefined) {
       obj.tuitionPlan = ObjectId.toJSON(message.tuition_plan);
+    }
+    if (message.effective_date !== undefined) {
+      obj.effectiveDate = message.effective_date;
+    }
+    if (message.auto_pay_backdated_installments !== undefined) {
+      obj.autoPayBackdatedInstallments = message.auto_pay_backdated_installments;
     }
     return obj;
   },
@@ -605,6 +671,8 @@ export const ModifyTuitionInvoiceRequest: MessageFns<ModifyTuitionInvoiceRequest
     message.tuition_plan = (object.tuition_plan !== undefined && object.tuition_plan !== null)
       ? ObjectId.fromPartial(object.tuition_plan)
       : undefined;
+    message.effective_date = object.effective_date ?? undefined;
+    message.auto_pay_backdated_installments = object.auto_pay_backdated_installments ?? undefined;
     return message;
   },
 };

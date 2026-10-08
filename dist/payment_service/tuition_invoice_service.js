@@ -191,6 +191,7 @@ function createBaseGenerateTuitionInvoiceRequest() {
         family_balance_amount: undefined,
         effective_date: undefined,
         auto_pay_backdated_installments: undefined,
+        tuition_invoice: undefined,
     };
 }
 exports.GenerateTuitionInvoiceRequest = {
@@ -215,6 +216,9 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.auto_pay_backdated_installments !== undefined) {
             writer.uint32(56).bool(message.auto_pay_backdated_installments);
+        }
+        if (message.tuition_invoice !== undefined) {
+            object_id_1.ObjectId.encode(message.tuition_invoice, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -267,6 +271,12 @@ exports.GenerateTuitionInvoiceRequest = {
                     }
                     message.auto_pay_backdated_installments = reader.bool();
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.tuition_invoice = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -288,6 +298,7 @@ exports.GenerateTuitionInvoiceRequest = {
             auto_pay_backdated_installments: isSet(object.autoPayBackdatedInstallments)
                 ? globalThis.Boolean(object.autoPayBackdatedInstallments)
                 : undefined,
+            tuition_invoice: isSet(object.tuitionInvoice) ? object_id_1.ObjectId.fromJSON(object.tuitionInvoice) : undefined,
         };
     },
     toJSON(message) {
@@ -313,6 +324,9 @@ exports.GenerateTuitionInvoiceRequest = {
         if (message.auto_pay_backdated_installments !== undefined) {
             obj.autoPayBackdatedInstallments = message.auto_pay_backdated_installments;
         }
+        if (message.tuition_invoice !== undefined) {
+            obj.tuitionInvoice = object_id_1.ObjectId.toJSON(message.tuition_invoice);
+        }
         return obj;
     },
     create(base) {
@@ -335,11 +349,20 @@ exports.GenerateTuitionInvoiceRequest = {
         message.family_balance_amount = object.family_balance_amount ?? undefined;
         message.effective_date = object.effective_date ?? undefined;
         message.auto_pay_backdated_installments = object.auto_pay_backdated_installments ?? undefined;
+        message.tuition_invoice = (object.tuition_invoice !== undefined && object.tuition_invoice !== null)
+            ? object_id_1.ObjectId.fromPartial(object.tuition_invoice)
+            : undefined;
         return message;
     },
 };
 function createBaseModifyTuitionInvoiceRequest() {
-    return { context: undefined, tuition_invoice: undefined, tuition_plan: undefined };
+    return {
+        context: undefined,
+        tuition_invoice: undefined,
+        tuition_plan: undefined,
+        effective_date: undefined,
+        auto_pay_backdated_installments: undefined,
+    };
 }
 exports.ModifyTuitionInvoiceRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -351,6 +374,12 @@ exports.ModifyTuitionInvoiceRequest = {
         }
         if (message.tuition_plan !== undefined) {
             object_id_1.ObjectId.encode(message.tuition_plan, writer.uint32(26).fork()).join();
+        }
+        if (message.effective_date !== undefined) {
+            writer.uint32(34).string(message.effective_date);
+        }
+        if (message.auto_pay_backdated_installments !== undefined) {
+            writer.uint32(40).bool(message.auto_pay_backdated_installments);
         }
         return writer;
     },
@@ -379,6 +408,18 @@ exports.ModifyTuitionInvoiceRequest = {
                     }
                     message.tuition_plan = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.effective_date = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.auto_pay_backdated_installments = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -392,6 +433,10 @@ exports.ModifyTuitionInvoiceRequest = {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             tuition_invoice: isSet(object.tuitionInvoice) ? object_id_1.ObjectId.fromJSON(object.tuitionInvoice) : undefined,
             tuition_plan: isSet(object.tuitionPlan) ? object_id_1.ObjectId.fromJSON(object.tuitionPlan) : undefined,
+            effective_date: isSet(object.effectiveDate) ? globalThis.String(object.effectiveDate) : undefined,
+            auto_pay_backdated_installments: isSet(object.autoPayBackdatedInstallments)
+                ? globalThis.Boolean(object.autoPayBackdatedInstallments)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -404,6 +449,12 @@ exports.ModifyTuitionInvoiceRequest = {
         }
         if (message.tuition_plan !== undefined) {
             obj.tuitionPlan = object_id_1.ObjectId.toJSON(message.tuition_plan);
+        }
+        if (message.effective_date !== undefined) {
+            obj.effectiveDate = message.effective_date;
+        }
+        if (message.auto_pay_backdated_installments !== undefined) {
+            obj.autoPayBackdatedInstallments = message.auto_pay_backdated_installments;
         }
         return obj;
     },
@@ -421,6 +472,8 @@ exports.ModifyTuitionInvoiceRequest = {
         message.tuition_plan = (object.tuition_plan !== undefined && object.tuition_plan !== null)
             ? object_id_1.ObjectId.fromPartial(object.tuition_plan)
             : undefined;
+        message.effective_date = object.effective_date ?? undefined;
+        message.auto_pay_backdated_installments = object.auto_pay_backdated_installments ?? undefined;
         return message;
     },
 };
