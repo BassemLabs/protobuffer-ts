@@ -122,6 +122,35 @@ export interface GetStudentCoursesRequest {
   school_year_id?: ObjectId | undefined;
 }
 
+export interface GetStudentClassesRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  include_archived?: boolean | undefined;
+  school_year_id?: ObjectId | undefined;
+}
+
+export interface GetStudentClassesResponse {
+  courses: Course[];
+  homerooms: Homeroom[];
+}
+
+export interface GetRecipientClassMembershipsRequest {
+  context: RequestContext | undefined;
+  course_ids: ObjectId[];
+  homeroom_ids: ObjectId[];
+}
+
+export interface RecipientClassMembership {
+  student_id: ObjectId | undefined;
+  class_id: ObjectId | undefined;
+  school_year_id: ObjectId | undefined;
+}
+
+export interface GetRecipientClassMembershipsResponse {
+  courses: RecipientClassMembership[];
+  homerooms: RecipientClassMembership[];
+}
+
 export interface GetTeacherStudentScopeRequest {
   context: RequestContext | undefined;
   teacher_id: ObjectId | undefined;
@@ -1022,6 +1051,468 @@ export const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest> = {
     message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentClassesRequest(): GetStudentClassesRequest {
+  return { context: undefined, student_id: undefined, include_archived: undefined, school_year_id: undefined };
+}
+
+export const GetStudentClassesRequest: MessageFns<GetStudentClassesRequest> = {
+  encode(message: GetStudentClassesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.include_archived !== undefined) {
+      writer.uint32(24).bool(message.include_archived);
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentClassesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentClassesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.include_archived = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentClassesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      include_archived: isSet(object.includeArchived) ? globalThis.Boolean(object.includeArchived) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: GetStudentClassesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.include_archived !== undefined) {
+      obj.includeArchived = message.include_archived;
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentClassesRequest>, I>>(base?: I): GetStudentClassesRequest {
+    return GetStudentClassesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentClassesRequest>, I>>(object: I): GetStudentClassesRequest {
+    const message = createBaseGetStudentClassesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.include_archived = object.include_archived ?? undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetStudentClassesResponse(): GetStudentClassesResponse {
+  return { courses: [], homerooms: [] };
+}
+
+export const GetStudentClassesResponse: MessageFns<GetStudentClassesResponse> = {
+  encode(message: GetStudentClassesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      Course.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.homerooms) {
+      Homeroom.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentClassesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetStudentClassesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(Course.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.homerooms.push(Homeroom.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetStudentClassesResponse {
+    return {
+      courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => Course.fromJSON(e)) : [],
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => Homeroom.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetStudentClassesResponse): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => Course.toJSON(e));
+    }
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => Homeroom.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetStudentClassesResponse>, I>>(base?: I): GetStudentClassesResponse {
+    return GetStudentClassesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetStudentClassesResponse>, I>>(object: I): GetStudentClassesResponse {
+    const message = createBaseGetStudentClassesResponse();
+    message.courses = object.courses?.map((e) => Course.fromPartial(e)) || [];
+    message.homerooms = object.homerooms?.map((e) => Homeroom.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetRecipientClassMembershipsRequest(): GetRecipientClassMembershipsRequest {
+  return { context: undefined, course_ids: [], homeroom_ids: [] };
+}
+
+export const GetRecipientClassMembershipsRequest: MessageFns<GetRecipientClassMembershipsRequest> = {
+  encode(message: GetRecipientClassMembershipsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.course_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.homeroom_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetRecipientClassMembershipsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRecipientClassMembershipsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.course_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.homeroom_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRecipientClassMembershipsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      course_ids: globalThis.Array.isArray(object?.courseIds)
+        ? object.courseIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+        ? object.homeroomIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetRecipientClassMembershipsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.course_ids?.length) {
+      obj.courseIds = message.course_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.homeroom_ids?.length) {
+      obj.homeroomIds = message.homeroom_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetRecipientClassMembershipsRequest>, I>>(
+    base?: I,
+  ): GetRecipientClassMembershipsRequest {
+    return GetRecipientClassMembershipsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetRecipientClassMembershipsRequest>, I>>(
+    object: I,
+  ): GetRecipientClassMembershipsRequest {
+    const message = createBaseGetRecipientClassMembershipsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseRecipientClassMembership(): RecipientClassMembership {
+  return { student_id: undefined, class_id: undefined, school_year_id: undefined };
+}
+
+export const RecipientClassMembership: MessageFns<RecipientClassMembership> = {
+  encode(message: RecipientClassMembership, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.class_id !== undefined) {
+      ObjectId.encode(message.class_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RecipientClassMembership {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRecipientClassMembership();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.class_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RecipientClassMembership {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      class_id: isSet(object.classId) ? ObjectId.fromJSON(object.classId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+    };
+  },
+
+  toJSON(message: RecipientClassMembership): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.class_id !== undefined) {
+      obj.classId = ObjectId.toJSON(message.class_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RecipientClassMembership>, I>>(base?: I): RecipientClassMembership {
+    return RecipientClassMembership.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RecipientClassMembership>, I>>(object: I): RecipientClassMembership {
+    const message = createBaseRecipientClassMembership();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.class_id = (object.class_id !== undefined && object.class_id !== null)
+      ? ObjectId.fromPartial(object.class_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetRecipientClassMembershipsResponse(): GetRecipientClassMembershipsResponse {
+  return { courses: [], homerooms: [] };
+}
+
+export const GetRecipientClassMembershipsResponse: MessageFns<GetRecipientClassMembershipsResponse> = {
+  encode(message: GetRecipientClassMembershipsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      RecipientClassMembership.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.homerooms) {
+      RecipientClassMembership.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetRecipientClassMembershipsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRecipientClassMembershipsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(RecipientClassMembership.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.homerooms.push(RecipientClassMembership.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRecipientClassMembershipsResponse {
+    return {
+      courses: globalThis.Array.isArray(object?.courses)
+        ? object.courses.map((e: any) => RecipientClassMembership.fromJSON(e))
+        : [],
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => RecipientClassMembership.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetRecipientClassMembershipsResponse): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => RecipientClassMembership.toJSON(e));
+    }
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => RecipientClassMembership.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetRecipientClassMembershipsResponse>, I>>(
+    base?: I,
+  ): GetRecipientClassMembershipsResponse {
+    return GetRecipientClassMembershipsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetRecipientClassMembershipsResponse>, I>>(
+    object: I,
+  ): GetRecipientClassMembershipsResponse {
+    const message = createBaseGetRecipientClassMembershipsResponse();
+    message.courses = object.courses?.map((e) => RecipientClassMembership.fromPartial(e)) || [];
+    message.homerooms = object.homerooms?.map((e) => RecipientClassMembership.fromPartial(e)) || [];
     return message;
   },
 };

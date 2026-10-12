@@ -52,6 +52,30 @@ export interface GetStudentCoursesRequest {
     include_archived?: boolean | undefined;
     school_year_id?: ObjectId | undefined;
 }
+export interface GetStudentClassesRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    include_archived?: boolean | undefined;
+    school_year_id?: ObjectId | undefined;
+}
+export interface GetStudentClassesResponse {
+    courses: Course[];
+    homerooms: Homeroom[];
+}
+export interface GetRecipientClassMembershipsRequest {
+    context: RequestContext | undefined;
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
+}
+export interface RecipientClassMembership {
+    student_id: ObjectId | undefined;
+    class_id: ObjectId | undefined;
+    school_year_id: ObjectId | undefined;
+}
+export interface GetRecipientClassMembershipsResponse {
+    courses: RecipientClassMembership[];
+    homerooms: RecipientClassMembership[];
+}
 export interface GetTeacherStudentScopeRequest {
     context: RequestContext | undefined;
     teacher_id: ObjectId | undefined;
@@ -218,6 +242,11 @@ export declare const LmsCourseWorkResponse: MessageFns<LmsCourseWorkResponse>;
 export declare const LmsStudentSubmissionResponse: MessageFns<LmsStudentSubmissionResponse>;
 export declare const GetStudentLmsCalendarResponse: MessageFns<GetStudentLmsCalendarResponse>;
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
+export declare const GetStudentClassesRequest: MessageFns<GetStudentClassesRequest>;
+export declare const GetStudentClassesResponse: MessageFns<GetStudentClassesResponse>;
+export declare const GetRecipientClassMembershipsRequest: MessageFns<GetRecipientClassMembershipsRequest>;
+export declare const RecipientClassMembership: MessageFns<RecipientClassMembership>;
+export declare const GetRecipientClassMembershipsResponse: MessageFns<GetRecipientClassMembershipsResponse>;
 export declare const GetTeacherStudentScopeRequest: MessageFns<GetTeacherStudentScopeRequest>;
 export declare const GetTeacherStudentScopeResponse: MessageFns<GetTeacherStudentScopeResponse>;
 export declare const GetStudentProfileClassScopeRequest: MessageFns<GetStudentProfileClassScopeRequest>;
