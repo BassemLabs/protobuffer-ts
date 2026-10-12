@@ -29,6 +29,8 @@ export interface GenerateTuitionInvoiceRequest {
     auto_pay_backdated_installments?: boolean | undefined;
     /** Calculation only: preview replacing this existing tuition invoice, including retained payments and discounts. */
     tuition_invoice?: ObjectId | undefined;
+    /** Calculation only: validate this student's enrollment against the existing tuition replacement. */
+    enrolling_student_id?: ObjectId | undefined;
 }
 export interface ModifyTuitionInvoiceRequest {
     context: RequestContext | undefined;

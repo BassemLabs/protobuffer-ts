@@ -192,6 +192,7 @@ function createBaseGenerateTuitionInvoiceRequest() {
         effective_date: undefined,
         auto_pay_backdated_installments: undefined,
         tuition_invoice: undefined,
+        enrolling_student_id: undefined,
     };
 }
 exports.GenerateTuitionInvoiceRequest = {
@@ -219,6 +220,9 @@ exports.GenerateTuitionInvoiceRequest = {
         }
         if (message.tuition_invoice !== undefined) {
             object_id_1.ObjectId.encode(message.tuition_invoice, writer.uint32(66).fork()).join();
+        }
+        if (message.enrolling_student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.enrolling_student_id, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -277,6 +281,12 @@ exports.GenerateTuitionInvoiceRequest = {
                     }
                     message.tuition_invoice = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.enrolling_student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -299,6 +309,7 @@ exports.GenerateTuitionInvoiceRequest = {
                 ? globalThis.Boolean(object.autoPayBackdatedInstallments)
                 : undefined,
             tuition_invoice: isSet(object.tuitionInvoice) ? object_id_1.ObjectId.fromJSON(object.tuitionInvoice) : undefined,
+            enrolling_student_id: isSet(object.enrollingStudentId) ? object_id_1.ObjectId.fromJSON(object.enrollingStudentId) : undefined,
         };
     },
     toJSON(message) {
@@ -327,6 +338,9 @@ exports.GenerateTuitionInvoiceRequest = {
         if (message.tuition_invoice !== undefined) {
             obj.tuitionInvoice = object_id_1.ObjectId.toJSON(message.tuition_invoice);
         }
+        if (message.enrolling_student_id !== undefined) {
+            obj.enrollingStudentId = object_id_1.ObjectId.toJSON(message.enrolling_student_id);
+        }
         return obj;
     },
     create(base) {
@@ -351,6 +365,9 @@ exports.GenerateTuitionInvoiceRequest = {
         message.auto_pay_backdated_installments = object.auto_pay_backdated_installments ?? undefined;
         message.tuition_invoice = (object.tuition_invoice !== undefined && object.tuition_invoice !== null)
             ? object_id_1.ObjectId.fromPartial(object.tuition_invoice)
+            : undefined;
+        message.enrolling_student_id = (object.enrolling_student_id !== undefined && object.enrolling_student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.enrolling_student_id)
             : undefined;
         return message;
     },
