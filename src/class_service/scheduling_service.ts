@@ -391,6 +391,46 @@ export interface UpdateSchedulingRoomEnforcementRequest {
   enforce_room_assignments?: boolean | undefined;
 }
 
+export interface PreviewSchedulingPublicationRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+}
+
+export interface PublishSchedulingScheduleRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  expected_current_revision_id: Uuid | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  preview_token?: string | undefined;
+  idempotency_key: Uuid | undefined;
+}
+
+export interface ListSchedulingPublicationsRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  cursor?: string | undefined;
+  limit?: number | undefined;
+}
+
+export interface GetSchedulingPublishedCalendarRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  resource_key?: string | undefined;
+  campus_id?: ObjectId | undefined;
+}
+
+export interface GetSchedulingPublishedLessonRequest {
+  context: RequestContext | undefined;
+  school_year_id: ObjectId | undefined;
+  lesson_id: Uuid | undefined;
+}
+
 function createBaseGetSchedulingPreparationRequest(): GetSchedulingPreparationRequest {
   return { context: undefined, school_year_id: undefined };
 }
@@ -5998,6 +6038,678 @@ export const UpdateSchedulingRoomEnforcementRequest: MessageFns<UpdateScheduling
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     message.enforce_room_assignments = object.enforce_room_assignments ?? undefined;
+    return message;
+  },
+};
+
+function createBasePreviewSchedulingPublicationRequest(): PreviewSchedulingPublicationRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    expected_current_revision_id: undefined,
+    start_date: undefined,
+    end_date: undefined,
+  };
+}
+
+export const PreviewSchedulingPublicationRequest: MessageFns<PreviewSchedulingPublicationRequest> = {
+  encode(message: PreviewSchedulingPublicationRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(34).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(42).string(message.end_date);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreviewSchedulingPublicationRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreviewSchedulingPublicationRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreviewSchedulingPublicationRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+    };
+  },
+
+  toJSON(message: PreviewSchedulingPublicationRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreviewSchedulingPublicationRequest>, I>>(
+    base?: I,
+  ): PreviewSchedulingPublicationRequest {
+    return PreviewSchedulingPublicationRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreviewSchedulingPublicationRequest>, I>>(
+    object: I,
+  ): PreviewSchedulingPublicationRequest {
+    const message = createBasePreviewSchedulingPublicationRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    return message;
+  },
+};
+
+function createBasePublishSchedulingScheduleRequest(): PublishSchedulingScheduleRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    expected_current_revision_id: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    preview_token: undefined,
+    idempotency_key: undefined,
+  };
+}
+
+export const PublishSchedulingScheduleRequest: MessageFns<PublishSchedulingScheduleRequest> = {
+  encode(message: PublishSchedulingScheduleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      Uuid.encode(message.expected_current_revision_id, writer.uint32(26).fork()).join();
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(34).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(42).string(message.end_date);
+    }
+    if (message.preview_token !== undefined) {
+      writer.uint32(50).string(message.preview_token);
+    }
+    if (message.idempotency_key !== undefined) {
+      Uuid.encode(message.idempotency_key, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PublishSchedulingScheduleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePublishSchedulingScheduleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.expected_current_revision_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.preview_token = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.idempotency_key = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PublishSchedulingScheduleRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      expected_current_revision_id: isSet(object.expectedCurrentRevisionId)
+        ? Uuid.fromJSON(object.expectedCurrentRevisionId)
+        : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+      preview_token: isSet(object.previewToken) ? globalThis.String(object.previewToken) : undefined,
+      idempotency_key: isSet(object.idempotencyKey) ? Uuid.fromJSON(object.idempotencyKey) : undefined,
+    };
+  },
+
+  toJSON(message: PublishSchedulingScheduleRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.expected_current_revision_id !== undefined) {
+      obj.expectedCurrentRevisionId = Uuid.toJSON(message.expected_current_revision_id);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    if (message.preview_token !== undefined) {
+      obj.previewToken = message.preview_token;
+    }
+    if (message.idempotency_key !== undefined) {
+      obj.idempotencyKey = Uuid.toJSON(message.idempotency_key);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PublishSchedulingScheduleRequest>, I>>(
+    base?: I,
+  ): PublishSchedulingScheduleRequest {
+    return PublishSchedulingScheduleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PublishSchedulingScheduleRequest>, I>>(
+    object: I,
+  ): PublishSchedulingScheduleRequest {
+    const message = createBasePublishSchedulingScheduleRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.expected_current_revision_id =
+      (object.expected_current_revision_id !== undefined && object.expected_current_revision_id !== null)
+        ? Uuid.fromPartial(object.expected_current_revision_id)
+        : undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.preview_token = object.preview_token ?? undefined;
+    message.idempotency_key = (object.idempotency_key !== undefined && object.idempotency_key !== null)
+      ? Uuid.fromPartial(object.idempotency_key)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseListSchedulingPublicationsRequest(): ListSchedulingPublicationsRequest {
+  return { context: undefined, school_year_id: undefined, cursor: undefined, limit: undefined };
+}
+
+export const ListSchedulingPublicationsRequest: MessageFns<ListSchedulingPublicationsRequest> = {
+  encode(message: ListSchedulingPublicationsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.cursor !== undefined) {
+      writer.uint32(26).string(message.cursor);
+    }
+    if (message.limit !== undefined) {
+      writer.uint32(32).uint32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListSchedulingPublicationsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListSchedulingPublicationsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.cursor = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.limit = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListSchedulingPublicationsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : undefined,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
+    };
+  },
+
+  toJSON(message: ListSchedulingPublicationsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.cursor !== undefined) {
+      obj.cursor = message.cursor;
+    }
+    if (message.limit !== undefined) {
+      obj.limit = Math.round(message.limit);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListSchedulingPublicationsRequest>, I>>(
+    base?: I,
+  ): ListSchedulingPublicationsRequest {
+    return ListSchedulingPublicationsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListSchedulingPublicationsRequest>, I>>(
+    object: I,
+  ): ListSchedulingPublicationsRequest {
+    const message = createBaseListSchedulingPublicationsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.cursor = object.cursor ?? undefined;
+    message.limit = object.limit ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingPublishedCalendarRequest(): GetSchedulingPublishedCalendarRequest {
+  return {
+    context: undefined,
+    school_year_id: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    resource_key: undefined,
+    campus_id: undefined,
+  };
+}
+
+export const GetSchedulingPublishedCalendarRequest: MessageFns<GetSchedulingPublishedCalendarRequest> = {
+  encode(message: GetSchedulingPublishedCalendarRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(26).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(34).string(message.end_date);
+    }
+    if (message.resource_key !== undefined) {
+      writer.uint32(42).string(message.resource_key);
+    }
+    if (message.campus_id !== undefined) {
+      ObjectId.encode(message.campus_id, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingPublishedCalendarRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingPublishedCalendarRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.resource_key = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.campus_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingPublishedCalendarRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+      resource_key: isSet(object.resourceKey) ? globalThis.String(object.resourceKey) : undefined,
+      campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingPublishedCalendarRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    if (message.resource_key !== undefined) {
+      obj.resourceKey = message.resource_key;
+    }
+    if (message.campus_id !== undefined) {
+      obj.campusId = ObjectId.toJSON(message.campus_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingPublishedCalendarRequest>, I>>(
+    base?: I,
+  ): GetSchedulingPublishedCalendarRequest {
+    return GetSchedulingPublishedCalendarRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingPublishedCalendarRequest>, I>>(
+    object: I,
+  ): GetSchedulingPublishedCalendarRequest {
+    const message = createBaseGetSchedulingPublishedCalendarRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.resource_key = object.resource_key ?? undefined;
+    message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
+      ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetSchedulingPublishedLessonRequest(): GetSchedulingPublishedLessonRequest {
+  return { context: undefined, school_year_id: undefined, lesson_id: undefined };
+}
+
+export const GetSchedulingPublishedLessonRequest: MessageFns<GetSchedulingPublishedLessonRequest> = {
+  encode(message: GetSchedulingPublishedLessonRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.lesson_id !== undefined) {
+      Uuid.encode(message.lesson_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSchedulingPublishedLessonRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetSchedulingPublishedLessonRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.lesson_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetSchedulingPublishedLessonRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      lesson_id: isSet(object.lessonId) ? Uuid.fromJSON(object.lessonId) : undefined,
+    };
+  },
+
+  toJSON(message: GetSchedulingPublishedLessonRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.lesson_id !== undefined) {
+      obj.lessonId = Uuid.toJSON(message.lesson_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetSchedulingPublishedLessonRequest>, I>>(
+    base?: I,
+  ): GetSchedulingPublishedLessonRequest {
+    return GetSchedulingPublishedLessonRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetSchedulingPublishedLessonRequest>, I>>(
+    object: I,
+  ): GetSchedulingPublishedLessonRequest {
+    const message = createBaseGetSchedulingPublishedLessonRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.lesson_id = (object.lesson_id !== undefined && object.lesson_id !== null)
+      ? Uuid.fromPartial(object.lesson_id)
+      : undefined;
     return message;
   },
 };

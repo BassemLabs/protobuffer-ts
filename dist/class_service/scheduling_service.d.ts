@@ -301,6 +301,41 @@ export interface UpdateSchedulingRoomEnforcementRequest {
     school_year_id: ObjectId | undefined;
     enforce_room_assignments?: boolean | undefined;
 }
+export interface PreviewSchedulingPublicationRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+    start_date?: string | undefined;
+    end_date?: string | undefined;
+}
+export interface PublishSchedulingScheduleRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    expected_current_revision_id: Uuid | undefined;
+    start_date?: string | undefined;
+    end_date?: string | undefined;
+    preview_token?: string | undefined;
+    idempotency_key: Uuid | undefined;
+}
+export interface ListSchedulingPublicationsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    cursor?: string | undefined;
+    limit?: number | undefined;
+}
+export interface GetSchedulingPublishedCalendarRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    start_date?: string | undefined;
+    end_date?: string | undefined;
+    resource_key?: string | undefined;
+    campus_id?: ObjectId | undefined;
+}
+export interface GetSchedulingPublishedLessonRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    lesson_id: Uuid | undefined;
+}
 export declare const GetSchedulingPreparationRequest: MessageFns<GetSchedulingPreparationRequest>;
 export declare const CreateSchedulingWorkspaceRequest: MessageFns<CreateSchedulingWorkspaceRequest>;
 export declare const CompleteSchedulingPreparationStepRequest: MessageFns<CompleteSchedulingPreparationStepRequest>;
@@ -350,6 +385,11 @@ export declare const StartSchedulingPinnedRegenerationRequest: MessageFns<StartS
 export declare const GetSchedulingPinnedRegenerationProposalRequest: MessageFns<GetSchedulingPinnedRegenerationProposalRequest>;
 export declare const ApplySchedulingPinnedRegenerationRequest: MessageFns<ApplySchedulingPinnedRegenerationRequest>;
 export declare const UpdateSchedulingRoomEnforcementRequest: MessageFns<UpdateSchedulingRoomEnforcementRequest>;
+export declare const PreviewSchedulingPublicationRequest: MessageFns<PreviewSchedulingPublicationRequest>;
+export declare const PublishSchedulingScheduleRequest: MessageFns<PublishSchedulingScheduleRequest>;
+export declare const ListSchedulingPublicationsRequest: MessageFns<ListSchedulingPublicationsRequest>;
+export declare const GetSchedulingPublishedCalendarRequest: MessageFns<GetSchedulingPublishedCalendarRequest>;
+export declare const GetSchedulingPublishedLessonRequest: MessageFns<GetSchedulingPublishedLessonRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

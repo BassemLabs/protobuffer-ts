@@ -119,6 +119,8 @@ import * as Comment_template_service from './class_service/comment_template_serv
 export { Comment_template_service };
 import * as Abstract_course from './class_service/abstract_course';
 export { Abstract_course };
+import * as Scheduling_publication from './class_service/scheduling_publication';
+export { Scheduling_publication };
 import * as Async_operation from './class_service/async_operation';
 export { Async_operation };
 import * as Class_ref from './class_service/class_ref';
