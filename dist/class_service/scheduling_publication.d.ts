@@ -66,6 +66,7 @@ export declare enum SchedulingPublishedDayEditScope {
     SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED",
     SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE",
     SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE",
+    SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function schedulingPublishedDayEditScopeFromJSON(object: any): SchedulingPublishedDayEditScope;
@@ -240,6 +241,19 @@ export interface SchedulingPublishedCalendar {
     lessons: SchedulingPublishedLesson[];
     /** Active resources for the school year, independent of the visible date range. */
     resources: SchedulingCalendarResource[];
+    /** Absent on publication-only servers, which do not provide conflict revisions. */
+    calendar_version?: number | undefined;
+}
+/**
+ * Read separately from the calendar so conflict checks do not delay navigation.
+ * All selected affected IDs are included; details cover the first 100 conflicts.
+ */
+export interface SchedulingPublishedCalendarConflicts {
+    calendar_version?: number | undefined;
+    conflict_count?: number | undefined;
+    conflicts: SchedulingPublishedLessonConflict[];
+    affected_lesson_ids: Uuid[];
+    lessons: SchedulingPublishedLesson[];
 }
 export interface SchedulingPublishedRoomChange {
     mode?: SchedulingPublishedRoomChangeMode | undefined;
@@ -257,9 +271,6 @@ export interface SchedulingPublishedLessonEdit {
     end_date?: string | undefined;
     teacher_id?: ObjectId | undefined;
     room_change?: SchedulingPublishedRoomChange | undefined;
-    /** Both times are required together, strict HH:mm in each occurrence's frozen timezone. */
-    start_time?: string | undefined;
-    end_time?: string | undefined;
     /** SCHEDULED restores current assignments/times; it never resets previous edits. */
     status?: SchedulingPublishedLessonStatus | undefined;
     reason?: string | undefined;
@@ -336,7 +347,10 @@ export interface SchedulingPublishedDayEdit {
     expected_day_version?: number | undefined;
     expected_calendar_version?: number | undefined;
     scope?: SchedulingPublishedDayEditScope | undefined;
-    /** SINGLE omits dates. SEMESTER_RANGE uses the anchor's exact semester and campus. */
+    /**
+     * SINGLE omits dates. SEMESTER_RANGE uses the anchor's exact semester and campus.
+     * CAMPUS_RANGE includes every published semester in the selected campuses.
+     */
     start_date?: string | undefined;
     end_date?: string | undefined;
     cancelled?: boolean | undefined;
@@ -348,6 +362,10 @@ export interface SchedulingPublishedDayEdit {
     periods: SchedulingPublishedPeriodEdit[];
     /** Only valid with paired period times. Omitted means KEEP_CUSTOM. */
     lesson_time_policy?: SchedulingPublishedLessonTimePolicy | undefined;
+    /** Range scopes only. Empty includes every weekday; selected days must share the anchor layout for period edits. */
+    weekdays: DayOfWeek[];
+    /** CAMPUS_RANGE only: 1–100 unique active organization campuses. Day cancellation/restoration only. */
+    campus_ids: ObjectId[];
 }
 export interface SchedulingPublishedDayEditOptions {
     days: SchedulingPublishedDay[];
@@ -396,6 +414,7 @@ export declare const SchedulingPublishedLessonSuppression: MessageFns<Scheduling
 export declare const SchedulingCalendarResourceScope: MessageFns<SchedulingCalendarResourceScope>;
 export declare const SchedulingCalendarResource: MessageFns<SchedulingCalendarResource>;
 export declare const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar>;
+export declare const SchedulingPublishedCalendarConflicts: MessageFns<SchedulingPublishedCalendarConflicts>;
 export declare const SchedulingPublishedRoomChange: MessageFns<SchedulingPublishedRoomChange>;
 export declare const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLessonEdit>;
 export declare const SchedulingPublishedEditChoice: MessageFns<SchedulingPublishedEditChoice>;

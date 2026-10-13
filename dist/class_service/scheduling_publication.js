@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/scheduling_publication.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SchedulingPublishedDayHistoryPage = exports.SchedulingPublishedDayHistoryEntry = exports.SchedulingPublishedDayEditPreview = exports.SchedulingPublishedDayChange = exports.SchedulingPublishedDayEditOptions = exports.SchedulingPublishedDayEdit = exports.SchedulingPublishedPeriodEdit = exports.SchedulingPublishedLessonHistoryPage = exports.SchedulingPublishedLessonHistoryEntry = exports.SchedulingPublishedChange = exports.SchedulingPublishedLessonEditPreview = exports.SchedulingPublishedLessonChange = exports.SchedulingPublishedLessonConflict = exports.SchedulingPublishedLessonEditOptions = exports.SchedulingPublishedEditChoice = exports.SchedulingPublishedLessonEdit = exports.SchedulingPublishedRoomChange = exports.SchedulingPublishedCalendar = exports.SchedulingCalendarResource = exports.SchedulingCalendarResourceScope = exports.SchedulingPublishedLessonSuppression = exports.SchedulingPublishedLesson = exports.SchedulingPublishedDay = exports.SchedulingPublishedPeriod = exports.SchedulingCalendarDate = exports.SchedulingPublicationPage = exports.SchedulingPublicationPreview = exports.SchedulingPublication = exports.SchedulingPublicationSemester = exports.SchedulingPublishedLessonTimePolicy = exports.SchedulingPublishedDayEditScope = exports.SchedulingPublishedLessonConflictKind = exports.SchedulingPublishedRoomChangeMode = exports.SchedulingPublishedLessonEditScope = exports.SchedulingPublishedLessonSuppressionSource = exports.SchedulingPublishedLessonStatus = exports.SchedulingCalendarDateStatus = exports.protobufPackage = void 0;
+exports.SchedulingPublishedDayHistoryPage = exports.SchedulingPublishedDayHistoryEntry = exports.SchedulingPublishedDayEditPreview = exports.SchedulingPublishedDayChange = exports.SchedulingPublishedDayEditOptions = exports.SchedulingPublishedDayEdit = exports.SchedulingPublishedPeriodEdit = exports.SchedulingPublishedLessonHistoryPage = exports.SchedulingPublishedLessonHistoryEntry = exports.SchedulingPublishedChange = exports.SchedulingPublishedLessonEditPreview = exports.SchedulingPublishedLessonChange = exports.SchedulingPublishedLessonConflict = exports.SchedulingPublishedLessonEditOptions = exports.SchedulingPublishedEditChoice = exports.SchedulingPublishedLessonEdit = exports.SchedulingPublishedRoomChange = exports.SchedulingPublishedCalendarConflicts = exports.SchedulingPublishedCalendar = exports.SchedulingCalendarResource = exports.SchedulingCalendarResourceScope = exports.SchedulingPublishedLessonSuppression = exports.SchedulingPublishedLesson = exports.SchedulingPublishedDay = exports.SchedulingPublishedPeriod = exports.SchedulingCalendarDate = exports.SchedulingPublicationPage = exports.SchedulingPublicationPreview = exports.SchedulingPublication = exports.SchedulingPublicationSemester = exports.SchedulingPublishedLessonTimePolicy = exports.SchedulingPublishedDayEditScope = exports.SchedulingPublishedLessonConflictKind = exports.SchedulingPublishedRoomChangeMode = exports.SchedulingPublishedLessonEditScope = exports.SchedulingPublishedLessonSuppressionSource = exports.SchedulingPublishedLessonStatus = exports.SchedulingCalendarDateStatus = exports.protobufPackage = void 0;
 exports.schedulingCalendarDateStatusFromJSON = schedulingCalendarDateStatusFromJSON;
 exports.schedulingCalendarDateStatusToJSON = schedulingCalendarDateStatusToJSON;
 exports.schedulingCalendarDateStatusToNumber = schedulingCalendarDateStatusToNumber;
@@ -374,6 +374,7 @@ var SchedulingPublishedDayEditScope;
     SchedulingPublishedDayEditScope["SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED"] = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED";
     SchedulingPublishedDayEditScope["SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE"] = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE";
     SchedulingPublishedDayEditScope["SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE"] = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE";
+    SchedulingPublishedDayEditScope["SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE"] = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE";
     SchedulingPublishedDayEditScope["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(SchedulingPublishedDayEditScope || (exports.SchedulingPublishedDayEditScope = SchedulingPublishedDayEditScope = {}));
 function schedulingPublishedDayEditScopeFromJSON(object) {
@@ -387,6 +388,9 @@ function schedulingPublishedDayEditScopeFromJSON(object) {
         case 2:
         case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE":
             return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE;
+        case 3:
+        case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE":
+            return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -401,6 +405,8 @@ function schedulingPublishedDayEditScopeToJSON(object) {
             return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE";
         case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE:
             return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE";
+        case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE:
+            return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE";
         case SchedulingPublishedDayEditScope.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -414,6 +420,8 @@ function schedulingPublishedDayEditScopeToNumber(object) {
             return 1;
         case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE:
             return 2;
+        case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE:
+            return 3;
         case SchedulingPublishedDayEditScope.UNRECOGNIZED:
         default:
             return -1;
@@ -2674,7 +2682,15 @@ exports.SchedulingCalendarResource = {
     },
 };
 function createBaseSchedulingPublishedCalendar() {
-    return { start_date: undefined, end_date: undefined, dates: [], days: [], lessons: [], resources: [] };
+    return {
+        start_date: undefined,
+        end_date: undefined,
+        dates: [],
+        days: [],
+        lessons: [],
+        resources: [],
+        calendar_version: undefined,
+    };
 }
 exports.SchedulingPublishedCalendar = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2695,6 +2711,9 @@ exports.SchedulingPublishedCalendar = {
         }
         for (const v of message.resources) {
             exports.SchedulingCalendarResource.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.calendar_version !== undefined) {
+            writer.uint32(56).uint64(message.calendar_version);
         }
         return writer;
     },
@@ -2741,6 +2760,12 @@ exports.SchedulingPublishedCalendar = {
                     }
                     message.resources.push(exports.SchedulingCalendarResource.decode(reader, reader.uint32()));
                     continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.calendar_version = longToNumber(reader.uint64());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2765,6 +2790,7 @@ exports.SchedulingPublishedCalendar = {
             resources: globalThis.Array.isArray(object?.resources)
                 ? object.resources.map((e) => exports.SchedulingCalendarResource.fromJSON(e))
                 : [],
+            calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
         };
     },
     toJSON(message) {
@@ -2787,6 +2813,9 @@ exports.SchedulingPublishedCalendar = {
         if (message.resources?.length) {
             obj.resources = message.resources.map((e) => exports.SchedulingCalendarResource.toJSON(e));
         }
+        if (message.calendar_version !== undefined) {
+            obj.calendarVersion = Math.round(message.calendar_version);
+        }
         return obj;
     },
     create(base) {
@@ -2800,6 +2829,127 @@ exports.SchedulingPublishedCalendar = {
         message.days = object.days?.map((e) => exports.SchedulingPublishedDay.fromPartial(e)) || [];
         message.lessons = object.lessons?.map((e) => exports.SchedulingPublishedLesson.fromPartial(e)) || [];
         message.resources = object.resources?.map((e) => exports.SchedulingCalendarResource.fromPartial(e)) || [];
+        message.calendar_version = object.calendar_version ?? undefined;
+        return message;
+    },
+};
+function createBaseSchedulingPublishedCalendarConflicts() {
+    return {
+        calendar_version: undefined,
+        conflict_count: undefined,
+        conflicts: [],
+        affected_lesson_ids: [],
+        lessons: [],
+    };
+}
+exports.SchedulingPublishedCalendarConflicts = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.calendar_version !== undefined) {
+            writer.uint32(8).uint64(message.calendar_version);
+        }
+        if (message.conflict_count !== undefined) {
+            writer.uint32(16).uint32(message.conflict_count);
+        }
+        for (const v of message.conflicts) {
+            exports.SchedulingPublishedLessonConflict.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.affected_lesson_ids) {
+            uuid_1.Uuid.encode(v, writer.uint32(34).fork()).join();
+        }
+        for (const v of message.lessons) {
+            exports.SchedulingPublishedLesson.encode(v, writer.uint32(42).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSchedulingPublishedCalendarConflicts();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.calendar_version = longToNumber(reader.uint64());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.conflict_count = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.conflicts.push(exports.SchedulingPublishedLessonConflict.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.affected_lesson_ids.push(uuid_1.Uuid.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.lessons.push(exports.SchedulingPublishedLesson.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+            conflict_count: isSet(object.conflictCount) ? globalThis.Number(object.conflictCount) : undefined,
+            conflicts: globalThis.Array.isArray(object?.conflicts)
+                ? object.conflicts.map((e) => exports.SchedulingPublishedLessonConflict.fromJSON(e))
+                : [],
+            affected_lesson_ids: globalThis.Array.isArray(object?.affectedLessonIds)
+                ? object.affectedLessonIds.map((e) => uuid_1.Uuid.fromJSON(e))
+                : [],
+            lessons: globalThis.Array.isArray(object?.lessons)
+                ? object.lessons.map((e) => exports.SchedulingPublishedLesson.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.calendar_version !== undefined) {
+            obj.calendarVersion = Math.round(message.calendar_version);
+        }
+        if (message.conflict_count !== undefined) {
+            obj.conflictCount = Math.round(message.conflict_count);
+        }
+        if (message.conflicts?.length) {
+            obj.conflicts = message.conflicts.map((e) => exports.SchedulingPublishedLessonConflict.toJSON(e));
+        }
+        if (message.affected_lesson_ids?.length) {
+            obj.affectedLessonIds = message.affected_lesson_ids.map((e) => uuid_1.Uuid.toJSON(e));
+        }
+        if (message.lessons?.length) {
+            obj.lessons = message.lessons.map((e) => exports.SchedulingPublishedLesson.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SchedulingPublishedCalendarConflicts.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSchedulingPublishedCalendarConflicts();
+        message.calendar_version = object.calendar_version ?? undefined;
+        message.conflict_count = object.conflict_count ?? undefined;
+        message.conflicts = object.conflicts?.map((e) => exports.SchedulingPublishedLessonConflict.fromPartial(e)) || [];
+        message.affected_lesson_ids = object.affected_lesson_ids?.map((e) => uuid_1.Uuid.fromPartial(e)) || [];
+        message.lessons = object.lessons?.map((e) => exports.SchedulingPublishedLesson.fromPartial(e)) || [];
         return message;
     },
 };
@@ -2880,8 +3030,6 @@ function createBaseSchedulingPublishedLessonEdit() {
         end_date: undefined,
         teacher_id: undefined,
         room_change: undefined,
-        start_time: undefined,
-        end_time: undefined,
         status: undefined,
         reason: undefined,
     };
@@ -2908,12 +3056,6 @@ exports.SchedulingPublishedLessonEdit = {
         }
         if (message.room_change !== undefined) {
             exports.SchedulingPublishedRoomChange.encode(message.room_change, writer.uint32(58).fork()).join();
-        }
-        if (message.start_time !== undefined) {
-            writer.uint32(66).string(message.start_time);
-        }
-        if (message.end_time !== undefined) {
-            writer.uint32(74).string(message.end_time);
         }
         if (message.status !== undefined) {
             writer.uint32(80).int32(schedulingPublishedLessonStatusToNumber(message.status));
@@ -2972,18 +3114,6 @@ exports.SchedulingPublishedLessonEdit = {
                     }
                     message.room_change = exports.SchedulingPublishedRoomChange.decode(reader, reader.uint32());
                     continue;
-                case 8:
-                    if (tag !== 66) {
-                        break;
-                    }
-                    message.start_time = reader.string();
-                    continue;
-                case 9:
-                    if (tag !== 74) {
-                        break;
-                    }
-                    message.end_time = reader.string();
-                    continue;
                 case 10:
                     if (tag !== 80) {
                         break;
@@ -3017,8 +3147,6 @@ exports.SchedulingPublishedLessonEdit = {
             end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
             teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
             room_change: isSet(object.roomChange) ? exports.SchedulingPublishedRoomChange.fromJSON(object.roomChange) : undefined,
-            start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
-            end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
             status: isSet(object.status) ? schedulingPublishedLessonStatusFromJSON(object.status) : undefined,
             reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
         };
@@ -3046,12 +3174,6 @@ exports.SchedulingPublishedLessonEdit = {
         if (message.room_change !== undefined) {
             obj.roomChange = exports.SchedulingPublishedRoomChange.toJSON(message.room_change);
         }
-        if (message.start_time !== undefined) {
-            obj.startTime = message.start_time;
-        }
-        if (message.end_time !== undefined) {
-            obj.endTime = message.end_time;
-        }
         if (message.status !== undefined) {
             obj.status = schedulingPublishedLessonStatusToJSON(message.status);
         }
@@ -3076,8 +3198,6 @@ exports.SchedulingPublishedLessonEdit = {
         message.room_change = (object.room_change !== undefined && object.room_change !== null)
             ? exports.SchedulingPublishedRoomChange.fromPartial(object.room_change)
             : undefined;
-        message.start_time = object.start_time ?? undefined;
-        message.end_time = object.end_time ?? undefined;
         message.status = object.status ?? undefined;
         message.reason = object.reason ?? undefined;
         return message;
@@ -4197,6 +4317,8 @@ function createBaseSchedulingPublishedDayEdit() {
         reason: undefined,
         periods: [],
         lesson_time_policy: undefined,
+        weekdays: [],
+        campus_ids: [],
     };
 }
 exports.SchedulingPublishedDayEdit = {
@@ -4227,6 +4349,14 @@ exports.SchedulingPublishedDayEdit = {
         }
         if (message.lesson_time_policy !== undefined) {
             writer.uint32(72).int32(schedulingPublishedLessonTimePolicyToNumber(message.lesson_time_policy));
+        }
+        writer.uint32(82).fork();
+        for (const v of message.weekdays) {
+            writer.int32((0, dayofweek_1.dayOfWeekToNumber)(v));
+        }
+        writer.join();
+        for (const v of message.campus_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(90).fork()).join();
         }
         return writer;
     },
@@ -4291,6 +4421,25 @@ exports.SchedulingPublishedDayEdit = {
                     }
                     message.lesson_time_policy = schedulingPublishedLessonTimePolicyFromJSON(reader.int32());
                     continue;
+                case 10:
+                    if (tag === 80) {
+                        message.weekdays.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 82) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.weekdays.push((0, dayofweek_1.dayOfWeekFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.campus_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4316,6 +4465,10 @@ exports.SchedulingPublishedDayEdit = {
             lesson_time_policy: isSet(object.lessonTimePolicy)
                 ? schedulingPublishedLessonTimePolicyFromJSON(object.lessonTimePolicy)
                 : undefined,
+            weekdays: globalThis.Array.isArray(object?.weekdays) ? object.weekdays.map((e) => (0, dayofweek_1.dayOfWeekFromJSON)(e)) : [],
+            campus_ids: globalThis.Array.isArray(object?.campusIds)
+                ? object.campusIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -4347,6 +4500,12 @@ exports.SchedulingPublishedDayEdit = {
         if (message.lesson_time_policy !== undefined) {
             obj.lessonTimePolicy = schedulingPublishedLessonTimePolicyToJSON(message.lesson_time_policy);
         }
+        if (message.weekdays?.length) {
+            obj.weekdays = message.weekdays.map((e) => (0, dayofweek_1.dayOfWeekToJSON)(e));
+        }
+        if (message.campus_ids?.length) {
+            obj.campusIds = message.campus_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -4363,6 +4522,8 @@ exports.SchedulingPublishedDayEdit = {
         message.reason = object.reason ?? undefined;
         message.periods = object.periods?.map((e) => exports.SchedulingPublishedPeriodEdit.fromPartial(e)) || [];
         message.lesson_time_policy = object.lesson_time_policy ?? undefined;
+        message.weekdays = object.weekdays?.map((e) => e) || [];
+        message.campus_ids = object.campus_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

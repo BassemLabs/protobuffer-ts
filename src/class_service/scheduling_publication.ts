@@ -374,6 +374,7 @@ export enum SchedulingPublishedDayEditScope {
   SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED",
   SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE",
   SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE",
+  SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -388,6 +389,9 @@ export function schedulingPublishedDayEditScopeFromJSON(object: any): Scheduling
     case 2:
     case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE":
       return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE;
+    case 3:
+    case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE":
+      return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -403,6 +407,8 @@ export function schedulingPublishedDayEditScopeToJSON(object: SchedulingPublishe
       return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE";
     case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE:
       return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE";
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE:
+      return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE";
     case SchedulingPublishedDayEditScope.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -417,6 +423,8 @@ export function schedulingPublishedDayEditScopeToNumber(object: SchedulingPublis
       return 1;
     case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE:
       return 2;
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_CAMPUS_RANGE:
+      return 3;
     case SchedulingPublishedDayEditScope.UNRECOGNIZED:
     default:
       return -1;
@@ -661,6 +669,20 @@ export interface SchedulingPublishedCalendar {
   lessons: SchedulingPublishedLesson[];
   /** Active resources for the school year, independent of the visible date range. */
   resources: SchedulingCalendarResource[];
+  /** Absent on publication-only servers, which do not provide conflict revisions. */
+  calendar_version?: number | undefined;
+}
+
+/**
+ * Read separately from the calendar so conflict checks do not delay navigation.
+ * All selected affected IDs are included; details cover the first 100 conflicts.
+ */
+export interface SchedulingPublishedCalendarConflicts {
+  calendar_version?: number | undefined;
+  conflict_count?: number | undefined;
+  conflicts: SchedulingPublishedLessonConflict[];
+  affected_lesson_ids: Uuid[];
+  lessons: SchedulingPublishedLesson[];
 }
 
 export interface SchedulingPublishedRoomChange {
@@ -683,11 +705,6 @@ export interface SchedulingPublishedLessonEdit {
   teacher_id?: ObjectId | undefined;
   room_change?:
     | SchedulingPublishedRoomChange
-    | undefined;
-  /** Both times are required together, strict HH:mm in each occurrence's frozen timezone. */
-  start_time?: string | undefined;
-  end_time?:
-    | string
     | undefined;
   /** SCHEDULED restores current assignments/times; it never resets previous edits. */
   status?: SchedulingPublishedLessonStatus | undefined;
@@ -779,7 +796,10 @@ export interface SchedulingPublishedDayEdit {
   scope?:
     | SchedulingPublishedDayEditScope
     | undefined;
-  /** SINGLE omits dates. SEMESTER_RANGE uses the anchor's exact semester and campus. */
+  /**
+   * SINGLE omits dates. SEMESTER_RANGE uses the anchor's exact semester and campus.
+   * CAMPUS_RANGE includes every published semester in the selected campuses.
+   */
   start_date?: string | undefined;
   end_date?: string | undefined;
   cancelled?:
@@ -792,7 +812,13 @@ export interface SchedulingPublishedDayEdit {
   reason?: string | undefined;
   periods: SchedulingPublishedPeriodEdit[];
   /** Only valid with paired period times. Omitted means KEEP_CUSTOM. */
-  lesson_time_policy?: SchedulingPublishedLessonTimePolicy | undefined;
+  lesson_time_policy?:
+    | SchedulingPublishedLessonTimePolicy
+    | undefined;
+  /** Range scopes only. Empty includes every weekday; selected days must share the anchor layout for period edits. */
+  weekdays: DayOfWeek[];
+  /** CAMPUS_RANGE only: 1–100 unique active organization campuses. Day cancellation/restoration only. */
+  campus_ids: ObjectId[];
 }
 
 export interface SchedulingPublishedDayEditOptions {
@@ -3232,7 +3258,15 @@ export const SchedulingCalendarResource: MessageFns<SchedulingCalendarResource> 
 };
 
 function createBaseSchedulingPublishedCalendar(): SchedulingPublishedCalendar {
-  return { start_date: undefined, end_date: undefined, dates: [], days: [], lessons: [], resources: [] };
+  return {
+    start_date: undefined,
+    end_date: undefined,
+    dates: [],
+    days: [],
+    lessons: [],
+    resources: [],
+    calendar_version: undefined,
+  };
 }
 
 export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar> = {
@@ -3254,6 +3288,9 @@ export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar
     }
     for (const v of message.resources) {
       SchedulingCalendarResource.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.calendar_version !== undefined) {
+      writer.uint32(56).uint64(message.calendar_version);
     }
     return writer;
   },
@@ -3307,6 +3344,13 @@ export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar
 
           message.resources.push(SchedulingCalendarResource.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3332,6 +3376,7 @@ export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar
       resources: globalThis.Array.isArray(object?.resources)
         ? object.resources.map((e: any) => SchedulingCalendarResource.fromJSON(e))
         : [],
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
     };
   },
 
@@ -3355,6 +3400,9 @@ export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar
     if (message.resources?.length) {
       obj.resources = message.resources.map((e) => SchedulingCalendarResource.toJSON(e));
     }
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
     return obj;
   },
 
@@ -3369,6 +3417,142 @@ export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar
     message.days = object.days?.map((e) => SchedulingPublishedDay.fromPartial(e)) || [];
     message.lessons = object.lessons?.map((e) => SchedulingPublishedLesson.fromPartial(e)) || [];
     message.resources = object.resources?.map((e) => SchedulingCalendarResource.fromPartial(e)) || [];
+    message.calendar_version = object.calendar_version ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedCalendarConflicts(): SchedulingPublishedCalendarConflicts {
+  return {
+    calendar_version: undefined,
+    conflict_count: undefined,
+    conflicts: [],
+    affected_lesson_ids: [],
+    lessons: [],
+  };
+}
+
+export const SchedulingPublishedCalendarConflicts: MessageFns<SchedulingPublishedCalendarConflicts> = {
+  encode(message: SchedulingPublishedCalendarConflicts, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.calendar_version !== undefined) {
+      writer.uint32(8).uint64(message.calendar_version);
+    }
+    if (message.conflict_count !== undefined) {
+      writer.uint32(16).uint32(message.conflict_count);
+    }
+    for (const v of message.conflicts) {
+      SchedulingPublishedLessonConflict.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.affected_lesson_ids) {
+      Uuid.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.lessons) {
+      SchedulingPublishedLesson.encode(v!, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedCalendarConflicts {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedCalendarConflicts();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.conflict_count = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.conflicts.push(SchedulingPublishedLessonConflict.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.affected_lesson_ids.push(Uuid.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.lessons.push(SchedulingPublishedLesson.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedCalendarConflicts {
+    return {
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+      conflict_count: isSet(object.conflictCount) ? globalThis.Number(object.conflictCount) : undefined,
+      conflicts: globalThis.Array.isArray(object?.conflicts)
+        ? object.conflicts.map((e: any) => SchedulingPublishedLessonConflict.fromJSON(e))
+        : [],
+      affected_lesson_ids: globalThis.Array.isArray(object?.affectedLessonIds)
+        ? object.affectedLessonIds.map((e: any) => Uuid.fromJSON(e))
+        : [],
+      lessons: globalThis.Array.isArray(object?.lessons)
+        ? object.lessons.map((e: any) => SchedulingPublishedLesson.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingPublishedCalendarConflicts): unknown {
+    const obj: any = {};
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
+    if (message.conflict_count !== undefined) {
+      obj.conflictCount = Math.round(message.conflict_count);
+    }
+    if (message.conflicts?.length) {
+      obj.conflicts = message.conflicts.map((e) => SchedulingPublishedLessonConflict.toJSON(e));
+    }
+    if (message.affected_lesson_ids?.length) {
+      obj.affectedLessonIds = message.affected_lesson_ids.map((e) => Uuid.toJSON(e));
+    }
+    if (message.lessons?.length) {
+      obj.lessons = message.lessons.map((e) => SchedulingPublishedLesson.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedCalendarConflicts>, I>>(
+    base?: I,
+  ): SchedulingPublishedCalendarConflicts {
+    return SchedulingPublishedCalendarConflicts.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedCalendarConflicts>, I>>(
+    object: I,
+  ): SchedulingPublishedCalendarConflicts {
+    const message = createBaseSchedulingPublishedCalendarConflicts();
+    message.calendar_version = object.calendar_version ?? undefined;
+    message.conflict_count = object.conflict_count ?? undefined;
+    message.conflicts = object.conflicts?.map((e) => SchedulingPublishedLessonConflict.fromPartial(e)) || [];
+    message.affected_lesson_ids = object.affected_lesson_ids?.map((e) => Uuid.fromPartial(e)) || [];
+    message.lessons = object.lessons?.map((e) => SchedulingPublishedLesson.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3460,8 +3644,6 @@ function createBaseSchedulingPublishedLessonEdit(): SchedulingPublishedLessonEdi
     end_date: undefined,
     teacher_id: undefined,
     room_change: undefined,
-    start_time: undefined,
-    end_time: undefined,
     status: undefined,
     reason: undefined,
   };
@@ -3489,12 +3671,6 @@ export const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLesson
     }
     if (message.room_change !== undefined) {
       SchedulingPublishedRoomChange.encode(message.room_change, writer.uint32(58).fork()).join();
-    }
-    if (message.start_time !== undefined) {
-      writer.uint32(66).string(message.start_time);
-    }
-    if (message.end_time !== undefined) {
-      writer.uint32(74).string(message.end_time);
     }
     if (message.status !== undefined) {
       writer.uint32(80).int32(schedulingPublishedLessonStatusToNumber(message.status));
@@ -3561,20 +3737,6 @@ export const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLesson
 
           message.room_change = SchedulingPublishedRoomChange.decode(reader, reader.uint32());
           continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.start_time = reader.string();
-          continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.end_time = reader.string();
-          continue;
         case 10:
           if (tag !== 80) {
             break;
@@ -3611,8 +3773,6 @@ export const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLesson
       end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
       teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
       room_change: isSet(object.roomChange) ? SchedulingPublishedRoomChange.fromJSON(object.roomChange) : undefined,
-      start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
-      end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
       status: isSet(object.status) ? schedulingPublishedLessonStatusFromJSON(object.status) : undefined,
       reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
     };
@@ -3641,12 +3801,6 @@ export const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLesson
     if (message.room_change !== undefined) {
       obj.roomChange = SchedulingPublishedRoomChange.toJSON(message.room_change);
     }
-    if (message.start_time !== undefined) {
-      obj.startTime = message.start_time;
-    }
-    if (message.end_time !== undefined) {
-      obj.endTime = message.end_time;
-    }
     if (message.status !== undefined) {
       obj.status = schedulingPublishedLessonStatusToJSON(message.status);
     }
@@ -3674,8 +3828,6 @@ export const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLesson
     message.room_change = (object.room_change !== undefined && object.room_change !== null)
       ? SchedulingPublishedRoomChange.fromPartial(object.room_change)
       : undefined;
-    message.start_time = object.start_time ?? undefined;
-    message.end_time = object.end_time ?? undefined;
     message.status = object.status ?? undefined;
     message.reason = object.reason ?? undefined;
     return message;
@@ -4924,6 +5076,8 @@ function createBaseSchedulingPublishedDayEdit(): SchedulingPublishedDayEdit {
     reason: undefined,
     periods: [],
     lesson_time_policy: undefined,
+    weekdays: [],
+    campus_ids: [],
   };
 }
 
@@ -4955,6 +5109,14 @@ export const SchedulingPublishedDayEdit: MessageFns<SchedulingPublishedDayEdit> 
     }
     if (message.lesson_time_policy !== undefined) {
       writer.uint32(72).int32(schedulingPublishedLessonTimePolicyToNumber(message.lesson_time_policy));
+    }
+    writer.uint32(82).fork();
+    for (const v of message.weekdays) {
+      writer.int32(dayOfWeekToNumber(v));
+    }
+    writer.join();
+    for (const v of message.campus_ids) {
+      ObjectId.encode(v!, writer.uint32(90).fork()).join();
     }
     return writer;
   },
@@ -5029,6 +5191,30 @@ export const SchedulingPublishedDayEdit: MessageFns<SchedulingPublishedDayEdit> 
 
           message.lesson_time_policy = schedulingPublishedLessonTimePolicyFromJSON(reader.int32());
           continue;
+        case 10:
+          if (tag === 80) {
+            message.weekdays.push(dayOfWeekFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 82) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.weekdays.push(dayOfWeekFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.campus_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5055,6 +5241,10 @@ export const SchedulingPublishedDayEdit: MessageFns<SchedulingPublishedDayEdit> 
       lesson_time_policy: isSet(object.lessonTimePolicy)
         ? schedulingPublishedLessonTimePolicyFromJSON(object.lessonTimePolicy)
         : undefined,
+      weekdays: globalThis.Array.isArray(object?.weekdays) ? object.weekdays.map((e: any) => dayOfWeekFromJSON(e)) : [],
+      campus_ids: globalThis.Array.isArray(object?.campusIds)
+        ? object.campusIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
     };
   },
 
@@ -5087,6 +5277,12 @@ export const SchedulingPublishedDayEdit: MessageFns<SchedulingPublishedDayEdit> 
     if (message.lesson_time_policy !== undefined) {
       obj.lessonTimePolicy = schedulingPublishedLessonTimePolicyToJSON(message.lesson_time_policy);
     }
+    if (message.weekdays?.length) {
+      obj.weekdays = message.weekdays.map((e) => dayOfWeekToJSON(e));
+    }
+    if (message.campus_ids?.length) {
+      obj.campusIds = message.campus_ids.map((e) => ObjectId.toJSON(e));
+    }
     return obj;
   },
 
@@ -5104,6 +5300,8 @@ export const SchedulingPublishedDayEdit: MessageFns<SchedulingPublishedDayEdit> 
     message.reason = object.reason ?? undefined;
     message.periods = object.periods?.map((e) => SchedulingPublishedPeriodEdit.fromPartial(e)) || [];
     message.lesson_time_policy = object.lesson_time_policy ?? undefined;
+    message.weekdays = object.weekdays?.map((e) => e) || [];
+    message.campus_ids = object.campus_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };
