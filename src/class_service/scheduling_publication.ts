@@ -135,6 +135,347 @@ export function schedulingPublishedLessonStatusToNumber(object: SchedulingPublis
   }
 }
 
+export enum SchedulingPublishedLessonSuppressionSource {
+  SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED =
+    "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED",
+  SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY = "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY",
+  SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD = "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingPublishedLessonSuppressionSourceFromJSON(
+  object: any,
+): SchedulingPublishedLessonSuppressionSource {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED":
+      return SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED;
+    case 1:
+    case "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY":
+      return SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY;
+    case 2:
+    case "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD":
+      return SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingPublishedLessonSuppressionSource.UNRECOGNIZED;
+  }
+}
+
+export function schedulingPublishedLessonSuppressionSourceToJSON(
+  object: SchedulingPublishedLessonSuppressionSource,
+): string {
+  switch (object) {
+    case SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED:
+      return "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED";
+    case SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY:
+      return "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY";
+    case SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD:
+      return "SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD";
+    case SchedulingPublishedLessonSuppressionSource.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingPublishedLessonSuppressionSourceToNumber(
+  object: SchedulingPublishedLessonSuppressionSource,
+): number {
+  switch (object) {
+    case SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_UNSPECIFIED:
+      return 0;
+    case SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_DAY:
+      return 1;
+    case SchedulingPublishedLessonSuppressionSource.SCHEDULING_PUBLISHED_LESSON_SUPPRESSION_SOURCE_PERIOD:
+      return 2;
+    case SchedulingPublishedLessonSuppressionSource.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SchedulingPublishedLessonEditScope {
+  SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED = "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED",
+  SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE = "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE",
+  SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE = "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingPublishedLessonEditScopeFromJSON(object: any): SchedulingPublishedLessonEditScope {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED":
+      return SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED;
+    case 1:
+    case "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE":
+      return SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE;
+    case 2:
+    case "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE":
+      return SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingPublishedLessonEditScope.UNRECOGNIZED;
+  }
+}
+
+export function schedulingPublishedLessonEditScopeToJSON(object: SchedulingPublishedLessonEditScope): string {
+  switch (object) {
+    case SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED:
+      return "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED";
+    case SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE:
+      return "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE";
+    case SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE:
+      return "SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE";
+    case SchedulingPublishedLessonEditScope.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingPublishedLessonEditScopeToNumber(object: SchedulingPublishedLessonEditScope): number {
+  switch (object) {
+    case SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_UNSPECIFIED:
+      return 0;
+    case SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_SINGLE:
+      return 1;
+    case SchedulingPublishedLessonEditScope.SCHEDULING_PUBLISHED_LESSON_EDIT_SCOPE_CLASS_RANGE:
+      return 2;
+    case SchedulingPublishedLessonEditScope.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SchedulingPublishedRoomChangeMode {
+  SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED = "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED",
+  SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET = "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET",
+  SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR = "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingPublishedRoomChangeModeFromJSON(object: any): SchedulingPublishedRoomChangeMode {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED":
+      return SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED;
+    case 1:
+    case "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET":
+      return SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET;
+    case 2:
+    case "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR":
+      return SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingPublishedRoomChangeMode.UNRECOGNIZED;
+  }
+}
+
+export function schedulingPublishedRoomChangeModeToJSON(object: SchedulingPublishedRoomChangeMode): string {
+  switch (object) {
+    case SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED:
+      return "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED";
+    case SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET:
+      return "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET";
+    case SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR:
+      return "SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR";
+    case SchedulingPublishedRoomChangeMode.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingPublishedRoomChangeModeToNumber(object: SchedulingPublishedRoomChangeMode): number {
+  switch (object) {
+    case SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_UNSPECIFIED:
+      return 0;
+    case SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_SET:
+      return 1;
+    case SchedulingPublishedRoomChangeMode.SCHEDULING_PUBLISHED_ROOM_CHANGE_MODE_CLEAR:
+      return 2;
+    case SchedulingPublishedRoomChangeMode.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SchedulingPublishedLessonConflictKind {
+  SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED = "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED",
+  SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER = "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER",
+  SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM = "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM",
+  SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION = "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION",
+  SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT = "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingPublishedLessonConflictKindFromJSON(object: any): SchedulingPublishedLessonConflictKind {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED":
+      return SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED;
+    case 1:
+    case "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER":
+      return SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER;
+    case 2:
+    case "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM":
+      return SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM;
+    case 3:
+    case "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION":
+      return SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION;
+    case 4:
+    case "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT":
+      return SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingPublishedLessonConflictKind.UNRECOGNIZED;
+  }
+}
+
+export function schedulingPublishedLessonConflictKindToJSON(object: SchedulingPublishedLessonConflictKind): string {
+  switch (object) {
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED:
+      return "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED";
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER:
+      return "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER";
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM:
+      return "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM";
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION:
+      return "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION";
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT:
+      return "SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT";
+    case SchedulingPublishedLessonConflictKind.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingPublishedLessonConflictKindToNumber(object: SchedulingPublishedLessonConflictKind): number {
+  switch (object) {
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_UNSPECIFIED:
+      return 0;
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_TEACHER:
+      return 1;
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_ROOM:
+      return 2;
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_SECTION:
+      return 3;
+    case SchedulingPublishedLessonConflictKind.SCHEDULING_PUBLISHED_LESSON_CONFLICT_KIND_STUDENT:
+      return 4;
+    case SchedulingPublishedLessonConflictKind.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SchedulingPublishedDayEditScope {
+  SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED",
+  SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE",
+  SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE = "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingPublishedDayEditScopeFromJSON(object: any): SchedulingPublishedDayEditScope {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED":
+      return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED;
+    case 1:
+    case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE":
+      return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE;
+    case 2:
+    case "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE":
+      return SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingPublishedDayEditScope.UNRECOGNIZED;
+  }
+}
+
+export function schedulingPublishedDayEditScopeToJSON(object: SchedulingPublishedDayEditScope): string {
+  switch (object) {
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED:
+      return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED";
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE:
+      return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE";
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE:
+      return "SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE";
+    case SchedulingPublishedDayEditScope.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingPublishedDayEditScopeToNumber(object: SchedulingPublishedDayEditScope): number {
+  switch (object) {
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_UNSPECIFIED:
+      return 0;
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SINGLE:
+      return 1;
+    case SchedulingPublishedDayEditScope.SCHEDULING_PUBLISHED_DAY_EDIT_SCOPE_SEMESTER_RANGE:
+      return 2;
+    case SchedulingPublishedDayEditScope.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum SchedulingPublishedLessonTimePolicy {
+  SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED = "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED",
+  SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM = "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM",
+  SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL = "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function schedulingPublishedLessonTimePolicyFromJSON(object: any): SchedulingPublishedLessonTimePolicy {
+  switch (object) {
+    case 0:
+    case "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED":
+      return SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED;
+    case 1:
+    case "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM":
+      return SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM;
+    case 2:
+    case "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL":
+      return SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return SchedulingPublishedLessonTimePolicy.UNRECOGNIZED;
+  }
+}
+
+export function schedulingPublishedLessonTimePolicyToJSON(object: SchedulingPublishedLessonTimePolicy): string {
+  switch (object) {
+    case SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED:
+      return "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED";
+    case SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM:
+      return "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM";
+    case SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL:
+      return "SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL";
+    case SchedulingPublishedLessonTimePolicy.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function schedulingPublishedLessonTimePolicyToNumber(object: SchedulingPublishedLessonTimePolicy): number {
+  switch (object) {
+    case SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_UNSPECIFIED:
+      return 0;
+    case SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_KEEP_CUSTOM:
+      return 1;
+    case SchedulingPublishedLessonTimePolicy.SCHEDULING_PUBLISHED_LESSON_TIME_POLICY_ALIGN_ALL:
+      return 2;
+    case SchedulingPublishedLessonTimePolicy.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 /** Date fields are inclusive school-local YYYY-MM-DD values, never UTC instants. */
 export interface SchedulingPublicationSemester {
   id: ObjectId | undefined;
@@ -181,7 +522,12 @@ export interface SchedulingPublicationPreview {
     | undefined;
   /** Binds source, reviewed setup, calendar settings, range and publication state. */
   preview_token?: string | undefined;
-  first_teaching_date?: string | undefined;
+  first_teaching_date?:
+    | string
+    | undefined;
+  /** Publication-only servers omit these counts because they do not support edits. */
+  replaced_adjusted_lesson_count?: number | undefined;
+  replaced_adjusted_day_count?: number | undefined;
 }
 
 export interface SchedulingPublicationPage {
@@ -203,7 +549,11 @@ export interface SchedulingPublishedPeriod {
   label?: string | undefined;
   start_time?: string | undefined;
   end_time?: string | undefined;
-  is_rest_period?: boolean | undefined;
+  is_rest_period?:
+    | boolean
+    | undefined;
+  /** Absent in original frozen layouts means active. */
+  cancelled?: boolean | undefined;
 }
 
 export interface SchedulingPublishedDay {
@@ -213,6 +563,19 @@ export interface SchedulingPublishedDay {
   campus_id: ObjectId | undefined;
   local_date?: string | undefined;
   periods: SchedulingPublishedPeriod[];
+  /** Editing metadata is absent on publication-only servers; edit options always populate it. */
+  version?:
+    | number
+    | undefined;
+  /** Absent means the original published day is active. */
+  cancelled?: boolean | undefined;
+  cancellation_reason?: string | undefined;
+  updated_at?: string | undefined;
+  semester_name?: string | undefined;
+  campus_name?: string | undefined;
+  timezone?: string | undefined;
+  superseded_by_publication_id?: Uuid | undefined;
+  superseded_at?: string | undefined;
 }
 
 /**
@@ -256,7 +619,21 @@ export interface SchedulingPublishedLesson {
   created_at?: string | undefined;
   updated_at?: string | undefined;
   superseded_by_publication_id?: Uuid | undefined;
-  superseded_at?: string | undefined;
+  superseded_at?:
+    | string
+    | undefined;
+  /** Always populated for current rows; old immutable history did not record this intent. */
+  follows_period_times?:
+    | boolean
+    | undefined;
+  /** Individual status remains unchanged when a day or period suppresses this meeting. */
+  suppression?: SchedulingPublishedLessonSuppression | undefined;
+}
+
+export interface SchedulingPublishedLessonSuppression {
+  source?: SchedulingPublishedLessonSuppressionSource | undefined;
+  reason?: string | undefined;
+  period_id?: Uuid | undefined;
 }
 
 export interface SchedulingCalendarResourceScope {
@@ -284,6 +661,180 @@ export interface SchedulingPublishedCalendar {
   lessons: SchedulingPublishedLesson[];
   /** Active resources for the school year, independent of the visible date range. */
   resources: SchedulingCalendarResource[];
+}
+
+export interface SchedulingPublishedRoomChange {
+  mode?: SchedulingPublishedRoomChangeMode | undefined;
+  room_id?: ObjectId | undefined;
+}
+
+export interface SchedulingPublishedLessonEdit {
+  expected_lesson_version?: number | undefined;
+  expected_calendar_version?: number | undefined;
+  scope?:
+    | SchedulingPublishedLessonEditScope
+    | undefined;
+  /**
+   * CLASS_RANGE matches the anchor's logical class and semester, across current publications.
+   * SINGLE omits dates. Omitted patch fields retain their current values.
+   */
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  teacher_id?: ObjectId | undefined;
+  room_change?:
+    | SchedulingPublishedRoomChange
+    | undefined;
+  /** Both times are required together, strict HH:mm in each occurrence's frozen timezone. */
+  start_time?: string | undefined;
+  end_time?:
+    | string
+    | undefined;
+  /** SCHEDULED restores current assignments/times; it never resets previous edits. */
+  status?: SchedulingPublishedLessonStatus | undefined;
+  reason?: string | undefined;
+}
+
+export interface SchedulingPublishedEditChoice {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+}
+
+export interface SchedulingPublishedLessonEditOptions {
+  lesson: SchedulingPublishedLesson | undefined;
+  calendar_version?: number | undefined;
+  teachers: SchedulingPublishedEditChoice[];
+  rooms: SchedulingPublishedEditChoice[];
+  maximum_range_days?: number | undefined;
+  maximum_affected_lessons?: number | undefined;
+}
+
+export interface SchedulingPublishedLessonConflict {
+  kind?: SchedulingPublishedLessonConflictKind | undefined;
+  lesson_id: Uuid | undefined;
+  conflicting_lesson_id: Uuid | undefined;
+  local_date?: string | undefined;
+  message?: string | undefined;
+}
+
+export interface SchedulingPublishedLessonChange {
+  before: SchedulingPublishedLesson | undefined;
+  after: SchedulingPublishedLesson | undefined;
+}
+
+export interface SchedulingPublishedLessonEditPreview {
+  preview_token?: string | undefined;
+  calendar_version?: number | undefined;
+  affected_lesson_count?: number | undefined;
+  changed_lesson_count?: number | undefined;
+  affected_dates: string[];
+  samples: SchedulingPublishedLessonChange[];
+  conflicts: SchedulingPublishedLessonConflict[];
+  conflict_count?: number | undefined;
+  affected_members: SchedulingScheduleSubjectMemberInfo[];
+}
+
+export interface SchedulingPublishedChange {
+  id: Uuid | undefined;
+  school_year_id: ObjectId | undefined;
+  anchor_lesson_id?: Uuid | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  reason?: string | undefined;
+  created_by: ObjectId | undefined;
+  created_at?: string | undefined;
+  calendar_version?: number | undefined;
+  affected_lesson_count?: number | undefined;
+  changed_lesson_count?: number | undefined;
+  affected_dates: string[];
+  anchor_day_id:
+    | Uuid
+    | undefined;
+  /** Absent for lesson-only operations. */
+  affected_day_count?: number | undefined;
+  changed_day_count?: number | undefined;
+}
+
+export interface SchedulingPublishedLessonHistoryEntry {
+  change: SchedulingPublishedChange | undefined;
+  before: SchedulingPublishedLesson | undefined;
+  after: SchedulingPublishedLesson | undefined;
+}
+
+export interface SchedulingPublishedLessonHistoryPage {
+  entries: SchedulingPublishedLessonHistoryEntry[];
+  next_cursor?: string | undefined;
+}
+
+export interface SchedulingPublishedPeriodEdit {
+  /** An existing period UUID on the anchor day; identity, sequence and kind stay fixed. */
+  period_id: Uuid | undefined;
+  start_time?: string | undefined;
+  end_time?: string | undefined;
+  cancelled?: boolean | undefined;
+}
+
+export interface SchedulingPublishedDayEdit {
+  expected_day_version?: number | undefined;
+  expected_calendar_version?: number | undefined;
+  scope?:
+    | SchedulingPublishedDayEditScope
+    | undefined;
+  /** SINGLE omits dates. SEMESTER_RANGE uses the anchor's exact semester and campus. */
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  cancelled?:
+    | boolean
+    | undefined;
+  /**
+   * Also retained in operation history. Changes the closure reason only with cancelled=true:
+   * omitted preserves an existing closure reason, empty clears it. Restoration clears it.
+   */
+  reason?: string | undefined;
+  periods: SchedulingPublishedPeriodEdit[];
+  /** Only valid with paired period times. Omitted means KEEP_CUSTOM. */
+  lesson_time_policy?: SchedulingPublishedLessonTimePolicy | undefined;
+}
+
+export interface SchedulingPublishedDayEditOptions {
+  days: SchedulingPublishedDay[];
+  calendar_version?: number | undefined;
+  maximum_range_days?: number | undefined;
+  maximum_affected_lessons?: number | undefined;
+}
+
+export interface SchedulingPublishedDayChange {
+  before: SchedulingPublishedDay | undefined;
+  after: SchedulingPublishedDay | undefined;
+}
+
+export interface SchedulingPublishedDayEditPreview {
+  preview_token?: string | undefined;
+  calendar_version?: number | undefined;
+  affected_day_count?: number | undefined;
+  changed_day_count?: number | undefined;
+  affected_lesson_count?:
+    | number
+    | undefined;
+  /** Includes effective changes from day/period suppression, without rewriting individual status. */
+  changed_lesson_count?: number | undefined;
+  affected_dates: string[];
+  day_samples: SchedulingPublishedDayChange[];
+  lesson_samples: SchedulingPublishedLessonChange[];
+  preserved_custom_time_count?: number | undefined;
+  reset_custom_time_count?: number | undefined;
+  conflicts: SchedulingPublishedLessonConflict[];
+  conflict_count?: number | undefined;
+}
+
+export interface SchedulingPublishedDayHistoryEntry {
+  change: SchedulingPublishedChange | undefined;
+  before: SchedulingPublishedDay | undefined;
+  after: SchedulingPublishedDay | undefined;
+}
+
+export interface SchedulingPublishedDayHistoryPage {
+  entries: SchedulingPublishedDayHistoryEntry[];
+  next_cursor?: string | undefined;
 }
 
 function createBaseSchedulingPublicationSemester(): SchedulingPublicationSemester {
@@ -792,6 +1343,8 @@ function createBaseSchedulingPublicationPreview(): SchedulingPublicationPreview 
     previously_published_date_count: undefined,
     preview_token: undefined,
     first_teaching_date: undefined,
+    replaced_adjusted_lesson_count: undefined,
+    replaced_adjusted_day_count: undefined,
   };
 }
 
@@ -835,6 +1388,12 @@ export const SchedulingPublicationPreview: MessageFns<SchedulingPublicationPrevi
     }
     if (message.first_teaching_date !== undefined) {
       writer.uint32(106).string(message.first_teaching_date);
+    }
+    if (message.replaced_adjusted_lesson_count !== undefined) {
+      writer.uint32(112).uint32(message.replaced_adjusted_lesson_count);
+    }
+    if (message.replaced_adjusted_day_count !== undefined) {
+      writer.uint32(120).uint32(message.replaced_adjusted_day_count);
     }
     return writer;
   },
@@ -937,6 +1496,20 @@ export const SchedulingPublicationPreview: MessageFns<SchedulingPublicationPrevi
 
           message.first_teaching_date = reader.string();
           continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.replaced_adjusted_lesson_count = reader.uint32();
+          continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.replaced_adjusted_day_count = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -967,6 +1540,12 @@ export const SchedulingPublicationPreview: MessageFns<SchedulingPublicationPrevi
         : undefined,
       preview_token: isSet(object.previewToken) ? globalThis.String(object.previewToken) : undefined,
       first_teaching_date: isSet(object.firstTeachingDate) ? globalThis.String(object.firstTeachingDate) : undefined,
+      replaced_adjusted_lesson_count: isSet(object.replacedAdjustedLessonCount)
+        ? globalThis.Number(object.replacedAdjustedLessonCount)
+        : undefined,
+      replaced_adjusted_day_count: isSet(object.replacedAdjustedDayCount)
+        ? globalThis.Number(object.replacedAdjustedDayCount)
+        : undefined,
     };
   },
 
@@ -1011,6 +1590,12 @@ export const SchedulingPublicationPreview: MessageFns<SchedulingPublicationPrevi
     if (message.first_teaching_date !== undefined) {
       obj.firstTeachingDate = message.first_teaching_date;
     }
+    if (message.replaced_adjusted_lesson_count !== undefined) {
+      obj.replacedAdjustedLessonCount = Math.round(message.replaced_adjusted_lesson_count);
+    }
+    if (message.replaced_adjusted_day_count !== undefined) {
+      obj.replacedAdjustedDayCount = Math.round(message.replaced_adjusted_day_count);
+    }
     return obj;
   },
 
@@ -1034,6 +1619,8 @@ export const SchedulingPublicationPreview: MessageFns<SchedulingPublicationPrevi
     message.previously_published_date_count = object.previously_published_date_count ?? undefined;
     message.preview_token = object.preview_token ?? undefined;
     message.first_teaching_date = object.first_teaching_date ?? undefined;
+    message.replaced_adjusted_lesson_count = object.replaced_adjusted_lesson_count ?? undefined;
+    message.replaced_adjusted_day_count = object.replaced_adjusted_day_count ?? undefined;
     return message;
   },
 };
@@ -1229,6 +1816,7 @@ function createBaseSchedulingPublishedPeriod(): SchedulingPublishedPeriod {
     start_time: undefined,
     end_time: undefined,
     is_rest_period: undefined,
+    cancelled: undefined,
   };
 }
 
@@ -1254,6 +1842,9 @@ export const SchedulingPublishedPeriod: MessageFns<SchedulingPublishedPeriod> = 
     }
     if (message.is_rest_period !== undefined) {
       writer.uint32(56).bool(message.is_rest_period);
+    }
+    if (message.cancelled !== undefined) {
+      writer.uint32(64).bool(message.cancelled);
     }
     return writer;
   },
@@ -1314,6 +1905,13 @@ export const SchedulingPublishedPeriod: MessageFns<SchedulingPublishedPeriod> = 
 
           message.is_rest_period = reader.bool();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.cancelled = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1332,6 +1930,7 @@ export const SchedulingPublishedPeriod: MessageFns<SchedulingPublishedPeriod> = 
       start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
       end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
       is_rest_period: isSet(object.isRestPeriod) ? globalThis.Boolean(object.isRestPeriod) : undefined,
+      cancelled: isSet(object.cancelled) ? globalThis.Boolean(object.cancelled) : undefined,
     };
   },
 
@@ -1358,6 +1957,9 @@ export const SchedulingPublishedPeriod: MessageFns<SchedulingPublishedPeriod> = 
     if (message.is_rest_period !== undefined) {
       obj.isRestPeriod = message.is_rest_period;
     }
+    if (message.cancelled !== undefined) {
+      obj.cancelled = message.cancelled;
+    }
     return obj;
   },
 
@@ -1373,6 +1975,7 @@ export const SchedulingPublishedPeriod: MessageFns<SchedulingPublishedPeriod> = 
     message.start_time = object.start_time ?? undefined;
     message.end_time = object.end_time ?? undefined;
     message.is_rest_period = object.is_rest_period ?? undefined;
+    message.cancelled = object.cancelled ?? undefined;
     return message;
   },
 };
@@ -1385,6 +1988,15 @@ function createBaseSchedulingPublishedDay(): SchedulingPublishedDay {
     campus_id: undefined,
     local_date: undefined,
     periods: [],
+    version: undefined,
+    cancelled: undefined,
+    cancellation_reason: undefined,
+    updated_at: undefined,
+    semester_name: undefined,
+    campus_name: undefined,
+    timezone: undefined,
+    superseded_by_publication_id: undefined,
+    superseded_at: undefined,
   };
 }
 
@@ -1407,6 +2019,33 @@ export const SchedulingPublishedDay: MessageFns<SchedulingPublishedDay> = {
     }
     for (const v of message.periods) {
       SchedulingPublishedPeriod.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.version !== undefined) {
+      writer.uint32(56).uint32(message.version);
+    }
+    if (message.cancelled !== undefined) {
+      writer.uint32(64).bool(message.cancelled);
+    }
+    if (message.cancellation_reason !== undefined) {
+      writer.uint32(74).string(message.cancellation_reason);
+    }
+    if (message.updated_at !== undefined) {
+      writer.uint32(82).string(message.updated_at);
+    }
+    if (message.semester_name !== undefined) {
+      writer.uint32(90).string(message.semester_name);
+    }
+    if (message.campus_name !== undefined) {
+      writer.uint32(98).string(message.campus_name);
+    }
+    if (message.timezone !== undefined) {
+      writer.uint32(106).string(message.timezone);
+    }
+    if (message.superseded_by_publication_id !== undefined) {
+      Uuid.encode(message.superseded_by_publication_id, writer.uint32(114).fork()).join();
+    }
+    if (message.superseded_at !== undefined) {
+      writer.uint32(122).string(message.superseded_at);
     }
     return writer;
   },
@@ -1460,6 +2099,69 @@ export const SchedulingPublishedDay: MessageFns<SchedulingPublishedDay> = {
 
           message.periods.push(SchedulingPublishedPeriod.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.version = reader.uint32();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.cancelled = reader.bool();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.cancellation_reason = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.updated_at = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.semester_name = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.campus_name = reader.string();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.timezone = reader.string();
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.superseded_by_publication_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.superseded_at = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1479,6 +2181,17 @@ export const SchedulingPublishedDay: MessageFns<SchedulingPublishedDay> = {
       periods: globalThis.Array.isArray(object?.periods)
         ? object.periods.map((e: any) => SchedulingPublishedPeriod.fromJSON(e))
         : [],
+      version: isSet(object.version) ? globalThis.Number(object.version) : undefined,
+      cancelled: isSet(object.cancelled) ? globalThis.Boolean(object.cancelled) : undefined,
+      cancellation_reason: isSet(object.cancellationReason) ? globalThis.String(object.cancellationReason) : undefined,
+      updated_at: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : undefined,
+      semester_name: isSet(object.semesterName) ? globalThis.String(object.semesterName) : undefined,
+      campus_name: isSet(object.campusName) ? globalThis.String(object.campusName) : undefined,
+      timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : undefined,
+      superseded_by_publication_id: isSet(object.supersededByPublicationId)
+        ? Uuid.fromJSON(object.supersededByPublicationId)
+        : undefined,
+      superseded_at: isSet(object.supersededAt) ? globalThis.String(object.supersededAt) : undefined,
     };
   },
 
@@ -1502,6 +2215,33 @@ export const SchedulingPublishedDay: MessageFns<SchedulingPublishedDay> = {
     if (message.periods?.length) {
       obj.periods = message.periods.map((e) => SchedulingPublishedPeriod.toJSON(e));
     }
+    if (message.version !== undefined) {
+      obj.version = Math.round(message.version);
+    }
+    if (message.cancelled !== undefined) {
+      obj.cancelled = message.cancelled;
+    }
+    if (message.cancellation_reason !== undefined) {
+      obj.cancellationReason = message.cancellation_reason;
+    }
+    if (message.updated_at !== undefined) {
+      obj.updatedAt = message.updated_at;
+    }
+    if (message.semester_name !== undefined) {
+      obj.semesterName = message.semester_name;
+    }
+    if (message.campus_name !== undefined) {
+      obj.campusName = message.campus_name;
+    }
+    if (message.timezone !== undefined) {
+      obj.timezone = message.timezone;
+    }
+    if (message.superseded_by_publication_id !== undefined) {
+      obj.supersededByPublicationId = Uuid.toJSON(message.superseded_by_publication_id);
+    }
+    if (message.superseded_at !== undefined) {
+      obj.supersededAt = message.superseded_at;
+    }
     return obj;
   },
 
@@ -1522,6 +2262,18 @@ export const SchedulingPublishedDay: MessageFns<SchedulingPublishedDay> = {
       : undefined;
     message.local_date = object.local_date ?? undefined;
     message.periods = object.periods?.map((e) => SchedulingPublishedPeriod.fromPartial(e)) || [];
+    message.version = object.version ?? undefined;
+    message.cancelled = object.cancelled ?? undefined;
+    message.cancellation_reason = object.cancellation_reason ?? undefined;
+    message.updated_at = object.updated_at ?? undefined;
+    message.semester_name = object.semester_name ?? undefined;
+    message.campus_name = object.campus_name ?? undefined;
+    message.timezone = object.timezone ?? undefined;
+    message.superseded_by_publication_id =
+      (object.superseded_by_publication_id !== undefined && object.superseded_by_publication_id !== null)
+        ? Uuid.fromPartial(object.superseded_by_publication_id)
+        : undefined;
+    message.superseded_at = object.superseded_at ?? undefined;
     return message;
   },
 };
@@ -1562,6 +2314,8 @@ function createBaseSchedulingPublishedLesson(): SchedulingPublishedLesson {
     updated_at: undefined,
     superseded_by_publication_id: undefined,
     superseded_at: undefined,
+    follows_period_times: undefined,
+    suppression: undefined,
   };
 }
 
@@ -1668,6 +2422,12 @@ export const SchedulingPublishedLesson: MessageFns<SchedulingPublishedLesson> = 
     }
     if (message.superseded_at !== undefined) {
       writer.uint32(274).string(message.superseded_at);
+    }
+    if (message.follows_period_times !== undefined) {
+      writer.uint32(280).bool(message.follows_period_times);
+    }
+    if (message.suppression !== undefined) {
+      SchedulingPublishedLessonSuppression.encode(message.suppression, writer.uint32(290).fork()).join();
     }
     return writer;
   },
@@ -1917,6 +2677,20 @@ export const SchedulingPublishedLesson: MessageFns<SchedulingPublishedLesson> = 
 
           message.superseded_at = reader.string();
           continue;
+        case 35:
+          if (tag !== 280) {
+            break;
+          }
+
+          message.follows_period_times = reader.bool();
+          continue;
+        case 36:
+          if (tag !== 290) {
+            break;
+          }
+
+          message.suppression = SchedulingPublishedLessonSuppression.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1966,6 +2740,12 @@ export const SchedulingPublishedLesson: MessageFns<SchedulingPublishedLesson> = 
         ? Uuid.fromJSON(object.supersededByPublicationId)
         : undefined,
       superseded_at: isSet(object.supersededAt) ? globalThis.String(object.supersededAt) : undefined,
+      follows_period_times: isSet(object.followsPeriodTimes)
+        ? globalThis.Boolean(object.followsPeriodTimes)
+        : undefined,
+      suppression: isSet(object.suppression)
+        ? SchedulingPublishedLessonSuppression.fromJSON(object.suppression)
+        : undefined,
     };
   },
 
@@ -2073,6 +2853,12 @@ export const SchedulingPublishedLesson: MessageFns<SchedulingPublishedLesson> = 
     if (message.superseded_at !== undefined) {
       obj.supersededAt = message.superseded_at;
     }
+    if (message.follows_period_times !== undefined) {
+      obj.followsPeriodTimes = message.follows_period_times;
+    }
+    if (message.suppression !== undefined) {
+      obj.suppression = SchedulingPublishedLessonSuppression.toJSON(message.suppression);
+    }
     return obj;
   },
 
@@ -2141,6 +2927,105 @@ export const SchedulingPublishedLesson: MessageFns<SchedulingPublishedLesson> = 
         ? Uuid.fromPartial(object.superseded_by_publication_id)
         : undefined;
     message.superseded_at = object.superseded_at ?? undefined;
+    message.follows_period_times = object.follows_period_times ?? undefined;
+    message.suppression = (object.suppression !== undefined && object.suppression !== null)
+      ? SchedulingPublishedLessonSuppression.fromPartial(object.suppression)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonSuppression(): SchedulingPublishedLessonSuppression {
+  return { source: undefined, reason: undefined, period_id: undefined };
+}
+
+export const SchedulingPublishedLessonSuppression: MessageFns<SchedulingPublishedLessonSuppression> = {
+  encode(message: SchedulingPublishedLessonSuppression, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.source !== undefined) {
+      writer.uint32(8).int32(schedulingPublishedLessonSuppressionSourceToNumber(message.source));
+    }
+    if (message.reason !== undefined) {
+      writer.uint32(18).string(message.reason);
+    }
+    if (message.period_id !== undefined) {
+      Uuid.encode(message.period_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonSuppression {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonSuppression();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.source = schedulingPublishedLessonSuppressionSourceFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.period_id = Uuid.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonSuppression {
+    return {
+      source: isSet(object.source) ? schedulingPublishedLessonSuppressionSourceFromJSON(object.source) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      period_id: isSet(object.periodId) ? Uuid.fromJSON(object.periodId) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonSuppression): unknown {
+    const obj: any = {};
+    if (message.source !== undefined) {
+      obj.source = schedulingPublishedLessonSuppressionSourceToJSON(message.source);
+    }
+    if (message.reason !== undefined) {
+      obj.reason = message.reason;
+    }
+    if (message.period_id !== undefined) {
+      obj.periodId = Uuid.toJSON(message.period_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonSuppression>, I>>(
+    base?: I,
+  ): SchedulingPublishedLessonSuppression {
+    return SchedulingPublishedLessonSuppression.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonSuppression>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonSuppression {
+    const message = createBaseSchedulingPublishedLessonSuppression();
+    message.source = object.source ?? undefined;
+    message.reason = object.reason ?? undefined;
+    message.period_id = (object.period_id !== undefined && object.period_id !== null)
+      ? Uuid.fromPartial(object.period_id)
+      : undefined;
     return message;
   },
 };
@@ -2488,6 +3373,2381 @@ export const SchedulingPublishedCalendar: MessageFns<SchedulingPublishedCalendar
   },
 };
 
+function createBaseSchedulingPublishedRoomChange(): SchedulingPublishedRoomChange {
+  return { mode: undefined, room_id: undefined };
+}
+
+export const SchedulingPublishedRoomChange: MessageFns<SchedulingPublishedRoomChange> = {
+  encode(message: SchedulingPublishedRoomChange, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.mode !== undefined) {
+      writer.uint32(8).int32(schedulingPublishedRoomChangeModeToNumber(message.mode));
+    }
+    if (message.room_id !== undefined) {
+      ObjectId.encode(message.room_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedRoomChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedRoomChange();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.mode = schedulingPublishedRoomChangeModeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.room_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedRoomChange {
+    return {
+      mode: isSet(object.mode) ? schedulingPublishedRoomChangeModeFromJSON(object.mode) : undefined,
+      room_id: isSet(object.roomId) ? ObjectId.fromJSON(object.roomId) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedRoomChange): unknown {
+    const obj: any = {};
+    if (message.mode !== undefined) {
+      obj.mode = schedulingPublishedRoomChangeModeToJSON(message.mode);
+    }
+    if (message.room_id !== undefined) {
+      obj.roomId = ObjectId.toJSON(message.room_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedRoomChange>, I>>(base?: I): SchedulingPublishedRoomChange {
+    return SchedulingPublishedRoomChange.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedRoomChange>, I>>(
+    object: I,
+  ): SchedulingPublishedRoomChange {
+    const message = createBaseSchedulingPublishedRoomChange();
+    message.mode = object.mode ?? undefined;
+    message.room_id = (object.room_id !== undefined && object.room_id !== null)
+      ? ObjectId.fromPartial(object.room_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonEdit(): SchedulingPublishedLessonEdit {
+  return {
+    expected_lesson_version: undefined,
+    expected_calendar_version: undefined,
+    scope: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    teacher_id: undefined,
+    room_change: undefined,
+    start_time: undefined,
+    end_time: undefined,
+    status: undefined,
+    reason: undefined,
+  };
+}
+
+export const SchedulingPublishedLessonEdit: MessageFns<SchedulingPublishedLessonEdit> = {
+  encode(message: SchedulingPublishedLessonEdit, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.expected_lesson_version !== undefined) {
+      writer.uint32(8).uint32(message.expected_lesson_version);
+    }
+    if (message.expected_calendar_version !== undefined) {
+      writer.uint32(16).uint64(message.expected_calendar_version);
+    }
+    if (message.scope !== undefined) {
+      writer.uint32(24).int32(schedulingPublishedLessonEditScopeToNumber(message.scope));
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(34).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(42).string(message.end_date);
+    }
+    if (message.teacher_id !== undefined) {
+      ObjectId.encode(message.teacher_id, writer.uint32(50).fork()).join();
+    }
+    if (message.room_change !== undefined) {
+      SchedulingPublishedRoomChange.encode(message.room_change, writer.uint32(58).fork()).join();
+    }
+    if (message.start_time !== undefined) {
+      writer.uint32(66).string(message.start_time);
+    }
+    if (message.end_time !== undefined) {
+      writer.uint32(74).string(message.end_time);
+    }
+    if (message.status !== undefined) {
+      writer.uint32(80).int32(schedulingPublishedLessonStatusToNumber(message.status));
+    }
+    if (message.reason !== undefined) {
+      writer.uint32(90).string(message.reason);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonEdit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonEdit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.expected_lesson_version = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.expected_calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.scope = schedulingPublishedLessonEditScopeFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.teacher_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.room_change = SchedulingPublishedRoomChange.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.start_time = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.end_time = reader.string();
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.status = schedulingPublishedLessonStatusFromJSON(reader.int32());
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonEdit {
+    return {
+      expected_lesson_version: isSet(object.expectedLessonVersion)
+        ? globalThis.Number(object.expectedLessonVersion)
+        : undefined,
+      expected_calendar_version: isSet(object.expectedCalendarVersion)
+        ? globalThis.Number(object.expectedCalendarVersion)
+        : undefined,
+      scope: isSet(object.scope) ? schedulingPublishedLessonEditScopeFromJSON(object.scope) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+      teacher_id: isSet(object.teacherId) ? ObjectId.fromJSON(object.teacherId) : undefined,
+      room_change: isSet(object.roomChange) ? SchedulingPublishedRoomChange.fromJSON(object.roomChange) : undefined,
+      start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
+      end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
+      status: isSet(object.status) ? schedulingPublishedLessonStatusFromJSON(object.status) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonEdit): unknown {
+    const obj: any = {};
+    if (message.expected_lesson_version !== undefined) {
+      obj.expectedLessonVersion = Math.round(message.expected_lesson_version);
+    }
+    if (message.expected_calendar_version !== undefined) {
+      obj.expectedCalendarVersion = Math.round(message.expected_calendar_version);
+    }
+    if (message.scope !== undefined) {
+      obj.scope = schedulingPublishedLessonEditScopeToJSON(message.scope);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    if (message.teacher_id !== undefined) {
+      obj.teacherId = ObjectId.toJSON(message.teacher_id);
+    }
+    if (message.room_change !== undefined) {
+      obj.roomChange = SchedulingPublishedRoomChange.toJSON(message.room_change);
+    }
+    if (message.start_time !== undefined) {
+      obj.startTime = message.start_time;
+    }
+    if (message.end_time !== undefined) {
+      obj.endTime = message.end_time;
+    }
+    if (message.status !== undefined) {
+      obj.status = schedulingPublishedLessonStatusToJSON(message.status);
+    }
+    if (message.reason !== undefined) {
+      obj.reason = message.reason;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonEdit>, I>>(base?: I): SchedulingPublishedLessonEdit {
+    return SchedulingPublishedLessonEdit.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonEdit>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonEdit {
+    const message = createBaseSchedulingPublishedLessonEdit();
+    message.expected_lesson_version = object.expected_lesson_version ?? undefined;
+    message.expected_calendar_version = object.expected_calendar_version ?? undefined;
+    message.scope = object.scope ?? undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+      ? ObjectId.fromPartial(object.teacher_id)
+      : undefined;
+    message.room_change = (object.room_change !== undefined && object.room_change !== null)
+      ? SchedulingPublishedRoomChange.fromPartial(object.room_change)
+      : undefined;
+    message.start_time = object.start_time ?? undefined;
+    message.end_time = object.end_time ?? undefined;
+    message.status = object.status ?? undefined;
+    message.reason = object.reason ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedEditChoice(): SchedulingPublishedEditChoice {
+  return { id: undefined, name: undefined };
+}
+
+export const SchedulingPublishedEditChoice: MessageFns<SchedulingPublishedEditChoice> = {
+  encode(message: SchedulingPublishedEditChoice, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedEditChoice {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedEditChoice();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedEditChoice {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedEditChoice): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedEditChoice>, I>>(base?: I): SchedulingPublishedEditChoice {
+    return SchedulingPublishedEditChoice.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedEditChoice>, I>>(
+    object: I,
+  ): SchedulingPublishedEditChoice {
+    const message = createBaseSchedulingPublishedEditChoice();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonEditOptions(): SchedulingPublishedLessonEditOptions {
+  return {
+    lesson: undefined,
+    calendar_version: undefined,
+    teachers: [],
+    rooms: [],
+    maximum_range_days: undefined,
+    maximum_affected_lessons: undefined,
+  };
+}
+
+export const SchedulingPublishedLessonEditOptions: MessageFns<SchedulingPublishedLessonEditOptions> = {
+  encode(message: SchedulingPublishedLessonEditOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.lesson !== undefined) {
+      SchedulingPublishedLesson.encode(message.lesson, writer.uint32(10).fork()).join();
+    }
+    if (message.calendar_version !== undefined) {
+      writer.uint32(16).uint64(message.calendar_version);
+    }
+    for (const v of message.teachers) {
+      SchedulingPublishedEditChoice.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.rooms) {
+      SchedulingPublishedEditChoice.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.maximum_range_days !== undefined) {
+      writer.uint32(40).uint32(message.maximum_range_days);
+    }
+    if (message.maximum_affected_lessons !== undefined) {
+      writer.uint32(48).uint32(message.maximum_affected_lessons);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonEditOptions {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonEditOptions();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.lesson = SchedulingPublishedLesson.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.teachers.push(SchedulingPublishedEditChoice.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.rooms.push(SchedulingPublishedEditChoice.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.maximum_range_days = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.maximum_affected_lessons = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonEditOptions {
+    return {
+      lesson: isSet(object.lesson) ? SchedulingPublishedLesson.fromJSON(object.lesson) : undefined,
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+      teachers: globalThis.Array.isArray(object?.teachers)
+        ? object.teachers.map((e: any) => SchedulingPublishedEditChoice.fromJSON(e))
+        : [],
+      rooms: globalThis.Array.isArray(object?.rooms)
+        ? object.rooms.map((e: any) => SchedulingPublishedEditChoice.fromJSON(e))
+        : [],
+      maximum_range_days: isSet(object.maximumRangeDays) ? globalThis.Number(object.maximumRangeDays) : undefined,
+      maximum_affected_lessons: isSet(object.maximumAffectedLessons)
+        ? globalThis.Number(object.maximumAffectedLessons)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonEditOptions): unknown {
+    const obj: any = {};
+    if (message.lesson !== undefined) {
+      obj.lesson = SchedulingPublishedLesson.toJSON(message.lesson);
+    }
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => SchedulingPublishedEditChoice.toJSON(e));
+    }
+    if (message.rooms?.length) {
+      obj.rooms = message.rooms.map((e) => SchedulingPublishedEditChoice.toJSON(e));
+    }
+    if (message.maximum_range_days !== undefined) {
+      obj.maximumRangeDays = Math.round(message.maximum_range_days);
+    }
+    if (message.maximum_affected_lessons !== undefined) {
+      obj.maximumAffectedLessons = Math.round(message.maximum_affected_lessons);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonEditOptions>, I>>(
+    base?: I,
+  ): SchedulingPublishedLessonEditOptions {
+    return SchedulingPublishedLessonEditOptions.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonEditOptions>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonEditOptions {
+    const message = createBaseSchedulingPublishedLessonEditOptions();
+    message.lesson = (object.lesson !== undefined && object.lesson !== null)
+      ? SchedulingPublishedLesson.fromPartial(object.lesson)
+      : undefined;
+    message.calendar_version = object.calendar_version ?? undefined;
+    message.teachers = object.teachers?.map((e) => SchedulingPublishedEditChoice.fromPartial(e)) || [];
+    message.rooms = object.rooms?.map((e) => SchedulingPublishedEditChoice.fromPartial(e)) || [];
+    message.maximum_range_days = object.maximum_range_days ?? undefined;
+    message.maximum_affected_lessons = object.maximum_affected_lessons ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonConflict(): SchedulingPublishedLessonConflict {
+  return {
+    kind: undefined,
+    lesson_id: undefined,
+    conflicting_lesson_id: undefined,
+    local_date: undefined,
+    message: undefined,
+  };
+}
+
+export const SchedulingPublishedLessonConflict: MessageFns<SchedulingPublishedLessonConflict> = {
+  encode(message: SchedulingPublishedLessonConflict, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.kind !== undefined) {
+      writer.uint32(8).int32(schedulingPublishedLessonConflictKindToNumber(message.kind));
+    }
+    if (message.lesson_id !== undefined) {
+      Uuid.encode(message.lesson_id, writer.uint32(18).fork()).join();
+    }
+    if (message.conflicting_lesson_id !== undefined) {
+      Uuid.encode(message.conflicting_lesson_id, writer.uint32(26).fork()).join();
+    }
+    if (message.local_date !== undefined) {
+      writer.uint32(34).string(message.local_date);
+    }
+    if (message.message !== undefined) {
+      writer.uint32(42).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonConflict {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonConflict();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.kind = schedulingPublishedLessonConflictKindFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.lesson_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.conflicting_lesson_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.local_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonConflict {
+    return {
+      kind: isSet(object.kind) ? schedulingPublishedLessonConflictKindFromJSON(object.kind) : undefined,
+      lesson_id: isSet(object.lessonId) ? Uuid.fromJSON(object.lessonId) : undefined,
+      conflicting_lesson_id: isSet(object.conflictingLessonId) ? Uuid.fromJSON(object.conflictingLessonId) : undefined,
+      local_date: isSet(object.localDate) ? globalThis.String(object.localDate) : undefined,
+      message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonConflict): unknown {
+    const obj: any = {};
+    if (message.kind !== undefined) {
+      obj.kind = schedulingPublishedLessonConflictKindToJSON(message.kind);
+    }
+    if (message.lesson_id !== undefined) {
+      obj.lessonId = Uuid.toJSON(message.lesson_id);
+    }
+    if (message.conflicting_lesson_id !== undefined) {
+      obj.conflictingLessonId = Uuid.toJSON(message.conflicting_lesson_id);
+    }
+    if (message.local_date !== undefined) {
+      obj.localDate = message.local_date;
+    }
+    if (message.message !== undefined) {
+      obj.message = message.message;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonConflict>, I>>(
+    base?: I,
+  ): SchedulingPublishedLessonConflict {
+    return SchedulingPublishedLessonConflict.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonConflict>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonConflict {
+    const message = createBaseSchedulingPublishedLessonConflict();
+    message.kind = object.kind ?? undefined;
+    message.lesson_id = (object.lesson_id !== undefined && object.lesson_id !== null)
+      ? Uuid.fromPartial(object.lesson_id)
+      : undefined;
+    message.conflicting_lesson_id =
+      (object.conflicting_lesson_id !== undefined && object.conflicting_lesson_id !== null)
+        ? Uuid.fromPartial(object.conflicting_lesson_id)
+        : undefined;
+    message.local_date = object.local_date ?? undefined;
+    message.message = object.message ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonChange(): SchedulingPublishedLessonChange {
+  return { before: undefined, after: undefined };
+}
+
+export const SchedulingPublishedLessonChange: MessageFns<SchedulingPublishedLessonChange> = {
+  encode(message: SchedulingPublishedLessonChange, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.before !== undefined) {
+      SchedulingPublishedLesson.encode(message.before, writer.uint32(10).fork()).join();
+    }
+    if (message.after !== undefined) {
+      SchedulingPublishedLesson.encode(message.after, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonChange();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.before = SchedulingPublishedLesson.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.after = SchedulingPublishedLesson.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonChange {
+    return {
+      before: isSet(object.before) ? SchedulingPublishedLesson.fromJSON(object.before) : undefined,
+      after: isSet(object.after) ? SchedulingPublishedLesson.fromJSON(object.after) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonChange): unknown {
+    const obj: any = {};
+    if (message.before !== undefined) {
+      obj.before = SchedulingPublishedLesson.toJSON(message.before);
+    }
+    if (message.after !== undefined) {
+      obj.after = SchedulingPublishedLesson.toJSON(message.after);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonChange>, I>>(base?: I): SchedulingPublishedLessonChange {
+    return SchedulingPublishedLessonChange.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonChange>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonChange {
+    const message = createBaseSchedulingPublishedLessonChange();
+    message.before = (object.before !== undefined && object.before !== null)
+      ? SchedulingPublishedLesson.fromPartial(object.before)
+      : undefined;
+    message.after = (object.after !== undefined && object.after !== null)
+      ? SchedulingPublishedLesson.fromPartial(object.after)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonEditPreview(): SchedulingPublishedLessonEditPreview {
+  return {
+    preview_token: undefined,
+    calendar_version: undefined,
+    affected_lesson_count: undefined,
+    changed_lesson_count: undefined,
+    affected_dates: [],
+    samples: [],
+    conflicts: [],
+    conflict_count: undefined,
+    affected_members: [],
+  };
+}
+
+export const SchedulingPublishedLessonEditPreview: MessageFns<SchedulingPublishedLessonEditPreview> = {
+  encode(message: SchedulingPublishedLessonEditPreview, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.preview_token !== undefined) {
+      writer.uint32(10).string(message.preview_token);
+    }
+    if (message.calendar_version !== undefined) {
+      writer.uint32(16).uint64(message.calendar_version);
+    }
+    if (message.affected_lesson_count !== undefined) {
+      writer.uint32(24).uint32(message.affected_lesson_count);
+    }
+    if (message.changed_lesson_count !== undefined) {
+      writer.uint32(32).uint32(message.changed_lesson_count);
+    }
+    for (const v of message.affected_dates) {
+      writer.uint32(42).string(v!);
+    }
+    for (const v of message.samples) {
+      SchedulingPublishedLessonChange.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.conflicts) {
+      SchedulingPublishedLessonConflict.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.conflict_count !== undefined) {
+      writer.uint32(64).uint32(message.conflict_count);
+    }
+    for (const v of message.affected_members) {
+      SchedulingScheduleSubjectMemberInfo.encode(v!, writer.uint32(74).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonEditPreview {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonEditPreview();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.preview_token = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.affected_lesson_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.changed_lesson_count = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.affected_dates.push(reader.string());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.samples.push(SchedulingPublishedLessonChange.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.conflicts.push(SchedulingPublishedLessonConflict.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.conflict_count = reader.uint32();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.affected_members.push(SchedulingScheduleSubjectMemberInfo.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonEditPreview {
+    return {
+      preview_token: isSet(object.previewToken) ? globalThis.String(object.previewToken) : undefined,
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+      affected_lesson_count: isSet(object.affectedLessonCount)
+        ? globalThis.Number(object.affectedLessonCount)
+        : undefined,
+      changed_lesson_count: isSet(object.changedLessonCount) ? globalThis.Number(object.changedLessonCount) : undefined,
+      affected_dates: globalThis.Array.isArray(object?.affectedDates)
+        ? object.affectedDates.map((e: any) => globalThis.String(e))
+        : [],
+      samples: globalThis.Array.isArray(object?.samples)
+        ? object.samples.map((e: any) => SchedulingPublishedLessonChange.fromJSON(e))
+        : [],
+      conflicts: globalThis.Array.isArray(object?.conflicts)
+        ? object.conflicts.map((e: any) => SchedulingPublishedLessonConflict.fromJSON(e))
+        : [],
+      conflict_count: isSet(object.conflictCount) ? globalThis.Number(object.conflictCount) : undefined,
+      affected_members: globalThis.Array.isArray(object?.affectedMembers)
+        ? object.affectedMembers.map((e: any) => SchedulingScheduleSubjectMemberInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonEditPreview): unknown {
+    const obj: any = {};
+    if (message.preview_token !== undefined) {
+      obj.previewToken = message.preview_token;
+    }
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
+    if (message.affected_lesson_count !== undefined) {
+      obj.affectedLessonCount = Math.round(message.affected_lesson_count);
+    }
+    if (message.changed_lesson_count !== undefined) {
+      obj.changedLessonCount = Math.round(message.changed_lesson_count);
+    }
+    if (message.affected_dates?.length) {
+      obj.affectedDates = message.affected_dates;
+    }
+    if (message.samples?.length) {
+      obj.samples = message.samples.map((e) => SchedulingPublishedLessonChange.toJSON(e));
+    }
+    if (message.conflicts?.length) {
+      obj.conflicts = message.conflicts.map((e) => SchedulingPublishedLessonConflict.toJSON(e));
+    }
+    if (message.conflict_count !== undefined) {
+      obj.conflictCount = Math.round(message.conflict_count);
+    }
+    if (message.affected_members?.length) {
+      obj.affectedMembers = message.affected_members.map((e) => SchedulingScheduleSubjectMemberInfo.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonEditPreview>, I>>(
+    base?: I,
+  ): SchedulingPublishedLessonEditPreview {
+    return SchedulingPublishedLessonEditPreview.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonEditPreview>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonEditPreview {
+    const message = createBaseSchedulingPublishedLessonEditPreview();
+    message.preview_token = object.preview_token ?? undefined;
+    message.calendar_version = object.calendar_version ?? undefined;
+    message.affected_lesson_count = object.affected_lesson_count ?? undefined;
+    message.changed_lesson_count = object.changed_lesson_count ?? undefined;
+    message.affected_dates = object.affected_dates?.map((e) => e) || [];
+    message.samples = object.samples?.map((e) => SchedulingPublishedLessonChange.fromPartial(e)) || [];
+    message.conflicts = object.conflicts?.map((e) => SchedulingPublishedLessonConflict.fromPartial(e)) || [];
+    message.conflict_count = object.conflict_count ?? undefined;
+    message.affected_members =
+      object.affected_members?.map((e) => SchedulingScheduleSubjectMemberInfo.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedChange(): SchedulingPublishedChange {
+  return {
+    id: undefined,
+    school_year_id: undefined,
+    anchor_lesson_id: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    reason: undefined,
+    created_by: undefined,
+    created_at: undefined,
+    calendar_version: undefined,
+    affected_lesson_count: undefined,
+    changed_lesson_count: undefined,
+    affected_dates: [],
+    anchor_day_id: undefined,
+    affected_day_count: undefined,
+    changed_day_count: undefined,
+  };
+}
+
+export const SchedulingPublishedChange: MessageFns<SchedulingPublishedChange> = {
+  encode(message: SchedulingPublishedChange, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      Uuid.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+    }
+    if (message.anchor_lesson_id !== undefined) {
+      Uuid.encode(message.anchor_lesson_id, writer.uint32(26).fork()).join();
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(42).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(50).string(message.end_date);
+    }
+    if (message.reason !== undefined) {
+      writer.uint32(58).string(message.reason);
+    }
+    if (message.created_by !== undefined) {
+      ObjectId.encode(message.created_by, writer.uint32(66).fork()).join();
+    }
+    if (message.created_at !== undefined) {
+      writer.uint32(74).string(message.created_at);
+    }
+    if (message.calendar_version !== undefined) {
+      writer.uint32(80).uint64(message.calendar_version);
+    }
+    if (message.affected_lesson_count !== undefined) {
+      writer.uint32(88).uint32(message.affected_lesson_count);
+    }
+    if (message.changed_lesson_count !== undefined) {
+      writer.uint32(96).uint32(message.changed_lesson_count);
+    }
+    for (const v of message.affected_dates) {
+      writer.uint32(106).string(v!);
+    }
+    if (message.anchor_day_id !== undefined) {
+      Uuid.encode(message.anchor_day_id, writer.uint32(114).fork()).join();
+    }
+    if (message.affected_day_count !== undefined) {
+      writer.uint32(120).uint32(message.affected_day_count);
+    }
+    if (message.changed_day_count !== undefined) {
+      writer.uint32(128).uint32(message.changed_day_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedChange();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.anchor_lesson_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.created_by = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.created_at = reader.string();
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.affected_lesson_count = reader.uint32();
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.changed_lesson_count = reader.uint32();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.affected_dates.push(reader.string());
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.anchor_day_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.affected_day_count = reader.uint32();
+          continue;
+        case 16:
+          if (tag !== 128) {
+            break;
+          }
+
+          message.changed_day_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedChange {
+    return {
+      id: isSet(object.id) ? Uuid.fromJSON(object.id) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      anchor_lesson_id: isSet(object.anchorLessonId) ? Uuid.fromJSON(object.anchorLessonId) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      created_by: isSet(object.createdBy) ? ObjectId.fromJSON(object.createdBy) : undefined,
+      created_at: isSet(object.createdAt) ? globalThis.String(object.createdAt) : undefined,
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+      affected_lesson_count: isSet(object.affectedLessonCount)
+        ? globalThis.Number(object.affectedLessonCount)
+        : undefined,
+      changed_lesson_count: isSet(object.changedLessonCount) ? globalThis.Number(object.changedLessonCount) : undefined,
+      affected_dates: globalThis.Array.isArray(object?.affectedDates)
+        ? object.affectedDates.map((e: any) => globalThis.String(e))
+        : [],
+      anchor_day_id: isSet(object.anchorDayId) ? Uuid.fromJSON(object.anchorDayId) : undefined,
+      affected_day_count: isSet(object.affectedDayCount) ? globalThis.Number(object.affectedDayCount) : undefined,
+      changed_day_count: isSet(object.changedDayCount) ? globalThis.Number(object.changedDayCount) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedChange): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = Uuid.toJSON(message.id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.anchor_lesson_id !== undefined) {
+      obj.anchorLessonId = Uuid.toJSON(message.anchor_lesson_id);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    if (message.reason !== undefined) {
+      obj.reason = message.reason;
+    }
+    if (message.created_by !== undefined) {
+      obj.createdBy = ObjectId.toJSON(message.created_by);
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at;
+    }
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
+    if (message.affected_lesson_count !== undefined) {
+      obj.affectedLessonCount = Math.round(message.affected_lesson_count);
+    }
+    if (message.changed_lesson_count !== undefined) {
+      obj.changedLessonCount = Math.round(message.changed_lesson_count);
+    }
+    if (message.affected_dates?.length) {
+      obj.affectedDates = message.affected_dates;
+    }
+    if (message.anchor_day_id !== undefined) {
+      obj.anchorDayId = Uuid.toJSON(message.anchor_day_id);
+    }
+    if (message.affected_day_count !== undefined) {
+      obj.affectedDayCount = Math.round(message.affected_day_count);
+    }
+    if (message.changed_day_count !== undefined) {
+      obj.changedDayCount = Math.round(message.changed_day_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedChange>, I>>(base?: I): SchedulingPublishedChange {
+    return SchedulingPublishedChange.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedChange>, I>>(object: I): SchedulingPublishedChange {
+    const message = createBaseSchedulingPublishedChange();
+    message.id = (object.id !== undefined && object.id !== null) ? Uuid.fromPartial(object.id) : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.anchor_lesson_id = (object.anchor_lesson_id !== undefined && object.anchor_lesson_id !== null)
+      ? Uuid.fromPartial(object.anchor_lesson_id)
+      : undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.reason = object.reason ?? undefined;
+    message.created_by = (object.created_by !== undefined && object.created_by !== null)
+      ? ObjectId.fromPartial(object.created_by)
+      : undefined;
+    message.created_at = object.created_at ?? undefined;
+    message.calendar_version = object.calendar_version ?? undefined;
+    message.affected_lesson_count = object.affected_lesson_count ?? undefined;
+    message.changed_lesson_count = object.changed_lesson_count ?? undefined;
+    message.affected_dates = object.affected_dates?.map((e) => e) || [];
+    message.anchor_day_id = (object.anchor_day_id !== undefined && object.anchor_day_id !== null)
+      ? Uuid.fromPartial(object.anchor_day_id)
+      : undefined;
+    message.affected_day_count = object.affected_day_count ?? undefined;
+    message.changed_day_count = object.changed_day_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonHistoryEntry(): SchedulingPublishedLessonHistoryEntry {
+  return { change: undefined, before: undefined, after: undefined };
+}
+
+export const SchedulingPublishedLessonHistoryEntry: MessageFns<SchedulingPublishedLessonHistoryEntry> = {
+  encode(message: SchedulingPublishedLessonHistoryEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.change !== undefined) {
+      SchedulingPublishedChange.encode(message.change, writer.uint32(10).fork()).join();
+    }
+    if (message.before !== undefined) {
+      SchedulingPublishedLesson.encode(message.before, writer.uint32(18).fork()).join();
+    }
+    if (message.after !== undefined) {
+      SchedulingPublishedLesson.encode(message.after, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonHistoryEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonHistoryEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.change = SchedulingPublishedChange.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.before = SchedulingPublishedLesson.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.after = SchedulingPublishedLesson.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonHistoryEntry {
+    return {
+      change: isSet(object.change) ? SchedulingPublishedChange.fromJSON(object.change) : undefined,
+      before: isSet(object.before) ? SchedulingPublishedLesson.fromJSON(object.before) : undefined,
+      after: isSet(object.after) ? SchedulingPublishedLesson.fromJSON(object.after) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonHistoryEntry): unknown {
+    const obj: any = {};
+    if (message.change !== undefined) {
+      obj.change = SchedulingPublishedChange.toJSON(message.change);
+    }
+    if (message.before !== undefined) {
+      obj.before = SchedulingPublishedLesson.toJSON(message.before);
+    }
+    if (message.after !== undefined) {
+      obj.after = SchedulingPublishedLesson.toJSON(message.after);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonHistoryEntry>, I>>(
+    base?: I,
+  ): SchedulingPublishedLessonHistoryEntry {
+    return SchedulingPublishedLessonHistoryEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonHistoryEntry>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonHistoryEntry {
+    const message = createBaseSchedulingPublishedLessonHistoryEntry();
+    message.change = (object.change !== undefined && object.change !== null)
+      ? SchedulingPublishedChange.fromPartial(object.change)
+      : undefined;
+    message.before = (object.before !== undefined && object.before !== null)
+      ? SchedulingPublishedLesson.fromPartial(object.before)
+      : undefined;
+    message.after = (object.after !== undefined && object.after !== null)
+      ? SchedulingPublishedLesson.fromPartial(object.after)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedLessonHistoryPage(): SchedulingPublishedLessonHistoryPage {
+  return { entries: [], next_cursor: undefined };
+}
+
+export const SchedulingPublishedLessonHistoryPage: MessageFns<SchedulingPublishedLessonHistoryPage> = {
+  encode(message: SchedulingPublishedLessonHistoryPage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.entries) {
+      SchedulingPublishedLessonHistoryEntry.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.next_cursor !== undefined) {
+      writer.uint32(18).string(message.next_cursor);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedLessonHistoryPage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedLessonHistoryPage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entries.push(SchedulingPublishedLessonHistoryEntry.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.next_cursor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedLessonHistoryPage {
+    return {
+      entries: globalThis.Array.isArray(object?.entries)
+        ? object.entries.map((e: any) => SchedulingPublishedLessonHistoryEntry.fromJSON(e))
+        : [],
+      next_cursor: isSet(object.nextCursor) ? globalThis.String(object.nextCursor) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedLessonHistoryPage): unknown {
+    const obj: any = {};
+    if (message.entries?.length) {
+      obj.entries = message.entries.map((e) => SchedulingPublishedLessonHistoryEntry.toJSON(e));
+    }
+    if (message.next_cursor !== undefined) {
+      obj.nextCursor = message.next_cursor;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedLessonHistoryPage>, I>>(
+    base?: I,
+  ): SchedulingPublishedLessonHistoryPage {
+    return SchedulingPublishedLessonHistoryPage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedLessonHistoryPage>, I>>(
+    object: I,
+  ): SchedulingPublishedLessonHistoryPage {
+    const message = createBaseSchedulingPublishedLessonHistoryPage();
+    message.entries = object.entries?.map((e) => SchedulingPublishedLessonHistoryEntry.fromPartial(e)) || [];
+    message.next_cursor = object.next_cursor ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedPeriodEdit(): SchedulingPublishedPeriodEdit {
+  return { period_id: undefined, start_time: undefined, end_time: undefined, cancelled: undefined };
+}
+
+export const SchedulingPublishedPeriodEdit: MessageFns<SchedulingPublishedPeriodEdit> = {
+  encode(message: SchedulingPublishedPeriodEdit, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.period_id !== undefined) {
+      Uuid.encode(message.period_id, writer.uint32(10).fork()).join();
+    }
+    if (message.start_time !== undefined) {
+      writer.uint32(18).string(message.start_time);
+    }
+    if (message.end_time !== undefined) {
+      writer.uint32(26).string(message.end_time);
+    }
+    if (message.cancelled !== undefined) {
+      writer.uint32(32).bool(message.cancelled);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedPeriodEdit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedPeriodEdit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.period_id = Uuid.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.start_time = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.end_time = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.cancelled = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedPeriodEdit {
+    return {
+      period_id: isSet(object.periodId) ? Uuid.fromJSON(object.periodId) : undefined,
+      start_time: isSet(object.startTime) ? globalThis.String(object.startTime) : undefined,
+      end_time: isSet(object.endTime) ? globalThis.String(object.endTime) : undefined,
+      cancelled: isSet(object.cancelled) ? globalThis.Boolean(object.cancelled) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedPeriodEdit): unknown {
+    const obj: any = {};
+    if (message.period_id !== undefined) {
+      obj.periodId = Uuid.toJSON(message.period_id);
+    }
+    if (message.start_time !== undefined) {
+      obj.startTime = message.start_time;
+    }
+    if (message.end_time !== undefined) {
+      obj.endTime = message.end_time;
+    }
+    if (message.cancelled !== undefined) {
+      obj.cancelled = message.cancelled;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedPeriodEdit>, I>>(base?: I): SchedulingPublishedPeriodEdit {
+    return SchedulingPublishedPeriodEdit.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedPeriodEdit>, I>>(
+    object: I,
+  ): SchedulingPublishedPeriodEdit {
+    const message = createBaseSchedulingPublishedPeriodEdit();
+    message.period_id = (object.period_id !== undefined && object.period_id !== null)
+      ? Uuid.fromPartial(object.period_id)
+      : undefined;
+    message.start_time = object.start_time ?? undefined;
+    message.end_time = object.end_time ?? undefined;
+    message.cancelled = object.cancelled ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedDayEdit(): SchedulingPublishedDayEdit {
+  return {
+    expected_day_version: undefined,
+    expected_calendar_version: undefined,
+    scope: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    cancelled: undefined,
+    reason: undefined,
+    periods: [],
+    lesson_time_policy: undefined,
+  };
+}
+
+export const SchedulingPublishedDayEdit: MessageFns<SchedulingPublishedDayEdit> = {
+  encode(message: SchedulingPublishedDayEdit, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.expected_day_version !== undefined) {
+      writer.uint32(8).uint32(message.expected_day_version);
+    }
+    if (message.expected_calendar_version !== undefined) {
+      writer.uint32(16).uint64(message.expected_calendar_version);
+    }
+    if (message.scope !== undefined) {
+      writer.uint32(24).int32(schedulingPublishedDayEditScopeToNumber(message.scope));
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(34).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(42).string(message.end_date);
+    }
+    if (message.cancelled !== undefined) {
+      writer.uint32(48).bool(message.cancelled);
+    }
+    if (message.reason !== undefined) {
+      writer.uint32(58).string(message.reason);
+    }
+    for (const v of message.periods) {
+      SchedulingPublishedPeriodEdit.encode(v!, writer.uint32(66).fork()).join();
+    }
+    if (message.lesson_time_policy !== undefined) {
+      writer.uint32(72).int32(schedulingPublishedLessonTimePolicyToNumber(message.lesson_time_policy));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedDayEdit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedDayEdit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.expected_day_version = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.expected_calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.scope = schedulingPublishedDayEditScopeFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.cancelled = reader.bool();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.periods.push(SchedulingPublishedPeriodEdit.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.lesson_time_policy = schedulingPublishedLessonTimePolicyFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedDayEdit {
+    return {
+      expected_day_version: isSet(object.expectedDayVersion) ? globalThis.Number(object.expectedDayVersion) : undefined,
+      expected_calendar_version: isSet(object.expectedCalendarVersion)
+        ? globalThis.Number(object.expectedCalendarVersion)
+        : undefined,
+      scope: isSet(object.scope) ? schedulingPublishedDayEditScopeFromJSON(object.scope) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+      cancelled: isSet(object.cancelled) ? globalThis.Boolean(object.cancelled) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      periods: globalThis.Array.isArray(object?.periods)
+        ? object.periods.map((e: any) => SchedulingPublishedPeriodEdit.fromJSON(e))
+        : [],
+      lesson_time_policy: isSet(object.lessonTimePolicy)
+        ? schedulingPublishedLessonTimePolicyFromJSON(object.lessonTimePolicy)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedDayEdit): unknown {
+    const obj: any = {};
+    if (message.expected_day_version !== undefined) {
+      obj.expectedDayVersion = Math.round(message.expected_day_version);
+    }
+    if (message.expected_calendar_version !== undefined) {
+      obj.expectedCalendarVersion = Math.round(message.expected_calendar_version);
+    }
+    if (message.scope !== undefined) {
+      obj.scope = schedulingPublishedDayEditScopeToJSON(message.scope);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    if (message.cancelled !== undefined) {
+      obj.cancelled = message.cancelled;
+    }
+    if (message.reason !== undefined) {
+      obj.reason = message.reason;
+    }
+    if (message.periods?.length) {
+      obj.periods = message.periods.map((e) => SchedulingPublishedPeriodEdit.toJSON(e));
+    }
+    if (message.lesson_time_policy !== undefined) {
+      obj.lessonTimePolicy = schedulingPublishedLessonTimePolicyToJSON(message.lesson_time_policy);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedDayEdit>, I>>(base?: I): SchedulingPublishedDayEdit {
+    return SchedulingPublishedDayEdit.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedDayEdit>, I>>(object: I): SchedulingPublishedDayEdit {
+    const message = createBaseSchedulingPublishedDayEdit();
+    message.expected_day_version = object.expected_day_version ?? undefined;
+    message.expected_calendar_version = object.expected_calendar_version ?? undefined;
+    message.scope = object.scope ?? undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.cancelled = object.cancelled ?? undefined;
+    message.reason = object.reason ?? undefined;
+    message.periods = object.periods?.map((e) => SchedulingPublishedPeriodEdit.fromPartial(e)) || [];
+    message.lesson_time_policy = object.lesson_time_policy ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedDayEditOptions(): SchedulingPublishedDayEditOptions {
+  return { days: [], calendar_version: undefined, maximum_range_days: undefined, maximum_affected_lessons: undefined };
+}
+
+export const SchedulingPublishedDayEditOptions: MessageFns<SchedulingPublishedDayEditOptions> = {
+  encode(message: SchedulingPublishedDayEditOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.days) {
+      SchedulingPublishedDay.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.calendar_version !== undefined) {
+      writer.uint32(16).uint64(message.calendar_version);
+    }
+    if (message.maximum_range_days !== undefined) {
+      writer.uint32(24).uint32(message.maximum_range_days);
+    }
+    if (message.maximum_affected_lessons !== undefined) {
+      writer.uint32(32).uint32(message.maximum_affected_lessons);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedDayEditOptions {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedDayEditOptions();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.days.push(SchedulingPublishedDay.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.maximum_range_days = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.maximum_affected_lessons = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedDayEditOptions {
+    return {
+      days: globalThis.Array.isArray(object?.days)
+        ? object.days.map((e: any) => SchedulingPublishedDay.fromJSON(e))
+        : [],
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+      maximum_range_days: isSet(object.maximumRangeDays) ? globalThis.Number(object.maximumRangeDays) : undefined,
+      maximum_affected_lessons: isSet(object.maximumAffectedLessons)
+        ? globalThis.Number(object.maximumAffectedLessons)
+        : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedDayEditOptions): unknown {
+    const obj: any = {};
+    if (message.days?.length) {
+      obj.days = message.days.map((e) => SchedulingPublishedDay.toJSON(e));
+    }
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
+    if (message.maximum_range_days !== undefined) {
+      obj.maximumRangeDays = Math.round(message.maximum_range_days);
+    }
+    if (message.maximum_affected_lessons !== undefined) {
+      obj.maximumAffectedLessons = Math.round(message.maximum_affected_lessons);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedDayEditOptions>, I>>(
+    base?: I,
+  ): SchedulingPublishedDayEditOptions {
+    return SchedulingPublishedDayEditOptions.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedDayEditOptions>, I>>(
+    object: I,
+  ): SchedulingPublishedDayEditOptions {
+    const message = createBaseSchedulingPublishedDayEditOptions();
+    message.days = object.days?.map((e) => SchedulingPublishedDay.fromPartial(e)) || [];
+    message.calendar_version = object.calendar_version ?? undefined;
+    message.maximum_range_days = object.maximum_range_days ?? undefined;
+    message.maximum_affected_lessons = object.maximum_affected_lessons ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedDayChange(): SchedulingPublishedDayChange {
+  return { before: undefined, after: undefined };
+}
+
+export const SchedulingPublishedDayChange: MessageFns<SchedulingPublishedDayChange> = {
+  encode(message: SchedulingPublishedDayChange, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.before !== undefined) {
+      SchedulingPublishedDay.encode(message.before, writer.uint32(10).fork()).join();
+    }
+    if (message.after !== undefined) {
+      SchedulingPublishedDay.encode(message.after, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedDayChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedDayChange();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.before = SchedulingPublishedDay.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.after = SchedulingPublishedDay.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedDayChange {
+    return {
+      before: isSet(object.before) ? SchedulingPublishedDay.fromJSON(object.before) : undefined,
+      after: isSet(object.after) ? SchedulingPublishedDay.fromJSON(object.after) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedDayChange): unknown {
+    const obj: any = {};
+    if (message.before !== undefined) {
+      obj.before = SchedulingPublishedDay.toJSON(message.before);
+    }
+    if (message.after !== undefined) {
+      obj.after = SchedulingPublishedDay.toJSON(message.after);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedDayChange>, I>>(base?: I): SchedulingPublishedDayChange {
+    return SchedulingPublishedDayChange.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedDayChange>, I>>(object: I): SchedulingPublishedDayChange {
+    const message = createBaseSchedulingPublishedDayChange();
+    message.before = (object.before !== undefined && object.before !== null)
+      ? SchedulingPublishedDay.fromPartial(object.before)
+      : undefined;
+    message.after = (object.after !== undefined && object.after !== null)
+      ? SchedulingPublishedDay.fromPartial(object.after)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedDayEditPreview(): SchedulingPublishedDayEditPreview {
+  return {
+    preview_token: undefined,
+    calendar_version: undefined,
+    affected_day_count: undefined,
+    changed_day_count: undefined,
+    affected_lesson_count: undefined,
+    changed_lesson_count: undefined,
+    affected_dates: [],
+    day_samples: [],
+    lesson_samples: [],
+    preserved_custom_time_count: undefined,
+    reset_custom_time_count: undefined,
+    conflicts: [],
+    conflict_count: undefined,
+  };
+}
+
+export const SchedulingPublishedDayEditPreview: MessageFns<SchedulingPublishedDayEditPreview> = {
+  encode(message: SchedulingPublishedDayEditPreview, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.preview_token !== undefined) {
+      writer.uint32(10).string(message.preview_token);
+    }
+    if (message.calendar_version !== undefined) {
+      writer.uint32(16).uint64(message.calendar_version);
+    }
+    if (message.affected_day_count !== undefined) {
+      writer.uint32(24).uint32(message.affected_day_count);
+    }
+    if (message.changed_day_count !== undefined) {
+      writer.uint32(32).uint32(message.changed_day_count);
+    }
+    if (message.affected_lesson_count !== undefined) {
+      writer.uint32(40).uint32(message.affected_lesson_count);
+    }
+    if (message.changed_lesson_count !== undefined) {
+      writer.uint32(48).uint32(message.changed_lesson_count);
+    }
+    for (const v of message.affected_dates) {
+      writer.uint32(58).string(v!);
+    }
+    for (const v of message.day_samples) {
+      SchedulingPublishedDayChange.encode(v!, writer.uint32(66).fork()).join();
+    }
+    for (const v of message.lesson_samples) {
+      SchedulingPublishedLessonChange.encode(v!, writer.uint32(74).fork()).join();
+    }
+    if (message.preserved_custom_time_count !== undefined) {
+      writer.uint32(80).uint32(message.preserved_custom_time_count);
+    }
+    if (message.reset_custom_time_count !== undefined) {
+      writer.uint32(88).uint32(message.reset_custom_time_count);
+    }
+    for (const v of message.conflicts) {
+      SchedulingPublishedLessonConflict.encode(v!, writer.uint32(98).fork()).join();
+    }
+    if (message.conflict_count !== undefined) {
+      writer.uint32(104).uint32(message.conflict_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedDayEditPreview {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedDayEditPreview();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.preview_token = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.calendar_version = longToNumber(reader.uint64());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.affected_day_count = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.changed_day_count = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.affected_lesson_count = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.changed_lesson_count = reader.uint32();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.affected_dates.push(reader.string());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.day_samples.push(SchedulingPublishedDayChange.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.lesson_samples.push(SchedulingPublishedLessonChange.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.preserved_custom_time_count = reader.uint32();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.reset_custom_time_count = reader.uint32();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.conflicts.push(SchedulingPublishedLessonConflict.decode(reader, reader.uint32()));
+          continue;
+        case 13:
+          if (tag !== 104) {
+            break;
+          }
+
+          message.conflict_count = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedDayEditPreview {
+    return {
+      preview_token: isSet(object.previewToken) ? globalThis.String(object.previewToken) : undefined,
+      calendar_version: isSet(object.calendarVersion) ? globalThis.Number(object.calendarVersion) : undefined,
+      affected_day_count: isSet(object.affectedDayCount) ? globalThis.Number(object.affectedDayCount) : undefined,
+      changed_day_count: isSet(object.changedDayCount) ? globalThis.Number(object.changedDayCount) : undefined,
+      affected_lesson_count: isSet(object.affectedLessonCount)
+        ? globalThis.Number(object.affectedLessonCount)
+        : undefined,
+      changed_lesson_count: isSet(object.changedLessonCount) ? globalThis.Number(object.changedLessonCount) : undefined,
+      affected_dates: globalThis.Array.isArray(object?.affectedDates)
+        ? object.affectedDates.map((e: any) => globalThis.String(e))
+        : [],
+      day_samples: globalThis.Array.isArray(object?.daySamples)
+        ? object.daySamples.map((e: any) => SchedulingPublishedDayChange.fromJSON(e))
+        : [],
+      lesson_samples: globalThis.Array.isArray(object?.lessonSamples)
+        ? object.lessonSamples.map((e: any) => SchedulingPublishedLessonChange.fromJSON(e))
+        : [],
+      preserved_custom_time_count: isSet(object.preservedCustomTimeCount)
+        ? globalThis.Number(object.preservedCustomTimeCount)
+        : undefined,
+      reset_custom_time_count: isSet(object.resetCustomTimeCount)
+        ? globalThis.Number(object.resetCustomTimeCount)
+        : undefined,
+      conflicts: globalThis.Array.isArray(object?.conflicts)
+        ? object.conflicts.map((e: any) => SchedulingPublishedLessonConflict.fromJSON(e))
+        : [],
+      conflict_count: isSet(object.conflictCount) ? globalThis.Number(object.conflictCount) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedDayEditPreview): unknown {
+    const obj: any = {};
+    if (message.preview_token !== undefined) {
+      obj.previewToken = message.preview_token;
+    }
+    if (message.calendar_version !== undefined) {
+      obj.calendarVersion = Math.round(message.calendar_version);
+    }
+    if (message.affected_day_count !== undefined) {
+      obj.affectedDayCount = Math.round(message.affected_day_count);
+    }
+    if (message.changed_day_count !== undefined) {
+      obj.changedDayCount = Math.round(message.changed_day_count);
+    }
+    if (message.affected_lesson_count !== undefined) {
+      obj.affectedLessonCount = Math.round(message.affected_lesson_count);
+    }
+    if (message.changed_lesson_count !== undefined) {
+      obj.changedLessonCount = Math.round(message.changed_lesson_count);
+    }
+    if (message.affected_dates?.length) {
+      obj.affectedDates = message.affected_dates;
+    }
+    if (message.day_samples?.length) {
+      obj.daySamples = message.day_samples.map((e) => SchedulingPublishedDayChange.toJSON(e));
+    }
+    if (message.lesson_samples?.length) {
+      obj.lessonSamples = message.lesson_samples.map((e) => SchedulingPublishedLessonChange.toJSON(e));
+    }
+    if (message.preserved_custom_time_count !== undefined) {
+      obj.preservedCustomTimeCount = Math.round(message.preserved_custom_time_count);
+    }
+    if (message.reset_custom_time_count !== undefined) {
+      obj.resetCustomTimeCount = Math.round(message.reset_custom_time_count);
+    }
+    if (message.conflicts?.length) {
+      obj.conflicts = message.conflicts.map((e) => SchedulingPublishedLessonConflict.toJSON(e));
+    }
+    if (message.conflict_count !== undefined) {
+      obj.conflictCount = Math.round(message.conflict_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedDayEditPreview>, I>>(
+    base?: I,
+  ): SchedulingPublishedDayEditPreview {
+    return SchedulingPublishedDayEditPreview.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedDayEditPreview>, I>>(
+    object: I,
+  ): SchedulingPublishedDayEditPreview {
+    const message = createBaseSchedulingPublishedDayEditPreview();
+    message.preview_token = object.preview_token ?? undefined;
+    message.calendar_version = object.calendar_version ?? undefined;
+    message.affected_day_count = object.affected_day_count ?? undefined;
+    message.changed_day_count = object.changed_day_count ?? undefined;
+    message.affected_lesson_count = object.affected_lesson_count ?? undefined;
+    message.changed_lesson_count = object.changed_lesson_count ?? undefined;
+    message.affected_dates = object.affected_dates?.map((e) => e) || [];
+    message.day_samples = object.day_samples?.map((e) => SchedulingPublishedDayChange.fromPartial(e)) || [];
+    message.lesson_samples = object.lesson_samples?.map((e) => SchedulingPublishedLessonChange.fromPartial(e)) || [];
+    message.preserved_custom_time_count = object.preserved_custom_time_count ?? undefined;
+    message.reset_custom_time_count = object.reset_custom_time_count ?? undefined;
+    message.conflicts = object.conflicts?.map((e) => SchedulingPublishedLessonConflict.fromPartial(e)) || [];
+    message.conflict_count = object.conflict_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedDayHistoryEntry(): SchedulingPublishedDayHistoryEntry {
+  return { change: undefined, before: undefined, after: undefined };
+}
+
+export const SchedulingPublishedDayHistoryEntry: MessageFns<SchedulingPublishedDayHistoryEntry> = {
+  encode(message: SchedulingPublishedDayHistoryEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.change !== undefined) {
+      SchedulingPublishedChange.encode(message.change, writer.uint32(10).fork()).join();
+    }
+    if (message.before !== undefined) {
+      SchedulingPublishedDay.encode(message.before, writer.uint32(18).fork()).join();
+    }
+    if (message.after !== undefined) {
+      SchedulingPublishedDay.encode(message.after, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedDayHistoryEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedDayHistoryEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.change = SchedulingPublishedChange.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.before = SchedulingPublishedDay.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.after = SchedulingPublishedDay.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedDayHistoryEntry {
+    return {
+      change: isSet(object.change) ? SchedulingPublishedChange.fromJSON(object.change) : undefined,
+      before: isSet(object.before) ? SchedulingPublishedDay.fromJSON(object.before) : undefined,
+      after: isSet(object.after) ? SchedulingPublishedDay.fromJSON(object.after) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedDayHistoryEntry): unknown {
+    const obj: any = {};
+    if (message.change !== undefined) {
+      obj.change = SchedulingPublishedChange.toJSON(message.change);
+    }
+    if (message.before !== undefined) {
+      obj.before = SchedulingPublishedDay.toJSON(message.before);
+    }
+    if (message.after !== undefined) {
+      obj.after = SchedulingPublishedDay.toJSON(message.after);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedDayHistoryEntry>, I>>(
+    base?: I,
+  ): SchedulingPublishedDayHistoryEntry {
+    return SchedulingPublishedDayHistoryEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedDayHistoryEntry>, I>>(
+    object: I,
+  ): SchedulingPublishedDayHistoryEntry {
+    const message = createBaseSchedulingPublishedDayHistoryEntry();
+    message.change = (object.change !== undefined && object.change !== null)
+      ? SchedulingPublishedChange.fromPartial(object.change)
+      : undefined;
+    message.before = (object.before !== undefined && object.before !== null)
+      ? SchedulingPublishedDay.fromPartial(object.before)
+      : undefined;
+    message.after = (object.after !== undefined && object.after !== null)
+      ? SchedulingPublishedDay.fromPartial(object.after)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSchedulingPublishedDayHistoryPage(): SchedulingPublishedDayHistoryPage {
+  return { entries: [], next_cursor: undefined };
+}
+
+export const SchedulingPublishedDayHistoryPage: MessageFns<SchedulingPublishedDayHistoryPage> = {
+  encode(message: SchedulingPublishedDayHistoryPage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.entries) {
+      SchedulingPublishedDayHistoryEntry.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.next_cursor !== undefined) {
+      writer.uint32(18).string(message.next_cursor);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SchedulingPublishedDayHistoryPage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSchedulingPublishedDayHistoryPage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entries.push(SchedulingPublishedDayHistoryEntry.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.next_cursor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SchedulingPublishedDayHistoryPage {
+    return {
+      entries: globalThis.Array.isArray(object?.entries)
+        ? object.entries.map((e: any) => SchedulingPublishedDayHistoryEntry.fromJSON(e))
+        : [],
+      next_cursor: isSet(object.nextCursor) ? globalThis.String(object.nextCursor) : undefined,
+    };
+  },
+
+  toJSON(message: SchedulingPublishedDayHistoryPage): unknown {
+    const obj: any = {};
+    if (message.entries?.length) {
+      obj.entries = message.entries.map((e) => SchedulingPublishedDayHistoryEntry.toJSON(e));
+    }
+    if (message.next_cursor !== undefined) {
+      obj.nextCursor = message.next_cursor;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SchedulingPublishedDayHistoryPage>, I>>(
+    base?: I,
+  ): SchedulingPublishedDayHistoryPage {
+    return SchedulingPublishedDayHistoryPage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SchedulingPublishedDayHistoryPage>, I>>(
+    object: I,
+  ): SchedulingPublishedDayHistoryPage {
+    const message = createBaseSchedulingPublishedDayHistoryPage();
+    message.entries = object.entries?.map((e) => SchedulingPublishedDayHistoryEntry.fromPartial(e)) || [];
+    message.next_cursor = object.next_cursor ?? undefined;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -2499,6 +5759,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

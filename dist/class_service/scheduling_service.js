@@ -6,7 +6,7 @@
 // source: class_service/scheduling_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateSchedulingRoomEnforcementRequest = exports.ApplySchedulingPinnedRegenerationRequest = exports.GetSchedulingPinnedRegenerationProposalRequest = exports.StartSchedulingPinnedRegenerationRequest = exports.RemoveSchedulingSchedulePinGroupRequest = exports.CreateSchedulingSchedulePinGroupRequest = exports.GetSchedulingSchedulePinsRequest = exports.ApplySchedulingScheduleAdjustmentRequest = exports.PreviewSchedulingScheduleAdjustmentRequest = exports.GetSchedulingScheduleAdjustmentOptionsRequest = exports.MutateSchedulingWorkingScheduleRequest = exports.ReturnToSchedulingScheduleRevisionRequest = exports.GetSchedulingScheduleRevisionRequest = exports.GetSchedulingScheduleRevisionsRequest = exports.RevalidateSchedulingWorkingScheduleRequest = exports.SelectSchedulingWorkingScheduleRequest = exports.UpdateSchedulingGeneratedScheduleMetadataRequest = exports.GetSchedulingGeneratedScheduleRequest = exports.ListSchedulingGeneratedSchedulesRequest = exports.GetSchedulingGenerationRunsRequest = exports.StartSchedulingGenerationFromScheduleRequest = exports.StartSchedulingGenerationRequest = exports.UpsertSchedulingHighSchoolCourseStudentAssignmentRequest = exports.GetSchedulingClassAssignmentSetupRequest = exports.DeleteSchedulingClassGroupRequest = exports.DeleteSchedulingSharedLessonRequest = exports.UpdateSchedulingSharedLessonRequest = exports.CreateSchedulingSharedLessonRequest = exports.UpsertSchedulingClassGroupTeacherAssignmentRequest = exports.RenameSchedulingClassGroupRequest = exports.CreateSchedulingClassGroupRequest = exports.GetSchedulingClassGroupSetupRequest = exports.UpsertSchedulingInstructionalRequirementRequest = exports.UpsertSchedulingHighSchoolCourseSetupRequest = exports.GetSchedulingClassesSetupRequest = exports.UpsertSchedulingTeacherProfileRequest = exports.GetSchedulingTeacherSetupRequest = exports.UpsertSemesterSchedulingPeriodTimeSetupRequest = exports.AssignSemesterSchedulingPeriodTimeSetupTemplateRequest = exports.DeleteSchedulingPeriodTimeSetupTemplateRequest = exports.UpdateSchedulingPeriodTimeSetupTemplateRequest = exports.CreateSchedulingPeriodTimeSetupTemplateRequest = exports.GetSchedulingPeriodTimeSetupRequest = exports.DeleteSchedulingOfferedGradeRequest = exports.UpsertSchedulingOfferedGradeRequest = exports.GetSchedulingOfferedGradeSetupRequest = exports.CompleteSchedulingPreparationStepRequest = exports.CreateSchedulingWorkspaceRequest = exports.GetSchedulingPreparationRequest = exports.protobufPackage = void 0;
-exports.GetSchedulingPublishedLessonRequest = exports.GetSchedulingPublishedCalendarRequest = exports.ListSchedulingPublicationsRequest = exports.PublishSchedulingScheduleRequest = exports.PreviewSchedulingPublicationRequest = void 0;
+exports.GetSchedulingPublishedDayHistoryRequest = exports.ApplySchedulingPublishedDayEditRequest = exports.PreviewSchedulingPublishedDayEditRequest = exports.GetSchedulingPublishedDayEditOptionsRequest = exports.GetSchedulingPublishedLessonHistoryRequest = exports.ApplySchedulingPublishedLessonEditRequest = exports.PreviewSchedulingPublishedLessonEditRequest = exports.GetSchedulingPublishedLessonRequest = exports.GetSchedulingPublishedCalendarRequest = exports.ListSchedulingPublicationsRequest = exports.PublishSchedulingScheduleRequest = exports.PreviewSchedulingPublicationRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../user_service/student");
@@ -14,6 +14,7 @@ const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const uuid_1 = require("../utils/uuid");
 const scheduling_1 = require("./scheduling");
+const scheduling_publication_1 = require("./scheduling_publication");
 exports.protobufPackage = "class_service.scheduling_service";
 function createBaseGetSchedulingPreparationRequest() {
     return { context: undefined, school_year_id: undefined };
@@ -5485,6 +5486,800 @@ exports.GetSchedulingPublishedLessonRequest = {
         message.lesson_id = (object.lesson_id !== undefined && object.lesson_id !== null)
             ? uuid_1.Uuid.fromPartial(object.lesson_id)
             : undefined;
+        return message;
+    },
+};
+function createBasePreviewSchedulingPublishedLessonEditRequest() {
+    return { context: undefined, school_year_id: undefined, lesson_id: undefined, edit: undefined };
+}
+exports.PreviewSchedulingPublishedLessonEditRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.lesson_id !== undefined) {
+            uuid_1.Uuid.encode(message.lesson_id, writer.uint32(26).fork()).join();
+        }
+        if (message.edit !== undefined) {
+            scheduling_publication_1.SchedulingPublishedLessonEdit.encode(message.edit, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePreviewSchedulingPublishedLessonEditRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.lesson_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.edit = scheduling_publication_1.SchedulingPublishedLessonEdit.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            lesson_id: isSet(object.lessonId) ? uuid_1.Uuid.fromJSON(object.lessonId) : undefined,
+            edit: isSet(object.edit) ? scheduling_publication_1.SchedulingPublishedLessonEdit.fromJSON(object.edit) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.lesson_id !== undefined) {
+            obj.lessonId = uuid_1.Uuid.toJSON(message.lesson_id);
+        }
+        if (message.edit !== undefined) {
+            obj.edit = scheduling_publication_1.SchedulingPublishedLessonEdit.toJSON(message.edit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PreviewSchedulingPublishedLessonEditRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePreviewSchedulingPublishedLessonEditRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.lesson_id = (object.lesson_id !== undefined && object.lesson_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.lesson_id)
+            : undefined;
+        message.edit = (object.edit !== undefined && object.edit !== null)
+            ? scheduling_publication_1.SchedulingPublishedLessonEdit.fromPartial(object.edit)
+            : undefined;
+        return message;
+    },
+};
+function createBaseApplySchedulingPublishedLessonEditRequest() {
+    return {
+        context: undefined,
+        school_year_id: undefined,
+        lesson_id: undefined,
+        edit: undefined,
+        preview_token: undefined,
+        idempotency_key: undefined,
+    };
+}
+exports.ApplySchedulingPublishedLessonEditRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.lesson_id !== undefined) {
+            uuid_1.Uuid.encode(message.lesson_id, writer.uint32(26).fork()).join();
+        }
+        if (message.edit !== undefined) {
+            scheduling_publication_1.SchedulingPublishedLessonEdit.encode(message.edit, writer.uint32(34).fork()).join();
+        }
+        if (message.preview_token !== undefined) {
+            writer.uint32(42).string(message.preview_token);
+        }
+        if (message.idempotency_key !== undefined) {
+            uuid_1.Uuid.encode(message.idempotency_key, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseApplySchedulingPublishedLessonEditRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.lesson_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.edit = scheduling_publication_1.SchedulingPublishedLessonEdit.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.preview_token = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.idempotency_key = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            lesson_id: isSet(object.lessonId) ? uuid_1.Uuid.fromJSON(object.lessonId) : undefined,
+            edit: isSet(object.edit) ? scheduling_publication_1.SchedulingPublishedLessonEdit.fromJSON(object.edit) : undefined,
+            preview_token: isSet(object.previewToken) ? globalThis.String(object.previewToken) : undefined,
+            idempotency_key: isSet(object.idempotencyKey) ? uuid_1.Uuid.fromJSON(object.idempotencyKey) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.lesson_id !== undefined) {
+            obj.lessonId = uuid_1.Uuid.toJSON(message.lesson_id);
+        }
+        if (message.edit !== undefined) {
+            obj.edit = scheduling_publication_1.SchedulingPublishedLessonEdit.toJSON(message.edit);
+        }
+        if (message.preview_token !== undefined) {
+            obj.previewToken = message.preview_token;
+        }
+        if (message.idempotency_key !== undefined) {
+            obj.idempotencyKey = uuid_1.Uuid.toJSON(message.idempotency_key);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ApplySchedulingPublishedLessonEditRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseApplySchedulingPublishedLessonEditRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.lesson_id = (object.lesson_id !== undefined && object.lesson_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.lesson_id)
+            : undefined;
+        message.edit = (object.edit !== undefined && object.edit !== null)
+            ? scheduling_publication_1.SchedulingPublishedLessonEdit.fromPartial(object.edit)
+            : undefined;
+        message.preview_token = object.preview_token ?? undefined;
+        message.idempotency_key = (object.idempotency_key !== undefined && object.idempotency_key !== null)
+            ? uuid_1.Uuid.fromPartial(object.idempotency_key)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetSchedulingPublishedLessonHistoryRequest() {
+    return { context: undefined, school_year_id: undefined, lesson_id: undefined, cursor: undefined, limit: undefined };
+}
+exports.GetSchedulingPublishedLessonHistoryRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.lesson_id !== undefined) {
+            uuid_1.Uuid.encode(message.lesson_id, writer.uint32(26).fork()).join();
+        }
+        if (message.cursor !== undefined) {
+            writer.uint32(34).string(message.cursor);
+        }
+        if (message.limit !== undefined) {
+            writer.uint32(40).uint32(message.limit);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetSchedulingPublishedLessonHistoryRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.lesson_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.cursor = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.limit = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            lesson_id: isSet(object.lessonId) ? uuid_1.Uuid.fromJSON(object.lessonId) : undefined,
+            cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : undefined,
+            limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.lesson_id !== undefined) {
+            obj.lessonId = uuid_1.Uuid.toJSON(message.lesson_id);
+        }
+        if (message.cursor !== undefined) {
+            obj.cursor = message.cursor;
+        }
+        if (message.limit !== undefined) {
+            obj.limit = Math.round(message.limit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetSchedulingPublishedLessonHistoryRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetSchedulingPublishedLessonHistoryRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.lesson_id = (object.lesson_id !== undefined && object.lesson_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.lesson_id)
+            : undefined;
+        message.cursor = object.cursor ?? undefined;
+        message.limit = object.limit ?? undefined;
+        return message;
+    },
+};
+function createBaseGetSchedulingPublishedDayEditOptionsRequest() {
+    return { context: undefined, school_year_id: undefined, local_date: undefined };
+}
+exports.GetSchedulingPublishedDayEditOptionsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.local_date !== undefined) {
+            writer.uint32(26).string(message.local_date);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetSchedulingPublishedDayEditOptionsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.local_date = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            local_date: isSet(object.localDate) ? globalThis.String(object.localDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.local_date !== undefined) {
+            obj.localDate = message.local_date;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetSchedulingPublishedDayEditOptionsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetSchedulingPublishedDayEditOptionsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.local_date = object.local_date ?? undefined;
+        return message;
+    },
+};
+function createBasePreviewSchedulingPublishedDayEditRequest() {
+    return { context: undefined, school_year_id: undefined, day_id: undefined, edit: undefined };
+}
+exports.PreviewSchedulingPublishedDayEditRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.day_id !== undefined) {
+            uuid_1.Uuid.encode(message.day_id, writer.uint32(26).fork()).join();
+        }
+        if (message.edit !== undefined) {
+            scheduling_publication_1.SchedulingPublishedDayEdit.encode(message.edit, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePreviewSchedulingPublishedDayEditRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.day_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.edit = scheduling_publication_1.SchedulingPublishedDayEdit.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            day_id: isSet(object.dayId) ? uuid_1.Uuid.fromJSON(object.dayId) : undefined,
+            edit: isSet(object.edit) ? scheduling_publication_1.SchedulingPublishedDayEdit.fromJSON(object.edit) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.day_id !== undefined) {
+            obj.dayId = uuid_1.Uuid.toJSON(message.day_id);
+        }
+        if (message.edit !== undefined) {
+            obj.edit = scheduling_publication_1.SchedulingPublishedDayEdit.toJSON(message.edit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PreviewSchedulingPublishedDayEditRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePreviewSchedulingPublishedDayEditRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.day_id = (object.day_id !== undefined && object.day_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.day_id)
+            : undefined;
+        message.edit = (object.edit !== undefined && object.edit !== null)
+            ? scheduling_publication_1.SchedulingPublishedDayEdit.fromPartial(object.edit)
+            : undefined;
+        return message;
+    },
+};
+function createBaseApplySchedulingPublishedDayEditRequest() {
+    return {
+        context: undefined,
+        school_year_id: undefined,
+        day_id: undefined,
+        edit: undefined,
+        preview_token: undefined,
+        idempotency_key: undefined,
+    };
+}
+exports.ApplySchedulingPublishedDayEditRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.day_id !== undefined) {
+            uuid_1.Uuid.encode(message.day_id, writer.uint32(26).fork()).join();
+        }
+        if (message.edit !== undefined) {
+            scheduling_publication_1.SchedulingPublishedDayEdit.encode(message.edit, writer.uint32(34).fork()).join();
+        }
+        if (message.preview_token !== undefined) {
+            writer.uint32(42).string(message.preview_token);
+        }
+        if (message.idempotency_key !== undefined) {
+            uuid_1.Uuid.encode(message.idempotency_key, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseApplySchedulingPublishedDayEditRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.day_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.edit = scheduling_publication_1.SchedulingPublishedDayEdit.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.preview_token = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.idempotency_key = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            day_id: isSet(object.dayId) ? uuid_1.Uuid.fromJSON(object.dayId) : undefined,
+            edit: isSet(object.edit) ? scheduling_publication_1.SchedulingPublishedDayEdit.fromJSON(object.edit) : undefined,
+            preview_token: isSet(object.previewToken) ? globalThis.String(object.previewToken) : undefined,
+            idempotency_key: isSet(object.idempotencyKey) ? uuid_1.Uuid.fromJSON(object.idempotencyKey) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.day_id !== undefined) {
+            obj.dayId = uuid_1.Uuid.toJSON(message.day_id);
+        }
+        if (message.edit !== undefined) {
+            obj.edit = scheduling_publication_1.SchedulingPublishedDayEdit.toJSON(message.edit);
+        }
+        if (message.preview_token !== undefined) {
+            obj.previewToken = message.preview_token;
+        }
+        if (message.idempotency_key !== undefined) {
+            obj.idempotencyKey = uuid_1.Uuid.toJSON(message.idempotency_key);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ApplySchedulingPublishedDayEditRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseApplySchedulingPublishedDayEditRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.day_id = (object.day_id !== undefined && object.day_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.day_id)
+            : undefined;
+        message.edit = (object.edit !== undefined && object.edit !== null)
+            ? scheduling_publication_1.SchedulingPublishedDayEdit.fromPartial(object.edit)
+            : undefined;
+        message.preview_token = object.preview_token ?? undefined;
+        message.idempotency_key = (object.idempotency_key !== undefined && object.idempotency_key !== null)
+            ? uuid_1.Uuid.fromPartial(object.idempotency_key)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetSchedulingPublishedDayHistoryRequest() {
+    return { context: undefined, school_year_id: undefined, day_id: undefined, cursor: undefined, limit: undefined };
+}
+exports.GetSchedulingPublishedDayHistoryRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.school_year_id !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year_id, writer.uint32(18).fork()).join();
+        }
+        if (message.day_id !== undefined) {
+            uuid_1.Uuid.encode(message.day_id, writer.uint32(26).fork()).join();
+        }
+        if (message.cursor !== undefined) {
+            writer.uint32(34).string(message.cursor);
+        }
+        if (message.limit !== undefined) {
+            writer.uint32(40).uint32(message.limit);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetSchedulingPublishedDayHistoryRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.school_year_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.day_id = uuid_1.Uuid.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.cursor = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.limit = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            school_year_id: isSet(object.schoolYearId) ? object_id_1.ObjectId.fromJSON(object.schoolYearId) : undefined,
+            day_id: isSet(object.dayId) ? uuid_1.Uuid.fromJSON(object.dayId) : undefined,
+            cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : undefined,
+            limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.school_year_id !== undefined) {
+            obj.schoolYearId = object_id_1.ObjectId.toJSON(message.school_year_id);
+        }
+        if (message.day_id !== undefined) {
+            obj.dayId = uuid_1.Uuid.toJSON(message.day_id);
+        }
+        if (message.cursor !== undefined) {
+            obj.cursor = message.cursor;
+        }
+        if (message.limit !== undefined) {
+            obj.limit = Math.round(message.limit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetSchedulingPublishedDayHistoryRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetSchedulingPublishedDayHistoryRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year_id)
+            : undefined;
+        message.day_id = (object.day_id !== undefined && object.day_id !== null)
+            ? uuid_1.Uuid.fromPartial(object.day_id)
+            : undefined;
+        message.cursor = object.cursor ?? undefined;
+        message.limit = object.limit ?? undefined;
         return message;
     },
 };

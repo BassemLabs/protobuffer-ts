@@ -4,6 +4,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Uuid } from "../utils/uuid";
 import { SchedulingCoursePeriodRule, SchedulingDoublePeriodMode, SchedulingPeriodDefinition, SchedulingPeriodTimeSetupWeekdayOverride, SchedulingPreparationStep, SchedulingScheduleAdjustmentOperation, SchedulingSchedulePinScope, SchedulingScheduleReference, SchedulingSemesterOptionGroup, SchedulingSharedLessonMember, SchedulingTeacherAvailabilityWindow, SchedulingTeacherPeriodAllocation } from "./scheduling";
+import { SchedulingPublishedDayEdit, SchedulingPublishedLessonEdit } from "./scheduling_publication";
 export declare const protobufPackage = "class_service.scheduling_service";
 export interface GetSchedulingPreparationRequest {
     context: RequestContext | undefined;
@@ -336,6 +337,53 @@ export interface GetSchedulingPublishedLessonRequest {
     school_year_id: ObjectId | undefined;
     lesson_id: Uuid | undefined;
 }
+export interface PreviewSchedulingPublishedLessonEditRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    lesson_id: Uuid | undefined;
+    edit: SchedulingPublishedLessonEdit | undefined;
+}
+export interface ApplySchedulingPublishedLessonEditRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    lesson_id: Uuid | undefined;
+    edit: SchedulingPublishedLessonEdit | undefined;
+    preview_token?: string | undefined;
+    idempotency_key: Uuid | undefined;
+}
+export interface GetSchedulingPublishedLessonHistoryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    lesson_id: Uuid | undefined;
+    cursor?: string | undefined;
+    limit?: number | undefined;
+}
+export interface GetSchedulingPublishedDayEditOptionsRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    local_date?: string | undefined;
+}
+export interface PreviewSchedulingPublishedDayEditRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    day_id: Uuid | undefined;
+    edit: SchedulingPublishedDayEdit | undefined;
+}
+export interface ApplySchedulingPublishedDayEditRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    day_id: Uuid | undefined;
+    edit: SchedulingPublishedDayEdit | undefined;
+    preview_token?: string | undefined;
+    idempotency_key: Uuid | undefined;
+}
+export interface GetSchedulingPublishedDayHistoryRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    day_id: Uuid | undefined;
+    cursor?: string | undefined;
+    limit?: number | undefined;
+}
 export declare const GetSchedulingPreparationRequest: MessageFns<GetSchedulingPreparationRequest>;
 export declare const CreateSchedulingWorkspaceRequest: MessageFns<CreateSchedulingWorkspaceRequest>;
 export declare const CompleteSchedulingPreparationStepRequest: MessageFns<CompleteSchedulingPreparationStepRequest>;
@@ -390,6 +438,13 @@ export declare const PublishSchedulingScheduleRequest: MessageFns<PublishSchedul
 export declare const ListSchedulingPublicationsRequest: MessageFns<ListSchedulingPublicationsRequest>;
 export declare const GetSchedulingPublishedCalendarRequest: MessageFns<GetSchedulingPublishedCalendarRequest>;
 export declare const GetSchedulingPublishedLessonRequest: MessageFns<GetSchedulingPublishedLessonRequest>;
+export declare const PreviewSchedulingPublishedLessonEditRequest: MessageFns<PreviewSchedulingPublishedLessonEditRequest>;
+export declare const ApplySchedulingPublishedLessonEditRequest: MessageFns<ApplySchedulingPublishedLessonEditRequest>;
+export declare const GetSchedulingPublishedLessonHistoryRequest: MessageFns<GetSchedulingPublishedLessonHistoryRequest>;
+export declare const GetSchedulingPublishedDayEditOptionsRequest: MessageFns<GetSchedulingPublishedDayEditOptionsRequest>;
+export declare const PreviewSchedulingPublishedDayEditRequest: MessageFns<PreviewSchedulingPublishedDayEditRequest>;
+export declare const ApplySchedulingPublishedDayEditRequest: MessageFns<ApplySchedulingPublishedDayEditRequest>;
+export declare const GetSchedulingPublishedDayHistoryRequest: MessageFns<GetSchedulingPublishedDayHistoryRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
