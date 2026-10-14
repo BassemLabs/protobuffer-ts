@@ -381,7 +381,11 @@ export interface LmsCalendarItem {
   state?: LmsSubmissionState | undefined;
   submitted_at?: Date | undefined;
   late?: boolean | undefined;
-  grade?: number | undefined;
+  grade?:
+    | number
+    | undefined;
+  /** Existing linked abstract-course color (#RRGGBB); absent for unlinked classes. */
+  course_color?: string | undefined;
 }
 
 export interface LmsHistory {
@@ -1077,6 +1081,7 @@ function createBaseLmsCalendarItem(): LmsCalendarItem {
     submitted_at: undefined,
     late: undefined,
     grade: undefined,
+    course_color: undefined,
   };
 }
 
@@ -1144,6 +1149,9 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
     }
     if (message.grade !== undefined) {
       writer.uint32(169).double(message.grade);
+    }
+    if (message.course_color !== undefined) {
+      writer.uint32(178).string(message.course_color);
     }
     return writer;
   },
@@ -1302,6 +1310,13 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
 
           message.grade = reader.double();
           continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.course_color = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1336,6 +1351,7 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
       submitted_at: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
       late: isSet(object.late) ? globalThis.Boolean(object.late) : undefined,
       grade: isSet(object.grade) ? globalThis.Number(object.grade) : undefined,
+      course_color: isSet(object.courseColor) ? globalThis.String(object.courseColor) : undefined,
     };
   },
 
@@ -1404,6 +1420,9 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
     if (message.grade !== undefined) {
       obj.grade = message.grade;
     }
+    if (message.course_color !== undefined) {
+      obj.courseColor = message.course_color;
+    }
     return obj;
   },
 
@@ -1435,6 +1454,7 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
     message.submitted_at = object.submitted_at ?? undefined;
     message.late = object.late ?? undefined;
     message.grade = object.grade ?? undefined;
+    message.course_color = object.course_color ?? undefined;
     return message;
   },
 };

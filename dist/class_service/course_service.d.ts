@@ -234,6 +234,20 @@ export interface HomeroomCloneRequest {
     teachers: ObjectId[];
     gclass_create?: boolean | undefined;
 }
+/** Current parent children are resolved by the service, never supplied by the caller. */
+export interface GetParentLmsCalendarRequest {
+    context: RequestContext | undefined;
+    school_year_id: ObjectId | undefined;
+    start_date: Date | undefined;
+    end_date: Date | undefined;
+}
+export interface ParentLmsCalendarChild {
+    student_id: ObjectId | undefined;
+    calendar_items: LmsCalendarItem[];
+}
+export interface GetParentLmsCalendarResponse {
+    children: ParentLmsCalendarChild[];
+}
 export declare const GetCourseRequest: MessageFns<GetCourseRequest>;
 export declare const ValidateStudentDeletionAcademicEligibilityRequest: MessageFns<ValidateStudentDeletionAcademicEligibilityRequest>;
 export declare const ListCoursesRequest: MessageFns<ListCoursesRequest>;
@@ -275,6 +289,9 @@ export declare const StandaloneCreateRequest: MessageFns<StandaloneCreateRequest
 export declare const StandaloneCloneRequest: MessageFns<StandaloneCloneRequest>;
 export declare const HomeroomCreateRequest: MessageFns<HomeroomCreateRequest>;
 export declare const HomeroomCloneRequest: MessageFns<HomeroomCloneRequest>;
+export declare const GetParentLmsCalendarRequest: MessageFns<GetParentLmsCalendarRequest>;
+export declare const ParentLmsCalendarChild: MessageFns<ParentLmsCalendarChild>;
+export declare const GetParentLmsCalendarResponse: MessageFns<GetParentLmsCalendarResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

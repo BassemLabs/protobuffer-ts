@@ -898,6 +898,7 @@ function createBaseLmsCalendarItem() {
         submitted_at: undefined,
         late: undefined,
         grade: undefined,
+        course_color: undefined,
     };
 }
 exports.LmsCalendarItem = {
@@ -964,6 +965,9 @@ exports.LmsCalendarItem = {
         }
         if (message.grade !== undefined) {
             writer.uint32(169).double(message.grade);
+        }
+        if (message.course_color !== undefined) {
+            writer.uint32(178).string(message.course_color);
         }
         return writer;
     },
@@ -1100,6 +1104,12 @@ exports.LmsCalendarItem = {
                     }
                     message.grade = reader.double();
                     continue;
+                case 22:
+                    if (tag !== 178) {
+                        break;
+                    }
+                    message.course_color = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1133,6 +1143,7 @@ exports.LmsCalendarItem = {
             submitted_at: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
             late: isSet(object.late) ? globalThis.Boolean(object.late) : undefined,
             grade: isSet(object.grade) ? globalThis.Number(object.grade) : undefined,
+            course_color: isSet(object.courseColor) ? globalThis.String(object.courseColor) : undefined,
         };
     },
     toJSON(message) {
@@ -1200,6 +1211,9 @@ exports.LmsCalendarItem = {
         if (message.grade !== undefined) {
             obj.grade = message.grade;
         }
+        if (message.course_color !== undefined) {
+            obj.courseColor = message.course_color;
+        }
         return obj;
     },
     create(base) {
@@ -1230,6 +1244,7 @@ exports.LmsCalendarItem = {
         message.submitted_at = object.submitted_at ?? undefined;
         message.late = object.late ?? undefined;
         message.grade = object.grade ?? undefined;
+        message.course_color = object.course_color ?? undefined;
         return message;
     },
 };

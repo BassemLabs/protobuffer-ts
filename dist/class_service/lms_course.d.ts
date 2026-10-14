@@ -146,6 +146,8 @@ export interface LmsCalendarItem {
     submitted_at?: Date | undefined;
     late?: boolean | undefined;
     grade?: number | undefined;
+    /** Existing linked abstract-course color (#RRGGBB); absent for unlinked classes. */
+    course_color?: string | undefined;
 }
 export interface LmsHistory {
     /** Who made the change (provider user id) */
