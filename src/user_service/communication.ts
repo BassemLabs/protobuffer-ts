@@ -8,6 +8,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Notification } from "../utils/notification";
 import {
+  NotificationBodyFormat,
+  notificationBodyFormatFromJSON,
+  notificationBodyFormatToJSON,
+  notificationBodyFormatToNumber,
+} from "../utils/notification_body_format";
+import {
   NotificationType,
   notificationTypeFromJSON,
   notificationTypeToJSON,
@@ -81,6 +87,8 @@ export interface CommunicationBroadcast {
   subject?: string | undefined;
   body?: string | undefined;
   attachments: CommunicationAttachment[];
+  /** Absent for legacy plain-text broadcasts. */
+  body_format?: NotificationBodyFormat | undefined;
 }
 
 export interface CommunicationAttachment {
@@ -317,6 +325,7 @@ function createBaseCommunicationBroadcast(): CommunicationBroadcast {
     subject: undefined,
     body: undefined,
     attachments: [],
+    body_format: undefined,
   };
 }
 
@@ -344,6 +353,9 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     }
     for (const v of message.attachments) {
       CommunicationAttachment.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.body_format !== undefined) {
+      writer.uint32(64).int32(notificationBodyFormatToNumber(message.body_format));
     }
     return writer;
   },
@@ -414,6 +426,13 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
 
           message.attachments.push(CommunicationAttachment.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.body_format = notificationBodyFormatFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -436,6 +455,7 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
       attachments: globalThis.Array.isArray(object?.attachments)
         ? object.attachments.map((e: any) => CommunicationAttachment.fromJSON(e))
         : [],
+      body_format: isSet(object.bodyFormat) ? notificationBodyFormatFromJSON(object.bodyFormat) : undefined,
     };
   },
 
@@ -462,6 +482,9 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     if (message.attachments?.length) {
       obj.attachments = message.attachments.map((e) => CommunicationAttachment.toJSON(e));
     }
+    if (message.body_format !== undefined) {
+      obj.bodyFormat = notificationBodyFormatToJSON(message.body_format);
+    }
     return obj;
   },
 
@@ -481,6 +504,7 @@ export const CommunicationBroadcast: MessageFns<CommunicationBroadcast> = {
     message.subject = object.subject ?? undefined;
     message.body = object.body ?? undefined;
     message.attachments = object.attachments?.map((e) => CommunicationAttachment.fromPartial(e)) || [];
+    message.body_format = object.body_format ?? undefined;
     return message;
   },
 };

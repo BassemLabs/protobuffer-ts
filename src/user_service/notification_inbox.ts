@@ -7,6 +7,12 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
+import {
+  NotificationBodyFormat,
+  notificationBodyFormatFromJSON,
+  notificationBodyFormatToJSON,
+  notificationBodyFormatToNumber,
+} from "../utils/notification_body_format";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { CommunicationAttachment } from "./communication";
@@ -22,7 +28,11 @@ export interface InboxNotification {
   student_id?: ObjectId | undefined;
   student_name?: string | undefined;
   attachments: CommunicationAttachment[];
-  available_at: Date | undefined;
+  available_at:
+    | Date
+    | undefined;
+  /** Absent for legacy plain-text messages. */
+  body_format?: NotificationBodyFormat | undefined;
 }
 
 export interface ActivateInboxNotificationRequest {
@@ -92,6 +102,7 @@ function createBaseInboxNotification(): InboxNotification {
     student_name: undefined,
     attachments: [],
     available_at: undefined,
+    body_format: undefined,
   };
 }
 
@@ -123,6 +134,9 @@ export const InboxNotification: MessageFns<InboxNotification> = {
     }
     if (message.available_at !== undefined) {
       Timestamp.encode(toTimestamp(message.available_at), writer.uint32(82).fork()).join();
+    }
+    if (message.body_format !== undefined) {
+      writer.uint32(88).int32(notificationBodyFormatToNumber(message.body_format));
     }
     return writer;
   },
@@ -197,6 +211,13 @@ export const InboxNotification: MessageFns<InboxNotification> = {
 
           message.available_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.body_format = notificationBodyFormatFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -219,6 +240,7 @@ export const InboxNotification: MessageFns<InboxNotification> = {
         ? object.attachments.map((e: any) => CommunicationAttachment.fromJSON(e))
         : [],
       available_at: isSet(object.availableAt) ? fromJsonTimestamp(object.availableAt) : undefined,
+      body_format: isSet(object.bodyFormat) ? notificationBodyFormatFromJSON(object.bodyFormat) : undefined,
     };
   },
 
@@ -251,6 +273,9 @@ export const InboxNotification: MessageFns<InboxNotification> = {
     if (message.available_at !== undefined) {
       obj.availableAt = message.available_at.toISOString();
     }
+    if (message.body_format !== undefined) {
+      obj.bodyFormat = notificationBodyFormatToJSON(message.body_format);
+    }
     return obj;
   },
 
@@ -270,6 +295,7 @@ export const InboxNotification: MessageFns<InboxNotification> = {
     message.student_name = object.student_name ?? undefined;
     message.attachments = object.attachments?.map((e) => CommunicationAttachment.fromPartial(e)) || [];
     message.available_at = object.available_at ?? undefined;
+    message.body_format = object.body_format ?? undefined;
     return message;
   },
 };

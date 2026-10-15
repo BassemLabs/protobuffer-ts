@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/communication_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResolveTargetsResponse = exports.ResolveTargetsRequest = exports.GetRecipientsListRequest = exports.GetBroadcastRequest = exports.GetBroadcastsListRequest = exports.CommunicationAttachmentDownload = exports.RedeemCommunicationAttachmentRequest = exports.GetCommunicationAttachmentDownloadUrlRequest = exports.DeleteCommunicationAttachmentRequest = exports.UploadCommunicationAttachmentRequest = exports.SendCommunicationRequest = exports.PreviewCommunicationRequest = exports.protobufPackage = void 0;
+exports.ResolveTargetsResponse = exports.ResolveTargetsRequest = exports.GetRecipientsListRequest = exports.GetBroadcastRequest = exports.GetBroadcastsListRequest = exports.CommunicationAttachmentDownload = exports.RedeemCommunicationAttachmentRequest = exports.GetCommunicationAttachmentDownloadUrlRequest = exports.DeleteCommunicationAttachmentRequest = exports.UploadCommunicationAttachmentRequest = exports.PreviewCommunicationContentResponse = exports.SendCommunicationRequest = exports.PreviewCommunicationRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const notification_type_1 = require("../utils/notification_type");
@@ -300,6 +300,72 @@ exports.SendCommunicationRequest = {
         message.subject = object.subject ?? undefined;
         message.body = object.body ?? undefined;
         message.attachment_ids = object.attachment_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBasePreviewCommunicationContentResponse() {
+    return { body: undefined, email_html: undefined };
+}
+exports.PreviewCommunicationContentResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.body !== undefined) {
+            writer.uint32(10).string(message.body);
+        }
+        if (message.email_html !== undefined) {
+            writer.uint32(18).string(message.email_html);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePreviewCommunicationContentResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.email_html = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            email_html: isSet(object.emailHtml) ? globalThis.String(object.emailHtml) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        if (message.email_html !== undefined) {
+            obj.emailHtml = message.email_html;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PreviewCommunicationContentResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePreviewCommunicationContentResponse();
+        message.body = object.body ?? undefined;
+        message.email_html = object.email_html ?? undefined;
         return message;
     },
 };

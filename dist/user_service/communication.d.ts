@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Notification } from "../utils/notification";
+import { NotificationBodyFormat } from "../utils/notification_body_format";
 import { NotificationType } from "../utils/notification_type";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
@@ -29,6 +30,8 @@ export interface CommunicationBroadcast {
     subject?: string | undefined;
     body?: string | undefined;
     attachments: CommunicationAttachment[];
+    /** Absent for legacy plain-text broadcasts. */
+    body_format?: NotificationBodyFormat | undefined;
 }
 export interface CommunicationAttachment {
     id: ObjectId | undefined;

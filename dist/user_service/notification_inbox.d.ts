@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { NotificationBodyFormat } from "../utils/notification_body_format";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { CommunicationAttachment } from "./communication";
@@ -13,6 +14,8 @@ export interface InboxNotification {
     student_name?: string | undefined;
     attachments: CommunicationAttachment[];
     available_at: Date | undefined;
+    /** Absent for legacy plain-text messages. */
+    body_format?: NotificationBodyFormat | undefined;
 }
 export interface ActivateInboxNotificationRequest {
     context: RequestContext | undefined;

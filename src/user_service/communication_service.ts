@@ -43,6 +43,15 @@ export interface SendCommunicationRequest {
   attachment_ids: ObjectId[];
 }
 
+export interface PreviewCommunicationContentResponse {
+  /** Sanitized message HTML fragment for notification details. */
+  body?:
+    | string
+    | undefined;
+  /** Complete branded email HTML with attachments, returned only when Email is selected. */
+  email_html?: string | undefined;
+}
+
 export interface UploadCommunicationAttachmentRequest {
   context: RequestContext | undefined;
   file_name?: string | undefined;
@@ -410,6 +419,84 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     message.subject = object.subject ?? undefined;
     message.body = object.body ?? undefined;
     message.attachment_ids = object.attachment_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBasePreviewCommunicationContentResponse(): PreviewCommunicationContentResponse {
+  return { body: undefined, email_html: undefined };
+}
+
+export const PreviewCommunicationContentResponse: MessageFns<PreviewCommunicationContentResponse> = {
+  encode(message: PreviewCommunicationContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.body !== undefined) {
+      writer.uint32(10).string(message.body);
+    }
+    if (message.email_html !== undefined) {
+      writer.uint32(18).string(message.email_html);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreviewCommunicationContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreviewCommunicationContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.email_html = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreviewCommunicationContentResponse {
+    return {
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      email_html: isSet(object.emailHtml) ? globalThis.String(object.emailHtml) : undefined,
+    };
+  },
+
+  toJSON(message: PreviewCommunicationContentResponse): unknown {
+    const obj: any = {};
+    if (message.body !== undefined) {
+      obj.body = message.body;
+    }
+    if (message.email_html !== undefined) {
+      obj.emailHtml = message.email_html;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreviewCommunicationContentResponse>, I>>(
+    base?: I,
+  ): PreviewCommunicationContentResponse {
+    return PreviewCommunicationContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreviewCommunicationContentResponse>, I>>(
+    object: I,
+  ): PreviewCommunicationContentResponse {
+    const message = createBasePreviewCommunicationContentResponse();
+    message.body = object.body ?? undefined;
+    message.email_html = object.email_html ?? undefined;
     return message;
   },
 };

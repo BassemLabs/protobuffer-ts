@@ -12,6 +12,7 @@ exports.broadcastListScopeToNumber = broadcastListScopeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const notification_1 = require("../utils/notification");
+const notification_body_format_1 = require("../utils/notification_body_format");
 const notification_type_1 = require("../utils/notification_type");
 const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
@@ -218,6 +219,7 @@ function createBaseCommunicationBroadcast() {
         subject: undefined,
         body: undefined,
         attachments: [],
+        body_format: undefined,
     };
 }
 exports.CommunicationBroadcast = {
@@ -244,6 +246,9 @@ exports.CommunicationBroadcast = {
         }
         for (const v of message.attachments) {
             exports.CommunicationAttachment.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.body_format !== undefined) {
+            writer.uint32(64).int32((0, notification_body_format_1.notificationBodyFormatToNumber)(message.body_format));
         }
         return writer;
     },
@@ -303,6 +308,12 @@ exports.CommunicationBroadcast = {
                     }
                     message.attachments.push(exports.CommunicationAttachment.decode(reader, reader.uint32()));
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.body_format = (0, notification_body_format_1.notificationBodyFormatFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -324,6 +335,7 @@ exports.CommunicationBroadcast = {
             attachments: globalThis.Array.isArray(object?.attachments)
                 ? object.attachments.map((e) => exports.CommunicationAttachment.fromJSON(e))
                 : [],
+            body_format: isSet(object.bodyFormat) ? (0, notification_body_format_1.notificationBodyFormatFromJSON)(object.bodyFormat) : undefined,
         };
     },
     toJSON(message) {
@@ -349,6 +361,9 @@ exports.CommunicationBroadcast = {
         if (message.attachments?.length) {
             obj.attachments = message.attachments.map((e) => exports.CommunicationAttachment.toJSON(e));
         }
+        if (message.body_format !== undefined) {
+            obj.bodyFormat = (0, notification_body_format_1.notificationBodyFormatToJSON)(message.body_format);
+        }
         return obj;
     },
     create(base) {
@@ -367,6 +382,7 @@ exports.CommunicationBroadcast = {
         message.subject = object.subject ?? undefined;
         message.body = object.body ?? undefined;
         message.attachments = object.attachments?.map((e) => exports.CommunicationAttachment.fromPartial(e)) || [];
+        message.body_format = object.body_format ?? undefined;
         return message;
     },
 };

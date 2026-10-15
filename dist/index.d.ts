@@ -52,6 +52,8 @@ import * as Object_id from './utils/object_id';
 export { Object_id };
 import * as Uuid from './utils/uuid';
 export { Uuid };
+import * as Notification_body_format from './utils/notification_body_format';
+export { Notification_body_format };
 import * as Staging_sync from './utils/staging_sync';
 export { Staging_sync };
 import * as Request_context from './utils/request_context';

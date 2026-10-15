@@ -8,6 +8,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Timestamp } from "../google/protobuf/timestamp";
 import {
+  NotificationBodyFormat,
+  notificationBodyFormatFromJSON,
+  notificationBodyFormatToJSON,
+  notificationBodyFormatToNumber,
+} from "./notification_body_format";
+import {
   NotificationType,
   notificationTypeFromJSON,
   notificationTypeToJSON,
@@ -88,7 +94,11 @@ export interface Notification {
   notification_destination_email?: string | undefined;
   notification_destination_phone?: string | undefined;
   date_to_send?: Date | undefined;
-  deep_link?: string | undefined;
+  deep_link?:
+    | string
+    | undefined;
+  /** Absent for legacy plain-text messages. */
+  body_format?: NotificationBodyFormat | undefined;
 }
 
 function createBaseNotification(): Notification {
@@ -110,6 +120,7 @@ function createBaseNotification(): Notification {
     notification_destination_phone: undefined,
     date_to_send: undefined,
     deep_link: undefined,
+    body_format: undefined,
   };
 }
 
@@ -167,6 +178,9 @@ export const Notification: MessageFns<Notification> = {
     }
     if (message.deep_link !== undefined) {
       writer.uint32(138).string(message.deep_link);
+    }
+    if (message.body_format !== undefined) {
+      writer.uint32(144).int32(notificationBodyFormatToNumber(message.body_format));
     }
     return writer;
   },
@@ -307,6 +321,13 @@ export const Notification: MessageFns<Notification> = {
 
           message.deep_link = reader.string();
           continue;
+        case 18:
+          if (tag !== 144) {
+            break;
+          }
+
+          message.body_format = notificationBodyFormatFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -345,6 +366,7 @@ export const Notification: MessageFns<Notification> = {
         : undefined,
       date_to_send: isSet(object.dateToSend) ? fromJsonTimestamp(object.dateToSend) : undefined,
       deep_link: isSet(object.deepLink) ? globalThis.String(object.deepLink) : undefined,
+      body_format: isSet(object.bodyFormat) ? notificationBodyFormatFromJSON(object.bodyFormat) : undefined,
     };
   },
 
@@ -401,6 +423,9 @@ export const Notification: MessageFns<Notification> = {
     if (message.deep_link !== undefined) {
       obj.deepLink = message.deep_link;
     }
+    if (message.body_format !== undefined) {
+      obj.bodyFormat = notificationBodyFormatToJSON(message.body_format);
+    }
     return obj;
   },
 
@@ -435,6 +460,7 @@ export const Notification: MessageFns<Notification> = {
     message.notification_destination_phone = object.notification_destination_phone ?? undefined;
     message.date_to_send = object.date_to_send ?? undefined;
     message.deep_link = object.deep_link ?? undefined;
+    message.body_format = object.body_format ?? undefined;
     return message;
   },
 };

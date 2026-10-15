@@ -20,6 +20,12 @@ export interface SendCommunicationRequest {
     body?: string | undefined;
     attachment_ids: ObjectId[];
 }
+export interface PreviewCommunicationContentResponse {
+    /** Sanitized message HTML fragment for notification details. */
+    body?: string | undefined;
+    /** Complete branded email HTML with attachments, returned only when Email is selected. */
+    email_html?: string | undefined;
+}
 export interface UploadCommunicationAttachmentRequest {
     context: RequestContext | undefined;
     file_name?: string | undefined;
@@ -63,6 +69,7 @@ export interface ResolveTargetsResponse {
 }
 export declare const PreviewCommunicationRequest: MessageFns<PreviewCommunicationRequest>;
 export declare const SendCommunicationRequest: MessageFns<SendCommunicationRequest>;
+export declare const PreviewCommunicationContentResponse: MessageFns<PreviewCommunicationContentResponse>;
 export declare const UploadCommunicationAttachmentRequest: MessageFns<UploadCommunicationAttachmentRequest>;
 export declare const DeleteCommunicationAttachmentRequest: MessageFns<DeleteCommunicationAttachmentRequest>;
 export declare const GetCommunicationAttachmentDownloadUrlRequest: MessageFns<GetCommunicationAttachmentDownloadUrlRequest>;

@@ -9,6 +9,7 @@ exports.GetInboxNotificationAttachmentDownloadUrlResponse = exports.GetInboxNoti
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const notification_body_format_1 = require("../utils/notification_body_format");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const communication_1 = require("./communication");
@@ -24,6 +25,7 @@ function createBaseInboxNotification() {
         student_name: undefined,
         attachments: [],
         available_at: undefined,
+        body_format: undefined,
     };
 }
 exports.InboxNotification = {
@@ -54,6 +56,9 @@ exports.InboxNotification = {
         }
         if (message.available_at !== undefined) {
             timestamp_1.Timestamp.encode(toTimestamp(message.available_at), writer.uint32(82).fork()).join();
+        }
+        if (message.body_format !== undefined) {
+            writer.uint32(88).int32((0, notification_body_format_1.notificationBodyFormatToNumber)(message.body_format));
         }
         return writer;
     },
@@ -118,6 +123,12 @@ exports.InboxNotification = {
                     }
                     message.available_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
                     continue;
+                case 11:
+                    if (tag !== 88) {
+                        break;
+                    }
+                    message.body_format = (0, notification_body_format_1.notificationBodyFormatFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -139,6 +150,7 @@ exports.InboxNotification = {
                 ? object.attachments.map((e) => communication_1.CommunicationAttachment.fromJSON(e))
                 : [],
             available_at: isSet(object.availableAt) ? fromJsonTimestamp(object.availableAt) : undefined,
+            body_format: isSet(object.bodyFormat) ? (0, notification_body_format_1.notificationBodyFormatFromJSON)(object.bodyFormat) : undefined,
         };
     },
     toJSON(message) {
@@ -170,6 +182,9 @@ exports.InboxNotification = {
         if (message.available_at !== undefined) {
             obj.availableAt = message.available_at.toISOString();
         }
+        if (message.body_format !== undefined) {
+            obj.bodyFormat = (0, notification_body_format_1.notificationBodyFormatToJSON)(message.body_format);
+        }
         return obj;
     },
     create(base) {
@@ -188,6 +203,7 @@ exports.InboxNotification = {
         message.student_name = object.student_name ?? undefined;
         message.attachments = object.attachments?.map((e) => communication_1.CommunicationAttachment.fromPartial(e)) || [];
         message.available_at = object.available_at ?? undefined;
+        message.body_format = object.body_format ?? undefined;
         return message;
     },
 };

@@ -12,6 +12,7 @@ exports.notificationStatusToNumber = notificationStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
+const notification_body_format_1 = require("./notification_body_format");
 const notification_type_1 = require("./notification_type");
 const object_id_1 = require("./object_id");
 const user_type_1 = require("./user_type");
@@ -85,6 +86,7 @@ function createBaseNotification() {
         notification_destination_phone: undefined,
         date_to_send: undefined,
         deep_link: undefined,
+        body_format: undefined,
     };
 }
 exports.Notification = {
@@ -141,6 +143,9 @@ exports.Notification = {
         }
         if (message.deep_link !== undefined) {
             writer.uint32(138).string(message.deep_link);
+        }
+        if (message.body_format !== undefined) {
+            writer.uint32(144).int32((0, notification_body_format_1.notificationBodyFormatToNumber)(message.body_format));
         }
         return writer;
     },
@@ -260,6 +265,12 @@ exports.Notification = {
                     }
                     message.deep_link = reader.string();
                     continue;
+                case 18:
+                    if (tag !== 144) {
+                        break;
+                    }
+                    message.body_format = (0, notification_body_format_1.notificationBodyFormatFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -297,6 +308,7 @@ exports.Notification = {
                 : undefined,
             date_to_send: isSet(object.dateToSend) ? fromJsonTimestamp(object.dateToSend) : undefined,
             deep_link: isSet(object.deepLink) ? globalThis.String(object.deepLink) : undefined,
+            body_format: isSet(object.bodyFormat) ? (0, notification_body_format_1.notificationBodyFormatFromJSON)(object.bodyFormat) : undefined,
         };
     },
     toJSON(message) {
@@ -352,6 +364,9 @@ exports.Notification = {
         if (message.deep_link !== undefined) {
             obj.deepLink = message.deep_link;
         }
+        if (message.body_format !== undefined) {
+            obj.bodyFormat = (0, notification_body_format_1.notificationBodyFormatToJSON)(message.body_format);
+        }
         return obj;
     },
     create(base) {
@@ -385,6 +400,7 @@ exports.Notification = {
         message.notification_destination_phone = object.notification_destination_phone ?? undefined;
         message.date_to_send = object.date_to_send ?? undefined;
         message.deep_link = object.deep_link ?? undefined;
+        message.body_format = object.body_format ?? undefined;
         return message;
     },
 };
